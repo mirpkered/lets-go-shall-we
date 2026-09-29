@@ -44,8 +44,8 @@ describe('player scenario selection and QA mode', () => {
     const empty: SaveData = { version: 1, bank: [], character: null, run: null };
     expect(renderQaPanel(isQaMode(''), empty, SCENARIOS, ITEMS)).toBe('');
     const tools = renderQaPanel(isQaMode('?qa=1'), empty, SCENARIOS, ITEMS);
-    expect(tools).toContain('Start The Broken Bell');
-    expect(tools).toContain('Start The Last Stop');
+    expect(tools).toContain('Start For Whom the Bell Tolls');
+    expect(tools).toContain('Start All Aboard!');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

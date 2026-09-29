@@ -2,7 +2,7 @@ import type { Scenario } from '../types';
 
 export const BROKEN_BELL: Scenario = {
   id: 'broken-bell',
-  title: 'The Broken Bell',
+  title: 'For Whom the Bell Tolls',
   subtitle: 'Three silent nights. Two missing relics. One thing waiting below.',
   startScene: 'chapelExterior',
   scenes: {

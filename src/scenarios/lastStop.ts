@@ -5,7 +5,7 @@ const ROUTE_KNOWLEDGE = 'Beyond Milepost 47, a maintenance siding climbs away be
 
 export const LAST_STOP: Scenario = {
   id: 'last-stop',
-  title: 'The Last Stop',
+  title: 'All Aboard!',
   subtitle: 'One train. No brakes. A bridge that is no longer there.',
   startScene: 'stationPlatform',
   scenes: {
