@@ -30,6 +30,8 @@ export const ITEMS: Record<string, Item> = {
   innCellarKey: { id: 'innCellarKey', name: 'Unmarked Cellar Key', description: 'A local key to the Lantern House service passage.', category: 'run-only', carryable: false },
   dealerCardKnife: { id: 'dealerCardKnife', name: 'Dealer’s Card Knife', description: 'A slim spring-steel blade for trimming cards, cord, and other careful work.', category: 'weapon', carryable: true },
   foldingCardMirror: { id: 'foldingCardMirror', name: 'Folding Card Mirror', description: 'A palm-sized inspection mirror with a brass hinge, useful for seeing into tight spaces.', category: 'tool', carryable: true },
+  bridgewrightHammer: { id: 'bridgewrightHammer', name: 'Bridgewright’s Hammer', description: 'A compact, well-balanced hammer for setting pegs and careful repairs.', category: 'tool', carryable: true },
+  ironRopeClamp: { id: 'ironRopeClamp', name: 'Iron Rope Clamp', description: 'A sturdy clamp for securing a line when wet knots cannot be trusted.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

@@ -1,6 +1,6 @@
 # Let’s Go, Shall We?
 
-A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes six complete adventures—**For Whom the Bell Tolls**, **All Aboard!**, **Aww, Rats!!**, **What’s Mine is Mine**, **The Last Room on the Left**, and **Dead Man’s Hand**—plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
+A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes seven complete adventures—**For Whom the Bell Tolls**, **All Aboard!**, **Aww, Rats!!**, **What’s Mine is Mine**, **The Last Room on the Left**, **Dead Man’s Hand**, and **Bridge Out**—plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
 
 ## Run locally
 
@@ -42,7 +42,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 
 ## Current limitations
 
-- Six authored scenarios and one character slot
+- Seven authored scenarios and one character slot
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable

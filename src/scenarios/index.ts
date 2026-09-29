@@ -5,8 +5,9 @@ import { AWW_RATS } from './awwRats';
 import { WHATS_MINE } from './whatsMine';
 import { THE_LAST_ROOM } from './theLastRoom';
 import { DEAD_MANS_HAND } from './deadMansHand';
+import { BRIDGE_OUT } from './bridgeOut';
 
-export const SCENARIOS: Scenario[] = [BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND];
+export const SCENARIOS: Scenario[] = [BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));
 
@@ -14,4 +15,4 @@ export function getScenario(id: string): Scenario | undefined {
   return BY_ID.get(id);
 }
 
-export { AWW_RATS, BROKEN_BELL, LAST_STOP, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND };
+export { AWW_RATS, BROKEN_BELL, LAST_STOP, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT };
