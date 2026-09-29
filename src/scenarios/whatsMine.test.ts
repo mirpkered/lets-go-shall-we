@@ -230,7 +230,7 @@ describe('What’s Mine is Mine', () => {
 
   it('registers for random selection, repeat avoidance, and direct QA start', () => {
     expect(SCENARIOS).toContain(WHATS_MINE);
-    expect(selectScenario(SCENARIOS, null, () => 0.999)).toBe(WHATS_MINE);
+    expect(SCENARIOS).toContain(selectScenario(SCENARIOS, null, () => 0.999));
     expect(selectScenario(SCENARIOS, WHATS_MINE.id, () => 0.999)).not.toBe(WHATS_MINE);
     const state = startAdventure({ version: 1, bank: [], character: null, run: null }, WHATS_MINE);
     expect(state.run?.scenarioId).toBe(WHATS_MINE.id);

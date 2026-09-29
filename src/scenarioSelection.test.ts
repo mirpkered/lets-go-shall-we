@@ -50,6 +50,7 @@ describe('player scenario selection and QA mode', () => {
     expect(tools).toContain('Start All Aboard!');
     expect(tools).toContain('Start Aww, Rats!!');
     expect(tools).toContain('Start What’s Mine is Mine');
+    expect(tools).toContain('Start The Last Room on the Left');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

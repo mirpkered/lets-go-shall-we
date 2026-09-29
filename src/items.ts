@@ -25,6 +25,9 @@ export const ITEMS: Record<string, Item> = {
   minerHeadlamp: { id: 'minerHeadlamp', name: 'Miner’s Headlamp', description: 'A rugged carbide lamp with a bright, steady beam.', category: 'tool', carryable: true },
   foremanMultiTool: { id: 'foremanMultiTool', name: 'Foreman’s Multi-tool', description: 'A worn but dependable folding tool for small repairs.', category: 'tool', carryable: true },
   mineSurveyMap: { id: 'mineSurveyMap', name: 'Mine Survey Map', description: 'A folded map of the old levels and a marked side drift.', category: 'run-only', carryable: false },
+  foldingPryTool: { id: 'foldingPryTool', name: 'Folding Pry Tool', description: 'A compact brass-and-steel tool made for careful leverage.', category: 'tool', carryable: true },
+  brassRoomKey: { id: 'brassRoomKey', name: 'Brass Room Key', description: 'An old inn key, its number worn smooth by years of travel.', category: 'artifact', carryable: true },
+  innCellarKey: { id: 'innCellarKey', name: 'Unmarked Cellar Key', description: 'A local key to the Lantern House service passage.', category: 'run-only', carryable: false },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
