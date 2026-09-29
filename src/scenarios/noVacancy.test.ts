@@ -45,9 +45,9 @@ describe('No Vacancy', () => {
     state = pick(state, 'repairByHand', () => 0);
     expect(state.run?.flags).toContain('windowBraced');
     state = pick(state, 'roomForAmos');
-    state = pick(state, 'holdTogether');
+    state = pick(state, 'trustTheBrace');
     expect(state.run?.status).toBe('success');
-    expect(sceneText(NO_VACANCY.scenes.costlySuccessEnding, state)).toContain('Amos gets the only dry room');
+    expect(state.run?.sceneId).toBe('orderRestoredEnding');
   });
 
   it('allows the misleading-authority claim to be investigated without revealing it beforehand', () => {
@@ -72,12 +72,21 @@ describe('No Vacancy', () => {
 
   it('records a costly success and a wrong-priority outcome without moral scoring', () => {
     let state = pick(fresh(), 'askAda');
-    state = pick(state, 'giveUpRoom');
+    state = pick(state, 'offerBlanket');
     state = pick(state, 'keepDryRoom');
     state = pick(state, 'holdTogether');
     expect(state.run?.sceneId).toBe('costlySuccessEnding');
     expect(sceneText(NO_VACANCY.scenes.costlySuccessEnding, state)).toContain('You keep the dry room');
     expect(Object.keys(state.character ?? {})).not.toContain('morality');
+  });
+
+  it('reveals the consequence of trusting Vale’s claimed authority only after that choice', () => {
+    let state = pick(fresh(), 'hearGuests');
+    state = pick(state, 'askLena');
+    state = pick(state, 'roomForVale');
+    expect(sceneText(NO_VACANCY.scenes.roofCrisis, state)).not.toContain('schoolteacher');
+    state = pick(state, 'holdTogether');
+    expect(sceneText(NO_VACANCY.scenes.costlySuccessEnding, state)).toContain('Only after the storm do you learn he was a volunteer, not a marshal');
   });
 
   it('lets money buy one of two explicitly named carryable rewards, but never blocks a broke route', () => {
@@ -117,6 +126,11 @@ describe('No Vacancy', () => {
     expect(NO_VACANCY.scenes.guestAccounts.choices.find((choice) => choice.id === 'checkValeClaim')?.timeCost).toBeGreaterThan(0);
     expect(NO_VACANCY.scenes.houseInspection.choices.find((choice) => choice.id === 'repairByHand')?.timeCost).toBe(12);
     expect(NO_VACANCY.scenes.houseInspection.choices.find((choice) => choice.id === 'repairWithGear')?.timeCost).toBe(5);
+    const critical = fresh();
+    critical.run!.sceneId = 'roofCrisis';
+    critical.run!.elapsedMinutes = 45;
+    expect(meets(NO_VACANCY.scenes.roofCrisis.choices.find((choice) => choice.id === 'secureWindowByHand')?.requirements, critical)).toBe(false);
+    expect(meets(NO_VACANCY.scenes.roofCrisis.choices.find((choice) => choice.id === 'evacuateHouse')?.requirements, critical)).toBe(true);
   });
 
   it('keeps limited shelter and blankets distinct, and gives fresh characters the same core options', () => {
@@ -126,6 +140,7 @@ describe('No Vacancy', () => {
     const borrowed = pick(keeper, 'offerBlanket');
     expect(borrowed.run?.inventory).toContain('reserveBlanket');
     expect(ITEMS.reserveBlanket.carryable).toBe(false);
+    expect(sceneText(NO_VACANCY.scenes.shelterAllocation, borrowed)).toContain('Lena’s child has one of the reserve blankets');
     expect(NO_VACANCY.scenes.shelterAllocation.choices).toHaveLength(4);
     expect(NO_VACANCY.scenes.shelterAllocation.choices.map((choice) => choice.id)).toEqual(['roomForFamily', 'roomForAmos', 'roomForVale', 'keepDryRoom']);
   });
@@ -161,6 +176,7 @@ describe('No Vacancy', () => {
     expect(NO_VACANCY.scenes.supplyPayment.choices.find((choice) => choice.id === 'buyCanvas')?.requirements?.notItems).toContain('waxedCanvasSheet');
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.effects?.gainItems).toEqual(['reserveBlanket']);
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.requirements?.notItems).toContain('reserveBlanket');
+    expect(NO_VACANCY.scenes.shelterAllocation.choices.find((choice) => choice.id === 'roomForVale')?.label).not.toContain('volunteer');
   });
 
   it('has a forward-only reachable graph with at most four actions and no active dead ends', () => {
@@ -178,8 +194,8 @@ describe('No Vacancy', () => {
       const scene = NO_VACANCY.scenes[run.sceneId];
       expect(scene, `Missing scene ${run.sceneId}`).toBeDefined();
       if (scene.ending) continue;
-      expect(scene.choices.length).toBeLessThanOrEqual(4);
       const actions = scene.choices.filter((choice) => meets(choice.requirements, state));
+      expect(actions.length).toBeLessThanOrEqual(4);
       if (!actions.length) deadEnds.push(scene.id);
       expect(actions.length, `No available action at ${scene.id}`).toBeGreaterThan(0);
       for (const action of actions) {
