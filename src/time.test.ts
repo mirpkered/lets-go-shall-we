@@ -108,7 +108,7 @@ describe('fictional adventure clock', () => {
   });
 
   it('gives every playable scenario authored, scenario-specific phases beginning at zero', () => {
-    expect(SCENARIOS).toHaveLength(8);
+    expect(SCENARIOS).toHaveLength(9);
     for (const scenario of SCENARIOS) {
       expect(scenario.timePhases?.[0].atMinutes).toBe(0);
       expect(timeStatus(scenario, 0).phase?.label).toBeTruthy();

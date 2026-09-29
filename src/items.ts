@@ -34,6 +34,9 @@ export const ITEMS: Record<string, Item> = {
   ironRopeClamp: { id: 'ironRopeClamp', name: 'Iron Rope Clamp', description: 'A sturdy clamp for securing a line when wet knots cannot be trusted.', category: 'tool', carryable: true },
   weatherproofCloak: { id: 'weatherproofCloak', name: 'Weatherproof Cloak', description: 'A dry oilskin cloak that sheds rain and wind on a long walk.', category: 'armor', carryable: true },
   trailCompass: { id: 'trailCompass', name: 'Trail Compass', description: 'A small brass compass, steady enough to keep a route in poor visibility.', category: 'tool', carryable: true },
+  waxedCanvasSheet: { id: 'waxedCanvasSheet', name: 'Waxed Canvas Sheet', description: 'A tough, water-shedding sheet useful for temporary cover and rough repairs.', category: 'tool', carryable: true },
+  compactStoveTool: { id: 'compactStoveTool', name: 'Compact Stove Tool', description: 'A short iron tool for adjusting latches, stove plates, and stubborn fittings.', category: 'tool', carryable: true },
+  reserveBlanket: { id: 'reserveBlanket', name: 'Reserve Blanket', description: 'A dry wool blanket borrowed from the inn’s limited emergency stores.', category: 'run-only', carryable: false },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
