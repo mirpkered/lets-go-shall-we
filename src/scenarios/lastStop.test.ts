@@ -3,6 +3,7 @@ import { choose, meets, newCharacter, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
 import { BROKEN_BELL } from './brokenBell';
 import { LAST_STOP } from './lastStop';
+import { AWW_RATS } from './awwRats';
 
 function fresh(money = 0, carriedItem: string | null = null): SaveData {
   const character = newCharacter('Test Traveler');
@@ -136,7 +137,7 @@ describe('All Aboard!', () => {
   });
 });
 
-describe.each([BROKEN_BELL, LAST_STOP])('$title reachable-state safety', (scenario: Scenario) => {
+describe.each([BROKEN_BELL, LAST_STOP, AWW_RATS])('$title reachable-state safety', (scenario: Scenario) => {
   it('never reaches an active non-ending scene with zero available actions', () => {
     const character = newCharacter('Graph Walker');
     character.money = 8;

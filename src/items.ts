@@ -17,6 +17,11 @@ export const ITEMS: Record<string, Item> = {
   railwayMap: { id: 'railwayMap', name: 'Railway Map', description: 'A folded route map marked with gradients, sidings, and mileposts.', category: 'run-only', carryable: false },
   brakeKey: { id: 'brakeKey', name: 'Brake Cabinet Key', description: 'A square iron key on a red cord.', category: 'run-only', carryable: false },
   workGloves: { id: 'workGloves', name: 'Work Gloves', description: 'Thick leather gloves made for hot iron and rough cable.', category: 'run-only', carryable: false },
+  ratBait: { id: 'ratBait', name: 'Farm Bait Tin', description: 'A small tin of seed and dried apple for setting practical traps.', category: 'run-only', carryable: false },
+  wireTraps: { id: 'wireTraps', name: 'Wire Traps', description: 'Two sturdy spring traps borrowed from the farm store.', category: 'run-only', carryable: false },
+  smokeBellows: { id: 'smokeBellows', name: 'Hand Bellows', description: 'A compact bellows for directing damp, cool smoke from a safe distance.', category: 'run-only', carryable: false },
+  ratCatchersHook: { id: 'ratCatchersHook', name: 'Rat-Catcher’s Hook', description: 'A stout iron hook useful for shifting debris without reaching into dark spaces.', category: 'tool', carryable: true },
+  heavyLeatherGloves: { id: 'heavyLeatherGloves', name: 'Heavy Leather Gloves', description: 'A well-made pair of thick farm gloves, sound enough for another hard day.', category: 'armor', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

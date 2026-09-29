@@ -15,8 +15,10 @@ describe('player scenario selection and QA mode', () => {
   });
 
   it('avoids immediately repeating the recent scenario when an alternative exists', () => {
-    expect(selectScenario(SCENARIOS, SCENARIOS[0].id, () => 0)).toBe(SCENARIOS[1]);
-    expect(selectScenario(SCENARIOS, SCENARIOS[1].id, () => 0.99)).toBe(SCENARIOS[0]);
+    for (const recent of SCENARIOS) {
+      expect(selectScenario(SCENARIOS, recent.id, () => 0)).not.toBe(recent);
+      expect(selectScenario(SCENARIOS, recent.id, () => 0.99)).not.toBe(recent);
+    }
   });
 
   it('still selects the only eligible scenario when there is just one', () => {
@@ -46,6 +48,7 @@ describe('player scenario selection and QA mode', () => {
     const tools = renderQaPanel(isQaMode('?qa=1'), empty, SCENARIOS, ITEMS);
     expect(tools).toContain('Start For Whom the Bell Tolls');
     expect(tools).toContain('Start All Aboard!');
+    expect(tools).toContain('Start Aww, Rats!!');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

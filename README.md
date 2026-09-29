@@ -1,6 +1,6 @@
 # Let’s Go, Shall We?
 
-A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes two complete adventures—**For Whom the Bell Tolls** and **All Aboard!**—plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
+A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes three complete adventures—**For Whom the Bell Tolls**, **All Aboard!**, and **Aww, Rats!!**—plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
 
 ## Run locally
 
@@ -38,7 +38,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 
 ## Current limitations
 
-- Two authored scenarios and one character slot
+- Three authored scenarios and one character slot
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable
