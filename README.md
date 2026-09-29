@@ -35,6 +35,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - Important items, clues, and advantages must come from an explicit choice, a clearly narrated handoff, or a clearly described discovery. Avoid silent inventory grants.
 - When a scenario supports multiple legitimate plans, explain each plan clearly and frame its risks consistently. Do not imply one is the intended answer; let the player weigh the tradeoffs.
 - Story screens are one-time narrative moments. Scenario paths move forward and do not revisit a screen.
+- Every scene should change the situation, reveal useful information, create risk, pay off an earlier choice, alter future options, or advance the central story. If it does none of these, consolidate or remove it.
 
 ## Current limitations
 

@@ -1,11 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
 import { BROKEN_BELL } from './scenarios/brokenBell';
+import { findScenarioGraphProblems } from './scenarioGraph';
 import type { SaveData } from './types';
 
 function fresh(): SaveData {
   const character = newCharacter('Test');
   return { version: 1, bank: [], character, run: startRun(character, BROKEN_BELL) };
+}
+function select(state: SaveData, sceneId: string, choiceId: string, random = () => 0): SaveData {
+  state.run!.sceneId = sceneId;
+  const choice = BROKEN_BELL.scenes[sceneId].choices.find((entry) => entry.id === choiceId);
+  if (!choice) throw new Error(`Missing choice ${sceneId}.${choiceId}`);
+  return choose(state, BROKEN_BELL, choice, random);
 }
 
 describe('adventure engine', () => {
@@ -16,9 +23,7 @@ describe('adventure engine', () => {
   });
 
   it('autosave-compatible choices preserve an exact serializable run state', () => {
-    const state = fresh();
-    const choice = BROKEN_BELL.scenes.chapelExterior.choices.find((c) => c.id === 'inspectRope')!;
-    const next = choose(state, BROKEN_BELL, choice, () => 0);
+    const next = select(fresh(), 'chapelExterior', 'inspectRope');
     expect(JSON.parse(JSON.stringify(next))).toEqual(next);
     expect(next.run?.sceneId).toBe('ropeClue');
     expect(next.character?.knowledge).toHaveLength(1);
@@ -26,185 +31,127 @@ describe('adventure engine', () => {
 
   it('lets a foreshadowed risky action both succeed and fail', () => {
     const state = fresh();
-    state.run!.sceneId = 'cellarWindow';
-    const choice = BROKEN_BELL.scenes.cellarWindow.choices[0];
-    expect(choose(state, BROKEN_BELL, choice, () => 0.2).run?.health).toBe(10);
-    expect(choose(state, BROKEN_BELL, choice, () => 0.9).run?.health).toBe(8);
+    const success = select(state, 'cellarWindow', 'climbCarefully', () => 0.2);
+    const failed = select(state, 'cellarWindow', 'climbCarefully', () => 0.99);
+    expect(success.run?.sceneId).toBe('cellarLanding');
+    expect(success.run?.health).toBe(10);
+    expect(failed.run?.sceneId).toBe('windowFall');
+    expect(failed.run?.health).toBe(8);
   });
 
-  it('supports the peaceful return route', () => {
-    const state = fresh();
-    state.run!.sceneId = 'maskedParley';
-    state.run!.inventory.push('ironHandbell', 'blackClapper');
-    const choice = BROKEN_BELL.scenes.maskedParley.choices.find((entry) => entry.id === 'returnBoth')!;
-    const next = choose(state, BROKEN_BELL, choice);
-    expect(next.run?.status).toBe('success');
-    expect(next.run?.inventory).toContain('bronzeMaskFragment');
-    expect(next.run?.inventory).not.toContain('ironHandbell');
+  it('supports peaceful return from a fresh character using evidence and explicit items', () => {
+    let state = fresh();
+    state = select(state, 'chapelExterior', 'callOut');
+    expect(state.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    state = select(state, 'voiceBelow', 'enterAfterCall');
+    state = select(state, 'chapelNave', 'takeCandlestick');
+    expect(state.run?.inventory).toContain('brassCandlestick');
+    state = select(state, 'naveAfterCandle', 'descendWithCandle');
+    state = select(state, 'underStairs', 'findPriestBelow');
+    expect(BROKEN_BELL.scenes.priestAfterHound.title).toContain('Below');
+    state = select(state, 'priestAfterHound', 'askPriest');
+    expect(state.run?.inventory).not.toContain('boneKey');
+    state = select(state, 'priestAccount', 'requestKeyAndWard');
+    expect(state.run?.inventory).toContain('boneKey');
+    state = select(state, 'priestFarewell', 'returnToChestAfterPriest');
+    state = select(state, 'chestAfterPriest', 'unlockChest');
+    expect(state.run?.inventory).toContain('ironHandbell');
+    state = select(state, 'bellFoundAfterPriest', 'goKeeperWithRecoveredBell');
+    state = select(state, 'burialApproach', 'speak');
+    state = select(state, 'maskedParley', 'observeGesture');
+    state = select(state, 'keeperSign', 'liftClapper');
+    state = select(state, 'clapperTaken', 'returnNowWithBoth');
+    expect(state.run?.status).toBe('success');
+    expect(state.run?.inventory).toContain('bronzeMaskFragment');
+    expect(state.run?.inventory).not.toContain('ironHandbell');
+    expect(state.run?.inventory).not.toContain('blackClapper');
+    expect(new Set(state.run?.visitedSceneIds ?? []).size).toBe(state.run?.visitedSceneIds?.length);
   });
 
-  it('lets a player with the snatched clapper return for the handbell', () => {
+  it('gives early clue and candlestick meaningful later payoffs', () => {
+    const cluePath = select(select(fresh(), 'chapelExterior', 'callOut'), 'voiceBelow', 'enterAfterCall');
+    expect(cluePath.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    const withBrass = select(select(fresh(), 'chapelNave', 'takeCandlestick'), 'naveAfterCandle', 'descendWithCandle');
+    const options = BROKEN_BELL.scenes.chestClue.choices.filter((choice) => meets(choice.requirements, { ...withBrass, run: { ...withBrass.run!, sceneId: 'chestClue' } }));
+    expect(options.map((choice) => choice.id)).toContain('wedgeChest');
+    expect(BROKEN_BELL.scenes.burialApproach.choices.find((choice) => choice.id === 'fightBrass')?.requirements?.items).toContain('brassCandlestick');
+  });
+
+  it('does not grant the bone key for binding the priest; the player must ask', () => {
+    let state = select(fresh(), 'underStairs', 'findPriestBelow');
+    state = select(state, 'priestAfterHound', 'bindPriest');
+    expect(state.run?.inventory).not.toContain('boneKey');
+    expect(state.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    state = select(state, 'priestStabilized', 'askAfterBinding');
+    state = select(state, 'priestAccount', 'requestKeyAndWard');
+    expect(state.run?.inventory).toContain('boneKey');
+    expect(state.run?.inventory).toContain('yewCharm');
+  });
+
+  it('offers a real candlestick chest use and consumes it when used', () => {
+    let state = select(fresh(), 'chapelNave', 'takeCandlestick');
+    state = select(state, 'naveAfterCandle', 'descendWithCandle');
+    const atChest = { ...state, run: { ...state.run!, sceneId: 'chestClue' } };
+    const wedge = BROKEN_BELL.scenes.chestClue.choices.find((choice) => choice.id === 'wedgeChest')!;
+    const result = choose(atChest, BROKEN_BELL, wedge);
+    expect(result.run?.sceneId).toBe('chestForcedOpen');
+    expect(result.run?.inventory).toContain('ironHandbell');
+    expect(result.run?.inventory).not.toContain('brassCandlestick');
+  });
+
+  it('does not duplicate unique relic acquisitions or reacquire the bell', () => {
     const state = fresh();
-    state.run!.sceneId = 'keeperAfterSnatch';
     state.run!.inventory.push('blackClapper');
-    state.run!.inventory.push('boneKey');
-    state.run!.acquiredThisRun.push('blackClapper');
-    state.run!.flags.push('hasClapper');
-
-    const available = BROKEN_BELL.scenes.keeperAfterSnatch.choices.filter((choice) => meets(choice.requirements, state));
-    expect(available.map((choice) => choice.id)).toContain('returnForBell');
-
-    const next = choose(state, BROKEN_BELL, available.find((choice) => choice.id === 'returnForBell')!);
-    expect(next.run?.sceneId).toBe('returnToChapel');
-    expect(next.run?.inventory).toContain('blackClapper');
-    const recover = BROKEN_BELL.scenes.returnToChapel.choices.find((choice) => choice.id === 'unlockReturnChest')!;
-    const recovered = choose(next, BROKEN_BELL, recover);
-    expect(recovered.run?.sceneId).toBe('returnChestLoot');
-    expect(recovered.run?.inventory).toContain('ironHandbell');
-    expect(recovered.run?.inventory).toContain('graveCoin');
-    const descend = BROKEN_BELL.scenes.returnChestLoot.choices.find((choice) => choice.id === 'returnWithChestLoot')!;
-    const reunion = choose(recovered, BROKEN_BELL, descend);
-    const returnBoth = BROKEN_BELL.scenes.keeperReunion.choices.find((choice) => choice.id === 'returnOnReunion')!;
-    const peaceful = choose(reunion, BROKEN_BELL, returnBoth);
-    expect(peaceful.run?.status).toBe('success');
-    expect(peaceful.run?.sceneId).toBe('peaceEnding');
+    state.run!.sceneId = 'keeperSign';
+    let available = BROKEN_BELL.scenes.keeperSign.choices.filter((choice) => meets(choice.requirements, state));
+    expect(available.map((choice) => choice.id)).not.toContain('takeClapperNoBell');
+    state.run!.inventory.push('ironHandbell', 'boneKey', 'bronzeMaskFragment');
+    state.run!.sceneId = 'chestClue';
+    available = BROKEN_BELL.scenes.chestClue.choices.filter((choice) => meets(choice.requirements, state));
+    expect(available.map((choice) => choice.id)).not.toContain('forceChest');
+    expect(available.map((choice) => choice.id)).not.toContain('wedgeChest');
   });
 
-  it('supports returning the handbell before taking the clapper', () => {
-    const state = fresh();
-    state.run!.sceneId = 'maskedParley';
-    state.run!.inventory.push('ironHandbell');
-    const returnBell = BROKEN_BELL.scenes.maskedParley.choices.find((choice) => choice.id === 'returnBell')!;
-    const half = choose(state, BROKEN_BELL, returnBell);
-    expect(half.run?.sceneId).toBe('partialReturn');
-    const lift = BROKEN_BELL.scenes.partialReturn.choices.find((choice) => choice.id === 'takeClapperNow')!;
-    const held = choose(half, BROKEN_BELL, lift);
-    expect(held.run?.sceneId).toBe('clapperAtAltar');
-    const place = BROKEN_BELL.scenes.clapperAtAltar.choices.find((choice) => choice.id === 'returnLastClapper')!;
-    expect(choose(held, BROKEN_BELL, place).run?.sceneId).toBe('peaceEnding');
-  });
-
-  it('does not grant the bone key for binding the priest; the player must ask for it', () => {
-    const state = fresh();
-    state.run!.sceneId = 'priestAfterHound';
-    state.run!.visitedSceneIds = ['chapelExterior', 'priestAfterHound'];
-    const bind = BROKEN_BELL.scenes.priestAfterHound.choices.find((choice) => choice.id === 'bindPriest')!;
-    const stabilized = choose(state, BROKEN_BELL, bind);
-
-    expect(stabilized.run?.sceneId).toBe('priestStabilized');
-    expect(stabilized.run?.inventory).not.toContain('boneKey');
-    expect(stabilized.run?.inventory).not.toContain('yewCharm');
-    expect(stabilized.run?.flags).toContain('boundPriest');
-    expect(stabilized.character?.knowledge).toContain('The priest warns you: DO NOT RING IT BELOW.');
-
-    const accountChoice = BROKEN_BELL.scenes.priestStabilized.choices.find((choice) => choice.id === 'askAfterBinding')!;
-    const account = choose(stabilized, BROKEN_BELL, accountChoice);
-    expect(account.run?.sceneId).toBe('priestAccount');
-    expect(account.run?.inventory).not.toContain('boneKey');
-
-    const askForKey = BROKEN_BELL.scenes.priestAccount.choices.find((choice) => choice.id === 'requestKeyAndWard')!;
-    const equipped = choose(account, BROKEN_BELL, askForKey);
-    expect(askForKey.label).toMatch(/Ask for the key/);
-    expect(equipped.run?.inventory).toContain('boneKey');
-    expect(equipped.run?.inventory).toContain('yewCharm');
-    expect(equipped.run?.sceneId).toBe('priestFarewell');
-  });
-
-  it('lets a player without the bone key try the chest and continue without it', () => {
-    const state = fresh();
-    state.run!.sceneId = 'underStairs';
-    state.run!.visitedSceneIds = ['chapelExterior', 'underStairs'];
-    const actions = BROKEN_BELL.scenes.underStairs.choices.filter((choice) => meets(choice.requirements, state));
-    expect(actions.map((choice) => choice.id)).toContain('forceChest');
-    expect(actions.map((choice) => choice.id)).not.toContain('unlockChest');
-
-    const force = actions.find((choice) => choice.id === 'forceChest')!;
-    const forcedOpen = choose(state, BROKEN_BELL, force, () => 0);
-    expect(forcedOpen.run?.sceneId).toBe('bellDiscovery');
-    expect(forcedOpen.run?.inventory).toContain('ironHandbell');
-    expect(forcedOpen.run?.inventory).toContain('graveCoin');
-    expect(BROKEN_BELL.scenes.bellDiscovery.text).toContain('silver grave coin');
-
-    const failed = choose(state, BROKEN_BELL, force, () => 0.99);
-    expect(failed.run?.sceneId).toBe('chestJammed');
+  it('advances a failed risky keeper action into a changed consequence scene', () => {
+    const failed = select(fresh(), 'burialApproach', 'snatch', () => 0.99);
+    expect(failed.run?.sceneId).toBe('keeperWarning');
     expect(failed.run?.health).toBe(7);
-    expect(failed.run?.inventory).not.toContain('boneKey');
-    const leave = BROKEN_BELL.scenes.chestJammed.choices.find((choice) => choice.id === 'leaveChest')!;
-    expect(choose(failed, BROKEN_BELL, leave).run?.sceneId).toBe('burialApproach');
-  });
-
-  it('makes Bell scenario rewards visibly discoverable or explicitly chosen', () => {
-    expect(BROKEN_BELL.scenes.chapelNave.choices.find((choice) => choice.id === 'takeCandlestick')?.label).toContain('candlestick');
-    expect(BROKEN_BELL.scenes.bellDiscovery.text).toContain('silver grave coin');
-    expect(BROKEN_BELL.scenes.bellDiscovery.text).toContain('you take both');
-    expect(BROKEN_BELL.scenes.burialApproach.choices.find((choice) => choice.id === 'snatch')?.chance?.successMessage).toContain('clapper in hand');
-    expect(BROKEN_BELL.scenes.priestAccount.choices.find((choice) => choice.id === 'requestKeyAndWard')?.label).toContain('ward');
-    expect(BROKEN_BELL.scenes.maskedParley.text).toContain('shard has loosened');
-    expect(BROKEN_BELL.scenes.maskedParley.choices.find((choice) => choice.id === 'returnBoth')?.label).toContain('accept the mask shard');
-  });
-
-  it('advances a failed clapper attempt and never offers a duplicate unique object', () => {
-    const state = fresh();
-    state.run!.sceneId = 'keeperWarning';
-    state.run!.visitedSceneIds = ['chapelExterior', 'keeperWarning'];
-    const attempt = BROKEN_BELL.scenes.keeperWarning.choices.find((choice) => choice.id === 'tryClapperAgain')!;
-    const failed = choose(state, BROKEN_BELL, attempt, () => 0.99);
-    expect(failed.run?.sceneId).toBe('keeperAfterClapperFailure');
-    expect(failed.run?.health).toBe(6);
     expect(failed.run?.inventory).not.toContain('blackClapper');
-
-    const alreadyHasClapper = structuredClone(state);
-    alreadyHasClapper.run!.sceneId = 'maskedParley';
-    alreadyHasClapper.run!.inventory.push('blackClapper');
-    alreadyHasClapper.run!.flags.push('hasClapper');
-    expect(BROKEN_BELL.scenes.maskedParley.choices.filter((choice) => meets(choice.requirements, alreadyHasClapper)).map((choice) => choice.id)).not.toContain('takeClapper');
-
-    const alreadyHasBell = structuredClone(state);
-    alreadyHasBell.run!.sceneId = 'underStairs';
-    alreadyHasBell.run!.inventory.push('ironHandbell');
-    expect(BROKEN_BELL.scenes.underStairs.choices.filter((choice) => meets(choice.requirements, alreadyHasBell)).map((choice) => choice.id)).not.toContain('unlockChest');
-    expect(BROKEN_BELL.scenes.underStairs.choices.filter((choice) => meets(choice.requirements, alreadyHasBell)).map((choice) => choice.id)).not.toContain('forceChest');
   });
 
-  it('moves failed dangerous checks into a new consequence scene', () => {
-    const state = fresh();
-    state.run!.sceneId = 'cellarWindow';
-    const choice = BROKEN_BELL.scenes.cellarWindow.choices.find((entry) => entry.id === 'climb')!;
-    const failure = choose(state, BROKEN_BELL, choice, () => 0.99);
-    expect(failure.run?.sceneId).toBe('windowFall');
-    expect(failure.run?.health).toBe(8);
-    expect(failure.run?.visitedSceneIds).toContain('windowFall');
+  it('supports dangerous but possible and lethal combat paths', () => {
+    const prepared = fresh();
+    prepared.run!.inventory.push('ironHandbell');
+    const won = select(prepared, 'burialApproach', 'fightKnife', () => 0.1);
+    expect(won.run?.sceneId).toBe('keeperDefeated');
+    const finished = select(won, 'keeperDefeated', 'takeBothAfterFight');
+    expect(finished.run?.status).toBe('success');
+    const loss = select(prepared, 'burialApproach', 'fightKnife', () => 0.99);
+    expect(loss.run?.health).toBe(3);
+    const lethal = select(loss, 'keeperAfterFight', 'fightAgain', () => 0.99);
+    expect(lethal.run?.status).toBe('death');
   });
 
-  it('never reaches an active non-ending state with zero available choices', () => {
-    const initial = fresh();
-    const queue: SaveData[] = [initial];
-    const visited = new Set<string>();
+  it('validates the complete Bell graph as forward-only', () => {
+    expect(findScenarioGraphProblems(BROKEN_BELL)).toEqual([]);
+  });
+
+  it('never reaches an active non-ending state with zero available choices or revisits a scene', () => {
+    const queue: SaveData[] = [fresh()];
+    const seenStates = new Set<string>();
     const deadEnds: string[] = [];
-
     while (queue.length) {
       const state = queue.shift()!;
       const run = state.run!;
-      const character = state.character!;
-      const key = JSON.stringify({
-        scene: run.sceneId,
-        inventory: [...run.inventory].sort(),
-        flags: [...run.flags].sort(),
-        knowledge: [...character.knowledge].sort(),
-      });
-      if (visited.has(key)) continue;
-      visited.add(key);
+      const key = JSON.stringify({ scene: run.sceneId, inventory: [...run.inventory].sort(), flags: [...run.flags].sort(), knowledge: [...state.character!.knowledge].sort() });
+      if (seenStates.has(key)) continue;
+      seenStates.add(key);
       if (run.status !== 'active') continue;
-
       const scene = BROKEN_BELL.scenes[run.sceneId];
-      expect(scene, `Missing scene: ${run.sceneId}`).toBeDefined();
+      expect(scene, `Missing scene ${run.sceneId}`).toBeDefined();
       if (scene.ending) continue;
       const available = scene.choices.filter((choice) => meets(choice.requirements, state));
-      if (!available.length) {
-        deadEnds.push(`${run.sceneId} with inventory [${run.inventory.join(', ')}] and flags [${run.flags.join(', ')}]`);
-        continue;
-      }
-
+      if (!available.length) deadEnds.push(run.sceneId);
       for (const choice of available) {
         const outcomes = [choose(state, BROKEN_BELL, choice, () => 0)];
         if (choice.chance || choice.effects?.combat) outcomes.push(choose(state, BROKEN_BELL, choice, () => 0.999999));
@@ -216,20 +163,8 @@ describe('adventure engine', () => {
         }
       }
     }
-
-    expect(deadEnds, `Reachable dead ends:\n${deadEnds.join('\n')}`).toEqual([]);
-    expect(visited.size).toBeGreaterThan(20);
-  });
-
-  it('supports the combat-capable completion route', () => {
-    const state = fresh();
-    state.run!.sceneId = 'burialApproach';
-    state.run!.inventory.push('ironHandbell');
-    const fight = BROKEN_BELL.scenes.burialApproach.choices.find((c) => c.id === 'fight')!;
-    const won = choose(state, BROKEN_BELL, fight, () => 0.1);
-    expect(won.run?.sceneId).toBe('keeperDefeated');
-    const finish = BROKEN_BELL.scenes.keeperDefeated.choices.find((c) => c.id === 'sealWithBell')!;
-    expect(choose(won, BROKEN_BELL, finish).run?.status).toBe('success');
+    expect(deadEnds).toEqual([]);
+    expect(seenStates.size).toBeGreaterThan(20);
   });
 
   it('retains one selected carryable reward and strips the run', () => {

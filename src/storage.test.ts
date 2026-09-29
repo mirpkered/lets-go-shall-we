@@ -40,4 +40,17 @@ describe('save compatibility', () => {
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
   });
+
+  it('moves an older active Bell save from a removed scene into a safe continuation scene', () => {
+    const character = newCharacter('Continuing Player');
+    const run = startRun(character, BROKEN_BELL);
+    const oldRun = { ...run, sceneId: 'returnToChapel', health: 6, inventory: [...run.inventory, 'blackClapper'], flags: ['hasClapper'], visitedSceneIds: ['chapelExterior', 'chapelNave', 'burialApproach', 'keeperAfterSnatch', 'returnToChapel'] };
+    const state = loadSave(memoryStorage(JSON.stringify({ version: 1, bank: ['graveCoin'], character, run: oldRun })));
+    expect(state.run?.sceneId).toBe('legacyResume');
+    expect(state.run?.health).toBe(6);
+    expect(state.run?.inventory).toContain('blackClapper');
+    expect(state.run?.flags).toContain('hasClapper');
+    expect(state.bank).toEqual(['graveCoin']);
+    expect(state.run?.visitedSceneIds).toContain('legacyResume');
+  });
 });
