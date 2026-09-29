@@ -19,7 +19,14 @@ function act(state: SaveData, id: string, random = 0): SaveData {
   return choose(state, LAST_STOP, choice!, () => random);
 }
 
-describe('The Last Stop', () => {
+function reachEmergency(state = fresh()): SaveData {
+  state = act(state, 'board');
+  state = act(state, 'settle');
+  state = act(state, 'findConductor');
+  return act(state, 'takeCharge');
+}
+
+describe('All Aboard!', () => {
   it('supports a fresh-character brake route to a survivable ending', () => {
     let state = fresh();
     for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
@@ -27,10 +34,18 @@ describe('The Last Stop', () => {
     expect(state.run?.sceneId).toBe('messyEnding');
   });
 
-  it('supports a distinct clean locomotive repair route', () => {
+  it('supports a distinct clean locomotive route using a purchased toolkit', () => {
     let state = fresh();
-    state.run!.sceneId = 'locomotive';
-    state.run!.inventory.push('pocketToolkit');
+    state = act(state, 'helpPorter');
+    state = act(state, 'kioskAfterHelp');
+    state = act(state, 'buyTools');
+    state = act(state, 'boardAfterPurchase');
+    state = act(state, 'settle');
+    state = act(state, 'findConductor');
+    state = act(state, 'takeCharge');
+    state = act(state, 'engine');
+    state = act(state, 'toolWindow');
+    expect(state.run?.inventory).toContain('pocketToolkit');
     state = act(state, 'repair');
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('cleanEnding');
@@ -66,8 +81,8 @@ describe('The Last Stop', () => {
   });
 
   it('preserves the difficult uncoupling choice and its distinct ending', () => {
-    let state = fresh();
-    state.run!.sceneId = 'couplingChoice';
+    let state = reachEmergency();
+    state = act(state, 'uncouple');
     state = act(state, 'cutLoose');
     expect(state.run?.flags).toContain('carsUncoupled');
     state = act(state, 'lightBrake');
@@ -76,12 +91,39 @@ describe('The Last Stop', () => {
   });
 
   it('supports a personal-survival ending that does not claim the train was saved', () => {
-    let state = fresh(0, 'travelRope');
-    state.run!.sceneId = 'escapePoint';
+    let state = reachEmergency(fresh(0, 'travelRope'));
+    state = act(state, 'escape');
     state = act(state, 'ropeExit');
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('escapeEnding');
     expect(LAST_STOP.scenes.escapeEnding.text).toContain('not the same as victory');
+    expect(state.run?.inventory).not.toContain('signalLens');
+  });
+
+  it('presents all four response plans clearly before commitment', () => {
+    const scene = LAST_STOP.scenes.emergencyHub;
+    expect(scene.choices).toHaveLength(4);
+    expect(scene.text).toContain('service brake');
+    expect(scene.text).toContain('regulator');
+    expect(scene.text).toContain('Uncoupling');
+    expect(scene.text).toContain('gravel bank');
+    expect(scene.choices.map((choice) => choice.next)).toEqual(['baggageBrake', 'roofAccess', 'couplingChoice', 'escapePoint']);
+    expect(LAST_STOP.scenes.brakesHolding.choices.map((choice) => choice.next)).toEqual(['roofAccess', 'messyEnding', 'couplingChoice', 'escapePoint']);
+  });
+
+  it('makes the cabinet key an explicit handoff and the toolkit a described discovery', () => {
+    let state = fresh();
+    state = act(state, 'board');
+    state = act(state, 'conductor');
+    const keyChoice = LAST_STOP.scenes.conductorCar.choices.find((choice) => choice.id === 'inspectKey')!;
+    expect(keyChoice.label).toContain('Ask Vale for the cabinet key');
+    state = act(state, 'inspectKey');
+    expect(state.run?.inventory).toContain('brakeKey');
+    expect(LAST_STOP.scenes.conductorKeyHandoff.text).toContain('places it in your palm');
+    state = act(state, 'serviceWithKey');
+    expect(LAST_STOP.scenes.serviceCar.text).toContain('make out a compact toolkit');
+    state = act(state, 'openCase');
+    expect(state.run?.inventory).toContain('pocketToolkit');
   });
 
   it('uses the standard death handling after a clearly dangerous failed action', () => {

@@ -95,15 +95,31 @@ export const BROKEN_BELL: Scenario = {
     },
     priestAfterHound: {
       id: 'priestAfterHound', title: 'The Injured Priest',
-      text: '“I took what was not ours,” the priest gasps. He presses a carved bone key into your hand. “The bell is in the chest. The clapper fell deeper. Return both. And whatever you do—DO NOT RING IT BELOW.” He knots a little yew ward for you.',
+      text: 'The priest is pale beneath the yew, one hand pressed to his side. A carved bone key hangs from his belt beside a small ward of knotted yew. “I took what was not ours,” he whispers. His breathing catches; he needs help before he can tell you more.',
       choices: [
-        { id: 'takeKeyAndCharm', label: 'Take the key and ward', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: ['DO NOT RING IT BELOW.'], lore: ['The masked keeper only attacked after the stolen bell was sounded.'], setFlags: ['helpedPriest'] }, next: 'priestFarewell' },
-        { id: 'bindPriest', label: 'Bind his wound first', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: ['DO NOT RING IT BELOW.'], lore: ['The masked keeper only attacked after the stolen bell was sounded.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestFarewell' },
+        { id: 'bindPriest', label: 'Bind his wound', hint: 'Help him steady his breathing.', effects: { knowledge: ['The priest warns you: DO NOT RING IT BELOW.'], lore: ['The keeper followed after the priest disturbed the old burial.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
+        { id: 'askPriest', label: 'Ask what happened', hint: 'The key and ward remain at his belt.', next: 'priestAccount' },
+      ],
+    },
+    priestStabilized: {
+      id: 'priestStabilized', title: 'A Steadier Breath',
+      text: 'The binding holds. The priest can breathe without choking on each word now. The bone key and yew ward remain at his belt; he watches you, waiting for a question.',
+      choices: [
+        { id: 'askAfterBinding', label: 'Ask about the old burial', next: 'priestAccount' },
+        { id: 'leaveAfterBinding', label: 'Leave him to rest and descend', next: 'priestAftercare' },
+      ],
+    },
+    priestAccount: {
+      id: 'priestAccount', title: 'What the Priest Took',
+      text: 'The priest tells you that he removed an iron handbell and black clapper from an older burial beneath the chapel. “The keeper came when I sounded the bell. The warning is real: DO NOT RING IT BELOW.” He nods toward the carved bone key at his belt and the yew ward tied beside it.',
+      choices: [
+        { id: 'requestKeyAndWard', label: 'Ask for the key and ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: ['DO NOT RING IT BELOW.'], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
+        { id: 'leaveWithoutKey', label: 'Leave without asking for them', next: 'priestAftercare' },
       ],
     },
     priestFarewell: {
       id: 'priestFarewell', title: 'A Promise at the Yew',
-      text: 'The priest is stable enough to wait. He grips your wrist: “If it stands in your way, do not mistake its warning for hunger.” The chapel door is near; the hidden stair lies below it.',
+      text: 'The priest offers the carved key and yew ward for the work below. “If the keeper stands in your way, do not mistake its warning for hunger.” The chapel door is near; the hidden stair lies below it.',
       choices: [
         { id: 'returnChapel', label: 'Return to the chapel', next: 'priestAftercare' },
         { id: 'enterCellar', label: 'Use the cellar window', requirements: { flags: ['foundCellarWindow'] }, next: 'underStairs' },
@@ -111,7 +127,7 @@ export const BROKEN_BELL: Scenario = {
     },
     priestAftercare: {
       id: 'priestAftercare', title: 'The Priest Can Wait',
-      text: 'The priest is stable. You leave him beneath the yew with the lantern and follow the chapel wall toward the hidden stair. The old place below is still ahead of you.',
+      text: 'You leave the injured priest beneath the yew, breathing shallowly but conscious. The chapel wall leads toward the hidden stair; the old place below is still ahead of you.',
       choices: [
         { id: 'descendFromYew', label: 'Descend beneath the chapel', next: 'underStairs' },
         { id: 'enterFromYew', label: 'Use the cellar window', requirements: { flags: ['foundCellarWindow'] }, next: 'underStairs' },
@@ -154,7 +170,7 @@ export const BROKEN_BELL: Scenario = {
     },
     bellDiscovery: {
       id: 'bellDiscovery', title: 'The Stolen Handbell',
-      text: 'Inside the chest lies a cold iron handbell wrapped in altar cloth. Its mouth seems to drink the lantern light. The warning above feels less like superstition now.',
+      text: 'Inside the chest lies a cold iron handbell wrapped in altar cloth. Beside it, a silver grave coin is caught in the folds; you take both. The bell’s mouth seems to drink the lantern light. The warning above feels less like superstition now.',
       choices: [
         { id: 'seekClapper', label: 'Seek the missing clapper', next: 'burialApproach' },
         { id: 'leaveBell', label: 'Leave the bell and go deeper', effects: { loseItems: ['ironHandbell'], setFlags: ['bellLeftBehind'] }, next: 'burialApproach' },
@@ -189,20 +205,20 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperAfterSnatch: {
       id: 'keeperAfterSnatch', title: 'A Keeper, Not a Monster', tone: 'warning',
-      text: 'With the clapper in your hand, the creature touches its mask, then points at the hollow in the burial altar. It does not pursue you. The loose bronze fragment at its neck catches the lantern light. Now you understand: it wants the relics returned.',
+      text: 'With the clapper in your hand, the creature touches its mask, then points at the hollow in the burial altar. It does not pursue you. A shard loosened from its bronze mask rests on the stone, offered if you return the stolen relics. Now you understand: it wants the relics returned.',
       choices: [
-        { id: 'returnBoth', label: 'Return bell and clapper', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
-        { id: 'returnClapper', label: 'Return the clapper', requirements: { items: ['blackClapper'], notFlags: ['clapperReturned'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['clapperReturned'] }, next: 'clapperReturnedScene' },
+        { id: 'returnBoth', label: 'Return both and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'returnClapper', label: 'Return the clapper; accept the mask shard', requirements: { items: ['blackClapper'], notFlags: ['clapperReturned'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['clapperReturned'] }, next: 'clapperReturnedScene' },
         { id: 'returnBell', label: 'Return the handbell first', requirements: { items: ['ironHandbell'], notFlags: ['returnedBell'] }, effects: { loseItems: ['ironHandbell'], setFlags: ['returnedBell'] }, next: 'partialReturn' },
         { id: 'returnForBell', label: 'Go back for the handbell', hint: 'The keeper lets you leave with the clapper.', requirements: { items: ['blackClapper'], notItems: ['ironHandbell'] }, next: 'returnToChapel' },
       ],
     },
     maskedParley: {
       id: 'maskedParley', title: 'A Keeper, Not a Monster',
-      text: 'The creature points to the bell-shaped hollow in the altar, then to the clapper on its bone ring. Not a threat—a request. The old things belong here. A loose fragment of bronze hangs at its neck.',
+      text: 'The creature points to the bell-shaped hollow in the altar, then to the clapper on its bone ring. Not a threat—a request. The old things belong here. A shard has loosened from its bronze mask and rests on the altar, offered if you return what was taken.',
       choices: [
         { id: 'takeClapper', label: 'Take the clapper gently', requirements: { notItems: ['blackClapper'], notFlags: ['clapperReturned', 'keeperDefeated'] }, effects: { gainItems: ['blackClapper'], setFlags: ['hasClapper'] }, next: 'keeperAfterSnatch' },
-        { id: 'returnBoth', label: 'Return bell and clapper', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'returnBoth', label: 'Return both and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
         { id: 'returnBell', label: 'Return the handbell first', requirements: { items: ['ironHandbell'], notFlags: ['returnedBell'] }, effects: { loseItems: ['ironHandbell'], setFlags: ['returnedBell'] }, next: 'partialReturn' },
         { id: 'ring', label: 'Ring the handbell below', hint: 'The warning is explicit. This may be fatal.', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { health: -20 }, next: 'deathBell' },
       ],
@@ -212,8 +228,8 @@ export const BROKEN_BELL: Scenario = {
       text: 'The keeper does not follow. You climb toward the chapel with the events below behind you. The wooden chest is still beneath the warning: unlock it if you brought the key, recover the bell if you left it, or force the lock and risk another injury.',
       choices: [
         { id: 'recoverBell', label: 'Recover the handbell', requirements: { flags: ['openedChest', 'bellLeftBehind'], notItems: ['ironHandbell'] }, effects: { gainItems: ['ironHandbell'], clearFlags: ['bellLeftBehind'], setFlags: ['bellRecovered'] }, next: 'bellRecoveredScene' },
-        { id: 'unlockReturnChest', label: 'Unlock the chest with the bone key', requirements: { items: ['boneKey'], notFlags: ['openedChest'], notItems: ['ironHandbell'] }, effects: { gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, next: 'bellRecoveredScene' },
-        { id: 'forceReturnChest', label: 'Force the locked chest', hint: 'A failed attempt will hurt.', requirements: { notFlags: ['openedChest'], notItems: ['ironHandbell'] }, chance: { probability: 0.45, successNext: 'bellRecoveredScene', failureNext: 'returnChestJammed', successMessage: 'The iron band tears open.', failureMessage: 'The lock catches your blade and bruises your hand.', successEffects: { gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, failureEffects: { health: -3, setFlags: ['chestJammed'] } } },
+        { id: 'unlockReturnChest', label: 'Unlock the chest with the bone key', requirements: { items: ['boneKey'], notFlags: ['openedChest'], notItems: ['ironHandbell'] }, effects: { gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, next: 'returnChestLoot' },
+        { id: 'forceReturnChest', label: 'Force the locked chest', hint: 'A failed attempt will hurt.', requirements: { notFlags: ['openedChest'], notItems: ['ironHandbell'] }, chance: { probability: 0.45, successNext: 'returnChestLoot', failureNext: 'returnChestJammed', successMessage: 'The iron band tears open.', failureMessage: 'The lock catches your blade and bruises your hand.', successEffects: { gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, failureEffects: { health: -3, setFlags: ['chestJammed'] } } },
         { id: 'leaveWithoutBell', label: 'Leave the chapel behind', next: 'retreatEnding' },
       ],
     },
@@ -221,49 +237,58 @@ export const BROKEN_BELL: Scenario = {
       id: 'returnChestJammed', title: 'The Lock Still Holds', tone: 'warning',
       text: 'The chest has not opened. Your hand throbs from the failed attempt, but the keeper no longer blocks the way. The candlestick might bend the lock band; otherwise you can leave the bell behind.',
       choices: [
-        { id: 'wedgeReturnChest', label: 'Bend the band with brass', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, next: 'bellRecoveredScene' },
+        { id: 'wedgeReturnChest', label: 'Bend the band with brass', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['openedChest', 'bellRecovered'] }, next: 'returnChestLoot' },
         { id: 'leaveLockedChest', label: 'Leave without the bell', next: 'retreatEnding' },
+      ],
+    },
+    returnChestLoot: {
+      id: 'returnChestLoot', title: 'The Chest at the Chapel',
+      text: 'Under the altar cloth lies the iron handbell, and beside it the silver grave coin. You take both before returning below to the keeper.',
+      choices: [
+        { id: 'returnWithChestLoot', label: 'Return to the keeper', next: 'keeperReunion' },
+        { id: 'leaveAfterChestLoot', label: 'Leave the chapel behind', next: 'retreatEnding' },
       ],
     },
     bellRecoveredScene: {
       id: 'bellRecoveredScene', title: 'The Bell Recovered',
-      text: 'The handbell is still where you left it, cold beneath its altar cloth. You have the clapper too. The keeper waits below, and this time you can return the whole relic.',
+      text: 'The handbell is still where you left it, cold beneath its altar cloth. The silver grave coin from the chest is safely in your pack. The keeper waits below; if you still carry the clapper, you can return the whole relic.',
       choices: [
-        { id: 'returnTogether', label: 'Return both relics', effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'returnTogether', label: 'Return both and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
         { id: 'keepGoing', label: 'Return to the keeper', next: 'keeperReunion' },
       ],
     },
     keeperReunion: {
       id: 'keeperReunion', title: 'The Keeper Waits', tone: 'warning',
-      text: 'You return with the bell and clapper in your hands. The keeper’s posture softens when it sees both relics together.',
+      text: 'You return to the old burial with the handbell. Whether the clapper is still in your hands or already rests by the altar, the keeper recognizes that you came back to finish what you began. The bronze mask shard remains on the altar, offered if you return the last relic.',
       choices: [
-        { id: 'returnOnReunion', label: 'Return both relics', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'returnOnReunion', label: 'Return both and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'finishBellReturn', label: 'Return the handbell too', requirements: { items: ['ironHandbell'], flags: ['clapperReturned'] }, effects: { loseItems: ['ironHandbell'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution'] }, next: 'peaceEnding' },
         { id: 'leaveOnReunion', label: 'Leave the burial behind', next: 'retreatEnding' },
       ],
     },
     clapperReturnedScene: {
       id: 'clapperReturnedScene', title: 'The Clapper at Rest',
-      text: 'The keeper places the clapper beside the altar hollow. It studies the handbell in your pack, then points to it. The burial is calmer, but the promise is not yet complete.',
+      text: 'The keeper places the clapper beside the altar hollow and nudges the loose bronze mask shard toward you in thanks. It studies the handbell in your pack, then points to it. The burial is calmer, but the promise is not yet complete.',
       choices: [
-        { id: 'completeReturn', label: 'Return the handbell too', requirements: { items: ['ironHandbell'] }, effects: { loseItems: ['ironHandbell'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The keeper accepted the return of the old burial relics.'], setFlags: ['peacefulResolution'] }, next: 'peaceEnding' },
+        { id: 'completeReturn', label: 'Return the handbell too', requirements: { items: ['ironHandbell'] }, effects: { loseItems: ['ironHandbell'], money: 8, lore: ['The keeper accepted the return of the old burial relics.'], setFlags: ['peacefulResolution'] }, next: 'peaceEnding' },
         { id: 'goForBell', label: 'Recover the handbell', requirements: { notItems: ['ironHandbell'] }, next: 'returnToChapel' },
         { id: 'leaveClapper', label: 'Leave the burial', next: 'retreatEnding' },
       ],
     },
     partialReturn: {
       id: 'partialReturn', title: 'Half a Promise',
-      text: 'The keeper places the handbell in the altar hollow and waits. When you lift the clapper, it does not stop you; it only points to the bell. You understand what remains.',
+      text: 'The keeper places the handbell in the altar hollow and waits. When you lift the clapper, it does not stop you; it only points to the bell. A bronze mask shard rests on the altar ledge, offered if you return the remaining relic.',
       choices: [
         { id: 'takeClapperNow', label: 'Take the clapper from the altar', requirements: { notItems: ['blackClapper'], notFlags: ['clapperReturned'] }, effects: { gainItems: ['blackClapper'], setFlags: ['hasClapper'] }, next: 'clapperAtAltar' },
-        { id: 'placeClapper', label: 'Place the clapper beside it', requirements: { items: ['blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper accepted the return of the burial relics.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'placeClapper', label: 'Return the clapper and accept the mask shard', requirements: { items: ['blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper accepted the return of the burial relics.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
         { id: 'leavePartial', label: 'Leave the burial', next: 'retreatEnding' },
       ],
     },
     clapperAtAltar: {
       id: 'clapperAtAltar', title: 'The Clapper Beside Its Place',
-      text: 'You lift the clapper from beside the handbell. The keeper watches without moving, waiting to see what you will do with it.',
+      text: 'You lift the clapper from beside the handbell. The keeper watches without moving. A small bronze shard from its mask rests by the altar, offered if you return the relic.',
       choices: [
-        { id: 'returnLastClapper', label: 'Return the clapper', requirements: { items: ['blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper accepted the return of the burial relics.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'returnLastClapper', label: 'Return the clapper and accept the mask shard', requirements: { items: ['blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], lore: ['The masked keeper accepted the return of the burial relics.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
         { id: 'leaveWithClapper', label: 'Leave with the clapper', next: 'retreatEnding' },
       ],
     },
@@ -286,9 +311,9 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperPlea: {
       id: 'keeperPlea', title: 'A Costly Truce',
-      text: 'The keeper accepts your open hands. There is no easy trust now, but the relics can still be returned if you have both.',
+      text: 'The keeper accepts your open hands. There is no easy trust now, but the relics can still be returned if you have both. The bronze shard from its damaged mask remains on the altar, offered if you make the return.',
       choices: [
-        { id: 'offerBothAfterFight', label: 'Return the bell and clapper', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 5, lore: ['The masked keeper accepted the relics after a violent misunderstanding.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
+        { id: 'offerBothAfterFight', label: 'Return both and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 5, lore: ['The masked keeper accepted the relics after a violent misunderstanding.'], setFlags: ['peacefulResolution', 'clapperReturned'] }, next: 'peaceEnding' },
         { id: 'withdrawAfterFight', label: 'Leave the burial', next: 'retreatEnding' },
       ],
     },
@@ -302,10 +327,10 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperDefeated: {
       id: 'keeperDefeated', title: 'A Costly Victory', tone: 'danger',
-      text: 'The masked keeper falls beside the altar. It never cries out. Behind the cracked mask is a face both ancient and terribly human. Among the bones, you find the clapper and understand too late that the keeper was guarding the burial.',
+      text: 'The masked keeper falls beside the altar. It never cries out. Behind the cracked mask is a face both ancient and terribly human. Among the bones lie the clapper and a bronze mask shard; you understand too late that the keeper was guarding the burial.',
       choices: [
-        { id: 'sealWithBell', label: 'Return the bell and seal the door', requirements: { items: ['ironHandbell'] }, effects: { loseItems: ['ironHandbell'], gainItems: ['blackClapper', 'bronzeMaskFragment'], money: 5, lore: ['Violence ended the keeper, though returning the stolen relics ended the haunting.'], setFlags: ['keeperDefeated', 'hasClapper'] }, next: 'hardEnding' },
-        { id: 'sealWithoutBell', label: 'Seal the burial door', requirements: { notItems: ['ironHandbell'] }, effects: { gainItems: ['blackClapper', 'bronzeMaskFragment'], money: 5, lore: ['The keeper died protecting the relics taken from its burial.'], setFlags: ['keeperDefeated', 'hasClapper'] }, next: 'hardEnding' },
+        { id: 'sealWithBell', label: 'Take the relics and seal the door', requirements: { items: ['ironHandbell'] }, effects: { loseItems: ['ironHandbell'], gainItems: ['blackClapper', 'bronzeMaskFragment'], money: 5, lore: ['Violence ended the keeper, though returning the stolen relics ended the haunting.'], setFlags: ['keeperDefeated', 'hasClapper'] }, next: 'hardEnding' },
+        { id: 'sealWithoutBell', label: 'Take the relics and seal the door', requirements: { notItems: ['ironHandbell'] }, effects: { gainItems: ['blackClapper', 'bronzeMaskFragment'], money: 5, lore: ['The keeper died protecting the relics taken from its burial.'], setFlags: ['keeperDefeated', 'hasClapper'] }, next: 'hardEnding' },
       ],
     },
     retreatEnding: {

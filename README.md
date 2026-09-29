@@ -30,6 +30,12 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - `src/main.ts`: UI states and DOM rendering
 - `src/styles.css`: phone-first presentation and action-grid rules
 
+## Scenario authoring rules
+
+- Important items, clues, and advantages must come from an explicit choice, a clearly narrated handoff, or a clearly described discovery. Avoid silent inventory grants.
+- When a scenario supports multiple legitimate plans, explain each plan clearly and frame its risks consistently. Do not imply one is the intended answer; let the player weigh the tradeoffs.
+- Story screens are one-time narrative moments. Scenario paths move forward and do not revisit a screen.
+
 ## Current limitations
 
 - Two authored scenarios and one character slot

@@ -71,25 +71,33 @@ export const LAST_STOP: Scenario = {
     },
     conductorCar: {
       id: 'conductorCar', title: 'The Conductor’s Alcove',
-      text: 'Conductor Vale points out the red emergency cabinet. “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” A square key hangs beside his timetable.',
+      text: 'Conductor Vale points out the red emergency cabinet. “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” A square iron key hangs beside his timetable; the locked maintenance case is in the service car.',
       choices: [
         { id: 'learn', label: 'Remember the procedure', effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
-        { id: 'inspectKey', label: 'Ask about the key', effects: { gainItems: ['brakeKey'] }, next: 'conductorExplains' },
+        { id: 'inspectKey', label: 'Ask Vale for the cabinet key', effects: { gainItems: ['brakeKey'] }, next: 'conductorKeyHandoff' },
         { id: 'service', label: 'Visit the service car', next: 'serviceCar' },
         { id: 'seat', label: 'Return to your seat', next: 'quietJourney' },
       ],
     },
     conductorExplains: {
       id: 'conductorExplains', title: 'The Conductor’s Instructions',
-      text: 'Vale finishes explaining the brake cabinet and key. With the procedure in mind, you can inspect the baggage diagram or return to the passenger coaches.',
+      text: 'Vale explains the handwheel procedure. The cabinet key remains on its hook beside the timetable if you need it; the baggage diagram is in the next car.',
       choices: [
         { id: 'serviceAfterTalk', label: 'Explore the service car', next: 'serviceCar' },
         { id: 'seatAfterTalk', label: 'Settle in for the journey', next: 'quietJourney' },
       ],
     },
+    conductorKeyHandoff: {
+      id: 'conductorKeyHandoff', title: 'The Cabinet Key',
+      text: 'Vale unhooks the square iron key and places it in your palm. “The maintenance case is in the baggage car. There’s a compact railway toolkit inside.”',
+      choices: [
+        { id: 'serviceWithKey', label: 'Open the maintenance case', next: 'serviceCar' },
+        { id: 'seatWithKey', label: 'Keep the key and return to your seat', next: 'quietJourney' },
+      ],
+    },
     serviceCar: {
       id: 'serviceCar', title: 'Baggage and Brass',
-      text: 'Crates are strapped beneath a wall-mounted brake handwheel. A faded diagram shows the pipe running beneath every coach. Leather work gloves rest beside a locked maintenance case.',
+      text: 'Crates are strapped beneath a wall-mounted brake handwheel. A faded diagram shows the pipe running beneath every coach. Leather work gloves rest beside a locked maintenance case; through its slats you can make out a compact toolkit.',
       choices: [
         { id: 'studyBrake', label: 'Study the brake diagram', effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'serviceDiscovery' },
         { id: 'takeGloves', label: 'Take the work gloves', effects: { gainItems: ['workGloves'] }, next: 'serviceDiscovery' },
@@ -99,14 +107,14 @@ export const LAST_STOP: Scenario = {
     },
     serviceDiscovery: {
       id: 'serviceDiscovery', title: 'A Useful Discovery',
-      text: 'The maintenance case is open and the wall diagram is clear. You have what you came for; the passenger coaches are just behind you.',
+      text: 'You take one last look at the service car’s diagram and fittings. The passenger coaches are just behind you; the train is ready to continue its journey.',
       choices: [
         { id: 'coachAfterService', label: 'Continue the journey', next: 'quietJourney' },
       ],
     },
     valeAftercare: {
       id: 'valeAftercare', title: 'The Whistle in Vale’s Hand',
-      text: 'Vale’s breathing steadies. He presses his brass whistle into your hand and repeats the brake procedure. The remaining passengers are waiting for someone to take charge.',
+      text: 'Vale’s breathing steadies. Grateful, he unclips his brass whistle and presses it into your hand, then repeats the brake procedure. The remaining passengers are waiting for someone to take charge.',
       choices: [
         { id: 'emergencyAfterCare', label: 'Move through the train', next: 'emergencyHub' },
         { id: 'routeAfterCare', label: 'Ask about the track', effects: { knowledge: [ROUTE_KNOWLEDGE] }, next: 'routeBriefing' },
@@ -148,7 +156,7 @@ export const LAST_STOP: Scenario = {
     },
     staffAfterBrake: {
       id: 'staffAfterBrake', title: 'Vale Reaches the Service Car', tone: 'warning',
-      text: 'Vale limps in behind you, pressing a cloth to his brow. He confirms the engineer cannot reach the controls. The rear brake handwheel is still your best chance to buy time.',
+      text: 'Vale limps in behind you, pressing a cloth to his brow. He confirms the engineer cannot reach the controls. The handwheel can bleed off speed; the exposed roof leads to the regulator, and the couplings can separate the passenger coaches. Each plan carries a different risk.',
       choices: [
         { id: 'useBrakeAfterStaff', label: 'Work the handwheel', next: 'baggageBrake' },
         { id: 'moveForwardAfterStaff', label: 'Go forward over the roofs', next: 'roofAccess' },
@@ -156,12 +164,12 @@ export const LAST_STOP: Scenario = {
     },
     emergencyHub: {
       id: 'emergencyHub', title: 'Six Miles to Blackstone', tone: 'danger',
-      text: 'Passengers brace in the aisle as the train plunges down the grade. Three plans emerge: fight the service-car brake, cross the roofs to the locomotive, or uncouple the rear coaches near the rising maintenance siding. A map also marks a gravel embankment where one person might jump clear.',
+      text: 'Passengers brace in the aisle as the train plunges down the grade. The service brake may slow the train enough for a rough run-off before the bridge. The locomotive regulator might close and stop it, but the route is over two exposed roofs. Uncoupling could send the passenger coaches toward a rising maintenance siding while lightening the engine section. A gravel bank offers a risky escape for one person, not a way to save the train. None is certain.',
       choices: [
-        { id: 'brake', label: 'Use the service brake', next: 'baggageBrake' },
-        { id: 'engine', label: 'Reach the locomotive', next: 'roofAccess' },
-        { id: 'uncouple', label: 'Consider uncoupling', next: 'couplingChoice' },
-        { id: 'escape', label: 'Look for an escape point', next: 'escapePoint' },
+        { id: 'brake', label: 'Try the service brake', hint: 'May trade speed for a rough run-off.', next: 'baggageBrake' },
+        { id: 'engine', label: 'Try for the locomotive', hint: 'A regulator repair could stop the train; the roofs are exposed.', next: 'roofAccess' },
+        { id: 'uncouple', label: 'Separate the passenger coaches', hint: 'May lighten the engine; leaves the coaches to the siding.', next: 'couplingChoice' },
+        { id: 'escape', label: 'Aim for the gravel bank', hint: 'A chance for you alone; the train continues.', next: 'escapePoint' },
       ],
     },
     baggageBrake: {
@@ -193,11 +201,12 @@ export const LAST_STOP: Scenario = {
     },
     brakesHolding: {
       id: 'brakesHolding', title: 'Speed Bought with Sparks', tone: 'warning',
-      text: 'Blue sparks stream past the windows. The train is slowing, but not enough to stop before Blackstone. You can keep the brake engaged for a controlled derailment, cross forward to help the engine, or cut away the rear coaches before the final slope.',
+      text: 'Blue sparks stream past the windows. The train is slowing, but not enough to stop before Blackstone. Keeping the brake engaged may force a survivable run-off into the brush. The regulator ahead might still close for a full stop, though the roof crossing is dangerous. Separating the coaches could lighten the engine section but leaves the passengers to the siding. The gravel bank remains a last chance for you alone.',
       choices: [
-        { id: 'hold', label: 'Hold the brake on', hint: 'The impact should be survivable, not gentle.', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
-        { id: 'front', label: 'Go forward', next: 'roofAccess' },
-        { id: 'couple', label: 'Uncouple the coaches', next: 'couplingChoice' },
+        { id: 'front', label: 'Try for the locomotive', hint: 'The regulator may stop the train; the roofs remain slick.', next: 'roofAccess' },
+        { id: 'hold', label: 'Keep the brake engaged', hint: 'Risk a rough run-off; passengers remain together.', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
+        { id: 'couple', label: 'Separate the passenger coaches', hint: 'May lighten the engine; coaches face the siding alone.', next: 'couplingChoice' },
+        { id: 'escapeAfterBrake', label: 'Try the gravel bank', hint: 'Could save you, not the train.', next: 'escapePoint' },
       ],
     },
     roofAccess: {
@@ -216,7 +225,7 @@ export const LAST_STOP: Scenario = {
       choices: [
         { id: 'haul', label: 'Haul yourself up', hint: 'A hard pull with no safe failure.', chance: { probability: 0.65, successNext: 'locomotive', failureNext: 'roofInjury', successMessage: 'You roll onto the roof and reach the cab.', failureMessage: 'The gutter tears another inch.', failureEffects: { health: -3 } } },
         { id: 'window', label: 'Swing through a window', chance: { probability: 0.75, successNext: 'roofWindowRecovery', failureNext: 'roofInjury', successMessage: 'Glass and passengers break your fall.', failureMessage: 'You strike the carriage side hard.', failureEffects: { health: -2 } } },
-        { id: 'drop', label: 'Drop at the embankment', hint: 'Personal survival is possible; the train will go on.', chance: { probability: 0.6, successNext: 'escapeEnding', failureNext: 'roofInjury', successMessage: 'You tumble through wet gravel and come to a stop alive.', failureMessage: 'You hit the slope badly and barely keep your grip.', failureEffects: { health: -4 }, successEffects: { gainItems: ['signalLens'] } } },
+        { id: 'drop', label: 'Drop at the embankment', hint: 'Personal survival is possible; the train will go on.', chance: { probability: 0.6, successNext: 'escapeEnding', failureNext: 'roofInjury', successMessage: 'You tumble through wet gravel and come to a stop alive.', failureMessage: 'You hit the slope badly and barely keep your grip.', failureEffects: { health: -4 } } },
       ],
     },
     roofWindowRecovery: {
@@ -231,8 +240,8 @@ export const LAST_STOP: Scenario = {
       id: 'roofInjury', title: 'A Grip on the Ladder', tone: 'danger',
       text: 'You catch a side ladder before the wheels take you. Your arms shake and the bridge is close. You can secure yourself for the impact or make one last dangerous attempt to jump clear.',
       choices: [
-        { id: 'secureForImpact', label: 'Hold on and brace', effects: { gainItems: ['signalLens'] }, next: 'messyEnding' },
-        { id: 'jumpFromLadder', label: 'Jump for the gravel', hint: 'A fall may be fatal.', chance: { probability: 0.4, successNext: 'escapeEnding', failureNext: 'fatalFall', successMessage: 'You roll clear of the rails, badly bruised but alive.', failureMessage: 'The ground strikes before you can tuck and roll.', successEffects: { gainItems: ['signalLens'] } } },
+        { id: 'secureForImpact', label: 'Hold on and brace', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
+        { id: 'jumpFromLadder', label: 'Jump for the gravel', hint: 'A fall may be fatal.', chance: { probability: 0.4, successNext: 'escapeEnding', failureNext: 'fatalFall', successMessage: 'You roll clear of the rails, badly bruised but alive.', failureMessage: 'The ground strikes before you can tuck and roll.' } },
       ],
     },
     locomotive: {
@@ -240,9 +249,9 @@ export const LAST_STOP: Scenario = {
       text: 'The engineer is conscious but pinned. The regulator linkage has jumped its guide; the main lever thrashes with every rail joint. Steam hides the brake valves. Blackstone Gorge opens ahead through the rain.',
       choices: [
         { id: 'repair', label: 'Repair the regulator', requirements: { items: ['pocketToolkit'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
-        { id: 'glovedLever', label: 'Reseat the hot linkage', requirements: { items: ['workGloves'] }, effects: { health: -1, gainItems: ['signalLens'] }, next: 'cleanEnding' },
+        { id: 'glovedLever', label: 'Reseat the hot linkage', requirements: { items: ['workGloves'] }, effects: { health: -1, gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
         { id: 'brakeSequence', label: 'Coordinate both brakes', requirements: { flags: ['brakesApplied'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
-        { id: 'grabLever', label: 'Grab the regulator', hint: 'The lever is visibly hot and bucking hard.', chance: { probability: 0.5, successNext: 'cleanEnding', failureNext: 'engineBurn', successMessage: 'The linkage drops home. The engine begins to answer.', failureMessage: 'Steam burns your hands and the lever throws you back.', successEffects: { gainItems: ['signalLens'] }, failureEffects: { health: -5 } } },
+        { id: 'grabLever', label: 'Grab the regulator', hint: 'The lever is visibly hot and bucking hard.', chance: { probability: 0.5, successNext: 'cleanEnding', failureNext: 'engineBurn', successMessage: 'The linkage drops home. The engine begins to answer.', failureMessage: 'Steam burns your hands and the lever throws you back.', successEffects: { gainItems: ['signalLens'], money: 3 }, failureEffects: { health: -5 } } },
       ],
     },
     engineBurn: {
@@ -250,19 +259,19 @@ export const LAST_STOP: Scenario = {
       text: 'Your hands are burned and the bridge is almost visible. The service brake may still buy a survivable crash. Or you can try the regulator once more, knowing exactly how it moves.',
       choices: [
         { id: 'brake', label: 'Brace for a survivable crash', next: 'engineBrakeRescue' },
-        { id: 'retry', label: 'Try the regulator again', hint: 'Failure may kill you.', chance: { probability: 0.7, successNext: 'cleanEnding', failureNext: 'engineBurnSecond', successMessage: 'You force the guide into place.', failureMessage: 'The lever lashes across your chest.', successEffects: { gainItems: ['signalLens'] }, failureEffects: { health: -6 } } },
+        { id: 'retry', label: 'Try the regulator again', hint: 'Failure may kill you.', chance: { probability: 0.7, successNext: 'cleanEnding', failureNext: 'engineBurnSecond', successMessage: 'You force the guide into place.', failureMessage: 'The lever lashes across your chest.', successEffects: { gainItems: ['signalLens'], money: 3 }, failureEffects: { health: -6 } } },
         { id: 'escape', label: 'Look for a way off', next: 'escapePoint' },
       ],
     },
     engineBurnSecond: {
       id: 'engineBurnSecond', title: 'The Lever Falls Away', tone: 'danger',
       text: 'The regulator linkage is beyond your reach now. Steam and the broken bridge fill the cab windows. The only remaining action is to brace for the impact.',
-      choices: [{ id: 'braceInCab', label: 'Brace against the boiler', effects: { health: -2, gainItems: ['signalLens'] }, next: 'messyEnding' }],
+      choices: [{ id: 'braceInCab', label: 'Brace against the boiler', effects: { health: -2, gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' }],
     },
     engineBrakeRescue: {
       id: 'engineBrakeRescue', title: 'Manual Brake Pressure', tone: 'warning',
       text: 'You pull the manual valve and hold it open. The train will not stop, but the service car’s earlier brake work gives it enough drag to leave the rails before the gorge.',
-      choices: [{ id: 'holdManualBrake', label: 'Hold the valve and brace', effects: { gainItems: ['signalLens'] }, next: 'messyEnding' }],
+      choices: [{ id: 'holdManualBrake', label: 'Hold the valve and brace', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' }],
     },
     couplingChoice: {
       id: 'couplingChoice', title: 'Who Keeps the Weight?', tone: 'warning',
@@ -285,23 +294,23 @@ export const LAST_STOP: Scenario = {
       id: 'togetherAttempt', title: 'One Last Attempt Together', tone: 'warning',
       text: 'You keep the coaches coupled. The passengers crouch between the seats as you direct them to brace. The combined weight makes a clean stop impossible, but the train may still leave the rails short of the gorge.',
       choices: [
-        { id: 'braceTogether', label: 'Brace the passengers', effects: { gainItems: ['signalLens'] }, next: 'messyEnding' },
+        { id: 'braceTogether', label: 'Brace the passengers', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
       ],
     },
     separatedFront: {
       id: 'separatedFront', title: 'Two Trains Now', tone: 'danger',
       text: 'The pin comes free. The passenger coaches fall behind, gathering toward the rising siding, while the engine and service car leap ahead. Their lost weight gives you one narrow chance to stop the front section.',
       choices: [
-        { id: 'lightBrake', label: 'Brake the lighter section', effects: { gainItems: ['conductorWhistle'], money: 1 }, next: 'uncoupledEnding' },
+        { id: 'lightBrake', label: 'Brake the lighter section', effects: { money: 1 }, next: 'uncoupledEnding' },
         { id: 'engine', label: 'Reach the engine', next: 'locomotive' },
-        { id: 'returnCars', label: 'Leap back to the coaches', requirements: { flags: ['passengersReady'] }, chance: { probability: 0.72, successNext: 'uncoupledEnding', failureNext: 'carriageGrab', successMessage: 'Hands catch yours and drag you onto the rear platform.', failureMessage: 'You miss the rail and catch the side ladder.', failureEffects: { health: -3 }, successEffects: { gainItems: ['conductorWhistle'] } } },
+        { id: 'returnCars', label: 'Leap back to the coaches', requirements: { flags: ['passengersReady'] }, chance: { probability: 0.72, successNext: 'uncoupledEnding', failureNext: 'carriageGrab', successMessage: 'Hands catch yours and drag you onto the rear platform.', failureMessage: 'You miss the rail and catch the side ladder.', failureEffects: { health: -3 } } },
       ],
     },
     carriageGrab: {
       id: 'carriageGrab', title: 'Between the Divided Cars', tone: 'danger',
       text: 'You cling to the side ladder as the gap widens. The passenger coaches are already rolling toward the siding; you can hold on and let them carry you clear, or try to jump onto the trackside gravel.',
       choices: [
-        { id: 'stayOnCarriage', label: 'Hold on and brace', effects: { gainItems: ['conductorWhistle'] }, next: 'uncoupledEnding' },
+        { id: 'stayOnCarriage', label: 'Hold on and brace', next: 'uncoupledEnding' },
         { id: 'jumpFromGap', label: 'Jump to the gravel', hint: 'The gap and speed make this dangerous.', chance: { probability: 0.45, successNext: 'escapeEnding', failureNext: 'fatalFall', successMessage: 'You roll into the gravel beside the siding.', failureMessage: 'You fall beneath the moving cars.' } },
       ],
     },
@@ -309,9 +318,9 @@ export const LAST_STOP: Scenario = {
       id: 'escapePoint', title: 'The Gravel Embankment', tone: 'danger',
       text: 'A long gravel bank rises beside the track before the gorge. Jumping at this speed could break every bone; staying aboard risks the missing bridge. This route saves only you.',
       choices: [
-        { id: 'ropeExit', label: 'Lower yourself by rope', requirements: { items: ['travelRope'] }, effects: { health: -2, gainItems: ['signalLens'] }, next: 'escapeEnding' },
-        { id: 'mappedJump', label: 'Jump at the soft shoulder', requirements: { knowledge: [ROUTE_KNOWLEDGE] }, chance: { probability: 0.72, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'You hit mud, roll, and stop short of the rocks.', failureMessage: 'You mistime the leap and slam into the slope.', successEffects: { gainItems: ['signalLens'] }, failureEffects: { health: -5 } } },
-        { id: 'blindJump', label: 'Jump for the gravel', hint: 'The landing is fast, rough, and uncertain.', chance: { probability: 0.45, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'The gravel tears at you, but you survive.', failureMessage: 'The ground hits harder than expected.', successEffects: { gainItems: ['signalLens'] }, failureEffects: { health: -6 } } },
+        { id: 'ropeExit', label: 'Lower yourself by rope', requirements: { items: ['travelRope'] }, effects: { health: -2 }, next: 'escapeEnding' },
+        { id: 'mappedJump', label: 'Jump at the soft shoulder', requirements: { knowledge: [ROUTE_KNOWLEDGE] }, chance: { probability: 0.72, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'You hit mud, roll, and stop short of the rocks.', failureMessage: 'You mistime the leap and slam into the slope.', failureEffects: { health: -5 } } },
+        { id: 'blindJump', label: 'Jump for the gravel', hint: 'The landing is fast, rough, and uncertain.', chance: { probability: 0.45, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'The gravel tears at you, but you survive.', failureMessage: 'The ground hits harder than expected.', failureEffects: { health: -6 } } },
         { id: 'stay', label: 'Stay aboard and brace', next: 'escapeInjury' },
       ],
     },
@@ -319,28 +328,28 @@ export const LAST_STOP: Scenario = {
       id: 'escapeInjury', title: 'Still Aboard', tone: 'danger',
       text: 'The doorframe catches you before you fall beneath the wheels. Hurt and shaken, you remain aboard. The service brake and coupling are still reachable, but time is almost gone.',
       choices: [
-        { id: 'brace', label: 'Brace for the impact', effects: { gainItems: ['signalLens'] }, next: 'messyEnding' },
-        { id: 'jumpAgain', label: 'Try the jump again', hint: 'Your injuries make this desperate.', chance: { probability: 0.55, successNext: 'escapeEnding', failureNext: 'fatalFall', successMessage: 'You clear the step and roll into the rain.', failureMessage: 'You strike the rocks below.', successEffects: { gainItems: ['signalLens'] } } },
+        { id: 'brace', label: 'Brace for the impact', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
+        { id: 'jumpAgain', label: 'Try the jump again', hint: 'Your injuries make this desperate.', chance: { probability: 0.55, successNext: 'escapeEnding', failureNext: 'fatalFall', successMessage: 'You clear the step and roll into the rain.', failureMessage: 'You strike the rocks below.' } },
       ],
     },
     cleanEnding: {
       id: 'cleanEnding', title: 'Stopped at Milepost Forty-Seven',
-      text: 'The regulator closes. Brake pressure builds, wheel by wheel, until the train stops with its lamps shining across the broken rails. The passengers step down trembling but alive. Beyond them, Blackstone Gorge answers with rain.',
+      text: 'The regulator closes. Brake pressure builds, wheel by wheel, until the train stops with its lamps shining across the broken rails. The passengers step down trembling but alive. A trackside signal has lost its crimson glass lens in the storm; you find it intact in the ballast and pocket it. The engineer presses three coins into your hand as thanks.',
       choices: [], ending: 'success',
     },
     messyEnding: {
       id: 'messyEnding', title: 'A Survivable Wreck',
-      text: 'You hold the brake until the iron glows. The train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls.',
+      text: 'You hold the brake until the iron glows. The train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.',
       choices: [], ending: 'success',
     },
     uncoupledEnding: {
       id: 'uncoupledEnding', title: 'The Divided Train',
-      text: 'The lightened front section grinds to a stop short of the gorge. Far uphill, the passenger coaches roll onto the maintenance siding and vanish around the bend. A whistle answers yours at last. You saved them by leaving them to a danger they had to face alone.',
+      text: 'The lightened front section grinds to a stop short of the gorge. Far uphill, the passenger coaches roll onto the maintenance siding and vanish around the bend. A whistle answers from the distant coaches at last. You saved them by leaving them to a danger they had to face alone.',
       choices: [], ending: 'success',
     },
     escapeEnding: {
       id: 'escapeEnding', title: 'One Passenger Missing',
-      text: 'You lie in wet gravel as the red tail lamps race toward Blackstone. You are alive. What happens beyond the bend is carried away by the storm—and survival, this time, is not the same as victory.',
+      text: 'You lie in wet gravel as the red tail lamps race toward Blackstone. You are alive, carrying only what you managed to keep as you left the train. What happens beyond the bend is carried away by the storm—and survival, this time, is not the same as victory.',
       choices: [], ending: 'success',
     },
     fatalFall: {
