@@ -22,15 +22,18 @@ describe('save compatibility', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
     const { visitedSceneIds: _visited, ...legacyRun } = run;
-    const oldSave = { version: 1, bank: ['graveCoin'], character, run: { ...legacyRun, sceneId: 'chapelNave' } };
+    const { historyFlags: _historyFlags, ...legacyCharacter } = character;
+    const oldSave = { version: 1, bank: ['graveCoin'], character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave' } };
     const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
     expect(state.run?.visitedSceneIds).toEqual(['chapelNave']);
     expect(state.mostRecentScenarioId).toBeNull();
     expect(state.bank).toEqual(['graveCoin']);
+    expect(state.character?.historyFlags).toEqual([]);
   });
 
   it('persists run history and recent scenario selection exactly', () => {
     const character = newCharacter('Recent Save');
+    character.historyFlags = ['returned_for_help'];
     const state: SaveData = {
       version: 1, bank: ['yewCharm'], character,
       run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },
@@ -39,6 +42,7 @@ describe('save compatibility', () => {
     const storage = memoryStorage();
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
+    expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
   });
 
   it('moves an older active Bell save from a removed scene into a safe continuation scene', () => {

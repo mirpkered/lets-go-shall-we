@@ -2,7 +2,7 @@ import { STARTING_ITEMS } from './items';
 import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario } from './types';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0 };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
 }
 
 export function startRun(character: Character, scenario: Scenario): RunState {
@@ -31,6 +31,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))
     && (!requirement.knowledge || requirement.knowledge.every((id) => character.knowledge.includes(id)))
+    && (!requirement.notKnowledge || requirement.notKnowledge.every((id) => !character.knowledge.includes(id)))
+    && (!requirement.historyFlags || requirement.historyFlags.every((id) => (character.historyFlags ?? []).includes(id)))
     && (!requirement.minHealth || run.health >= requirement.minHealth)
     && (requirement.minMoney === undefined || character.money >= requirement.minMoney);
 }
@@ -51,6 +53,7 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.loseItems) run.inventory = without(run.inventory, effects.loseItems);
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge);
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore);
+  if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags);
   if (effects.setFlags) run.flags = addUnique(run.flags, effects.setFlags);
   if (effects.clearFlags) run.flags = without(run.flags, effects.clearFlags);
 }
@@ -69,7 +72,10 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     destination = won ? combat.winNext : combat.lossNext;
     next.run.message = won ? `You survive the fight with the ${combat.enemy}.` : `The ${combat.enemy} wounds you. You lose ${combat.damageOnLoss} health.`;
   } else if (choice.chance) {
-    const won = random() < choice.chance.probability;
+    const bonusItem = choice.chance.bonusItems?.some((item) => next.run!.inventory.includes(item)) ?? false;
+    const bonusFlag = choice.chance.bonusFlags?.some((flag) => next.run!.flags.includes(flag)) ?? false;
+    const probability = Math.min(0.98, choice.chance.probability + (bonusItem || bonusFlag ? choice.chance.bonusProbability ?? 0 : 0));
+    const won = random() < probability;
     destination = won ? choice.chance.successNext : choice.chance.failureNext;
     next.run.message = won ? choice.chance.successMessage : choice.chance.failureMessage;
     applyEffects(next, won ? choice.chance.successEffects : choice.chance.failureEffects);
@@ -97,6 +103,10 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
 
 export function failCharacter(state: SaveData): SaveData {
   return { ...state, character: null, run: null, mostRecentScenarioId: state.run?.scenarioId ?? state.mostRecentScenarioId ?? null };
+}
+
+export function retireCharacter(state: SaveData): SaveData {
+  return { ...state, character: null, run: null };
 }
 
 export function finishSuccess(state: SaveData, carriedItem: string | null): SaveData {

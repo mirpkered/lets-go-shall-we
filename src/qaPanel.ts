@@ -15,7 +15,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     sceneId: run?.sceneId ?? null,
     visitedSceneIds: run?.visitedSceneIds ?? (run ? [run.sceneId] : []),
     inventory: run?.inventory ?? [], flags: run?.flags ?? [], money: character?.money ?? null,
-    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], bank: state.bank,
+    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank,
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
   };
   const directLaunch = active ? '<p class="qa-note">Clear the active run before launching another scenario.</p>' : `<div class="qa-launches">${scenarios.map((entry) => `<button type="button" data-qa-start="${entry.id}">Start ${entry.title}</button>`).join('')}</div>`;

@@ -1,5 +1,5 @@
 import './styles.css';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, startAdventure, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, startAdventure, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
 import { renderQaPanel } from './qaPanel';
@@ -77,7 +77,7 @@ function render(): void {
 function renderHome(): void {
   if (state.run?.status === 'active') {
     const scenario = activeScenario();
-    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, and knowledge will be lost. Banked items remain safe.</p></section>`, 'centered');
+    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>`, 'centered');
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
       if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); render(); }
@@ -125,7 +125,7 @@ function renderDeath(): void {
   const scenario = activeScenario();
   const run = state.run;
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene?.text ?? 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear & money lost</span><span>Lore & knowledge lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene?.text ?? 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
 }
 
@@ -140,7 +140,7 @@ function renderSuccess(): void {
 
 function renderBank(): void {
   const carried = state.character?.carriedItem;
-  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore and knowledge cannot be stored here.</p></section>
+  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>
     <section class="bank-section"><h2>Carried by character</h2>${state.character ? (carried ? `<article class="item-row"><div><strong>${itemName(carried)}</strong><small>${ITEMS[carried].description}</small></div><button id="deposit">Deposit</button></article>` : '<p class="empty">The carry slot is empty.</p>') : '<p class="empty">Create a traveler to withdraw an item.</p>'}</section>
     <section class="bank-section"><h2>Safe deposit</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}</article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>`, 'subscreen');
   document.querySelector('#back')!.addEventListener('click', () => { screen = 'home'; render(); });
@@ -150,9 +150,9 @@ function renderBank(): void {
 
 function renderRetire(): void {
   const carried = state.character?.carriedItem;
-  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, and knowledge will end with their story. Banked items remain safe.</p>${carried ? `<div class="retirement-item"><strong>${itemName(carried)}</strong><span>is still being carried</span><button id="bankFirst">Bank it first</button></div>` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
+  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, and personal history will end with their story. Banked items remain safe.</p>${carried ? `<div class="retirement-item"><strong>${itemName(carried)}</strong><span>is still being carried</span><button id="bankFirst">Bank it first</button></div>` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
   document.querySelector('#bankFirst')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
-  document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = { ...state, character: null, run: null }; persist(); screen = 'home'; render(); });
+  document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = retireCharacter(state); persist(); screen = 'home'; render(); });
   document.querySelector('#cancel')!.addEventListener('click', () => { screen = 'home'; render(); });
 }
 

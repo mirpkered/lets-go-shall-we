@@ -18,6 +18,7 @@ export interface Character {
   lore: string[];
   knowledge: string[];
   adventuresCompleted: number;
+  historyFlags: string[];
 }
 
 export interface RunState {
@@ -48,6 +49,8 @@ export interface Requirement {
   flags?: string[];
   notFlags?: string[];
   knowledge?: string[];
+  notKnowledge?: string[];
+  historyFlags?: string[];
   minHealth?: number;
   minMoney?: number;
 }
@@ -67,6 +70,7 @@ export interface Effects {
   loseItems?: string[];
   knowledge?: string[];
   lore?: string[];
+  historyFlags?: string[];
   money?: number;
   setFlags?: string[];
   clearFlags?: string[];
@@ -81,6 +85,9 @@ export interface ChanceBranch {
   failureMessage: string;
   successEffects?: Effects;
   failureEffects?: Effects;
+  bonusItems?: string[];
+  bonusFlags?: string[];
+  bonusProbability?: number;
 }
 
 export interface Choice {

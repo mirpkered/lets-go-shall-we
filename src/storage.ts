@@ -10,6 +10,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> = localStorage): Save
     if (!raw) return structuredClone(EMPTY_SAVE);
     const parsed = JSON.parse(raw) as SaveData;
     if (parsed.version !== 1 || !Array.isArray(parsed.bank)) throw new Error('Unsupported save');
+    if (parsed.character) parsed.character.historyFlags ??= [];
     if (parsed.run) {
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       const scenario = getScenario(parsed.run.scenarioId);
