@@ -17,6 +17,7 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
   const character = state.character;
   if (!run || !character) return false;
   return (!requirement.items || requirement.items.every((id) => run.inventory.includes(id)))
+    && (!requirement.notItems || requirement.notItems.every((id) => !run.inventory.includes(id)))
     && (!requirement.anyItems || requirement.anyItems.some((id) => run.inventory.includes(id)))
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))

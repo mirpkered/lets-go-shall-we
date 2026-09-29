@@ -41,6 +41,7 @@ export interface SaveData {
 
 export interface Requirement {
   items?: string[];
+  notItems?: string[];
   anyItems?: string[];
   flags?: string[];
   notFlags?: string[];

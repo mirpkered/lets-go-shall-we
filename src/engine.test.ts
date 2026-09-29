@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, depositCarried, failCharacter, finishSuccess, newCharacter, startRun, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import type { SaveData } from './types';
 
@@ -41,6 +41,60 @@ describe('adventure engine', () => {
     expect(next.run?.status).toBe('success');
     expect(next.run?.inventory).toContain('bronzeMaskFragment');
     expect(next.run?.inventory).not.toContain('ironHandbell');
+  });
+
+  it('lets a player with the snatched clapper return for the handbell', () => {
+    const state = fresh();
+    state.run!.sceneId = 'maskedParley';
+    state.run!.inventory.push('blackClapper');
+    state.run!.acquiredThisRun.push('blackClapper');
+    state.run!.flags.push('hasClapper');
+
+    const available = BROKEN_BELL.scenes.maskedParley.choices.filter((choice) => meets(choice.requirements, state));
+    expect(available.map((choice) => choice.id)).toContain('returnForBell');
+
+    const next = choose(state, BROKEN_BELL, available.find((choice) => choice.id === 'returnForBell')!);
+    expect(next.run?.sceneId).toBe('underStairs');
+    expect(next.run?.inventory).toContain('blackClapper');
+  });
+
+  it('never reaches an active non-ending state with zero available choices', () => {
+    const initial = fresh();
+    const queue: SaveData[] = [initial];
+    const visited = new Set<string>();
+    const deadEnds: string[] = [];
+
+    while (queue.length) {
+      const state = queue.shift()!;
+      const run = state.run!;
+      const character = state.character!;
+      const key = JSON.stringify({
+        scene: run.sceneId,
+        inventory: [...run.inventory].sort(),
+        flags: [...run.flags].sort(),
+        knowledge: [...character.knowledge].sort(),
+      });
+      if (visited.has(key)) continue;
+      visited.add(key);
+      if (run.status !== 'active') continue;
+
+      const scene = BROKEN_BELL.scenes[run.sceneId];
+      expect(scene, `Missing scene: ${run.sceneId}`).toBeDefined();
+      if (scene.ending) continue;
+      const available = scene.choices.filter((choice) => meets(choice.requirements, state));
+      if (!available.length) {
+        deadEnds.push(`${run.sceneId} with inventory [${run.inventory.join(', ')}] and flags [${run.flags.join(', ')}]`);
+        continue;
+      }
+
+      for (const choice of available) {
+        queue.push(choose(state, BROKEN_BELL, choice, () => 0));
+        if (choice.chance || choice.effects?.combat) queue.push(choose(state, BROKEN_BELL, choice, () => 0.999999));
+      }
+    }
+
+    expect(deadEnds, `Reachable dead ends:\n${deadEnds.join('\n')}`).toEqual([]);
+    expect(visited.size).toBeGreaterThan(20);
   });
 
   it('supports the combat-capable completion route', () => {

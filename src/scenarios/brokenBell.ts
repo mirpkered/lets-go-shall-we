@@ -105,6 +105,7 @@ export const BROKEN_BELL: Scenario = {
         { id: 'returnBoth', label: 'Return bell and clapper', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'], money: 8, lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution'] }, next: 'peaceEnding' },
         { id: 'takeClapper', label: 'Take the clapper gently', requirements: { notFlags: ['hasClapper'] }, effects: { gainItems: ['blackClapper'], setFlags: ['hasClapper'] }, next: 'maskedParley' },
         { id: 'returnBell', label: 'Return the handbell first', requirements: { items: ['ironHandbell'], notFlags: ['returnedBell'] }, effects: { loseItems: ['ironHandbell'], setFlags: ['returnedBell'] }, next: 'partialReturn' },
+        { id: 'returnForBell', label: 'Return to the chapel for the handbell', hint: 'The keeper lets you leave with the clapper.', requirements: { items: ['blackClapper'], notItems: ['ironHandbell'] }, next: 'underStairs' },
         { id: 'ring', label: 'Ring the handbell below', hint: 'Every warning says this is catastrophic.', requirements: { items: ['ironHandbell', 'blackClapper'] }, effects: { health: -20 }, next: 'deathBell' },
       ],
     },
@@ -122,6 +123,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'The masked keeper falls beside the altar. It never cries out. Behind its cracked mask is a face both ancient and terribly human. You find the clapper among the bones and understand, too late, that it was guarding the burial—not hunting the village.',
       choices: [
         { id: 'seal', label: 'Return the bell and seal the door', requirements: { items: ['ironHandbell'] }, effects: { loseItems: ['ironHandbell'], gainItems: ['bronzeMaskFragment'], money: 5, lore: ['Violence ended the keeper, though returning the stolen relics ended the haunting.'] }, next: 'hardEnding' },
+        { id: 'sealReturned', label: 'Seal the burial door', requirements: { flags: ['returnedBell'] }, effects: { gainItems: ['bronzeMaskFragment'], money: 5, lore: ['The handbell was returned before violence ended its keeper.'] }, next: 'hardEnding' },
         { id: 'return', label: 'Go back for the stolen bell', requirements: { notFlags: ['openedChest'] }, effects: { gainItems: ['bronzeMaskFragment'], setFlags: ['violentResolution'] }, next: 'underStairs' },
       ],
     },
