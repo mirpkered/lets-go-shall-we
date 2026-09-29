@@ -1,6 +1,7 @@
 import './styles.css';
 import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
 import { ITEMS } from './items';
+import { showLaunchSplash } from './launchSplash';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import { loadSave, saveGame } from './storage';
 import type { SaveData } from './types';
@@ -111,3 +112,4 @@ function renderRetire(): void {
 }
 
 render();
+showLaunchSplash();

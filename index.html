@@ -1,14 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-launch-pending>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#11100e" />
     <meta name="description" content="Short, choice-driven dark fantasy adventures." />
+    <link rel="icon" href="/icons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <title>Let’s Go, Shall We?</title>
   </head>
-  <body>
-    <div id="app"></div>
+  <body data-launch-pending>
+    <div class="launch-splash" aria-hidden="true">
+      <img class="launch-splash-logo" src="/branding/mirpworks-logo.jpg" alt="" />
+    </div>
+    <div id="app" data-launch-pending></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

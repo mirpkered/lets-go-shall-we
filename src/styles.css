@@ -4,6 +4,19 @@
 * { box-sizing: border-box; }
 html { min-height: 100%; background:#0b0b0a; }
 body { margin:0; min-width:320px; min-height:100vh; min-height:100dvh; background: radial-gradient(circle at 50% -10%, #2a2419 0, #12110f 34rem, #0b0b0a 68rem); }
+#app[data-launch-pending] { visibility:hidden; }
+#app[data-launch-revealing] { visibility:visible; opacity:0; animation:launch-app-reveal 600ms ease-out forwards; }
+html[data-launch-pending],html[data-launch-pending] body,body[data-launch-pending] { background:#fff !important; }
+.launch-splash { position:fixed; z-index:1000; inset:0; display:grid; place-items:center; box-sizing:border-box; padding:max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); background:#fff; opacity:0; }
+.launch-splash-logo { display:block; width:min(72vw, 410px); max-height:min(58dvh, 520px); height:auto; object-fit:contain; }
+.launch-splash.is-entering { animation:launch-splash-enter 750ms ease-out forwards; }
+.launch-splash.is-fading-to-black { animation:launch-splash-to-black 850ms ease-in-out forwards; }
+.launch-splash.is-black { opacity:1; filter:brightness(0); }
+.launch-splash.is-revealing-app { animation:launch-splash-reveal 750ms ease-out forwards; }
+@keyframes launch-splash-enter { to { opacity:1; } }
+@keyframes launch-splash-to-black { from { opacity:1; filter:brightness(1); } to { opacity:1; filter:brightness(0); } }
+@keyframes launch-splash-reveal { from { opacity:1; filter:brightness(0); } to { opacity:0; filter:brightness(0); visibility:hidden; } }
+@keyframes launch-app-reveal { to { opacity:1; } }
 button { font:inherit; }
 button:focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 svg { width:1.25rem; height:1.25rem; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
@@ -127,4 +140,15 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 @media (prefers-reduced-motion: no-preference) {
   .story-card { animation:arrive .22s ease-out; }
   @keyframes arrive { from { opacity:.45; transform:translateY(.3rem); } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #app[data-launch-revealing] { animation:launch-app-reveal-reduced 100ms linear forwards; }
+  .launch-splash.is-entering { animation:launch-splash-enter-reduced 100ms linear forwards; }
+  .launch-splash.is-fading-to-black { animation:launch-splash-to-black-reduced 120ms linear forwards; }
+  .launch-splash.is-revealing-app { animation:launch-splash-reveal-reduced 120ms linear forwards; }
+  @keyframes launch-splash-enter-reduced { to { opacity:1; } }
+  @keyframes launch-splash-to-black-reduced { from { opacity:1; filter:brightness(1); } to { opacity:1; filter:brightness(0); } }
+  @keyframes launch-app-reveal-reduced { to { opacity:1; } }
+  @keyframes launch-splash-reveal-reduced { from { opacity:1; filter:brightness(0); } to { opacity:0; filter:brightness(0); visibility:hidden; } }
 }
