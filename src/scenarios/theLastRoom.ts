@@ -11,15 +11,20 @@ export const THE_LAST_ROOM: Scenario = {
   title: 'The Last Room on the Left',
   subtitle: 'A roadside inn. A missing guest. A door no one wants opened.',
   startScene: 'arrival',
+  timePhases: [
+    { id: 'evening', label: 'Evening at the Inn', atMinutes: 0 },
+    { id: 'storm', label: 'The Storm Is Rising', atMinutes: 15 },
+    { id: 'late', label: 'Late Night', atMinutes: 35 },
+  ],
   scenes: {
     arrival: {
       id: 'arrival', title: 'A Light in the Rain', tone: 'warning',
       text: 'Rain has turned the road to black mud by the time you reach the Lantern House. The innkeeper says one guest, Silas Vale, is missing; the last room on the left is barricaded from within. He insists it is a private misunderstanding and asks you not to stir up the other guests. A gust rattles the shutters. No one seems eager to meet your eye.',
       choices: [
-        { id: 'askInnkeeper', label: 'Ask the innkeeper what happened', next: 'hostAccount' },
-        { id: 'askGuests', label: 'Listen to the other guests', next: 'commonRoom' },
-        { id: 'inspectRegister', label: 'Look at the guest register', next: 'guestRegister' },
-        { id: 'walkAway', label: 'Leave it alone and continue on', effects: { historyFlags: ['walked_away_from_inn_problem'] }, next: 'walkAwayEnding' },
+        { id: 'askInnkeeper', label: 'Ask the innkeeper what happened', timeCost: 3, next: 'hostAccount' },
+        { id: 'askGuests', label: 'Listen to the other guests', timeCost: 5, next: 'commonRoom' },
+        { id: 'inspectRegister', label: 'Look at the guest register', timeCost: 4, next: 'guestRegister' },
+        { id: 'walkAway', label: 'Leave it alone and continue on', timeCost: 1, effects: { historyFlags: ['walked_away_from_inn_problem'] }, next: 'walkAwayEnding' },
       ],
     },
     hostAccount: {
@@ -74,9 +79,9 @@ export const THE_LAST_ROOM: Scenario = {
       id: 'corridor', title: 'The Last Room on the Left', tone: 'warning',
       text: 'The corridor smells of wet wool and lamp oil. A chair and a narrow table have been pushed against the last door on the left. There is no sound from within. The door frame is old, but not splintered.',
       choices: [
-        { id: 'knockGently', label: 'Knock and ask to speak', next: 'doorTalk' },
-        { id: 'inspectBarricade', label: 'Study the latch and the barricade', next: 'latchClue' },
-        { id: 'forceDoor', label: 'Shoulder the door aside', hint: 'The furniture is heavy and the old frame may break; whoever is inside will hear you coming.', chance: { probability: 0.56, successNext: 'roomEntered', failureNext: 'doorBacklash', successMessage: 'The chair skids away and the door opens with a crack.', failureMessage: 'The frame holds. The impact shakes the wall and someone inside cries out.', successEffects: { setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'], knowledge: ['The guest behind the barricade is alive and frightened, not missing.'] }, failureEffects: { health: -1, setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] } } },
+        { id: 'knockGently', label: 'Knock and ask to speak', timeCost: 2, next: 'doorTalk' },
+        { id: 'inspectBarricade', label: 'Study the latch and the barricade', timeCost: 5, next: 'latchClue' },
+        { id: 'forceDoor', label: 'Shoulder the door aside', timeCost: 10, hint: 'The furniture is heavy and the old frame may break; whoever is inside will hear you coming.', chance: { probability: 0.56, successNext: 'roomEntered', failureNext: 'doorBacklash', successMessage: 'The chair skids away and the door opens with a crack.', failureMessage: 'The frame holds. The impact shakes the wall and someone inside cries out.', successEffects: { setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'], knowledge: ['The guest behind the barricade is alive and frightened, not missing.'] }, failureEffects: { health: -1, setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] } } },
       ],
     },
     doorTalk: {
@@ -93,10 +98,10 @@ export const THE_LAST_ROOM: Scenario = {
       id: 'latchClue', title: 'A Barricade from Within',
       text: 'The chair legs have been wedged from the inside. The wood around the latch is intact. Someone chose to block the door; no one appears to have forced their way in. A key lies just beyond reach under the gap.',
       choices: [
-        { id: 'quietToolEntry', label: 'Use a small tool to lift the latch quietly', requirements: { anyItems: ROOM_TOOL }, next: 'roomEntered', effects: { setFlags: ['quietEntry', 'intervenedAtInn'], knowledge: ['The room’s barricade was set from inside; there is no sign of a forced entry.'] } },
-        { id: 'hookKey', label: 'Reach for the dropped key with your hook', requirements: { items: ['ratCatchersHook'] }, next: 'keyRecovered', effects: { gainItems: ['innCellarKey'], setFlags: ['intervenedAtInn'], knowledge: ['A cellar key had been left under the barricaded room door.'] } },
+        { id: 'quietToolEntry', label: 'Use a small tool to lift the latch quietly', timeCost: 3, requirements: { anyItems: ROOM_TOOL }, next: 'roomEntered', effects: { setFlags: ['quietEntry', 'intervenedAtInn'], knowledge: ['The room’s barricade was set from inside; there is no sign of a forced entry.'] } },
+        { id: 'hookKey', label: 'Reach for the dropped key with your hook', timeCost: 2, requirements: { items: ['ratCatchersHook'] }, next: 'keyRecovered', effects: { gainItems: ['innCellarKey'], setFlags: ['intervenedAtInn'], knowledge: ['A cellar key had been left under the barricaded room door.'] } },
         { id: 'goToServiceHall', label: 'Leave the room alone and inspect the service hall', next: 'serviceHall' },
-        { id: 'forceFromHall', label: 'Force the door despite the warning', hint: 'You have seen no sign of a break-in; forcing it may frighten the person inside.', chance: { probability: 0.56, successNext: 'roomEntered', failureNext: 'doorBacklash', successMessage: 'The door swings open against the furniture.', failureMessage: 'The old frame groans but holds; the person inside shouts for you to stop.', successEffects: { setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] }, failureEffects: { health: -1, setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] } } },
+        { id: 'forceFromHall', label: 'Force the door despite the warning', timeCost: 10, hint: 'You have seen no sign of a break-in; forcing it may frighten the person inside.', chance: { probability: 0.56, successNext: 'roomEntered', failureNext: 'doorBacklash', successMessage: 'The door swings open against the furniture.', failureMessage: 'The old frame groans but holds; the person inside shouts for you to stop.', successEffects: { setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] }, failureEffects: { health: -1, setFlags: ['forcedEntry', 'intervenedAtInn'], historyFlags: ['forced_entry_without_proof', 'intervened_in_inn_dispute'] } } },
       ],
     },
     keyRecovered: {
@@ -110,10 +115,11 @@ export const THE_LAST_ROOM: Scenario = {
     doorConfides: {
       id: 'doorConfides', title: 'What She Heard',
       text: 'The guest gives her name as Nell. She barricaded herself after hearing the innkeeper tell someone that Vale had “gone out the back.” A few moments later she heard three slow knocks from below the kitchen floor. She never saw Vale leave. She is afraid that if she opens the door, the innkeeper will blame her.',
+      textVariants: [{ requirements: { minElapsedMinutes: 25 }, text: 'Nell gives her account in a low, tired voice. She barricaded herself after hearing the innkeeper tell someone that Vale had “gone out the back.” A few moments later she heard three slow knocks from below the kitchen floor. She is still afraid the innkeeper will blame her, and the rain has made the old house groan around her.' }],
       choices: [
-        { id: 'believeNell', label: 'Believe her and follow the sound below', next: 'serviceHall', effects: { setFlags: ['guestConfided', 'believedNell'], historyFlags: ['intervened_in_inn_dispute', 'trusted_testimony_over_evidence', 'protected_hidden_guest'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
-        { id: 'askNellToWait', label: 'Ask her to stay put while you check the passage', next: 'serviceHall', effects: { setFlags: ['guestConfided'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
-        { id: 'tellInnkeeperAboutNell', label: 'Confront the innkeeper with her account', next: 'hostConfrontation', effects: { setFlags: ['guestConfided'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
+        { id: 'believeNell', label: 'Believe her and follow the sound below', timeCost: 2, next: 'serviceHall', effects: { setFlags: ['guestConfided', 'believedNell'], historyFlags: ['intervened_in_inn_dispute', 'trusted_testimony_over_evidence', 'protected_hidden_guest'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
+        { id: 'askNellToWait', label: 'Ask her to stay put while you check the passage', timeCost: 2, next: 'serviceHall', effects: { setFlags: ['guestConfided'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
+        { id: 'tellInnkeeperAboutNell', label: 'Confront the innkeeper with her account', timeCost: 4, next: 'hostConfrontation', effects: { setFlags: ['guestConfided'], knowledge: ['Nell heard three knocks below the kitchen after the innkeeper said Vale had gone out the back.'] } },
         { id: 'leaveNell', label: 'Respect her request and leave', next: 'walkAwayEnding', effects: { historyFlags: ['walked_away_from_inn_problem'] } },
       ],
     },
@@ -150,39 +156,47 @@ export const THE_LAST_ROOM: Scenario = {
       text: 'The innkeeper looks at the blank checkout line, then gives up on the story. Vale slipped on the cellar stairs while retrieving his case and is pinned behind a fallen shelf. The innkeeper heard him knocking. He lied because the cellar steps have been unsafe for months and he fears the inn will be shut down. Nell barricaded herself after he told her to stay quiet. The lie was real; an assault was not.',
       choices: [
         { id: 'helpWithInnkeeper', label: 'Get the cellar door open together', next: 'cellarEntry', effects: { setFlags: ['hostConfessed', 'innkeeperHelping'], historyFlags: ['intervened_in_inn_dispute'], knowledge: ['Vale is trapped in the cellar after an accidental fall; the innkeeper concealed the accident to protect the inn.'] } },
-        { id: 'callAuthorities', label: 'Send for the constable and a doctor', next: 'authoritiesCalled', effects: { setFlags: ['hostConfessed'], historyFlags: ['returned_for_authorities'], knowledge: ['Vale is trapped in the cellar after an accidental fall; the innkeeper concealed the accident to protect the inn.'] } },
+        { id: 'callAuthorities', label: 'Send for the constable and a doctor', timeCost: 35, next: 'authoritiesCalled', effects: { setFlags: ['hostConfessed'], historyFlags: ['returned_for_authorities'], knowledge: ['Vale is trapped in the cellar after an accidental fall; the innkeeper concealed the accident to protect the inn.'] } },
         { id: 'leaveAfterConfession', label: 'Tell him to answer for it and leave', next: 'walkAwayEnding', effects: { historyFlags: ['uncovered_inn_truth', 'walked_away_from_inn_problem'] } },
       ],
     },
     serviceHall: {
       id: 'serviceHall', title: 'The Service Passage', tone: 'warning',
       text: 'The passage ends at a swollen cellar door with an old iron latch. Wet scuffs mark the stones on both sides. The innkeeper says the door has stuck before; from below, you hear a faint, deliberate knock.',
-      textVariants: [{ requirements: { flags: ['heardTapping'] }, text: 'The passage ends at a swollen cellar door with an old iron latch. The three slow knocks Nell described sound again beneath your feet. The innkeeper says the door has stuck before.' }],
+      textVariants: [
+        { requirements: { flags: ['heardTapping'], minElapsedMinutes: 35 }, text: 'The passage ends at a swollen cellar door with an old iron latch. The three slow knocks Nell described have grown faint beneath your feet. Rainwater creeps under the door, and the innkeeper says the old frame will not hold forever.' },
+        { requirements: { flags: ['heardTapping'] }, text: 'The passage ends at a swollen cellar door with an old iron latch. The three slow knocks Nell described sound again beneath your feet. The innkeeper says the door has stuck before.' },
+        { requirements: { minElapsedMinutes: 35 }, text: 'The passage ends at a swollen cellar door with an old iron latch. The knock from below has grown faint. Rainwater creeps under the door, and the innkeeper says the old frame will not hold forever.' },
+      ],
       choices: [
-        { id: 'inspectCellarScuffs', label: 'Study the marks around the cellar door', next: 'cellarClues' },
-        { id: 'tryCellarLatch', label: 'Lift the swollen latch by hand', hint: 'The wood is wet and the frame is shifting; forcing it may hurt you.', chance: { probability: 0.6, successNext: 'cellarEntry', failureNext: 'cellarStuck', successMessage: 'The latch rises and the swollen door gives enough to open.', failureMessage: 'The door jerks back; the latch catches your hand.', successEffects: { setFlags: ['roughAccess'] }, failureEffects: { health: -1, setFlags: ['roughAccess'] } } },
-        { id: 'useRecoveredKey', label: 'Use the key pulled from under the room door', requirements: { items: ['innCellarKey'] }, next: 'cellarEntry', effects: { setFlags: ['quietAccess'] } },
-        { id: 'askInnkeeperForTruth', label: 'Ask the innkeeper to explain the knocks', next: 'hostConfrontation' },
+        { id: 'inspectCellarScuffs', label: 'Study the marks around the cellar door', timeCost: 5, next: 'cellarClues' },
+        { id: 'tryCellarLatch', label: 'Lift the swollen latch by hand', timeCost: 8, hint: 'The wood is wet and the frame is shifting; forcing it may hurt you.', chance: { probability: 0.6, successNext: 'cellarEntry', failureNext: 'cellarStuck', successMessage: 'The latch rises and the swollen door gives enough to open.', failureMessage: 'The door jerks back; the latch catches your hand.', successEffects: { setFlags: ['roughAccess'] }, failureEffects: { health: -1, setFlags: ['roughAccess'] } } },
+        { id: 'useRecoveredKey', label: 'Use the key pulled from under the room door', timeCost: 1, requirements: { items: ['innCellarKey'] }, next: 'cellarEntry', effects: { setFlags: ['quietAccess'] } },
+        { id: 'askInnkeeperForTruth', label: 'Ask the innkeeper to explain the knocks', timeCost: 4, next: 'hostConfrontation' },
       ],
     },
     cellarClues: {
       id: 'cellarClues', title: 'The Marks at the Threshold',
       text: 'One set of scuffs goes down the steps; none come back up. Near the latch, the wood is scraped from the cellar side. Someone below has been trying to move the door. A short length of broken handrail lies nearby.',
       choices: [
-        { id: 'openAfterClues', label: 'Try the latch with the handrail for leverage', next: 'cellarEntry', effects: { setFlags: ['roughAccess'], knowledge: ['The cellar door was pushed at from below; someone may be trapped there.'] } },
-        { id: 'lightAndListen', label: 'Listen and light the gap before opening', requirements: { anyItems: CELLAR_LIGHTS }, next: 'cellarEntry', effects: { setFlags: ['quietAccess'], knowledge: ['The marks at the cellar door suggest someone below has been trying to open it.'] } },
-        { id: 'callHostToDoor', label: 'Ask the innkeeper to help with the door', next: 'hostConfrontation' },
+        { id: 'openAfterClues', label: 'Try the latch with the handrail for leverage', timeCost: 7, next: 'cellarEntry', effects: { setFlags: ['roughAccess'], knowledge: ['The cellar door was pushed at from below; someone may be trapped there.'] } },
+        { id: 'lightAndListen', label: 'Listen and light the gap before opening', timeCost: 3, requirements: { anyItems: CELLAR_LIGHTS }, next: 'cellarEntry', effects: { setFlags: ['quietAccess'], knowledge: ['The marks at the cellar door suggest someone below has been trying to open it.'] } },
+        { id: 'callHostToDoor', label: 'Ask the innkeeper to help with the door', timeCost: 4, next: 'hostConfrontation' },
       ],
     },
     cellarEntry: {
       id: 'cellarEntry', title: 'Below the Inn', tone: 'danger',
       text: 'A fallen shelf pins a man’s coat to the cellar floor. Silas Vale is conscious, cold, and unable to free one leg. His travel case lies open beside him. The shelf fell across his path to the door; there is no weapon, no stolen property, and no second person below. The cellar steps creak under the weight of the building.',
-      textVariants: [{ requirements: { items: ['minerHeadlamp'] }, text: 'Your headlamp picks out the whole cellar at once: a fallen shelf pins a man’s coat to the floor. Silas Vale is conscious, cold, and unable to free one leg. His travel case lies open beside him. The shelf fell across his path to the door; there is no weapon, no stolen property, and no second person below. The cellar steps creak under the weight of the building.' }],
+      textVariants: [
+        { requirements: { items: ['minerHeadlamp'], minElapsedMinutes: 30 }, text: 'Your headlamp picks out the whole cellar at once: a fallen shelf pins Silas Vale to the floor. He is conscious, but cold and visibly weaker after the long wait. His case lies open beside him. The shelf fell across his path to the door; the cellar steps creak under the weight of the building.' },
+        { requirements: { items: ['minerHeadlamp'] }, text: 'Your headlamp picks out the whole cellar at once: a fallen shelf pins a man’s coat to the floor. Silas Vale is conscious, cold, and unable to free one leg. His travel case lies open beside him. The shelf fell across his path to the door; there is no weapon, no stolen property, and no second person below. The cellar steps creak under the weight of the building.' },
+        { requirements: { minElapsedMinutes: 30 }, text: 'A fallen shelf pins Silas Vale to the cellar floor. He is conscious, but cold and visibly weaker after the long wait. His case lies open beside him. The shelf fell across his path to the door; the cellar steps creak under the weight of the building.' },
+      ],
       choices: [
-        { id: 'rigRopeForSilas', label: 'Rig your rope to shift the shelf', requirements: { items: ['travelRope'] }, chance: { probability: 0.68, bonusItems: ['travelRope'], bonusProbability: 0.12, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'The rope holds while you ease the shelf clear.', failureMessage: 'The shelf rolls before the rope is secure; you stumble hard.', successEffects: { setFlags: ['ropeRescue'] }, failureEffects: { health: -2 } } },
-        { id: 'pryShelf', label: 'Use a carried tool to lever the shelf aside', requirements: { anyItems: PRY_TOOLS }, chance: { probability: 0.61, bonusItems: PRY_TOOLS, bonusProbability: 0.14, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'A careful lift opens enough space for Vale to pull free.', failureMessage: 'The leverage shifts the shelf and sends you against the stone wall.', successEffects: { setFlags: ['carefulRescue'] }, failureEffects: { health: -2 } } },
-        { id: 'getHelpForSilas', label: 'Call the innkeeper and Nell to help lift', next: 'sharedRescue', effects: { setFlags: ['askedForHelp'] } },
-        { id: 'dropThroughVent', label: 'Climb down through the narrow cellar vent', hint: 'The wet stone is slick and the drop is awkward; a fall here could be serious.', chance: { probability: 0.55, bonusItems: ['travelRope'], bonusProbability: 0.2, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'You land on the dry edge and reach Vale.', failureMessage: 'Your foot slips on the wet lip and you fall against the cellar wall.', successEffects: { health: -1, setFlags: ['ventRescue'] }, failureEffects: { health: -4 } } },
+        { id: 'rigRopeForSilas', label: 'Rig your rope to shift the shelf', timeCost: 8, requirements: { items: ['travelRope'] }, chance: { probability: 0.68, bonusItems: ['travelRope'], bonusProbability: 0.12, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'The rope holds while you ease the shelf clear.', failureMessage: 'The shelf rolls before the rope is secure; you stumble hard.', successEffects: { setFlags: ['ropeRescue'] }, failureEffects: { health: -2 } } },
+        { id: 'pryShelf', label: 'Use a carried tool to lever the shelf aside', timeCost: 4, requirements: { anyItems: PRY_TOOLS }, chance: { probability: 0.61, bonusItems: PRY_TOOLS, bonusProbability: 0.14, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'A careful lift opens enough space for Vale to pull free.', failureMessage: 'The leverage shifts the shelf and sends you against the stone wall.', successEffects: { setFlags: ['carefulRescue'] }, failureEffects: { health: -2 } } },
+        { id: 'getHelpForSilas', label: 'Call the innkeeper and Nell to help lift', timeCost: 5, next: 'sharedRescue', effects: { setFlags: ['askedForHelp'] } },
+        { id: 'dropThroughVent', label: 'Climb down through the narrow cellar vent', timeCost: 10, hint: 'The wet stone is slick and the drop is awkward; a fall here could be serious.', chance: { probability: 0.55, bonusItems: ['travelRope'], bonusProbability: 0.2, successNext: 'silasFree', failureNext: 'cellarSlip', successMessage: 'You land on the dry edge and reach Vale.', failureMessage: 'Your foot slips on the wet lip and you fall against the cellar wall.', successEffects: { health: -1, setFlags: ['ventRescue'] }, failureEffects: { health: -4 } } },
       ],
     },
     cellarStuck: {
@@ -191,7 +205,7 @@ export const THE_LAST_ROOM: Scenario = {
       choices: [
         { id: 'pullAgain', label: 'Pull once more and brace for the door', hint: 'The damaged frame may give way suddenly.', chance: { probability: 0.7, successNext: 'cellarEntry', failureNext: 'cellarSlip', successMessage: 'The frame cracks and the door opens.', failureMessage: 'The step drops as the latch tears loose.', failureEffects: { health: -3 } } },
         { id: 'callForInnHelp', label: 'Call the innkeeper to help open it', next: 'hostConfrontation' },
-        { id: 'leaveCellarDoor', label: 'Stop and send for outside help', next: 'authoritiesCalled', effects: { historyFlags: ['returned_for_authorities'] } },
+        { id: 'leaveCellarDoor', label: 'Stop and send for outside help', timeCost: 35, next: 'authoritiesCalled', effects: { historyFlags: ['returned_for_authorities'] } },
       ],
     },
     cellarSlip: {

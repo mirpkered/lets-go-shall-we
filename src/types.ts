@@ -32,6 +32,13 @@ export interface RunState {
   status: 'active' | 'success' | 'death';
   message: string | null;
   startedAt: number;
+  elapsedMinutes?: number;
+}
+
+export interface TimePhase {
+  id: string;
+  label: string;
+  atMinutes: number;
 }
 
 export interface SaveData {
@@ -53,6 +60,8 @@ export interface Requirement {
   historyFlags?: string[];
   minHealth?: number;
   minMoney?: number;
+  minElapsedMinutes?: number;
+  maxElapsedMinutes?: number;
 }
 
 export interface CombatEffect {
@@ -99,6 +108,7 @@ export interface Choice {
   effects?: Effects;
   chance?: ChanceBranch;
   next?: string;
+  timeCost?: number;
 }
 
 export interface Scene {
@@ -116,5 +126,6 @@ export interface Scenario {
   title: string;
   subtitle: string;
   startScene: string;
+  timePhases?: TimePhase[];
   scenes: Record<string, Scene>;
 }

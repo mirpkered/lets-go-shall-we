@@ -1,5 +1,5 @@
 import './styles.css';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
 import { renderQaPanel } from './qaPanel';
@@ -40,6 +40,18 @@ function bindQaPanel(): void {
     const health = Math.max(0, Math.min(state.character.maxHealth, Number(input?.value ?? 10)));
     state.run.health = health;
     if (health === 0) { state.run.status = 'death'; state.run.sceneId = '__death'; state.run.visitedSceneIds = [...new Set([...(state.run.visitedSceneIds ?? []), '__death'])]; }
+    persist(); render();
+  });
+  document.querySelector('[data-qa-set-time]')?.addEventListener('click', () => {
+    if (!state.run || state.run.status !== 'active') return;
+    const input = document.querySelector<HTMLInputElement>('#qa-time');
+    const elapsed = Number(input?.value ?? 0);
+    state.run.elapsedMinutes = Number.isFinite(elapsed) ? Math.max(0, Math.floor(elapsed)) : 0;
+    persist(); render();
+  });
+  document.querySelector('[data-qa-reset-time]')?.addEventListener('click', () => {
+    if (!state.run || state.run.status !== 'active') return;
+    state.run.elapsedMinutes = 0;
     persist(); render();
   });
   document.querySelector('[data-qa-add-item]')?.addEventListener('click', () => {
@@ -107,11 +119,12 @@ function renderPlay(): void {
   if (run.status === 'success') return renderSuccess();
   const scene = scenario.scenes[run.sceneId];
   const choices = scene.choices.filter((choice) => meets(choice.requirements, state));
+  const timing = timeStatus(scenario, run.elapsedMinutes ?? 0);
   const healthPct = (run.health / character.maxHealth) * 100;
   shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}">${icon('bag')}<span>${run.inventory.length}</span><b class="sr-only">Inventory</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
     ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
-    <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
+    <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${timing.phase ? `<p class="story-time" aria-label="Story time: ${timing.phase.label}">${timing.phase.label}</p>` : ''}${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
     <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${choice.label}</strong>${choice.hint ? `<small>${choice.hint}</small>` : ''}</button>`).join('')}</section>`, 'playing');
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });

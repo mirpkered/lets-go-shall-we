@@ -8,7 +8,7 @@ function extractionChoices(delayed: boolean): Choice[] {
   const clean = delayed ? 'thanksCostly' : 'thanksClean';
   return [
     {
-      id: 'workWinch', label: 'Work the old rescue winch', hint: 'The brake is rusted; a toolkit or braced tunnel should help.',
+      id: 'workWinch', label: 'Work the old rescue winch', timeCost: 12, hint: 'The brake is rusted; a toolkit or braced tunnel should help.',
       chance: {
         probability: delayed ? 0.32 : 0.46, bonusItems: ['pocketToolkit', 'foremanMultiTool'], bonusFlags: ['tunnelBraced', 'highAirRoute'], bonusProbability: 0.24,
         successNext: clean, failureNext: 'rescueCollapse', successMessage: 'The drum turns. Slowly, the slumped beam lifts clear.', failureMessage: 'The cable slips on the drum and the roof jolts.',
@@ -16,7 +16,7 @@ function extractionChoices(delayed: boolean): Choice[] {
       },
     },
     {
-      id: 'rigRope', label: 'Rig a rope lift for Eli', hint: 'A long pull can work, but the damaged ledge may shift.', requirements: { items: ['travelRope'] },
+      id: 'rigRope', label: 'Rig a rope lift for Eli', timeCost: 6, hint: 'A long pull can work, but the damaged ledge may shift.', requirements: { items: ['travelRope'] },
       chance: {
         probability: delayed ? 0.55 : 0.69, bonusItems: ['heavyLeatherGloves', 'minerHeadlamp', 'ratCatchersHook'], bonusProbability: 0.16,
         successNext: 'thanksCostly', failureNext: 'rescueCollapse', successMessage: 'The rope holds. You haul together until Eli slides free.', failureMessage: 'The rope bites into the ledge and the support cracks.',
@@ -24,14 +24,14 @@ function extractionChoices(delayed: boolean): Choice[] {
       },
     },
     {
-      id: 'clearBeam', label: 'Shoulder the beam clear', hint: 'Fast if it moves; the timber overhead is already splitting.',
+      id: 'clearBeam', label: 'Shoulder the beam clear', timeCost: 8, hint: 'Fast if it moves; the timber overhead is already splitting.',
       chance: {
         probability: delayed ? 0.36 : 0.53, bonusItems: ['heavyLeatherGloves', 'ratCatchersHook', 'brassCandlestick'], bonusFlags: ['tunnelBraced'], bonusProbability: 0.15,
         successNext: 'thanksCostly', failureNext: 'rescueCollapse', successMessage: 'The beam rolls far enough for Eli to crawl clear.', failureMessage: 'The timber shifts against your shoulder and the roof sheds rock.',
         successEffects: { health: -2, historyFlags: RESCUE_HISTORY }, failureEffects: { health: -2, setFlags: ['rescueStructureShifted'] },
       },
     },
-    { id: 'bringHelp', label: 'Climb out and bring a rescue crew', hint: 'It costs time, but trained hands can rig the surface winch.', next: 'outsideForHelp', effects: { setFlags: ['leftForHelp'] } },
+    { id: 'bringHelp', label: 'Climb out and bring a rescue crew', timeCost: 45, hint: 'It costs time, but trained hands can rig the surface winch.', next: 'outsideForHelp', effects: { setFlags: ['leftForHelp'] } },
   ];
 }
 
@@ -48,13 +48,19 @@ export const WHATS_MINE: Scenario = {
   title: 'What’s Mine is Mine',
   subtitle: 'A missing brother. An abandoned mine. A choice about what is worth bringing back.',
   startScene: 'mineRequest',
+  timePhases: [
+    { id: 'search', label: 'The Search Begins', atMinutes: 0 },
+    { id: 'shifting', label: 'The Supports Shift', atMinutes: 20 },
+    { id: 'narrowing', label: 'The Rescue Window Narrows', atMinutes: 45 },
+    { id: 'deepNight', label: 'Deep Night Below', atMinutes: 70 },
+  ],
   scenes: {
     mineRequest: {
       id: 'mineRequest', title: 'A Sister at the Mine Gate', tone: 'warning',
       text: 'Mara waits beside the chained mouth of an abandoned silver mine. Her brother Eli went inside before dawn to retrieve their father’s survey book. He has been gone six hours. The old workings have rotten supports, flooded levels, and pockets of bad air. Mara asks if you will search for him.',
       choices: [
-        { id: 'acceptSearch', label: 'Agree to look for Eli', hint: 'The mine is dangerous, and no one can promise what waits inside.', effects: { historyFlags: ['accepted_dangerous_rescue'] }, next: 'preparation' },
-        { id: 'hearMore', label: 'Ask what Eli was looking for', next: 'maraExplains' },
+        { id: 'acceptSearch', label: 'Agree to look for Eli', hint: 'The mine is dangerous, and no one can promise what waits inside.', timeCost: 1, effects: { historyFlags: ['accepted_dangerous_rescue'] }, next: 'preparation' },
+        { id: 'hearMore', label: 'Ask what Eli was looking for', timeCost: 3, next: 'maraExplains' },
         { id: 'refuseSearch', label: 'Decline the rescue', hint: 'You are not required to enter the mine.', effects: { historyFlags: ['refused_mine_rescue'] }, next: 'refusalEnding' },
       ],
     },
@@ -62,28 +68,28 @@ export const WHATS_MINE: Scenario = {
       id: 'maraExplains', title: 'The Survey Book',
       text: 'Eli believed the survey book would settle an old boundary dispute and show where their father had worked the silver seam. He took a lantern and said he knew the main rail drift. No one has heard from him since.',
       choices: [
-        { id: 'acceptAfterAccount', label: 'Go in after him', effects: { historyFlags: ['accepted_dangerous_rescue'], knowledge: ['Eli entered by the old rail drift while looking for his father’s survey book.'] }, next: 'preparation' },
+        { id: 'acceptAfterAccount', label: 'Go in after him', timeCost: 1, effects: { historyFlags: ['accepted_dangerous_rescue'], knowledge: ['Eli entered by the old rail drift while looking for his father’s survey book.'] }, next: 'preparation' },
         { id: 'declineAfterAccount', label: 'Tell Mara you cannot help', effects: { historyFlags: ['refused_mine_rescue'] }, next: 'refusalEnding' },
       ],
     },
     preparation: {
       id: 'preparation', title: 'Before the Descent',
-      text: 'The retired foreman keeps a few supplies by the gate. A survey map of the upper workings costs two coins; a coil of travel rope costs three; a miner’s headlamp costs four. You can also go in with your own kit. None of it makes the old supports safe.',
+      text: 'The retired foreman lives nearby and still checks the sealed property. He has only a few pieces of his old work kit left: an upper-level survey map, a coil of travel rope, and a miner’s headlamp. If you have coins to spare, he will part with one to help pay for keeping the gate road clear. You can also go in with what you brought. None of it makes the old supports safe.',
       choices: [
-        { id: 'buyMap', label: 'Buy the upper-level survey map — 2 coins', requirements: { minMoney: 2, notItems: ['mineSurveyMap'] }, effects: { money: -2, gainItems: ['mineSurveyMap'], knowledge: [MAP_KNOWLEDGE] }, next: 'mineMouth' },
-        { id: 'buyRope', label: 'Buy travel rope — 3 coins', requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'mineMouth' },
-        { id: 'buyHeadlamp', label: 'Buy a miner’s headlamp — 4 coins', requirements: { minMoney: 4, notItems: ['minerHeadlamp'] }, effects: { money: -4, gainItems: ['minerHeadlamp'] }, next: 'mineMouth' },
-        { id: 'enterWithoutPurchase', label: 'Keep your money and enter', next: 'mineMouth' },
+        { id: 'buyMap', label: 'Take the old survey map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['mineSurveyMap'] }, effects: { money: -2, gainItems: ['mineSurveyMap'], knowledge: [MAP_KNOWLEDGE] }, next: 'mineMouth' },
+        { id: 'buyRope', label: 'Take the travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'mineMouth' },
+        { id: 'buyHeadlamp', label: 'Take the miner’s headlamp — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['minerHeadlamp'] }, effects: { money: -4, gainItems: ['minerHeadlamp'] }, next: 'mineMouth' },
+        { id: 'enterWithoutPurchase', label: 'Enter with what you have', timeCost: 1, next: 'mineMouth' },
       ],
     },
     mineMouth: {
       id: 'mineMouth', title: 'The Mouth of the Old Workings', tone: 'warning',
       text: 'The chain hangs loose where Eli cut it. One fresh bootprint crosses the dust. The main rail drift slopes into darkness; a ladder descends beside it, its lower rungs bent. A breath of stale air rolls out, then fades.',
       choices: [
-        { id: 'followRailDrift', label: 'Follow Eli’s prints along the rails', next: 'railGallery' },
-        { id: 'climbBentLadder', label: 'Descend the bent ladder carefully', hint: 'Several rungs flex under your weight.', chance: { probability: 0.72, successNext: 'ladderLanding', failureNext: 'ladderFall', successMessage: 'You reach the landing without putting your weight on the worst rungs.', failureMessage: 'A rung snaps; you hit the landing hard.', failureEffects: { health: -2 } } },
-        { id: 'takeMappedDrift', label: 'Use the map’s upper side drift', requirements: { items: ['mineSurveyMap'] }, next: 'mappedDrift' },
-        { id: 'ropeDownOldShaft', label: 'Lower yourself down the old shaft', requirements: { items: ['travelRope'] }, hint: 'The rope gives a controlled descent beside the broken ladder.', next: 'ropeDescent' },
+        { id: 'followRailDrift', label: 'Follow Eli’s prints along the rails', timeCost: 6, next: 'railGallery' },
+        { id: 'climbBentLadder', label: 'Descend the bent ladder carefully', timeCost: 7, hint: 'Several rungs flex under your weight.', chance: { probability: 0.72, successNext: 'ladderLanding', failureNext: 'ladderFall', successMessage: 'You reach the landing without putting your weight on the worst rungs.', failureMessage: 'A rung snaps; you hit the landing hard.', failureEffects: { health: -2 } } },
+        { id: 'takeMappedDrift', label: 'Use the map’s upper side drift', timeCost: 3, requirements: { items: ['mineSurveyMap'] }, next: 'mappedDrift' },
+        { id: 'ropeDownOldShaft', label: 'Lower yourself down the old shaft', timeCost: 4, requirements: { items: ['travelRope'] }, hint: 'The rope gives a controlled descent beside the broken ladder.', next: 'ropeDescent' },
       ],
     },
     railGallery: { id: 'railGallery', title: 'A Tool in the Dust', text: 'A small wrench lies beside a fresh scrape in the rail. Eli dropped it in a hurry. Beyond it, the rails disappear under a low rock shelf.', choices: [{ id: 'duckUnderShelf', label: 'Follow the scrape under the shelf', effects: { knowledge: ['Eli passed through the main rail drift and continued below the low shelf.'] }, next: 'lowerTunnel' }] },
@@ -95,9 +101,9 @@ export const WHATS_MINE: Scenario = {
       id: 'lowerTunnel', title: 'The Lower Tunnel', tone: 'warning',
       text: 'The tunnel narrows. Eli’s bootprints appear and vanish beneath drifts of silver-gray dust. Somewhere ahead, metal taps twice. A vein of silver glints from a split in the wall; above it, old timbers groan.',
       choices: [
-        { id: 'followScrape', label: 'Follow the fresh scrape beneath the supports', next: 'supportApproach' },
-        { id: 'testMineAir', label: 'Check the air near the flooded rail bed', next: 'airPocket' },
-        { id: 'inspectSilverVein', label: 'Look closer at the exposed silver', effects: { setFlags: ['silverVeinFound'] }, next: 'silverSeam' },
+        { id: 'followScrape', label: 'Follow the fresh scrape beneath the supports', timeCost: 4, next: 'supportApproach' },
+        { id: 'testMineAir', label: 'Check the air near the flooded rail bed', timeCost: 3, next: 'airPocket' },
+        { id: 'inspectSilverVein', label: 'Look closer at the exposed silver', timeCost: 8, effects: { setFlags: ['silverVeinFound'] }, next: 'silverSeam' },
       ],
     },
     airPocket: { id: 'airPocket', title: 'Where the Flame Leans', tone: 'warning', text: 'Your lantern flame gutters low near the flooded rail bed. On the upper ledge it straightens again. The old mine carries air unevenly; the side ledge is safer to breathe along, but the tapping comes from below.', choices: [{ id: 'keepToUpperAir', label: 'Stay on the upper ledge toward the tapping', effects: { knowledge: [AIR_KNOWLEDGE], setFlags: ['highAirRoute'] }, next: 'supportApproach' }] },
@@ -127,6 +133,7 @@ export const WHATS_MINE: Scenario = {
     trappedEli: {
       id: 'trappedEli', title: 'Eli Behind the Fall', tone: 'danger',
       text: 'Eli is alive, pinned behind a fallen beam with one leg trapped. He can speak, but cannot climb or lift himself free. The old winch is still bolted into the wall; the roof above him is cracked. Your choices could save him—or bring the rest down.',
+      textVariants: [{ requirements: { minElapsedMinutes: 35 }, text: 'Eli is alive, pinned behind a fallen beam with one leg trapped. His answers have grown faint while you searched, and the settling roof has tightened the space around him. The old winch is still bolted into the wall; a rope lift or a careful brace may help, but the roof above him is cracked.' }],
       choices: extractionChoices(false),
     },
     trappedEliDelayed: {
@@ -138,7 +145,7 @@ export const WHATS_MINE: Scenario = {
       id: 'rescueCollapse', title: 'The Rescue Chamber Shifts', tone: 'danger',
       text: 'The beam lurches. Eli is still alive, but another attempt may bring down the roof. The entrance is reachable, and the silver seam is behind you. You cannot do everything before the next shift.',
       choices: [
-        { id: 'lastPull', label: 'Make one last pull on the beam', hint: 'A clear danger: if it slips again, you may be badly hurt.', chance: { probability: 0.43, successNext: 'thanksCostly', failureNext: 'mineAftershock', successMessage: 'The beam rolls aside and Eli crawls clear.', failureMessage: 'The ceiling drops between you and the passage.', successEffects: { health: -2, historyFlags: RESCUE_HISTORY }, failureEffects: { health: -4 } } },
+        { id: 'lastPull', label: 'Make one last pull on the beam', timeCost: 6, hint: 'A clear danger: if it slips again, you may be badly hurt.', chance: { probability: 0.43, successNext: 'thanksCostly', failureNext: 'mineAftershock', successMessage: 'The beam rolls aside and Eli crawls clear.', failureMessage: 'The ceiling drops between you and the passage.', successEffects: { health: -2, historyFlags: RESCUE_HISTORY }, failureEffects: { health: -4 } } },
         { id: 'leaveForRescueCrew', label: 'Get out and bring the rescue crew', next: 'outsideForHelp', effects: { setFlags: ['leftForHelp'] } },
         { id: 'leaveEliBehind', label: 'Get yourself out while you can', effects: { historyFlags: ['abandoned_injured_person'] }, next: 'abandonedEnding' },
         { id: 'takeSilverAndLeave', label: 'Take the exposed silver and leave', requirements: { flags: ['silverVeinFound'] }, hint: 'The ore is within reach; Eli is still trapped.', effects: { money: 8, historyFlags: ['chose_silver_over_rescue', 'abandoned_injured_person'] }, next: 'profitEnding' },
@@ -148,9 +155,10 @@ export const WHATS_MINE: Scenario = {
     outsideForHelp: {
       id: 'outsideForHelp', title: 'Back with a Rescue Crew', tone: 'warning',
       text: 'You reach the surface and return with the retired foreman and two local miners. Eli is still answering below. The crew has a surface winch, but needs a route that will not send them through the flooded level.',
+      textVariants: [{ requirements: { minElapsedMinutes: 45 }, text: 'The climb out and return for help has taken precious time. The foreman and two local miners reach the mine with a surface winch; Eli is still answering below, but more weakly now. The crew needs a route that will not send them through the flooded level.' }],
       choices: [
-        { id: 'guideBySurveyMap', label: 'Guide them along the mapped side drift', requirements: { knowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.86, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The map brings the crew to the stable upper ledge.', failureMessage: 'A washed-out mark costs the crew precious time.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
-        { id: 'guideWithoutMap', label: 'Lead the crew by the fresh bootprints', requirements: { notKnowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.67, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The fresh tracks lead the crew to Eli.', failureMessage: 'A drift of rock hides the prints; the crew has to search again.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
+        { id: 'guideBySurveyMap', label: 'Guide them along the mapped side drift', timeCost: 8, requirements: { knowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.86, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The map brings the crew to the stable upper ledge.', failureMessage: 'A washed-out mark costs the crew precious time.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
+        { id: 'guideWithoutMap', label: 'Lead the crew by the fresh bootprints', timeCost: 15, requirements: { notKnowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.67, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The fresh tracks lead the crew to Eli.', failureMessage: 'A drift of rock hides the prints; the crew has to search again.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
       ],
     },
     helpDelayed: { id: 'helpDelayed', title: 'The Crew Loses Time', tone: 'warning', text: 'The first route has shifted. The foreman can rig the winch from a safer ledge, though Eli is growing weaker; a direct lift would be faster and rougher.', choices: [

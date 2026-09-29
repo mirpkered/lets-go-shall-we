@@ -1,5 +1,5 @@
 import { STARTING_ITEMS } from './items';
-import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario } from './types';
+import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 
 export function newCharacter(name = 'The Traveler'): Character {
   return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
@@ -8,7 +8,7 @@ export function newCharacter(name = 'The Traveler'): Character {
 export function startRun(character: Character, scenario: Scenario): RunState {
   const inventory = [...STARTING_ITEMS];
   if (character.carriedItem) inventory.push(character.carriedItem);
-  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], status: 'active', message: null, startedAt: Date.now() };
+  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0 };
 }
 
 export function startAdventure(state: SaveData, scenario: Scenario): SaveData {
@@ -34,7 +34,16 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.notKnowledge || requirement.notKnowledge.every((id) => !character.knowledge.includes(id)))
     && (!requirement.historyFlags || requirement.historyFlags.every((id) => (character.historyFlags ?? []).includes(id)))
     && (!requirement.minHealth || run.health >= requirement.minHealth)
-    && (requirement.minMoney === undefined || character.money >= requirement.minMoney);
+    && (requirement.minMoney === undefined || character.money >= requirement.minMoney)
+    && (requirement.minElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) >= requirement.minElapsedMinutes)
+    && (requirement.maxElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) <= requirement.maxElapsedMinutes);
+}
+
+export function timeStatus(scenario: Scenario, elapsedMinutes = 0): { elapsedMinutes: number; phase: TimePhase | null; nextThreshold: number | null } {
+  const phases = [...(scenario.timePhases ?? [])].sort((a, b) => a.atMinutes - b.atMinutes);
+  const phase = phases.filter((entry) => elapsedMinutes >= entry.atMinutes).at(-1) ?? phases[0] ?? null;
+  const nextThreshold = phases.find((entry) => entry.atMinutes > elapsedMinutes)?.atMinutes ?? null;
+  return { elapsedMinutes, phase, nextThreshold };
 }
 
 export function sceneText(scene: Scenario['scenes'][string], state: SaveData): string {
@@ -65,6 +74,8 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
 export function choose(state: SaveData, scenario: Scenario, choice: Choice, random = Math.random): SaveData {
   const next = structuredClone(state);
   if (!next.run || next.run.status !== 'active' || !meets(choice.requirements, next)) return next;
+  const actionMinutes = Number.isFinite(choice.timeCost) ? Math.max(0, Math.floor(choice.timeCost!)) : 0;
+  next.run.elapsedMinutes = (next.run.elapsedMinutes ?? 0) + actionMinutes;
   next.run.message = null;
   applyEffects(next, choice.effects);
 

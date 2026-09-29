@@ -105,6 +105,25 @@ describe('What’s Mine is Mine', () => {
     expect(WHATS_MINE.scenes.mineMouth.choices.filter((choice) => meets(choice.requirements, state)).map((choice) => choice.id)).toContain('takeMappedDrift');
   });
 
+  it('shows only preparation options the character can actually afford', () => {
+    const choicesAt = (money: number) => {
+      const state = pick(fresh(money), 'acceptSearch');
+      return WHATS_MINE.scenes.preparation.choices.filter((choice) => meets(choice.requirements, state));
+    };
+
+    const broke = choicesAt(0);
+    expect(broke.map((choice) => choice.id)).toEqual(['enterWithoutPurchase']);
+    expect(broke[0].label).toBe('Enter with what you have');
+    expect(broke.map((choice) => choice.label).join(' ')).not.toMatch(/keep your money/i);
+
+    expect(choicesAt(1).map((choice) => choice.id)).toEqual(['enterWithoutPurchase']);
+    expect(choicesAt(2).map((choice) => choice.id)).toEqual(['buyMap', 'enterWithoutPurchase']);
+    expect(choicesAt(3).map((choice) => choice.id)).toEqual(['buyMap', 'buyRope', 'enterWithoutPurchase']);
+    expect(choicesAt(4).map((choice) => choice.id)).toEqual(['buyMap', 'buyRope', 'buyHeadlamp', 'enterWithoutPurchase']);
+    expect(WHATS_MINE.scenes.preparation.text).toMatch(/lives nearby/i);
+    expect(WHATS_MINE.scenes.preparation.text).toMatch(/old work kit/i);
+  });
+
   it('allows an outside-help rescue and records the return with a crew', () => {
     let state = reachEli(fresh());
     state = pick(state, 'bringHelp');
@@ -176,7 +195,7 @@ describe('What’s Mine is Mine', () => {
 
   it('requires explicit actions for all important items and prevents duplicate reward choices', () => {
     const purchase = WHATS_MINE.scenes.preparation.choices.find((choice) => choice.id === 'buyRope')!;
-    expect(purchase.label).toMatch(/Buy travel rope/);
+    expect(purchase.label).toMatch(/Take the travel rope/);
     expect(purchase.effects?.gainItems).toEqual(['travelRope']);
     const reward = WHATS_MINE.scenes.thanksClean.choices.find((choice) => choice.id === 'takeHeadlampReward')!;
     expect(reward.label).toContain('Accept Eli’s spare miner headlamp');

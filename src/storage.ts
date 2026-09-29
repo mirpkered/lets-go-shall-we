@@ -12,6 +12,8 @@ export function loadSave(storage: Pick<Storage, 'getItem'> = localStorage): Save
     if (parsed.version !== 1 || !Array.isArray(parsed.bank)) throw new Error('Unsupported save');
     if (parsed.character) parsed.character.historyFlags ??= [];
     if (parsed.run) {
+      // Pre-clock active saves resume at a safe zero; real-world elapsed time never counts.
+      parsed.run.elapsedMinutes = Number.isFinite(parsed.run.elapsedMinutes) ? Math.max(0, Math.floor(parsed.run.elapsedMinutes!)) : 0;
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       const scenario = getScenario(parsed.run.scenarioId);
       if (parsed.run.status === 'active' && parsed.run.scenarioId === 'broken-bell' && scenario && !scenario.scenes[parsed.run.sceneId]) {

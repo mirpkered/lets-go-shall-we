@@ -16,15 +16,20 @@ export const BROKEN_BELL: Scenario = {
   title: 'For Whom the Bell Tolls',
   subtitle: 'Three silent nights. A missing priest. Something waiting below.',
   startScene: 'chapelExterior',
+  timePhases: [
+    { id: 'early', label: 'Night Settling In', atMinutes: 0 },
+    { id: 'pressing', label: 'The Night Deepens', atMinutes: 20 },
+    { id: 'critical', label: 'Stone Shifts Below', atMinutes: 40 },
+  ],
   scenes: {
     chapelExterior: {
       id: 'chapelExterior', title: 'The Silent Chapel', tone: 'warning',
       text: 'You reach the village chapel beneath a low moon. Its bell rope sways though the night is still. Muddy prints lead from the graveyard gate to the open chapel door; the priest who went to investigate has not returned. Somewhere below the stones, a faint knock answers the wind.',
       choices: [
-        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', effects: { knowledge: [DO_NOT_RING], setFlags: ['calledOut'] }, next: 'voiceBelow' },
-        { id: 'inspectRope', label: 'Examine the bell rope', hint: 'The cut may tell you where the bell went.', effects: { knowledge: ['The bell rope was cut from below, not from the tower.'], setFlags: ['inspectedRope'] }, next: 'ropeClue' },
-        { id: 'enter', label: 'Enter the chapel', next: 'chapelNave' },
-        { id: 'cellarWindow', label: 'Try the narrow cellar window', hint: 'Broken glass and a hard drop are visible.', next: 'cellarWindow' },
+        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', timeCost: 2, effects: { knowledge: [DO_NOT_RING], setFlags: ['calledOut'] }, next: 'voiceBelow' },
+        { id: 'inspectRope', label: 'Examine the bell rope', hint: 'The cut may tell you where the bell went.', timeCost: 4, effects: { knowledge: ['The bell rope was cut from below, not from the tower.'], setFlags: ['inspectedRope'] }, next: 'ropeClue' },
+        { id: 'enter', label: 'Enter the chapel', timeCost: 1, next: 'chapelNave' },
+        { id: 'cellarWindow', label: 'Try the narrow cellar window', hint: 'Broken glass and a hard drop are visible.', timeCost: 3, next: 'cellarWindow' },
       ],
     },
     voiceBelow: {
@@ -70,10 +75,10 @@ export const BROKEN_BELL: Scenario = {
       id: 'chapelNave', title: 'The Empty Nave',
       text: 'Rain ticks against colored glass. Muddy prints cross the altar toward a prayer rug; a brass candlestick rests beside a dark stain. A service door opens onto the vestry. Under the floor comes a thin, uneven knock.',
       choices: [
-        { id: 'takeCandlestick', label: 'Take the heavy brass candlestick', hint: 'Useful weight, but only one free hand.', requirements: { notItems: ['brassCandlestick'] }, effects: { gainItems: ['brassCandlestick'], setFlags: ['tookCandlestick'] }, next: 'naveAfterCandle' },
-        { id: 'searchVestry', label: 'Search the vestry for evidence', next: 'priestNotes' },
-        { id: 'liftPrayerRug', label: 'Investigate the prayer rug', effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' },
-        { id: 'followMud', label: 'Study the muddy prints', effects: { knowledge: ['The muddy prints lead from the altar to a stair beneath the chapel.'] }, next: 'mudTrail' },
+        { id: 'takeCandlestick', label: 'Take the heavy brass candlestick', hint: 'Useful weight, but only one free hand.', timeCost: 1, requirements: { notItems: ['brassCandlestick'] }, effects: { gainItems: ['brassCandlestick'], setFlags: ['tookCandlestick'] }, next: 'naveAfterCandle' },
+        { id: 'searchVestry', label: 'Search the vestry for evidence', timeCost: 7, next: 'priestNotes' },
+        { id: 'liftPrayerRug', label: 'Investigate the prayer rug', timeCost: 2, effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' },
+        { id: 'followMud', label: 'Study the muddy prints', timeCost: 3, effects: { knowledge: ['The muddy prints lead from the altar to a stair beneath the chapel.'] }, next: 'mudTrail' },
       ],
     },
     naveAfterCandle: {
@@ -89,7 +94,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestNotes', title: 'The Priest’s Notes',
       text: 'A page lies crushed beneath a muddy bootprint: “Handbell and clapper recovered from the old burial. Parish display after cleaning.” Below, in a shaking hand: “It followed the sound. I was wrong.”',
       choices: [
-        { id: 'readNotes', label: 'Remember the warning and follow the prints', effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
+        { id: 'readNotes', label: 'Remember the warning and follow the prints', timeCost: 4, effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
       ],
     },
     notesLeadBelow: {
@@ -110,16 +115,16 @@ export const BROKEN_BELL: Scenario = {
     trapdoorFound: {
       id: 'trapdoorFound', title: 'The Hidden Stair',
       text: 'The rug folds back to reveal a narrow trapdoor set into the chapel floor. A ring of iron lifts it; cold air and the sound of a distant knock rise from below.',
-      choices: [{ id: 'descendHiddenStair', label: 'Open the trapdoor and descend', next: 'underStairs' }],
+      choices: [{ id: 'descendHiddenStair', label: 'Open the trapdoor and descend', timeCost: 3, next: 'underStairs' }],
     },
     underStairs: {
       id: 'underStairs', title: 'Beneath the Chapel', tone: 'warning',
       text: 'Stone steps descend into an ossuary. Soot-black letters cross the arch: DO NOT RING IT BELOW. A wooden chest sits beneath them. Beyond it, a bronze door stands ajar; behind the door comes a faint, pained breath.',
       choices: [
-        { id: 'readWarning', label: 'Study the soot-black warning', effects: { knowledge: [DO_NOT_RING], lore: ['The warning was carved before the chapel was built.'], setFlags: ['knowsWarning'] }, next: 'warningRemembered' },
-        { id: 'inspectChest', label: 'Examine the wooden chest', next: 'chestClue' },
-        { id: 'findPriestBelow', label: 'Follow the pained breath', effects: { setFlags: ['foundPriest'] }, next: 'priestAfterHound' },
-        { id: 'passBronzeDoor', label: 'Continue toward the bronze door', next: 'burialApproach' },
+        { id: 'readWarning', label: 'Study the soot-black warning', timeCost: 2, effects: { knowledge: [DO_NOT_RING], lore: ['The warning was carved before the chapel was built.'], setFlags: ['knowsWarning'] }, next: 'warningRemembered' },
+        { id: 'inspectChest', label: 'Examine the wooden chest', timeCost: 5, next: 'chestClue' },
+        { id: 'findPriestBelow', label: 'Follow the pained breath', timeCost: 3, effects: { setFlags: ['foundPriest'] }, next: 'priestAfterHound' },
+        { id: 'passBronzeDoor', label: 'Continue toward the bronze door', timeCost: 3, next: 'burialApproach' },
       ],
     },
     warningRemembered: {
@@ -135,7 +140,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'chestClue', title: 'The Chest Beneath the Warning',
       text: 'The chest is iron-banded and locked. From inside comes a dull shape of metal against wood. The warning above, the cut rope, and the marks on the lid begin to point toward something taken from below.',
       choices: [
-        { id: 'forceChest', label: 'Force the old lock', hint: 'The knife may slip; failure will hurt.', requirements: { notItems: ['ironHandbell'] }, chance: { probability: 0.48, successNext: 'bellDiscovery', failureNext: 'chestJammed', successMessage: 'The lock tears free. You lift out the iron handbell and a silver grave coin.', failureMessage: 'The knife slips; the lid jams and cuts your hand.', successEffects: takeBellEffects, failureEffects: { health: -2, setFlags: ['chestJammed'] } } },
+        { id: 'forceChest', label: 'Force the old lock', timeCost: 8, hint: 'The knife may slip; failure will hurt.', requirements: { notItems: ['ironHandbell'] }, chance: { probability: 0.48, successNext: 'bellDiscovery', failureNext: 'chestJammed', successMessage: 'The lock tears free. You lift out the iron handbell and a silver grave coin.', failureMessage: 'The knife slips; the lid jams and cuts your hand.', successEffects: takeBellEffects, failureEffects: { health: -2, setFlags: ['chestJammed'] } } },
         { id: 'wedgeChest', label: 'Pry the band with the brass candlestick', hint: 'It will bend the candlestick, but the heavy base fits.', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], ...takeBellEffects }, next: 'chestForcedOpen' },
         { id: 'callPriestAtChest', label: 'Follow the breath beyond the door', requirements: { notFlags: ['foundPriest'] }, effects: { setFlags: ['foundPriest'] }, next: 'priestAfterHound' },
         { id: 'leaveChestForNow', label: 'Leave the chest and continue deeper', next: 'burialApproach' },
@@ -161,10 +166,11 @@ export const BROKEN_BELL: Scenario = {
     priestAfterHound: {
       id: 'priestAfterHound', title: 'The Injured Priest Below', tone: 'warning',
       text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.',
+      textVariants: [{ requirements: { minElapsedMinutes: 25 }, text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. His breaths have grown shallower while you searched the chapel. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.' }],
       choices: [
-        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', effects: { knowledge: [DO_NOT_RING, HAND_BELL_KNOWLEDGE], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
-        { id: 'askPriest', label: 'Ask what he removed from the burial', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
-        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'burialApproach' },
+        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', timeCost: 10, effects: { knowledge: [DO_NOT_RING, HAND_BELL_KNOWLEDGE], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
+        { id: 'askPriest', label: 'Ask what he removed from the burial', timeCost: 4, effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
+        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', timeCost: 1, effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'burialApproach' },
       ],
     },
     priestStabilized: {
@@ -355,6 +361,7 @@ export const BROKEN_BELL: Scenario = {
     keeperFinal: {
       id: 'keeperFinal', title: 'The Last Place in the Hollow',
       text: 'The keeper does not stop you. The two relics are together again, and the chamber’s pressure eases. You can complete the return, or leave with what remains.',
+      textVariants: [{ requirements: { minElapsedMinutes: 40 }, text: 'The keeper does not stop you. The two relics are together again, but the old stones shiver and dust sifts from the ceiling. You can complete the return, or leave with what remains.' }],
       choices: [
         { id: 'completeReturn', label: 'Return the clapper and accept the mask shard', requirements: { items: ['blackClapper'], flags: ['bellReturned'], notItems: ['bronzeMaskFragment'] }, effects: { loseItems: ['blackClapper'], gainItems: ['bronzeMaskFragment'], setFlags: ['clapperReturned', 'peacefulResolution'] }, next: 'peaceEnding' },
         { id: 'completeReturnNoShard', label: 'Return the clapper', requirements: { items: ['blackClapper', 'bronzeMaskFragment'], flags: ['bellReturned'] }, effects: { loseItems: ['blackClapper'], setFlags: ['clapperReturned', 'peacefulResolution'] }, next: 'peaceEnding' },

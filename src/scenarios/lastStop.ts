@@ -8,15 +8,21 @@ export const LAST_STOP: Scenario = {
   title: 'All Aboard!',
   subtitle: 'One train. No brakes. A bridge that is no longer there.',
   startScene: 'stationPlatform',
+  timePhases: [
+    { id: 'evening', label: 'Evening Journey', atMinutes: 0 },
+    { id: 'descent', label: 'The Descent', atMinutes: 15 },
+    { id: 'approaching', label: 'Blackstone Ahead', atMinutes: 30 },
+    { id: 'critical', label: 'The Bridge Is Near', atMinutes: 45 },
+  ],
   scenes: {
     stationPlatform: {
       id: 'stationPlatform', title: 'All Aboard',
       text: 'The evening local waits beneath a haze of steam: locomotive, service car, and three green passenger coaches. Porters call destinations. A timetable promises a quiet arrival at Bellweather before midnight.',
       choices: [
-        { id: 'helpPorter', label: 'Help the porter', hint: 'A few trunks remain on the platform.', effects: { money: 4, setFlags: ['earnedTip'] }, next: 'platformAfterHelp' },
-        { id: 'studyRoute', label: 'Study the route board', hint: 'The map shows grades and sidings.', effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['studiedRoute'] }, next: 'platformAfterStudy' },
-        { id: 'visitKiosk', label: 'Visit the platform kiosk', next: 'stationKiosk' },
-        { id: 'board', label: 'Board the train', next: 'passengerCar' },
+        { id: 'helpPorter', label: 'Help the porter', hint: 'A few trunks remain on the platform.', timeCost: 5, effects: { money: 4, setFlags: ['earnedTip'] }, next: 'platformAfterHelp' },
+        { id: 'studyRoute', label: 'Study the route board', hint: 'The map shows grades and sidings.', timeCost: 4, effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['studiedRoute'] }, next: 'platformAfterStudy' },
+        { id: 'visitKiosk', label: 'Visit the platform kiosk', timeCost: 3, next: 'stationKiosk' },
+        { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
       ],
     },
     platformAfterHelp: {
@@ -39,10 +45,10 @@ export const LAST_STOP: Scenario = {
       id: 'stationKiosk', title: 'Last-Minute Provisions',
       text: 'The kiosk keeper has practical odds and ends among the sweets: a compact toolkit, a hooked travel rope, and a folded railway map. None looks especially heroic.',
       choices: [
-        { id: 'buyTools', label: 'Toolkit — 4 coins', requirements: { minMoney: 4, notItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
-        { id: 'buyRope', label: 'Travel rope — 3 coins', requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
-        { id: 'buyMap', label: 'Railway map — 2 coins', requirements: { minMoney: 2, notItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledge: [ROUTE_KNOWLEDGE] }, next: 'kioskPurchase' },
-        { id: 'board', label: 'Board the train', next: 'passengerCar' },
+        { id: 'buyTools', label: 'Toolkit — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
+        { id: 'buyRope', label: 'Travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
+        { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledge: [ROUTE_KNOWLEDGE] }, next: 'kioskPurchase' },
+        { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
       ],
     },
     kioskPurchase: {
@@ -54,10 +60,10 @@ export const LAST_STOP: Scenario = {
       id: 'passengerCar', title: 'The Evening Local',
       text: 'Lamplight rocks across velvet seats as the train gathers an easy rhythm. A surveyor reads in the corner. Forward lies the service car; behind, the conductor checks tickets. Rain begins to bead on the glass.',
       choices: [
-        { id: 'conductor', label: 'Speak with the conductor', next: 'conductorCar' },
-        { id: 'service', label: 'Explore the service car', next: 'serviceCar' },
-        { id: 'surveyor', label: 'Talk to the surveyor', effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['talkedSurveyor'] }, next: 'surveyorAfterTalk' },
-        { id: 'settle', label: 'Watch the countryside', hint: 'Let the journey carry you awhile.', next: 'quietJourney' },
+        { id: 'conductor', label: 'Speak with the conductor', timeCost: 4, next: 'conductorCar' },
+        { id: 'service', label: 'Explore the service car', timeCost: 5, next: 'serviceCar' },
+        { id: 'surveyor', label: 'Talk to the surveyor', timeCost: 5, effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['talkedSurveyor'] }, next: 'surveyorAfterTalk' },
+        { id: 'settle', label: 'Watch the countryside', hint: 'Let the journey carry you awhile.', timeCost: 18, next: 'quietJourney' },
       ],
     },
     surveyorAfterTalk: {
@@ -73,8 +79,8 @@ export const LAST_STOP: Scenario = {
       id: 'conductorCar', title: 'The Conductor’s Alcove',
       text: 'Conductor Vale points out the red emergency cabinet. “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” A square iron key hangs beside his timetable; the locked maintenance case is in the service car.',
       choices: [
-        { id: 'learn', label: 'Remember the procedure', effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
-        { id: 'inspectKey', label: 'Ask Vale for the cabinet key', effects: { gainItems: ['brakeKey'] }, next: 'conductorKeyHandoff' },
+        { id: 'learn', label: 'Remember the procedure', timeCost: 3, effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
+        { id: 'inspectKey', label: 'Ask Vale for the cabinet key', timeCost: 2, effects: { gainItems: ['brakeKey'] }, next: 'conductorKeyHandoff' },
         { id: 'service', label: 'Visit the service car', next: 'serviceCar' },
         { id: 'seat', label: 'Return to your seat', next: 'quietJourney' },
       ],
@@ -99,9 +105,9 @@ export const LAST_STOP: Scenario = {
       id: 'serviceCar', title: 'Baggage and Brass',
       text: 'Crates are strapped beneath a wall-mounted brake handwheel. A faded diagram shows the pipe running beneath every coach. Leather work gloves rest beside a locked maintenance case; through its slats you can make out a compact toolkit.',
       choices: [
-        { id: 'studyBrake', label: 'Study the brake diagram', effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'serviceDiscovery' },
-        { id: 'takeGloves', label: 'Take the work gloves', effects: { gainItems: ['workGloves'] }, next: 'serviceDiscovery' },
-        { id: 'openCase', label: 'Open the maintenance case', requirements: { items: ['brakeKey'], notItems: ['pocketToolkit'] }, effects: { gainItems: ['pocketToolkit'] }, next: 'serviceDiscovery' },
+        { id: 'studyBrake', label: 'Study the brake diagram', timeCost: 6, effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'serviceDiscovery' },
+        { id: 'takeGloves', label: 'Take the work gloves', timeCost: 1, effects: { gainItems: ['workGloves'] }, next: 'serviceDiscovery' },
+        { id: 'openCase', label: 'Open the maintenance case', timeCost: 4, requirements: { items: ['brakeKey'], notItems: ['pocketToolkit'] }, effects: { gainItems: ['pocketToolkit'] }, next: 'serviceDiscovery' },
         { id: 'seats', label: 'Leave the baggage car', next: 'serviceDiscovery' },
       ],
     },
@@ -165,21 +171,22 @@ export const LAST_STOP: Scenario = {
     emergencyHub: {
       id: 'emergencyHub', title: 'Six Miles to Blackstone', tone: 'danger',
       text: 'Passengers brace in the aisle as the train plunges down the grade. The service brake may slow the train enough for a rough run-off before the bridge. The locomotive regulator might close and stop it, but the route is over two exposed roofs. Uncoupling could send the passenger coaches toward a rising maintenance siding while lightening the engine section. A gravel bank offers a risky escape for one person, not a way to save the train. None is certain.',
+      textVariants: [{ requirements: { minElapsedMinutes: 30 }, text: 'Passengers brace in the aisle as the train plunges down the grade. Blackstone Bridge is closer now, its missing span a dark break beyond the rain. The service brake may still slow the train enough for a rough run-off. The locomotive regulator might close and stop it, but the route is over two exposed roofs. Uncoupling could send the passenger coaches toward a rising maintenance siding while lightening the engine section. A gravel bank offers a risky escape for one person, not a way to save the train. None is certain.' }],
       choices: [
-        { id: 'brake', label: 'Try the service brake', hint: 'May trade speed for a rough run-off.', next: 'baggageBrake' },
-        { id: 'engine', label: 'Try for the locomotive', hint: 'A regulator repair could stop the train; the roofs are exposed.', next: 'roofAccess' },
-        { id: 'uncouple', label: 'Separate the passenger coaches', hint: 'May lighten the engine; leaves the coaches to the siding.', next: 'couplingChoice' },
-        { id: 'escape', label: 'Aim for the gravel bank', hint: 'A chance for you alone; the train continues.', next: 'escapePoint' },
+        { id: 'brake', label: 'Try the service brake', timeCost: 3, hint: 'May trade speed for a rough run-off.', next: 'baggageBrake' },
+        { id: 'engine', label: 'Try for the locomotive', timeCost: 2, hint: 'A regulator repair could stop the train; the roofs are exposed.', next: 'roofAccess' },
+        { id: 'uncouple', label: 'Separate the passenger coaches', timeCost: 6, hint: 'May lighten the engine; leaves the coaches to the siding.', next: 'couplingChoice' },
+        { id: 'escape', label: 'Aim for the gravel bank', timeCost: 3, hint: 'A chance for you alone; the train continues.', next: 'escapePoint' },
       ],
     },
     baggageBrake: {
       id: 'baggageBrake', title: 'The Shuddering Handwheel', tone: 'danger',
       text: 'The wheel is hot and fighting the pressure. Its locking tooth is cracked. Turn too little and nothing happens; vent too quickly and the rear brakes may seize, throwing the coaches sideways.',
       choices: [
-        { id: 'knownMethod', label: 'Turn, hold, then lock', requirements: { knowledge: [BRAKE_KNOWLEDGE] }, effects: { setFlags: ['brakesApplied'] }, next: 'brakesHolding' },
-        { id: 'toolRepair', label: 'Repair the locking tooth', requirements: { items: ['pocketToolkit'] }, effects: { setFlags: ['brakesApplied', 'brakeRepaired'] }, next: 'brakesHolding' },
-        { id: 'wedgeBrass', label: 'Wedge it with the candlestick', requirements: { items: ['brassCandlestick'] }, effects: { setFlags: ['brakesApplied'], loseItems: ['brassCandlestick'] }, next: 'brakesHolding' },
-        { id: 'forceWheel', label: 'Force the wheel', hint: 'It may slow the train—or kick free.', chance: { probability: 0.55, successNext: 'brakesHolding', failureNext: 'brakeKickback', successMessage: 'The line hisses. Brakes bite along the train.', failureMessage: 'The wheel kicks loose and throws you into the crates.', successEffects: { setFlags: ['brakesApplied'] }, failureEffects: { health: -4 } } },
+        { id: 'knownMethod', label: 'Turn, hold, then lock', timeCost: 6, requirements: { knowledge: [BRAKE_KNOWLEDGE] }, effects: { setFlags: ['brakesApplied'] }, next: 'brakesHolding' },
+        { id: 'toolRepair', label: 'Repair the locking tooth', timeCost: 4, requirements: { items: ['pocketToolkit'] }, effects: { setFlags: ['brakesApplied', 'brakeRepaired'] }, next: 'brakesHolding' },
+        { id: 'wedgeBrass', label: 'Wedge it with the candlestick', timeCost: 5, requirements: { items: ['brassCandlestick'] }, effects: { setFlags: ['brakesApplied'], loseItems: ['brassCandlestick'] }, next: 'brakesHolding' },
+        { id: 'forceWheel', label: 'Force the wheel', timeCost: 8, hint: 'It may slow the train—or kick free.', chance: { probability: 0.55, successNext: 'brakesHolding', failureNext: 'brakeKickback', successMessage: 'The line hisses. Brakes bite along the train.', failureMessage: 'The wheel kicks loose and throws you into the crates.', successEffects: { setFlags: ['brakesApplied'] }, failureEffects: { health: -4 } } },
       ],
     },
     brakeKickback: {
@@ -213,10 +220,10 @@ export const LAST_STOP: Scenario = {
       id: 'roofAccess', title: 'Into the Rain', tone: 'danger',
       text: 'The forward vestibule is jammed. Outside, rain lashes the roof and telegraph poles blur past. Crossing is possible, but one bad step means the ballast. The locked side window offers a less elegant route.',
       choices: [
-        { id: 'toolWindow', label: 'Unfasten the window', requirements: { items: ['pocketToolkit'] }, next: 'locomotive' },
-        { id: 'smashWindow', label: 'Smash it with brass', requirements: { items: ['brassCandlestick'] }, next: 'locomotive' },
-        { id: 'ropeCross', label: 'Clip on the travel rope', requirements: { items: ['travelRope'] }, next: 'locomotive' },
-        { id: 'crossRoof', label: 'Cross the roof', hint: 'The speed and slick iron make this extremely dangerous.', chance: { probability: 0.55, successNext: 'locomotive', failureNext: 'roofSlip', successMessage: 'You crawl into the locomotive cab.', failureMessage: 'Your boot slips. You catch a rain gutter with one hand.', failureEffects: { health: -3 } } },
+        { id: 'toolWindow', label: 'Unfasten the window', timeCost: 3, requirements: { items: ['pocketToolkit'] }, next: 'locomotive' },
+        { id: 'smashWindow', label: 'Smash it with brass', timeCost: 2, requirements: { items: ['brassCandlestick'] }, next: 'locomotive' },
+        { id: 'ropeCross', label: 'Clip on the travel rope', timeCost: 4, requirements: { items: ['travelRope'] }, next: 'locomotive' },
+        { id: 'crossRoof', label: 'Cross the roof', timeCost: 8, hint: 'The speed and slick iron make this extremely dangerous.', chance: { probability: 0.55, successNext: 'locomotive', failureNext: 'roofSlip', successMessage: 'You crawl into the locomotive cab.', failureMessage: 'Your boot slips. You catch a rain gutter with one hand.', failureEffects: { health: -3 } } },
       ],
     },
     roofSlip: {
@@ -247,11 +254,12 @@ export const LAST_STOP: Scenario = {
     locomotive: {
       id: 'locomotive', title: 'The Runaway Engine', tone: 'danger',
       text: 'The engineer is conscious but pinned. The regulator linkage has jumped its guide; the main lever thrashes with every rail joint. Steam hides the brake valves. Blackstone Gorge opens ahead through the rain.',
+      textVariants: [{ requirements: { minElapsedMinutes: 45 }, text: 'The engineer is conscious but pinned. The regulator linkage has jumped its guide; the main lever thrashes with every rail joint. Steam hides the brake valves. The broken span at Blackstone Bridge is nearly upon you.' }],
       choices: [
-        { id: 'repair', label: 'Repair the regulator', requirements: { items: ['pocketToolkit'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
-        { id: 'glovedLever', label: 'Reseat the hot linkage', requirements: { items: ['workGloves'] }, effects: { health: -1, gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
-        { id: 'brakeSequence', label: 'Coordinate both brakes', requirements: { flags: ['brakesApplied'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
-        { id: 'grabLever', label: 'Grab the regulator', hint: 'The lever is visibly hot and bucking hard.', chance: { probability: 0.5, successNext: 'cleanEnding', failureNext: 'engineBurn', successMessage: 'The linkage drops home. The engine begins to answer.', failureMessage: 'Steam burns your hands and the lever throws you back.', successEffects: { gainItems: ['signalLens'], money: 3 }, failureEffects: { health: -5 } } },
+        { id: 'repair', label: 'Repair the regulator', timeCost: 5, requirements: { items: ['pocketToolkit'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
+        { id: 'glovedLever', label: 'Reseat the hot linkage', timeCost: 6, requirements: { items: ['workGloves'] }, effects: { health: -1, gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
+        { id: 'brakeSequence', label: 'Coordinate both brakes', timeCost: 4, requirements: { flags: ['brakesApplied'] }, effects: { gainItems: ['signalLens'], money: 3 }, next: 'cleanEnding' },
+        { id: 'grabLever', label: 'Grab the regulator', timeCost: 8, hint: 'The lever is visibly hot and bucking hard.', chance: { probability: 0.5, successNext: 'cleanEnding', failureNext: 'engineBurn', successMessage: 'The linkage drops home. The engine begins to answer.', failureMessage: 'Steam burns your hands and the lever throws you back.', successEffects: { gainItems: ['signalLens'], money: 3 }, failureEffects: { health: -5 } } },
       ],
     },
     engineBurn: {
@@ -277,9 +285,9 @@ export const LAST_STOP: Scenario = {
       id: 'couplingChoice', title: 'Who Keeps the Weight?', tone: 'warning',
       text: 'At the coupling, the choice is cruel. Cut loose the three passenger coaches and the lighter engine section may stop. The coaches should roll backward toward the maintenance siding—but without the locomotive, passengers will face that risk alone. Keep everyone together and the brakes must hold the full train.',
       choices: [
-        { id: 'cutLoose', label: 'Uncouple the coaches', effects: { setFlags: ['carsUncoupled'] }, next: 'separatedFront' },
-        { id: 'stayTogether', label: 'Keep everyone together', next: 'togetherAttempt' },
-        { id: 'warnPassengers', label: 'Warn and organize them', requirements: { items: ['conductorWhistle'] }, effects: { setFlags: ['passengersReady'] }, next: 'couplingAfterWarning' },
+        { id: 'cutLoose', label: 'Uncouple the coaches', timeCost: 7, effects: { setFlags: ['carsUncoupled'] }, next: 'separatedFront' },
+        { id: 'stayTogether', label: 'Keep everyone together', timeCost: 2, next: 'togetherAttempt' },
+        { id: 'warnPassengers', label: 'Warn and organize them', timeCost: 4, requirements: { items: ['conductorWhistle'] }, effects: { setFlags: ['passengersReady'] }, next: 'couplingAfterWarning' },
       ],
     },
     couplingAfterWarning: {

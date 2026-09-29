@@ -21,11 +21,12 @@ describe('save compatibility', () => {
   it('adds visited-scene and recent-scenario defaults to an older active save', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
-    const { visitedSceneIds: _visited, ...legacyRun } = run;
+    const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, ...legacyRun } = run;
     const { historyFlags: _historyFlags, ...legacyCharacter } = character;
     const oldSave = { version: 1, bank: ['graveCoin'], character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave' } };
     const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
     expect(state.run?.visitedSceneIds).toEqual(['chapelNave']);
+    expect(state.run?.elapsedMinutes).toBe(0);
     expect(state.mostRecentScenarioId).toBeNull();
     expect(state.bank).toEqual(['graveCoin']);
     expect(state.character?.historyFlags).toEqual([]);
@@ -39,10 +40,21 @@ describe('save compatibility', () => {
       run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },
       mostRecentScenarioId: 'broken-bell',
     };
+    state.run!.elapsedMinutes = 27;
     const storage = memoryStorage();
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
+  });
+
+  it('migrates an active save with no clock to zero elapsed fictional minutes', () => {
+    const character = newCharacter('Paused Traveler');
+    const { elapsedMinutes: _elapsed, ...legacyRun } = startRun(character, BROKEN_BELL);
+    const oldSave = { version: 1, bank: [], character, run: { ...legacyRun, sceneId: 'underStairs' } };
+    const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
+    expect(state.run?.sceneId).toBe('underStairs');
+    expect(state.run?.elapsedMinutes).toBe(0);
+    expect(state.run?.status).toBe('active');
   });
 
   it('moves an older active Bell save from a removed scene into a safe continuation scene', () => {
