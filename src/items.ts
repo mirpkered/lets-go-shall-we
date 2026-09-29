@@ -28,6 +28,8 @@ export const ITEMS: Record<string, Item> = {
   foldingPryTool: { id: 'foldingPryTool', name: 'Folding Pry Tool', description: 'A compact brass-and-steel tool made for careful leverage.', category: 'tool', carryable: true },
   brassRoomKey: { id: 'brassRoomKey', name: 'Brass Room Key', description: 'An old inn key, its number worn smooth by years of travel.', category: 'artifact', carryable: true },
   innCellarKey: { id: 'innCellarKey', name: 'Unmarked Cellar Key', description: 'A local key to the Lantern House service passage.', category: 'run-only', carryable: false },
+  dealerCardKnife: { id: 'dealerCardKnife', name: 'Dealer’s Card Knife', description: 'A slim spring-steel blade for trimming cards, cord, and other careful work.', category: 'weapon', carryable: true },
+  foldingCardMirror: { id: 'foldingCardMirror', name: 'Folding Card Mirror', description: 'A palm-sized inspection mirror with a brass hinge, useful for seeing into tight spaces.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

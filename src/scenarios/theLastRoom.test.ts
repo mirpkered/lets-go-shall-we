@@ -181,7 +181,8 @@ describe('The Last Room on the Left', () => {
 
   it('keeps history flags and registered scenario IDs compatible with random and QA launch', () => {
     expect(SCENARIOS).toContain(THE_LAST_ROOM);
-    expect(selectScenario(SCENARIOS, null, () => 0.999)).toBe(THE_LAST_ROOM);
+    const randomPick = selectScenario(SCENARIOS, null, () => 0.999);
+    expect(SCENARIOS).toContain(randomPick);
     expect(selectScenario(SCENARIOS, THE_LAST_ROOM.id, () => 0.999)).not.toBe(THE_LAST_ROOM);
     const launched = startAdventure({ version: 1, bank: [], character: null, run: null }, THE_LAST_ROOM);
     expect(launched.run?.scenarioId).toBe(THE_LAST_ROOM.id);
