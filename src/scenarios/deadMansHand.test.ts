@@ -89,6 +89,20 @@ describe('Dead Man’s Hand', () => {
     expect(DEAD_MANS_HAND.scenes.handLost.text).toContain('two-dollar stake is gone');
   });
 
+  it('supports one narrative bluff with the same capped stake and distinct social reaction', () => {
+    let state = act(fresh(2), 'takeOpenSeat');
+    state = act(state, 'buyIntoHand');
+    const bluff = DEAD_MANS_HAND.scenes.playerHand.choices.find((choice) => choice.id === 'bluffOneHand')!;
+    expect(bluff.hint).toContain('same two-dollar stake');
+    const won = act(state, 'bluffOneHand', 0);
+    const lost = act(state, 'bluffOneHand', 0.99);
+    expect(won.character?.money).toBe(3);
+    expect(won.run?.flags).toContain('bluffedMercer');
+    expect(lost.character?.money).toBe(0);
+    expect(lost.run?.sceneId).toBe('handLost');
+    expect(lost.run?.flags).toContain('bluffedMercer');
+  });
+
   it('allows a wrong accusation and stores the behavior as character history', () => {
     let state = act(fresh(), 'watchFromRail');
     state = act(state, 'watchAdaFromRail');
