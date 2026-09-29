@@ -37,6 +37,10 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (requirement.minMoney === undefined || character.money >= requirement.minMoney);
 }
 
+export function sceneText(scene: Scenario['scenes'][string], state: SaveData): string {
+  return scene.textVariants?.find((variant) => meets(variant.requirements, state))?.text ?? scene.text;
+}
+
 const addUnique = (target: string[], values: string[] = []) => [...new Set([...target, ...values])];
 const without = (target: string[], values: string[] = []) => target.filter((value) => !values.includes(value));
 

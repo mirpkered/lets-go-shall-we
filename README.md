@@ -37,6 +37,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - Story screens are one-time narrative moments. Scenario paths move forward and do not revisit a screen.
 - Every scene should change the situation, reveal useful information, create risk, pay off an earlier choice, alter future options, or advance the central story. If it does none of these, consolidate or remove it.
 - Character history is a small set of behavior flags, not an alignment score. It follows a living character across runs and is lost with that character; future scenarios can inspect it through choice requirements.
+- Narration must not assume the character knows what the scenario data knows. Introduce an object, person, danger, or mystery in the current scene, or gate later references on prior discovery/knowledge; inventory possession and knowledge are separate states.
 
 ## Current limitations
 

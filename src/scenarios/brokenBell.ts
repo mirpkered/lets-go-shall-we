@@ -2,8 +2,9 @@ import type { Scenario } from '../types';
 
 const DO_NOT_RING = 'The soot inscription reads: DO NOT RING IT BELOW.';
 const RELIC_HISTORY = 'The priest removed an iron handbell and black clapper from an older burial beneath the chapel.';
+const HAND_BELL_KNOWLEDGE = 'A cold iron handbell was taken from beneath the chapel.';
 
-const takeBellEffects = { gainItems: ['ironHandbell', 'graveCoin'], setFlags: ['bellRecovered'] };
+const takeBellEffects = { gainItems: ['ironHandbell', 'graveCoin'], knowledge: [HAND_BELL_KNOWLEDGE], setFlags: ['bellRecovered'] };
 const returnBothEffects = {
   loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'],
   lore: ['The masked keeper guards the old burial; it is not inherently evil.'],
@@ -71,31 +72,45 @@ export const BROKEN_BELL: Scenario = {
       choices: [
         { id: 'takeCandlestick', label: 'Take the heavy brass candlestick', hint: 'Useful weight, but only one free hand.', requirements: { notItems: ['brassCandlestick'] }, effects: { gainItems: ['brassCandlestick'], setFlags: ['tookCandlestick'] }, next: 'naveAfterCandle' },
         { id: 'searchVestry', label: 'Search the vestry for evidence', next: 'priestNotes' },
-        { id: 'liftPrayerRug', label: 'Lift the rug and open the trapdoor', effects: { setFlags: ['foundHiddenStair'] }, next: 'underStairs' },
+        { id: 'liftPrayerRug', label: 'Investigate the prayer rug', effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' },
         { id: 'followMud', label: 'Study the muddy prints', effects: { knowledge: ['The muddy prints lead from the altar to a stair beneath the chapel.'] }, next: 'mudTrail' },
       ],
     },
     naveAfterCandle: {
       id: 'naveAfterCandle', title: 'Brass in Your Hand',
-      text: 'The candlestick is heavier than it looked. Its broad base could pry a stubborn lid or brace a narrow gap; the altar’s trapdoor waits beneath the rug.',
-      choices: [{ id: 'descendWithCandle', label: 'Take the hidden stair below', next: 'underStairs' }],
+      text: 'The candlestick is heavier than it looked. Its broad base could pry a stubborn lid or brace a narrow gap. The uneven knock continues while the investigation remains open.',
+      choices: [
+        { id: 'searchVestryWithCandle', label: 'Search the vestry for evidence', next: 'priestNotes' },
+        { id: 'studyPrintsWithCandle', label: 'Study the muddy prints', effects: { knowledge: ['The muddy prints lead from the altar toward the prayer rug.'] }, next: 'mudTrail' },
+        { id: 'followKnockWithCandle', label: 'Follow the knock near the rug', next: 'rugInvestigation' },
+      ],
     },
     priestNotes: {
       id: 'priestNotes', title: 'The Priest’s Notes',
       text: 'A page lies crushed beneath a muddy bootprint: “Handbell and clapper recovered from the old burial. Parish display after cleaning.” Below, in a shaking hand: “It followed the sound. I was wrong.”',
       choices: [
-        { id: 'readNotes', label: 'Remember the warning and follow the prints', effects: { knowledge: [RELIC_HISTORY, DO_NOT_RING], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
+        { id: 'readNotes', label: 'Remember the warning and follow the prints', effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
       ],
     },
     notesLeadBelow: {
       id: 'notesLeadBelow', title: 'The Trail Below',
-      text: 'The missing bell and clapper came from beneath this chapel. A dark smear crosses the prayer rug and ends at the trapdoor ring. The weak knocking has stopped.',
-      choices: [{ id: 'openAfterNotes', label: 'Open the trapdoor', next: 'underStairs' }],
+      text: 'The notes identify the missing bell and clapper. A dark smear crosses the prayer rug; the weak knocking has stopped, but something beneath the cloth catches the light.',
+      choices: [{ id: 'inspectRugAfterNotes', label: 'Check beneath the prayer rug', effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' }],
     },
     mudTrail: {
-      id: 'mudTrail', title: 'Prints to the Trapdoor',
-      text: 'The footprints stop at the prayer rug. One heel-mark is dragged backward, as if someone was pulled down the stairs—or crawled there under their own strength.',
-      choices: [{ id: 'liftAfterTracks', label: 'Lift the rug and descend', next: 'underStairs' }],
+      id: 'mudTrail', title: 'Where the Prints Stop',
+      text: 'The footprints stop at the prayer rug. One heel-mark is dragged backward. The rug’s edge lifts slightly with the draft from below.',
+      choices: [{ id: 'liftAfterTracks', label: 'Inspect the lifted rug', effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' }],
+    },
+    rugInvestigation: {
+      id: 'rugInvestigation', title: 'A Knock Beneath the Cloth',
+      text: 'The knock comes again from beneath the rug. Its corner trembles, and a thin line in the floor runs under the woven edge.',
+      choices: [{ id: 'raiseRugAfterKnock', label: 'Lift the rug and inspect the seam', effects: { setFlags: ['discoveredTrapdoor', 'foundHiddenStair'] }, next: 'trapdoorFound' }],
+    },
+    trapdoorFound: {
+      id: 'trapdoorFound', title: 'The Hidden Stair',
+      text: 'The rug folds back to reveal a narrow trapdoor set into the chapel floor. A ring of iron lifts it; cold air and the sound of a distant knock rise from below.',
+      choices: [{ id: 'descendHiddenStair', label: 'Open the trapdoor and descend', next: 'underStairs' }],
     },
     underStairs: {
       id: 'underStairs', title: 'Beneath the Chapel', tone: 'warning',
@@ -118,7 +133,7 @@ export const BROKEN_BELL: Scenario = {
     },
     chestClue: {
       id: 'chestClue', title: 'The Chest Beneath the Warning',
-      text: 'The chest is iron-banded and locked. From inside comes a dull, familiar shape of metal against wood. The keeper’s warning, the notes, and the cut rope begin to point toward the same missing object.',
+      text: 'The chest is iron-banded and locked. From inside comes a dull shape of metal against wood. The warning above, the cut rope, and the marks on the lid begin to point toward something taken from below.',
       choices: [
         { id: 'forceChest', label: 'Force the old lock', hint: 'The knife may slip; failure will hurt.', requirements: { notItems: ['ironHandbell'] }, chance: { probability: 0.48, successNext: 'bellDiscovery', failureNext: 'chestJammed', successMessage: 'The lock tears free. You lift out the iron handbell and a silver grave coin.', failureMessage: 'The knife slips; the lid jams and cuts your hand.', successEffects: takeBellEffects, failureEffects: { health: -2, setFlags: ['chestJammed'] } } },
         { id: 'wedgeChest', label: 'Pry the band with the brass candlestick', hint: 'It will bend the candlestick, but the heavy base fits.', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], ...takeBellEffects }, next: 'chestForcedOpen' },
@@ -147,16 +162,16 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestAfterHound', title: 'The Injured Priest Below', tone: 'warning',
       text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.',
       choices: [
-        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', effects: { knowledge: [DO_NOT_RING], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
-        { id: 'askPriest', label: 'Ask what he removed from the burial', next: 'priestAccount' },
-        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', next: 'burialApproach' },
+        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', effects: { knowledge: [DO_NOT_RING, HAND_BELL_KNOWLEDGE], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
+        { id: 'askPriest', label: 'Ask what he removed from the burial', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
+        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'burialApproach' },
       ],
     },
     priestStabilized: {
       id: 'priestStabilized', title: 'A Steadier Breath',
       text: 'The binding holds. The priest can breathe without choking on each word. The key and yew ward remain at his belt; he watches you, waiting for the question he fears.',
       choices: [
-        { id: 'askAfterBinding', label: 'Ask about the old burial', next: 'priestAccount' },
+        { id: 'askAfterBinding', label: 'Ask about the old burial', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
         { id: 'leaveAfterBinding', label: 'Leave him to rest and go on', next: 'burialApproach' },
       ],
     },
@@ -164,8 +179,8 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestAccount', title: 'What the Priest Took',
       text: 'The priest tells you he lifted an iron handbell and its black clapper from a burial older than the chapel. The keeper followed the sound, then stood between him and the relics. “It never struck me while I was trapped,” he says. That may be fear speaking—or a clue.',
       choices: [
-        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY, DO_NOT_RING], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
-        { id: 'leaveKeyWithPriest', label: 'Leave the key with him and continue', next: 'priestFarewell' },
+        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
+        { id: 'leaveKeyWithPriest', label: 'Leave the key with him and continue', effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE] }, next: 'priestFarewell' },
       ],
     },
     priestFarewell: {
@@ -174,7 +189,7 @@ export const BROKEN_BELL: Scenario = {
       choices: [
         { id: 'returnToChestAfterPriest', label: 'Use the chest before facing the keeper', requirements: { notItems: ['ironHandbell'] }, next: 'chestAfterPriest' },
         { id: 'goKeeperAfterPriest', label: 'Continue through the bronze door', requirements: { items: ['ironHandbell'] }, next: 'burialApproach' },
-        { id: 'leaveWithPriest', label: 'Help him out and leave the chapel', next: 'retreatEnding' },
+        { id: 'leaveWithPriest', label: 'Help him out and leave the chapel', effects: { setFlags: ['escortedPriest'] }, next: 'retreatEnding' },
       ],
     },
     chestAfterPriest: {
@@ -211,7 +226,11 @@ export const BROKEN_BELL: Scenario = {
     },
     burialApproach: {
       id: 'burialApproach', title: 'The Old Burial', tone: 'warning',
-      text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. The bell, if you carry it, seems to pull every sound toward this room.',
+      text: 'Roots thread through ancient stone. A dark iron weight rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the iron, it lowers into a warning crouch. A faint metallic vibration threads through the stones, and the chamber seems to draw sound inward.',
+      textVariants: [
+        { requirements: { items: ['ironHandbell'] }, text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. The handbell in your possession seems to pull every sound toward this room.' },
+        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. You remember the iron handbell taken from below; every sound seems to gather in this room.' },
+      ],
       choices: [
         { id: 'speak', label: 'Show empty hands', hint: 'It has warned you, but has not attacked.', effects: { setFlags: ['showedPeace'] }, next: 'maskedParley' },
         { id: 'snatch', label: 'Snatch the clapper', hint: 'Fast, dangerous, but not impossible.', requirements: { notItems: ['blackClapper'], notFlags: ['clapperReturned', 'keeperDefeated'] }, chance: { probability: 0.44, successNext: 'keeperAfterSnatch', failureNext: 'keeperWarning', successMessage: 'You roll through the bone ring with the clapper in hand.', failureMessage: 'A long arm hurls you back; your shoulder strikes the stone.', successEffects: { gainItems: ['blackClapper'], setFlags: ['hasClapper'] }, failureEffects: { health: -3, setFlags: ['angeredKeeper'] } } },
@@ -239,7 +258,7 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperAfterSnatch: {
       id: 'keeperAfterSnatch', title: 'A Keeper, Not a Monster', tone: 'warning',
-      text: 'With the clapper in your hand, the creature touches its mask, then points to the hollow in the altar. It does not chase you. The injured priest’s warning, the handbell, and this gesture finally fit together: the keeper wants the stolen relics returned.',
+      text: 'With the clapper in your hand, the creature touches its mask, then points to the hollow in the altar. It does not chase you. Its gesture seems less like a threat now; perhaps it wants something returned, though you do not yet know what.',
       choices: [
         { id: 'returnBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },
         { id: 'returnBothNoShard', label: 'Return both relics', requirements: { items: ['ironHandbell', 'blackClapper', 'bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], lore: ['The masked keeper guards the old burial; it is not inherently evil.'], setFlags: ['peacefulResolution', 'bellReturned', 'clapperReturned'] }, next: 'peaceEnding' },
@@ -260,7 +279,11 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperSign: {
       id: 'keeperSign', title: 'The Hollow in the Altar',
-      text: 'The keeper turns its palm up. It points first to the bell’s empty mouth, then the clapper, then the hollow. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but the keeper’s strength is still plain, and you may choose otherwise.',
+      text: 'The creature turns its palm up. It points to the clapper, then to the hollow. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.',
+      textVariants: [
+        { requirements: { items: ['ironHandbell'] }, text: 'The creature turns its palm up. The handbell in your possession seems to fit the hollow beside the clapper. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.' },
+        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'The creature turns its palm up. You remember the handbell taken from below; now it points to the clapper and the hollow beside it. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.' },
+      ],
       choices: [
         { id: 'signReturnBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },
         { id: 'signReturnBothNoShard', label: 'Return both relics', requirements: { items: ['ironHandbell', 'blackClapper', 'bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], setFlags: ['peacefulResolution', 'bellReturned', 'clapperReturned'] }, next: 'peaceEnding' },
@@ -275,7 +298,11 @@ export const BROKEN_BELL: Scenario = {
     },
     clapperTaken: {
       id: 'clapperTaken', title: 'The Clapper in Your Hand', tone: 'warning',
-      text: 'The black iron is colder than the chamber. The keeper’s raised hand stops short of you, then points again to the bell and altar. Its warning has become harder to mistake for a threat.',
+      text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the hollow. Its warning has become harder to mistake for a threat.',
+      textVariants: [
+        { requirements: { items: ['ironHandbell'] }, text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the handbell you carry and the hollow. Its warning has become harder to mistake for a threat.' },
+        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the handbell and the hollow. Its warning has become harder to mistake for a threat.' },
+      ],
       choices: [
         { id: 'returnNowWithBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },
         { id: 'returnNowNoShard', label: 'Return both relics', requirements: { items: ['ironHandbell', 'blackClapper', 'bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], setFlags: ['peacefulResolution', 'bellReturned', 'clapperReturned'] }, next: 'peaceEnding' },
@@ -314,7 +341,7 @@ export const BROKEN_BELL: Scenario = {
     },
     oneRelicEnding: {
       id: 'oneRelicEnding', title: 'A Promise Left Open',
-      text: 'You leave the relic in the keeper’s care. The creature bows its masked head as you carry the injured priest toward dawn; some part of the old wrong remains unfinished.',
+      text: 'You leave the relic in the creature’s care. It bows its masked head as dawn comes; some part of the old wrong remains unfinished.',
       choices: [], ending: 'success',
     },
     clapperAtAltar: {
@@ -362,7 +389,7 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperReunion: {
       id: 'keeperReunion', title: 'The Keeper Waits', tone: 'warning',
-      text: 'The keeper waits beside the hollow. It recognizes the bell and clapper, and makes no move to take them from you. The choice of what to do with them is yours.',
+      text: 'The keeper waits beside the hollow and makes no move to take anything from you. The choice of what to do next is yours.',
       choices: [
         { id: 'reunionReturnBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },
         { id: 'reunionReturnBothNoShard', label: 'Return both relics', requirements: { items: ['ironHandbell', 'blackClapper', 'bronzeMaskFragment'] }, effects: { loseItems: ['ironHandbell', 'blackClapper'], setFlags: ['peacefulResolution', 'bellReturned', 'clapperReturned'] }, next: 'peaceEnding' },
@@ -379,7 +406,7 @@ export const BROKEN_BELL: Scenario = {
     },
     clapperReturnedAtReunion: {
       id: 'clapperReturnedAtReunion', title: 'One Relic Returned',
-      text: 'The keeper places the clapper in the hollow. The chamber grows quieter, though the handbell is still missing. You decide not to disturb the old passage again; the priest is waiting above, and the creature lets you go.',
+      text: 'The keeper places the iron object in the hollow. The chamber grows quieter. It watches you for a moment, then allows you to leave with the promise unfinished.',
       choices: [
         { id: 'leaveAfterClapperAtReunion', label: 'Leave with the promise unfinished', next: 'retreatEnding' },
       ],
@@ -428,7 +455,7 @@ export const BROKEN_BELL: Scenario = {
     },
     keeperDefeated: {
       id: 'keeperDefeated', title: 'A Costly Victory', tone: 'danger',
-      text: 'The masked keeper falls beside the altar. It never cries out. Behind the cracked mask is a face both ancient and terribly human. The hand it reaches toward the relics is not a threat now.',
+      text: 'The masked creature falls beside the altar. It never cries out. Behind the cracked mask is a face both ancient and terribly human. The hand it reaches toward the relics is not a threat now.',
       choices: [
         { id: 'takeBothAfterFight', label: 'Take the clapper and mask fragment', requirements: { notItems: ['blackClapper', 'bronzeMaskFragment'] }, effects: { gainItems: ['blackClapper', 'bronzeMaskFragment'], lore: ['Violence ended the keeper, though returning the stolen relics might have ended the haunting.'], setFlags: ['keeperDefeated', 'hasClapper'] }, next: 'hardEnding' },
         { id: 'takeMaskAfterFight', label: 'Take the mask fragment', requirements: { items: ['blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: { gainItems: ['bronzeMaskFragment'], lore: ['The keeper guarded the old burial, though you learned it too late.'], setFlags: ['keeperDefeated'] }, next: 'hardEnding' },
@@ -493,17 +520,21 @@ export const BROKEN_BELL: Scenario = {
     },
     retreatEnding: {
       id: 'retreatEnding', title: 'The Chapel at Dawn',
-      text: 'You help the injured priest into the dawn. The keeper’s fate and the missing livestock remain uncertain, but the bell stays silent. You have survived; the mystery is not yet solved.',
+      text: 'You reach the dawn with the night’s questions unresolved. You have survived, and the chapel is quiet for now.',
+      textVariants: [
+        { requirements: { flags: ['escortedPriest'] }, text: 'You guide the injured priest into the dawn. You have survived, and the chapel is quiet for now.' },
+        { requirements: { flags: ['boundPriest'] }, text: 'The priest’s wound is bound as you reach the dawn. You have survived, and the chapel is quiet for now.' },
+      ],
       choices: [], ending: 'success',
     },
     peaceEnding: {
       id: 'peaceEnding', title: 'The Bell Stays Silent',
-      text: 'The keeper fits the clapper beside the handbell, never inside it, and closes the burial altar. Its shoulders settle. Above, the graveyard grows quiet; by dawn the priest is safe and the missing livestock return from the wood. The chapel bell rings once—from its tower, where bells belong. A bronze mask fragment remains on the stone, offered in thanks.',
+      text: 'The keeper fits the clapper beside the handbell, never inside it, and closes the burial altar. Its shoulders settle. Above, the graveyard grows quiet. A bronze mask fragment remains on the stone, offered in thanks.',
       choices: [], ending: 'success',
     },
     hardEnding: {
       id: 'hardEnding', title: 'Morning, at a Price',
-      text: 'You drag the priest into the dawn as the old passage settles behind you. The village is safe, and the missing livestock wander home. Yet when the tower bell rings, you remember the keeper’s empty hands and wonder what the chapel has lost.',
+      text: 'You leave the old passage as it settles behind you. The creature will not rise again. The victory is real, but the keeper’s empty hands stay with you; you wonder what the chapel has lost.',
       choices: [], ending: 'success',
     },
     deathBell: {

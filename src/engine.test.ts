@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, sceneText, startRun, withdrawBanked } from './engine';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import { findScenarioGraphProblems } from './scenarioGraph';
 import type { SaveData } from './types';
@@ -46,7 +46,9 @@ describe('adventure engine', () => {
     state = select(state, 'voiceBelow', 'enterAfterCall');
     state = select(state, 'chapelNave', 'takeCandlestick');
     expect(state.run?.inventory).toContain('brassCandlestick');
-    state = select(state, 'naveAfterCandle', 'descendWithCandle');
+    state = select(state, 'naveAfterCandle', 'followKnockWithCandle');
+    state = select(state, 'rugInvestigation', 'raiseRugAfterKnock');
+    state = select(state, 'trapdoorFound', 'descendHiddenStair');
     state = select(state, 'underStairs', 'findPriestBelow');
     expect(BROKEN_BELL.scenes.priestAfterHound.title).toContain('Below');
     state = select(state, 'priestAfterHound', 'askPriest');
@@ -71,10 +73,72 @@ describe('adventure engine', () => {
   it('gives early clue and candlestick meaningful later payoffs', () => {
     const cluePath = select(select(fresh(), 'chapelExterior', 'callOut'), 'voiceBelow', 'enterAfterCall');
     expect(cluePath.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
-    const withBrass = select(select(fresh(), 'chapelNave', 'takeCandlestick'), 'naveAfterCandle', 'descendWithCandle');
-    const options = BROKEN_BELL.scenes.chestClue.choices.filter((choice) => meets(choice.requirements, { ...withBrass, run: { ...withBrass.run!, sceneId: 'chestClue' } }));
+    let withBrass = select(fresh(), 'chapelNave', 'takeCandlestick');
+    withBrass = select(withBrass, 'naveAfterCandle', 'followKnockWithCandle');
+    withBrass = select(withBrass, 'rugInvestigation', 'raiseRugAfterKnock');
+    withBrass = select(withBrass, 'trapdoorFound', 'descendHiddenStair');
+    withBrass = select(withBrass, 'underStairs', 'inspectChest');
+    const options = BROKEN_BELL.scenes.chestClue.choices.filter((choice) => meets(choice.requirements, withBrass));
     expect(options.map((choice) => choice.id)).toContain('wedgeChest');
     expect(BROKEN_BELL.scenes.burialApproach.choices.find((choice) => choice.id === 'fightBrass')?.requirements?.items).toContain('brassCandlestick');
+  });
+
+  it('does not reveal the trapdoor before the character discovers it', () => {
+    const nave = BROKEN_BELL.scenes.chapelNave;
+    expect(nave.text.toLowerCase()).not.toContain('trapdoor');
+    expect(nave.choices.find((choice) => choice.id === 'liftPrayerRug')?.label.toLowerCase()).not.toContain('trapdoor');
+    let state = select(fresh(), 'chapelNave', 'takeCandlestick');
+    expect(state.run?.sceneId).toBe('naveAfterCandle');
+    expect(BROKEN_BELL.scenes.naveAfterCandle.text.toLowerCase()).not.toContain('trapdoor');
+    expect(BROKEN_BELL.scenes.naveAfterCandle.choices.some((choice) => choice.id === 'descendWithCandle')).toBe(false);
+    state = select(fresh(), 'chapelNave', 'liftPrayerRug');
+    expect(state.run?.sceneId).toBe('trapdoorFound');
+    expect(state.run?.flags).toContain('discoveredTrapdoor');
+    expect(BROKEN_BELL.scenes.trapdoorFound.text.toLowerCase()).toContain('trapdoor');
+  });
+
+  it('keeps the chapel investigation open after taking the candlestick', () => {
+    const state = select(fresh(), 'chapelNave', 'takeCandlestick');
+    const followup = BROKEN_BELL.scenes.naveAfterCandle;
+    expect(state.run?.inventory).toContain('brassCandlestick');
+    expect(followup.choices.map((choice) => choice.label)).toEqual(expect.arrayContaining([
+      'Search the vestry for evidence', 'Study the muddy prints', 'Follow the knock near the rug',
+    ]));
+    expect(followup.choices.every((choice) => choice.next !== 'underStairs')).toBe(true);
+    expect(select(state, 'naveAfterCandle', 'searchVestryWithCandle').run?.sceneId).toBe('priestNotes');
+    expect(select(state, 'naveAfterCandle', 'studyPrintsWithCandle').run?.sceneId).toBe('mudTrail');
+  });
+
+  it('describes the handbell only when carried or previously discovered', () => {
+    const scene = BROKEN_BELL.scenes.burialApproach;
+    const unknown = fresh();
+    expect(sceneText(scene, unknown).toLowerCase()).not.toContain('bell');
+    const known = fresh();
+    known.character!.knowledge.push('A cold iron handbell was taken from beneath the chapel.');
+    expect(sceneText(scene, known)).toContain('remember the iron handbell taken from below');
+    const carrying = fresh();
+    carrying.run!.inventory.push('ironHandbell');
+    expect(sceneText(scene, carrying)).toContain('handbell in your possession');
+    expect(sceneText(BROKEN_BELL.scenes.keeperSign, unknown)).not.toContain('handbell');
+    expect(sceneText(BROKEN_BELL.scenes.keeperSign, known)).toContain('remember the handbell taken from below');
+    expect(sceneText(BROKEN_BELL.scenes.keeperSign, carrying)).toContain('handbell in your possession');
+    expect(sceneText(BROKEN_BELL.scenes.clapperTaken, unknown)).not.toContain('handbell');
+    expect(sceneText(BROKEN_BELL.scenes.clapperTaken, known)).toContain('points toward the handbell and the hollow');
+    expect(sceneText(BROKEN_BELL.scenes.clapperTaken, carrying)).toContain('handbell you carry');
+  });
+
+  it('keeps endings limited to facts the character encountered', () => {
+    const unknown = fresh();
+    const retreat = sceneText(BROKEN_BELL.scenes.retreatEnding, unknown).toLowerCase();
+    expect(retreat).not.toContain('livestock');
+    expect(retreat).not.toContain('priest');
+    const escorted = fresh();
+    escorted.run!.flags.push('escortedPriest');
+    expect(sceneText(BROKEN_BELL.scenes.retreatEnding, escorted)).toContain('guide the injured priest');
+    for (const endingId of ['retreatEnding', 'peaceEnding', 'hardEnding']) {
+      expect(BROKEN_BELL.scenes[endingId].text.toLowerCase()).not.toContain('livestock');
+    }
+    expect(sceneText(BROKEN_BELL.scenes.oneRelicEnding, unknown)).not.toContain('priest');
   });
 
   it('does not grant the bone key for binding the priest; the player must ask', () => {
@@ -90,7 +154,10 @@ describe('adventure engine', () => {
 
   it('offers a real candlestick chest use and consumes it when used', () => {
     let state = select(fresh(), 'chapelNave', 'takeCandlestick');
-    state = select(state, 'naveAfterCandle', 'descendWithCandle');
+    state = select(state, 'naveAfterCandle', 'followKnockWithCandle');
+    state = select(state, 'rugInvestigation', 'raiseRugAfterKnock');
+    state = select(state, 'trapdoorFound', 'descendHiddenStair');
+    state = select(state, 'underStairs', 'inspectChest');
     const atChest = { ...state, run: { ...state.run!, sceneId: 'chestClue' } };
     const wedge = BROKEN_BELL.scenes.chestClue.choices.find((choice) => choice.id === 'wedgeChest')!;
     const result = choose(atChest, BROKEN_BELL, wedge);

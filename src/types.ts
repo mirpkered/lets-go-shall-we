@@ -105,6 +105,7 @@ export interface Scene {
   id: string;
   title: string;
   text: string;
+  textVariants?: { requirements: Requirement; text: string }[];
   tone?: 'safe' | 'warning' | 'danger';
   choices: Choice[];
   ending?: 'success' | 'death';

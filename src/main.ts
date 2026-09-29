@@ -1,5 +1,5 @@
 import './styles.css';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, startAdventure, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
 import { renderQaPanel } from './qaPanel';
@@ -111,7 +111,7 @@ function renderPlay(): void {
   shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}">${icon('bag')}<span>${run.inventory.length}</span><b class="sr-only">Inventory</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
     ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
-    <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${scene.text}</p></article>
+    <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
     <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${choice.label}</strong>${choice.hint ? `<small>${choice.hint}</small>` : ''}</button>`).join('')}</section>`, 'playing');
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });
@@ -125,7 +125,7 @@ function renderDeath(): void {
   const scenario = activeScenario();
   const run = state.run;
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene?.text ?? 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
 }
 
@@ -134,7 +134,7 @@ function renderSuccess(): void {
   const scenario = activeScenario()!;
   const scene = scenario.scenes[run.sceneId];
   const eligible = run.acquiredThisRun.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
-  shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${scene.text}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Everything else from this run stays behind. You can bank your choice before the next adventure.</p>${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
+  shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Everything else from this run stays behind. You can bank your choice before the next adventure.</p>${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
   document.querySelectorAll<HTMLButtonElement>('[data-carry]').forEach((button) => button.addEventListener('click', () => { state = finishSuccess(state, button.dataset.carry || null); persist(); screen = 'home'; render(); }));
 }
 
