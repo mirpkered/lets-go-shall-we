@@ -27,6 +27,7 @@ export interface RunState {
   inventory: string[];
   acquiredThisRun: string[];
   flags: string[];
+  visitedSceneIds?: string[];
   status: 'active' | 'success' | 'death';
   message: string | null;
   startedAt: number;
@@ -37,6 +38,7 @@ export interface SaveData {
   bank: string[];
   character: Character | null;
   run: RunState | null;
+  mostRecentScenarioId?: string | null;
 }
 
 export interface Requirement {

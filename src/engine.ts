@@ -8,7 +8,16 @@ export function newCharacter(name = 'The Traveler'): Character {
 export function startRun(character: Character, scenario: Scenario): RunState {
   const inventory = [...STARTING_ITEMS];
   if (character.carriedItem) inventory.push(character.carriedItem);
-  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], status: 'active', message: null, startedAt: Date.now() };
+  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], status: 'active', message: null, startedAt: Date.now() };
+}
+
+export function startAdventure(state: SaveData, scenario: Scenario): SaveData {
+  if (state.run?.status === 'active') return state;
+  const next = structuredClone(state);
+  next.character ??= newCharacter();
+  next.run = startRun(next.character, scenario);
+  next.mostRecentScenarioId = scenario.id;
+  return next;
 }
 
 export function meets(requirement: Requirement | undefined, state: SaveData): boolean {
@@ -69,16 +78,25 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   if (next.run.health <= 0) {
     next.run.status = 'death';
     next.run.sceneId = destination === 'deathBell' ? destination : '__death';
+    next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
     return next;
   }
-  if (destination) next.run.sceneId = destination;
+  if (destination) {
+    if ((next.run.visitedSceneIds ?? []).includes(destination)) {
+      const blocked = structuredClone(state);
+      blocked.run!.message = 'That moment has already passed. Choose another action to move the story forward.';
+      return blocked;
+    }
+    next.run.sceneId = destination;
+    next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [], [destination]);
+  }
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
   return next;
 }
 
 export function failCharacter(state: SaveData): SaveData {
-  return { ...state, character: null, run: null };
+  return { ...state, character: null, run: null, mostRecentScenarioId: state.run?.scenarioId ?? state.mostRecentScenarioId ?? null };
 }
 
 export function finishSuccess(state: SaveData, carriedItem: string | null): SaveData {
@@ -87,6 +105,7 @@ export function finishSuccess(state: SaveData, carriedItem: string | null): Save
   next.character.health = next.character.maxHealth;
   next.character.carriedItem = carriedItem;
   next.character.adventuresCompleted += 1;
+  next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
   next.run = null;
   return next;
 }

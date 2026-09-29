@@ -17,7 +17,7 @@ describe('adventure engine', () => {
 
   it('autosave-compatible choices preserve an exact serializable run state', () => {
     const state = fresh();
-    const choice = BROKEN_BELL.scenes.chapelExterior.choices.find((c) => c.id === 'rope')!;
+    const choice = BROKEN_BELL.scenes.chapelExterior.choices.find((c) => c.id === 'inspectRope')!;
     const next = choose(state, BROKEN_BELL, choice, () => 0);
     expect(JSON.parse(JSON.stringify(next))).toEqual(next);
     expect(next.run?.sceneId).toBe('ropeClue');
@@ -36,7 +36,7 @@ describe('adventure engine', () => {
     const state = fresh();
     state.run!.sceneId = 'maskedParley';
     state.run!.inventory.push('ironHandbell', 'blackClapper');
-    const choice = BROKEN_BELL.scenes.maskedParley.choices[0];
+    const choice = BROKEN_BELL.scenes.maskedParley.choices.find((entry) => entry.id === 'returnBoth')!;
     const next = choose(state, BROKEN_BELL, choice);
     expect(next.run?.status).toBe('success');
     expect(next.run?.inventory).toContain('bronzeMaskFragment');
@@ -45,17 +45,73 @@ describe('adventure engine', () => {
 
   it('lets a player with the snatched clapper return for the handbell', () => {
     const state = fresh();
-    state.run!.sceneId = 'maskedParley';
+    state.run!.sceneId = 'keeperAfterSnatch';
     state.run!.inventory.push('blackClapper');
+    state.run!.inventory.push('boneKey');
     state.run!.acquiredThisRun.push('blackClapper');
     state.run!.flags.push('hasClapper');
 
-    const available = BROKEN_BELL.scenes.maskedParley.choices.filter((choice) => meets(choice.requirements, state));
+    const available = BROKEN_BELL.scenes.keeperAfterSnatch.choices.filter((choice) => meets(choice.requirements, state));
     expect(available.map((choice) => choice.id)).toContain('returnForBell');
 
     const next = choose(state, BROKEN_BELL, available.find((choice) => choice.id === 'returnForBell')!);
-    expect(next.run?.sceneId).toBe('underStairs');
+    expect(next.run?.sceneId).toBe('returnToChapel');
     expect(next.run?.inventory).toContain('blackClapper');
+    const recover = BROKEN_BELL.scenes.returnToChapel.choices.find((choice) => choice.id === 'unlockReturnChest')!;
+    const recovered = choose(next, BROKEN_BELL, recover);
+    expect(recovered.run?.sceneId).toBe('bellRecoveredScene');
+    expect(recovered.run?.inventory).toContain('ironHandbell');
+    const returnBoth = BROKEN_BELL.scenes.bellRecoveredScene.choices.find((choice) => choice.id === 'returnTogether')!;
+    const peaceful = choose(recovered, BROKEN_BELL, returnBoth);
+    expect(peaceful.run?.status).toBe('success');
+    expect(peaceful.run?.sceneId).toBe('peaceEnding');
+  });
+
+  it('supports returning the handbell before taking the clapper', () => {
+    const state = fresh();
+    state.run!.sceneId = 'maskedParley';
+    state.run!.inventory.push('ironHandbell');
+    const returnBell = BROKEN_BELL.scenes.maskedParley.choices.find((choice) => choice.id === 'returnBell')!;
+    const half = choose(state, BROKEN_BELL, returnBell);
+    expect(half.run?.sceneId).toBe('partialReturn');
+    const lift = BROKEN_BELL.scenes.partialReturn.choices.find((choice) => choice.id === 'takeClapperNow')!;
+    const held = choose(half, BROKEN_BELL, lift);
+    expect(held.run?.sceneId).toBe('clapperAtAltar');
+    const place = BROKEN_BELL.scenes.clapperAtAltar.choices.find((choice) => choice.id === 'returnLastClapper')!;
+    expect(choose(held, BROKEN_BELL, place).run?.sceneId).toBe('peaceEnding');
+  });
+
+  it('advances a failed clapper attempt and never offers a duplicate unique object', () => {
+    const state = fresh();
+    state.run!.sceneId = 'keeperWarning';
+    state.run!.visitedSceneIds = ['chapelExterior', 'keeperWarning'];
+    const attempt = BROKEN_BELL.scenes.keeperWarning.choices.find((choice) => choice.id === 'tryClapperAgain')!;
+    const failed = choose(state, BROKEN_BELL, attempt, () => 0.99);
+    expect(failed.run?.sceneId).toBe('keeperAfterClapperFailure');
+    expect(failed.run?.health).toBe(6);
+    expect(failed.run?.inventory).not.toContain('blackClapper');
+
+    const alreadyHasClapper = structuredClone(state);
+    alreadyHasClapper.run!.sceneId = 'maskedParley';
+    alreadyHasClapper.run!.inventory.push('blackClapper');
+    alreadyHasClapper.run!.flags.push('hasClapper');
+    expect(BROKEN_BELL.scenes.maskedParley.choices.filter((choice) => meets(choice.requirements, alreadyHasClapper)).map((choice) => choice.id)).not.toContain('takeClapper');
+
+    const alreadyHasBell = structuredClone(state);
+    alreadyHasBell.run!.sceneId = 'underStairs';
+    alreadyHasBell.run!.inventory.push('ironHandbell');
+    expect(BROKEN_BELL.scenes.underStairs.choices.filter((choice) => meets(choice.requirements, alreadyHasBell)).map((choice) => choice.id)).not.toContain('unlockChest');
+    expect(BROKEN_BELL.scenes.underStairs.choices.filter((choice) => meets(choice.requirements, alreadyHasBell)).map((choice) => choice.id)).not.toContain('forceChest');
+  });
+
+  it('moves failed dangerous checks into a new consequence scene', () => {
+    const state = fresh();
+    state.run!.sceneId = 'cellarWindow';
+    const choice = BROKEN_BELL.scenes.cellarWindow.choices.find((entry) => entry.id === 'climb')!;
+    const failure = choose(state, BROKEN_BELL, choice, () => 0.99);
+    expect(failure.run?.sceneId).toBe('windowFall');
+    expect(failure.run?.health).toBe(8);
+    expect(failure.run?.visitedSceneIds).toContain('windowFall');
   });
 
   it('never reaches an active non-ending state with zero available choices', () => {
@@ -88,8 +144,14 @@ describe('adventure engine', () => {
       }
 
       for (const choice of available) {
-        queue.push(choose(state, BROKEN_BELL, choice, () => 0));
-        if (choice.chance || choice.effects?.combat) queue.push(choose(state, BROKEN_BELL, choice, () => 0.999999));
+        const outcomes = [choose(state, BROKEN_BELL, choice, () => 0)];
+        if (choice.chance || choice.effects?.combat) outcomes.push(choose(state, BROKEN_BELL, choice, () => 0.999999));
+        for (const outcome of outcomes) {
+          const visits = outcome.run?.visitedSceneIds ?? [];
+          expect(new Set(visits).size).toBe(visits.length);
+          if (outcome.run) expect(visits).toContain(outcome.run.sceneId);
+          queue.push(outcome);
+        }
       }
     }
 
@@ -104,7 +166,7 @@ describe('adventure engine', () => {
     const fight = BROKEN_BELL.scenes.burialApproach.choices.find((c) => c.id === 'fight')!;
     const won = choose(state, BROKEN_BELL, fight, () => 0.1);
     expect(won.run?.sceneId).toBe('keeperDefeated');
-    const finish = BROKEN_BELL.scenes.keeperDefeated.choices.find((c) => c.id === 'seal')!;
+    const finish = BROKEN_BELL.scenes.keeperDefeated.choices.find((c) => c.id === 'sealWithBell')!;
     expect(choose(won, BROKEN_BELL, finish).run?.status).toBe('success');
   });
 

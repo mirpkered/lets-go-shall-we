@@ -22,7 +22,7 @@ function act(state: SaveData, id: string, random = 0): SaveData {
 describe('The Last Stop', () => {
   it('supports a fresh-character brake route to a survivable ending', () => {
     let state = fresh();
-    for (const id of ['board', 'conductor', 'learn', 'seat', 'settle', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
+    for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('messyEnding');
   });
@@ -58,7 +58,7 @@ describe('The Last Stop', () => {
     let state = fresh();
     state = act(state, 'helpPorter');
     expect(state.character?.money).toBe(4);
-    state = act(state, 'visitKiosk');
+    state = act(state, 'kioskAfterHelp');
     state = act(state, 'buyTools');
     expect(state.character?.money).toBe(0);
     expect(state.run?.inventory).toContain('pocketToolkit');
@@ -130,8 +130,14 @@ describe.each([BROKEN_BELL, LAST_STOP])('$title reachable-state safety', (scenar
       }
 
       for (const choice of available) {
-        queue.push(choose(state, scenario, choice, () => 0));
-        if (choice.chance || choice.effects?.combat) queue.push(choose(state, scenario, choice, () => 0.999999));
+        const outcomes = [choose(state, scenario, choice, () => 0)];
+        if (choice.chance || choice.effects?.combat) outcomes.push(choose(state, scenario, choice, () => 0.999999));
+        for (const outcome of outcomes) {
+          const visits = outcome.run?.visitedSceneIds ?? [];
+          expect(new Set(visits).size).toBe(visits.length);
+          if (outcome.run) expect(visits).toContain(outcome.run.sceneId);
+          queue.push(outcome);
+        }
       }
     }
 

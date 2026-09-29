@@ -1,19 +1,55 @@
 import './styles.css';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
+import { choose, depositCarried, failCharacter, finishSuccess, meets, startAdventure, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
+import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
-import { loadSave, saveGame } from './storage';
+import { isQaMode, selectScenario } from './scenarioSelection';
+import { EMPTY_SAVE, loadSave, SAVE_KEY, saveGame } from './storage';
 import type { SaveData } from './types';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let state: SaveData = loadSave();
 let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active' ? 'home' : 'home';
 let inventoryOpen = false;
+const qaEnabled = isQaMode(window.location.search);
 
 function persist(): void { saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
+function safeText(text: string): string { return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!); }
 function activeScenario() { return state.run ? getScenario(state.run.scenarioId) : undefined; }
+function startScenario(scenarioId: string): void {
+  if (state.run?.status === 'active') return;
+  const scenario = getScenario(scenarioId);
+  if (!scenario) return;
+  state = startAdventure(state, scenario);
+  persist(); screen = 'play'; inventoryOpen = false; render();
+}
+
+function bindQaPanel(): void {
+  if (!qaEnabled) return;
+  document.querySelectorAll<HTMLButtonElement>('[data-qa-start]').forEach((button) => button.addEventListener('click', () => startScenario(button.dataset.qaStart!)));
+  document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
+  document.querySelector('[data-qa-reset-character]')?.addEventListener('click', () => { state.character = null; state.run = null; persist(); screen = 'home'; render(); });
+  document.querySelector('[data-qa-clear-save]')?.addEventListener('click', () => {
+    localStorage.removeItem(SAVE_KEY); state = structuredClone(EMPTY_SAVE); screen = 'home'; render();
+  });
+  document.querySelector('[data-qa-set-health]')?.addEventListener('click', () => {
+    if (!state.run || !state.character) return;
+    const input = document.querySelector<HTMLInputElement>('#qa-health');
+    const health = Math.max(0, Math.min(state.character.maxHealth, Number(input?.value ?? 10)));
+    state.run.health = health;
+    if (health === 0) { state.run.status = 'death'; state.run.sceneId = '__death'; state.run.visitedSceneIds = [...new Set([...(state.run.visitedSceneIds ?? []), '__death'])]; }
+    persist(); render();
+  });
+  document.querySelector('[data-qa-add-item]')?.addEventListener('click', () => {
+    const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
+    if (!state.run || !itemId || !ITEMS[itemId]?.carryable) return;
+    state.run.inventory = [...new Set([...state.run.inventory, itemId])];
+    state.run.acquiredThisRun = [...new Set([...state.run.acquiredThisRun, itemId])];
+    persist(); render();
+  });
+}
 function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
   const paths = {
     bag: '<path d="M7 8h10l1 11H6L7 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
@@ -25,13 +61,16 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}">${content}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  bindQaPanel();
 }
 
 function render(): void {
   if (screen === 'play') return renderPlay();
   if (screen === 'bank') return renderBank();
   if (screen === 'retire') return renderRetire();
+  if (state.run?.status === 'death') return renderDeath();
+  if (state.run?.status === 'success') return renderSuccess();
   renderHome();
 }
 
@@ -48,14 +87,12 @@ function renderHome(): void {
 
   const hasCharacter = Boolean(state.character);
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
-    <section class="adventure-select"><div class="eyebrow">Choose an adventure</div><div class="scenario-list">${SCENARIOS.map((scenario, index) => `<article class="scenario-card" data-number="0${index + 1}"><div class="chapter-no">Adventure 0${index + 1}</div><h2>${scenario.title}</h2><p>${scenario.subtitle}</p><div class="rule"></div><p class="brief">${scenario.id === 'broken-bell' ? 'A village chapel fell silent three nights ago. Now something moves among the graves, and the priest has vanished.' : 'An evening train gathers speed on a mountain descent. Ahead, the rails end at Blackstone Gorge.'}</p><button class="primary" data-start="${scenario.id}">${hasCharacter ? 'Begin Adventure' : 'Create a Traveler'}</button></article>`).join('')}</div></section>
+    <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>
     <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${state.bank.length} item${state.bank.length === 1 ? '' : 's'}</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>`);
-  document.querySelectorAll<HTMLButtonElement>('[data-start]').forEach((button) => button.addEventListener('click', () => {
-    const scenario = getScenario(button.dataset.start!);
-    if (!scenario) return;
-    if (!state.character) state.character = newCharacter();
-    state.run = startRun(state.character, scenario); persist(); screen = 'play'; render();
-  }));
+  document.querySelector('#begin')!.addEventListener('click', () => {
+    const scenario = selectScenario(SCENARIOS, state.mostRecentScenarioId);
+    if (scenario) startScenario(scenario.id);
+  });
   document.querySelector('#bank')!.addEventListener('click', () => { screen = 'bank'; render(); });
   document.querySelector('#retire')?.addEventListener('click', () => { screen = 'retire'; render(); });
 }
