@@ -32,6 +32,8 @@ export const ITEMS: Record<string, Item> = {
   foldingCardMirror: { id: 'foldingCardMirror', name: 'Folding Card Mirror', description: 'A palm-sized inspection mirror with a brass hinge, useful for seeing into tight spaces.', category: 'tool', carryable: true },
   bridgewrightHammer: { id: 'bridgewrightHammer', name: 'Bridgewright’s Hammer', description: 'A compact, well-balanced hammer for setting pegs and careful repairs.', category: 'tool', carryable: true },
   ironRopeClamp: { id: 'ironRopeClamp', name: 'Iron Rope Clamp', description: 'A sturdy clamp for securing a line when wet knots cannot be trusted.', category: 'tool', carryable: true },
+  weatherproofCloak: { id: 'weatherproofCloak', name: 'Weatherproof Cloak', description: 'A dry oilskin cloak that sheds rain and wind on a long walk.', category: 'armor', carryable: true },
+  trailCompass: { id: 'trailCompass', name: 'Trail Compass', description: 'A small brass compass, steady enough to keep a route in poor visibility.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
