@@ -47,6 +47,7 @@ export interface Requirement {
   notFlags?: string[];
   knowledge?: string[];
   minHealth?: number;
+  minMoney?: number;
 }
 
 export interface CombatEffect {

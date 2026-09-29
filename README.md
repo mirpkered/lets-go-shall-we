@@ -1,6 +1,6 @@
 # Let’s Go, Shall We?
 
-A mobile-first, choice-driven text RPG prototype by Mirpworks. Version 0.1 includes the canonical first adventure, **The Broken Bell**, a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
+A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes two complete adventures—**The Broken Bell** and **The Last Stop**—plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
 
 ## Run locally
 
@@ -32,7 +32,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 
 ## Current limitations
 
-- One authored scenario and one character slot
+- Two authored scenarios and one character slot
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable

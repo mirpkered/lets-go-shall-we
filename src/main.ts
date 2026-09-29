@@ -2,7 +2,7 @@ import './styles.css';
 import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, startRun, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
-import { BROKEN_BELL } from './scenarios/brokenBell';
+import { getScenario, SCENARIOS } from './scenarios';
 import { loadSave, saveGame } from './storage';
 import type { SaveData } from './types';
 
@@ -13,6 +13,7 @@ let inventoryOpen = false;
 
 function persist(): void { saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
+function activeScenario() { return state.run ? getScenario(state.run.scenarioId) : undefined; }
 function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
   const paths = {
     bag: '<path d="M7 8h10l1 11H6L7 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
@@ -36,7 +37,8 @@ function render(): void {
 
 function renderHome(): void {
   if (state.run?.status === 'active') {
-    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your lantern is still burning in <strong>The Broken Bell</strong>. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, and knowledge will be lost. Banked items remain safe.</p></section>`, 'centered');
+    const scenario = activeScenario();
+    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, and knowledge will be lost. Banked items remain safe.</p></section>`, 'centered');
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
       if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); render(); }
@@ -46,13 +48,14 @@ function renderHome(): void {
 
   const hasCharacter = Boolean(state.character);
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
-    <section class="scenario-card"><div class="chapter-no">Adventure 01</div><h2>The Broken Bell</h2><p>${BROKEN_BELL.subtitle}</p><div class="rule"></div><p class="brief">A village chapel fell silent three nights ago. Now something moves among the graves, and the priest has vanished.</p>
-    <button class="primary" id="start">${hasCharacter ? 'Begin Adventure' : 'Create a Traveler'}</button></section>
+    <section class="adventure-select"><div class="eyebrow">Choose an adventure</div><div class="scenario-list">${SCENARIOS.map((scenario, index) => `<article class="scenario-card" data-number="0${index + 1}"><div class="chapter-no">Adventure 0${index + 1}</div><h2>${scenario.title}</h2><p>${scenario.subtitle}</p><div class="rule"></div><p class="brief">${scenario.id === 'broken-bell' ? 'A village chapel fell silent three nights ago. Now something moves among the graves, and the priest has vanished.' : 'An evening train gathers speed on a mountain descent. Ahead, the rails end at Blackstone Gorge.'}</p><button class="primary" data-start="${scenario.id}">${hasCharacter ? 'Begin Adventure' : 'Create a Traveler'}</button></article>`).join('')}</div></section>
     <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${state.bank.length} item${state.bank.length === 1 ? '' : 's'}</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>`);
-  document.querySelector('#start')!.addEventListener('click', () => {
+  document.querySelectorAll<HTMLButtonElement>('[data-start]').forEach((button) => button.addEventListener('click', () => {
+    const scenario = getScenario(button.dataset.start!);
+    if (!scenario) return;
     if (!state.character) state.character = newCharacter();
-    state.run = startRun(state.character, BROKEN_BELL); persist(); screen = 'play'; render();
-  });
+    state.run = startRun(state.character, scenario); persist(); screen = 'play'; render();
+  }));
   document.querySelector('#bank')!.addEventListener('click', () => { screen = 'bank'; render(); });
   document.querySelector('#retire')?.addEventListener('click', () => { screen = 'retire'; render(); });
 }
@@ -61,12 +64,14 @@ function renderPlay(): void {
   const run = state.run;
   const character = state.character;
   if (!run || !character) { screen = 'home'; return render(); }
+  const scenario = activeScenario();
+  if (!scenario) { state.run = null; persist(); screen = 'home'; return render(); }
   if (run.status === 'death') return renderDeath();
   if (run.status === 'success') return renderSuccess();
-  const scene = BROKEN_BELL.scenes[run.sceneId];
+  const scene = scenario.scenes[run.sceneId];
   const choices = scene.choices.filter((choice) => meets(choice.requirements, state));
   const healthPct = (run.health / character.maxHealth) * 100;
-  shell(`<header class="play-header"><div><span class="eyebrow">The Broken Bell</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}">${icon('bag')}<span>${run.inventory.length}</span><b class="sr-only">Inventory</b></button></header>
+  shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}">${icon('bag')}<span>${run.inventory.length}</span><b class="sr-only">Inventory</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
     ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
     <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${scene.text}</p></article>
@@ -75,19 +80,22 @@ function renderPlay(): void {
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });
   document.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((button) => button.addEventListener('click', () => {
     const choice = choices.find((entry) => entry.id === button.dataset.choice)!;
-    state = choose(state, BROKEN_BELL, choice); persist(); inventoryOpen = false; render();
+    state = choose(state, scenario, choice); persist(); inventoryOpen = false; render();
   }));
 }
 
 function renderDeath(): void {
-  const scene = state.run?.sceneId === 'deathBell' ? BROKEN_BELL.scenes.deathBell : null;
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'Lost Beneath the Chapel'}</h1><p>${scene?.text ?? 'Your wounds overcome you in the dark. The village will have to wait for another traveler.'}</p><div class="loss-list"><span>Character lost</span><span>Gear & money lost</span><span>Lore & knowledge lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
+  const scenario = activeScenario();
+  const run = state.run;
+  const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene?.text ?? 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear & money lost</span><span>Lore & knowledge lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
 }
 
 function renderSuccess(): void {
   const run = state.run!;
-  const scene = BROKEN_BELL.scenes[run.sceneId];
+  const scenario = activeScenario()!;
+  const scene = scenario.scenes[run.sceneId];
   const eligible = run.acquiredThisRun.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
   shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${scene.text}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Everything else from this run stays behind. You can bank your choice before the next adventure.</p>${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
   document.querySelectorAll<HTMLButtonElement>('[data-carry]').forEach((button) => button.addEventListener('click', () => { state = finishSuccess(state, button.dataset.carry || null); persist(); screen = 'home'; render(); }));

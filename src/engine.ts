@@ -22,7 +22,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))
     && (!requirement.knowledge || requirement.knowledge.every((id) => character.knowledge.includes(id)))
-    && (!requirement.minHealth || run.health >= requirement.minHealth);
+    && (!requirement.minHealth || run.health >= requirement.minHealth)
+    && (requirement.minMoney === undefined || character.money >= requirement.minMoney);
 }
 
 const addUnique = (target: string[], values: string[] = []) => [...new Set([...target, ...values])];

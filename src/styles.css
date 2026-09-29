@@ -31,8 +31,10 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .brand-mark { width:3.25rem; aspect-ratio:1; display:grid; place-items:center; border:1px solid #8c6a32; color:#d7b46d; font:1.1rem 'IM Fell English',serif; transform:rotate(-3deg); box-shadow:inset 0 0 0 4px #14120f, inset 0 0 0 5px #6d542d; }
 .masthead h1 { font-size:clamp(2.55rem,12vw,4rem); line-height:.82; margin:.35rem 0 0; letter-spacing:-.025em; }
 .masthead h1 em { color:#cba55f; font-weight:400; }
+.adventure-select > .eyebrow { margin-bottom:.65rem; }
+.scenario-list { display:grid; gap:1rem; }
 .scenario-card { position:relative; overflow:hidden; padding:1.45rem; border:1px solid #4a4133; background:linear-gradient(145deg,#211e18,#161512); box-shadow:0 1.2rem 3rem #0008; }
-.scenario-card::after { content:'01'; position:absolute; right:-.3rem; bottom:-2rem; font:9rem 'IM Fell English',serif; color:#ffffff05; }
+.scenario-card::after { content:attr(data-number); position:absolute; right:-.3rem; bottom:-2rem; font:9rem 'IM Fell English',serif; color:#ffffff05; }
 .chapter-no { color:#8f8777; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; }
 .scenario-card h2 { margin:.35rem 0 .55rem; font-size:2.25rem; color:#f2e8d4; }
 .scenario-card > p { color:#bbb2a1; line-height:1.55; font-size:.95rem; }
