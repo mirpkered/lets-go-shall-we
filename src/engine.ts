@@ -1,4 +1,5 @@
-import { STARTING_ITEMS } from './items';
+import { ITEMS, STARTING_ITEMS } from './items';
+import { BANK_CAPACITY } from './bank';
 import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 
 export function newCharacter(name = 'The Traveler'): Character {
@@ -135,10 +136,26 @@ export function finishSuccess(state: SaveData, carriedItem: string | null): Save
   return next;
 }
 
-export function depositCarried(state: SaveData): SaveData {
+export function eligibleCarryItems(state: SaveData): string[] {
+  const run = state.run;
+  if (!run) return [];
+  const candidates = [...new Set([...(state.character?.carriedItem ? [state.character.carriedItem] : []), ...run.acquiredThisRun])];
+  return candidates.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
+}
+
+export function depositCarried(state: SaveData, replaceBankItemId?: string): SaveData {
   const next = structuredClone(state);
   const item = next.character?.carriedItem;
   if (!item || next.bank.includes(item)) return next;
+  if (next.bank.length > BANK_CAPACITY) return next;
+  if (next.bank.length === BANK_CAPACITY) {
+    if (!replaceBankItemId) return next;
+    const index = next.bank.indexOf(replaceBankItemId);
+    if (index < 0) return next;
+    next.bank[index] = item;
+    next.character!.carriedItem = replaceBankItemId;
+    return next;
+  }
   next.bank.push(item);
   next.character!.carriedItem = null;
   return next;

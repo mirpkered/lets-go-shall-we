@@ -127,6 +127,8 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .back { min-width:3.5rem; min-height:3.5rem; border:1px solid #35312b; background:#151412; color:#c7bda9; cursor:pointer; }
 .bank-note { margin:1rem 0; padding:1rem; border-left:2px solid var(--brass); background:#161511; }
 .bank-note p { margin:0; color:#aaa294; font-size:.85rem; line-height:1.55; }
+.bank-capacity-note { border-left-color:var(--brass); background:#201c13; }
+.bank-capacity-note p { color:#e0c88f; }
 .bank-section { padding:1rem 0; }
 .bank-section h2 { font-size:1.4rem; color:#d7cdb9; }
 .item-row { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem; border:1px solid #343029; background:#151411; }

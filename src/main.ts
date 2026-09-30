@@ -1,6 +1,7 @@
 import './styles.css';
-import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { choose, depositCarried, eligibleCarryItems, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
+import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage } from './bank';
 import { showLaunchSplash } from './launchSplash';
 import { renderUtilityFeatures } from './helpPanels';
 import { renderQaPanel } from './qaPanel';
@@ -108,7 +109,7 @@ function renderHome(): void {
   const hasCharacter = Boolean(state.character);
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
     <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>
-    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${state.bank.length} item${state.bank.length === 1 ? '' : 's'}</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>`);
+    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>`);
   document.querySelector('#begin')!.addEventListener('click', () => {
     const scenario = selectScenario(SCENARIOS, state.mostRecentScenarioId);
     if (scenario) startScenario(scenario.id);
@@ -154,25 +155,33 @@ function renderSuccess(): void {
   const run = state.run!;
   const scenario = activeScenario()!;
   const scene = scenario.scenes[run.sceneId];
-  const eligible = run.acquiredThisRun.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
-  shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Everything else from this run stays behind. You can bank your choice before the next adventure.</p>${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
+  const eligible = eligibleCarryItems(state);
+  const fullBankText = bankCapacityMessage(state.bank.length);
+  const rewardBankNote = fullBankText ? `<p class="bank-capacity-note">${safeText(fullBankText)} Your reward can still be carried; visit The Bank afterward to make an explicit swap.</p>` : '';
+  shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Choose one item for your next adventure. Items you leave behind will not carry over. You can bank your choice before the next adventure.</p>${rewardBankNote}${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
   document.querySelectorAll<HTMLButtonElement>('[data-carry]').forEach((button) => button.addEventListener('click', () => { state = finishSuccess(state, button.dataset.carry || null); persist(); screen = 'home'; render(); }));
 }
 
 function renderBank(): void {
   const carried = state.character?.carriedItem;
-  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>
-    <section class="bank-section"><h2>Carried by character</h2>${state.character ? (carried ? `<article class="item-row"><div><strong>${itemName(carried)}</strong><small>${ITEMS[carried].description}</small></div><button id="deposit">Deposit</button></article>` : '<p class="empty">The carry slot is empty.</p>') : '<p class="empty">Create a traveler to withdraw an item.</p>'}</section>
-    <section class="bank-section"><h2>Safe deposit</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}</article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>`, 'subscreen');
+  const capacityMessage = bankCapacityMessage(state.bank.length);
+  const legacyCarryNote = state.bank.length > BANK_CAPACITY && carried ? ' Your carry slot is occupied; free it before withdrawing an item to reduce the saved bank.' : '';
+  const swapAllowed = state.bank.length === BANK_CAPACITY && Boolean(carried);
+  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
+    <section class="bank-section"><h2>Carried by character</h2>${state.character ? (carried ? `<article class="item-row"><div><strong>${itemName(carried)}</strong><small>${ITEMS[carried].description}</small></div>${state.bank.length < BANK_CAPACITY ? '<button id="deposit">Deposit</button>' : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : '<span class="empty">Choose an item below to swap.</span>'}</article>` : '<p class="empty">The carry slot is empty.</p>') : '<p class="empty">Create a traveler to withdraw an item.</p>'}</section>
+    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${swapAllowed ? `<button data-bank-swap="${id}">Swap with carried item</button>` : state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}</article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>`, 'subscreen');
   document.querySelector('#back')!.addEventListener('click', () => { screen = 'home'; render(); });
   document.querySelector('#deposit')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
+  document.querySelectorAll<HTMLButtonElement>('[data-bank-swap]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, button.dataset.bankSwap); persist(); render(); }));
   document.querySelectorAll<HTMLButtonElement>('[data-withdraw]').forEach((button) => button.addEventListener('click', () => { state = withdrawBanked(state, button.dataset.withdraw!); persist(); render(); }));
 }
 
 function renderRetire(): void {
   const carried = state.character?.carriedItem;
-  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, and personal history will end with their story. Banked items remain safe.</p>${carried ? `<div class="retirement-item"><strong>${itemName(carried)}</strong><span>is still being carried</span><button id="bankFirst">Bank it first</button></div>` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
+  const retirementBankHint = carried && state.bank.length >= BANK_CAPACITY ? `<p class="bank-capacity-note">${safeText(bankCapacityMessage(state.bank.length) ?? '')}</p>` : '';
+  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, and personal history will end with their story. Banked items remain safe. Retiring with a carried item will lose that item unless you store it first.</p>${carried ? `<div class="retirement-item"><strong>${itemName(carried)}</strong><span>is still being carried</span>${state.bank.length < BANK_CAPACITY ? '<button id="bankFirst">Bank it first</button>' : '<button id="manageBank">Manage bank</button>'}</div>${retirementBankHint}` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
   document.querySelector('#bankFirst')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
+  document.querySelector('#manageBank')?.addEventListener('click', () => { screen = 'bank'; render(); });
   document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = retireCharacter(state); persist(); screen = 'home'; render(); });
   document.querySelector('#cancel')!.addEventListener('click', () => { screen = 'home'; render(); });
 }

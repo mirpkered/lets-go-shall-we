@@ -1,5 +1,6 @@
 import type { Item, SaveData, Scenario } from './types';
 import { timeStatus } from './engine';
+import { BANK_CAPACITY } from './bank';
 
 function safeText(text: string): string {
   return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]!));
@@ -17,7 +18,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     sceneId: run?.sceneId ?? null,
     visitedSceneIds: run?.visitedSceneIds ?? (run ? [run.sceneId] : []),
     inventory: run?.inventory ?? [], flags: run?.flags ?? [], money: character?.money ?? null,
-    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank,
+    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank, bankCount: state.bank.length, bankCapacity: BANK_CAPACITY,
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
     elapsedMinutes: run?.elapsedMinutes ?? 0,
     timePhase: timing?.phase?.label ?? null,
