@@ -29,6 +29,7 @@ export interface RunState {
   acquiredThisRun: string[];
   flags: string[];
   visitedSceneIds?: string[];
+  randomSelections?: Record<string, string>;
   status: 'active' | 'success' | 'death';
   message: string | null;
   startedAt: number;
@@ -62,6 +63,7 @@ export interface Requirement {
   minMoney?: number;
   minElapsedMinutes?: number;
   maxElapsedMinutes?: number;
+  selections?: Record<string, string>;
 }
 
 export interface CombatEffect {
@@ -88,6 +90,8 @@ export interface Effects {
 
 export interface ChanceBranch {
   probability: number;
+  lateProbability?: number;
+  lateAfterMinutes?: number;
   successNext: string;
   failureNext: string;
   successMessage: string;
@@ -127,5 +131,11 @@ export interface Scenario {
   subtitle: string;
   startScene: string;
   timePhases?: TimePhase[];
+  runRandomSelections?: RunRandomSelection[];
   scenes: Record<string, Scene>;
+}
+
+export interface RunRandomSelection {
+  id: string;
+  values: { value: string; weight?: number }[];
 }

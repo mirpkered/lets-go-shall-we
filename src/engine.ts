@@ -6,10 +6,20 @@ export function newCharacter(name = 'The Traveler'): Character {
   return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
 }
 
-export function startRun(character: Character, scenario: Scenario): RunState {
+export function pickRunRandomSelections(scenario: Scenario, random = Math.random): Record<string, string> {
+  return Object.fromEntries((scenario.runRandomSelections ?? []).map(({ id, values }) => {
+    const total = values.reduce((sum, entry) => sum + Math.max(0, entry.weight ?? 1), 0);
+    let point = Math.min(0.999999999, Math.max(0, random())) * total;
+    const selected = values.find((entry) => (point -= Math.max(0, entry.weight ?? 1)) < 0) ?? values.at(-1);
+    return [id, selected?.value ?? ''];
+  }));
+}
+
+export function startRun(character: Character, scenario: Scenario, random = Math.random): RunState {
   const inventory = [...STARTING_ITEMS];
   if (character.carriedItem) inventory.push(character.carriedItem);
-  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0 };
+  const randomSelections = pickRunRandomSelections(scenario, random);
+  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0 };
 }
 
 export function startAdventure(state: SaveData, scenario: Scenario): SaveData {
@@ -37,7 +47,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.minHealth || run.health >= requirement.minHealth)
     && (requirement.minMoney === undefined || character.money >= requirement.minMoney)
     && (requirement.minElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) >= requirement.minElapsedMinutes)
-    && (requirement.maxElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) <= requirement.maxElapsedMinutes);
+    && (requirement.maxElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) <= requirement.maxElapsedMinutes)
+    && (!requirement.selections || Object.entries(requirement.selections).every(([key, value]) => run.randomSelections?.[key] === value));
 }
 
 export function timeStatus(scenario: Scenario, elapsedMinutes = 0): { elapsedMinutes: number; phase: TimePhase | null; nextThreshold: number | null } {
@@ -48,7 +59,11 @@ export function timeStatus(scenario: Scenario, elapsedMinutes = 0): { elapsedMin
 }
 
 export function sceneText(scene: Scenario['scenes'][string], state: SaveData): string {
-  return scene.textVariants?.find((variant) => meets(variant.requirements, state))?.text ?? scene.text;
+  return runText(scene.textVariants?.find((variant) => meets(variant.requirements, state))?.text ?? scene.text, state);
+}
+
+export function runText(text: string, state: SaveData): string {
+  return text.replace(/\{\{([\w-]+)\}\}/g, (_match, key: string) => state.run?.randomSelections?.[key] ?? '');
 }
 
 const addUnique = (target: string[], values: string[] = []) => [...new Set([...target, ...values])];
@@ -65,8 +80,8 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     run.acquiredThisRun = addUnique(run.acquiredThisRun, effects.gainItems);
   }
   if (effects.loseItems) run.inventory = without(run.inventory, effects.loseItems);
-  if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge);
-  if (effects.lore) character.lore = addUnique(character.lore, effects.lore);
+  if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
+  if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
   if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags);
   if (effects.setFlags) run.flags = addUnique(run.flags, effects.setFlags);
   if (effects.clearFlags) run.flags = without(run.flags, effects.clearFlags);
@@ -86,14 +101,17 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     const won = random() < combat.winChance;
     applyEffects(next, { health: won ? -(combat.damageOnWin ?? 0) : -combat.damageOnLoss });
     destination = won ? combat.winNext : combat.lossNext;
-    next.run.message = won ? `You survive the fight with the ${combat.enemy}.` : `The ${combat.enemy} wounds you. You lose ${combat.damageOnLoss} health.`;
+    next.run.message = runText(won ? `You survive the fight with the ${combat.enemy}.` : `The ${combat.enemy} wounds you. You lose ${combat.damageOnLoss} health.`, next);
   } else if (choice.chance) {
     const bonusItem = choice.chance.bonusItems?.some((item) => next.run!.inventory.includes(item)) ?? false;
     const bonusFlag = choice.chance.bonusFlags?.some((flag) => next.run!.flags.includes(flag)) ?? false;
-    const probability = Math.min(0.98, choice.chance.probability + (bonusItem || bonusFlag ? choice.chance.bonusProbability ?? 0 : 0));
+    const baseProbability = choice.chance.lateAfterMinutes !== undefined && (next.run.elapsedMinutes ?? 0) >= choice.chance.lateAfterMinutes
+      ? choice.chance.lateProbability ?? choice.chance.probability
+      : choice.chance.probability;
+    const probability = Math.min(0.98, baseProbability + (bonusItem || bonusFlag ? choice.chance.bonusProbability ?? 0 : 0));
     const won = random() < probability;
     destination = won ? choice.chance.successNext : choice.chance.failureNext;
-    next.run.message = won ? choice.chance.successMessage : choice.chance.failureMessage;
+    next.run.message = runText(won ? choice.chance.successMessage : choice.chance.failureMessage, next);
     applyEffects(next, won ? choice.chance.successEffects : choice.chance.failureEffects);
   }
 

@@ -109,7 +109,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .story-card.danger { border-top:3px solid #823b35; }
 .story-card h1 { position:relative; margin:0 1rem .85rem 0; font-size:2rem; line-height:1; color:#24211c; }
 .story-time { position:relative; margin:-.3rem 0 .65rem; color:#74664b; font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
-.story-text { position:relative; margin:0; font:1.14rem/1.68 'IM Fell English',Georgia,serif; }
+.story-text { position:relative; margin:0; white-space:pre-line; font:1.14rem/1.68 'IM Fell English',Georgia,serif; }
 .result-message { position:relative; margin:0 0 1rem; padding:.6rem .75rem; border-left:3px solid #a47731; background:#b2a58b42; color:#5c411c; font-size:.83rem; font-weight:700; }
 .choices { display:grid; gap:.7rem; padding-top:.85rem; }
 .choices button { min-height:5rem; padding:.85rem 1rem; border:1px solid #50493e; background:#181713; color:#eee7d9; text-align:left; cursor:pointer; box-shadow:inset 0 0 0 1px #0b0b0a; }
@@ -163,6 +163,23 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .qa-body pre { max-width:100%; max-height:18rem; margin:.6rem 0 0; padding:.75rem; overflow:auto; border:1px solid #302b23; background:#090908; color:#c7bda9; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.68rem; line-height:1.45; }
 .qa-note { color:#9a8d78; font-size:.78rem; line-height:1.4; }
 
+/* Bridge Out is intentionally compact enough to keep story and choices in view on phones. */
+.playing.scenario-bridge-out { height:100vh; height:100dvh; min-height:0; overflow:hidden; padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom)); }
+.scenario-bridge-out .play-header { flex:none; padding-bottom:.35rem; }
+.scenario-bridge-out .status-row { flex:none; padding:.4rem .1rem; }
+.scenario-bridge-out .story-card { flex:none; min-height:0; padding:.85rem 1rem; }
+.scenario-bridge-out .story-card h1 { margin:0 1rem .45rem 0; font-size:1.65rem; }
+.scenario-bridge-out .story-time { margin:-.15rem 0 .35rem; }
+.scenario-bridge-out .result-message { margin-bottom:.4rem; padding:.35rem .5rem; font-size:.75rem; }
+.scenario-bridge-out .story-text { font-size:1rem; line-height:1.35; }
+.scenario-bridge-out .choices { flex:none; gap:.45rem; padding-top:.55rem; }
+.scenario-bridge-out .choices button { min-height:3rem; padding:.5rem .65rem; }
+.scenario-bridge-out .choices strong { font-size:.88rem; line-height:1.2; }
+.scenario-bridge-out .choices small { margin-top:.18rem; font-size:.65rem; line-height:1.2; }
+.scenario-bridge-out .utility-links { flex:none; margin:.45rem auto 0; }
+.scenario-bridge-out.playing .utility-links { padding-top:.4rem; }
+.scenario-bridge-out footer { padding-top:.3rem; font-size:.6rem; }
+
 @media (min-width: 560px) {
   .app-shell { padding-inline:1.5rem; }
   .choices.count-2,.choices.count-3,.choices.count-4 { grid-template-columns:1fr 1fr; }
@@ -185,6 +202,13 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .choices button { padding:.7rem; }
   .choices strong { font-size:.86rem; }
   footer { font-size:.58rem; letter-spacing:.045em; padding-top:1.2rem; }
+  .playing.scenario-bridge-out { padding-inline:.65rem; }
+  .scenario-bridge-out .story-card { padding:.7rem .8rem; }
+  .scenario-bridge-out .story-card h1 { font-size:1.45rem; }
+  .scenario-bridge-out .story-text { font-size:.93rem; line-height:1.32; }
+  .scenario-bridge-out .choices button { padding:.45rem .5rem; }
+  .scenario-bridge-out .choices strong { font-size:.81rem; }
+  .scenario-bridge-out .choices small { font-size:.62rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

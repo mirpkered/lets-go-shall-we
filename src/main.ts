@@ -1,5 +1,5 @@
 import './styles.css';
-import { choose, depositCarried, eligibleCarryItems, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { choose, depositCarried, eligibleCarryItems, failCharacter, finishSuccess, meets, retireCharacter, runText, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -134,7 +134,7 @@ function renderPlay(): void {
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
     ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
     <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${timing.phase ? `<p class="story-time" aria-label="Story time: ${timing.phase.label}">${timing.phase.label}</p>` : ''}${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
-    <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${choice.label}</strong>${choice.hint ? `<small>${choice.hint}</small>` : ''}</button>`).join('')}</section>`, 'playing');
+    <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${safeText(runText(choice.label, state))}</strong>${choice.hint ? `<small>${safeText(runText(choice.hint, state))}</small>` : ''}</button>`).join('')}</section>`, `playing scenario-${scenario.id}`);
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });
   document.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((button) => button.addEventListener('click', () => {

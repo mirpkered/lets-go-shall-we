@@ -1,10 +1,11 @@
 import type { SaveData } from './types';
 import { getScenario } from './scenarios';
+import { pickRunRandomSelections } from './engine';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
 export const EMPTY_SAVE: SaveData = { version: 1, bank: [], character: null, run: null };
 
-export function loadSave(storage: Pick<Storage, 'getItem'> = localStorage): SaveData {
+export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storage, 'setItem'>> = localStorage): SaveData {
   try {
     const raw = storage.getItem(KEY);
     if (!raw) return structuredClone(EMPTY_SAVE);
@@ -16,6 +17,10 @@ export function loadSave(storage: Pick<Storage, 'getItem'> = localStorage): Save
       parsed.run.elapsedMinutes = Number.isFinite(parsed.run.elapsedMinutes) ? Math.max(0, Math.floor(parsed.run.elapsedMinutes!)) : 0;
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       const scenario = getScenario(parsed.run.scenarioId);
+      if (scenario?.runRandomSelections?.length && !parsed.run.randomSelections) {
+        parsed.run.randomSelections = pickRunRandomSelections(scenario);
+        storage.setItem?.(KEY, JSON.stringify(parsed));
+      }
       if (parsed.run.status === 'active' && parsed.run.scenarioId === 'broken-bell' && scenario && !scenario.scenes[parsed.run.sceneId]) {
         parsed.run.sceneId = 'legacyResume';
         parsed.run.visitedSceneIds = [...new Set([...parsed.run.visitedSceneIds, 'legacyResume'])];

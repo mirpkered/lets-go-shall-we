@@ -17,6 +17,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     scenario: run ? scenario?.title ?? run.scenarioId : null,
     sceneId: run?.sceneId ?? null,
     visitedSceneIds: run?.visitedSceneIds ?? (run ? [run.sceneId] : []),
+    randomSelections: run?.randomSelections ?? {},
     inventory: run?.inventory ?? [], flags: run?.flags ?? [], money: character?.money ?? null,
     health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank, bankCount: state.bank.length, bankCapacity: BANK_CAPACITY,
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
