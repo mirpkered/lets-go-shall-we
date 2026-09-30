@@ -1,7 +1,7 @@
 import type { Choice, Scenario } from '../types';
 
 const REPAIR_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'compactStoveTool', 'bridgewrightHammer'];
-const DOOR_TOOLS = ['ratCatchersHook', 'foldingPryTool', 'brassCandlestick', 'pocketToolkit', 'foremanMultiTool', 'icehouseTongs'];
+const DOOR_TOOLS = ['ratCatchersHook', 'foldingPryTool', 'brassCandlestick', 'pocketToolkit', 'foremanMultiTool', 'icehouseTongs', 'brassBottleOpener'];
 const SERVICE_GEAR = ['travelRope', 'minerHeadlamp'];
 const RESCUE_GEAR = ['travelRope', 'minerHeadlamp', 'heavyLeatherGloves', 'weatherproofCloak', 'pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'bridgewrightHammer', 'ratCatchersHook', 'compactBlockAndTackle', 'icehouseTongs'];
 const INSULATING_GEAR = ['waxedCanvasSheet', 'weatherproofCloak'];

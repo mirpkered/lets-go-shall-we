@@ -57,6 +57,7 @@ describe('player scenario selection and QA mode', () => {
     expect(tools).toContain('Start No Vacancy');
     expect(tools).toContain('Start Cold Storage');
     expect(tools).toContain('Start High Water');
+    expect(tools).toContain('Start One More Round');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

@@ -1,7 +1,7 @@
 import type { Scenario } from '../types';
 
 const REPUTATION = 'You have come back for someone before. I suppose I can tell you what I know.';
-const ROOM_TOOL = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool'];
+const ROOM_TOOL = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'brassBottleOpener'];
 const PRY_TOOLS = [...ROOM_TOOL, 'brassCandlestick'];
 const CELLAR_LIGHTS = ['lantern', 'minerHeadlamp'];
 const REWARD_ENDING = 'quietEnding';
