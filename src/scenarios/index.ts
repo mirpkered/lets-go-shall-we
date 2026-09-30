@@ -9,8 +9,9 @@ import { BRIDGE_OUT } from './bridgeOut';
 import { THE_LONG_WAY_HOME } from './longWayHome';
 import { NO_VACANCY } from './noVacancy';
 import { COLD_STORAGE } from './coldStorage';
+import { HIGH_WATER } from './highWater';
 
-export const SCENARIOS: Scenario[] = [BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME, NO_VACANCY, COLD_STORAGE];
+export const SCENARIOS: Scenario[] = [BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME, NO_VACANCY, COLD_STORAGE, HIGH_WATER];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));
 
@@ -18,4 +19,4 @@ export function getScenario(id: string): Scenario | undefined {
   return BY_ID.get(id);
 }
 
-export { AWW_RATS, BROKEN_BELL, LAST_STOP, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME, NO_VACANCY, COLD_STORAGE };
+export { AWW_RATS, BROKEN_BELL, LAST_STOP, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME, NO_VACANCY, COLD_STORAGE, HIGH_WATER };
