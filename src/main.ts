@@ -2,6 +2,7 @@ import './styles.css';
 import { choose, depositCarried, failCharacter, finishSuccess, meets, retireCharacter, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { showLaunchSplash } from './launchSplash';
+import { renderUtilityFeatures } from './helpPanels';
 import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario } from './scenarioSelection';
@@ -73,7 +74,14 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderUtilityFeatures(activeScenario()?.title)}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
+    const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
+    if (dialog && !dialog.open) dialog.showModal();
+  }));
+  document.querySelectorAll<HTMLButtonElement>('[data-close-help]').forEach((button) => button.addEventListener('click', () => {
+    button.closest('dialog')?.close();
+  }));
   bindQaPanel();
 }
 

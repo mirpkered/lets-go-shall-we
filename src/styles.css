@@ -52,6 +52,27 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .home-tools svg,.retire-icon { grid-row:1/3; width:1.5rem; color:#ac8a4d; font-size:1.5rem; }
 .home-tools span { font-weight:700; }
 .home-tools small { color:#777166; }
+.utility-links { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; width:100%; margin-top:1.1rem; }
+.utility-links button { min-width:0; min-height:2.9rem; padding:.65rem .8rem; border:1px solid #3b362c; background:#13120f; color:#cbbb9c; font:inherit; font-size:.88rem; cursor:pointer; }
+.utility-links button:hover { border-color:#8b6a32; color:#f0d49b; }
+.utility-dialog { width:min(calc(100vw - 2rem), 40rem); max-width:none; max-height:min(88dvh, 54rem); margin:auto; padding:0; overflow-y:auto; overscroll-behavior:contain; border:1px solid #75603a; background:#171613; color:#e8e0d2; box-shadow:0 1.5rem 5rem #000d; }
+.utility-dialog::backdrop { background:#050504d9; backdrop-filter:blur(3px); }
+.utility-dialog-header { position:sticky; z-index:2; top:0; display:flex; align-items:center; justify-content:space-between; gap:.7rem; min-height:4rem; padding:.8rem 1rem; border-bottom:1px solid #3b352b; background:#171613f5; }
+.utility-dialog-header h2 { margin:0; color:#dec58f; font-size:1.55rem; line-height:1.1; }
+.utility-dialog-close { flex:0 0 auto; min-width:3.5rem; min-height:2.75rem; padding:.55rem .7rem; border:1px solid #5b4c32; background:#211e18; color:#e5d7bb; font:inherit; font-size:.8rem; cursor:pointer; }
+.utility-dialog-body { padding:1rem 1.15rem 1.25rem; }
+.utility-dialog-body p { color:#c4bcaf; font-size:.9rem; line-height:1.58; }
+.utility-dialog-body .utility-lede { color:#e6dece; font-size:.98rem; line-height:1.62; }
+.utility-dialog-body section { padding:.75rem 0 .2rem; border-top:1px solid #302d27; }
+.utility-dialog-body h3 { margin:.1rem 0 .4rem; color:#d4b873; font:1.2rem 'IM Fell English',Georgia,serif; }
+.utility-dialog-body section p { margin-bottom:.55rem; }
+.utility-dialog-body a:not(.primary) { color:#e1bd72; text-underline-offset:.2rem; }
+.utility-dialog-body .mirpworks-note p { margin-bottom:.35rem; }
+.contact-dialog .utility-dialog-body > p { margin-bottom:.8rem; }
+.contact-dialog .contact-adventure { padding:.65rem .75rem; border-left:2px solid var(--brass); background:#211e18; }
+.contact-email { display:grid; place-items:center; min-height:3.35rem; margin:.4rem 0 .75rem; text-decoration:none; }
+.contact-address { margin:0!important; text-align:center; font-size:.78rem!important; }
+.utility-dialog :focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 .resume-card { width:100%; padding:1.6rem 1.35rem; border-top:2px solid var(--brass); background:#171613; box-shadow:0 1.5rem 5rem #0009; }
 .resume-card h1 { font-size:2.5rem; margin:.5rem 0 .75rem; }
 .resume-card p { color:#bdb5a7; line-height:1.6; }
