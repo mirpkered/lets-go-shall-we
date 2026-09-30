@@ -26,13 +26,13 @@ export const COLD_STORAGE: Scenario = {
   scenes: {
     loadingBay: {
       id: 'loadingBay', title: 'The Cooperative Icehouse', tone: 'warning',
-      text: 'The rural cooperative’s cold store is humming far louder than it should. A worker named Mara is trapped somewhere inside; the foreman lost contact with her when the refrigeration cycle jammed. Frost is spreading around a sealed service door, while the building also holds supplies the nearby settlement depends on. The foreman asks you to help before either problem gets worse.',
+      text: 'The rural cooperative’s cold store is humming far louder than it should. A worker named Mara is trapped somewhere inside; before the refrigeration machinery jammed, the foreman heard her answer from within. Since then, no one has heard from her. Frost is spreading around a sealed service door, while the building also holds supplies the nearby settlement depends on. The foreman asks you to help before either problem gets worse.',
       textVariants: [{ requirements: { historyFlags: ['rescued_cold_storage_worker'] }, text: 'The rural cooperative’s cold store is humming far louder than it should. Foreman Iven recognizes you as someone who has brought a trapped worker home before. Mara is trapped somewhere inside, the refrigeration cycle jammed, and frost is spreading around a sealed service door. The building also holds supplies the nearby settlement depends on.' }],
       choices: [
         { id: 'inspectDoor', label: 'Inspect the sealed service door', timeCost: 3, next: 'doorSurvey' },
         { id: 'inspectControls', label: 'Check the refrigeration controls', timeCost: 4, next: 'controlSurvey' },
         { id: 'inspectStock', label: 'Check the cooperative’s stored goods', timeCost: 3, next: 'goodsSurvey' },
-        { id: 'callCrew', label: 'Call the nearby rescue crew', next: 'outsideCall', effects: { setFlags: ['helpCalled'] } },
+        { id: 'callCrew', label: 'Send for the nearby rescue crew', next: 'outsideCall', effects: { setFlags: ['helpCalled'] } },
       ],
     },
     doorSurvey: {
@@ -51,7 +51,7 @@ export const COLD_STORAGE: Scenario = {
       choices: [
         { id: 'leaveForControls', label: 'Find the refrigeration cut-off', timeCost: 3, next: 'controlSurvey' },
         { id: 'leaveForServiceRoute', label: 'Try the lower service passage', timeCost: 4, next: 'serviceEntry' },
-        { id: 'callFromDoor', label: 'Call in the rescue crew', effects: { setFlags: ['helpCalled'] }, next: 'outsideCall' },
+        { id: 'callFromDoor', label: 'Send for the rescue crew', effects: { setFlags: ['helpCalled'] }, next: 'outsideCall' },
         { id: 'withdrawFromDoor', label: 'Back out and leave the site', effects: { historyFlags: ['abandoned_cold_storage_rescue'] }, next: 'abandonedEnding' },
       ],
     },
@@ -72,7 +72,7 @@ export const COLD_STORAGE: Scenario = {
       choices: [
         { id: 'emergencyPowerOff', label: 'Pull the large manual shut-off', hint: 'This safely stops the machinery, but the goods will lose cooling.', effects: { setFlags: ['machineryStopped'] }, next: 'workerFound' },
         { id: 'serviceAfterSpark', label: 'Reach the lower chamber through the service route', timeCost: 5, next: 'serviceEntry' },
-        { id: 'crewAfterSpark', label: 'Call the rescue crew', effects: { setFlags: ['helpCalled'] }, next: 'outsideCall' },
+        { id: 'crewAfterSpark', label: 'Send for the rescue crew', effects: { setFlags: ['helpCalled'] }, next: 'outsideCall' },
       ],
     },
     goodsSurvey: {
@@ -83,7 +83,7 @@ export const COLD_STORAGE: Scenario = {
         { id: 'coverGoodsFast', label: 'Cover and move the cart with your insulation', hint: 'A carried canvas sheet or weatherproof cloak can shield the cart quickly.', timeCost: 4, requirements: { anyItems: INSULATING_GEAR }, chance: { probability: 0.9, successNext: 'goodsSecured', failureNext: 'goodsLost', successMessage: 'The cart reaches the insulated alcove before the strip changes.', failureMessage: 'The cart slips; one medicine case freezes before you can move it.', successEffects: { setFlags: ['goodsSaved', 'goodsIdentified'], knowledge: ['The clinic’s refrigerated medicines were exposed to the cold vent. You moved the cart to a stable alcove.'], historyFlags: ['saved_community_supplies'] }, failureEffects: { setFlags: ['goodsSpoiled', 'goodsIdentified'], knowledge: ['The clinic’s medicine cart was exposed to the cold vent; one case froze while it was moved.'] } } },
         { id: 'moveGoodsByHand', label: 'Move the medicine cart by hand', hint: 'The cart is heavy and the floor is slick; it will take longer.', timeCost: 9, requirements: { notItems: INSULATING_GEAR }, chance: { probability: 0.7, successNext: 'goodsSecured', failureNext: 'goodsLost', successMessage: 'You get the cart clear of the vent just before the strip changes.', failureMessage: 'The slick floor slows you; part of the medicine stock freezes.', successEffects: { setFlags: ['goodsSaved', 'goodsIdentified'], knowledge: ['The clinic’s refrigerated medicines were exposed to the cold vent. You moved the cart to a stable alcove.'], historyFlags: ['saved_community_supplies'] }, failureEffects: { setFlags: ['goodsSpoiled', 'goodsIdentified'], knowledge: ['The clinic’s medicine cart was exposed to the cold vent; part of the stock froze while it was moved.'] } } },
         { id: 'leaveGoodsAndReachWorker', label: 'Leave the cart and follow the knocks', timeCost: 2, effects: { setFlags: ['goodsIdentified', 'goodsAtRisk'], knowledge: ['The clinic’s refrigerated medicines are at risk from the cold vent.'] }, next: 'workerFound' },
-        { id: 'callBeforeMovingGoods', label: 'Ask the rescue crew to handle the cart', timeCost: 2, effects: { setFlags: ['goodsIdentified'], knowledge: ['The clinic’s refrigerated medicines are at risk from the cold vent.'] }, next: 'outsideCall' },
+        { id: 'callBeforeMovingGoods', label: 'Send for the crew to move the cart', timeCost: 2, effects: { setFlags: ['goodsIdentified'], knowledge: ['The clinic’s refrigerated medicines are at risk from the cold vent.'] }, next: 'outsideCall' },
       ],
     },
     goodsSecured: {

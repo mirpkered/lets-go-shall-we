@@ -27,6 +27,14 @@ function available(state: SaveData): Choice[] {
 }
 
 describe('Cold Storage', () => {
+  it('describes outside help through a period-appropriate messenger route', () => {
+    expect(COLD_STORAGE.scenes.loadingBay.text).not.toContain('lost contact');
+    expect(COLD_STORAGE.scenes.loadingBay.choices.find((choice) => choice.id === 'callCrew')?.label).toBe('Send for the nearby rescue crew');
+    expect(COLD_STORAGE.scenes.doorBruised.choices.find((choice) => choice.id === 'callFromDoor')?.label).toBe('Send for the rescue crew');
+    expect(COLD_STORAGE.scenes.relaySparks.choices.find((choice) => choice.id === 'crewAfterSpark')?.label).toBe('Send for the rescue crew');
+    expect(COLD_STORAGE.scenes.outsideCall.text).toContain('A runner can bring them over');
+  });
+
   it('registers for random starts, avoids an immediate repeat, and uses the QA direct-launch route', () => {
     expect(SCENARIOS).toContain(COLD_STORAGE);
     expect(selectScenario(SCENARIOS, COLD_STORAGE.id, () => 0)).not.toBe(COLD_STORAGE);

@@ -22,7 +22,7 @@ export const ITEMS: Record<string, Item> = {
   smokeBellows: { id: 'smokeBellows', name: 'Hand Bellows', description: 'A compact bellows for directing damp, cool smoke from a safe distance.', category: 'run-only', carryable: false },
   ratCatchersHook: { id: 'ratCatchersHook', name: 'Rat-Catcher’s Hook', description: 'A stout iron hook useful for shifting debris without reaching into dark spaces.', category: 'tool', carryable: true },
   heavyLeatherGloves: { id: 'heavyLeatherGloves', name: 'Heavy Leather Gloves', description: 'A well-made pair of thick farm gloves, sound enough for another hard day.', category: 'armor', carryable: true },
-  minerHeadlamp: { id: 'minerHeadlamp', name: 'Miner’s Headlamp', description: 'A rugged carbide lamp with a bright, steady beam.', category: 'tool', carryable: true },
+  minerHeadlamp: { id: 'minerHeadlamp', name: 'Miner’s Headlamp', description: 'A cap-mounted carbide lamp; its water-fed burner and reflector cast a bright, steady beam.', category: 'tool', carryable: true },
   foremanMultiTool: { id: 'foremanMultiTool', name: 'Foreman’s Multi-tool', description: 'A worn but dependable folding tool for small repairs.', category: 'tool', carryable: true },
   mineSurveyMap: { id: 'mineSurveyMap', name: 'Mine Survey Map', description: 'A folded map of the old levels and a marked side drift.', category: 'run-only', carryable: false },
   foldingPryTool: { id: 'foldingPryTool', name: 'Folding Pry Tool', description: 'A compact brass-and-steel tool made for careful leverage.', category: 'tool', carryable: true },

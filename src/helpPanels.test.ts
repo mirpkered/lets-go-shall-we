@@ -70,6 +70,9 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('Time away from the game never advances the adventure clock');
     expect(markup).toContain('You travel light, take work where you find it, and rarely stay anywhere long. Some days bring ordinary work. Others bring trouble.');
     expect(markup).toContain('You can accept a job, lend a hand, or keep moving');
+    expect(markup).toContain('This is a fictional travel era inspired by the late 19th century');
+    expect(markup).toContain('The exact year is left open');
+    expect(markup).toContain('telegraphy is available only in some settlements');
   });
 
   it('explains persistence, one-item carry, bank, death, retirement, abandonment, and autosave accurately', () => {
