@@ -16,7 +16,24 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       // Pre-clock active saves resume at a safe zero; real-world elapsed time never counts.
       parsed.run.elapsedMinutes = Number.isFinite(parsed.run.elapsedMinutes) ? Math.max(0, Math.floor(parsed.run.elapsedMinutes!)) : 0;
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
+      parsed.run.flags ??= [];
       const scenario = getScenario(parsed.run.scenarioId);
+      if (scenario?.saveVersion && (parsed.run.scenarioSaveVersion ?? 0) < scenario.saveVersion) {
+        // Earlier versions named Silas in the opening, so an active legacy run
+        // has already learned his identity even if it has not visited a new
+        // identity-reveal scene. Keep that knowledge explicit for gated prose.
+        const identityWasEstablished = new Set([
+          'arrival', 'hostAccount', 'guestRegister', 'hostConfrontation', 'cellarEntry',
+          'cellarIdentity', 'silasFree', 'quietEnding', 'partialEnding',
+        ]);
+        if (parsed.run.visitedSceneIds.some((sceneId) => identityWasEstablished.has(sceneId))) {
+          parsed.run.flags = [...new Set([...parsed.run.flags, 'identifiedSilas'])];
+        }
+        if (parsed.run.visitedSceneIds.some((sceneId) => ['serviceHall', 'cellarClues', 'cellarEntry', 'cellarIdentity'].includes(sceneId))) {
+          parsed.run.flags = [...new Set([...parsed.run.flags, 'knowsCellar'])];
+        }
+        parsed.run.scenarioSaveVersion = scenario.saveVersion;
+      }
       if (scenario?.runRandomSelections?.length && !parsed.run.randomSelections) {
         parsed.run.randomSelections = pickRunRandomSelections(scenario);
         storage.setItem?.(KEY, JSON.stringify(parsed));

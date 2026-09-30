@@ -19,7 +19,7 @@ export function startRun(character: Character, scenario: Scenario, random = Math
   const inventory = [...STARTING_ITEMS];
   if (character.carriedItem) inventory.push(character.carriedItem);
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0 };
+  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function startAdventure(state: SaveData, scenario: Scenario): SaveData {

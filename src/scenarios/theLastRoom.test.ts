@@ -6,6 +6,7 @@ import { selectScenario } from '../scenarioSelection';
 import { renderQaPanel } from '../qaPanel';
 import { SCENARIOS, THE_LAST_ROOM } from './index';
 import type { SaveData } from '../types';
+import { loadSave, SAVE_KEY } from '../storage';
 
 function fresh(money = 0, carriedItem: string | null = null): SaveData {
   const character = newCharacter('Inn Guest');
@@ -30,6 +31,15 @@ function toCellar(state: SaveData): SaveData {
   return pick(state, 'openAfterClues');
 }
 
+function toCellarWithoutName(state: SaveData): SaveData {
+  state = pick(state, 'askGuests');
+  state = pick(state, 'followYardAccount');
+  state = pick(state, 'followMudMarks');
+  state = pick(state, 'goToServiceHall');
+  state = pick(state, 'inspectCellarScuffs');
+  return pick(state, 'openAfterClues');
+}
+
 describe('The Last Room on the Left', () => {
   it('supports a fresh-character resolution by bringing the innkeeper and guests together', () => {
     let state = pick(fresh(), 'askInnkeeper');
@@ -37,7 +47,7 @@ describe('The Last Room on the Left', () => {
     state = pick(state, 'askInnkeeperForTruth');
     state = pick(state, 'helpWithInnkeeper');
     expect(state.run?.sceneId).toBe('cellarEntry');
-    state = pick(state, 'getHelpForSilas');
+    state = pick(state, 'liftWithInnkeeper');
     state = pick(state, 'guideTheLift');
     expect(state.run?.sceneId).toBe('silasFree');
     state = pick(state, 'acceptFoldingTool');
@@ -60,18 +70,79 @@ describe('The Last Room on the Left', () => {
     expect(state.run?.status).toBe('active');
   });
 
-  it('allows a wrong accusation with social consequences instead of arbitrary death', () => {
-    let state = pick(fresh(), 'askGuests');
-    state = pick(state, 'accuseGuest');
-    state = pick(state, 'doubleDownOnNell');
-    expect(state.run?.sceneId).toBe('wrongAccusationEnding');
-    expect(state.run?.status).toBe('success');
-    expect(state.run?.health).toBe(10);
-    expect(state.character?.historyFlags).toContain('wrongly_accused_guest');
+  it('introduces the mystery without revealing the missing traveler’s name before discovery', () => {
+    const state = fresh();
+    expect(THE_LAST_ROOM.scenes.arrival.text).toMatch(/Nell, the inn’s maid/);
+    expect(THE_LAST_ROOM.scenes.arrival.text).toMatch(/chair and narrow table shoved against the door from the hallway side/);
+    expect(THE_LAST_ROOM.scenes.arrival.text).toMatch(/storm has made the road dangerous to search/);
+    expect(THE_LAST_ROOM.scenes.arrival.text).not.toMatch(/Silas|Vale/);
+    expect(state.run?.visitedSceneIds).toEqual(['arrival']);
+    const cellar = toCellar(fresh());
+    expect(THE_LAST_ROOM.scenes.cellarEntry.text).not.toMatch(/Silas Vale/);
+    expect(pick(cellar, 'askHisName').run?.sceneId).toBe('cellarIdentity');
+    expect(THE_LAST_ROOM.scenes.cellarIdentity.text).toContain('Silas Vale');
+  });
+
+  it('keeps name-aware narration gated to routes that identify Silas', () => {
+    const unknown = toCellarWithoutName(fresh());
+    const known = pick(fresh(), 'askInnkeeper');
+    expect(unknown.run?.flags).not.toContain('identifiedSilas');
+    expect(known.run?.flags).toContain('identifiedSilas');
+    expect(THE_LAST_ROOM.scenes.cellarEntry.textVariants?.some((variant) => variant.text.includes('Silas Vale') && variant.requirements?.flags?.includes('identifiedSilas'))).toBe(true);
+  });
+
+  it('makes the cellar route, rescue anchor, and hidden room space physically explicit', () => {
+    const start = fresh();
+    let state = pick(start, 'inspectRoom');
+    state = pick(state, 'inspectBarricade');
+    expect(state.run?.sceneId).toBe('latchClue');
+    expect(THE_LAST_ROOM.scenes.latchClue.text).toMatch(/furniture was pushed from your side/);
+    expect(THE_LAST_ROOM.scenes.latchClue.choices.find((choice) => choice.id === 'useMirrorAtDoor')?.next).toBe('mirrorRoomClue');
+    const mirrorState = { ...state, run: { ...state.run!, inventory: [...state.run!.inventory, 'foldingCardMirror'] } };
+    const checked = pick(mirrorState, 'useMirrorAtDoor');
+    expect(checked.run?.sceneId).toBe('mirrorRoomClue');
+    expect(THE_LAST_ROOM.scenes.mirrorRoomClue.text).toMatch(/It cannot show the far side of the room/);
+    const cellar = toCellar(fresh(0, 'travelRope'));
+    expect(THE_LAST_ROOM.scenes.cellarEntry.text).toMatch(/support post stands beside the shelf/);
+    expect(THE_LAST_ROOM.scenes.cellarEntry.choices.find((choice) => choice.id === 'rigRopeForSilas')?.label).toMatch(/cellar post/);
+    expect(cellar.run?.sceneId).toBe('cellarEntry');
+  });
+
+  it('migrates legacy active saves to explicit name and cellar knowledge without resetting the run', () => {
+    const legacy = fresh();
+    legacy.run!.sceneId = 'cellarEntry';
+    legacy.run!.visitedSceneIds = ['arrival', 'hostAccount', 'serviceHall', 'cellarEntry'];
+    legacy.run!.flags = [];
+    delete legacy.run!.scenarioSaveVersion;
+    const storage = {
+      getItem: (key: string) => key === SAVE_KEY ? JSON.stringify(legacy) : null,
+    };
+    const loaded = loadSave(storage as Pick<Storage, 'getItem'> & Partial<Pick<Storage, 'setItem'>>);
+    expect(loaded.run?.sceneId).toBe('cellarEntry');
+    expect(loaded.run?.flags).toContain('identifiedSilas');
+    expect(loaded.run?.flags).toContain('knowsCellar');
+    expect(loaded.run?.visitedSceneIds).toEqual(legacy.run!.visitedSceneIds);
+  });
+
+  it('does not infer Silas’s identity when a current-version player has not discovered it', () => {
+    const current = toCellarWithoutName(fresh());
+    const storage = { getItem: (key: string) => key === SAVE_KEY ? JSON.stringify(current) : null };
+    const loaded = loadSave(storage as Pick<Storage, 'getItem'> & Partial<Pick<Storage, 'setItem'>>);
+    expect(loaded.run?.scenarioSaveVersion).toBe(THE_LAST_ROOM.saveVersion);
+    expect(loaded.run?.flags).not.toContain('identifiedSilas');
+    expect(loaded.run?.sceneId).toBe('cellarEntry');
+  });
+
+  it('does not offer an accusation before the player has evidence about the blocked room', () => {
+    const corridor = pick(pick(fresh(), 'inspectRoom'), 'inspectBarricade');
+    expect(THE_LAST_ROOM.scenes.corridor.choices.some((choice) => /accuse/i.test(choice.label))).toBe(false);
+    expect(THE_LAST_ROOM.scenes.latchClue.choices.some((choice) => /accuse/i.test(choice.label))).toBe(false);
+    expect(THE_LAST_ROOM.scenes.guestAccused.text).toContain('without evidence');
+    expect(corridor.run?.sceneId).toBe('latchClue');
   });
 
   it('treats walking away as a valid ending without moral judgment or reward', () => {
-    const state = pick(fresh(), 'walkAway');
+    const state = pick(fresh(), 'leaveInn');
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('walkAwayEnding');
     expect(state.run?.acquiredThisRun).toEqual([]);
@@ -80,13 +151,14 @@ describe('The Last Room on the Left', () => {
   });
 
   it('lets careful investigation uncover contradictions and the cellar truth', () => {
-    let state = pick(fresh(), 'inspectRegister');
+    let state = pick(fresh(), 'askGuests');
+    state = pick(state, 'compareRegister');
     state = pick(state, 'checkServiceDoor');
-    expect(state.character?.knowledge).toContain('The inn’s service passage has fresh scrape marks at the cellar latch.');
+    expect(state.character?.knowledge).toContain('The register names Silas Vale and notes that his travel case was stored below.');
     state = pick(state, 'inspectCellarScuffs');
     state = pick(state, 'openAfterClues');
     expect(state.run?.sceneId).toBe('cellarEntry');
-    expect(THE_LAST_ROOM.scenes.cellarEntry.text).toMatch(/Vale is conscious/);
+    expect(THE_LAST_ROOM.scenes.cellarEntry.text).toMatch(/injured man\. He is conscious/);
   });
 
   it('supports forceful entry but records it and does not resolve the mystery', () => {
@@ -153,8 +225,7 @@ describe('The Last Room on the Left', () => {
   it('persists meaningful history and removes run-only access keys after successful completion', () => {
     let state = pick(fresh(), 'askGuests');
     state = pick(state, 'visitRoom');
-    state = pick(state, 'knockGently');
-    state = pick(state, 'offerToListen');
+    state = pick(state, 'askNell');
     state = pick(state, 'believeNell');
     expect(state.character?.historyFlags).toContain('trusted_testimony_over_evidence');
     expect(state.character?.historyFlags).toContain('intervened_in_inn_dispute');
@@ -192,12 +263,12 @@ describe('The Last Room on the Left', () => {
 
   it('supports a foreshadowed dangerous route where accumulated injury can kill', () => {
     let state = toCellar(fresh(0, 'pocketToolkit'));
-    state = pick(state, 'dropThroughVent', () => 0.999);
+    state = pick(state, 'pryShelf', () => 0.999);
     expect(state.run?.sceneId).toBe('cellarSlip');
-    expect(state.run?.health).toBe(6);
+    expect(state.run?.health).toBe(8);
     state = pick(state, 'retryWithTool', () => 0.999);
     expect(state.run?.sceneId).toBe('cellarSlipAgain');
-    expect(state.run?.health).toBe(3);
+    expect(state.run?.health).toBe(5);
     state = pick(state, 'tryLastLift', () => 0.999);
     expect(state.run?.status).toBe('death');
   });
@@ -220,7 +291,7 @@ describe('The Last Room on the Left', () => {
       if (scene.ending) continue;
       const actions = scene.choices.filter((choice) => meets(choice.requirements, state));
       if (!actions.length) deadEnds.push(run.sceneId);
-      expect(scene.choices.length).toBeLessThanOrEqual(4);
+      expect(actions.length).toBeLessThanOrEqual(4);
       for (const action of actions) {
         const outcomes = [choose(state, THE_LAST_ROOM, action, () => 0)];
         if (action.chance || action.effects?.combat) outcomes.push(choose(state, THE_LAST_ROOM, action, () => 0.999999));

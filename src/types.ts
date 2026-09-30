@@ -35,6 +35,7 @@ export interface RunState {
   message: string | null;
   startedAt: number;
   elapsedMinutes?: number;
+  scenarioSaveVersion?: number;
 }
 
 export interface TimePhase {
@@ -136,6 +137,7 @@ export interface Scenario {
   title: string;
   subtitle: string;
   startScene: string;
+  saveVersion?: number;
   timePhases?: TimePhase[];
   runRandomSelections?: RunRandomSelection[];
   scenes: Record<string, Scene>;
