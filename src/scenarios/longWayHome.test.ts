@@ -4,6 +4,7 @@ import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { selectScenario } from '../scenarioSelection';
 import { renderQaPanel } from '../qaPanel';
+import { loadSave, saveGame } from '../storage';
 import { SCENARIOS } from './index';
 import { THE_LONG_WAY_HOME } from './longWayHome';
 import type { SaveData } from '../types';
@@ -152,6 +153,32 @@ describe('The Long Way Home', () => {
     expect(treatedGloved.run?.elapsedMinutes).toBe(9);
     expect(treatedGloved.run?.flags).toContain('woundSupported');
     expect(treatedGloved.character?.knowledge).toContain('You wrapped Anna’s ankle firmly; it is supported, though she will still need to rest and move carefully.');
+  });
+
+  it('uses a field bandage as a consumable, faster sprain wrap and preserves it on save only until used', () => {
+    const bare = act(fresh(), 'inspectInjury');
+    expect(THE_LONG_WAY_HOME.scenes.injuryAssessment.choices.filter((choice) => meets(choice.requirements, bare)).map((choice) => choice.id)).not.toContain('useFieldBandage');
+    expect(THE_LONG_WAY_HOME.scenes.injuryAssessment.choices.filter((choice) => meets(choice.requirements, bare)).map((choice) => choice.id)).toContain('wrapWithoutGloves');
+
+    const equipped = act(fresh('fieldBandageRoll'), 'inspectInjury');
+    const available = THE_LONG_WAY_HOME.scenes.injuryAssessment.choices.filter((choice) => meets(choice.requirements, equipped)).map((choice) => choice.id);
+    expect(available).toContain('useFieldBandage');
+    expect(available).not.toContain('wrapWithoutGloves');
+    const treated = act(equipped, 'useFieldBandage');
+    expect(treated.run?.elapsedMinutes).toBe(7);
+    expect(treated.run?.inventory).not.toContain('fieldBandageRoll');
+    expect(treated.run?.flags).toContain('bandageRollUsed');
+    expect(treated.run?.sceneId).toBe('journeyPlan');
+    expect(treated.character?.knowledge).toContain('You used your field bandage roll to support Anna’s sprained ankle. It helps steady her, but she still needs rest and careful steps.');
+
+    const values = new Map<string, string>();
+    const storage = { setItem: (key: string, value: string) => values.set(key, value), getItem: (key: string) => values.get(key) ?? null };
+    saveGame(treated, storage);
+    const resumed = loadSave(storage);
+    expect(resumed.run?.sceneId).toBe('journeyPlan');
+    expect(resumed.run?.inventory).not.toContain('fieldBandageRoll');
+    expect(resumed.run?.flags).toContain('bandageRollUsed');
+    expect(resumed.run?.elapsedMinutes).toBe(7);
   });
 
   it('makes rope or other descent gear faster and safer without requiring it', () => {

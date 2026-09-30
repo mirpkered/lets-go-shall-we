@@ -44,7 +44,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 
 ## Current limitations
 
-- Sixteen authored scenarios and one character slot
+- Twenty authored scenarios and one character slot
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable

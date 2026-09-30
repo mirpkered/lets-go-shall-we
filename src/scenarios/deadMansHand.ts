@@ -3,7 +3,7 @@ import type { Scenario } from '../types';
 const MARK_KNOWLEDGE = 'Mercer marked the backs of three aces with tiny half-moon nicks and reads them by touch.';
 const DEBT_KNOWLEDGE = 'Boone is three dollars behind on his marker and is afraid of losing his room.';
 const CUT_CARD_KNOWLEDGE = 'The red card Ada passed across the table was the ordinary cut card, not a signal.';
-const TOOL_ITEMS = ['pocketToolkit', 'foremanMultiTool', 'ratCatchersHook', 'foldingCardMirror'];
+const TOOL_ITEMS = ['pocketToolkit', 'foremanMultiTool', 'ratCatchersHook', 'foldingCardMirror', 'assayersLoupe'];
 const WEAPON_ITEMS = ['smallKnife', 'brassCandlestick', 'ratCatchersHook', 'dealerCardKnife'];
 
 export const DEAD_MANS_HAND: Scenario = {
@@ -84,7 +84,7 @@ export const DEAD_MANS_HAND: Scenario = {
         { requirements: { minElapsedMinutes: 14 }, text: 'Another round has passed. Boone is standing now, one hand near his belt. Mabel has begun putting away the glassware. The deputy’s office across the street is dark; no one can fetch him before the room turns.' },
       ],
       choices: [
-        { id: 'inspectWithTool', label: 'Check the discarded cards carefully', hint: 'A toolkit, hook, or inspection mirror can reach and examine the card edges quickly.', requirements: { anyItems: TOOL_ITEMS }, timeCost: 3, effects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces'] }, next: 'markedDeckProof' },
+        { id: 'inspectWithTool', label: 'Check the discarded cards carefully', hint: 'A toolkit, hook, or mirror reaches the cards quickly; the loupe makes fine edge nicks easier to distinguish.', requirements: { anyItems: TOOL_ITEMS }, timeCost: 3, effects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces'] }, next: 'markedDeckProof' },
         { id: 'inspectWithoutTool', label: 'Study the discarded cards by hand', hint: 'Takes longer and risks drawing attention.', requirements: { notItems: TOOL_ITEMS }, timeCost: 8, chance: { probability: 0.68, successNext: 'markedDeckProof', failureNext: 'uncertainCards', successMessage: 'Three aces have tiny crescent nicks at the same corner. Mercer’s thumb fits the marks.', failureMessage: 'The cards are worn from use; none gives you certain proof.', successEffects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces'] }, failureEffects: { setFlags: ['searchDrewAttention'] } } },
         { id: 'speakPrivatelyToBoone', label: 'Ask Boone what he actually saw', timeCost: 4, next: 'boonePrivate' },
         { id: 'speakPrivatelyToAda', label: 'Ask Ada why she is afraid', timeCost: 4, next: 'adaPrivate' },

@@ -75,6 +75,25 @@ describe('Dead Man’s Hand', () => {
     expect(state.character?.historyFlags).toContain('exposed_card_cheat');
   });
 
+  it('uses an assayer’s loupe to inspect the card marks quickly without gating the untooled route', () => {
+    const bare = reachRisingTension();
+    const bareChoices = DEAD_MANS_HAND.scenes.risingTension.choices.filter((choice) => meets(choice.requirements, bare)).map((choice) => choice.id);
+    expect(bareChoices).toContain('inspectWithoutTool');
+    expect(bareChoices).not.toContain('inspectWithTool');
+    const handInspected = act(bare, 'inspectWithoutTool', 0);
+
+    const louped = reachRisingTension(fresh(0, 'assayersLoupe'));
+    const loupedChoices = DEAD_MANS_HAND.scenes.risingTension.choices.filter((choice) => meets(choice.requirements, louped)).map((choice) => choice.id);
+    expect(loupedChoices).toContain('inspectWithTool');
+    expect(loupedChoices).not.toContain('inspectWithoutTool');
+    const inspected = act(louped, 'inspectWithTool');
+    expect(inspected.run?.elapsedMinutes).toBe((louped.run?.elapsedMinutes ?? 0) + 3);
+    expect(handInspected.run?.elapsedMinutes).toBe((bare.run?.elapsedMinutes ?? 0) + 8);
+    expect(inspected.run?.sceneId).toBe('markedDeckProof');
+    expect(inspected.run?.inventory).toContain('assayersLoupe');
+    expect(inspected.character?.knowledge).toContain('Mercer marked the backs of three aces with tiny half-moon nicks and reads them by touch.');
+  });
+
   it('makes a paid hand a bounded money choice with clear wins and losses', () => {
     let state = act(fresh(2), 'takeOpenSeat');
     state = act(state, 'buyIntoHand');

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { choose, failCharacter, meets, newCharacter, startRun } from '../engine';
+import { choose, failCharacter, meets, newCharacter, sceneText, startRun } from '../engine';
+import { loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
 import { AWW_RATS } from './awwRats';
 
@@ -96,6 +97,66 @@ describe('Aww, Rats!!', () => {
     expect(AWW_RATS.scenes.sealPlan.choices.filter((choice) => meets(choice.requirements, state)).map((choice) => choice.id)).toContain('toolSeal');
     state = act(state, 'toolSeal');
     expect(state.run?.sceneId).toBe('routesSealed');
+  });
+
+  it('lets a carried inspection mirror reveal a safe outer run and improve a later fresh route', () => {
+    let bare = act(fresh(), 'followTracks');
+    expect(AWW_RATS.scenes.tracksClue.choices.filter((choice) => meets(choice.requirements, bare)).map((choice) => choice.id)).not.toContain('inspectOuterRun');
+    expect(AWW_RATS.scenes.trapPlan.text).not.toContain('The mirror showed you');
+
+    let mirrored = act(fresh(0, 'foldingCardMirror'), 'followTracks');
+    mirrored = act(mirrored, 'inspectOuterRun');
+    expect(mirrored.run?.elapsedMinutes).toBe(11);
+    expect(mirrored.run?.inventory).toContain('foldingCardMirror');
+    expect(mirrored.run?.flags).toContain('outerRunViewed');
+    expect(mirrored.character?.knowledge).toContain('The folding mirror shows an outer rat run beneath the loose sill; the hollow boards should not be crossed.');
+    expect(sceneText(AWW_RATS.scenes.trapPlan, { ...mirrored, run: { ...mirrored.run!, sceneId: 'trapPlan' } })).toContain('The mirror showed you a narrow outer run');
+    const values = new Map<string, string>();
+    const storage = { setItem: (key: string, value: string) => values.set(key, value), getItem: (key: string) => values.get(key) ?? null };
+    saveGame(mirrored, storage);
+    mirrored = loadSave(storage);
+    expect(mirrored.run?.sceneId).toBe('supplyShed');
+    expect(mirrored.run?.visitedSceneIds).toContain('tracksClue');
+    expect(mirrored.run?.flags).toContain('outerRunViewed');
+    expect(mirrored.run?.inventory).toContain('foldingCardMirror');
+
+    bare = act(bare, 'markCreekRoute');
+    bare = act(bare, 'skipSupplies');
+    bare = act(bare, 'destroyGrain');
+    bare = act(bare, 'tryTraps');
+    const bareAttempt = act(bare, 'simpleTrap', 0.65);
+    expect(bareAttempt.run?.sceneId).toBe('trapBurst');
+
+    mirrored = act(mirrored, 'skipSupplies');
+    mirrored = act(mirrored, 'destroyGrain');
+    mirrored = act(mirrored, 'tryTraps');
+    const improvedAttempt = act(mirrored, 'simpleTrap', 0.65);
+    expect(improvedAttempt.run?.sceneId).toBe('trapsWorking');
+  });
+
+  it('makes the smoke hood a quicker, safer option without hiding the fresh-character smoke route', () => {
+    let bare = reachGrainDecision();
+    bare = act(bare, 'destroyGrain');
+    bare = act(bare, 'smokeNest');
+    const bareChoices = AWW_RATS.scenes.smokePlan.choices.filter((choice) => meets(choice.requirements, bare)).map((choice) => choice.id);
+    expect(bareChoices).toContain('dampSmoke');
+    expect(bareChoices).not.toContain('hoodedDampSmoke');
+
+    let hooded = reachGrainDecision(fresh(0, 'smokeHood'));
+    hooded = act(hooded, 'destroyGrain');
+    hooded = act(hooded, 'smokeNest');
+    const hoodedChoices = AWW_RATS.scenes.smokePlan.choices.filter((choice) => meets(choice.requirements, hooded)).map((choice) => choice.id);
+    expect(hoodedChoices).toContain('hoodedDampSmoke');
+    expect(hoodedChoices).not.toContain('dampSmoke');
+    expect(hoodedChoices.length).toBeLessThanOrEqual(4);
+    const smoke = act(hooded, 'hoodedDampSmoke', 0.7);
+    expect(smoke.run?.elapsedMinutes).toBe(27);
+    expect(smoke.run?.sceneId).toBe('smokeClears');
+    expect(smoke.run?.inventory).toContain('smokeHood');
+
+    const failure = act(hooded, 'hoodedDampSmoke', 0.99);
+    expect(failure.run?.sceneId).toBe('smokeDrifts');
+    expect(failure.run?.health).toBe(9);
   });
 
   it('advances after a failed dangerous check and communicates the threat first', () => {
