@@ -55,6 +55,8 @@ export const ITEMS: Record<string, Item> = {
   gateHook: { id: 'gateHook', name: 'Gate Hook', description: 'A stout hooked tool for lifting latches and drawing wire clear of a gate.', category: 'tool', carryable: true },
   windproofMatchCase: { id: 'windproofMatchCase', name: 'Windproof Match Case', description: 'A brass case that keeps a few matches dry in wind and wet weather.', category: 'tool', carryable: true },
   woolTravelBlanket: { id: 'woolTravelBlanket', name: 'Wool Travel Blanket', description: 'A compact, tightly woven blanket that holds warmth on a cold road.', category: 'armor', carryable: true },
+  fieldBandageRoll: { id: 'fieldBandageRoll', name: 'Field Bandage Roll', description: 'A clean, tightly wrapped roll of gauze for practical roadside first aid.', category: 'consumable', carryable: true },
+  roadsideSignalMirror: { id: 'roadsideSignalMirror', name: 'Roadside Signal Mirror', description: 'A polished steel mirror with a sighting notch for signaling across open country.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

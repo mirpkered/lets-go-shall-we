@@ -61,6 +61,7 @@ describe('player scenario selection and QA mode', () => {
     expect(tools).toContain('Start The Road Below');
     expect(tools).toContain('Start Smoke on the Hill');
     expect(tools).toContain('Start Down to the Last Match');
+    expect(tools).toContain('Start The Man in the Ditch');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

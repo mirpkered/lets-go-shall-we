@@ -99,7 +99,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
 
   if (next.run.health <= 0) {
     next.run.status = 'death';
-    next.run.sceneId = destination === 'deathBell' ? destination : '__death';
+    next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
     next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
     return next;
   }
