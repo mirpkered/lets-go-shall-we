@@ -92,4 +92,17 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}');
     expect(mainSource).toContain('<section class="choices count-${choices.length}"');
   });
+
+  it('keeps title-screen art session-scoped, QA-only controls hidden from players, and gameplay backdrop unchanged', () => {
+    expect(mainSource).toContain('getOrCreateHomeScene(homeSceneStorage)');
+    expect(mainSource).toContain('sessionStorage');
+    expect(mainSource).toContain('if (!qaEnabled) return \'\';');
+    expect(mainSource).toContain('data-home-scene-next');
+    expect(mainSource).toContain('homeSceneQaControls()');
+    expect(styles).toContain('.home-screen { position:relative; isolation:isolate; background-color:#101313;');
+    expect(styles).toContain('var(--home-scene-art)');
+    expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
+    expect(styles).toContain("url('./assets/adventure-backdrop.svg')");
+    expect(styles).toContain('.qa-home-scene-actions button { min-width:3.75rem; min-height:44px;');
+  });
 });

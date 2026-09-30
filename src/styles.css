@@ -22,8 +22,15 @@ button:focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 svg { width:1.25rem; height:1.25rem; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .app-shell { width:min(100%, 47rem); min-height:100vh; min-height:100dvh; margin:0 auto; padding:clamp(1.2rem, 5vw, 2.5rem) 1.1rem max(1.25rem, env(safe-area-inset-bottom)); display:flex; flex-direction:column; }
-.home-screen { position:relative; isolation:isolate; }
+.home-screen { position:relative; isolation:isolate; background-color:#101313; background-image:linear-gradient(180deg,#080a0a42 0%,#090b0cc2 48%,#090b0df2 100%),var(--home-scene-art); background-size:cover,cover; background-position:center,center; background-repeat:no-repeat; }
 .home-screen::before { content:''; position:absolute; z-index:-1; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 30%,#c28a3820,transparent 58%),linear-gradient(180deg,#080a0a05 0%,#090a0c12 70%,#08090c45 100%); }
+.resume-home { min-height:100vh; min-height:100dvh; }
+.qa-home-scene { display:flex; align-items:center; justify-content:space-between; gap:.75rem; width:100%; margin-top:1rem; padding:.8rem; border:1px dashed #76603b; background:#10100de8; box-shadow:0 .5rem 1.5rem #0008; }
+.qa-home-scene > div:first-child { display:grid; min-width:0; gap:.25rem; }
+.qa-home-scene strong { color:#e6d5ae; }
+.qa-home-scene small { color:#a49a88; font-size:.72rem; line-height:1.35; }
+.qa-home-scene-actions { display:flex; flex:0 0 auto; gap:.4rem; }
+.qa-home-scene-actions button { min-width:3.75rem; min-height:44px; padding:.45rem; border:1px solid #665438; background:#201c15; color:#e4d8c1; font:inherit; font-size:.72rem; cursor:pointer; }
 footer { margin-top:auto; padding:2.5rem .2rem .25rem; display:flex; justify-content:space-between; color:#706a60; font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; }
 .centered { justify-content:center; }
 .eyebrow { color:var(--brass); font-size:.74rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
@@ -234,6 +241,11 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .reward-screen .reward-box button small { margin-top:.15rem; font-size:.72rem; line-height:1.2; }
   .reward-screen .reward-box .bank-capacity-note { font-size:.74rem; line-height:1.25; }
   .reward-screen .reward-box .text-button { min-height:2.7rem; }
+}
+
+@media (max-width: 370px) {
+  .qa-home-scene { align-items:stretch; flex-direction:column; }
+  .qa-home-scene-actions button { flex:1; }
 }
 
 @media (max-width: 370px) {

@@ -10,6 +10,7 @@ import { isQaMode, selectScenario } from './scenarioSelection';
 import { EMPTY_SAVE, loadSave, SAVE_KEY, saveGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
+import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let state: SaveData = loadSave();
@@ -19,6 +20,12 @@ let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSele
 let pendingBankDestructive: { kind: 'item'; itemId: string } | { kind: 'empty' } | null = null;
 let bankConfirmReturnSelector = '#back';
 const qaEnabled = isQaMode(window.location.search);
+const homeSceneStorage: SessionSceneStorage = (() => {
+  try { return window.sessionStorage; }
+  catch { return { getItem: () => null, setItem: () => undefined }; }
+})();
+let activeHomeScene = getOrCreateHomeScene(homeSceneStorage);
+const assetBaseUrl = (import.meta as ImportMeta & { env: { BASE_URL: string } }).env.BASE_URL;
 const counterEndpoint = (import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL ?? '';
 let globalTotal: number | null = null;
 let globalTotalRequested = false;
@@ -85,8 +92,8 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
   return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name]}</svg>`;
 }
 
-function shell(content: string, extra = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+function shell(content: string, extra = '', style = ''): void {
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -102,6 +109,27 @@ function shell(content: string, extra = ''): void {
   bindQaPanel();
 }
 
+function homeSceneStyle(): string {
+  return `--home-scene-art:url(${assetBaseUrl}home-scenes/${activeHomeScene.file})`;
+}
+
+function homeSceneQaControls(): string {
+  if (!qaEnabled) return '';
+  const index = homeSceneIndex(activeHomeScene.id);
+  return `<section class="qa-home-scene" aria-label="QA home scene preview"><div><span class="eyebrow">QA · Home scene</span><strong>${safeText(activeHomeScene.name)}</strong><small>${index + 1} of ${HOME_SCENES.length} · ${safeText(activeHomeScene.description)}</small></div><div class="qa-home-scene-actions"><button type="button" data-home-scene-previous aria-label="Previous home scene">Previous</button><button type="button" data-home-scene-next aria-label="Next home scene">Next</button></div></section>`;
+}
+
+function bindHomeSceneQaControls(): void {
+  if (!qaEnabled) return;
+  const move = (direction: number) => {
+    const index = (homeSceneIndex(activeHomeScene.id) + direction + HOME_SCENES.length) % HOME_SCENES.length;
+    activeHomeScene = setHomeSceneForSession(homeSceneStorage, HOME_SCENES[index].id) ?? activeHomeScene;
+    renderHome();
+  };
+  document.querySelector('[data-home-scene-previous]')?.addEventListener('click', () => move(-1));
+  document.querySelector('[data-home-scene-next]')?.addEventListener('click', () => move(1));
+}
+
 function render(): void {
   if (screen === 'play') return renderPlay();
   if (screen === 'bank') return renderBank();
@@ -114,7 +142,8 @@ function render(): void {
 function renderHome(): void {
   if (state.run?.status === 'active') {
     const scenario = activeScenario();
-    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>`, 'centered');
+    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>${homeSceneQaControls()}`, 'centered home-screen resume-home', homeSceneStyle());
+    bindHomeSceneQaControls();
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
       if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); render(); }
@@ -130,7 +159,8 @@ function renderHome(): void {
   const counterLabel = globalTotal === null ? '' : `<p class="global-completions">Adventures completed by travelers: ${formatGlobalTotal(globalTotal)}</p>`;
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
     <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>
-    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}`, 'home-screen');
+    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
+  bindHomeSceneQaControls();
   document.querySelector('#begin')!.addEventListener('click', () => {
     const scenario = selectScenario(SCENARIOS, state.mostRecentScenarioId);
     if (scenario) startScenario(scenario.id);

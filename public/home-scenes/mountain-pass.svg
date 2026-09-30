@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="highSky" x2="0" y2="1"><stop stop-color="#17202d"/><stop offset=".6" stop-color="#3d4850"/><stop offset="1" stop-color="#242827"/></linearGradient>
+    <linearGradient id="highRoad" x2="0" y2="1"><stop stop-color="#77715e" stop-opacity=".55"/><stop offset="1" stop-color="#181c1b" stop-opacity=".95"/></linearGradient>
+    <radialGradient id="highMoon"><stop stop-color="#d0d5d1" stop-opacity=".19"/><stop offset="1" stop-color="#d0d5d1" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#highSky)"/><ellipse cx="1130" cy="310" rx="400" ry="310" fill="url(#highMoon)"/><circle cx="1130" cy="310" r="38" fill="#d3d3c6" fill-opacity=".24"/>
+  <path d="M0 845 275 432l170 203 202-395 218 314 240-453 229 431 183-185 83 216v637H0Z" fill="#202a2d"/><path d="m0 944 302-350 192 264 153-298 237 334 224-349 199 317 205-236 88 177v397H0Z" fill="#151c1c"/>
+  <path d="M0 1200c179-71 333-88 472-50 137 37 241 6 281-65 45-81-39-132-8-209 28-70 144-71 167-150 24-79-41-132-13-211 26-73 93-99 161-122l62 92c-71 45-100 80-83 136 30 102 93 163 29 266-66 105-200 92-228 178-23 71 32 129 8 211-24 79-98 151-171 224Z" fill="url(#highRoad)"/>
+  <g transform="translate(1070 636)" fill="#111614"><path d="M0 77 76 18l75 59v121H0Z"/><path d="m-14 80 90-71 90 71h-28L76 28 12 80Z"/><path d="M62 106h28v92H62Z"/><path d="M51 119h16v23H51Zm43 0h16v23H94Z" fill="#d0a95e" fill-opacity=".45"/></g>
+  <g fill="#101513"><path d="m94 889 31-129 33 129h-17l24 75H87l24-75Zm1395-45 31-133 33 133h-17l25 78h-81l25-78Z"/></g>
+  <rect width="1600" height="1200" fill="#080a0c" fill-opacity=".25"/>
+</svg>
