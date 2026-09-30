@@ -55,6 +55,7 @@ describe('player scenario selection and QA mode', () => {
     expect(tools).toContain('Start Bridge Out');
     expect(tools).toContain('Start The Long Way Home');
     expect(tools).toContain('Start No Vacancy');
+    expect(tools).toContain('Start Cold Storage');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });

@@ -37,6 +37,8 @@ export const ITEMS: Record<string, Item> = {
   waxedCanvasSheet: { id: 'waxedCanvasSheet', name: 'Waxed Canvas Sheet', description: 'A tough, water-shedding sheet useful for temporary cover and rough repairs.', category: 'tool', carryable: true },
   compactStoveTool: { id: 'compactStoveTool', name: 'Compact Stove Tool', description: 'A short iron tool for adjusting latches, stove plates, and stubborn fittings.', category: 'tool', carryable: true },
   reserveBlanket: { id: 'reserveBlanket', name: 'Reserve Blanket', description: 'A dry wool blanket borrowed from the inn’s limited emergency stores.', category: 'run-only', carryable: false },
+  compactBlockAndTackle: { id: 'compactBlockAndTackle', name: 'Compact Block-and-Tackle', description: 'A small pulley set with a sound line, useful for lifting heavy loads in tight spaces.', category: 'tool', carryable: true },
+  icehouseTongs: { id: 'icehouseTongs', name: 'Icehouse Tongs', description: 'Long-handled steel tongs for moving awkward objects without putting your hands beneath them.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
