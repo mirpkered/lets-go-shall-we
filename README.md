@@ -29,6 +29,13 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - `src/storage.ts`: versioned local persistence
 - `src/main.ts`: UI states and DOM rendering
 - `src/styles.css`: phone-first presentation and action-grid rules
+- `counter-service/`: the optional shared, anonymous adventure-completion aggregate (Cloudflare Worker + SQLite Durable Object)
+
+## Global adventure completion
+
+When configured, the home screen displays **“Adventures completed by travelers: N”** after the shared total loads. The counter starts at `0` when its production service is first deployed; it does not estimate earlier local play. Every normal run reaching an authored terminal ending counts, including death and authored walk-away endings. Explicit **Abandon Adventure** does not count. Runs launched or manipulated in `?qa=1` do not count.
+
+The browser sends only a random run UUID to the counter service. A single Cloudflare SQLite Durable Object stores the UUIDs and aggregate; a database primary key and insert trigger make repeated requests idempotent and serialize updates. No player identity, scenario, ending, choices, inventory, or save data is sent. Pending submissions stay in the local save and receive one quiet retry; gameplay never waits for the service. The counter URL is a public build setting (`VITE_GLOBAL_COMPLETION_COUNTER_URL`). Leave it unset for local development/tests; the UI remains unchanged and tests use mocks. Deploy `counter-service/wrangler.jsonc` with the **Deploy global completion counter** GitHub Actions workflow after adding the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Then set the public Worker URL as `VITE_GLOBAL_COMPLETION_COUNTER_URL` for the GitHub Pages build and publish the frontend. The counter is one shared total, not a player or win count. This is a narrowly scoped foundation, not a commitment to broader analytics.
 
 ## Scenario authoring rules
 
@@ -57,6 +64,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable
+- The global completion service is optional until Cloudflare deployment credentials and its public `workers.dev` endpoint are configured; no live total is shown while it is unconfigured
 
 ## Ongoing development input
 

@@ -22,6 +22,54 @@ describe('adventure engine', () => {
     expect(state.run?.inventory).toEqual(['smallKnife', 'lantern']);
   });
 
+  it('queues every authored terminal outcome once, including death and walk-away, but not abandonment or QA', () => {
+    const endingScenario = {
+      id: 'counter-test', title: 'Counter test', subtitle: '', startScene: 'start',
+      scenes: {
+        start: { id: 'start', title: 'Start', text: 'End it.', choices: [{ id: 'finish', label: 'Finish', next: 'walkAway' }] },
+        walkAway: { id: 'walkAway', title: 'Walk away', text: 'The story closes.', choices: [], ending: 'success' as const },
+      },
+    };
+    const character = newCharacter('Counter');
+    const initial = { version: 1 as const, bank: ['graveCoin'], character, run: startRun(character, endingScenario) };
+    const choice = endingScenario.scenes.start.choices[0];
+    const completed = choose(initial, endingScenario, choice);
+    expect(completed.run?.status).toBe('success');
+    expect(completed.pendingGlobalCompletions).toEqual([initial.run.runId]);
+    expect(completed.character?.adventuresCompleted).toBe(0);
+    expect(choose(completed, endingScenario, choice).pendingGlobalCompletions).toEqual(completed.pendingGlobalCompletions);
+    const resumedThenAbandoned = failCharacter(JSON.parse(JSON.stringify(initial)) as SaveData);
+    expect(resumedThenAbandoned.pendingGlobalCompletions).toBeUndefined();
+    expect(resumedThenAbandoned.bank).toEqual(['graveCoin']);
+    expect(finishSuccess(completed, null).pendingGlobalCompletions).toEqual([initial.run.runId]);
+
+    const qaRun = { ...startRun(character, endingScenario), qaMode: true };
+    const qaCompleted = choose({ ...initial, run: qaRun }, endingScenario, choice);
+    expect(qaCompleted.pendingGlobalCompletions).toBeUndefined();
+
+    const lethalScenario = { ...endingScenario, scenes: {
+      start: { id: 'start', title: 'Start', text: 'Danger.', choices: [{ id: 'fall', label: 'Take the risk', next: 'fatal' as const, effects: { health: -10 } }] },
+      fatal: { id: 'fatal', title: 'Fatal ending', text: 'The player dies.', choices: [], ending: 'death' as const },
+    } };
+    const lethal = { ...initial, run: { ...startRun(character, lethalScenario), health: 1 } };
+    const died = choose(lethal, lethalScenario, lethalScenario.scenes.start.choices[0]);
+    expect(died.run?.status).toBe('death');
+    expect(died.pendingGlobalCompletions).toEqual([lethal.run.runId]);
+    expect(died.bank).toEqual(['graveCoin']);
+  });
+
+  it('assigns a new ID to each adventure and preserves the same one through state transitions', () => {
+    const character = newCharacter('Run IDs');
+    const first = startRun(character, BROKEN_BELL);
+    const second = startRun(character, BROKEN_BELL);
+    expect(first.runId).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(second.runId).not.toBe(first.runId);
+    const save: SaveData = { version: 1, bank: [], character, run: first };
+    const resumed = JSON.parse(JSON.stringify(save)) as SaveData;
+    expect(resumed.run?.runId).toBe(first.runId);
+    expect(resumed.run?.runId).not.toBe(second.runId);
+  });
+
   it('autosave-compatible choices preserve an exact serializable run state', () => {
     const next = select(fresh(), 'chapelExterior', 'inspectRope');
     expect(JSON.parse(JSON.stringify(next))).toEqual(next);

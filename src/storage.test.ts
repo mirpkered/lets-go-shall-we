@@ -47,6 +47,18 @@ describe('save compatibility', () => {
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
   });
 
+  it('migrates an older active save with one durable run ID and preserves the queued counter IDs', () => {
+    const character = newCharacter('Counter Test');
+    const { runId: _runId, ...legacyRun } = startRun(character, BROKEN_BELL);
+    const storage = memoryStorage(JSON.stringify({ version: 1, bank: [], character, run: legacyRun }));
+    const firstLoad = loadSave(storage);
+    expect(firstLoad.run?.runId).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(loadSave(storage).run?.runId).toBe(firstLoad.run?.runId);
+    const withPending = { ...firstLoad, pendingGlobalCompletions: ['run-to-retry'] };
+    saveGame(withPending, storage);
+    expect(loadSave(storage).pendingGlobalCompletions).toEqual(['run-to-retry']);
+  });
+
   it('preserves the current keepsake-selection view for an unfinished successful run', () => {
     const character = newCharacter('Reward Save');
     const state: SaveData = {

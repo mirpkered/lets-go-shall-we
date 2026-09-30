@@ -19,7 +19,7 @@ export function startRun(character: Character, scenario: Scenario, random = Math
   const inventory = [...STARTING_ITEMS];
   if (character.carriedItem) inventory.push(character.carriedItem);
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function startAdventure(state: SaveData, scenario: Scenario): SaveData {
@@ -128,6 +128,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     next.run.status = 'death';
     next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
     next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
+    queueGlobalCompletion(next);
     return next;
   }
   if (destination) {
@@ -141,7 +142,15 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   }
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
+  if (scene?.ending) queueGlobalCompletion(next);
   return next;
+}
+
+function queueGlobalCompletion(state: SaveData): void {
+  const run = state.run;
+  if (!run || run.qaMode || run.globalCompletionQueued || !run.runId) return;
+  state.pendingGlobalCompletions = [...new Set([...(state.pendingGlobalCompletions ?? []), run.runId])];
+  run.globalCompletionQueued = true;
 }
 
 export function failCharacter(state: SaveData): SaveData {

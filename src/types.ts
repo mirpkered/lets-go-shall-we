@@ -22,6 +22,9 @@ export interface Character {
 }
 
 export interface RunState {
+  runId?: string;
+  qaMode?: boolean;
+  globalCompletionQueued?: boolean;
   scenarioId: string;
   sceneId: string;
   health: number;
@@ -50,6 +53,7 @@ export interface SaveData {
   character: Character | null;
   run: RunState | null;
   mostRecentScenarioId?: string | null;
+  pendingGlobalCompletions?: string[];
 }
 
 export interface Requirement {

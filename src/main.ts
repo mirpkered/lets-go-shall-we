@@ -9,6 +9,7 @@ import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario } from './scenarioSelection';
 import { EMPTY_SAVE, loadSave, SAVE_KEY, saveGame } from './storage';
 import type { SaveData } from './types';
+import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let state: SaveData = loadSave();
@@ -16,6 +17,12 @@ let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active'
 let inventoryOpen = false;
 let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
 const qaEnabled = isQaMode(window.location.search);
+const counterEndpoint = (import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL ?? '';
+let globalTotal: number | null = null;
+let globalTotalRequested = false;
+let completionFlushRunning = false;
+
+if (qaEnabled && state.run) { state.run.qaMode = true; saveGame(state); }
 
 function persist(): void { saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
@@ -26,6 +33,7 @@ function startScenario(scenarioId: string): void {
   const scenario = getScenario(scenarioId);
   if (!scenario) return;
   state = startAdventure(state, scenario);
+  if (state.run && qaEnabled) state.run.qaMode = true;
   persist(); screen = 'play'; inventoryOpen = false; successRewardsOpen = false; render();
 }
 
@@ -113,9 +121,14 @@ function renderHome(): void {
   }
 
   const hasCharacter = Boolean(state.character);
+  if (counterEndpoint && !globalTotalRequested) {
+    globalTotalRequested = true;
+    void readGlobalTotal(counterEndpoint).then((total) => { globalTotal = Math.max(globalTotal ?? 0, total); if (screen === 'home' && !state.run) render(); }).catch(() => { /* Counter outages never affect play. */ });
+  }
+  const counterLabel = globalTotal === null ? '' : `<p class="global-completions">Adventures completed by travelers: ${formatGlobalTotal(globalTotal)}</p>`;
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
     <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>
-    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>`, 'home-screen');
+    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}`, 'home-screen');
   document.querySelector('#begin')!.addEventListener('click', () => {
     const scenario = selectScenario(SCENARIOS, state.mostRecentScenarioId);
     if (scenario) startScenario(scenario.id);
@@ -145,8 +158,27 @@ function renderPlay(): void {
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });
   document.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((button) => button.addEventListener('click', () => {
     const choice = choices.find((entry) => entry.id === button.dataset.choice)!;
-    state = choose(state, scenario, choice); persist(); inventoryOpen = false; render();
+    state = choose(state, scenario, choice); persist(); inventoryOpen = false; render(); void flushPendingGlobalCompletions();
   }));
+}
+
+async function flushPendingGlobalCompletions(): Promise<void> {
+  if (!counterEndpoint || completionFlushRunning) return;
+  completionFlushRunning = true;
+  try {
+    for (const runId of [...(state.pendingGlobalCompletions ?? [])]) {
+      let total: number;
+      try { total = await submitGlobalCompletion(counterEndpoint, runId); }
+      catch {
+        await new Promise((resolve) => window.setTimeout(resolve, 1500));
+        try { total = await submitGlobalCompletion(counterEndpoint, runId); }
+        catch { continue; }
+      }
+      state.pendingGlobalCompletions = (state.pendingGlobalCompletions ?? []).filter((pendingId) => pendingId !== runId);
+      globalTotal = Math.max(globalTotal ?? 0, total);
+      persist();
+    }
+  } finally { completionFlushRunning = false; }
 }
 
 function renderDeath(): void {
@@ -202,4 +234,5 @@ function renderRetire(): void {
 }
 
 render();
+void flushPendingGlobalCompletions();
 showLaunchSplash();
