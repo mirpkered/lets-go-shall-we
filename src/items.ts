@@ -40,6 +40,9 @@ export const ITEMS: Record<string, Item> = {
   compactBlockAndTackle: { id: 'compactBlockAndTackle', name: 'Compact Block-and-Tackle', description: 'A small pulley set with a sound line, useful for lifting heavy loads in tight spaces.', category: 'tool', carryable: true },
   icehouseTongs: { id: 'icehouseTongs', name: 'Icehouse Tongs', description: 'Long-handled steel tongs for moving awkward objects without putting your hands beneath them.', category: 'tool', carryable: true },
   brassBottleOpener: { id: 'brassBottleOpener', name: 'Brass Bottle Opener', description: 'A sturdy brass opener with a narrow end that can pry a small cover or latch.', category: 'tool', carryable: true },
+  drainageHook: { id: 'drainageHook', name: 'Drainage Hook', description: 'A long-handled steel hook for reaching behind grates and shifting debris.', category: 'tool', carryable: true },
+  steelWedge: { id: 'steelWedge', name: 'Steel Wedge', description: 'A stout wedge for holding a brace, door, or loose structure in place.', category: 'tool', carryable: true },
+  roadmansLantern: { id: 'roadmansLantern', name: 'Roadman’s Lantern', description: 'A shuttered storm lantern built to keep its flame steady in wet air.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

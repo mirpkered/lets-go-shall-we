@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 
-const BRIDGE_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'brassCandlestick'];
+const BRIDGE_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'brassCandlestick', 'steelWedge'];
 const SAFE_HANDLING = ['heavyLeatherGloves'];
 
 export const BRIDGE_OUT: Scenario = {

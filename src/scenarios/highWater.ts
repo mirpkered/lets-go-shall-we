@@ -12,7 +12,7 @@ const SAVED: Record<Priority, string> = {
 const WINDOW: Record<Window, string> = { first: 'priorityWindowOne', second: 'priorityWindowTwo', last: 'priorityWindowThree' };
 const AFTER_WINDOW: Record<Window, string> = { first: 'waterDeepens', second: 'waterCrest', last: 'aftermathDecision' };
 const TOOL_GEAR = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'bridgewrightHammer', 'ironRopeClamp', 'brassCandlestick', 'waxedCanvasSheet'];
-const MEDICINE_GEAR = ['ratCatchersHook', 'minerHeadlamp', 'waxedCanvasSheet', 'weatherproofCloak'];
+const MEDICINE_GEAR = ['ratCatchersHook', 'minerHeadlamp', 'waxedCanvasSheet', 'weatherproofCloak', 'drainageHook'];
 
 function priorityChoice(kind: Priority, window: Window, label: string, sceneId: string, timeCost: number): Choice {
   const suffix = `${window[0].toUpperCase()}${window.slice(1)}`;
