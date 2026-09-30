@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="dawn" x2="0" y2="1"><stop stop-color="#333744"/><stop offset=".48" stop-color="#9b7665"/><stop offset=".76" stop-color="#d0a36c"/><stop offset="1" stop-color="#585044"/></linearGradient>
+    <radialGradient id="sunrise"><stop stop-color="#f1c98a" stop-opacity=".44"/><stop offset="1" stop-color="#f1c98a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#dawn)"/><ellipse cx="805" cy="610" rx="560" ry="390" fill="url(#sunrise)"/><circle cx="805" cy="590" r="74" fill="#f0c98d" fill-opacity=".32"/>
+  <path d="M0 672 180 555l185 72 173-119 180 131 191-167 194 137 190-153 307 111v633H0Z" fill="#474940"/><path d="M0 800 212 679l186 103 217-109 222 114 226-139 231 107 160-91 146 74v462H0Z" fill="#29332f"/>
+  <g fill="#202724"><path d="M585 720h430v245H585Z"/><path d="m548 737 245-192 252 192Z"/><path d="M740 806h74v159h-74Z" fill="#b58b58" fill-opacity=".5"/><path d="M612 789h54v56h-54Zm313 0h54v56h-54Z" fill="#edc486" fill-opacity=".42"/><path d="M1130 752h238v180h-238Z"/><path d="m1107 766 140-115 146 115Z"/><path d="M0 790 212 679l42 24v259H0Zm1340-83 34-164 35 164h-18l27 80h-86l27-80Z"/></g>
+  <path d="M716 1200c44-132 139-227 77-315-45-66-170-66-198-148-31-92 78-156 44-246 87 62 122 130 96 215-24 79 112 93 147 174 49 115-35 212-30 320Z" fill="#514939"/>
+  <rect width="1600" height="1200" fill="#101313" fill-opacity=".2"/>
+</svg>

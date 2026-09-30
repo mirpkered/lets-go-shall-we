@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#111824"/><stop offset=".62" stop-color="#26303a"/><stop offset="1" stop-color="#473b2d"/></linearGradient>
+    <radialGradient id="moon"><stop stop-color="#d6c9a1" stop-opacity=".28"/><stop offset="1" stop-color="#d6c9a1" stop-opacity="0"/></radialGradient>
+    <linearGradient id="path" x2="0" y2="1"><stop stop-color="#817052" stop-opacity=".45"/><stop offset="1" stop-color="#181b1a" stop-opacity=".9"/></linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#sky)"/><ellipse cx="1260" cy="270" rx="370" ry="320" fill="url(#moon)"/><circle cx="1260" cy="270" r="47" fill="#ded6bc" fill-opacity=".25"/>
+  <path d="M0 630 180 520l170 78 190-176 188 173 170-121 210 160 190-180 302 120v626H0Z" fill="#1d2528"/><path d="M0 758 220 625l203 109 200-130 215 121 218-122 200 123 180-92 164 74v492H0Z" fill="#151b1b"/>
+  <path d="M630 1200c70-144 197-238 172-352-23-102-156-123-98-224 48-83 170-106 198-192l98 5c-5 116-114 176-175 240-58 61 83 122 54 239-22 91-107 181-119 284Z" fill="url(#path)"/>
+  <g transform="translate(1030 490)" fill="#101514"><path d="M0 100 105 16l103 84v180H0Z"/><path d="m-17 105 122-99 124 99h-36L105 31 21 105Z"/><path d="M89 135h33v145H89Z"/><path d="M75 147h18v28H75Zm49 0h18v28h-18Z" fill="#c49a56" fill-opacity=".48"/></g>
+  <g fill="#101512"><path d="m150 820 45-155 44 155h-22l33 96h-111l34-96Z"/><path d="m1380 790 37-135 39 135h-20l29 82h-96l29-82Z"/><path d="m370 820 30-112 32 112h-16l23 68h-76l23-68Z"/></g>
+  <rect width="1600" height="1200" fill="#07090c" fill-opacity=".28"/>
+</svg>
