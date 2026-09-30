@@ -68,4 +68,13 @@ describe('global no-scroll layout contract', () => {
     expect(phoneRules).toContain('.ending-screen { height:100vh; height:100dvh;');
     expect(phoneRules).toContain('.reward-screen .reward-box button:not(.text-button) { min-height:3rem;');
   });
+
+  it('keeps bank disposal controls readable and confirmation bounded on narrow phones', () => {
+    expect(styles).toContain('.bank-item-actions { display:flex; flex:0 0 auto; flex-direction:column;');
+    expect(styles).toContain('.bank-item-actions button { width:100%; min-height:44px;');
+    expect(styles).toContain('.bank-confirm-dialog { width:min(calc(100vw - 2rem), 28rem);');
+    expect(mainSource).toContain('${emptyBankCopy ? `<section class="bank-destructive-controls"');
+    expect(mainSource).toContain('aria-describedby="bank-confirm-message"');
+    expect(mainSource).toContain('requestAnimationFrame(() => document.querySelector<HTMLElement>(bankConfirmReturnSelector)?.focus())');
+  });
 });

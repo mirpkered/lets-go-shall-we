@@ -204,3 +204,16 @@ export function withdrawBanked(state: SaveData, itemId: string): SaveData {
   next.character.carriedItem = itemId;
   return next;
 }
+
+export function discardBankItem(state: SaveData, itemId: string): SaveData {
+  const index = state.bank.indexOf(itemId);
+  if (index < 0) return state;
+  const next = structuredClone(state);
+  next.bank.splice(index, 1);
+  return next;
+}
+
+export function emptyBank(state: SaveData): SaveData {
+  if (!state.bank.length) return state;
+  return { ...state, bank: [] };
+}

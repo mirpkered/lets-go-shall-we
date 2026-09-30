@@ -144,8 +144,27 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .item-row { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem; border:1px solid #343029; background:#151411; }
 .item-row + .item-row { margin-top:.6rem; }
 .item-row strong,.item-row small { display:block; }
+.bank-item-row > div:first-child { min-width:0; flex:1 1 auto; }
+.bank-item-actions { display:flex; flex:0 0 auto; flex-direction:column; gap:.4rem; min-width:7rem; }
 .item-row small { max-width:26rem; margin-top:.25rem; color:#837d72; font-size:.75rem; line-height:1.4; }
 .item-row button,.retirement-item button { min-height:2.8rem; padding:0 .9rem; border:1px solid #6b5838; background:#201c15; color:#dec38d; cursor:pointer; }
+.bank-item-actions button { width:100%; min-height:44px; padding:.4rem .55rem; line-height:1.2; }
+.bank-discard { border:1px solid #8b4f46 !important; background:#2b1918 !important; color:#e7b2a8 !important; }
+.bank-discard:hover,.bank-discard:focus-visible { border-color:#d27a6d !important; background:#3a201e !important; }
+.bank-destructive-controls { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:.4rem; padding:1rem; border:1px solid #5a3632; background:#181211; }
+.bank-destructive-controls h2 { margin:0 0 .3rem; color:#c99a8f; font-size:1.2rem; }
+.bank-destructive-controls p { margin:0; color:#9d8a82; font-size:.76rem; line-height:1.4; }
+.bank-empty-button { min-height:44px; flex:0 0 auto; padding:.5rem .8rem; font:inherit; font-size:.8rem; font-weight:700; cursor:pointer; }
+.bank-confirm-dialog { width:min(calc(100vw - 2rem), 28rem); max-width:none; padding:0; border:1px solid #80514a; background:#1b1514; color:#eee8da; box-shadow:0 1.5rem 5rem #000d; }
+.bank-confirm-dialog::backdrop { background:#050504dc; backdrop-filter:blur(3px); }
+.bank-confirm-content { padding:1.35rem; }
+.bank-confirm-content h2 { margin:.4rem 0 .7rem; font-size:1.8rem; color:#f0e5d1; }
+.bank-confirm-content p { color:#c8bdb0; line-height:1.55; }
+.bank-confirm-actions { display:grid; grid-template-columns:1fr 1fr; gap:.65rem; margin-top:1.1rem; }
+.bank-confirm-actions button { min-height:48px; padding:.6rem; font:inherit; font-weight:700; cursor:pointer; }
+.bank-cancel { border:1px solid #60594f; background:#22201c; color:#e2d8c8; }
+.bank-confirm-destructive { border:1px solid #9a5148; background:#612c28; color:#fff0e8; }
+.bank-confirm-dialog :focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 .empty { padding:1rem; border:1px dashed #343029; color:#746e64; font-style:italic; }
 .retirement-item { display:grid; gap:.35rem; margin:1.2rem 0; padding:1rem; border:1px solid #4c412f; }
 .retirement-item span { color:#827b70; font-size:.8rem; }

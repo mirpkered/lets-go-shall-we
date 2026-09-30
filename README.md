@@ -31,6 +31,10 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - `src/styles.css`: phone-first presentation and action-grid rules
 - `counter-service/`: the optional shared, anonymous adventure-completion aggregate (Cloudflare Worker + SQLite Durable Object)
 
+## Bank disposal rule
+
+Players may intentionally and permanently discard one banked item or empty the whole Bank after a clear confirmation. There is no undo or recovery. Disposal never happens automatically; the five-item capacity continues to preserve legacy over-capacity contents and blocks new deposits until reduced.
+
 ## Global adventure completion
 
 When configured, the home screen displays **“Adventures completed by travelers: N”** after the shared total loads. The counter starts at `0` when its production service is first deployed; it does not estimate earlier local play. Every normal run reaching an authored terminal ending counts, including death and authored walk-away endings. Explicit **Abandon Adventure** does not count. Runs launched or manipulated in `?qa=1` do not count.

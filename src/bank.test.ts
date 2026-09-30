@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { bankCapacityLabel, bankCapacityMessage, BANK_CAPACITY } from './bank';
-import { depositCarried, eligibleCarryItems, failCharacter, finishSuccess, newCharacter, retireCharacter, startRun, withdrawBanked } from './engine';
+import { bankCapacityLabel, bankCapacityMessage, BANK_CAPACITY, emptyBankConfirmationText } from './bank';
+import { depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, newCharacter, retireCharacter, startRun, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { renderQaPanel } from './qaPanel';
 import { BROKEN_BELL } from './scenarios/brokenBell';
-import { loadSave, SAVE_KEY } from './storage';
+import { loadSave, SAVE_KEY, saveGame } from './storage';
 import type { SaveData } from './types';
 
 const FIVE_ITEMS = ['graveCoin', 'yewCharm', 'brassCandlestick', 'bronzeMaskFragment', 'boneKey'];
@@ -118,5 +118,70 @@ describe('persistent bank capacity', () => {
     const markup = renderQaPanel(true, state, [BROKEN_BELL], ITEMS);
     expect(markup).toContain('&quot;bankCount&quot;: 5');
     expect(markup).toContain('&quot;bankCapacity&quot;: 5');
+  });
+});
+
+describe('intentional bank disposal', () => {
+  it('only removes the selected bank item and preserves character, run, money, history, and other items', () => {
+    const state = stateWithBank(FIVE_ITEMS, 'ironRopeClamp');
+    state.character!.money = 37;
+    state.character!.historyFlags = ['helped_a_stranger'];
+    state.run!.flags.push('found_a_clue');
+    state.run!.elapsedMinutes = 19;
+    const before = structuredClone(state);
+
+    // Until the player confirms, no disposal function is called and the save remains unchanged.
+    expect(state).toEqual(before);
+    const discarded = discardBankItem(state, 'brassCandlestick');
+    expect(discarded.bank).toEqual(['graveCoin', 'yewCharm', 'bronzeMaskFragment', 'boneKey']);
+    expect(discarded.bank).toHaveLength(4);
+    expect(discarded.character).toEqual(before.character);
+    expect(discarded.run).toEqual(before.run);
+    expect(discarded.character?.money).toBe(37);
+    expect(discarded.character?.historyFlags).toEqual(['helped_a_stranger']);
+    expect(discarded.run?.elapsedMinutes).toBe(19);
+  });
+
+  it('permanently saves a single-item discard and never restores it after reload', () => {
+    const state = stateWithBank(FIVE_ITEMS, null);
+    const storage = memoryStorage(JSON.stringify(state));
+    const loaded = loadSave(storage);
+    saveGame(discardBankItem(loaded, 'yewCharm'), storage);
+    expect(loadSave(storage).bank).toEqual(['graveCoin', 'brassCandlestick', 'bronzeMaskFragment', 'boneKey']);
+  });
+
+  it('does not discard anything when the selected item is not banked and removes only one duplicate slot', () => {
+    const state = stateWithBank(['graveCoin', 'yewCharm', 'yewCharm'], null);
+    expect(discardBankItem(state, 'not-in-bank')).toBe(state);
+    expect(discardBankItem(state, 'yewCharm').bank).toEqual(['graveCoin', 'yewCharm']);
+  });
+
+  it('uses precise item-count copy and offers no destructive empty confirmation for an empty bank', () => {
+    expect(emptyBankConfirmationText(0)).toBeNull();
+    expect(emptyBankConfirmationText(1)).toBe('This will permanently destroy 1 stored item. This cannot be undone.');
+    expect(emptyBankConfirmationText(5)).toBe('This will permanently destroy all 5 stored items. This cannot be undone.');
+  });
+
+  it('keeps every bank item until Empty Bank is confirmed, then saves the empty bank', () => {
+    const state = stateWithBank(FIVE_ITEMS.slice(0, 3), null);
+    const before = structuredClone(state);
+    // Cancel leaves the original state and storage untouched.
+    expect(state).toEqual(before);
+    const storage = memoryStorage(JSON.stringify(state));
+    const loaded = loadSave(storage);
+    saveGame(emptyBank(loaded), storage);
+    expect(loadSave(storage).bank).toEqual([]);
+    expect(loadSave(storage).character).toEqual(state.character);
+    expect(loadSave(storage).run).toEqual(state.run);
+  });
+
+  it('preserves legacy over-capacity contents until disposal and allows both removal choices', () => {
+    const overCapacity = [...FIVE_ITEMS, 'ironRopeClamp', 'trailCompass'];
+    const state = stateWithBank(overCapacity, null);
+    expect(state.bank).toEqual(overCapacity);
+    const one = discardBankItem(state, 'ironRopeClamp');
+    expect(one.bank).toEqual([...FIVE_ITEMS, 'trailCompass']);
+    expect(one.bank).toHaveLength(6);
+    expect(emptyBank(state).bank).toEqual([]);
   });
 });

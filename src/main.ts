@@ -1,7 +1,7 @@
 import './styles.css';
-import { choose, depositCarried, eligibleCarryItems, failCharacter, finishSuccess, meets, retireCharacter, runText, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, meets, retireCharacter, runText, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
-import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage } from './bank';
+import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
 import { contactMailto, feedbackAdventureTitle, renderUtilityFeatures } from './helpPanels';
 import { renderQaPanel } from './qaPanel';
@@ -16,6 +16,8 @@ let state: SaveData = loadSave();
 let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active' ? 'home' : 'home';
 let inventoryOpen = false;
 let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
+let pendingBankDestructive: { kind: 'item'; itemId: string } | { kind: 'empty' } | null = null;
+let bankConfirmReturnSelector = '#back';
 const qaEnabled = isQaMode(window.location.search);
 const counterEndpoint = (import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL ?? '';
 let globalTotal: number | null = null;
@@ -214,13 +216,55 @@ function renderBank(): void {
   const capacityMessage = bankCapacityMessage(state.bank.length);
   const legacyCarryNote = state.bank.length > BANK_CAPACITY && carried ? ' Your carry slot is occupied; free it before withdrawing an item to reduce the saved bank.' : '';
   const swapAllowed = state.bank.length === BANK_CAPACITY && Boolean(carried);
+  const emptyBankCopy = emptyBankConfirmationText(state.bank.length);
+  const confirmationText = pendingBankDestructive?.kind === 'empty'
+    ? emptyBankCopy
+    : pendingBankDestructive?.kind === 'item'
+      ? `This permanently removes ${itemName(pendingBankDestructive.itemId)} from your bank. This cannot be undone.`
+      : null;
+  const confirmationTitle = pendingBankDestructive?.kind === 'empty' ? 'Empty the bank?' : `Discard ${pendingBankDestructive ? itemName(pendingBankDestructive.itemId) : 'item'}?`;
+  const confirmationAction = pendingBankDestructive?.kind === 'empty' ? 'Empty Bank' : 'Discard Item';
   shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
     <section class="bank-section"><h2>Carried by character</h2>${state.character ? (carried ? `<article class="item-row"><div><strong>${itemName(carried)}</strong><small>${ITEMS[carried].description}</small></div>${state.bank.length < BANK_CAPACITY ? '<button id="deposit">Deposit</button>' : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : '<span class="empty">Choose an item below to swap.</span>'}</article>` : '<p class="empty">The carry slot is empty.</p>') : '<p class="empty">Create a traveler to withdraw an item.</p>'}</section>
-    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${swapAllowed ? `<button data-bank-swap="${id}">Swap with carried item</button>` : state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}</article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>`, 'subscreen');
+    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div><div class="bank-item-actions">${swapAllowed ? `<button data-bank-swap="${id}">Swap with carried item</button>` : state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
+    ${emptyBankCopy ? `<section class="bank-destructive-controls"><div><h2>Permanent disposal</h2><p>Discard stored items permanently. This cannot be undone.</p></div><button type="button" class="bank-discard bank-empty-button" id="empty-bank">Empty Bank</button></section>` : ''}
+    ${confirmationText ? `<dialog class="bank-confirm-dialog" id="bank-confirm-dialog" aria-labelledby="bank-confirm-title" aria-describedby="bank-confirm-message"><div class="bank-confirm-content"><span class="eyebrow">Permanent disposal</span><h2 id="bank-confirm-title">${safeText(confirmationTitle)}</h2><p id="bank-confirm-message">${safeText(confirmationText)}</p><div class="bank-confirm-actions"><button type="button" class="bank-cancel" id="cancel-bank-disposal" autofocus>Cancel</button><button type="button" class="bank-discard bank-confirm-destructive" id="confirm-bank-disposal">${confirmationAction}</button></div></div></dialog>` : ''}`, 'subscreen');
   document.querySelector('#back')!.addEventListener('click', () => { screen = 'home'; render(); });
   document.querySelector('#deposit')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
   document.querySelectorAll<HTMLButtonElement>('[data-bank-swap]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, button.dataset.bankSwap); persist(); render(); }));
   document.querySelectorAll<HTMLButtonElement>('[data-withdraw]').forEach((button) => button.addEventListener('click', () => { state = withdrawBanked(state, button.dataset.withdraw!); persist(); render(); }));
+  document.querySelectorAll<HTMLButtonElement>('[data-bank-discard]').forEach((button) => button.addEventListener('click', () => {
+    const itemId = button.dataset.bankDiscard!;
+    bankConfirmReturnSelector = `[data-bank-discard="${itemId}"]`;
+    pendingBankDestructive = { kind: 'item', itemId };
+    renderBank();
+    document.querySelector<HTMLDialogElement>('#bank-confirm-dialog')?.showModal();
+  }));
+  document.querySelector('#empty-bank')?.addEventListener('click', () => {
+    bankConfirmReturnSelector = '#empty-bank';
+    pendingBankDestructive = { kind: 'empty' };
+    renderBank();
+    document.querySelector<HTMLDialogElement>('#bank-confirm-dialog')?.showModal();
+  });
+  const confirmDialog = document.querySelector<HTMLDialogElement>('#bank-confirm-dialog');
+  const cancelDisposal = () => {
+    confirmDialog?.close();
+    pendingBankDestructive = null;
+    renderBank();
+    requestAnimationFrame(() => document.querySelector<HTMLElement>(bankConfirmReturnSelector)?.focus());
+  };
+  document.querySelector('#cancel-bank-disposal')?.addEventListener('click', cancelDisposal);
+  confirmDialog?.addEventListener('cancel', (event) => { event.preventDefault(); cancelDisposal(); });
+  document.querySelector('#confirm-bank-disposal')?.addEventListener('click', () => {
+    if (!pendingBankDestructive) return;
+    state = pendingBankDestructive.kind === 'empty'
+      ? emptyBank(state)
+      : discardBankItem(state, pendingBankDestructive.itemId);
+    confirmDialog?.close();
+    pendingBankDestructive = null;
+    persist();
+    render();
+  });
 }
 
 function renderRetire(): void {

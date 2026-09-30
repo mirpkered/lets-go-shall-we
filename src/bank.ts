@@ -13,3 +13,9 @@ export function bankCapacityMessage(itemCount: number): string | null {
   }
   return null;
 }
+
+export function emptyBankConfirmationText(itemCount: number): string | null {
+  if (itemCount <= 0) return null;
+  const contents = itemCount === 1 ? '1 stored item' : `all ${itemCount} stored items`;
+  return `This will permanently destroy ${contents}. This cannot be undone.`;
+}
