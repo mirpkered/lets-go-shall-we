@@ -81,9 +81,9 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
       textVariants: [{ requirements: { minElapsedMinutes: 24 }, text: 'Hal can stand with help, though his leg is badly stiff. His story remains that Mara fell from the wagon; he keeps glancing toward the old tollpost. The eastern prints are already difficult to distinguish.' }],
       choices: [
         { id: 'askHalWhatHappened', label: 'Ask Hal to explain the crash', timeCost: 3, next: 'halTestimony' },
-        { id: 'readGroundWithHal', label: 'Read the tracks while he rests', timeCost: 4, next: 'trackFork', effects: { historyFlags: ['searched_for_missing_traveler'] } },
         { id: 'inspectWagonWithHal', label: 'Check the wheel and scattered cargo', timeCost: 4, next: 'wagonEvidence' },
         { id: 'escortHalToFarm', label: 'Walk Hal to the nearby farmhouse', hint: 'It is safer for him there, but the detour will cost daylight.', timeCost: 10, next: 'farmhouse', effects: { setFlags: ['survivorEscorted'], historyFlags: ['escorted_injured_traveler', 'returned_for_help'] } },
+        { id: 'pointHalTowardFarmAndLeave', label: 'Point Hal toward the farm and continue on', hint: 'He can walk with support; the nearby family can take over.', timeCost: 1, next: 'walkAwayEnding', effects: { setFlags: ['helpedHalThenLeft'], historyFlags: ['abandoned_crossroads_search'] } },
       ],
     },
     roadsideCall: {
@@ -312,6 +312,7 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Continues', tone: 'safe', ending: 'success',
       text: 'You continue down the road. The farm lies close enough for Hal to call for help, and the local people know a traveler is missing. You do not know what happened next, and the story does not judge your choice to keep going.' ,
+      textVariants: [{ requirements: { flags: ['helpedHalThenLeft'] }, text: 'After checking Hal’s injuries, you point him toward the nearby farmhouse. He can walk with support, and the family there can take over. Mara is still missing; you do not know what happened next, and the story does not judge your choice to continue on.' }],
       choices: [],
     },
   },

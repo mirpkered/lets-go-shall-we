@@ -150,6 +150,16 @@ describe('Last Light at Miller’s Crossing', () => {
     expect(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.walkAwayEnding.text).not.toMatch(/coward|shame|selfish/i);
   });
 
+  it('allows brief aid and directions to shelter before leaving the deeper search', () => {
+    let state = act(fresh(), 'helpHalFirst');
+    state = act(state, 'pointHalTowardFarmAndLeave');
+    expect(state.run?.sceneId).toBe('walkAwayEnding');
+    expect(state.run?.status).toBe('success');
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.walkAwayEnding, state)).toMatch(/point him toward the nearby farmhouse/i);
+    expect(state.run?.acquiredThisRun).toEqual([]);
+    expect(state.character?.historyFlags).toContain('abandoned_crossroads_search');
+  });
+
   it('lets the player respect Mara’s wish for space instead of forcing an immediate reunion', () => {
     const state = atScene('travelerFound', 25);
     state.run!.flags.push('foundAtMarker');
