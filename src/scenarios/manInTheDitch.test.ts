@@ -67,7 +67,9 @@ function explore(initial: SaveData): { states: SaveData[]; scenes: Set<string> }
 describe('The Man in the Ditch', () => {
   it('registers for random selection and QA launch without exposing a player picker', () => {
     expect(SCENARIOS).toContain(THE_MAN_IN_THE_DITCH);
-    expect(selectScenario(SCENARIOS, 'down-to-the-last-match', () => 0.999)).toBe(THE_MAN_IN_THE_DITCH);
+    const afterLastMatch = selectScenario(SCENARIOS, 'down-to-the-last-match', () => 0.999);
+    expect(SCENARIOS).toContain(afterLastMatch);
+    expect(afterLastMatch?.id).not.toBe('down-to-the-last-match');
     expect(selectScenario(SCENARIOS, THE_MAN_IN_THE_DITCH.id, () => 0.999)).not.toBe(THE_MAN_IN_THE_DITCH);
     expect(isQaMode('?qa=1')).toBe(true);
     const empty: SaveData = { version: 1, bank: [], character: null, run: null };

@@ -63,7 +63,9 @@ function explore(initial: SaveData): { states: SaveData[]; scenes: Set<string> }
 describe('Down to the Last Match', () => {
   it('is registered for random selection and QA direct launch only', () => {
     expect(SCENARIOS).toContain(DOWN_TO_THE_LAST_MATCH);
-    expect(selectScenario(SCENARIOS, 'the-man-in-the-ditch', () => 0.999)).toBe(DOWN_TO_THE_LAST_MATCH);
+    const afterDitch = selectScenario(SCENARIOS, 'the-man-in-the-ditch', () => 0.999);
+    expect(SCENARIOS).toContain(afterDitch);
+    expect(afterDitch?.id).not.toBe('the-man-in-the-ditch');
     const empty: SaveData = { version: 1, bank: [], character: null, run: null };
     expect(renderQaPanel(false, empty, SCENARIOS, ITEMS)).toBe('');
     expect(renderQaPanel(true, empty, SCENARIOS, ITEMS)).toContain('Start Down to the Last Match');

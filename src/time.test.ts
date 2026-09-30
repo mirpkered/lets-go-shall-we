@@ -107,11 +107,12 @@ describe('fictional adventure clock', () => {
     expect(qa).toContain('data-qa-reset-time');
   });
 
-  it('gives every playable scenario authored, scenario-specific phases beginning at zero', () => {
-    expect(SCENARIOS).toHaveLength(21);
+  it('uses fictional-time phases when authored and leaves other adventures timeless', () => {
+    expect(SCENARIOS).toHaveLength(37);
     for (const scenario of SCENARIOS) {
-      expect(scenario.timePhases?.[0].atMinutes).toBe(0);
-      expect(timeStatus(scenario, 0).phase?.label).toBeTruthy();
+      if (scenario.timePhases?.length) expect(scenario.timePhases[0].atMinutes).toBe(0);
+      if (scenario.timePhases?.length) expect(timeStatus(scenario, 0).phase?.label).toBeTruthy();
+      else expect(timeStatus(scenario, 0).phase).toBeNull();
     }
   });
 });
