@@ -180,6 +180,23 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .scenario-bridge-out.playing .utility-links { padding-top:.4rem; }
 .scenario-bridge-out footer { padding-top:.3rem; font-size:.6rem; }
 
+/* Taking on Water keeps every observation and choice visible on short phone screens. */
+.playing.scenario-taking-on-water { height:100vh; height:100dvh; min-height:0; overflow:hidden; padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom)); }
+.scenario-taking-on-water .play-header { flex:none; padding-bottom:.35rem; }
+.scenario-taking-on-water .status-row { flex:none; padding:.4rem .1rem; }
+.scenario-taking-on-water .story-card { flex:none; min-height:0; padding:.85rem 1rem; }
+.scenario-taking-on-water .story-card h1 { margin:0 1rem .45rem 0; font-size:1.65rem; }
+.scenario-taking-on-water .story-time { margin:-.15rem 0 .35rem; }
+.scenario-taking-on-water .result-message { margin-bottom:.4rem; padding:.35rem .5rem; font-size:.75rem; }
+.scenario-taking-on-water .story-text { font-size:1rem; line-height:1.35; }
+.scenario-taking-on-water .choices { flex:none; gap:.45rem; padding-top:.55rem; }
+.scenario-taking-on-water .choices button { min-height:3rem; padding:.5rem .65rem; }
+.scenario-taking-on-water .choices strong { font-size:.88rem; line-height:1.2; }
+.scenario-taking-on-water .choices small { margin-top:.18rem; font-size:.65rem; line-height:1.2; }
+.scenario-taking-on-water .utility-links { flex:none; margin:.45rem auto 0; }
+.scenario-taking-on-water.playing .utility-links { padding-top:.4rem; }
+.scenario-taking-on-water footer { padding-top:.3rem; font-size:.6rem; }
+
 @media (min-width: 560px) {
   .app-shell { padding-inline:1.5rem; }
   .choices.count-2,.choices.count-3,.choices.count-4 { grid-template-columns:1fr 1fr; }
@@ -209,6 +226,13 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .scenario-bridge-out .choices button { padding:.45rem .5rem; }
   .scenario-bridge-out .choices strong { font-size:.81rem; }
   .scenario-bridge-out .choices small { font-size:.62rem; }
+  .playing.scenario-taking-on-water { padding-inline:.65rem; }
+  .scenario-taking-on-water .story-card { padding:.7rem .8rem; }
+  .scenario-taking-on-water .story-card h1 { font-size:1.45rem; }
+  .scenario-taking-on-water .story-text { font-size:.93rem; line-height:1.32; }
+  .scenario-taking-on-water .choices button { padding:.45rem .5rem; }
+  .scenario-taking-on-water .choices strong { font-size:.81rem; }
+  .scenario-taking-on-water .choices small { font-size:.62rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

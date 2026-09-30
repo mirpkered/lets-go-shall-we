@@ -75,6 +75,11 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (!run || !character) return;
   if (effects.health) run.health = Math.max(0, Math.min(character.maxHealth, run.health + effects.health));
   if (effects.money) character.money = Math.max(0, character.money + effects.money);
+  if (effects.loseMoney) character.money = 0;
+  if (effects.loseCarriedItem && character.carriedItem) {
+    run.inventory = without(run.inventory, [character.carriedItem]);
+    character.carriedItem = null;
+  }
   if (effects.gainItems) {
     run.inventory = addUnique(run.inventory, effects.gainItems);
     run.acquiredThisRun = addUnique(run.acquiredThisRun, effects.gainItems);
@@ -105,10 +110,14 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   } else if (choice.chance) {
     const bonusItem = choice.chance.bonusItems?.some((item) => next.run!.inventory.includes(item)) ?? false;
     const bonusFlag = choice.chance.bonusFlags?.some((flag) => next.run!.flags.includes(flag)) ?? false;
+    const bonusSelection = Object.entries(choice.chance.bonusSelections ?? {}).some(([key, value]) => next.run!.randomSelections?.[key] === value);
+    const penaltySelection = Object.entries(choice.chance.penaltySelections ?? {}).some(([key, value]) => next.run!.randomSelections?.[key] === value);
     const baseProbability = choice.chance.lateAfterMinutes !== undefined && (next.run.elapsedMinutes ?? 0) >= choice.chance.lateAfterMinutes
       ? choice.chance.lateProbability ?? choice.chance.probability
       : choice.chance.probability;
-    const probability = Math.min(0.98, baseProbability + (bonusItem || bonusFlag ? choice.chance.bonusProbability ?? 0 : 0));
+    const probability = Math.max(0.02, Math.min(0.98, baseProbability
+      + (bonusItem || bonusFlag || bonusSelection ? choice.chance.bonusProbability ?? 0 : 0)
+      - (penaltySelection ? choice.chance.penaltyProbability ?? 0 : 0)));
     const won = random() < probability;
     destination = won ? choice.chance.successNext : choice.chance.failureNext;
     next.run.message = runText(won ? choice.chance.successMessage : choice.chance.failureMessage, next);

@@ -77,6 +77,8 @@ export interface CombatEffect {
 
 export interface Effects {
   health?: number;
+  loseMoney?: boolean;
+  loseCarriedItem?: boolean;
   gainItems?: string[];
   loseItems?: string[];
   knowledge?: string[];
@@ -100,7 +102,10 @@ export interface ChanceBranch {
   failureEffects?: Effects;
   bonusItems?: string[];
   bonusFlags?: string[];
+  bonusSelections?: Record<string, string>;
+  penaltySelections?: Record<string, string>;
   bonusProbability?: number;
+  penaltyProbability?: number;
 }
 
 export interface Choice {
