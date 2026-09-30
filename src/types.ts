@@ -31,6 +31,7 @@ export interface RunState {
   visitedSceneIds?: string[];
   randomSelections?: Record<string, string>;
   status: 'active' | 'success' | 'death';
+  rewardSelectionOpen?: boolean;
   message: string | null;
   startedAt: number;
   elapsedMinutes?: number;

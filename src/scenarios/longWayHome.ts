@@ -163,12 +163,12 @@ export const THE_LONG_WAY_HOME: Scenario = {
     },
     revelation: {
       id: 'revelation', title: 'Anna Is Rowan', tone: 'warning',
-      text: 'She finally tells you the rest. Her name is Rowan Voss, and she works as a tally clerk at the Northbridge mill. She took the payroll ledger without permission after finding deductions she believes were falsified. Benn, the foreman and her older brother, is looking for it. She admits the theft; she says she ran because he would bring her straight back to the mill before she could show the book to anyone. She cannot prove the pages tell the whole story.',
+      text: 'She finally tells you the rest: she is Rowan Voss, a tally clerk at Northbridge mill. She took the payroll ledger after finding deductions she believes false. Benn, the foreman and her older brother, wants it back. She fled before he could return her to the mill, hoping to show the book to someone who would listen. She admits the theft but cannot prove every page tells the whole story.',
       textVariants: [{ requirements: { flags: ['heardForemanClaim'] }, text: 'Rowan confirms that her name is Rowan Voss and that she took the payroll ledger from the mill. She says the deductions were falsified; Benn says the book belongs to the mill. Her ankle was hurt while she fled the hill road. She admits the theft and does not claim the ledger proves everything.' }],
       choices: [
-        { id: 'protectRowanAtClinic', label: 'Take her to the clinic and stand witness', hint: 'The book can be reviewed without handing her back to the mill.', timeCost: 8, effects: { historyFlags: ['uncovered_strangers_truth', 'protected_stranger_from_pursuer', 'escorted_injured_stranger'], setFlags: ['rowanTruth', 'trustedRowan'] }, next: 'townCare' },
-        { id: 'bringBothSidesToWarden', label: 'Ask Rowan and Benn to make their case in town', hint: 'You do not have to decide whose account is complete.', timeCost: 7, effects: { historyFlags: ['uncovered_strangers_truth', 'escorted_injured_stranger'], setFlags: ['rowanTruth', 'heardForemanClaim'] }, next: 'townCare' },
-        { id: 'leaveAfterTruth', label: 'Leave Rowan with the shepherd and continue alone', hint: 'She has shelter and a chance to get help, but no escort.', effects: { historyFlags: ['uncovered_strangers_truth', 'abandoned_injured_stranger'] }, next: 'helpEnding' },
+        { id: 'protectRowanAtClinic', label: 'Witness for Rowan at the clinic', hint: 'The ledger can be reviewed without returning her to the mill.', timeCost: 8, effects: { historyFlags: ['uncovered_strangers_truth', 'protected_stranger_from_pursuer', 'escorted_injured_stranger'], setFlags: ['rowanTruth', 'trustedRowan'] }, next: 'townCare' },
+        { id: 'bringBothSidesToWarden', label: 'Bring both accounts to town', hint: 'The warden can hear both without choosing a side.', timeCost: 7, effects: { historyFlags: ['uncovered_strangers_truth', 'escorted_injured_stranger'], setFlags: ['rowanTruth', 'heardForemanClaim'] }, next: 'townCare' },
+        { id: 'leaveAfterTruth', label: 'Leave her with the shepherd', hint: 'She has shelter, but no escort.', effects: { historyFlags: ['uncovered_strangers_truth', 'abandoned_injured_stranger'] }, next: 'helpEnding' },
       ],
     },
     pursuerAccount: {

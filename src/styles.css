@@ -163,40 +163,6 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .qa-body pre { max-width:100%; max-height:18rem; margin:.6rem 0 0; padding:.75rem; overflow:auto; border:1px solid #302b23; background:#090908; color:#c7bda9; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.68rem; line-height:1.45; }
 .qa-note { color:#9a8d78; font-size:.78rem; line-height:1.4; }
 
-/* Bridge Out is intentionally compact enough to keep story and choices in view on phones. */
-.playing.scenario-bridge-out { height:100vh; height:100dvh; min-height:0; overflow:hidden; padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom)); }
-.scenario-bridge-out .play-header { flex:none; padding-bottom:.35rem; }
-.scenario-bridge-out .status-row { flex:none; padding:.4rem .1rem; }
-.scenario-bridge-out .story-card { flex:none; min-height:0; padding:.85rem 1rem; }
-.scenario-bridge-out .story-card h1 { margin:0 1rem .45rem 0; font-size:1.65rem; }
-.scenario-bridge-out .story-time { margin:-.15rem 0 .35rem; }
-.scenario-bridge-out .result-message { margin-bottom:.4rem; padding:.35rem .5rem; font-size:.75rem; }
-.scenario-bridge-out .story-text { font-size:1rem; line-height:1.35; }
-.scenario-bridge-out .choices { flex:none; gap:.45rem; padding-top:.55rem; }
-.scenario-bridge-out .choices button { min-height:3rem; padding:.5rem .65rem; }
-.scenario-bridge-out .choices strong { font-size:.88rem; line-height:1.2; }
-.scenario-bridge-out .choices small { margin-top:.18rem; font-size:.65rem; line-height:1.2; }
-.scenario-bridge-out .utility-links { flex:none; margin:.45rem auto 0; }
-.scenario-bridge-out.playing .utility-links { padding-top:.4rem; }
-.scenario-bridge-out footer { padding-top:.3rem; font-size:.6rem; }
-
-/* Taking on Water keeps every observation and choice visible on short phone screens. */
-.playing.scenario-taking-on-water { height:100vh; height:100dvh; min-height:0; overflow:hidden; padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom)); }
-.scenario-taking-on-water .play-header { flex:none; padding-bottom:.35rem; }
-.scenario-taking-on-water .status-row { flex:none; padding:.4rem .1rem; }
-.scenario-taking-on-water .story-card { flex:none; min-height:0; padding:.85rem 1rem; }
-.scenario-taking-on-water .story-card h1 { margin:0 1rem .45rem 0; font-size:1.65rem; }
-.scenario-taking-on-water .story-time { margin:-.15rem 0 .35rem; }
-.scenario-taking-on-water .result-message { margin-bottom:.4rem; padding:.35rem .5rem; font-size:.75rem; }
-.scenario-taking-on-water .story-text { font-size:1rem; line-height:1.35; }
-.scenario-taking-on-water .choices { flex:none; gap:.45rem; padding-top:.55rem; }
-.scenario-taking-on-water .choices button { min-height:3rem; padding:.5rem .65rem; }
-.scenario-taking-on-water .choices strong { font-size:.88rem; line-height:1.2; }
-.scenario-taking-on-water .choices small { margin-top:.18rem; font-size:.65rem; line-height:1.2; }
-.scenario-taking-on-water .utility-links { flex:none; margin:.45rem auto 0; }
-.scenario-taking-on-water.playing .utility-links { padding-top:.4rem; }
-.scenario-taking-on-water footer { padding-top:.3rem; font-size:.6rem; }
-
 @media (min-width: 560px) {
   .app-shell { padding-inline:1.5rem; }
   .choices.count-2,.choices.count-3,.choices.count-4 { grid-template-columns:1fr 1fr; }
@@ -207,9 +173,40 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 }
 
 @media (max-width: 559px) {
+  /* Shared compact phone shell; overflow remains measurable instead of being clipped. */
+  .playing { height:100vh; height:100dvh; min-height:0; padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom)); }
+  .playing .play-header { flex:none; min-width:0; gap:.65rem; padding-bottom:.35rem; }
+  .playing .play-header > div { min-width:0; overflow-wrap:anywhere; }
+  .playing .status-row { flex:none; padding:.35rem .1rem; }
+  .playing .story-card { flex:none; min-width:0; min-height:0; overflow:visible; padding:.75rem .9rem; }
+  .playing .story-card h1 { margin:0 1rem .4rem 0; font-size:1.55rem; line-height:1.05; overflow-wrap:anywhere; }
+  .playing .story-time { margin:-.1rem 0 .3rem; font-size:.64rem; }
+  .playing .result-message { margin:0 0 .4rem; padding:.35rem .5rem; font-size:.75rem; }
+  .playing .story-text { font-size:1rem; line-height:1.32; overflow-wrap:anywhere; }
+  .playing .choices { flex:none; min-width:0; gap:.45rem; padding-top:.5rem; }
   .playing .choices.count-2,.playing .choices.count-3,.playing .choices.count-4 { grid-template-columns:1fr 1fr; }
   .playing .choices.count-3 button:last-child { grid-column:1/3; width:calc(50% - .35rem); justify-self:center; }
-  .choices button { min-height:5.25rem; }
+  .playing .choices button { min-width:0; min-height:3rem; padding:.5rem .6rem; overflow-wrap:anywhere; }
+  .playing .choices strong { font-size:.875rem; line-height:1.2; overflow-wrap:anywhere; }
+  .playing .choices small { margin-top:.2rem; font-size:.72rem; line-height:1.25; overflow-wrap:anywhere; }
+  .playing .utility-links { flex:none; margin:.4rem auto 0; padding-top:.35rem; }
+  .playing footer { flex:none; padding:.25rem .2rem .25rem; font-size:.6rem; letter-spacing:.05em; }
+  .ending-screen { height:100vh; height:100dvh; min-height:0; justify-content:flex-start; padding:max(.65rem,env(safe-area-inset-top)) .85rem max(.55rem,env(safe-area-inset-bottom)); }
+  .ending-screen .ending { margin:auto 0; }
+  .ending-screen .ending-mark { width:2.5rem; height:2.5rem; margin:0 auto .65rem; font-size:1.35rem; }
+  .ending-screen .ending h1 { margin:.35rem 0 .55rem; font-size:1.8rem; line-height:1.05; }
+  .ending-screen .ending > p { margin:0 0 .8rem; font-size:1rem; line-height:1.42; }
+  .ending-screen .primary { min-height:3rem; }
+  .ending-screen .loss-list { gap:.35rem; margin:.7rem 0; padding:.65rem; font-size:.85rem; }
+  .ending-screen .utility-links { flex:none; margin:.35rem auto 0; padding-top:.3rem; }
+  .ending-screen footer { flex:none; padding:.2rem .2rem; font-size:.58rem; letter-spacing:.04em; }
+  .reward-screen { margin:auto 0; }
+  .reward-screen > p { margin-bottom:.45rem!important; }
+  .reward-screen .reward-box { margin-top:.35rem; padding:.55rem; }
+  .reward-screen .reward-box button:not(.text-button) { min-height:3rem; margin-top:.35rem; padding:.45rem .55rem; }
+  .reward-screen .reward-box button small { margin-top:.15rem; font-size:.72rem; line-height:1.2; }
+  .reward-screen .reward-box .bank-capacity-note { font-size:.74rem; line-height:1.25; }
+  .reward-screen .reward-box .text-button { min-height:2.7rem; }
 }
 
 @media (max-width: 370px) {
@@ -219,20 +216,14 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .choices button { padding:.7rem; }
   .choices strong { font-size:.86rem; }
   footer { font-size:.58rem; letter-spacing:.045em; padding-top:1.2rem; }
-  .playing.scenario-bridge-out { padding-inline:.65rem; }
-  .scenario-bridge-out .story-card { padding:.7rem .8rem; }
-  .scenario-bridge-out .story-card h1 { font-size:1.45rem; }
-  .scenario-bridge-out .story-text { font-size:.93rem; line-height:1.32; }
-  .scenario-bridge-out .choices button { padding:.45rem .5rem; }
-  .scenario-bridge-out .choices strong { font-size:.81rem; }
-  .scenario-bridge-out .choices small { font-size:.62rem; }
-  .playing.scenario-taking-on-water { padding-inline:.65rem; }
-  .scenario-taking-on-water .story-card { padding:.7rem .8rem; }
-  .scenario-taking-on-water .story-card h1 { font-size:1.45rem; }
-  .scenario-taking-on-water .story-text { font-size:.93rem; line-height:1.32; }
-  .scenario-taking-on-water .choices button { padding:.45rem .5rem; }
-  .scenario-taking-on-water .choices strong { font-size:.81rem; }
-  .scenario-taking-on-water .choices small { font-size:.62rem; }
+  .playing { padding-inline:.65rem; }
+  .playing .story-card { padding:.7rem .8rem; }
+  .playing .story-card h1 { font-size:1.4rem; }
+  .playing .story-text { font-size:.95rem; line-height:1.3; }
+  .playing .choices button { padding:.45rem .5rem; }
+  .ending-screen { padding-inline:.65rem; }
+  .ending-screen .ending h1 { font-size:1.65rem; }
+  .ending-screen .ending > p { font-size:.95rem; line-height:1.38; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

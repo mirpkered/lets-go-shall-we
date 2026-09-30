@@ -47,6 +47,18 @@ describe('save compatibility', () => {
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
   });
 
+  it('preserves the current keepsake-selection view for an unfinished successful run', () => {
+    const character = newCharacter('Reward Save');
+    const state: SaveData = {
+      version: 1, bank: [], character,
+      run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true },
+      mostRecentScenarioId: BROKEN_BELL.id,
+    };
+    const storage = memoryStorage();
+    saveGame(state, storage);
+    expect(loadSave(storage)).toEqual(state);
+  });
+
   it('migrates an active save with no clock to zero elapsed fictional minutes', () => {
     const character = newCharacter('Paused Traveler');
     const { elapsedMinutes: _elapsed, ...legacyRun } = startRun(character, BROKEN_BELL);

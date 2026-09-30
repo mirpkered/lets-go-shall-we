@@ -119,6 +119,22 @@ describe('The Long Way Home', () => {
     expect(state.run?.sceneId).toBe('rewardOffer');
   });
 
+  it('keeps the narrow-phone revelation and its three choices concise', () => {
+    const scene = THE_LONG_WAY_HOME.scenes.revelation;
+    expect(scene.text.length).toBeLessThan(400);
+    expect(scene.choices.every((choice) => (choice.label + (choice.hint ?? '')).length < 100)).toBe(true);
+    expect(scene.text).toContain('cannot prove every page tells the whole story');
+    expect(scene.choices[0].hint).toContain('without returning her to the mill');
+  });
+
+  it('keeps the longest three-choice revelation compact for narrow phones', () => {
+    const scene = THE_LONG_WAY_HOME.scenes.revelation;
+    expect(scene.text.length).toBeLessThan(400);
+    expect(scene.choices.every((choice) => (choice.label + (choice.hint ?? '')).length < 100)).toBe(true);
+    expect(scene.text).toContain('cannot prove every page tells the whole story');
+    expect(scene.choices[0].hint).toContain('without returning her to the mill');
+  });
+
   it('shows why the pursuer is looking without making his claim conclusive', () => {
     let state = reachStormViaDirect(fresh(), 0);
     state = act(state, 'hearLanternMansClaim');

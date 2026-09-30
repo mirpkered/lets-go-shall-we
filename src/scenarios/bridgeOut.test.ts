@@ -186,6 +186,8 @@ describe('Bridge Out', () => {
     expect(opening).toContain(start.run?.randomSelections?.travelerOne);
     expect(opening).toContain(start.run?.randomSelections?.travelerTwo);
     expect(opening).toContain('river');
+    expect(opening.length).toBeLessThan(390);
+    expect(BRIDGE_OUT.scenes.arrival.choices.every((choice) => (choice.label + (choice.hint ?? '')).length < 70)).toBe(true);
 
     const travelers = act(fresh(), 'speakWithTravelers');
     const travelerText = sceneText(BRIDGE_OUT.scenes.travelerAssessment, travelers);

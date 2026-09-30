@@ -14,6 +14,7 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 let state: SaveData = loadSave();
 let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active' ? 'home' : 'home';
 let inventoryOpen = false;
+let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
 const qaEnabled = isQaMode(window.location.search);
 
 function persist(): void { saveGame(state); }
@@ -25,7 +26,7 @@ function startScenario(scenarioId: string): void {
   const scenario = getScenario(scenarioId);
   if (!scenario) return;
   state = startAdventure(state, scenario);
-  persist(); screen = 'play'; inventoryOpen = false; render();
+  persist(); screen = 'play'; inventoryOpen = false; successRewardsOpen = false; render();
 }
 
 function bindQaPanel(): void {
@@ -147,7 +148,7 @@ function renderDeath(): void {
   const scenario = activeScenario();
   const run = state.run;
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered');
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
 }
 
@@ -158,7 +159,16 @@ function renderSuccess(): void {
   const eligible = eligibleCarryItems(state);
   const fullBankText = bankCapacityMessage(state.bank.length);
   const rewardBankNote = fullBankText ? `<p class="bank-capacity-note">${safeText(fullBankText)} Your reward can still be carried; visit The Bank afterward to make an explicit swap.</p>` : '';
-  shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><div class="reward-box"><span class="eyebrow">Choose one item to carry</span><p>Choose one item for your next adventure. Items you leave behind will not carry over. You can bank your choice before the next adventure.</p>${rewardBankNote}${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered');
+  if (!successRewardsOpen) {
+    shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><button class="primary" id="openRewards">Choose a keepsake</button></section>`, 'centered ending-screen');
+    document.querySelector('#openRewards')!.addEventListener('click', () => {
+      successRewardsOpen = true;
+      if (state.run) state.run.rewardSelectionOpen = true;
+      persist(); render();
+    });
+    return;
+  }
+  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Choose one item to carry</div><h1>One keepsake for the road</h1><p>Your adventure through ${scenario.title} is complete. Choose one eligible item; you can bank it before the next journey.</p><div class="reward-box">${rewardBankNote}${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered ending-screen');
   document.querySelectorAll<HTMLButtonElement>('[data-carry]').forEach((button) => button.addEventListener('click', () => { state = finishSuccess(state, button.dataset.carry || null); persist(); screen = 'home'; render(); }));
 }
 

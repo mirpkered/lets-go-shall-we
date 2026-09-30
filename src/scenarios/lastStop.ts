@@ -173,10 +173,10 @@ export const LAST_STOP: Scenario = {
       text: 'Passengers brace in the aisle as the train plunges down the grade. The service brake may slow the train enough for a rough run-off before the bridge. The locomotive regulator might close and stop it, but the route is over two exposed roofs. Uncoupling could send the passenger coaches toward a rising maintenance siding while lightening the engine section. A gravel bank offers a risky escape for one person, not a way to save the train. None is certain.',
       textVariants: [{ requirements: { minElapsedMinutes: 30 }, text: 'Passengers brace in the aisle as the train plunges down the grade. Blackstone Bridge is closer now, its missing span a dark break beyond the rain. The service brake may still slow the train enough for a rough run-off. The locomotive regulator might close and stop it, but the route is over two exposed roofs. Uncoupling could send the passenger coaches toward a rising maintenance siding while lightening the engine section. A gravel bank offers a risky escape for one person, not a way to save the train. None is certain.' }],
       choices: [
-        { id: 'brake', label: 'Try the service brake', timeCost: 3, hint: 'May trade speed for a rough run-off.', next: 'baggageBrake' },
-        { id: 'engine', label: 'Try for the locomotive', timeCost: 2, hint: 'A regulator repair could stop the train; the roofs are exposed.', next: 'roofAccess' },
-        { id: 'uncouple', label: 'Separate the passenger coaches', timeCost: 6, hint: 'May lighten the engine; leaves the coaches to the siding.', next: 'couplingChoice' },
-        { id: 'escape', label: 'Aim for the gravel bank', timeCost: 3, hint: 'A chance for you alone; the train continues.', next: 'escapePoint' },
+        { id: 'brake', label: 'Try the service brake', timeCost: 3, next: 'baggageBrake' },
+        { id: 'engine', label: 'Try for the locomotive', timeCost: 2, next: 'roofAccess' },
+        { id: 'uncouple', label: 'Separate the passenger coaches', timeCost: 6, next: 'couplingChoice' },
+        { id: 'escape', label: 'Aim for the gravel bank', timeCost: 3, next: 'escapePoint' },
       ],
     },
     baggageBrake: {
@@ -210,10 +210,10 @@ export const LAST_STOP: Scenario = {
       id: 'brakesHolding', title: 'Speed Bought with Sparks', tone: 'warning',
       text: 'Blue sparks stream past the windows. The train is slowing, but not enough to stop before Blackstone. Keeping the brake engaged may force a survivable run-off into the brush. The regulator ahead might still close for a full stop, though the roof crossing is dangerous. Separating the coaches could lighten the engine section but leaves the passengers to the siding. The gravel bank remains a last chance for you alone.',
       choices: [
-        { id: 'front', label: 'Try for the locomotive', hint: 'The regulator may stop the train; the roofs remain slick.', next: 'roofAccess' },
-        { id: 'hold', label: 'Keep the brake engaged', hint: 'Risk a rough run-off; passengers remain together.', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
-        { id: 'couple', label: 'Separate the passenger coaches', hint: 'May lighten the engine; coaches face the siding alone.', next: 'couplingChoice' },
-        { id: 'escapeAfterBrake', label: 'Try the gravel bank', hint: 'Could save you, not the train.', next: 'escapePoint' },
+        { id: 'front', label: 'Try for the locomotive', next: 'roofAccess' },
+        { id: 'hold', label: 'Keep the brake engaged', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' },
+        { id: 'couple', label: 'Separate the passenger coaches', next: 'couplingChoice' },
+        { id: 'escapeAfterBrake', label: 'Try the gravel bank', next: 'escapePoint' },
       ],
     },
     roofAccess: {
