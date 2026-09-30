@@ -187,6 +187,16 @@ describe('Taking on Water', () => {
     expect(available(secured).map((choice) => choice.id)).not.toContain('swimLeavePossessions');
   });
 
+  it('uses Travel Rope to bundle money and carried gear before a swim', () => {
+    let state = act(discoverSeam(fresh('travelRope', 5)), 'goToPreparation');
+    expect(available(state).map((choice) => choice.id)).toContain('secureWithTravelRope');
+    state = act(state, 'secureWithTravelRope');
+    expect(state.run?.flags).toContain('moneySecured');
+    expect(state.run?.flags).toContain('carriedItemSecured');
+    expect(state.run?.inventory).toContain('travelRope');
+    expect(state.character?.money).toBe(5);
+  });
+
   it('uses Travel Rope to tether the canoe during a swim', () => {
     const state = { ...fresh('travelRope'), run: { ...fresh('travelRope').run!, sceneId: 'swampedNearShore', visitedSceneIds: ['dampBoot', 'swampedNearShore'] } };
     expect(available(state).map((choice) => choice.id)).toContain('tetherCanoeWithRope');
