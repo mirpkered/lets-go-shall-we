@@ -77,4 +77,19 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('aria-describedby="bank-confirm-message"');
     expect(mainSource).toContain('requestAnimationFrame(() => document.querySelector<HTMLElement>(bankConfirmReturnSelector)?.focus())');
   });
+
+  it('keeps the gameplay HUD crisp above atmosphere and utilities anchored below choices', () => {
+    expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
+    expect(styles).toContain('.playing::before { content:\'\'; position:absolute; z-index:-1;');
+    expect(styles).toContain('.playing .play-header { position:relative; z-index:2; background:#10110ff2;');
+    expect(styles).toContain('.playing .status-row { position:relative; z-index:1;');
+    expect(styles).toContain('.icon-button span { position:absolute; top:-.4rem; right:-.4rem; min-width:1.3rem;');
+    expect(styles).toContain('.playing .utility-links { flex:none; width:max-content; margin:auto auto 0;');
+    expect(styles).toContain('.playing footer { margin-top:0; }');
+    expect(styles).toContain('.playing .play-header > div { min-width:0; overflow-wrap:anywhere; }');
+    expect(styles).toContain('padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom));');
+    expect(styles).toContain('min-height:44px');
+    expect(mainSource).toContain('${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}');
+    expect(mainSource).toContain('<section class="choices count-${choices.length}"');
+  });
 });
