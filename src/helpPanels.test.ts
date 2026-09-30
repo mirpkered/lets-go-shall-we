@@ -68,6 +68,8 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('there is no perfect outcome');
     expect(markup).toContain('There is no real-world timer');
     expect(markup).toContain('Time away from the game never advances the adventure clock');
+    expect(markup).toContain('You travel light, take work where you find it, and rarely stay anywhere long. Some days bring ordinary work. Others bring trouble.');
+    expect(markup).toContain('You can accept a job, lend a hand, or keep moving');
   });
 
   it('explains persistence, one-item carry, bank, death, retirement, abandonment, and autosave accurately', () => {
@@ -79,7 +81,9 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('The game autosaves after meaningful choices');
     expect(markup).toContain('Closing the tab or app is safe');
     expect(markup).toContain('<strong>Abandon Adventure</strong> intentionally ends the active run');
-    expect(markup).toContain('reputation through the things they’ve actually done');
+    expect(markup).toContain('A surviving adventurer carries a small history of important choices into future stories');
+    expect(markup).toContain('there is no fame score');
+    expect(markup).not.toContain('reputation score');
     expect(markup).not.toContain('karma');
     expect(markup).not.toContain('cloud sync');
   });
