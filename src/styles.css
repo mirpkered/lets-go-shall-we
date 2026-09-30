@@ -3,7 +3,7 @@
 :root { color-scheme: dark; font-family: Inter, system-ui, sans-serif; background: #0b0b0a; color: #eee8da; font-synthesis: none; --brass:#c59a4a; --paper:#e7dfce; --ink:#25231f; --line:#3a362f; --muted:#a69f91; }
 * { box-sizing: border-box; }
 html { min-height: 100%; background:#0b0b0a; }
-body { margin:0; min-width:0; min-height:100vh; min-height:100dvh; background: radial-gradient(circle at 50% -10%, #2a2419 0, #12110f 34rem, #0b0b0a 68rem); }
+body { margin:0; min-width:0; min-height:100vh; min-height:100dvh; background-color:#0b0b0a; background-image:radial-gradient(ellipse at 50% 5%,#bd87333d 0,transparent 43%),radial-gradient(ellipse at 78% 23%,#8ea5bd1c 0,transparent 31%),linear-gradient(180deg,#080a0d61 0%,#090b0d8c 52%,#08090bd6 100%),url('./assets/adventure-backdrop.svg'); background-size:cover,cover,cover,cover; background-position:center,center,center,center; background-repeat:no-repeat; }
 #app[data-launch-pending] { visibility:hidden; }
 #app[data-launch-revealing] { visibility:visible; opacity:0; animation:launch-app-reveal 600ms ease-out forwards; }
 html[data-launch-pending],html[data-launch-pending] body,body[data-launch-pending] { background:#fff !important; }
@@ -22,6 +22,8 @@ button:focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 svg { width:1.25rem; height:1.25rem; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .app-shell { width:min(100%, 47rem); min-height:100vh; min-height:100dvh; margin:0 auto; padding:clamp(1.2rem, 5vw, 2.5rem) 1.1rem max(1.25rem, env(safe-area-inset-bottom)); display:flex; flex-direction:column; }
+.home-screen { position:relative; isolation:isolate; }
+.home-screen::before { content:''; position:absolute; z-index:-1; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 30%,#c28a3820,transparent 58%),linear-gradient(180deg,#080a0a05 0%,#090a0c12 70%,#08090c45 100%); }
 footer { margin-top:auto; padding:2.5rem .2rem .25rem; display:flex; justify-content:space-between; color:#706a60; font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; }
 .centered { justify-content:center; }
 .eyebrow { color:var(--brass); font-size:.74rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
@@ -52,9 +54,14 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .home-tools svg,.retire-icon { grid-row:1/3; width:1.5rem; color:#ac8a4d; font-size:1.5rem; }
 .home-tools span { font-weight:700; }
 .home-tools small { color:#777166; }
-.utility-links { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; width:100%; margin-top:1.1rem; }
-.utility-links button { min-width:0; min-height:2.9rem; padding:.65rem .8rem; border:1px solid #3b362c; background:#13120f; color:#cbbb9c; font:inherit; font-size:.88rem; cursor:pointer; }
-.utility-links button:hover { border-color:#8b6a32; color:#f0d49b; }
+.utility-links { display:flex; justify-content:center; align-items:center; gap:.8rem; width:fit-content; margin:1rem auto .2rem; }
+.utility-links .utility-icon { display:grid; place-items:center; flex:0 0 2.9rem; width:2.9rem; height:2.9rem; min-height:44px; padding:0; border:1px solid #665438; border-radius:50%; background:#111315df; color:#d0ae6b; cursor:pointer; box-shadow:0 .2rem .8rem #0006; transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease; }
+.utility-icon svg { width:1.12rem; height:1.12rem; }
+.utility-question { font:1.25rem/1 'IM Fell English',Georgia,serif; }
+.utility-links .utility-icon:hover { border-color:#bd9650; background:#201b13f2; color:#f0d49b; transform:translateY(-1px); }
+.utility-links .utility-icon:active { transform:translateY(1px); }
+.utility-links .utility-icon:focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
+.playing .utility-links { margin-top:1.35rem; padding-top:.95rem; border-top:1px solid #c59a4a29; }
 .utility-dialog { width:min(calc(100vw - 2rem), 40rem); max-width:none; max-height:min(88dvh, 54rem); margin:auto; padding:0; overflow-y:auto; overscroll-behavior:contain; border:1px solid #75603a; background:#171613; color:#e8e0d2; box-shadow:0 1.5rem 5rem #000d; }
 .utility-dialog::backdrop { background:#050504d9; backdrop-filter:blur(3px); }
 .utility-dialog-header { position:sticky; z-index:2; top:0; display:flex; align-items:center; justify-content:space-between; gap:.7rem; min-height:4rem; padding:.8rem 1rem; border-bottom:1px solid #3b352b; background:#171613f5; }
@@ -177,7 +184,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .story-text { font-size:1.04rem; }
   .choices button { padding:.7rem; }
   .choices strong { font-size:.86rem; }
-  footer { display:none; }
+  footer { font-size:.58rem; letter-spacing:.045em; padding-top:1.2rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -186,6 +193,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .utility-links .utility-icon { transition:none; }
   #app[data-launch-revealing] { animation:launch-app-reveal-reduced 100ms linear forwards; }
   .launch-splash.is-entering { animation:launch-splash-enter-reduced 100ms linear forwards; }
   .launch-splash.is-fading-to-black { animation:launch-splash-to-black-reduced 120ms linear forwards; }

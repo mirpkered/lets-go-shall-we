@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="night" x2="0" y2="1">
+      <stop stop-color="#171d27"/>
+      <stop offset=".52" stop-color="#1c2022"/>
+      <stop offset="1" stop-color="#111310"/>
+    </linearGradient>
+    <radialGradient id="haze" cx=".52" cy=".65" r=".56">
+      <stop stop-color="#c4944b" stop-opacity=".24"/>
+      <stop offset=".48" stop-color="#80734e" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#80734e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonlight">
+      <stop stop-color="#aebdd0" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#aebdd0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="road" x2="0" y2="1">
+      <stop stop-color="#3b3529" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#24241f" stop-opacity=".72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#night)"/>
+  <ellipse cx="820" cy="690" rx="780" ry="510" fill="url(#haze)"/>
+  <ellipse cx="1300" cy="235" rx="340" ry="290" fill="url(#moonlight)"/>
+  <circle cx="1300" cy="235" r="47" fill="#d0d5d6" fill-opacity=".12"/>
+  <circle cx="1300" cy="235" r="35" fill="#d0d5d6" fill-opacity=".16"/>
+
+  <path d="M0 590 180 470l155 90 190-175 196 183 168-132 193 154 184-183 180 151 154-67v350H0Z" fill="#252d31" fill-opacity=".52"/>
+  <path d="M0 670 203 570l175 97 183-123 173 115 186-111 168 114 221-139 291 150v257H0Z" fill="#1a2224" fill-opacity=".82"/>
+  <path d="M0 738q170-91 346-16 155 64 302-20 179-103 370-3 180 94 333 8 126-70 249-10v503H0Z" fill="#141a18"/>
+
+  <g fill="#101513" fill-opacity=".86">
+    <path d="m77 766 34-131 35 131h-18l28 88H66l29-88Z"/>
+    <path d="m200 744 26-103 29 103h-15l22 66h-70l23-66Z"/>
+    <path d="m1390 724 33-126 34 126h-18l28 83h-87l28-83Z"/>
+    <path d="m1505 755 25-98 28 98h-14l22 64h-68l22-64Z"/>
+    <path d="m1185 752 27-103 29 103h-15l23 69h-72l23-69Z"/>
+    <path d="m388 751 24-93 27 93h-14l21 62h-65l21-62Z"/>
+  </g>
+
+  <g fill="#111512" fill-opacity=".88" transform="translate(885 488)">
+    <path d="M0 87 88 16l86 71v112H0Z"/>
+    <path d="m-15 91 103-84 102 84h-29L88 31 13 91Z"/>
+    <path d="M72 73h32v126H72Z"/>
+    <path d="m69 74 19-53 19 53Z"/>
+    <path d="M64 130h18v25H64Zm40 0h18v25h-18Z" fill="#c0934c" fill-opacity=".34"/>
+    <path d="M21 119h24v27H21Z" fill="#c0934c" fill-opacity=".27"/>
+    <path d="M138 119h24v27h-24Z" fill="#c0934c" fill-opacity=".27"/>
+  </g>
+  <ellipse cx="970" cy="620" rx="152" ry="112" fill="#bb8c47" fill-opacity=".045"/>
+
+  <path d="M655 1200c78-103 151-173 145-255-7-91-121-117-51-205 57-70 133-86 161-148 17-38 10-77-2-116l94-16c19 71 19 128-16 184-49 80-143 97-181 159-40 65 63 109 54 198-8 73-66 133-94 199Z" fill="url(#road)"/>
+  <path d="M800 1200c18-92 24-166-4-239m39-188c-9-66 19-104 67-150m33-94c1-18-1-36-5-53" fill="none" stroke="#aa8750" stroke-opacity=".14" stroke-width="5"/>
+
+  <g fill="#c99a52" fill-opacity=".12">
+    <circle cx="515" cy="777" r="3"/><circle cx="548" cy="790" r="2"/><circle cx="1101" cy="786" r="3"/>
+    <circle cx="1068" cy="801" r="2"/><circle cx="742" cy="868" r="2"/><circle cx="858" cy="830" r="2"/>
+  </g>
+  <rect width="1600" height="1200" fill="#080a0c" fill-opacity=".16"/>
+</svg>

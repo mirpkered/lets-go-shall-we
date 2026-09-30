@@ -9,6 +9,11 @@ describe('About and Contact utilities', () => {
     const markup = renderUtilityFeatures();
     expect(markup).toContain('data-open-help="about"');
     expect(markup).toContain('data-open-help="contact"');
+    expect(markup).toContain('aria-label="About"');
+    expect(markup).toContain('aria-label="Contact Mirpworks"');
+    expect(markup).toContain('class="utility-question" aria-hidden="true">?</span>');
+    expect(markup).toContain('<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">');
+    expect(markup).toContain('aria-label="Help and contact utilities"');
     expect(markup).toContain('id="about-dialog"');
     expect(markup).toContain('id="contact-dialog"');
     expect(markup).toContain('Adventure: Add the story name if it applies.');

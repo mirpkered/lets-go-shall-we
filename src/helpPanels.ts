@@ -25,9 +25,9 @@ export function renderUtilityFeatures(adventureTitle?: string): string {
   const href = escapeHtml(contactMailto(adventureTitle));
   const title = adventureTitle ? escapeHtml(adventureTitle) : '';
   return `
-    <nav class="utility-links" aria-label="Help and contact">
-      <button type="button" data-open-help="about">About</button>
-      <button type="button" data-open-help="contact">Contact</button>
+    <nav class="utility-links" aria-label="Help and contact utilities">
+      <button type="button" class="utility-icon" data-open-help="about" aria-label="About" title="About"><span class="utility-question" aria-hidden="true">?</span></button>
+      <button type="button" class="utility-icon" data-open-help="contact" aria-label="Contact Mirpworks" title="Contact Mirpworks"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="m4.5 7 7.5 6 7.5-6"/></svg></button>
     </nav>
     <dialog class="utility-dialog" id="about-dialog" aria-labelledby="about-heading">
       <header class="utility-dialog-header">
