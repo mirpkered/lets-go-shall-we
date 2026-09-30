@@ -173,6 +173,61 @@ describe('Bridge Out', () => {
     expect(BRIDGE_OUT.scenes.arrival.choices.every((choice) => !choice.requirements?.historyFlags)).toBe(true);
   });
 
+  it('establishes the physical setup before choices and never implies unseen draft animals', () => {
+    const opening = sceneText(BRIDGE_OUT.scenes.arrival, fresh());
+    expect(opening).toContain('near bank');
+    expect(opening).toContain('far bank');
+    expect(opening).toContain('one narrow lane across a cracked, sagging deck');
+    expect(opening).toContain('No one is stranded across the river');
+    expect(opening).toContain('wagon');
+    expect(opening).toContain('No animals are hitched');
+    expect(opening).toContain('Mara');
+    expect(opening).toContain('Eli');
+    expect(opening).toContain('river');
+
+    const travelers = act(fresh(), 'speakWithTravelers');
+    const travelerText = sceneText(BRIDGE_OUT.scenes.travelerAssessment, travelers);
+    expect(travelerText).toContain('near bank');
+    expect(travelerText).toContain('far bank');
+    expect(travelerText).toContain('long leather strap');
+    expect(travelerText).toContain('No animals are hitched');
+
+    const choiceCopy = Object.values(BRIDGE_OUT.scenes).flatMap((scene) => scene.choices.flatMap((choice) => [
+      choice.label,
+      choice.hint ?? '',
+      choice.chance?.successMessage ?? '',
+      choice.chance?.failureMessage ?? '',
+    ])).join(' ');
+    expect(choiceCopy).not.toMatch(/\b(?:horses?|mules?|oxen|traces?)\b/i);
+    expect(choiceCopy).toContain('Use the wagon’s leather strap as a handline');
+    expect(choiceCopy).toContain('Set your rope as a bridge handline');
+  });
+
+  it('makes the cargo dilemma explicit and narrates position changes across the river', () => {
+    let state = act(fresh(), 'speakWithTravelers');
+    state = act(state, 'considerWagon');
+    const dilemma = sceneText(BRIDGE_OUT.scenes.cargoDecision, state);
+    expect(dilemma).toContain('near-bank approach');
+    expect(dilemma).toContain('medicine chest');
+    expect(dilemma).toContain('Eli and Mara are still on this bank');
+    expect(dilemma).toContain('rising river');
+
+    state = act(fresh(0, 'travelRope'), 'speakWithTravelers');
+    state = act(state, 'useTravelRope', 0);
+    expect(state.run?.sceneId).toBe('ropeSuccess');
+    expect(BRIDGE_OUT.scenes.ropeSuccess.text).toContain('reach the far bank');
+    expect(BRIDGE_OUT.scenes.ropeSuccess.text).toContain('wagon remains on the near bank');
+
+    let delayed = act(fresh(), 'speakWithTravelers');
+    delayed = act(delayed, 'improviseGuideLine', 0.999);
+    expect(delayed.run?.sceneId).toBe('ropeSlip');
+    delayed = act(delayed, 'moveToPeoplePlan');
+    expect(delayed.run?.flags).toContain('eliAcross');
+    delayed = act(delayed, 'leadMaraDownstream');
+    expect(delayed.run?.sceneId).toBe('fordAfterDelay');
+    expect(sceneText(BRIDGE_OUT.scenes.fordAfterDelay, delayed)).toContain('Eli is already waiting on the far bank');
+  });
+
   it('makes every item award explicit and protects unique rewards from duplicate acquisition', () => {
     const awards = [BRIDGE_OUT.scenes.repairSuccess.choices[0], BRIDGE_OUT.scenes.cargoSuccess.choices[0], BRIDGE_OUT.scenes.ropeSuccess.choices[0]];
     expect(awards.map((choice) => choice.effects?.gainItems?.[0])).toEqual(['bridgewrightHammer', 'ironRopeClamp', 'ironRopeClamp']);
