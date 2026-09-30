@@ -47,6 +47,8 @@ export const ITEMS: Record<string, Item> = {
   fireBeater: { id: 'fireBeater', name: 'Fire Beater', description: 'A flat, springy tool for pressing out small ground fires and shifting hot brush from a safe distance.', category: 'tool', carryable: true },
   trailWhistle: { id: 'trailWhistle', name: 'Trail Whistle', description: 'A clear, sharp whistle for calling companions across rough country.', category: 'tool', carryable: true },
   weatherproofBlanket: { id: 'weatherproofBlanket', name: 'Weatherproof Blanket', description: 'A compact wool blanket with a waxed outer layer to hold off cold rain.', category: 'armor', carryable: true },
+  compactWheelWrench: { id: 'compactWheelWrench', name: 'Compact Wheel Wrench', description: 'A sturdy travel wrench for wheel hubs, bolts, and field repairs.', category: 'tool', carryable: true },
+  foldingTrailMarker: { id: 'foldingTrailMarker', name: 'Folding Trail Marker', description: 'A bright, hinged marker that can be placed or hung to make a route easier to follow.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
