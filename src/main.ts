@@ -3,7 +3,7 @@ import { choose, depositCarried, eligibleCarryItems, failCharacter, finishSucces
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage } from './bank';
 import { showLaunchSplash } from './launchSplash';
-import { renderUtilityFeatures } from './helpPanels';
+import { contactMailto, feedbackAdventureTitle, renderUtilityFeatures } from './helpPanels';
 import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario } from './scenarioSelection';
@@ -76,7 +76,7 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderUtilityFeatures(activeScenario()?.title)}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}">${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -84,6 +84,11 @@ function shell(content: string, extra = ''): void {
   document.querySelectorAll<HTMLButtonElement>('[data-close-help]').forEach((button) => button.addEventListener('click', () => {
     button.closest('dialog')?.close();
   }));
+  document.querySelector<HTMLSelectElement>('[data-feedback-category]')?.addEventListener('change', (event) => {
+    const category = (event.currentTarget as HTMLSelectElement).value;
+    const email = document.querySelector<HTMLAnchorElement>('[data-contact-email]');
+    if (email) email.href = contactMailto(feedbackAdventureTitle(state, SCENARIOS), category || undefined);
+  });
   bindQaPanel();
 }
 

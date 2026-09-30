@@ -77,6 +77,8 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .utility-dialog-body .mirpworks-note p { margin-bottom:.35rem; }
 .contact-dialog .utility-dialog-body > p { margin-bottom:.8rem; }
 .contact-dialog .contact-adventure { padding:.65rem .75rem; border-left:2px solid var(--brass); background:#211e18; }
+.contact-category { display:grid; gap:.4rem; margin:.8rem 0; color:#c4bcaf; font-size:.82rem; }
+.contact-category select { width:100%; min-height:2.9rem; padding:.55rem .7rem; border:1px solid #5b4c32; border-radius:0; background:#11110f; color:#eee8da; font:inherit; }
 .contact-email { display:grid; place-items:center; min-height:3.35rem; margin:.4rem 0 .75rem; text-decoration:none; }
 .contact-address { margin:0!important; text-align:center; font-size:.78rem!important; }
 .utility-dialog :focus-visible { outline:3px solid #f0c675; outline-offset:3px; }

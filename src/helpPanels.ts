@@ -1,33 +1,42 @@
 export const CONTACT_EMAIL = 'contact@mirpworks.com';
 export const CONTACT_SUBJECT = 'Let’s Go, Shall We? — Feedback';
+export const FEEDBACK_CATEGORIES = ['Story / Choices', 'Bug', 'Something felt unfair', 'Something I liked', 'General feedback'] as const;
+
+import type { SaveData, Scenario } from './types';
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]!);
 }
 
-export function contactMailto(adventureTitle?: string): string {
+export function feedbackAdventureTitle(state: Pick<SaveData, 'run' | 'mostRecentScenarioId'>, scenarios: Scenario[]): string | undefined {
+  const scenarioId = state.run?.scenarioId ?? state.mostRecentScenarioId;
+  return scenarios.find((scenario) => scenario.id === scenarioId)?.title;
+}
+
+export function contactMailto(adventureTitle?: string, category?: string): string {
   const body = [
-    'Type: Bug / Story Idea / Feedback / Other',
+    'Game: Let’s Go, Shall We?',
     '',
-    `Adventure: ${adventureTitle || '[if applicable]'}`,
+    `Adventure: ${adventureTitle || 'General Feedback'}`,
+    ...(category ? [`Category: ${category}`] : []),
     '',
-    'What happened / What’s your idea?',
+    'Feedback:',
     '',
-    'If reporting a problem:',
-    'What choice did you make just before it happened?',
+    'What would you like to share?',
     '',
-    'Attach a screenshot if you have one.',
+    'If reporting a problem, what happened just before it?',
+    'A screenshot may help; attach one if you have it.',
   ].join('\n');
   return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(CONTACT_SUBJECT)}&body=${encodeURIComponent(body)}`;
 }
 
-export function renderUtilityFeatures(adventureTitle?: string): string {
-  const href = escapeHtml(contactMailto(adventureTitle));
+export function renderUtilityFeatures(adventureTitle?: string, category?: string): string {
+  const href = escapeHtml(contactMailto(adventureTitle, category));
   const title = adventureTitle ? escapeHtml(adventureTitle) : '';
   return `
     <nav class="utility-links" aria-label="Help and contact utilities">
       <button type="button" class="utility-icon" data-open-help="about" aria-label="About" title="About"><span class="utility-question" aria-hidden="true">?</span></button>
-      <button type="button" class="utility-icon" data-open-help="contact" aria-label="Contact Mirpworks" title="Contact Mirpworks"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="m4.5 7 7.5 6 7.5-6"/></svg></button>
+      <button type="button" class="utility-icon" data-open-help="contact" aria-label="Contact and game feedback" title="Contact and game feedback"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="m4.5 7 7.5 6 7.5-6"/></svg></button>
     </nav>
     <dialog class="utility-dialog" id="about-dialog" aria-labelledby="about-heading">
       <header class="utility-dialog-header">
@@ -49,15 +58,20 @@ export function renderUtilityFeatures(adventureTitle?: string): string {
     </dialog>
     <dialog class="utility-dialog contact-dialog" id="contact-dialog" aria-labelledby="contact-heading">
       <header class="utility-dialog-header">
-        <h2 id="contact-heading">Contact Mirpworks</h2>
-        <button type="button" class="utility-dialog-close" data-close-help aria-label="Close Contact">Close</button>
+        <h2 id="contact-heading">Contact &amp; Feedback</h2>
+        <button type="button" class="utility-dialog-close" data-close-help aria-label="Close Contact and Feedback">Close</button>
       </header>
       <div class="utility-dialog-body">
-        <p class="utility-lede">Found a bug? A choice that doesn’t work, a continuity or text mistake, a layout problem, save trouble, or a balance concern? Useful feedback of every kind is welcome.</p>
-        <p>If something looks wrong, screenshots are especially helpful. Attach one to your email if you can; this page does not upload screenshots.</p>
-        <p>Got an idea for an adventure? Send it. Weird, serious, funny, dangerous—we want to hear it.</p>
-        <p class="contact-adventure">${title ? `Adventure: <strong>${title}</strong>` : 'Adventure: Add the story name if it applies.'}</p>
-        <a class="primary contact-email" href="${href}">Email Mirpworks</a>
+        <p class="utility-lede">Found something odd, unfair, confusing, or especially fun? Feedback is welcome.</p>
+        <p>Tell us about bugs, confusing choices, continuity, consequences, stories you liked or disliked, item interactions that felt useful or forced—or anything else. Screenshots can help with a problem; attach one to your email if you like. This page does not upload them.</p>
+        <p class="contact-adventure" data-feedback-adventure>${title ? `Adventure: <strong>${title}</strong>` : 'Adventure: General Feedback'}</p>
+        <label class="contact-category" for="feedback-category">Optional category
+          <select id="feedback-category" data-feedback-category>
+            <option value="">No category</option>
+            ${FEEDBACK_CATEGORIES.map((entry) => `<option value="${escapeHtml(entry)}"${entry === category ? ' selected' : ''}>${escapeHtml(entry)}</option>`).join('')}
+          </select>
+        </label>
+        <a class="primary contact-email" data-contact-email href="${href}">Email Mirpworks</a>
         <p class="contact-address">Or email <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a></p>
       </div>
     </dialog>`;

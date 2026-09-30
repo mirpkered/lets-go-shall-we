@@ -56,3 +56,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable
+
+## Ongoing development input
+
+Player feedback remains an ongoing input as the adventure library expands. Reports are especially useful for unfair decisions, unclear physical geography, continuity errors, predictable choice patterns, weak or favorite scenarios, forced item usage, and consequences that feel too weak or too severe. Suggestions help guide development, but not every request can be implemented. Feedback is voluntary through the in-game Contact & Feedback utility; messages open in the player's email app and are not submitted to a server.
