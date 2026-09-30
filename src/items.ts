@@ -51,6 +51,8 @@ export const ITEMS: Record<string, Item> = {
   foldingTrailMarker: { id: 'foldingTrailMarker', name: 'Folding Trail Marker', description: 'A bright, hinged marker that can be placed or hung to make a route easier to follow.', category: 'tool', carryable: true },
   freightmansStrap: { id: 'freightmansStrap', name: 'Freightman’s Strap', description: 'A broad, well-stitched leather strap for securing awkward loads.', category: 'tool', carryable: true },
   assayersLoupe: { id: 'assayersLoupe', name: 'Assayer’s Loupe', description: 'A brass-rimmed lens for reading fine marks and inspecting small details.', category: 'tool', carryable: true },
+  farmWhistle: { id: 'farmWhistle', name: 'Farm Whistle', description: 'A clear, low-pitched whistle used to call livestock and farmhands without shouting.', category: 'tool', carryable: true },
+  gateHook: { id: 'gateHook', name: 'Gate Hook', description: 'A stout hooked tool for lifting latches and drawing wire clear of a gate.', category: 'tool', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
