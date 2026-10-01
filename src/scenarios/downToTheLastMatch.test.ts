@@ -264,6 +264,15 @@ describe('Down to the Last Match', () => {
     const resumed = JSON.parse(JSON.stringify(spent)) as SaveData;
     expect(resumed.run?.flags).toEqual(spent.run?.flags);
     expect(options(resumed).map(({ id }) => id)).toEqual(options(spent).map(({ id }) => id));
+
+    let eliInColdCabin = fresh();
+    eliInColdCabin.run!.sceneId = 'criticalCold';
+    eliInColdCabin.run!.elapsedMinutes = 40;
+    eliInColdCabin.run!.flags.push('travelerInside', 'lastMatchSpent');
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold, eliInColdCabin)).toMatch(/last coals have gone dark/i);
+    expect(options(eliInColdCabin).map(({ id }) => id)).not.toContain('shareLastWood');
+    expect(options(eliInColdCabin).map(({ id }) => id)).not.toContain('keepLastWood');
+    expect(options(eliInColdCabin).map(({ id }) => id)).toContain('waitWithEliByColdStove');
   });
 
   it('uses item-specific repairs and safer outdoor actions', () => {
