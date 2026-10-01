@@ -1,6 +1,6 @@
 # Adventure Library Status
 
-Current registry: **175 playable adventures**, verified against `src/scenarios/index.ts` and matching scenario definitions on 2026-10-01. Stable IDs preserve saves and should not be renamed casually.
+Current registry: **187 playable adventures**, verified against `src/scenarios/index.ts` after the October-affinity expansion. The table below remains the prior 175-adventure inventory snapshot; the twelve new adventures and their authored metadata matrix are summarized in [Scenario Diversity](SCENARIO-DIVERSITY.md). Stable IDs preserve saves and should not be renamed casually.
 
 This is an inventory, not a claim that all adventures have received hands-on playtesting. Broad category is inferred from the authoring module; tone and danger vary by route and should be read in the story itself. Approximate shortest/typical route lengths and payoff/reward/quiet signals mirror the structural scan recorded in the [ending/reward audit](LIBRARY-ENDING-REWARD-AUDIT.md), not a newly recomputed analysis; that report states its baseline and measurement limits. “Material” means a positive money or carryable-item reward was authored in the scanned version. “Character-state callback potential” means history/lore/knowledge effects were detected, not that a future cross-adventure callback exists. No unresolved issue is asserted by this inventory.
 

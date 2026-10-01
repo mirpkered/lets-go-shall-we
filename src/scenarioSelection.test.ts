@@ -115,13 +115,13 @@ describe('player scenario selection and QA mode', () => {
   });
 
   it('assigns every registered scenario a valid consequence-based risk tier', () => {
-    expect(SCENARIOS).toHaveLength(175);
+    expect(SCENARIOS).toHaveLength(187);
     for (const scenario of SCENARIOS) expect(RISK_TIERS).toContain(scenarioRiskTier(scenario));
     for (const scenario of SCENARIOS.filter((entry) => Object.values(entry.scenes).some((scene) => scene.ending === 'death'))) {
       expect(['HIGH', 'SEVERE']).toContain(scenarioRiskTier(scenario));
     }
     const distribution = Object.fromEntries(RISK_TIERS.map((tier) => [tier, SCENARIOS.filter((scenario) => scenarioRiskTier(scenario) === tier).length]));
-    expect(distribution).toEqual({ LOW: 111, MODERATE: 35, HIGH: 20, SEVERE: 9 });
+    expect(distribution).toEqual({ LOW: 118, MODERATE: 39, HIGH: 20, SEVERE: 10 });
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'gone-fishing')!)).toBe('LOW');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'under-the-ice')!)).toBe('SEVERE');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'high-water')!)).toBe('SEVERE');

@@ -9,7 +9,7 @@ export type LengthClass = 'VIGNETTE' | 'STANDARD' | 'EXTENDED' | 'EPIC_SHORT';
 export type SeasonKey = 'ALL_YEAR' | 'OCTOBER' | 'DECEMBER' | 'WINTER' | 'SPRING' | 'SUMMER' | 'AUTUMN' | 'CUSTOM';
 export type HistoricalPresence = 'NONE' | 'INSPIRED' | 'CAMEO' | 'FEATURED' | 'HISTORICAL_EVENT';
 export type HistoricalPortrayal = 'GROUNDED' | 'LEGENDARY' | 'MIXED' | 'NOT_APPLICABLE';
-export interface SeasonAvailability { season: SeasonKey; months?: number[]; startMonthDay?: string; endMonthDay?: string; weightBoost?: number }
+export interface SeasonAvailability { season: SeasonKey; months?: number[]; startMonthDay?: string; endMonthDay?: string; weightBoost?: number; /** Optional months in which an ALL_YEAR affinity boost applies. */ affinityMonths?: number[] }
 export interface ScenarioDiversity {
   playerRoles: string[]; activities: string[]; structures: string[]; tones: string[]; settings: string[];
   riskTier: RiskTier; fantasyDensity: FantasyDensity; supernaturalThreats: string[]; combat: CombatPresence; length: LengthClass;

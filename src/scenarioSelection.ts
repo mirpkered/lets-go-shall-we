@@ -168,7 +168,9 @@ export function selectionDiagnostics(scenarios: Scenario[], recentScenarioIds: s
       const tier = cachedRisk(scenario);
       const completedPlays = Math.max(0, Math.floor(pressure.scenarioPlayCounts?.[scenario.id] ?? 0));
       const metadata = scenarioMetadata(scenario);
-      const seasonalWeight = Math.max(1, Math.min(2.25, getSeasonAvailability(scenario).weightBoost ?? 1));
+      const availability = getSeasonAvailability(scenario);
+      const affinityActive = !availability.affinityMonths?.length || availability.affinityMonths.includes(month);
+      const seasonalWeight = Math.max(1, Math.min(2.25, affinityActive ? (availability.weightBoost ?? 1) : 1));
       const specialWeight = historicalWeight(metadata.historicalPresence);
       const replay = replayWeight(completedPlays);
       const risk = (shares[tier] / (perTier.get(tier) ?? 1));
@@ -227,6 +229,7 @@ export interface SelectionSimulation {
 /** Pure QA simulation: all evolving histories are local copies and never touch the supplied save. */
 export function simulateScenarioSelection(scenarios: Scenario[], recentScenarioIds: string[] = [], pressure: SelectionPressure = {}, draws = 100, random = Math.random): SelectionSimulation {
   const result: SelectionSimulation = { draws, scenarioCounts: {}, categoryCounts: {}, riskCounts: { LOW: 0, MODERATE: 0, HIGH: 0, SEVERE: 0 }, seasonalCount: 0, historicalCount: 0, repeatCount: 0, recentFallbackCount: 0 };
+  const month = pressure.selectionMonth ?? new Date().getMonth() + 1;
   const recent = [...recentScenarioIds];
   const categoryHistory = [...(pressure.categoryHistory ?? [])];
   const scenarioPlayCounts = { ...(pressure.scenarioPlayCounts ?? {}) };
@@ -245,7 +248,8 @@ export function simulateScenarioSelection(scenarios: Scenario[], recentScenarioI
     result.scenarioCounts[selected.id] = (result.scenarioCounts[selected.id] ?? 0) + 1;
     result.categoryCounts[category] = (result.categoryCounts[category] ?? 0) + 1;
     result.riskCounts[tier]++;
-    if (getSeasonAvailability(selected).season !== 'ALL_YEAR') result.seasonalCount++;
+    const availability = getSeasonAvailability(selected);
+    if (availability.season !== 'ALL_YEAR' || (availability.affinityMonths?.includes(month) && (availability.weightBoost ?? 1) > 1)) result.seasonalCount++;
     if (meta.historicalPresence !== 'NONE' && meta.historicalPresence !== 'INSPIRED') result.historicalCount++;
     if (prior > 0) result.repeatCount++;
     scenarioPlayCounts[selected.id] = prior + 1;

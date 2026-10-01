@@ -47,6 +47,6 @@ describe('content-substance audit', () => {
 
   it('reviews the registered library using warning-only heuristics', () => {
     const report = auditContentQuality(SCENARIOS);
-    expect(report.scenarioCount).toBe(175);
+    expect(report.scenarioCount).toBe(187);
   });
 });

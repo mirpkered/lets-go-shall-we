@@ -3,6 +3,7 @@ import type { RiskTier, Scenario } from './types';
 const SEVERE_SCENARIOS = new Set([
   'under-the-ice', 'taking-on-water', 'high-water', 'no-vacancy', 'the-missing-boat',
   'the-burning-loft', 'the-sound-in-the-well', 'the-washout', 'the-blue-hole',
+  'the-man-in-the-corn',
 ]);
 
 const HIGH_SCENARIOS = new Set([

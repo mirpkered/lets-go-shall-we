@@ -43,6 +43,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Keep Gear requirements optional for baseline success. Bank only Gear/Relics; character-bound Supplies and Assets are lost with death, abandonment, or retirement.
 - [ ] Consider quiet/partial outcomes and situations with no perfect solution where they fit.
 - [ ] Before terminal: did more than a procedure happen?
+- [ ] Apply the No Checklist Ending Rule: an explicit refusal may end briefly, but engaged participation should show judgment, performance, complication, consequence, reaction, or payoff; do not add scenes to satisfy a quota.
 - [ ] Did the player make a meaningful decision?
 - [ ] Did the situation change because of the player’s action?
 - [ ] Is a visible consequence present?

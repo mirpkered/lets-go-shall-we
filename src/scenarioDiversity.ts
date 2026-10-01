@@ -177,7 +177,7 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
   const ids = new Set<string>();
   const tagRules: Partial<Record<keyof ScenarioDiversity, string[]>> = {
     playerRoles: ['worker', 'helper/rescuer', 'witness', 'traveler/passenger', 'investigator/explorer', 'negotiator/buyer/seller', 'guest', 'accidental participant', 'other role'],
-    activities: ['labor/repair', 'rescue/care', 'survival', 'negotiation/trade', 'investigation/mystery', 'travel/exploration', 'social interaction', 'animals', 'combat/defense', 'puzzle/problem-solving', 'moral prioritization', 'communication/witness', 'other activity'],
+    activities: ['labor/repair', 'rescue/care', 'survival', 'negotiation/trade', 'investigation/mystery', 'travel/exploration', 'social interaction', 'animals', 'combat/defense', 'puzzle/problem-solving', 'moral prioritization', 'communication/witness', 'competition/game', 'other activity'],
     structures: ['short focused sequence', 'multi-stage sequence', 'branching narrative', 'time-pressure sequence', 'run-specific variable', 'other structure'],
     tones: ['peaceful', 'warm/hopeful', 'humorous/absurd', 'mysterious/eerie', 'adventurous', 'tense/dangerous', 'melancholy/tragic', 'grim', 'other tone'],
     settings: [...SETTING_RULES.map(([tag]) => tag), 'other setting'],
@@ -212,6 +212,8 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
     }
     const months = metadata.availability.months ?? [];
     if (!months.length || months.some((month) => !Number.isInteger(month) || month < 1 || month > 12)) issues.push(`${scenario.id}: invalid seasonal month configuration`);
+    if (metadata.availability.affinityMonths?.some((month) => !Number.isInteger(month) || month < 1 || month > 12)) issues.push(`${scenario.id}: invalid affinity month configuration`);
+    if (metadata.availability.affinityMonths?.length && metadata.availability.season !== 'ALL_YEAR') issues.push(`${scenario.id}: affinity months require ALL_YEAR availability`);
     if (metadata.availability.weightBoost !== undefined && (metadata.availability.weightBoost < 1 || metadata.availability.weightBoost > 5)) issues.push(`${scenario.id}: seasonal boost outside safe bounds`);
     const datePattern = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
     if ((metadata.availability.startMonthDay || metadata.availability.endMonthDay) && !(metadata.availability.startMonthDay && metadata.availability.endMonthDay && datePattern.test(metadata.availability.startMonthDay) && datePattern.test(metadata.availability.endMonthDay))) issues.push(`${scenario.id}: incomplete/invalid seasonal date window`);
