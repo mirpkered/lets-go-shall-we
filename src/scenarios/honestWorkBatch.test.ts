@@ -98,6 +98,8 @@ describe('honest work adventure batch', () => {
     expect(scenario.scenes.hiring.choices.find(({ id }) => id === 'askThenWork')?.label).toContain('bound saw safely');
     let state = act(start(scenario, 'quiet'), scenario, 'hiring', 'askThenWork');
     state = act(state, scenario, 'work', 'finishQuiet');
+    expect(state.run?.sceneId).toBe('timberTally');
+    state = act(state, scenario, 'timberTally', 'finishTimberLoad');
     expect(state.run?.completionQualification).toBe('substantive');
     expect(state.character?.money).toBe(4);
     expect(finishSuccess(state, null).character?.adventuresCompleted).toBe(1);

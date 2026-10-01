@@ -97,3 +97,51 @@ export const SMALL_HUMAN_MOMENT_ADVENTURES = authorBatch([
     ],
   },
 ]);
+
+const MARBLE_STORY = SMALL_HUMAN_MOMENT_ADVENTURES.find(({ id }) => id === 'the-childrens-court')!;
+MARBLE_STORY.scenes = {
+  opening: { id: 'opening', title: 'A Disputed Shot', tone: 'safe', text: 'Two children in a boarding-house yard have stopped their game over a blue marble. One says it crossed the chalk line; the other says it struck a stone and bounced back. Their older sister asks for help, but neither child is upset beyond the argument.', choices: [
+    { id: 'take-listen', label: 'Hear both accounts', next: 'listen' },
+    { id: 'take-rule', label: 'Mark the line and replay the shot', next: 'rule', effects: { historyFlags: ['helped_children_settle_marble_rule'] } },
+    { id: 'take-stayOut', label: 'Let their sister handle it', next: 'stayOut' },
+  ] },
+  accounts: { id: 'accounts', title: 'Two Accounts of the Line', tone: 'safe', text: 'One child points to the chalk boundary. The other points to the stone that changed the marble’s path. Both explain the rule with complete seriousness, and neither can be certain where the marble stopped.', choices: [
+    { id: 'replayMarked', label: 'Mark the line and replay once', next: 'replaySetup', effects: { historyFlags: ['helped_children_settle_marble_rule'] } },
+    { id: 'takeTurns', label: 'Give each child the next turn', next: 'fairTurns', effects: { historyFlags: ['helped_children_settle_marble_rule'] } },
+    { id: 'letChildrenChoose', label: 'Let them choose how to continue', next: 'childrenChoose' },
+  ] },
+  replaySetup: { id: 'replaySetup', title: 'A Fresh Mark', tone: 'safe', text: 'The older sister redraws the chalk line from the same starting place and moves the loose stone out of the shot’s path. The children agree that one replay can settle this turn, not prove what happened to the first marble.', choices: [
+    { id: 'takeReplayShot', label: 'Watch the marked replay', timeCost: 2, chance: { probability: 0.56, successNext: 'clearShot', failureNext: 'closeShot', successMessage: 'The marble rolls cleanly past the chalk and stops in plain view.', failureMessage: 'The marble clips the chalk at the edge; even with the stone moved, the shot remains close.' } },
+    { id: 'callFriendlyDraw', label: 'Call the first turn a draw', next: 'friendlyDraw', effects: { historyFlags: ['kept_a_friendly_marble_game_fair'] } },
+  ] },
+  clearShot: { id: 'clearShot', title: 'A Clear Turn', tone: 'safe', text: 'This shot is plain enough for both children to accept. The child who lost the turn shrugs, then asks to take the next shot. The first argument is not proved either way, but the game has a fair next turn.', choices: [
+    { id: 'giveNextTurn', label: 'Let the other child shoot next', next: 'friendlyRematch', effects: { historyFlags: ['helped_children_restart_marble_game'] } },
+    { id: 'leaveClearGame', label: 'Leave them to play on', next: 'gameResumes', effects: { historyFlags: ['helped_children_restart_marble_game'] } },
+  ] },
+  closeShot: { id: 'closeShot', title: 'Still Too Close', tone: 'safe', text: 'The marble clips the chalk at the edge, and the children agree the replay does not settle the old turn. Their sister smiles: a game this close needs a rule they both accept, not an outside verdict.', choices: [
+    { id: 'shareCloseTurns', label: 'Suggest one turn each', next: 'fairTurns', effects: { historyFlags: ['helped_children_settle_marble_rule'] } },
+    { id: 'leaveCloseGame', label: 'Let them choose a rule together', next: 'childrenChoose' },
+  ] },
+  childrenChoose: { id: 'childrenChoose', title: 'Their Rule to Keep', tone: 'safe', text: 'The children talk it over without asking you to decide who was right. One proposes a fresh start; the other asks for alternating turns. Their sister lets them settle the rule themselves.', choices: [
+    { id: 'acceptFreshStart', label: 'Agree to a fresh start', next: 'gameResumes', effects: { historyFlags: ['let_children_set_their_own_marble_rule'] } },
+    { id: 'acceptTurns', label: 'Agree to alternating turns', next: 'fairTurns', effects: { historyFlags: ['let_children_set_their_own_marble_rule'] } },
+  ] },
+  watchGame: { id: 'watchGame', title: 'The Game Returns', tone: 'safe', text: 'Their sister watches from the porch while the children argue once more, then start over. The blue marble rolls past the chalk without causing another hearing. You leave them to their game.', ending: 'success', choices: [] },
+  fairTurns: { id: 'fairTurns', title: 'A Fair Set of Turns', tone: 'safe', text: 'They take turns from the same marked place. Neither has to win the old argument, and both get another shot before supper. Their sister thanks you for helping them move on without choosing a favorite.', ending: 'success', choices: [] },
+  friendlyDraw: { id: 'friendlyDraw', title: 'A Friendly Draw', tone: 'safe', text: 'The children call the disputed turn even and start a fresh round. The blue marble stays in the yard, where it belongs, and the next shot has a clear mark to follow.', ending: 'success', choices: [] },
+  friendlyRematch: { id: 'friendlyRematch', title: 'The Next Shot', tone: 'safe', text: 'The other child takes the next turn. The first keeps score, the sister moves the stone farther from the chalk, and the game continues on terms they all accept.', ending: 'success', choices: [] },
+  gameResumes: { id: 'gameResumes', title: 'The Game Resumes', tone: 'safe', text: 'The children restart from the chalk line and settle into their game again. Their sister keeps watch from the porch, and the blue marble belongs to the play—not to either side of the argument.', ending: 'success', choices: [] },
+  // Original scene IDs remain the live route so in-progress saves resume in-place.
+  listen: { id: 'listen', title: 'Two Accounts of the Line', tone: 'safe', text: 'One child points to the chalk boundary. The other points to the stone that changed the marble’s path. Both explain the rule with complete seriousness, and neither can be certain where the marble stopped.', choices: [
+    { id: 'listen-replay', label: 'Hear both accounts before a replay', next: 'accounts' },
+    { id: 'listen-share', label: 'Give each child the next turn', next: 'fairTurns', effects: { historyFlags: ['helped_children_settle_marble_rule'] } },
+  ] },
+  stayOut: { id: 'stayOut', title: 'A Dispute They Can Settle', tone: 'safe', text: 'Their sister asks the children whether they want another try or turns shared. She stays close enough to keep the game friendly, and you can watch the moment settle before moving on.', choices: [
+    { id: 'stayOut-resume', label: 'Watch them choose how to continue', next: 'childrenChoose' },
+    { id: 'stayOut-leave', label: 'Return to your own errand', next: 'watchGame' },
+  ] },
+  rule: { id: 'rule', title: 'A Rule Going Forward', tone: 'safe', text: 'You mark the chalk line from the same starting place and move the loose stone out of the shot’s path. The children agree that a replay can settle this turn, not prove what happened to the first marble.', choices: [
+    { id: 'rule-agree', label: 'Watch the marked replay', next: 'replaySetup' },
+    { id: 'rule-decline', label: 'Call the first turn a draw', next: 'friendlyDraw' },
+  ] },
+};

@@ -119,9 +119,13 @@ export const WHAT_DID_YOU_SEE: Scenario = {
       { id: 'giveDriverAccount', label: 'State only what you remember', next: 'carefulAccount', effects: { historyFlags: ['gave_limited_cart_witness_account'] } },
       { id: 'admitPoorView', label: 'Say your view was too poor to help', next: 'uncertainAccount', effects: { historyFlags: ['marked_limits_of_cart_witness_account'] } },
     ] },
-    carefulAccount: done('carefulAccount', 'A Narrow Account', 'You describe only the detail you remember and make clear what remained outside your view. The neighbors may weigh it as they choose; your memory is recorded without turning it into a verdict.'),
-    uncertainAccount: done('uncertainAccount', 'An Honest Limit', 'You explain what you could not see. The disagreement remains, but nobody can mistake your uncertainty for proof against either person.'),
-    noStatement: done('noStatement', 'No Useful Account', 'You decline to supply a detail you cannot honestly support. The neighbors continue asking others who were closer.'),
+    carefulAccount: { id: 'carefulAccount', title: 'A Narrow Account', tone: 'safe', text: 'You describe only the detail you remember. The neighbors change what they claim, but neither can turn your limited view into a verdict.', textVariants: [
+      { requirements: { selections: { cartIncident: 'wheel' } }, text: 'You report the left wheel striking a buried stone. The neighbor who blamed the driver pauses: the stone was there, but no one saw whether the load shifted first. They agree to inspect the wheel and its lashings before deciding what caused the tip.' },
+      { requirements: { selections: { cartIncident: 'driver' } }, text: 'You report the driver pulling the reins just before the cart tipped. One neighbor says that may have started it; the other points out it could have been a reaction. They narrow the question to what happened first, without calling your account a verdict.' },
+      { requirements: { selections: { cartIncident: 'road' } }, text: 'You report loose gravel sliding beneath the near wheel. One neighbor stops calling the road firm; the other notes you could not see the far wheel. They agree to inspect the track before assigning a cause.' },
+    ], ending: 'success', choices: [] },
+    uncertainAccount: done('uncertainAccount', 'An Honest Limit', 'You explain what you could not see. The neighbors stop using your silence as support for either claim; they agree to inspect the cart and ask someone who saw the far wheel. The cause remains open, but the next question is narrower.'),
+    noStatement: done('noStatement', 'No Useful Account', 'You decline to supply a detail you cannot honestly support. One neighbor nods and asks a wagoner who was closer; neither treats your refusal as evidence against the other.'),
   },
 };
 

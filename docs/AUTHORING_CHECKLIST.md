@@ -47,6 +47,10 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Every story transition moves forward; no scene ID is revisited.
 - [ ] Each scene has narrative value; avoid filler and unnecessary navigation.
 - [ ] Resolve the central problem in the story, then show a concise payoff/aftermath where needed. Quiet paths deserve closure without a new crisis.
+- [ ] Work-focused stories include a meaningful workday decision/event and state-aware performance feedback (output, quality, time, setback, pay, or coworker reaction).
+- [ ] Testimony/information stories show what the account changes and what remains uncertain; do not end at “statement recorded.”
+- [ ] Administrative actions (compare, report, submit, return, or wait for an authority) lead to a visible consequence or payoff.
+- [ ] Quiet/recreational routes contain an interaction, choice, reaction, or memorable detail; danger is not required.
 - [ ] Endings reflect actual state: tasks, warnings, locations, tools used, injuries, losses, and current-run knowledge.
 - [ ] Consider fictional payment, item, history, relationship, lore, knowledge, cost, or a satisfying narrative payoff. Do not impose reward quotas or forget agreed wages.
 - [ ] Ensure item rewards have believable ownership/provenance, distinct capability, no unintended duplicate, and a safe carry/Bank/decline flow.

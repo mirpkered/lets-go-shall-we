@@ -135,7 +135,7 @@ export const HARVEST_HAND = workAdventure({
   item: { id: 'fieldBandageRoll', name: 'Field Bandage Roll', label: 'Use your Field Bandage Roll', hint: 'The bandage is accessible and clean; the worker can hold out their hand.', consumeOnSuccess: true },
   askForHelp: 'Ask the foreman to reassign one worker while you help', time: 300,
   timePhases: [{ id: 'morning', label: 'Morning', atMinutes: 0 }, { id: 'afternoon', label: 'Afternoon', atMinutes: 180 }, { id: 'evening', label: 'Evening', atMinutes: 360 }],
-  normalEnding: 'The crew finishes the planned rows before rain reaches the field. You are paid for your days’ work, and the foreman makes clear that the harvest was a team effort.',
+  normalEnding: 'You finish the four rows assigned to your section at a steady pace. The crew covers the remaining field before rain reaches it, and the foreman pays the agreed day wage for reliable work.',
   rushedEnding: 'You finish your assigned rows while another worker wraps the palm. The last cut wheat is covered before rain, though the crew will return for a small section tomorrow.',
   earlyEnding: 'The foreman pays you for the work already done. The crew is large enough to continue without you; no one is left depending on your strength alone.',
   carefulEnding: 'You rinse the cut with clean water, wrap it, and return the worker to light duties. The others finish the exposed rows.',
@@ -143,6 +143,24 @@ export const HARVEST_HAND = workAdventure({
   failedEnding: 'The first wrap slips and must be redone. The worker is safe, but the lost time leaves a few sheaves to cover after the rain begins.',
   history: 'completed_paid_harvest_work', knowledge: 'A shallow harvest cut should be cleaned and covered before the worker returns to the field.', goodPay: 4, reducedPay: 2,
 });
+
+// This job gets a distinct workday beat rather than making a quiet shift one button long.
+HARVEST_HAND.scenes.work.choices = HARVEST_HAND.scenes.work.choices.map((choice) => choice.id === 'finishQuiet'
+  ? { ...choice, label: 'Continue into the afternoon', hint: 'Your first rows are bound; the foreman marks the pace before the weather reaches the field.', next: 'harvestTally', effects: undefined }
+  : choice);
+HARVEST_HAND.scenes.harvestTally = {
+  id: 'harvestTally', title: 'Rows Before the Rain', tone: 'safe',
+  text: 'By midafternoon, you have bound three rows in your section; one assigned row remains. The crew is keeping pace beneath the western clouds. You can finish steadily, help tie the last shared sheaves, or risk a faster extra row for a small bonus.',
+  choices: [
+    { id: 'steadyHarvest', label: 'Finish your assigned rows steadily', timeCost: 90, next: 'ordinaryFinish', effects: { money: 4, historyFlags: ['completed_paid_harvest_work'] } },
+    { id: 'pushHarvest', label: 'Try one extra row for a bonus', hint: 'The pace may strain your hand before the binding is done.', timeCost: 60, chance: { probability: 0.76, successNext: 'harvestBonusFinish', failureNext: 'harvestSetbackFinish', successMessage: 'You bind the extra row before the rain reaches the field.', failureMessage: 'Your grip slips on the binding hook; the foreman stops you and reduces the pay.',
+      successEffects: { money: 5, historyFlags: ['completed_paid_harvest_work', 'earned_harvest_row_bonus'] }, failureEffects: { money: 2, historyFlags: ['completed_paid_harvest_work_had_setback'] } } },
+    { id: 'helpHarvestCrew', label: 'Help tie the crew’s last shared sheaves', timeCost: 90, next: 'harvestTeamFinish', effects: { money: 4, historyFlags: ['completed_paid_harvest_work', 'helped_bind_shared_harvest_rows'] } },
+  ],
+};
+HARVEST_HAND.scenes.harvestBonusFinish = { id: 'harvestBonusFinish', title: 'One Row More', text: 'The foreman adds a coin to your pay for the extra row. Your section is finished before the rain, and the crew has enough time to cover the last sheaves.', ending: 'success', completionQualification: 'substantive', choices: [] };
+HARVEST_HAND.scenes.harvestSetbackFinish = { id: 'harvestSetbackFinish', title: 'A Slower Finish', text: 'The foreman steadies the loose binding hook before anyone continues. You have finished the assigned rows, but not the extra one; the crew covers the field together and your pay is reduced for the lost time.', ending: 'success', completionQualification: 'substantive', choices: [] };
+HARVEST_HAND.scenes.harvestTeamFinish = { id: 'harvestTeamFinish', title: 'The Last Sheaves', text: 'You and the nearby worker tie the shared sheaves while the rest of the crew brings in the exposed row. The foreman pays the agreed wage and thanks you for keeping the work together.', ending: 'success', completionQualification: 'substantive', choices: [] };
 
 export const FREIGHT_TO_MILLERS_FORK = workAdventure({
   id: 'freight-to-millers-fork', title: 'Freight to Miller’s Fork', subtitle: 'A routine wagon delivery',
@@ -243,7 +261,7 @@ export const CUTTING_TIMBER = workAdventure({
   item: { id: 'heavyLeatherGloves', name: 'Heavy Leather Gloves', label: 'Use your Heavy Leather Gloves to shift the branch', hint: 'They protect your hands from bark and splinters, but not from the branch’s weight.' },
   askForHelp: 'Ask the sawyer to release the branch while you steady the blade', time: 180,
   timePhases: [{ id: 'morning', label: 'Morning', atMinutes: 0 }, { id: 'afternoon', label: 'Afternoon', atMinutes: 90 }, { id: 'nearDusk', label: 'Near dusk', atMinutes: 180 }],
-  normalEnding: 'The smaller lengths are stacked beside the road, ready for the cart. The foreman pays your day wage; the sawyers keep the heavy trunk work.',
+  normalEnding: 'You stack the two assigned cart-loads of smaller lengths beside the road. The foreman checks the pile, pays your day wage, and leaves the heavy trunk work to the sawyers.',
   rushedEnding: 'You finish the safe trimming and leave the bound branch for the sawyer. The cart takes most of the stack before dusk, and the foreman pays a reduced wage for the unfinished section.',
   earlyEnding: 'You stop when the light falls across the marked work area. The foreman pays for the lengths already stacked; the trunk remains stable in the clearing.',
   carefulEnding: 'The sawyer shifts the branch from the marked side while you ease the blade free. You return to trimming smaller lengths.',
@@ -251,6 +269,24 @@ export const CUTTING_TIMBER = workAdventure({
   failedEnding: 'The branch springs a short distance and scratches your forearm. You step clear and leave the bound cut for the sawyer; the day’s pay is reduced.',
   history: 'completed_paid_timber_work', knowledge: 'A bound saw should be released by moving the wood from a clear side, not by pulling harder.', questionLabel: 'Ask how to handle a bound saw safely', goodPay: 4, reducedPay: 2, failureHealth: 1,
 });
+
+// The calm timber route reports completed work; the existing bound-branch route remains intact.
+CUTTING_TIMBER.scenes.work.choices = CUTTING_TIMBER.scenes.work.choices.map((choice) => choice.id === 'finishQuiet'
+  ? { ...choice, label: 'Continue through the afternoon', hint: 'The first cart-load is stacked; the foreman checks the marked pile before dusk.', next: 'timberTally', effects: undefined }
+  : choice);
+CUTTING_TIMBER.scenes.timberTally = {
+  id: 'timberTally', title: 'The Stack by the Road', tone: 'safe',
+  text: 'Two cart-loads of trimmed lengths are stacked on firm ground. The foreman says that is the agreed work. There is still enough daylight for a short extra load, but branches can bind under tension and the safe side is marked.',
+  choices: [
+    { id: 'finishTimberLoad', label: 'Leave the finished stack as agreed', timeCost: 60, next: 'ordinaryFinish', effects: { money: 4, historyFlags: ['completed_paid_timber_work'] } },
+    { id: 'extraTimberLoad', label: 'Trim one more short load', hint: 'The extra work may bring a coin, but a bound branch can strain your hand.', timeCost: 60, chance: { probability: 0.78, successNext: 'timberBonusFinish', failureNext: 'timberSetbackFinish', successMessage: 'The short extra load is trimmed and stacked before the light fades.', failureMessage: 'A branch shifts against your forearm. You step back safely, but the extra load is left unfinished.',
+      successEffects: { money: 5, historyFlags: ['completed_paid_timber_work', 'earned_timber_load_bonus'] }, failureEffects: { money: 2, historyFlags: ['completed_paid_timber_work_had_setback'] } } },
+    { id: 'helpTimberCrew', label: 'Help the sawyers balance the cart', timeCost: 45, next: 'timberCrewFinish', effects: { money: 4, historyFlags: ['completed_paid_timber_work', 'helped_balance_timber_cart'] } },
+  ],
+};
+CUTTING_TIMBER.scenes.timberBonusFinish = { id: 'timberBonusFinish', title: 'A Short Extra Load', text: 'The extra trimmed lengths make a third short cart-load. The foreman adds a coin for the added work; the heavy cuts remain with the experienced sawyers.', ending: 'success', completionQualification: 'substantive', choices: [] };
+CUTTING_TIMBER.scenes.timberSetbackFinish = { id: 'timberSetbackFinish', title: 'A Careful Stop', text: 'You stop before the shifting branch can catch you. The foreman pays for the two loads already stacked rather than the unfinished extra work.', ending: 'success', completionQualification: 'substantive', choices: [] };
+CUTTING_TIMBER.scenes.timberCrewFinish = { id: 'timberCrewFinish', title: 'The Cart Balanced', text: 'You help the sawyers arrange the two loads evenly. The cart rolls without shifting, and the foreman pays the agreed wage for the completed stack.', ending: 'success', completionQualification: 'substantive', choices: [] };
 
 export const THE_DELIVERY_RUN = workAdventure({
   id: 'the-delivery-run', title: 'The Delivery Run', subtitle: 'A known parcel, a familiar road',

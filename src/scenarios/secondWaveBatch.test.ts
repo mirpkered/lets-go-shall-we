@@ -44,7 +44,7 @@ function freshState(scenario: Scenario, money = 5, item?: string): SaveData {
   return { ...structuredClone(EMPTY_SAVE), character, run };
 }
 
-function explore(scenario: Scenario, money: number, item?: string): Set<string> {
+function explore(scenario: Scenario, money: number, item?: string, roll: () => number = () => 0): Set<string> {
   const queue = [freshState(scenario, money, item)];
   const seen = new Set<string>();
   const reached = new Set<string>();
@@ -63,7 +63,7 @@ function explore(scenario: Scenario, money: number, item?: string): Set<string> 
     expect(actions.length, `${scenario.title}.${scene.id} action`).toBeGreaterThan(0);
     expect(actions.length, `${scenario.title}.${scene.id} mobile grid`).toBeLessThanOrEqual(4);
     for (const action of actions) {
-      const next = choose(state, scenario, action, () => 0);
+      const next = choose(state, scenario, action, roll);
       expect(next.run?.sceneId === run.sceneId && next.run?.status === 'active', `${scenario.title}.${scene.id}.${action.id} advances`).toBe(false);
       expect(new Set(next.run?.visitedSceneIds).size).toBe(next.run?.visitedSceneIds?.length);
       queue.push(next);
@@ -108,6 +108,7 @@ describe('second-wave gap-fill adventures', () => {
     for (const scenario of authored) {
       const reached = explore(scenario, 0);
       for (const id of explore(scenario, 5)) reached.add(id);
+      for (const id of explore(scenario, 0, undefined, () => 0.999999)) reached.add(id);
       const itemGated = Object.values(scenario.scenes).flatMap((scene) => scene.choices
         .filter((choice) => choice.requirements?.items?.length)
         .map((choice) => choice.requirements!.items![0]));

@@ -1,24 +1,46 @@
 import { authorBatch } from './secondWaveTools';
+import type { Scenario } from '../types';
 
-export const LEGAL_PROCESS_ADVENTURES = authorBatch([
-  {
-    id: 'property-of', title: 'Property Of...', subtitle: 'Two people name the same toolbox; neither asks you to be a judge.',
-    opening: 'At a rail-yard lodging house, a small steel toolbox sits on the counter. A track worker says the initials inside are his; a carpenter says he lent the box months ago and never got it back. The innkeeper asks what you actually observed while unloading freight nearby.',
-    routes: [
-      { id: 'mark', label: 'Look at the initials and repairs', title: 'Marks on the Box', text: 'The lid bears two scratched initials and one newer hinge. Either person could have made or inherited the marks; wear is not proof of ownership.', outcomes: [
-        { id: 'describe', label: 'Describe the marks to both claimants', title: 'Facts Without a Verdict', text: 'You state what you can see and leave the claim with the people who know the box’s history. Neither receives an automatic victory.' },
-        { id: 'decline', label: 'Say you cannot identify its owner', title: 'An Honest Limit', text: 'You explain that the repairs and initials are not enough to tell. The innkeeper holds the box until the claimants can speak again.' },
-      ] },
-      { id: 'ask', label: 'Ask who can describe what is inside', title: 'A List from Memory', text: 'The worker names a wrench and two chalk sticks. The carpenter recalls a square and a short saw. Some tools may have been exchanged over time.', outcomes: [
-        { id: 'compare', label: 'Compare both lists without opening it', title: 'Two Partial Memories', text: 'The lists overlap only partly. You pass them to the innkeeper, who asks both people to return with a witness rather than opening the box yourself.' },
-        { id: 'wait', label: 'Leave the toolbox with the innkeeper', title: 'Kept Safe for Now', text: 'The innkeeper stores the box in a locked room while the two claimants arrange another conversation.' },
-      ] },
-      { id: 'witness', label: 'Tell them what you saw at the freight wagon', title: 'A Memory of the Unloading', text: 'You remember one person carrying the box from the wagon, but the other may have helped load it earlier. Your view covers only part of the journey.', outcomes: [
-        { id: 'state', label: 'Give only your limited account', title: 'A Partial Statement', text: 'You say who you saw lift the box and when. The claim remains open because you did not see who owned it before the trip.' },
-        { id: 'withdraw', label: 'Decline to choose between them', title: 'Still Disputed', text: 'You explain that your brief view cannot settle the matter. The innkeeper keeps the toolbox in sight while the claimants sort out their own agreement.' },
-      ] },
-    ],
+const PROPERTY_OF: Scenario = {
+  id: 'property-of', title: 'Property Of...', subtitle: 'Two people name the same toolbox; neither asks you to be a judge.', startScene: 'opening',
+  scenes: {
+    opening: { id: 'opening', title: 'The Box on the Counter', tone: 'safe', text: 'At a rail-yard lodging house, a latched steel toolbox sits on the counter. A track worker says it is his; a carpenter says he lent it months ago and never got it back. You saw part of the freight unloading, but not who owned the box before the trip. The innkeeper asks what you can actually add.', choices: [
+      { id: 'inspectMarks', label: 'Look at the initials and hinge', next: 'mark', timeCost: 3 },
+      { id: 'askContents', label: 'Ask what each remembers inside', next: 'ask', timeCost: 3 },
+      { id: 'reportUnloading', label: 'Describe what you saw at the wagon', next: 'witness', effects: { knowledge: ['At the rail-yard lodging house, you saw who lifted the toolbox during unloading, but not who owned it before the trip.'] } },
+    ] },
+    mark: { id: 'mark', title: 'Marks, Not Proof', tone: 'safe', text: 'Two initials are scratched inside the handle; a newer brass pin holds one hinge. The worker says the initials are his. The carpenter says he replaced that pin. Each recognizes something, and neither detail settles when the box changed hands.', choices: [
+      { id: 'askAboutRepair', label: 'Ask when the hinge was repaired', next: 'marksResponse' },
+      { id: 'keepMarksNeutral', label: 'Record both claims without choosing', next: 'marksResponse', effects: { historyFlags: ['kept_toolbox_claim_neutral'] } },
+    ] },
+    marksResponse: { id: 'marksResponse', title: 'Two Reactions', tone: 'safe', text: 'The carpenter offers to look for the repair slip; the worker says a slip would date the hinge, not prove who owns the whole box. The innkeeper agrees to keep it latched until they can bring someone who remembers the loan.', choices: [
+      { id: 'waitForWitnessMarks', label: 'Ask them to return with a witness', next: 'witnessRequested', effects: { historyFlags: ['helped_narrow_toolbox_ownership_dispute'] } },
+      { id: 'recordMarks', label: 'Leave the box secured for now', next: 'boxSecured', effects: { historyFlags: ['kept_toolbox_claim_neutral'] } },
+    ] },
+    ask: { id: 'ask', title: 'Two Lists from Memory', tone: 'safe', text: 'The worker recalls a wrench, chalk, and a square with a chipped corner. The carpenter names the same square and says he added a short saw after borrowing the box. Both know its contents; the carpenter’s addition may have happened before or after the loan.', choices: [
+      { id: 'askForWitnessContents', label: 'Ask who remembers the loan', next: 'contentsResponse' },
+      { id: 'leaveContentsUnopened', label: 'Keep the box closed and hear them out', next: 'contentsResponse', effects: { historyFlags: ['kept_toolbox_claim_neutral'] } },
+    ] },
+    contentsResponse: { id: 'contentsResponse', title: 'The Shared Detail', tone: 'safe', text: 'The chipped square makes both claimants pause: each has used it. The worker says sharing a tool is not giving it away; the carpenter agrees, but says the loan never ended. The innkeeper will not open the box while they dispute whether the contents were changed.', choices: [
+      { id: 'requestCrewWitness', label: 'Ask for someone from their old crew', next: 'witnessRequested', effects: { historyFlags: ['helped_narrow_toolbox_ownership_dispute'] } },
+      { id: 'secureContents', label: 'Leave it latched until they agree', next: 'boxSecured', effects: { historyFlags: ['kept_toolbox_claim_neutral'] } },
+    ] },
+    witness: { id: 'witness', title: 'A Limited Memory', tone: 'safe', text: 'You remember the carpenter lifting the box from the wagon. You did not see who packed it or hear whether it was being returned. The worker says the carpenter carried it only because the box was heavy; the carpenter says the worker asked him to carry his own tools.', choices: [
+      { id: 'stateOnlyWhatSaw', label: 'State only who lifted it', next: 'unloadingResponse', effects: { historyFlags: ['gave_limited_toolbox_witness_account'] } },
+      { id: 'askYardClerk', label: 'Suggest asking the yard clerk', next: 'unloadingResponse' },
+    ] },
+    unloadingResponse: { id: 'unloadingResponse', title: 'What the Moment Can Show', tone: 'safe', text: 'Neither claimant asks you to say more than you saw. The innkeeper notes that the unloading answers who moved the box, not who owned it. The yard clerk may remember who signed for the freight, though that still may not settle the loan.', choices: [
+      { id: 'askClerkNext', label: 'Have the innkeeper ask about the freight record', next: 'clerkAsked', effects: { historyFlags: ['helped_narrow_toolbox_ownership_dispute'] } },
+      { id: 'leaveAccount', label: 'Leave your account with the innkeeper', next: 'accountRecorded', effects: { historyFlags: ['kept_toolbox_claim_neutral'] } },
+    ] },
+    witnessRequested: { id: 'witnessRequested', title: 'A Claim Narrowed', tone: 'safe', text: 'The innkeeper sets the latched box in a locked cupboard for the night. Both claimants agree to ask a former crew hand about the loan; the carpenter will also look for the repair slip. No one is awarded the box, but the argument now has a specific question to answer.', ending: 'success', choices: [] },
+    boxSecured: { id: 'boxSecured', title: 'Kept Safe, Still Disputed', tone: 'safe', text: 'The innkeeper locks the toolbox away rather than opening it or choosing an owner. The claimants leave with a clear next step: bring someone who remembers the loan. Your restraint keeps the contents safe without pretending the question is settled.', ending: 'success', choices: [] },
+    clerkAsked: { id: 'clerkAsked', title: 'A Record of the Journey', tone: 'safe', text: 'The innkeeper sends a note to the yard clerk asking who signed for the crate. The answer may clarify the box’s recent journey, not its older ownership; both claimants accept that limit and leave it latched.', ending: 'success', choices: [] },
+    accountRecorded: { id: 'accountRecorded', title: 'A Narrow Account', tone: 'safe', text: 'The innkeeper writes down that the carpenter lifted the box during unloading. The worker stops treating that single act as proof of ownership, while the carpenter agrees it does not prove the loan ended. The box stays secured and the dispute remains open.', ending: 'success', choices: [] },
   },
+};
+
+export const LEGAL_PROCESS_ADVENTURES = [PROPERTY_OF, ...authorBatch([
   {
     id: 'to-the-magistrate', title: 'To the Magistrate', subtitle: 'A paid escort job becomes less simple on the road.', openingContext: 'roadside',
     opening: 'A shopkeeper offers you two coins to accompany a former clerk to the magistrate in the next town. The clerk walks willingly but looks frightened. The shopkeeper says a debt is owed; the clerk says the amount was already paid. Neither asks you to use force.',
@@ -55,4 +77,4 @@ export const LEGAL_PROCESS_ADVENTURES = authorBatch([
       ] },
     ],
   },
-]);
+])];

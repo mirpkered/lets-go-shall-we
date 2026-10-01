@@ -206,3 +206,25 @@ Possible reward presence in baseline (scenario can award this on at least one ro
 Carry-or-Bank placement, explicit decline, choose-one reward handling, full-carry/full-Bank safeguards, five-item Bank capacity, and deduplication were already present in baseline and retained. Traveler progression credit remains separate from global completion and story rewards. No new carryables were necessary: the measured gap is uneven payoff clarity, and item proliferation would flatten the existing item roster.
 
 The table’s short-route signals are intended as a living triage queue. Opt-out endings, deliberately reflective endings, and endings whose terminal text is conclusive remain valid. Future editorial review should prioritize short, non-opt-out resolution paths without a consequence beat; avoid changing rows solely to increase scene counts or reward totals.
+
+## Content depth and procedural-ending follow-up
+
+The current registry contains **175 playable adventures**. The inventory above is the structural pass across all 175. For this focused follow-up, route-level review concentrated on six high-confidence playtest examples and the shared work-story pattern; it did not treat scene count alone as a defect. Five adventures were adjusted; **Loose in the Market** was verified as already having a sufficient recovery and aftercare sequence and was left unchanged.
+
+| Adventure | Approx. engaged route | Previous weakness | Category | Payoff / consequence | Reward | Action |
+|---|---:|---|---|---|---|---|
+| Property Of... | 4–6 scenes | Comparing memories could terminate as a bare deferral | Ownership dispute | Claimants react to the same chipped tool detail; the box stays secured for an explicit reason and a specific witness/record is sought | Neutrality history; no forced material reward | Expanded; old active scene and terminal IDs retained |
+| Harvest Hand | 4 scenes, including the ending | Quiet shift skipped directly from work to day-complete | Paid labor | Reports assigned rows, remaining daylight/weather, and the crew’s closing work | Agreed wage; optional bonus or reduced pay/setback | Work-performance added |
+| Cutting Timber | 4 scenes, including the ending | Quiet shift lacked a measurable work result | Paid labor | Reports two agreed cart-loads, safe stopping point, and optional extra-load result | Agreed wage; optional bonus or reduced pay/setback | Work-performance added |
+| What Did You See? | 3 scenes | Statement was recorded with little visible effect | Witness account | The claim changes or narrows, the next inspection is identified, and uncertainty remains explicit | History of careful testimony | Payoff strengthened; no verdict invented |
+| The Children’s Court | 3–6 scenes when participating; 3 to watch and leave | The marble dispute could resolve before the children experienced a fair next turn | Recreation / social | A marked replay, shared turns, friendly draw, or children’s own rule produces an observed result | History of helping or fair play; no wager/item forced | Expanded; original in-progress route IDs retained |
+| Loose in the Market | 5 scenes on recovery route | Previously flagged as potentially short | Animal / community | Goat is returned, owner checks pen and stalls, shoppers reopen lane, and the player can accept or decline a coin | Optional one-coin thanks | Already resolved; unchanged |
+
+### Category scan and limits
+
+- The ten paid-work adventures sharing `workAdventure` were reviewed as a pattern. Its complication branches already have a work decision and differentiated pay; the ordinary one-action “finish” path was thin. Harvest Hand and Cutting Timber receive distinct tally/performance beats in this pass. The other eight were not mechanically changed: their scenario-specific work and consequences remain authored in their existing quiet/complication text, and a blanket helper rewrite would risk homogenizing all ten.
+- Witness/dispute, recreation, and other short-route rows in the 175-adventure table remain triage signals, not automatic defects. The named witness and ownership cases now show reaction and what remains unresolved. Other procedural stories were left unchanged where a visible conclusive event already occurs or the route is an intentional opt-out.
+- No new carryables, generic keepsakes, or wagers were added. The work routes pay through their employers; the children’s game and neutral testimony use history/social payoff rather than artificial coin rewards.
+- The pass adds no new danger tier. Optional extra work has a communicated, nonlethal setback chance and pays less if the traveler stops after the setback.
+
+The structural route estimates in the main table remain approximate and heuristic. This follow-up records the manually examined candidates, actual edits, and already-resolved example rather than claiming every branch of all 175 adventures was freshly playtested.
