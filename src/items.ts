@@ -1,15 +1,18 @@
-import type { Item } from './types';
+import type { InventoryClass, Item } from './types';
 
 export const ITEMS: Record<string, Item> = {
-  smallKnife: { id: 'smallKnife', name: 'Small Knife', description: 'Plain, sharp, and better than bare hands.', category: 'weapon', carryable: false },
-  lantern: { id: 'lantern', name: 'Lantern', description: 'Its warm flame pushes back the crypt-dark.', category: 'tool', carryable: false },
+  smallKnife: { id: 'smallKnife', name: 'Small Knife', description: 'Plain, sharp, and better than bare hands.', category: 'weapon', carryable: false, inventoryClass: 'GEAR' },
+  lantern: { id: 'lantern', name: 'Lantern', description: 'Its warm flame pushes back the crypt-dark.', category: 'tool', carryable: false, inventoryClass: 'GEAR' },
   brassCandlestick: { id: 'brassCandlestick', name: 'Brass Candlestick', description: 'Heavy enough to serve as an improvised weapon.', category: 'weapon', carryable: true },
   boneKey: { id: 'boneKey', name: 'Bone Key', description: 'A finger-bone carved with tiny warding marks.', category: 'run-only', carryable: false },
   ironHandbell: { id: 'ironHandbell', name: 'Iron Handbell', description: 'Cold iron, old soil in its seams. Its clapper is missing.', category: 'run-only', carryable: false },
   blackClapper: { id: 'blackClapper', name: 'Black Iron Clapper', description: 'Far too heavy for the little handbell.', category: 'run-only', carryable: false },
-  bronzeMaskFragment: { id: 'bronzeMaskFragment', name: 'Bronze Mask Fragment', description: 'Warm in moonlight. Its purpose is unknown.', category: 'artifact', carryable: true },
-  graveCoin: { id: 'graveCoin', name: 'Grave Coin', description: 'A silver funeral token accepted by collectors and ferrymen.', category: 'valuable', carryable: true },
-  yewCharm: { id: 'yewCharm', name: 'Yew Charm', description: 'A tiny ward tied with the priest’s red thread.', category: 'charm', carryable: true },
+  bronzeMaskFragment: { id: 'bronzeMaskFragment', name: 'Bronze Mask Fragment', description: 'Warm in moonlight. Its purpose is unknown.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  graveCoin: { id: 'graveCoin', name: 'Grave Coin', description: 'A silver funeral token accepted by collectors and ferrymen.', category: 'valuable', carryable: true, inventoryClass: 'RELIC' },
+  yewCharm: { id: 'yewCharm', name: 'Yew Charm', description: 'A tiny ward tied with the priest’s red thread.', category: 'charm', carryable: true, inventoryClass: 'RELIC' },
+  ritualChalk: { id: 'ritualChalk', name: 'Ritual Chalk', description: 'A short stick of marked chalk used for one careful boundary or sign.', category: 'consumable', carryable: false, inventoryClass: 'SUPPLY', stackLimit: 4 },
+  consecratedSalt: { id: 'consecratedSalt', name: 'Consecrated Salt', description: 'A sealed pinch of salt prepared for a specific warding use.', category: 'consumable', carryable: false, inventoryClass: 'SUPPLY', stackLimit: 3 },
+  coldIronNails: { id: 'coldIronNails', name: 'Cold-Iron Nails', description: 'A few heavy nails reserved for a particular fastening or folk ward.', category: 'consumable', carryable: false, inventoryClass: 'SUPPLY', stackLimit: 6 },
   pocketToolkit: { id: 'pocketToolkit', name: 'Pocket Toolkit', description: 'A compact railway kit: pliers, driver, punch, and oil.', category: 'tool', carryable: true },
   travelRope: { id: 'travelRope', name: 'Travel Rope', description: 'Twenty feet of good braided cord with a locking hook.', category: 'tool', carryable: true, maxUpgrades: 1, upgrades: [{ id: 'splicedEyes', name: 'Spliced hook eye', description: 'A short leather whipping binds the hook eye more securely to the rope.' }] },
   conductorWhistle: { id: 'conductorWhistle', name: 'Conductor’s Whistle', description: 'A bright brass whistle that carries over machinery and weather.', category: 'valuable', carryable: true },
@@ -61,5 +64,24 @@ export const ITEMS: Record<string, Item> = {
   joinersFoldingRule: { id: 'joinersFoldingRule', name: 'Joiner’s Folding Rule', description: 'A hinged hardwood measuring rule, worn smooth at the joints but accurate for careful layout work.', category: 'tool', carryable: true },
 };
 
-export const STARTING_ITEMS = ['smallKnife', 'lantern'];
+const relicIds = new Set(['bronzeMaskFragment', 'graveCoin', 'signalLens', 'yewCharm']);
 
+// Legacy definitions receive a one-time explicit class at catalog load; future items
+// should set inventoryClass directly so exceptions are visible in the item record.
+for (const item of Object.values(ITEMS)) {
+  item.inventoryClass ??= item.stackLimit ? 'SUPPLY'
+    : relicIds.has(item.id) ? 'RELIC'
+      : item.carryable || item.id === 'smallKnife' || item.id === 'lantern' ? 'GEAR'
+        : 'TEMPORARY';
+}
+
+/** A migration-safe class for every catalog entry; explicit item metadata wins. */
+export function inventoryClass(itemId: string): InventoryClass {
+  return ITEMS[itemId]?.inventoryClass ?? 'TEMPORARY';
+}
+
+export function itemsOfClass(itemClass: InventoryClass): Item[] {
+  return Object.values(ITEMS).filter((item) => inventoryClass(item.id) === itemClass);
+}
+
+export const STARTING_ITEMS = ['smallKnife', 'lantern'];

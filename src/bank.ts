@@ -6,10 +6,10 @@ export function bankCapacityLabel(itemCount: number): string {
 
 export function bankCapacityMessage(itemCount: number): string | null {
   if (itemCount > BANK_CAPACITY) {
-    return `Your saved bank has ${itemCount} items, above the current ${BANK_CAPACITY}-item limit. Existing items are preserved. Withdraw items until the bank is at or below capacity before making another deposit.`;
+    return `Your saved Bank has ${itemCount} items, above the ${BANK_CAPACITY}-item limit. Existing items are preserved, but deposits stop until space is made.`;
   }
   if (itemCount === BANK_CAPACITY) {
-    return `Your bank is full. You can store up to ${BANK_CAPACITY} items. Swap a carried item with a banked item; the banked item returns to an open carry slot.`;
+    return `Your Bank is full. You can store up to ${BANK_CAPACITY} items. Gear swaps need an open Gear slot; Relics are separate from Gear capacity.`;
   }
   return null;
 }

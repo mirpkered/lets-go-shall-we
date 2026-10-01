@@ -102,10 +102,11 @@ describe('About and Contact utilities', () => {
 
   it('explains traveler carry milestones, bank, death, retirement, abandonment, and autosave accurately', () => {
     const markup = renderUtilityFeatures();
-    expect(markup).toContain('money, lore, knowledge, carried gear, and history');
+    expect(markup).toContain('money, lore, knowledge, equipment, and history');
     expect(markup).toContain('two after ten completed adventures, and three after twenty');
-    expect(markup).toContain('prepare a loadout from eligible gear');
-    expect(markup).toContain('Banked items are stored separately and survive death or retirement');
+    expect(markup).toContain('prepare a loadout from eligible gear and relics');
+    expect(markup).toContain('Gear and relics stored in the five-place Bank survive death or retirement');
+    expect(markup).toContain('Supplies, like other unbanked belongings, stay with their traveler');
     expect(markup).toContain('If an adventurer dies or is retired');
     expect(markup).toContain('The game autosaves after meaningful choices');
     expect(markup).toContain('Closing the tab or app is safe');

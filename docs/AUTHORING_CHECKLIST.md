@@ -11,6 +11,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Review NPC names for variety and intentional recurrence.
 - [ ] Classify historical presence (NONE / INSPIRED / CAMEO / FEATURED / HISTORICAL_EVENT). Keep real figures/events rare and grounded; avoid exact-year/geography anchors, distinguish fact from reputation and later legend, and identify any named reference and portrayal where applicable.
 - [ ] Review the generated diversity matrix and library gaps; pick underrepresented combinations rather than repeating the last batch’s formula.
+- [ ] Before adding a persistent item, check whether existing Gear/Relic can serve through a new use or upgrade; decide whether it belongs in Gear, Supply, Relic, Asset, or Temporary and whether persistent tracking earns its complexity.
 - [ ] Give the adventure a distinctive hook beyond changed names or scenery; vary structure, role, pacing, risk, tone, entry, decision pattern, outcome, and payoff across the batch.
 - [ ] Set seasonal availability only when the story is genuinely date-bound; mention of weather or a season alone does not require calendar gating. Classify fantasy density and combat separately from tone and risk.
 
@@ -37,6 +38,8 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Keep a fresh, broke traveler viable. Carried tools should offer specific optional methods, not hidden prerequisites.
 - [ ] Check tool capability and accessibility; identify what each item acts on and where.
 - [ ] For persistent gear changes, author the explicit damage/break/repair/upgrade/replacement event and its visible narration. Broken gear remains owned but unusable; repairs and named upgrades preserve provenance and must be checked across inventory, Bank, death, save/reload, and replacement.
+- [ ] For Supplies, set a stack limit and separate stack-slot need; test add/merge/full pouch/consume/empty/save/reload, and narrate quantity spent. Routine provisions remain abstract.
+- [ ] Keep Gear requirements optional for baseline success. Bank only Gear/Relics; character-bound Supplies and Assets are lost with death, abandonment, or retirement.
 - [ ] Consider quiet/partial outcomes and situations with no perfect solution where they fit.
 
 ## Structure, payoff, and rewards
@@ -56,4 +59,3 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Test longest prose/hints, endings, reward views, and four-choice screens at 320×720 and 390×844; verify no page scrolling or horizontal overflow.
 - [ ] Confirm exact-state resume, fictional-time persistence, QA isolation, Bank capacity, and safe reward resolution where relevant.
 - [ ] Update the library status and continuity registry only for facts actually established by the scenario.
-

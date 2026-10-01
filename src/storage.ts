@@ -3,7 +3,7 @@ import { getScenario } from './scenarios';
 import { countQualifyingStoryTransitions, pickRunRandomSelections } from './engine';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
-import { ITEMS, STARTING_ITEMS } from './items';
+import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import type { ItemCondition, PersistentItemState } from './types';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
@@ -35,6 +35,11 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     if (parsed.character) {
       parsed.character.historyFlags ??= [];
       if (!Array.isArray(parsed.character.ownedAssets)) { parsed.character.ownedAssets = []; migrated = true; }
+      if (!parsed.character.supplies || typeof parsed.character.supplies !== 'object' || Array.isArray(parsed.character.supplies)) { parsed.character.supplies = {}; migrated = true; }
+      else for (const [id, quantity] of Object.entries(parsed.character.supplies)) {
+        if (inventoryClass(id) === 'SUPPLY' && (!Number.isInteger(quantity) || quantity < 0 || quantity > (ITEMS[id]?.stackLimit ?? 0))) { delete parsed.character.supplies[id]; migrated = true; }
+        else if (inventoryClass(id) === 'SUPPLY' && quantity === 0) { delete parsed.character.supplies[id]; migrated = true; }
+      }
       if (!Number.isFinite(parsed.character.adventuresCompleted)) { parsed.character.adventuresCompleted = 0; migrated = true; }
       const carriedItems = [...new Set([...(Array.isArray(parsed.character.carriedItems) ? parsed.character.carriedItems.filter((id): id is string => typeof id === 'string') : []), ...(parsed.character.carriedItem ? [parsed.character.carriedItem] : [])])];
       if (JSON.stringify(carriedItems) !== JSON.stringify(parsed.character.carriedItems ?? [])) migrated = true;
@@ -48,6 +53,8 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       }
       // Pre-clock active saves resume at a safe zero; real-world elapsed time never counts.
       parsed.run.elapsedMinutes = Number.isFinite(parsed.run.elapsedMinutes) ? Math.max(0, Math.floor(parsed.run.elapsedMinutes!)) : 0;
+      if (!parsed.run.supplies || typeof parsed.run.supplies !== 'object' || Array.isArray(parsed.run.supplies)) { parsed.run.supplies = structuredClone(parsed.character?.supplies ?? {}); migrated = true; }
+      if (!parsed.run.startingSupplies || typeof parsed.run.startingSupplies !== 'object' || Array.isArray(parsed.run.startingSupplies)) { parsed.run.startingSupplies = structuredClone(parsed.run.supplies); migrated = true; }
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       parsed.run.flags ??= [];
       if (!Array.isArray(parsed.run.startingCarriedItems)) { parsed.run.startingCarriedItems = parsed.character ? [...new Set([...(parsed.character.carriedItems ?? []), ...(parsed.character.carriedItem ? [parsed.character.carriedItem] : [])])] : []; migrated = true; }
@@ -149,4 +156,3 @@ export function saveQaGame(state: SaveData, storage?: Pick<Storage, 'setItem'>):
 }
 
 export { KEY as SAVE_KEY };
-

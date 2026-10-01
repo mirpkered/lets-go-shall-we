@@ -111,7 +111,7 @@ describe('persistent bank capacity', () => {
     expect(retireCharacter(full).bank).toEqual(FIVE_ITEMS);
   });
 
-  it('keeps carried equipment separate from bank capacity and reports both values in QA', () => {
+  it('keeps carried Gear separate from bank capacity and reports both values in QA', () => {
     const state = stateWithBank(FIVE_ITEMS, 'smallKnife');
     expect(state.bank).toHaveLength(BANK_CAPACITY);
     expect(state.character?.carriedItem).toBe('smallKnife');
@@ -119,7 +119,7 @@ describe('persistent bank capacity', () => {
     expect(markup).toContain('&quot;bankCount&quot;: 5');
     expect(markup).toContain('&quot;bankCapacity&quot;: 5');
     expect(markup).toContain('data-qa-set-completions');
-    expect(markup).toContain('&quot;carryCapacity&quot;: 1');
+    expect(markup).toContain('&quot;gearCapacity&quot;: 1');
   });
 });
 

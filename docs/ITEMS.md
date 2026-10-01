@@ -1,10 +1,20 @@
 # Persistent Item Roster
 
-`src/items.ts` is the source of truth for item IDs, names, descriptions, and carryability. This page inventories its **44 carryable items** to support authoring and reduce duplication. Starting Small Knife and Lantern are not carryable. Local keys, clues, and temporary objects are run-only and are not listed here.
+`src/items.ts` is the source of truth for item IDs, names, descriptions, resolved inventory class, stack limits, and carryability. This page inventories its **44 persistent Gear/Relic items** to support authoring and reduce duplication. The 1/2/3 progression is Gear Capacity only. Starting Small Knife and Lantern are Gear supplied at every run but do not use capacity. Local keys, clues, and temporary objects remain run-only.
 
-Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra carry slots.
+Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra Gear slots.
 
 “Useful in” describes a plausible capability/theme, not a guaranteed bonus or a promise that every named scenario currently checks that item. Scenario requirements and tests define actual interactions. Items do not stack generic bonuses.
+
+## Classes and capacities
+
+- **Gear:** 40 reusable carryable items, plus the starting Small Knife and Lantern supplied at each run. Only persistent carried Gear uses the traveler’s 1/2/3 Gear Capacity. Gear can be damaged, broken, repaired, upgraded, and Banked.
+- **Relics:** Bronze Mask Fragment, Grave Coin, Yew Charm, and Crimson Signal Lens. These have separate inventory display and do not consume Gear slots. There is no hard Relic cap in v0.1; three is a soft “unusually many” UI cue. They are normally Bankable and character-bound while carried.
+- **Supplies:** Ritual Chalk ×4, Consecrated Salt ×3, and Cold-Iron Nails ×6 are the pilot definitions. A traveler has four distinct Supply stacks; quantities do not use Gear slots and Supplies cannot be Banked. They are character-bound and lost on death, abandonment, or retirement. Ordinary provisions remain abstract.
+- **Assets:** Character-owned property such as the Older Chestnut Horse remains in `ownedAssets`, outside the item catalog and all capacities. Assets are not Bankable and end with the character.
+- **Temporary:** Lent, supplied, local, and quest equipment stays in the active run inventory with its source label and normally disappears when the run ends. A temporary object becomes persistent only through an explicit authored award.
+
+Items retain stable IDs through classification changes. The former `carriedItem` alias and `carriedItems` save array remain compatible; legacy carry counts are Gear Capacity milestones. Inventory class is resolved for every catalog entry when the item catalog loads, with explicit overrides for exceptional items and supplies.
 
 | ID | Player-facing name | Distinct function | Useful in | Use / overlap note |
 |---|---|---|---|---|
@@ -55,3 +65,12 @@ Persistent condition and upgrade behavior is documented in the [Equipment Evolut
 
 Before adding another carryable, check for a narrow capability already represented above. Prefer money, knowledge, history, or a narrative reward when another tool would overlap without adding a distinct future use.
 
+## Occult property audit
+
+- **Yew Charm (`yewCharm`) — RELIC:** offered by the chapel priest as a narrow folk ward with the red thread and burial context. It can support recognition or a specific warding choice when a traveler knows why it matters; it is not universal protection and has no generic stat effect. It is persistent and Bankable.
+- **Grave Token (`graveCoin`) — RELIC:** a physical silver funeral token, accepted by certain collectors or ferrymen. Its value/provenance is distinct from ordinary money; it is not itself accumulated knowledge. It is persistent and Bankable.
+- **Bone Key (`boneKey`) — TEMPORARY:** the current ID is an adventure-only, carved finger-bone key used for the Broken Bell chest. It is non-carryable and does not persist; retaining it as a run object is clearer than silently making a quest key a long-term Relic.
+- **Bronze Mask Fragment (`bronzeMaskFragment`) — RELIC:** a mysterious tangible reward from the Broken Bell keeper. Its meaning remains unknown unless the current traveler learns more; it is atmospheric, not a universal supernatural tool.
+- **Crimson Signal Lens (`signalLens`) — RELIC:** a railway-origin glass artifact with narrow recognition callbacks. Its warmth is atmospheric, not a general-purpose detector.
+
+Overlap review: ordinary money and the Grave Coin remain distinct; the Grave Coin has physical provenance and specific acceptance. The Bone Key remains location-specific rather than competing with the Bank as a permanent key collection. Rope and freight strap, lantern variants, and the two blankets retain distinct capability emphasis as recorded in the roster. `fieldBandageRoll` is still a legacy carryable whose authored use may consume it; future migration should reconcile that behavior with Supplies without invalidating existing reward saves.

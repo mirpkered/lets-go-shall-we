@@ -10,19 +10,29 @@ The local traveler progression count is distinct from the shared global authored
 
 Forward story-transition count remains available as a QA diagnostic and authoring metric. Ordinary story scenes count by default. A scene authored solely to continue the same beat across a presentation/no-scroll split can set `countsForProgression: false`. UI panels, inventory views, the Bank, dialogs, and QA controls do not use story transitions and never affect progression qualification.
 
-Character-bound property such as an owned animal is recorded separately from carried gear. It is visible in the traveler’s Available Gear panel, does not use carry capacity, and is not bankable. Such property ends with its traveler at death, abandonment, or retirement.
+Character-bound property such as an owned animal is recorded separately from carried Gear. It appears in the traveler’s inventory, uses no Gear or Supply capacity, and is not bankable. Such property ends with its traveler at death, abandonment, or retirement.
 
 ## Carry capacity
 
-| Qualifying adventures completed by this traveler | Persistent carry capacity |
+| Qualifying adventures completed by this traveler | Persistent Gear capacity |
 | --- | ---: |
-| 0–9 | 1 item |
-| 10–19 | 2 items |
-| 20+ | 3 items |
+| 0–9 | 1 Gear item |
+| 10–19 | 2 Gear items |
+| 20+ | 3 Gear items |
 
-The new slot unlocks after the milestone adventure ends, before the next adventure begins. Three slots is the current maximum. Capacity belongs to one traveler and resets to one when that traveler dies, is abandoned, or retires. The Bank remains separate, persists across travelers, and retains its five-item capacity.
+The new Gear slot unlocks after the milestone adventure ends, before the next adventure begins. Three Gear slots is the current maximum. Capacity belongs to one traveler and resets to one when that traveler dies, is abandoned, or retires. Relics are tracked separately and do not consume Gear capacity; a soft reminder at three Relics is not a hard limit. The Bank remains separate, persists across travelers, and retains its five-item capacity.
 
-Fresh travelers must remain able to complete every adventure with one slot or no useful carried gear. Extra slots may add preparation or optional approaches, but must not become required progression gates. Carrying several items does not automatically stack their benefits; item interactions remain specific to the authored situation.
+## Inventory classes
+
+- **Gear**: reusable equipment whose persistent loadout is limited by Gear capacity. Condition and item-specific upgrades belong to its stable item ID.
+- **Relic**: a rare persistent object tracked separately from practical Gear. Relics can be carried or banked without using Gear slots.
+- **Supply**: a limited-use, character-bound quantity stack. The current prototype allows four distinct Supply types, with an authored per-type maximum. Supplies can be gained, spent, replenished, and lost with their traveler; they cannot be banked.
+- **Asset**: durable character-bound property tracked in its own section. It uses no Gear slot and cannot be banked.
+- **Temporary**: adventure-only equipment, keys, clues, and objects. It normally leaves with the run unless explicitly awarded as persistent Gear or a Relic.
+
+Starting equipment such as the Small Knife and Lantern is Gear available during a run, but is not automatically part of the persistent carried loadout. The five-place Bank accepts only persistent Gear and Relics. Money, lore, knowledge, history, Assets, and Supplies are not bankable.
+
+Fresh travelers must remain able to complete every adventure with one Gear slot or no useful carried Gear. Extra slots may add preparation or optional approaches, but must not become required progression gates. Carrying several items does not automatically stack their benefits; item interactions remain specific to the authored situation.
 
 ## Saves and legacy travelers
 

@@ -39,18 +39,24 @@ describe('save compatibility', () => {
   it('adds visited-scene and recent-scenario defaults to an older active save', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
-    const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, startingItemStates: _itemStates, ...legacyRun } = run;
-    const { historyFlags: _historyFlags, ...legacyCharacter } = character;
-    const oldSave = { version: 1, bank: ['graveCoin'], character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave' } };
+    const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, startingItemStates: _itemStates, supplies: _supplies, startingSupplies: _startingSupplies, ...legacyRun } = run;
+    const { historyFlags: _historyFlags, supplies: _characterSupplies, ...legacyCharacter } = character;
+    legacyCharacter.carriedItem = 'graveCoin';
+    legacyCharacter.ownedAssets = [{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }];
+    const oldSave = { version: 1, bank: ['yewCharm'], itemStates: { graveCoin: { condition: 'DAMAGED', upgrades: [], provenance: ['Old save'] } }, character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave', inventory: ['smallKnife', 'lantern', 'graveCoin'], flags: ['heard_below'], health: 6 } };
     const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
     expect(state.run?.visitedSceneIds).toEqual(['chapelNave']);
     expect(state.run?.elapsedMinutes).toBe(0);
     expect(state.run?.riskTier).toBe('HIGH');
     expect(state.mostRecentScenarioId).toBeNull();
     expect(state.recentScenarioIds).toEqual([]);
-    expect(state.bank).toEqual(['graveCoin']);
+    expect(state.bank).toEqual(['yewCharm']);
     expect(state.character?.historyFlags).toEqual([]);
-    expect(state.itemStates).toEqual({});
+    expect(state.character?.carriedItems).toEqual(['graveCoin']);
+    expect(state.character?.ownedAssets).toEqual([{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }]);
+    expect(state.character?.supplies).toEqual({});
+    expect(state.itemStates).toEqual({ graveCoin: { condition: 'DAMAGED', upgrades: [], provenance: ['Old save'] } });
+    expect(state.run).toMatchObject({ sceneId: 'chapelNave', inventory: ['smallKnife', 'lantern', 'graveCoin'], flags: ['heard_below'], health: 6, supplies: {}, startingSupplies: {} });
     expect(state.run?.startingItemStates).toMatchObject({ smallKnife: { condition: 'NORMAL' }, lantern: { condition: 'NORMAL' } });
   });
 
@@ -63,6 +69,9 @@ describe('save compatibility', () => {
       mostRecentScenarioId: 'broken-bell',
       recentScenarioIds: ['broken-bell'],
     };
+    character.supplies = { ritualChalk: 2, coldIronNails: 4 };
+    state.run!.supplies = structuredClone(character.supplies);
+    state.run!.startingSupplies = { ritualChalk: 3, coldIronNails: 4 };
     state.run!.elapsedMinutes = 27;
     const storage = memoryStorage();
     saveGame(state, storage);
@@ -165,4 +174,3 @@ describe('save compatibility', () => {
     expect(state.run?.visitedSceneIds).toContain('legacyResume');
   });
 });
-

@@ -50,6 +50,14 @@ These rules govern new adventures and focused revisions. They are consolidated f
 - **Intentional Disposal Rule:** Never silently overwrite, discard, or replace persistent items. Require an explicit, understandable player choice; disposal should be clearly described and confirmed where appropriate.
 - **Reward Storage Rule:** At an authored ending, an earned persistent item may be carried within capacity, stored directly in available Bank space, or declined. A choose-one reward stays choose-one. Full carry plus full Bank must have a safe explicit resolution; ending reward placement is not full Bank management.
 - **Supernatural Item Rule:** Strange items may have narrow atmospheric effects, not universal detection, keys, or combat upgrades. Do not force every relic into every story.
+- **Inventory Class Rule:** Every catalog item has one explicit resolved class: Gear, Supply, Relic, Asset, or Temporary. Gear uses the traveler’s 1/2/3 Gear Capacity and may have condition/upgrades; Relics are rare and separately listed; Supplies use quantity stacks; Assets remain character property; Temporary equipment ends with its adventure unless explicitly awarded.
+- **Persistent Supply Rule:** Persist a consumable between adventures only when conserving, spending, replenishing, or losing it creates a meaningful future decision. Ordinary food, water, oil, string, nails, bandages, and matches stay abstract unless an authored design specifically justifies tracking them.
+- **Limited-Use Item Rule:** Physically expended materials use quantity-based Supply stacks rather than infinite reusable-item behavior. Show consumption and remaining quantity to the player.
+- **No Item Bloat Rule:** Do not create a persistent item merely to fill a reward slot. Prefer an existing item’s upgrade/discovered use, money, Supply replenishment, favor/contact, knowledge, history, access, repair, or property when it fits better.
+- **Existing Relic First Rule:** Before adding a supernatural charm, token, key, lens, or ward, check whether an existing Relic can plausibly gain its function through discovered meaning, modification, repair, or preparation.
+- **Occult Consumable Rule:** Occult materials physically expended by use—such as chalk, salt, herbs, nails, or wax—are limited-use Supplies with authored quantity and purpose, not infinite-use Gear.
+- **Specific Protection Rule:** No Relic or occult Supply universally protects against supernatural threats. State its scope and limits; it may fail or be inapplicable.
+- **Inventory Pressure Without Busywork:** Limited slots, distinct functions, consumable scarcity, gear condition, and character loss can create inventory tension. Do not require frequent sorting, weight arithmetic, or routine provision tracking.
 
 ## Story structure and endings
 
@@ -81,4 +89,3 @@ These rules govern new adventures and focused revisions. They are consolidated f
 - **HUD Priority Rule:** Functional text, status, buttons, and controls must remain crisp and legible above atmospheric art. Use backplates/overlays as needed; do not blur functional UI.
 
 For the practical pre-implementation and release checks, use the [Adventure Authoring Checklist](AUTHORING_CHECKLIST.md). The [World Continuity Appendix](WORLD-CONTINUITY.md) remains the detailed reference for locations, callbacks, and world persistence.
-

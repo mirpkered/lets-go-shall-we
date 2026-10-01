@@ -1,4 +1,4 @@
-import { ITEMS, STARTING_ITEMS } from './items';
+import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
 import type { Character, Choice, Effects, InventorySource, ItemCondition, PersistentItemState, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
@@ -7,7 +7,7 @@ import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], ownedAssets: [] };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], ownedAssets: [], supplies: {} };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -22,6 +22,94 @@ export function setCarriedItems(character: Character, items: string[]): void {
 
 export function carryCapacity(adventuresCompleted = 0): number {
   return adventuresCompleted >= 20 ? 3 : adventuresCompleted >= 10 ? 2 : 1;
+}
+
+export const gearCapacity = carryCapacity;
+export const SUPPLY_STACK_CAPACITY = 4;
+/** A soft reminder only; relics are rare and never block a story reward. */
+export const RELIC_SOFT_CAPACITY = 3;
+
+export function getCarriedGearItems(character: Character | null | undefined): string[] {
+  return getCarriedItems(character).filter((id) => inventoryClass(id) === 'GEAR');
+}
+
+export function getCarriedRelics(character: Character | null | undefined): string[] {
+  return getCarriedItems(character).filter((id) => inventoryClass(id) === 'RELIC');
+}
+
+export function supplyQuantity(character: Character | null | undefined, supplyId: string): number {
+  return Math.max(0, Math.floor(character?.supplies?.[supplyId] ?? 0));
+}
+
+export function supplyStackCount(character: Character | null | undefined): number {
+  return Object.entries(character?.supplies ?? {}).filter(([id, quantity]) => inventoryClass(id) === 'SUPPLY' && quantity > 0).length;
+}
+
+export function hasSupply(character: Character | null | undefined, supplyId: string, quantity = 1): boolean {
+  return inventoryClass(supplyId) === 'SUPPLY' && supplyQuantity(character, supplyId) >= quantity;
+}
+
+export function hasGear(state: SaveData, itemId: string): boolean {
+  return inventoryClass(itemId) === 'GEAR' && !!state.run?.inventory.includes(itemId);
+}
+
+export function hasRelic(state: SaveData, itemId: string): boolean {
+  return inventoryClass(itemId) === 'RELIC' && !!state.run?.inventory.includes(itemId);
+}
+
+export function hasTemporaryEquipment(state: SaveData, itemId: string): boolean {
+  const run = state.run;
+  return !!run?.inventory.includes(itemId) && ['temporary', 'borrowed', 'supplied'].includes(run.inventorySources?.[itemId] ?? 'temporary');
+}
+
+export function hasOwnedAsset(state: SaveData, assetId: string): boolean {
+  return !!state.character?.ownedAssets?.some(({ id }) => id === assetId);
+}
+
+function supplyFits(character: Character, supplyId: string, quantity: number): boolean {
+  const item = ITEMS[supplyId];
+  if (inventoryClass(supplyId) !== 'SUPPLY' || !Number.isInteger(quantity) || quantity < 1) return false;
+  const current = supplyQuantity(character, supplyId);
+  const stackLimit = item.stackLimit ?? 1;
+  return current > 0
+    ? current + quantity <= stackLimit
+    : supplyStackCount(character) < SUPPLY_STACK_CAPACITY && quantity <= stackLimit;
+}
+
+/** Adds atomically; a full stack/pouch leaves state untouched for an explicit decline/replace decision. */
+export function addSupply(state: SaveData, supplyId: string, quantity = 1): SaveData {
+  const next = structuredClone(state);
+  if (!next.character || !supplyFits(next.character, supplyId, quantity)) return next;
+  next.character.supplies ??= {};
+  next.character.supplies[supplyId] = supplyQuantity(next.character, supplyId) + quantity;
+  if (next.run) next.run.supplies = structuredClone(next.character.supplies);
+  return next;
+}
+
+export function consumeSupply(state: SaveData, supplyId: string, quantity = 1): SaveData {
+  const next = structuredClone(state);
+  if (!next.character || !Number.isInteger(quantity) || quantity < 1 || !hasSupply(next.character, supplyId, quantity)) return next;
+  next.character.supplies ??= {};
+  const remaining = supplyQuantity(next.character, supplyId) - quantity;
+  if (remaining) next.character.supplies[supplyId] = remaining;
+  else delete next.character.supplies[supplyId];
+  if (next.run) {
+    next.run.supplies = structuredClone(next.character.supplies);
+    next.run.supplyNotice = `You use ${quantity} ${ITEMS[supplyId].name}${quantity === 1 ? '' : ' pieces'}. ${ITEMS[supplyId].name}: ${remaining + quantity} → ${remaining}.`;
+  }
+  return next;
+}
+
+export function setSupplyQuantity(state: SaveData, supplyId: string, quantity: number): SaveData {
+  const next = structuredClone(state);
+  if (!next.character || inventoryClass(supplyId) !== 'SUPPLY' || !Number.isInteger(quantity) || quantity < 0) return next;
+  const old = supplyQuantity(next.character, supplyId);
+  if (quantity === 0) { if (next.character.supplies) delete next.character.supplies[supplyId]; }
+  else if (quantity <= (ITEMS[supplyId].stackLimit ?? 1) && (old > 0 || supplyStackCount(next.character) < SUPPLY_STACK_CAPACITY)) {
+    next.character.supplies ??= {}; next.character.supplies[supplyId] = quantity;
+  }
+  if (next.run) next.run.supplies = structuredClone(next.character.supplies ?? {});
+  return next;
 }
 
 export function pickRunRandomSelections(scenario: Scenario, random = Math.random): Record<string, string> {
@@ -102,7 +190,7 @@ export function removeUpgrade(state: SaveData, itemId: string, upgradeId: string
 export function replaceItem(state: SaveData, oldItemId: string, newItemId: string, provenance?: string): SaveData {
   const next = structuredClone(state);
   const activelyOwned = !!next.run?.inventory.includes(oldItemId) || getCarriedItems(next.character).includes(oldItemId);
-  if (!ITEMS[oldItemId]?.carryable || !ITEMS[newItemId]?.carryable || !activelyOwned || hasItem(next, newItemId)) return next;
+  if (!ITEMS[oldItemId]?.carryable || !ITEMS[newItemId]?.carryable || inventoryClass(oldItemId) !== inventoryClass(newItemId) || !activelyOwned || hasItem(next, newItemId)) return next;
   const run = next.run;
   if (run?.inventory.includes(oldItemId)) {
     run.inventory = run.inventory.map((id) => id === oldItemId ? newItemId : id);
@@ -127,7 +215,7 @@ export function startRun(character: Character, scenario: Scenario, random = Math
   for (const id of carriedItems) inventorySources[id] = 'carried';
   const randomSelections = pickRunRandomSelections(scenario, random);
   const trackedAtStart = [...new Set([...STARTING_ITEMS, ...carriedItems])];
-  return { runId: crypto.randomUUID(), scenarioId: scenario.id, riskTier: scenarioRiskTier(scenario), sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, startingItemStates: Object.fromEntries(trackedAtStart.map((id) => [id, structuredClone(itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] })])), acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, riskTier: scenarioRiskTier(scenario), sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, startingItemStates: Object.fromEntries(trackedAtStart.map((id) => [id, structuredClone(itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] })])), startingSupplies: structuredClone(character.supplies ?? {}), supplies: structuredClone(character.supplies ?? {}), acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function countQualifyingStoryTransitions(scenario: Scenario, visitedSceneIds: string[] | undefined): number {
@@ -160,6 +248,14 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.anyUsableItems || requirement.anyUsableItems.some((id) => run.inventory.includes(id) && itemCondition(state, id) !== 'BROKEN'))
     && (!requirement.itemConditions || Object.entries(requirement.itemConditions).every(([id, values]) => run.inventory.includes(id) && values.includes(itemCondition(state, id))))
     && (!requirement.itemUpgrades || Object.entries(requirement.itemUpgrades).every(([id, upgrades]) => run.inventory.includes(id) && upgrades.every((upgradeId) => hasUpgrade(state, id, upgradeId))))
+    && (!requirement.gear || requirement.gear.every((id) => hasGear(state, id)))
+    && (!requirement.usableGear || requirement.usableGear.every((id) => hasGear(state, id) && itemCondition(state, id) !== 'BROKEN'))
+    && (!requirement.gearUpgrades || Object.entries(requirement.gearUpgrades).every(([id, upgrades]) => hasGear(state, id) && upgrades.every((upgradeId) => hasUpgrade(state, id, upgradeId))))
+    && (!requirement.relics || requirement.relics.every((id) => hasRelic(state, id)))
+    && (!requirement.supplies || Object.entries(requirement.supplies).every(([id, quantity]) => inventoryClass(id) === 'SUPPLY' && hasSupply(character, id, quantity)))
+    && (!requirement.canAddSupplies || Object.entries(requirement.canAddSupplies).every(([id, quantity]) => supplyFits(character, id, quantity)))
+    && (!requirement.ownedAssets || requirement.ownedAssets.every((id) => hasOwnedAsset(state, id)))
+    && (!requirement.temporaryEquipment || requirement.temporaryEquipment.every((id) => hasTemporaryEquipment(state, id)))
     && (!requirement.notItemUpgrades || Object.entries(requirement.notItemUpgrades).every(([id, upgrades]) => upgrades.every((upgradeId) => !hasUpgrade(state, id, upgradeId))))
     && (!requirement.notItems || requirement.notItems.every((id) => !run.inventory.includes(id)))
     && (!requirement.anyItems || requirement.anyItems.some((id) => run.inventory.includes(id)))
@@ -218,6 +314,29 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   const run = state.run;
   const character = state.character;
   if (!run || !character) return;
+  if (effects.consumeSupplies) for (const [id, quantity] of Object.entries(effects.consumeSupplies)) {
+    if (inventoryClass(id) !== 'SUPPLY' || !Number.isInteger(quantity) || quantity < 1 || !hasSupply(character, id, quantity)) continue;
+    const before = supplyQuantity(character, id);
+    const remaining = before - quantity;
+    if (remaining) (character.supplies ??= {})[id] = remaining;
+    else if (character.supplies) delete character.supplies[id];
+    run.supplyNotice = `You use ${quantity} ${ITEMS[id].name}${quantity === 1 ? '' : ' pieces'}. ${ITEMS[id].name}: ${before} → ${remaining}.`;
+  }
+  if (effects.gainSupplies) {
+    const projected = structuredClone(character);
+    let fits = true;
+    for (const [id, quantity] of Object.entries(effects.gainSupplies)) {
+      if (!supplyFits(projected, id, quantity)) { fits = false; break; }
+      projected.supplies ??= {};
+      projected.supplies[id] = supplyQuantity(projected, id) + quantity;
+    }
+    if (fits) {
+      character.supplies = projected.supplies;
+      run.supplyRewarded = true;
+      run.supplyNotice = `Supplies received: ${Object.entries(effects.gainSupplies).map(([id, quantity]) => `${ITEMS[id].name} ×${quantity}`).join(', ')}.`;
+    } else run.supplyNotice = 'Your supply pouch is full or a stack is at its limit; the offered supplies remain with the giver.';
+  }
+  run.supplies = structuredClone(character.supplies ?? {});
   if (effects.health) run.health = Math.max(0, Math.min(character.maxHealth, run.health + effects.health));
   if (effects.money) character.money = Math.max(0, character.money + effects.money);
   if (effects.loseMoney) character.money = 0;
@@ -234,14 +353,27 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     for (const id of lostItems) if (!state.bank.includes(id)) delete state.itemStates?.[id];
   }
   if (effects.gainItems) {
-    run.inventory = addUnique(run.inventory, effects.gainItems);
-    run.acquiredThisRun = addUnique(run.acquiredThisRun, effects.gainItems);
-    for (const id of effects.gainItems) (run.inventorySources ??= {})[id] = effects.inventorySources?.[id] ?? (ITEMS[id]?.carryable ? 'found' : 'temporary');
+    const physical = effects.gainItems.filter((id) => inventoryClass(id) !== 'SUPPLY');
+    run.inventory = addUnique(run.inventory, physical);
+    run.acquiredThisRun = addUnique(run.acquiredThisRun, physical);
+    for (const id of physical) (run.inventorySources ??= {})[id] = effects.inventorySources?.[id] ?? (ITEMS[id]?.carryable ? 'found' : 'temporary');
+    for (const id of effects.gainItems.filter((itemId) => inventoryClass(itemId) === 'SUPPLY')) {
+      const projected = addSupply(state, id, 1);
+      if (projected.character?.supplies?.[id] !== character.supplies?.[id]) {
+        character.supplies = projected.character?.supplies ?? {};
+        run.supplies = structuredClone(character.supplies);
+        run.supplyRewarded = true;
+        run.supplyNotice = `Received 1 ${ITEMS[id].name}.`;
+      } else run.supplyNotice = 'Your supply pouch is full or this stack is at its limit; the offered supply remains with the giver.';
+    }
   }
   if (effects.loseItems) {
-    run.inventory = without(run.inventory, effects.loseItems);
-    setCarriedItems(character, getCarriedItems(character).filter((id) => !effects.loseItems!.includes(id)));
-    for (const id of effects.loseItems) if (!state.bank.includes(id)) delete state.itemStates?.[id];
+    const physical = effects.loseItems.filter((id) => inventoryClass(id) !== 'SUPPLY');
+    run.inventory = without(run.inventory, physical);
+    setCarriedItems(character, getCarriedItems(character).filter((id) => !physical.includes(id)));
+    for (const id of physical) if (!state.bank.includes(id)) delete state.itemStates?.[id];
+    for (const id of effects.loseItems.filter((itemId) => inventoryClass(itemId) === 'SUPPLY')) if (character.supplies) delete character.supplies[id];
+    run.supplies = structuredClone(character.supplies ?? {});
   }
   for (const id of effects.damageItems ?? []) {
     if (!run.inventory.includes(id) || !ITEMS[id]?.carryable) continue;
@@ -297,6 +429,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   const actionMinutes = Number.isFinite(choice.timeCost) ? Math.max(0, Math.floor(choice.timeCost!)) : 0;
   next.run.elapsedMinutes = (next.run.elapsedMinutes ?? 0) + actionMinutes;
   next.run.message = null;
+  next.run.supplyNotice = undefined;
   applyEffects(next, choice.effects);
 
   let destination = choice.next;
@@ -408,7 +541,7 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
   const endingItems = [...new Set(getCarriedItems(state.character))].sort();
   const inventoryChanged = JSON.stringify(startingItems) !== JSON.stringify(endingItems);
   const changedRetainedGear = run.status === 'success' && endingItems.some((id) => JSON.stringify(state.itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }) !== JSON.stringify(run.startingItemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }));
-  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged && !changedRetainedGear) return;
+  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged && !changedRetainedGear && !run.supplyRewarded) return;
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
     run.completionMilestoneReached = state.character.adventuresCompleted;
@@ -430,7 +563,7 @@ export function finishSuccess(state: SaveData, carriedItems: string | string[] |
   const requested = Array.isArray(carriedItems) ? carriedItems : carriedItems ? [carriedItems] : [];
   const eligible = new Set([...eligibleCarryItems(next), ...requested.filter((id) => ITEMS[id]?.carryable)]);
   const selected = [...new Set(requested.filter((id) => eligible.has(id)))];
-  if (selected.length > carryCapacity(next.character.adventuresCompleted)) return next;
+  if (selected.filter((id) => inventoryClass(id) === 'GEAR').length > gearCapacity(next.character.adventuresCompleted)) return next;
   setCarriedItems(next.character, selected);
   retainOnlyBankedItemStates(next, [...selected, ...STARTING_ITEMS]);
   if (next.run?.status === 'success') recordAuthoredEnding(next, true);
@@ -476,7 +609,7 @@ export function placeReward(state: SaveData, itemId: string, destination: Reward
   if (destination === 'carry') {
     if (!next.character) return next;
     const carried = getCarriedItems(next.character);
-    if (carried.length >= carryCapacity(next.character.adventuresCompleted ?? 0)) return next;
+    if (inventoryClass(itemId) === 'GEAR' && getCarriedGearItems(next.character).length >= gearCapacity(next.character.adventuresCompleted ?? 0)) return next;
     setCarriedItems(next.character, [...carried, itemId]);
   } else if (destination === 'bank') {
     if (next.bank.length >= BANK_CAPACITY || next.bank.includes(itemId)) return next;
@@ -497,12 +630,15 @@ export function depositCarried(state: SaveData, replaceBankItemId?: string, carr
   const next = structuredClone(state);
   const carried = getCarriedItems(next.character);
   const item = carriedItemId ?? carried[0];
-  if (!next.character || !item || !carried.includes(item) || next.bank.includes(item)) return next;
+  if (!next.character || !item || !carried.includes(item) || !['GEAR', 'RELIC'].includes(inventoryClass(item)) || next.bank.includes(item)) return next;
   if (next.bank.length > BANK_CAPACITY) return next;
   if (next.bank.length === BANK_CAPACITY) {
     if (!replaceBankItemId) return next;
     const index = next.bank.indexOf(replaceBankItemId);
     if (index < 0) return next;
+    const returnedGear = inventoryClass(replaceBankItemId) === 'GEAR' ? 1 : 0;
+    const removedGear = inventoryClass(item) === 'GEAR' ? 1 : 0;
+    if (getCarriedGearItems(next.character).length - removedGear + returnedGear > gearCapacity(next.character.adventuresCompleted ?? 0)) return next;
     next.bank[index] = item;
     setCarriedItems(next.character, carried.filter((id) => id !== item).concat(replaceBankItemId));
     return next;
@@ -516,7 +652,7 @@ export function withdrawBanked(state: SaveData, itemId: string): SaveData {
   const next = structuredClone(state);
   if (!next.bank.includes(itemId)) return next;
   next.character ??= newCharacter();
-  if (getCarriedItems(next.character).length >= carryCapacity(next.character.adventuresCompleted ?? 0)) return structuredClone(state);
+  if (inventoryClass(itemId) === 'GEAR' && getCarriedGearItems(next.character).length >= gearCapacity(next.character.adventuresCompleted ?? 0)) return structuredClone(state);
   next.bank = next.bank.filter((id) => id !== itemId);
   setCarriedItems(next.character, [...getCarriedItems(next.character), itemId]);
   return next;
@@ -539,4 +675,3 @@ export function emptyBank(state: SaveData): SaveData {
   for (const id of emptied) if (!getCarriedItems(next.character).includes(id) && !next.run?.inventory.includes(id)) delete next.itemStates?.[id];
   return next;
 }
-

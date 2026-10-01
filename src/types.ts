@@ -1,5 +1,6 @@
 import type { EasterEggContext } from './easterEggs';
 export type ItemCategory = 'weapon' | 'armor' | 'tool' | 'charm' | 'relic' | 'consumable' | 'valuable' | 'artifact' | 'run-only';
+export type InventoryClass = 'GEAR' | 'SUPPLY' | 'RELIC' | 'ASSET' | 'TEMPORARY';
 export type RiskTier = 'LOW' | 'MODERATE' | 'HIGH' | 'SEVERE';
 
 export type FantasyDensity = 'NONE' | 'AMBIGUOUS' | 'EERIE' | 'CONFIRMED_SUPERNATURAL' | 'FANTASY_THREAT' | 'DUNGEON_FANTASY';
@@ -27,7 +28,13 @@ export interface Item {
   carryable: boolean;
   upgrades?: ItemUpgradeDefinition[];
   maxUpgrades?: number;
+  /** Persistent class; run-only equipment is TEMPORARY. Missing legacy values are safely inferred. */
+  inventoryClass?: InventoryClass;
+  /** Persistent supply stack size; supply quantity is stored on the character, not in carriedItems. */
+  stackLimit?: number;
 }
+
+export type SupplyInventory = Record<string, number>;
 
 export interface ItemUpgradeDefinition {
   id: string;
@@ -58,6 +65,8 @@ export interface Character {
   historyFlags: string[];
   /** Character-bound property; unlike gear, these assets are not carried or banked. */
   ownedAssets?: OwnedAsset[];
+  /** Character-bound limited-use resources, keyed by supply item ID. */
+  supplies?: SupplyInventory;
 }
 
 export interface OwnedAsset {
@@ -83,6 +92,11 @@ export interface RunState {
   startingMoney?: number;
   startingCarriedItems?: string[];
   startingItemStates?: Record<string, PersistentItemState>;
+  startingSupplies?: SupplyInventory;
+  /** Current run snapshot of the traveler’s persistent Supply stacks. */
+  supplies?: SupplyInventory;
+  supplyNotice?: string;
+  supplyRewarded?: boolean;
   /** Provenance for the broad usable inventory shown during this adventure. */
   inventorySources?: Record<string, InventorySource>;
   completionQualification?: 'substantive' | 'nonSubstantive';
@@ -137,6 +151,14 @@ export interface Requirement {
   anyUsableItems?: string[];
   itemConditions?: Record<string, ItemCondition[]>;
   itemUpgrades?: Record<string, string[]>;
+  gear?: string[];
+  usableGear?: string[];
+  gearUpgrades?: Record<string, string[]>;
+  relics?: string[];
+  supplies?: Record<string, number>;
+  canAddSupplies?: Record<string, number>;
+  ownedAssets?: string[];
+  temporaryEquipment?: string[];
   notItemUpgrades?: Record<string, string[]>;
   notItems?: string[];
   anyItems?: string[];
@@ -168,6 +190,8 @@ export interface Effects {
   loseCarriedItem?: boolean;
   loseCarriedItems?: boolean;
   gainItems?: string[];
+  gainSupplies?: Record<string, number>;
+  consumeSupplies?: Record<string, number>;
   damageItems?: string[];
   breakItems?: string[];
   repairItems?: string[];
@@ -249,4 +273,3 @@ export interface RunRandomSelection {
   id: string;
   values: { value: string; weight?: number }[];
 }
-

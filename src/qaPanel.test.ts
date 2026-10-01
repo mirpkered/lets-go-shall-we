@@ -22,9 +22,17 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('data-qa-repair-item');
     expect(markup).toContain('data-qa-add-upgrade');
     expect(markup).toContain('data-qa-remove-upgrade');
+    expect(markup).toContain('data-qa-set-gear-capacity');
+    expect(markup).toContain('data-qa-add-carried');
+    expect(markup).toContain('data-qa-remove-carried');
+    expect(markup).toContain('data-qa-add-supply');
+    expect(markup).toContain('data-qa-set-supply');
+    expect(markup).toContain('data-qa-consume-supply');
+    expect(markup).toContain('&quot;inventoryClasses&quot;');
+    expect(markup).toContain('&quot;carriedRelics&quot;');
+    expect(markup).toContain('&quot;supplyStackCapacity&quot;: 4');
     expect(markup).toContain('&quot;itemStates&quot;');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('Easter egg');
     expect(JSON.stringify(state)).toBe(before);
   });
 });
-
