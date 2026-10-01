@@ -1,6 +1,6 @@
 # Library Ending, Payoff & Reward Audit
 
-Baseline: main at f22ba58e3467bf49243371b4438107d25455c1fb, before this pass. The live registry contained **175 playable adventures**. This report is an internal structural audit, not player-facing content.
+Baseline: main at `f22ba58e3467bf49243371b4438107d25455c1fb`, before the original audit pass. The registry at that baseline contained **175 playable adventures**. The current registry was rechecked during the 2026-10-01 documentation reconciliation and also contains 175. This report’s route and reward measurements remain a dated structural snapshot, not a freshly recomputed analysis of every later authored edit; scenario source/tests are authoritative for current behavior. This is an internal audit, not player-facing content.
 
 ## Method and limits
 
