@@ -1,0 +1,72 @@
+import type { Scenario } from '../types';
+
+export const ONLY_ONE_BULLET: Scenario = {
+  id: 'only-one-bullet', title: 'Only One Bullet', subtitle: 'A frightened stranger, a loaded revolver, and no safe calculation.', startScene: 'roadsideCrisis',
+  timePhases: [{ id: 'firstMoment', label: 'A Moment to Speak', atMinutes: 0 }, { id: 'tensionRising', label: 'The Silence Stretches', atMinutes: 8 }, { id: 'dangerAcute', label: 'A Hand Trembles', atMinutes: 18 }],
+  runRandomSelections: [
+    { id: 'person', values: ['Wulfric', 'Cressida', 'Tobin', 'Aveline', 'Bramwell'].map((value) => ({ value })) },
+    { id: 'state', values: [{ value: 'shaken' }, { value: 'angry' }, { value: 'exhausted' }] },
+  ],
+  scenes: {
+    roadsideCrisis: { id: 'roadsideCrisis', title: 'At a Distance', tone: 'danger',
+      text: '{{person}} stands alone beyond a roadside fence, holding an old revolver pointed toward the dirt. You are several paces away, with open ground between you. A companion stays behind your shoulder. {{person}} says, “There’s only one cartridge left. I think.” You cannot verify the weapon or make the danger safe by counting.',
+      textVariants: [{ requirements: { selections: { state: 'angry' } }, text: '{{person}} stands alone beyond a roadside fence, holding an old revolver pointed toward the dirt. You are several paces away, with open ground between you. A companion stays behind your shoulder. {{person}} says, “There’s only one cartridge left. I think.” Their voice is sharp, but the weapon’s state cannot be known from here.' }, { requirements: { selections: { state: 'exhausted' } }, text: '{{person}} stands beyond a roadside fence, shoulders slack, an old revolver pointed toward the dirt. You are several paces away; a companion stays behind you. “There’s only one cartridge left. I think,” they say. You cannot verify that, and any trigger pull could be lethal.' }],
+      choices: [
+        { id: 'speakDistant', label: 'Speak gently from where you are', timeCost: 1, next: 'firstReply' },
+        { id: 'sendForHelp', label: 'Ask your companion to fetch help', timeCost: 2, next: 'companionLeaves' },
+        { id: 'withdrawForHelp', label: 'Step away and seek help yourself', timeCost: 2, effects: { historyFlags: ['withdrew_from_armed_crisis', 'sought_help_for_armed_person'] }, next: 'helpAway' },
+        { id: 'rushWeapon', label: 'Rush in to seize the revolver', hint: 'They may pull the trigger before you reach them.', chance: { probability: 0.16, successNext: 'weaponDisarmed', failureNext: 'playerShot', successMessage: 'You knock the revolver away, taking a hard blow in the struggle.', failureMessage: 'The sudden rush startles {{person}}. The revolver fires before you reach them.', successEffects: { health: -3, historyFlags: ['attempted_armed_intervention', 'survived_armed_crisis'] }, failureEffects: { health: -10, historyFlags: ['was_shot_during_intervention'] } } },
+      ] },
+    firstReply: { id: 'firstReply', title: 'A First Answer', tone: 'warning',
+      text: '{{person}} says little about what brought them here. Their grip tightens whenever you move. You can hear them; you do not know whether anything you say will change what happens.',
+      textVariants: [{ requirements: { selections: { state: 'shaken' } }, text: '{{person}} answers in fragments, looking past you toward the road. Their grip tightens whenever you move. You can hear them; you do not know whether anything you say will change what happens.' }, { requirements: { selections: { state: 'angry' } }, text: '{{person}} cuts off your first words. Their grip tightens, but the revolver remains pointed at the dirt. You can listen, leave space, or get help; there is no sentence that guarantees safety.' }],
+      choices: [
+        { id: 'listen', label: 'Listen without arguing', timeCost: 3, effects: { historyFlags: ['stayed_with_person_in_crisis'] }, next: 'listening' },
+        { id: 'askSetDown', label: 'Ask them to set it on the ground', hint: 'A direct request may help, but could also feel like pressure.', timeCost: 2, chance: { probability: 0.48, bonusSelections: { state: 'exhausted' }, bonusProbability: 0.12, successNext: 'weaponLowered', failureNext: 'tensionRises', successMessage: '{{person}} lays the revolver on the ground, then steps back.', failureMessage: '{{person}} stiffens. The request has not made the weapon safer.', successEffects: { historyFlags: ['talked_armed_person_down', 'survived_armed_crisis'] } } },
+        { id: 'stayBack', label: 'Keep your distance and give them a moment', timeCost: 7, effects: { historyFlags: ['stayed_with_person_in_crisis'] }, next: 'tensionRises' },
+        { id: 'leaveFromReply', label: 'Step away and go for help', timeCost: 3, effects: { historyFlags: ['withdrew_from_armed_crisis', 'sought_help_for_armed_person'] }, next: 'helpAway' },
+      ] },
+    listening: { id: 'listening', title: 'The Story Comes Slowly', tone: 'warning',
+      text: '{{person}} speaks of a letter and a debt, then stops. You do not know the whole story. The companion remains well behind you, ready to go for help if asked. The revolver is still in {{person}}’s hand.',
+      choices: [
+        { id: 'offerCompany', label: 'Offer to stay at this distance', timeCost: 3, chance: { probability: 0.52, bonusSelections: { state: 'shaken' }, bonusProbability: 0.12, successNext: 'weaponLowered', failureNext: 'tensionRises', successMessage: '{{person}} lays the revolver down and moves several paces away.', failureMessage: '{{person}} turns away. Your presence has not settled the crisis.' } },
+        { id: 'askHelpFromCompanion', label: 'Ask your companion to fetch a doctor', timeCost: 2, next: 'companionLeaves' },
+        { id: 'leaveAfterListening', label: 'Leave and seek help nearby', timeCost: 3, effects: { historyFlags: ['withdrew_from_armed_crisis', 'sought_help_for_armed_person'] }, next: 'helpAway' },
+      ] },
+    tensionRises: { id: 'tensionRises', title: 'The Silence Stretches', tone: 'danger',
+      text: 'The pause grows long. {{person}} looks past you, then back at the revolver. You remain behind the fence line. A sudden approach could end in a shot; waiting also cannot promise that {{person}} will be safe.',
+      textVariants: [{ requirements: { minElapsedMinutes: 10 }, text: 'The light is fading and {{person}} has not let go of the revolver. You are still several paces away. The danger of a sudden move is plain, but there is no guarantee that waiting will prevent a tragedy.' }],
+      choices: [
+        { id: 'askGroundAgain', label: 'Ask them to put it down, then step back', hint: 'You leave room for them to choose; the outcome is uncertain.', timeCost: 2, chance: { probability: 0.34, bonusSelections: { state: 'exhausted' }, bonusProbability: 0.12, successNext: 'weaponLowered', failureNext: 'crisisLost', successMessage: '{{person}} sets the revolver on the ground and steps away.', failureMessage: 'A shot cracks across the field. When the sound passes, {{person}} has fallen.', successEffects: { historyFlags: ['survived_armed_crisis', 'talked_armed_person_down'] }, failureEffects: { historyFlags: ['armed_person_died'] } } },
+        { id: 'callCompanionNow', label: 'Send your companion for help', timeCost: 2, next: 'companionLeaves' },
+        { id: 'withdrawAtTension', label: 'Back away and seek help', timeCost: 3, effects: { historyFlags: ['withdrew_from_armed_crisis', 'sought_help_for_armed_person'] }, next: 'helpAway' },
+        { id: 'rushAtTension', label: 'Make one sudden attempt to disarm them', hint: 'The revolver could fire before you reach it.', chance: { probability: 0.10, successNext: 'weaponDisarmed', failureNext: 'playerShot', successMessage: 'You knock the revolver clear, but the struggle leaves you hurt.', failureMessage: 'The revolver fires as you cross the open ground.', successEffects: { health: -4, historyFlags: ['attempted_armed_intervention', 'survived_armed_crisis'] }, failureEffects: { health: -10, historyFlags: ['was_shot_during_intervention'] } } },
+      ] },
+    weaponLowered: { id: 'weaponLowered', title: 'A Little Space', tone: 'safe',
+      text: '{{person}} lowers the revolver and sets it within reach, then moves back. It is still loaded or may be; nobody handles it casually. The immediate danger has eased, though what comes next belongs to {{person}} and those they trust.',
+      choices: [
+        { id: 'askForHelpNow', label: 'Have your companion fetch a doctor', effects: { historyFlags: ['sought_help_for_armed_person', 'talked_armed_person_down'] }, next: 'helpArrives' },
+        { id: 'stayWithPerson', label: 'Stay nearby while they speak', effects: { historyFlags: ['stayed_with_person_in_crisis', 'talked_armed_person_down', 'survived_armed_crisis'] }, next: 'crisisSettles' },
+        { id: 'stepAwayNow', label: 'Give them space and leave slowly', effects: { historyFlags: ['survived_armed_crisis'] }, next: 'safeWithdrawal' },
+      ] },
+    companionLeaves: { id: 'companionLeaves', title: 'Help Is Not Immediate', tone: 'warning',
+      text: 'Your companion walks toward the nearest farm for a doctor. They will be gone several minutes. You remain behind the fence, able to see {{person}} but not control what they decide while help is away.',
+      choices: [
+        { id: 'stayWhileHelp', label: 'Stay back and keep talking', timeCost: 5, chance: { probability: 0.48, bonusSelections: { state: 'shaken' }, bonusProbability: 0.1, successNext: 'helpArrives', failureNext: 'crisisLost', successMessage: 'The doctor arrives while {{person}} is still alive and willing to hear help.', failureMessage: 'A single shot cracks across the empty field before help returns.', successEffects: { historyFlags: ['sought_help_for_armed_person', 'survived_armed_crisis'] }, failureEffects: { historyFlags: ['sought_help_for_armed_person', 'armed_person_died'] } } },
+        { id: 'staySilent', label: 'Keep your distance and wait', timeCost: 5, chance: { probability: 0.46, successNext: 'helpArrives', failureNext: 'crisisLost', successMessage: 'Your companion returns with the doctor, who approaches slowly.', failureMessage: 'The revolver fires while the road is empty.', successEffects: { historyFlags: ['sought_help_for_armed_person', 'survived_armed_crisis'] }, failureEffects: { historyFlags: ['sought_help_for_armed_person', 'armed_person_died'] } } },
+        { id: 'withdrawWhileHelp', label: 'Leave the doctor to take over', effects: { historyFlags: ['withdrew_from_armed_crisis', 'sought_help_for_armed_person'] }, next: 'safeWithdrawal' },
+      ] },
+    helpAway: { id: 'helpAway', title: 'Help Takes Time', tone: 'warning',
+      text: 'You keep well clear of the fence and seek the nearest household. You cannot see {{person}} from the road. When you return with a neighbor, the outcome is not yours to choose.',
+      choices: [
+        { id: 'returnWithNeighbor', label: 'Return with a neighbor', timeCost: 10, chance: { probability: 0.76, successNext: 'helpArrives', failureNext: 'crisisLost', successMessage: 'The neighbor reaches the field while {{person}} is still alive and willing to hear help.', failureMessage: 'The neighbor arrives after a shot has ended the crisis.', successEffects: { historyFlags: ['sought_help_for_armed_person', 'survived_armed_crisis'] }, failureEffects: { historyFlags: ['sought_help_for_armed_person', 'armed_person_died'] } } },
+        { id: 'keepWalking', label: 'Do not return; continue down the road', effects: { historyFlags: ['withdrew_from_armed_crisis'] }, next: 'safeWithdrawal' },
+      ] },
+    helpArrives: { id: 'helpArrives', title: 'Someone Else Is Here', tone: 'safe', text: 'The neighbor or doctor stops well back and speaks with {{person}}. The revolver is moved only after {{person}} agrees. You have not solved another person’s life; you helped make room for more hands.', ending: 'success', choices: [] },
+    crisisSettles: { id: 'crisisSettles', title: 'A Conversation, Not a Cure', tone: 'safe', text: 'The revolver remains on the ground while {{person}} speaks with the neighbor. Nothing you said fixes the debt or the loss, but they are no longer alone with the weapon.', ending: 'success', choices: [] },
+    safeWithdrawal: { id: 'safeWithdrawal', title: 'The Road Goes On', tone: 'safe', text: 'You leave the field without a clear answer. Someone else may reach {{person}}; you cannot know from the road. You chose not to put your body between a person and a loaded weapon.', ending: 'success', choices: [] },
+    weaponDisarmed: { id: 'weaponDisarmed', title: 'The Weapon Is Away', tone: 'warning', text: 'You have the revolver away from {{person}}, but the sudden struggle has hurt you. You step back and leave it on bare ground rather than trying to inspect or unload it.', choices: [{ id: 'callForCare', label: 'Ask the companion to fetch help', effects: { historyFlags: ['survived_armed_crisis', 'attempted_armed_intervention', 'sought_help_for_armed_person'] }, next: 'helpArrives' }] },
+    crisisLost: { id: 'crisisLost', title: 'A Shot in the Field', tone: 'danger', text: 'The neighbor arrives too late. {{person}} has died. You did not know what would happen while you were away, and there was no certain way to control another person’s choice.', ending: 'success', choices: [] },
+    playerShot: { id: 'playerShot', title: 'The Cost of the Rush', tone: 'danger', text: 'The shot catches you before you reach {{person}}. The danger was real, and the sudden rush left no time to turn aside.', ending: 'death', choices: [] },
+  },
+};

@@ -57,6 +57,7 @@ export const ITEMS: Record<string, Item> = {
   woolTravelBlanket: { id: 'woolTravelBlanket', name: 'Wool Travel Blanket', description: 'A compact, tightly woven blanket that holds warmth on a cold road.', category: 'armor', carryable: true },
   fieldBandageRoll: { id: 'fieldBandageRoll', name: 'Field Bandage Roll', description: 'A clean, tightly wrapped roll of gauze for practical roadside first aid.', category: 'consumable', carryable: true },
   roadsideSignalMirror: { id: 'roadsideSignalMirror', name: 'Roadside Signal Mirror', description: 'A polished steel mirror with a sighting notch for signaling across open country.', category: 'tool', carryable: true },
+  foundPocketWatch: { id: 'foundPocketWatch', name: 'Silver Pocket Watch', description: 'A working silver watch with a former owner’s name engraved inside.', category: 'valuable', carryable: true },
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];

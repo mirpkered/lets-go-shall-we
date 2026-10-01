@@ -84,10 +84,13 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     run.inventory = addUnique(run.inventory, effects.gainItems);
     run.acquiredThisRun = addUnique(run.acquiredThisRun, effects.gainItems);
   }
-  if (effects.loseItems) run.inventory = without(run.inventory, effects.loseItems);
+  if (effects.loseItems) {
+    run.inventory = without(run.inventory, effects.loseItems);
+    if (character.carriedItem && effects.loseItems.includes(character.carriedItem)) character.carriedItem = null;
+  }
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
-  if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags);
+  if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags.map((entry) => runText(entry, state)));
   if (effects.setFlags) run.flags = addUnique(run.flags, effects.setFlags);
   if (effects.clearFlags) run.flags = without(run.flags, effects.clearFlags);
 }

@@ -22,6 +22,22 @@ describe('adventure engine', () => {
     expect(state.run?.inventory).toEqual(['smallKnife', 'lantern']);
   });
 
+  it('clears the persistent carried-item pointer when a choice explicitly consumes that item', () => {
+    const character = newCharacter('Consumed Gear');
+    character.carriedItem = 'fieldBandageRoll';
+    const scenario = {
+      id: 'consumed-gear-test', title: 'Consumed gear', subtitle: '', startScene: 'start',
+      scenes: {
+        start: { id: 'start', title: 'Start', text: 'The bandage is used.', choices: [{ id: 'use', label: 'Use it', effects: { loseItems: ['fieldBandageRoll'] }, next: 'done' }] },
+        done: { id: 'done', title: 'Done', text: 'Finished.', choices: [], ending: 'success' as const },
+      },
+    };
+    const initial = { version: 1 as const, bank: [], character, run: startRun(character, scenario) };
+    const next = choose(initial, scenario, scenario.scenes.start.choices[0]);
+    expect(next.run?.inventory).not.toContain('fieldBandageRoll');
+    expect(next.character?.carriedItem).toBeNull();
+  });
+
   it('queues every authored terminal outcome once, including death and walk-away, but not abandonment or QA', () => {
     const endingScenario = {
       id: 'counter-test', title: 'Counter test', subtitle: '', startScene: 'start',
