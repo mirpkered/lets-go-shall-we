@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "lets-go-shall-we-counter",
+  "name": "dark-scene-308e",
   "main": "src/index.ts",
   "compatibility_date": "2026-09-30",
   "workers_dev": true,
