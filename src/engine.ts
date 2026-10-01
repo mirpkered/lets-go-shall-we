@@ -1,6 +1,7 @@
 import { ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
 import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
+import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 
 export function newCharacter(name = 'The Traveler'): Character {
   return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
@@ -133,6 +134,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
     next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
     queueGlobalCompletion(next);
+    recordScenarioEnding(next);
     return next;
   }
   if (destination) {
@@ -146,7 +148,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   }
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
-  if (scene?.ending) queueGlobalCompletion(next);
+  if (scene?.ending) { queueGlobalCompletion(next); recordScenarioEnding(next); }
   return next;
 }
 
@@ -158,7 +160,17 @@ function queueGlobalCompletion(state: SaveData): void {
 }
 
 export function failCharacter(state: SaveData): SaveData {
-  return { ...state, character: null, run: null, mostRecentScenarioId: state.run?.scenarioId ?? state.mostRecentScenarioId ?? null };
+  const next = structuredClone(state);
+  if (next.run) { next.mostRecentScenarioId = next.run.scenarioId; recordScenarioEnding(next); }
+  next.character = null; next.run = null;
+  return next;
+}
+
+function recordScenarioEnding(state: SaveData): void {
+  const run = state.run;
+  if (!run || run.qaMode) return;
+  state.mostRecentScenarioId = run.scenarioId;
+  state.recentScenarioIds = [run.scenarioId, ...(state.recentScenarioIds ?? []).filter((id) => id !== run.scenarioId)].slice(0, RECENT_SCENARIO_WINDOW);
 }
 
 export function retireCharacter(state: SaveData): SaveData {
@@ -172,6 +184,7 @@ export function finishSuccess(state: SaveData, carriedItem: string | null): Save
   next.character.carriedItem = carriedItem;
   next.character.adventuresCompleted += 1;
   next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
+  recordScenarioEnding(next);
   next.run = null;
   return next;
 }

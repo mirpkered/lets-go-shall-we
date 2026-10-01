@@ -126,8 +126,23 @@ describe('The Man in the Ditch', () => {
     expect(state.character?.knowledge).toContain('The pouch is marked for the orchard mill payroll, not Rowan.');
     state = act(state, 'confrontWithWagonEvidence');
     expect(state.run?.sceneId).toBe('confrontationReveal');
-    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, state)).toMatch(/another man tried to divert the mill payroll/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, state)).toMatch(/a partner tried to divert the mill payroll/i);
     expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, state)).toMatch(/threw Rowan off balance into the ditch|left him hurt/i);
+  });
+
+  it('keeps the payroll confession gated until the pouch is found and ties aid callbacks to this run', () => {
+    let state = fresh();
+    state = act(state, 'helpImmediately');
+    state = act(state, 'letRowanExplain');
+    state.run!.sceneId = 'confrontationReveal';
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, state)).not.toMatch(/payroll|partner fled|failed theft/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, state)).not.toMatch(/bandage on his arm/i);
+    expect(options(state).map((choice) => choice.id)).not.toContain('followPartnerTracks');
+    const withPouch = act(reachPouch(), 'keepPouchForWarden');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, withPouch)).toMatch(/admits he and a partner tried to divert the mill payroll/i);
+    expect(options(withPouch).map((choice) => choice.id)).toContain('followPartnerTracks');
+    expect(THE_MAN_IN_THE_DITCH.scenes.roadsideDiscovery.text).toMatch(/brief shower|ground is soft|orchard trees/i);
+    expect(THE_MAN_IN_THE_DITCH.scenes.firstEvidence.text).toMatch(/gap in the orchard trees/i);
   });
 
   it('supports a wrong accusation that causes distrust but advances toward a safe outcome', () => {
@@ -296,6 +311,7 @@ describe('The Man in the Ditch', () => {
       const run = state.run!;
       const authorizedReveal = run.flags.includes('confrontedStory')
         || ['confrontationReveal', 'farmerEvidenceEnding', 'walkAwayAfterReveal'].includes(run.sceneId)
+        || (run.flags.includes('pouchRecovered') && run.sceneId === 'resolutionChoice')
         || (run.flags.includes('pouchRecovered') && ['wardenResolution', 'wardenRewardEnding'].includes(run.sceneId));
       if (!authorizedReveal) expect(sceneText(THE_MAN_IN_THE_DITCH.scenes[run.sceneId], state), `${run.sceneId} does not leak hidden truth`).not.toMatch(hiddenTruth);
     }

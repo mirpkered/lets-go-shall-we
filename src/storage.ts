@@ -1,6 +1,7 @@
 import type { SaveData } from './types';
 import { getScenario } from './scenarios';
 import { pickRunRandomSelections } from './engine';
+import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
 export const EMPTY_SAVE: SaveData = { version: 1, bank: [], character: null, run: null };
@@ -64,6 +65,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       }
     }
     parsed.mostRecentScenarioId ??= null;
+    parsed.recentScenarioIds = [...new Set(Array.isArray(parsed.recentScenarioIds) ? parsed.recentScenarioIds.filter((id): id is string => typeof id === 'string') : parsed.run?.qaMode ? [] : parsed.mostRecentScenarioId ? [parsed.mostRecentScenarioId] : [])].slice(0, RECENT_SCENARIO_WINDOW);
     return parsed;
   } catch {
     return structuredClone(EMPTY_SAVE);

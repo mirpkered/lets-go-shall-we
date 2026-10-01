@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { isQaMode, selectScenario } from './scenarioSelection';
 import { SCENARIOS } from './scenarios';
 import { findScenarioGraphProblems } from './scenarioGraph';
-import { startAdventure } from './engine';
+import { failCharacter, finishSuccess, startAdventure } from './engine';
 import { newCharacter } from './engine';
 import type { SaveData } from './types';
 import { ITEMS } from './items';
@@ -23,6 +23,44 @@ describe('player scenario selection and QA mode', () => {
 
   it('still selects the only eligible scenario when there is just one', () => {
     expect(selectScenario([SCENARIOS[0]], SCENARIOS[0].id, () => 0)?.id).toBe(SCENARIOS[0].id);
+  });
+
+  it('excludes the five most recently completed adventures, then releases the oldest', () => {
+    const scenarios = SCENARIOS.slice(0, 7);
+    const ids = scenarios.slice(0, 5).map((scenario) => scenario.id);
+    expect(selectScenario(scenarios, ids, () => 0)?.id).toBe(scenarios[5].id);
+    const afterOneMoreEnding = [scenarios[5].id, ...ids.slice(0, 4)];
+    expect(selectScenario(scenarios, afterOneMoreEnding, () => 0)?.id).toBe(ids[4]);
+  });
+
+  it('gracefully shrinks the exclusion window when the available pool is small', () => {
+    expect(selectScenario(SCENARIOS.slice(0, 2), SCENARIOS.slice(0, 5).map((scenario) => scenario.id), () => 0)?.id).toBe(SCENARIOS[1].id);
+  });
+
+  it('prevents the observed Cold Storage and All Aboard repeat patterns', () => {
+    const coldStorage = SCENARIOS.find((scenario) => scenario.id === 'cold-storage')!;
+    const allAboard = SCENARIOS.find((scenario) => scenario.id === 'last-stop')!;
+    expect(coldStorage).toBeDefined();
+    expect(allAboard).toBeDefined();
+    const coldStorageRecentlyPlayed = [coldStorage.id, ...SCENARIOS.filter((entry) => entry.id !== coldStorage.id).slice(0, 3).map((entry) => entry.id)];
+    const allAboardRecentlyPlayed = [allAboard.id, ...SCENARIOS.filter((entry) => entry.id !== allAboard.id).slice(0, 2).map((entry) => entry.id)];
+    for (const random of [() => 0, () => 0.5, () => 0.999]) {
+      expect(selectScenario(SCENARIOS, coldStorageRecentlyPlayed, random)?.id).not.toBe(coldStorage.id);
+      expect(selectScenario(SCENARIOS, allAboardRecentlyPlayed, random)?.id).not.toBe(allAboard.id);
+    }
+  });
+
+  it('records finished and abandoned normal adventures, but not QA runs', () => {
+    const base: SaveData = { version: 1, bank: [], character: newCharacter(), run: null };
+    const abandoned = failCharacter(startAdventure(base, SCENARIOS[0]));
+    expect(abandoned.recentScenarioIds).toEqual([SCENARIOS[0].id]);
+    let completed = startAdventure(abandoned, SCENARIOS[1]);
+    completed.run!.status = 'success';
+    completed = finishSuccess(completed, null);
+    expect(completed.recentScenarioIds).toEqual([SCENARIOS[1].id, SCENARIOS[0].id]);
+    const qa = startAdventure(base, SCENARIOS[2]);
+    qa.run!.qaMode = true;
+    expect(failCharacter(qa).recentScenarioIds).toBeUndefined();
   });
 
   it('starts either QA-selected scenario directly through the same run initializer', () => {

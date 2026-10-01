@@ -30,6 +30,8 @@ describe('No Vacancy', () => {
   });
 
   it('lets a fresh broke character succeed by allocating the room and sheltering upstairs', () => {
+    expect(NO_VACANCY.scenes.keeperAccount.text).toMatch(/upstairs.*safe for now/i);
+    expect(NO_VACANCY.scenes.guestAccounts.text).toMatch(/rescue crew he expects.*no crew/i);
     let state = pick(fresh(), 'askAda');
     state = pick(state, 'giveUpRoom');
     state = pick(state, 'roomForFamily');
@@ -38,6 +40,7 @@ describe('No Vacancy', () => {
     expect(state.run?.sceneId).toBe('costlySuccessEnding');
     expect(state.character?.money).toBe(0);
     expect(sceneText(NO_VACANCY.scenes.costlySuccessEnding, state)).toContain('Lena and her child get the only dry room');
+    expect(NO_VACANCY.scenes.roofCrisis.text).toMatch(/bottom stair.*upstairs room.*still dry/i);
   });
 
   it('supports a different success route by repairing the window before allocating shelter', () => {
@@ -122,7 +125,7 @@ describe('No Vacancy', () => {
     expect(state.run?.elapsedMinutes).toBe(4);
     state.run!.elapsedMinutes = 46;
     expect(timeStatus(NO_VACANCY, 46).phase?.id).toBe('critical');
-    expect(sceneText(NO_VACANCY.scenes.roofCrisis, { ...state, run: { ...state.run!, sceneId: 'roofCrisis' } })).toContain('yard is now a moving sheet of water');
+    expect(sceneText(NO_VACANCY.scenes.roofCrisis, { ...state, run: { ...state.run!, sceneId: 'roofCrisis' } })).toContain('yard is a moving sheet of water');
     expect(NO_VACANCY.scenes.guestAccounts.choices.find((choice) => choice.id === 'checkValeClaim')?.timeCost).toBeGreaterThan(0);
     expect(NO_VACANCY.scenes.houseInspection.choices.find((choice) => choice.id === 'repairByHand')?.timeCost).toBe(12);
     expect(NO_VACANCY.scenes.houseInspection.choices.find((choice) => choice.id === 'repairWithGear')?.timeCost).toBe(5);

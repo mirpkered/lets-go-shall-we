@@ -155,6 +155,19 @@ describe('The Road Below', () => {
     expect(THE_ROAD_BELOW.scenes.hazardAssessment.text).toContain('storm-drain culvert');
   });
 
+  it('uses visible above-water evidence and makes the rescue about water and access, not a pinned body', () => {
+    expect(THE_ROAD_BELOW.scenes.lowCulvert.text).toMatch(/above the waterline.*mud smear/i);
+    expect(THE_ROAD_BELOW.scenes.lowCulvert.text).not.toMatch(/boot scuffs/i);
+    expect(THE_ROAD_BELOW.scenes.lowCulvert.choices.find((choice) => choice.id === 'crawlFromOutletToMain')?.label).toMatch(/mud smear/i);
+    expect(THE_ROAD_BELOW.scenes.trappedWorker.text).toMatch(/raised stone shelf.*fallen beam blocks the low passage.*has not fallen on him/i);
+    expect(THE_ROAD_BELOW.scenes.trappedWorker.text).toMatch(/current below the shelf is already too strong to cross safely/i);
+    expect(THE_ROAD_BELOW.scenes.bracePlan.text).toMatch(/low outlet.*water away.*packed with silt/i);
+    expect(THE_ROAD_BELOW.scenes.bracedWorker.text).toMatch(/water level has dropped.*shelf edge/i);
+    for (const id of ['trappedWorker', 'bracePlan', 'braceFailed', 'bracedWorker', 'rescueFailure', 'sideAngleAttempt', 'finalRescueFailure']) {
+      expect(THE_ROAD_BELOW.scenes[id].text).not.toMatch(/pinned beneath|free his leg|lift the slab/i);
+    }
+  });
+
   it('offers every acquired item visibly and prevents duplicate unique rewards', () => {
     for (const scene of Object.values(THE_ROAD_BELOW.scenes)) {
       for (const choice of scene.choices) {
@@ -181,7 +194,7 @@ describe('The Road Below', () => {
   it('foreshadows a lethal extraction failure before allowing death', () => {
     let state = reachDirectRescue();
     state.run!.health = 2;
-    expect(THE_ROAD_BELOW.scenes.trappedWorker.text).toMatch(/beam overhead is bowed|beam above you is bending/i);
+    expect(THE_ROAD_BELOW.scenes.trappedWorker.text).toMatch(/current below the shelf is already too strong|water now covers the lower shelf/i);
     state = act(state, 'pullNeriFreeNow', 0.99);
     expect(state.run?.status).toBe('death');
     expect(state.run?.health).toBe(0);

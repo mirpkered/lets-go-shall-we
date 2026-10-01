@@ -2,9 +2,9 @@ import type { Choice, Scenario } from '../types';
 
 const ENTRY_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'bridgewrightHammer', 'brassCandlestick', 'steelWedge'];
 const GRATE_TOOLS = ['ratCatchersHook', 'pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'steelWedge'];
-const BRACE_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'bridgewrightHammer', 'steelWedge', 'ironRopeClamp'];
+const BRACE_TOOLS = ['ratCatchersHook', 'drainageHook', 'pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'steelWedge'];
 const LIGHT_GEAR = ['minerHeadlamp', 'roadmansLantern'];
-const WORK_GEAR = [...ENTRY_TOOLS, 'heavyLeatherGloves', 'travelRope', 'ironRopeClamp', 'compactBlockAndTackle'];
+const WORK_GEAR = ['heavyLeatherGloves', 'travelRope', 'ironRopeClamp', 'weatherproofCloak'];
 
 function grateChoice(withTool: boolean): Choice {
   return {
@@ -30,8 +30,8 @@ function grateChoice(withTool: boolean): Choice {
 function braceChoice(withTool: boolean): Choice {
   return {
     id: withTool ? 'braceWithGear' : 'braceWithLooseTimber',
-    label: withTool ? 'Brace the beam with your carried gear' : 'Set a brace from loose timber',
-    hint: withTool ? 'A lever, clamp, or wedge can hold the beam while Neri moves.' : 'Possible without equipment, but the fit will be rough and take longer.',
+    label: withTool ? 'Clear the side drain with your tool' : 'Scoop silt from the side drain',
+    hint: withTool ? 'A hook or narrow tool can draw packed silt away from the raised outlet.' : 'The outlet is reachable, but the rising flow makes the work slower.',
     requirements: withTool ? { anyItems: BRACE_TOOLS } : { notItems: BRACE_TOOLS },
     timeCost: withTool ? 5 : 9,
     chance: {
@@ -40,9 +40,9 @@ function braceChoice(withTool: boolean): Choice {
       bonusProbability: withTool ? 0.08 : undefined,
       successNext: 'bracedWorker',
       failureNext: 'braceFailed',
-      successMessage: 'The timber settles into a firm angle. Neri has room to move without the beam rolling.',
-      failureMessage: 'The prop skews under the load. You pull clear as grit and water spill from the joint.',
-      successEffects: { setFlags: ['chamberBraced'] },
+      successMessage: 'The packed silt comes free. Water drains through the side outlet, lowering the current across Neri’s shelf.',
+      failureMessage: 'The silt shifts, but the current surges back before the outlet clears. You retreat with scraped hands.',
+      successEffects: { setFlags: ['drainCleared'] },
       failureEffects: { health: withTool ? -1 : -2, setFlags: ['chamberShifted'] },
     },
   };
@@ -203,10 +203,10 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     lowCulvert: {
       id: 'lowCulvert', title: 'Under the Lower Road', tone: 'warning',
-      text: 'The outlet opens into a low, stone-lined drain. It predates the road surface above and carries rainwater toward the creek. Your knees are in a shallow flow. Fresh boot scuffs continue inward; the lower access avoided the loose bank, but it is wet and cramped.',
-      textVariants: [{ requirements: { minElapsedMinutes: 22 }, text: 'The old drain is filling from the creekward end. Water is ankle-deep and pushing silt ahead of it. The boot scuffs continue inward; returning now is possible, but crossing the main channel later may not be.' }],
+      text: 'The outlet opens into a low, stone-lined drain. It predates the road and carries rainwater toward the creek. You kneel in shallow flow. Above the waterline, a fresh mud smear marks the raised stone ledge and ends deeper in; the lower access avoided the loose bank, but it is wet and cramped.',
+      textVariants: [{ requirements: { minElapsedMinutes: 22 }, text: 'The old drain is filling from the creekward end. Water is ankle-deep and pushes silt ahead of it. The mud smear remains on the raised ledge above the flow; returning is possible, but crossing the main channel later may not be.' }],
       choices: [
-        { id: 'crawlFromOutletToMain', label: 'Follow the boot scuffs into the main channel', timeCost: 4, next: 'mainChannel', effects: { setFlags: ['foundAlternateRoute'] } },
+        { id: 'crawlFromOutletToMain', label: 'Follow the mud smear along the ledge', timeCost: 4, next: 'mainChannel', effects: { setFlags: ['foundAlternateRoute'] } },
         { id: 'guideLineFromOutlet', label: 'Secure a guide line before going farther', hint: 'A carried rope or clamp makes retreat easier if water rises.', requirements: { anyItems: ['travelRope', 'ironRopeClamp', 'compactBlockAndTackle'] }, timeCost: 3, next: 'mainChannel', effects: { setFlags: ['guideLineSecured'] } },
         { id: 'turnBackFromLowDrain', label: 'Return to the open air', effects: { historyFlags: ['left_collapsed_road'] }, next: 'personLeftEnding' },
       ],
@@ -236,11 +236,11 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     mainChannel: {
       id: 'mainChannel', title: 'Water in the Main Run', tone: 'warning',
-      text: 'The main channel bends beneath the road. Fresh scuffs cross the silt, and two knocks answer from farther in. Water trickles along the wall. The stone arch is intact for now, though fine dirt falls when a cart crosses above.',
+      text: 'The main channel bends beneath the road. A fresh mud smear continues along the raised ledge, and two knocks answer from farther in. Water trickles along the wall. The stone arch is intact for now, though fine dirt falls when a cart crosses above.',
       textVariants: [
         { requirements: { minElapsedMinutes: 22 }, text: 'The main channel is taking on water. The arch sheds grit with every cart overhead, and a side run remains open where the wall has cracked. The tapping is farther in; the direct arch is becoming harder to reach.' },
         { requirements: { minElapsedMinutes: 34 }, text: 'Water now pushes through the main run and the stone arch flexes under traffic. A narrow side channel remains passable, but the direct route toward the tapping is partly blocked. The road above may not hold another loaded cart.' },
-        { requirements: { flags: ['guideLineSecured'] }, text: 'Your guide line trails back toward the lower outlet. The main channel bends ahead, where boot scuffs cross the silt and two knocks answer from beyond the arch.' },
+        { requirements: { flags: ['guideLineSecured'] }, text: 'Your guide line trails back toward the lower outlet. The main channel bends ahead; the mud smear follows the raised ledge, and two knocks answer from beyond the arch.' },
       ],
       choices: [
         { id: 'followArchEarly', label: 'Follow the tapping through the stone arch', hint: 'The arch is passable now; dirt is already falling from it.', requirements: { maxElapsedMinutes: 21 }, timeCost: 3, effects: { setFlags: ['risked_collapse_for_rescue'] }, next: 'trappedWorker' },
@@ -259,47 +259,47 @@ export const THE_ROAD_BELOW: Scenario = {
       ],
     },
     trappedWorker: {
-      id: 'trappedWorker', title: 'Neri Beneath the Beam', tone: 'danger',
-      text: 'A road surveyor named Neri is pinned beneath a fallen timber and a slab of stone. He is conscious, with one leg trapped; he can breathe and answer, but cannot pull himself free. Water runs toward his boots. The beam overhead is bowed, and the road still carries traffic.',
+      id: 'trappedWorker', title: 'Neri on the High Shelf', tone: 'danger',
+      text: 'Beyond the arch, a road surveyor named Neri stands on a raised stone shelf. A fallen beam blocks the low passage between you; it has not fallen on him. His ankle is hurt, and the creek-fed current below the shelf is already too strong to cross safely. Water is rising toward his feet. A narrow side drain may lower it, but the road above still carries traffic.',
       textVariants: [
-        { requirements: { historyFlags: ['rescued_trapped_traveler'] }, text: 'Neri is pinned beneath a bowed beam and stone slab. You have helped someone through a collapse before; he is conscious, but the rising water and creaking road leave little room for a careless pull.' },
-        { requirements: { minElapsedMinutes: 34 }, text: 'Neri is conscious beneath the slab, but water is now around his boots and the beam above you is bending. He asks you not to yank his trapped leg. You can brace first, try a fast lift, or withdraw for the crew.' },
+        { requirements: { historyFlags: ['rescued_trapped_traveler'] }, text: 'Neri stands on the raised shelf beyond the fallen beam. You have helped someone through a collapse before; here the immediate danger is water closing the gap between you, not a weight on Neri. His ankle is hurt, and the road above keeps shaking loose grit.' },
+        { requirements: { minElapsedMinutes: 34 }, text: 'Water now covers the lower shelf stones and is rising around Neri’s boots. The beam still blocks the low passage, but it has not struck him. He asks you not to cross the current blindly. The side drain, a guided crossing, or the road crew remain possible.' },
       ],
       choices: [
-        { id: 'pullNeriFreeNow', label: 'Lift the slab and free him now', hint: 'Fast, but the beam is bowed and the slab may roll.', timeCost: 5, chance: { probability: 0.48, bonusItems: WORK_GEAR, bonusProbability: 0.2, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'Neri slides clear as the slab settles into the silt.', failureMessage: 'The slab rolls and the beam drops a handspan. You are struck, but Neri is still conscious.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler', 'risked_collapse_for_rescue'] }, failureEffects: { health: -3, setFlags: ['chamberShifted', 'rescueAttemptFailed'] } } },
-        { id: 'braceBeforeFreeing', label: 'Brace the beam before moving him', hint: 'Slower, but it may keep the slab from rolling onto Neri.', timeCost: 2, next: 'bracePlan' },
-        { id: 'leaveToGetCrew', label: 'Leave Neri and fetch the road crew', hint: 'Help may bring a winch, but the passage will keep taking water.', timeCost: 16, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
+        { id: 'pullNeriFreeNow', label: 'Guide Neri across the flooded gap', hint: 'The current is swift and the shelf is slick; a fall could injure you both.', timeCost: 5, chance: { probability: 0.48, bonusItems: WORK_GEAR, bonusProbability: 0.2, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'You find a steady foothold and guide Neri across to your side.', failureMessage: 'The current sweeps you back against the wall. You are bruised, and Neri remains on the shelf.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler', 'risked_collapse_for_rescue'] }, failureEffects: { health: -3, setFlags: ['chamberShifted', 'rescueAttemptFailed'] } } },
+        { id: 'braceBeforeFreeing', label: 'Find a way to lower the water first', hint: 'Neri points out a side drain partly packed with silt.', timeCost: 2, next: 'bracePlan' },
+        { id: 'leaveToGetCrew', label: 'Leave Neri and fetch the road crew', hint: 'They can close the road and bring a supported line; water will keep rising.', timeCost: 16, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'retreatFromNeri', label: 'Retreat and mark the road as closed', effects: { setFlags: ['roadWarned'], historyFlags: ['protected_road_users', 'abandoned_trapped_person'] }, next: 'personLeftEnding' },
       ],
     },
     bracePlan: {
-      id: 'bracePlan', title: 'A Support Before the Lift', tone: 'warning',
-      text: 'Neri points out a sound stone shelf where a prop might take the beam’s weight. Setting it carefully costs several minutes, and water is gathering in the channel. A rushed brace could make the load shift instead of holding it.',
-      choices: [braceChoice(true), braceChoice(false), { id: 'stopBracingAndPull', label: 'Abandon the brace and try a quick lift', timeCost: 1, next: 'rescueFailure', effects: { health: -1, setFlags: ['chamberShifted'] } }],
+      id: 'bracePlan', title: 'The Side Drain', tone: 'warning',
+      text: 'From your side of the fallen beam, Neri points to a low outlet beside the arch. It should carry water away from the shelf, but its mouth is packed with silt. Clearing it will take time in the current; if it fails, the water may rise before the crew can return.',
+      choices: [braceChoice(true), braceChoice(false), { id: 'stopBracingAndPull', label: 'Try the flooded crossing now', hint: 'The current has not eased; a slip could injure you.', timeCost: 1, next: 'rescueFailure', effects: { health: -1, setFlags: ['chamberShifted'] } }],
     },
     braceFailed: {
-      id: 'braceFailed', title: 'The Prop Slips', tone: 'danger',
-      text: 'The prop twists under the beam and strikes your shoulder. Neri is still pinned; your attempt has not freed him. The shifting support and rising water make another attempt more dangerous, but the side run and outside crew remain options.',
+      id: 'braceFailed', title: 'The Current Pushes Back', tone: 'danger',
+      text: 'The silt shifts but the drain mouth remains blocked. The current shoves you against the stone and scrapes your shoulder. Neri is still on the shelf; the water has risen another few inches. You can try a different approach or fetch the road crew.',
       choices: [
-        { id: 'tryLiftAfterBraceFailure', label: 'Lift while the beam is briefly settled', timeCost: 3, chance: { probability: 0.42, bonusItems: ['travelRope', 'compactBlockAndTackle'], bonusProbability: 0.18, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'You pull the slab just far enough for Neri to slide clear.', failureMessage: 'The load shifts again; you retreat before the beam drops.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler', 'risked_collapse_for_rescue'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
+        { id: 'tryLiftAfterBraceFailure', label: 'Try to clear the outlet from the ledge', timeCost: 3, chance: { probability: 0.42, bonusItems: ['ratCatchersHook', 'drainageHook'], bonusProbability: 0.18, successNext: 'bracedWorker', failureNext: 'rescueFailure', successMessage: 'You work the packed silt loose and water begins to drain.', failureMessage: 'The runoff surges and forces you back from the outlet.', successEffects: { setFlags: ['drainCleared'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
         { id: 'getCrewAfterFailedBrace', label: 'Withdraw and bring the road crew', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'leaveAfterFailedBrace', label: 'Retreat to firm ground', effects: { historyFlags: ['abandoned_trapped_person'] }, next: 'personLeftEnding' },
       ],
     },
     bracedWorker: {
-      id: 'bracedWorker', title: 'Room to Move', tone: 'warning',
-      text: 'The beam is resting on the brace rather than Neri’s shoulder. He can help with his hands but should not stand until the stone is clear. The brace is sound for the moment; runoff continues to gather at the low end.',
-      textVariants: [{ requirements: { flags: ['foundSideChannel'] }, text: 'From the side channel, you wedged a prop beneath the beam where the stone shelf is firm. It rests off Neri’s shoulder, giving you room to work; runoff continues to gather at the low end.' }],
+      id: 'bracedWorker', title: 'Water Falling', tone: 'warning',
+      text: 'The side drain is open and the water level has dropped below the shelf edge. Neri can now step across, but his ankle is weak and the stones are slick. A rope makes a useful handline; without one, you can guide him slowly from the ledge.',
+      textVariants: [{ requirements: { flags: ['foundSideChannel'] }, text: 'From the side channel, you cleared the silted outlet. Water drains away from the shelf, leaving Neri a narrow route across; his ankle is weak, and the stones remain slick.' }],
       choices: [
-        { id: 'extractWithRope', label: 'Rig the travel rope around the slab', hint: 'A rope or pulley lets you pull from beyond the beam.', requirements: { anyItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 4, chance: { probability: 0.88, bonusItems: ['ironRopeClamp', 'heavyLeatherGloves'], bonusProbability: 0.08, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'The line holds. The slab rises and Neri works his leg free.', failureMessage: 'The line slips against wet stone. You let it go before the brace moves.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -1, setFlags: ['chamberShifted'] } } },
-        { id: 'liftTogetherAfterBrace', label: 'Lift with Neri on your count', hint: 'No special gear needed; the brace buys a safer window.', timeCost: 6, chance: { probability: 0.74, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.1, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'Neri pushes as you lift; his trapped leg clears the stone.', failureMessage: 'The stone shifts before his leg is clear. The brace catches it, but the passage jolts.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
+        { id: 'extractWithRope', label: 'Set a rope handline across the gap', hint: 'A line gives Neri a steady guide over the slick stones.', requirements: { anyItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 4, chance: { probability: 0.88, bonusItems: ['ironRopeClamp', 'heavyLeatherGloves'], bonusProbability: 0.08, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'The handline holds and Neri crosses one careful step at a time.', failureMessage: 'The line slips against wet stone. You both retreat before the current catches you.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -1, setFlags: ['chamberShifted'] } } },
+        { id: 'liftTogetherAfterBrace', label: 'Guide Neri across one step at a time', hint: 'No special gear needed; the lower water makes the crossing possible.', timeCost: 6, chance: { probability: 0.74, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.1, successNext: 'rescuedNeri', failureNext: 'rescueFailure', successMessage: 'You steady Neri as he crosses the slick stones.', failureMessage: 'His injured ankle slips. You both retreat before the current catches you.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
         { id: 'waitForCrewAtBrace', label: 'Keep the brace and wait for help', timeCost: 8, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'leaveNeriBraced', label: 'Withdraw while the support still holds', effects: { historyFlags: ['abandoned_trapped_person'] }, next: 'personLeftEnding' },
       ],
     },
     rescueFailure: {
-      id: 'rescueFailure', title: 'The Load Settles Again', tone: 'danger',
-      text: 'Neri is still pinned. A jolt from the road above shakes grit loose, and the failed lift has made the slab harder to grip. Water now reaches the edge of the stone shelf. Repeating the same pull would be a poor choice; help or a safer angle remains possible.',
+      id: 'rescueFailure', title: 'Driven Back by Water', tone: 'danger',
+      text: 'The current drives you back against the wall. Neri is still on the shelf, but the water now covers the lowest stones and the first route is no longer safe. The side drain or the road crew offer different ways forward; repeating the same crossing would be a poor choice.',
       choices: [
         { id: 'repositionAfterFailedLift', label: 'Move to a safer angle for one more attempt', timeCost: 4, next: 'sideAngleAttempt', effects: { setFlags: ['foundSideChannel'] } },
         { id: 'goForCrewAfterFailure', label: 'Retreat and fetch the road crew', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
@@ -307,17 +307,17 @@ export const THE_ROAD_BELOW: Scenario = {
       ],
     },
     sideAngleAttempt: {
-      id: 'sideAngleAttempt', title: 'A Different Purchase', tone: 'danger',
-      text: 'From the side run you can pull along the stone shelf instead of lifting straight up. The beam still moves when the road takes weight, and Neri warns that this is the last safe angle before water cuts off the footing.',
+      id: 'sideAngleAttempt', title: 'The Upper Ledge', tone: 'danger',
+      text: 'You reach a narrow upper ledge that passes around the fallen beam. From here you can lower a line to Neri’s shelf, but the wet stone shifts beneath your feet and water is nearly level with his boots.',
       choices: [
-        { id: 'pullFromSideWithLine', label: 'Use a rope or pulley from the side shelf', requirements: { anyItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 3, chance: { probability: 0.72, bonusItems: ['ironRopeClamp', 'heavyLeatherGloves'], bonusProbability: 0.12, successNext: 'rescuedNeri', failureNext: 'finalRescueFailure', successMessage: 'The side pull lifts the slab enough for Neri to work free.', failureMessage: 'The line slips in the runoff. You let go before the beam can roll.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
-        { id: 'pullFromSideByHand', label: 'Pull together from the stone shelf', requirements: { notItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 5, chance: { probability: 0.52, bonusItems: ['heavyLeatherGloves', 'steelWedge'], bonusProbability: 0.14, successNext: 'rescuedNeri', failureNext: 'finalRescueFailure', successMessage: 'Neri pushes as you pull from the side; the slab clears his leg.', failureMessage: 'The beam shifts and your footing gives. You back away without being caught.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler', 'risked_collapse_for_rescue'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
+        { id: 'pullFromSideWithLine', label: 'Lower a rope handline to Neri', requirements: { anyItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 3, chance: { probability: 0.72, bonusItems: ['ironRopeClamp', 'heavyLeatherGloves'], bonusProbability: 0.12, successNext: 'rescuedNeri', failureNext: 'finalRescueFailure', successMessage: 'Neri grips the line and reaches the upper ledge.', failureMessage: 'The line slips in the runoff. You secure yourself before trying again.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
+        { id: 'pullFromSideByHand', label: 'Reach down and steady Neri', requirements: { notItems: ['travelRope', 'compactBlockAndTackle'] }, timeCost: 5, chance: { probability: 0.52, bonusItems: ['heavyLeatherGloves', 'steelWedge'], bonusProbability: 0.14, successNext: 'rescuedNeri', failureNext: 'finalRescueFailure', successMessage: 'You steady Neri as he climbs to the upper ledge.', failureMessage: 'Your grip slips on the wet stone and you both back away.', successEffects: { setFlags: ['personFreed'], historyFlags: ['rescued_trapped_traveler', 'risked_collapse_for_rescue'] }, failureEffects: { health: -2, setFlags: ['chamberShifted'] } } },
         { id: 'callCrewFromSideAttempt', label: 'Give up the pull and fetch the crew', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
       ],
     },
     finalRescueFailure: {
       id: 'finalRescueFailure', title: 'No Safe Grip Remains', tone: 'danger',
-      text: 'The second angle fails, and the water has reached the stone shelf. Neri is conscious but the passage is no longer safe to work in. You can still lead the road crew back, but another unassisted pull could bring the beam down.',
+      text: 'The second approach fails, and water now covers Neri’s shelf. He is conscious, but you can no longer reach him safely from here. You can still lead the road crew back with a supported line; any more unassisted crossing risks being swept into the deeper channel.',
       choices: [
         { id: 'getCrewAfterLastFailure', label: 'Get the crew and winch', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'withdrawAfterLastFailure', label: 'Leave the culvert and mark the road', effects: { setFlags: ['roadWarned'], historyFlags: ['protected_road_users', 'abandoned_trapped_person'] }, next: 'personLeftEnding' },
@@ -325,8 +325,8 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     rescuedNeri: {
       id: 'rescuedNeri', title: 'Back on Firm Stone', tone: 'warning',
-      text: 'Neri is free and can put weight on his leg, though he needs your shoulder. The route back is still open. Above, the road edge remains cracked and the cloth warning is visible only if you placed it. You can secure the road before leaving or get Neri to safety now.',
-      textVariants: [{ requirements: { flags: ['roadBraced', 'roadWarned'] }, text: 'Neri is free and leaning on your shoulder. Your brace still holds the lip and the road warning is visible above. The crew can secure the site when you reach them; for now, the route out remains passable.' }],
+      text: 'Neri has crossed to your side and can put weight on his leg, though he needs your shoulder. The route back is still open. Above, the road edge remains cracked and the cloth warning is visible only if you placed it. You can secure the road before leaving or get Neri to safety now.',
+      textVariants: [{ requirements: { flags: ['roadBraced', 'roadWarned'] }, text: 'Neri has reached your side and leans on your shoulder. Your brace still holds the lip and the road warning is visible above. The crew can secure the site when you reach them; for now, the route out remains passable.' }],
       choices: [
         { id: 'secureRoadWithGear', label: 'Secure the edge with your tool or rope', hint: 'A wedge, tool, clamp, or line can hold the warning barrier in place.', requirements: { anyItems: [...ENTRY_TOOLS, 'travelRope', 'ironRopeClamp'] }, timeCost: 7, next: 'cleanRescueRewards', effects: { setFlags: ['roadSecured', 'roadWarned'], historyFlags: ['stabilized_road_collapse', 'protected_road_users'] } },
         { id: 'markRoadAfterRescue', label: 'Mark the road and guide Neri to cover', timeCost: 9, next: 'costlyRescueRewards', effects: { setFlags: ['roadWarned'], historyFlags: ['protected_road_users'] } },
@@ -345,10 +345,10 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     crewArrival: {
       id: 'crewArrival', title: 'Winch at the Opening', tone: 'warning',
-      text: 'The crew closes the road and lowers a supported line through the most stable access. Neri answers from below. The winch does the heavy lifting; the rescue still takes patience as the crew frees his leg and brings him into open air.',
+      text: 'The crew closes the road and lowers a supported line to the raised shelf through the stable side access. Neri answers from below. The winch gives him a handhold and helps the crew bring him up the wet slope into open air; no one tries to shift the fallen beam.',
       textVariants: [
         { requirements: { flags: ['winchReady'] }, text: 'The cart brings the hand winch ahead of the crew. With traffic stopped, they lower a supported line through the stable access and bring Neri up without asking you to enter the failing culvert.' },
-        { requirements: { minElapsedMinutes: 48 }, text: 'The crew closes the road and lowers a supported line. Water has partly filled the drain, but Neri answers from an air pocket and the winch brings him out slowly.' },
+        { requirements: { minElapsedMinutes: 48 }, text: 'The crew closes the road and lowers a supported line. Water has partly filled the drain, but Neri answers from the raised shelf and the winch helps him climb out slowly.' },
       ],
       choices: [
         { id: 'helpCrewSecureRoad', label: 'Help brace the road after the rescue', timeCost: 7, next: 'cleanRescueRewards', effects: { setFlags: ['roadSecured', 'roadWarned'], historyFlags: ['rescued_trapped_traveler', 'stabilized_road_collapse', 'protected_road_users'] } },

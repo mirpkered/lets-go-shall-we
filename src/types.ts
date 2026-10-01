@@ -53,6 +53,7 @@ export interface SaveData {
   character: Character | null;
   run: RunState | null;
   mostRecentScenarioId?: string | null;
+  recentScenarioIds?: string[];
   pendingGlobalCompletions?: string[];
 }
 

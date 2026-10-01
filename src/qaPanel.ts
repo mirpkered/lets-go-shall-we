@@ -21,6 +21,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     inventory: run?.inventory ?? [], flags: run?.flags ?? [], money: character?.money ?? null,
     health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank, bankCount: state.bank.length, bankCapacity: BANK_CAPACITY,
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
+    recentScenarioIds: state.recentScenarioIds ?? [],
     elapsedMinutes: run?.elapsedMinutes ?? 0,
     timePhase: timing?.phase?.label ?? null,
     nextTimeThreshold: timing?.nextThreshold ?? null,

@@ -10,19 +10,19 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
   subtitle: 'An injured stranger, a plausible story, and evidence that refuses to agree.',
   startScene: 'roadsideDiscovery',
   timePhases: [
-    { id: 'stable', label: 'Stable', atMinutes: 0 },
-    { id: 'worsening', label: 'Worsening', atMinutes: 8 },
-    { id: 'dangerous', label: 'Dangerous', atMinutes: 20 },
-    { id: 'critical', label: 'Critical', atMinutes: 38 },
-    { id: 'aftermath', label: 'Aftermath', atMinutes: 55 },
+    { id: 'stable', label: 'Late Afternoon', atMinutes: 0 },
+    { id: 'worsening', label: 'Light Thinning', atMinutes: 8 },
+    { id: 'dangerous', label: 'Dusk', atMinutes: 20 },
+    { id: 'critical', label: 'After Dark', atMinutes: 38 },
+    { id: 'aftermath', label: 'Night', atMinutes: 55 },
   ],
   scenes: {
     roadsideDiscovery: {
       id: 'roadsideDiscovery', title: 'A Voice Below the Road', tone: 'warning',
-      text: 'A man lies in the shallow ditch beside the mile road, one sleeve dark with blood. He is awake, bruised, and breathing hard, but not shouting. “Robbed,” he says. “Two men. They took my purse and dragged me off the road.” There are wagon ruts nearby, a smear on the grass, and enough fading light to see the road clearly—for now.',
+      text: 'Late afternoon, after a brief shower, a man lies in the shallow ditch beside the mile road, one sleeve dark with blood. The rain has eased, but the ground is soft and the wagon ruts hold muddy water. He is awake, bruised, and breathing hard. “Robbed,” he says. “Two men. They took my purse and dragged me off the road.” The ruts run toward a gap beneath the orchard trees. Cloud keeps the light flat; for now, you can still read the ground.',
       textVariants: [{ requirements: { historyFlags: ['helped_injured_stranger'] }, text: 'You remember the weight of an injured stranger before you know his name. This man is awake in the ditch, bruised, and bleeding through one sleeve. “Robbed,” he says. “Two men. They took my purse and dragged me off the road.” Wagon ruts cross the grass; the light is already thinning.' }],
       choices: [
-        { id: 'helpImmediately', label: 'Give him immediate aid', hint: 'You may steady him, but the road evidence will have less of your attention.', timeCost: 5, next: 'aidBeforeQuestions', effects: { setFlags: ['helpedFirst', 'manStabilized'], historyFlags: ['helped_injured_stranger'] } },
+        { id: 'helpImmediately', label: 'Give him immediate aid', hint: 'You may steady him, but the road evidence will have less of your attention.', timeCost: 5, next: 'aidBeforeQuestions', effects: { setFlags: ['helpedFirst', 'manStabilized', 'helpedRowanDirectly'], historyFlags: ['helped_injured_stranger'] } },
         { id: 'askWhatHappened', label: 'Ask what happened before moving him', hint: 'A few questions may preserve details, but he is still bleeding.', timeCost: 3, next: 'firstAccount', effects: { setFlags: ['questionedBeforeAid', 'investigated_before_helping'], historyFlags: ['investigated_before_helping'], knowledge: ['The injured man says two attackers took his purse and pulled him from the road.'] } },
         { id: 'inspectRoadside', label: 'Read the ground around the ditch', hint: 'The ruts and blood are visible now; a close search will take longer.', timeCost: 4, next: 'firstEvidence', effects: { setFlags: ['investigatedBeforeAid', 'investigated_before_helping'], historyFlags: ['investigated_before_helping'] } },
         { id: 'leaveImmediately', label: 'Leave him and continue down the road', hint: 'You can go. The man cannot follow you in his condition.', timeCost: 1, next: 'walkAwayEnding', effects: { historyFlags: ['left_injured_man_behind'] } },
@@ -47,20 +47,20 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
         { requirements: { minElapsedMinutes: 8 }, text: 'Rowan’s account is still plausible: two men, a stolen purse, a blow from behind. His voice is less steady than before, and blood has seeped past his sleeve.' },
       ],
       choices: [
-        { id: 'treatAfterQuestions', label: 'Bandage him before asking more', timeCost: 7, next: 'aidAfterQuestions', effects: { setFlags: ['manStabilized', 'helpedAfterQuestions'], historyFlags: ['helped_injured_stranger'] } },
+        { id: 'treatAfterQuestions', label: 'Bandage him before asking more', timeCost: 7, next: 'aidAfterQuestions', effects: { setFlags: ['manStabilized', 'helpedAfterQuestions', 'helpedRowanDirectly'], historyFlags: ['helped_injured_stranger'] } },
         { id: 'searchTracksAfterQuestions', label: 'Inspect the ruts and footprints', hint: 'This delays treatment; the blood loss is visible.', timeCost: 6, next: 'evidenceAfterQuestions', effects: { setFlags: ['evidenceSearched', 'investigatedBeforeAid'] } },
         { id: 'fetchHelpBeforeQuestions', label: 'Go to the farm for help', hint: 'The walk there and back will take time; Rowan may worsen before you return.', timeCost: 18, next: 'helpReturns', effects: { setFlags: ['helpSummoned'], historyFlags: ['sought_help_for_injured_stranger'] } },
       ],
     },
     firstEvidence: {
       id: 'firstEvidence', title: 'Ruts, Blood, and One Clean Patch', tone: 'warning',
-      text: 'The wagon ruts leave the road, then turn back onto it. A blood smear begins at the ditch, but the crushed grass suggests someone stood beside Rowan before he fell. One set of boot prints goes toward the trees; another is hard to separate from the wheel marks. It could be an ambush, an argument beside a wagon, or a fall while climbing out of the ditch. Rowan watches you work.',
+      text: 'The wagon ruts leave the road toward a visible gap in the orchard trees, then turn back onto it. A blood smear begins at the ditch, but the crushed grass suggests someone stood beside Rowan before he fell. One set of boot prints goes toward the trees; another is hard to separate from the wheel marks. It could be an ambush, an argument beside a wagon, or a fall. Rowan watches you work.',
       textVariants: [
         { requirements: { minElapsedMinutes: 20 }, text: 'Rain has blurred the small prints, though the deep wagon ruts remain. The blood smear still begins at the ditch. Rowan’s sleeve is wetter now; the scene is giving you fewer answers as he loses strength.' },
         { requirements: { minElapsedMinutes: 8 }, text: 'The ruts are plain, but the fine heel marks are already softening in damp dust. The blood starts at the ditch, not the road. Rowan is still watching you, jaw tight against the pain.' },
       ],
       choices: [
-        { id: 'treatAfterSearch', label: 'Stop searching and bandage Rowan', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation'], historyFlags: ['helped_injured_stranger'] } },
+        { id: 'treatAfterSearch', label: 'Stop searching and bandage Rowan', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation', 'helpedRowanDirectly'], historyFlags: ['helped_injured_stranger'] } },
         { id: 'followBootprints', label: 'Follow the clearer prints toward the trees', hint: 'The light is fading and Rowan remains untreated.', timeCost: 9, next: 'treeLineEvidence', effects: { setFlags: ['followedTracks', 'investigatedBeforeAid'] } },
         { id: 'inspectWagonRuts', label: 'Trace the wagon ruts to their turnoff', timeCost: 6, next: 'wagonTurnoff', effects: { setFlags: ['foundWagonTurnoff', 'investigatedBeforeAid'] } },
         { id: 'searchBeyondTheDitch', label: 'Search beyond the first clear marks', hint: 'A longer search may reveal more, while Rowan waits untreated.', timeCost: 5, next: 'evidenceAfterInvestigation', effects: { setFlags: ['evidenceSearched', 'investigatedBeforeAid'] } },
@@ -93,7 +93,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
         { requirements: { minElapsedMinutes: 8 }, text: 'Two sets of prints overlap by the ruts, but the finer edges are softening in rain. A patch beside the wheel looks swept. Rowan’s breathing has turned shallow while you searched.' },
       ],
       choices: [
-        { id: 'bandageAtEvidence', label: 'Treat Rowan now', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation'], historyFlags: ['helped_injured_stranger'] } },
+        { id: 'bandageAtEvidence', label: 'Treat Rowan now', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation', 'helpedRowanDirectly'], historyFlags: ['helped_injured_stranger'] } },
         { id: 'inspectTurnoffFromEvidence', label: 'Follow the ruts to their turnoff', timeCost: 6, next: 'wagonTurnoff', effects: { setFlags: ['foundWagonTurnoff'] } },
         { id: 'confrontFromPrints', label: 'Ask Rowan to explain the second trail', hint: 'He may take an accusation badly, especially while hurt.', timeCost: 3, next: 'contradictionWithSuspicion', effects: { setFlags: ['bootContradictionNoticed', 'confrontedStory'], historyFlags: ['confronted_false_robbery_story'] } },
       ],
@@ -110,7 +110,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
     },
     evidenceAfterAid: {
       id: 'evidenceAfterAid', title: 'The Road Keeps Its Marks', tone: 'warning',
-      text: 'The blood begins at the ditch, but the shoe prints do not show a struggle. A leather strap lies under the hedge, cut cleanly rather than torn. There is a shallow wheel rut leading toward the orchard lane. Rowan says nothing while you turn the strap over.',
+      text: 'The blood begins at the ditch, but the shoe prints do not show a struggle. A leather strap lies under the hedge, cut cleanly rather than torn. The shallow rut leads to the gap under the orchard trees you saw from the road. Rowan says nothing while you turn the strap over.',
       textVariants: [
         { requirements: { minElapsedMinutes: 20 }, text: 'The rain has softened the prints, though the cut strap and orchard rut remain. Rowan is stable but pale. Whatever happened, you have missed the finer details.' },
         { requirements: { minElapsedMinutes: 8 }, text: 'The blood begins at the ditch, but there are no scuff marks from a struggle. A leather strap lies under the hedge, cut cleanly rather than torn. Rain begins to blur the shoe prints.' },
@@ -129,7 +129,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
         { requirements: { minElapsedMinutes: 8 }, text: 'Rain has softened the print edges, but a cut leather strap remains in a thorn. The pouch is gone. You cannot tell whether its owner fled or returned to the wagon.' },
       ],
       choices: [
-        { id: 'treatFromEvidence', label: 'Stop and treat Rowan', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation'], historyFlags: ['helped_injured_stranger'] } },
+        { id: 'treatFromEvidence', label: 'Stop and treat Rowan', timeCost: 7, next: 'aidAfterInvestigation', effects: { setFlags: ['manStabilized', 'helpedAfterInvestigation', 'helpedRowanDirectly'], historyFlags: ['helped_injured_stranger'] } },
         { id: 'inspectTurnoff', label: 'Follow the wagon ruts', timeCost: 6, next: 'wagonTurnoff', effects: { setFlags: ['foundWagonTurnoff'] } },
         { id: 'askAboutStrap', label: 'Show Rowan the cut strap', timeCost: 3, next: 'contradictionWithSuspicion', effects: { setFlags: ['bootContradictionNoticed', 'confrontedStory'], historyFlags: ['confronted_false_robbery_story'] } },
       ],
@@ -174,7 +174,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
     },
     wagonTurnoff: {
       id: 'wagonTurnoff', title: 'The Orchard Lane', tone: 'danger',
-      text: 'The wagon ruts leave the road and end behind an orchard shed. A broken harness buckle lies under the wheel. The buckle is bent from strain, not cut. There are two sets of boot prints here, one matching Rowan’s muddy heel. A small canvas pouch is wedged beneath the axle.',
+      text: 'The wagon ruts leave the road through the gap in the orchard trees and end behind a shed. A broken harness buckle lies under the wheel. The buckle is bent from strain, not cut. There are two sets of boot prints here, one matching Rowan’s muddy heel. A small canvas pouch is wedged beneath the axle.',
       textVariants: [
         { requirements: { minElapsedMinutes: 20 }, text: 'The rain has filled the ruts. You still find a bent harness buckle and a canvas pouch under the axle, but the boot prints are gone. Rowan is alone by the road unless you have already sought help.' },
         { requirements: { anyItems: HAND_TOOLS }, text: 'Your carried tool lets you lift the bent harness buckle without cutting the leather. The damage came from strain, not a blade. Two sets of prints—one like Rowan’s—lead to a canvas pouch beneath the axle.' },
@@ -227,21 +227,25 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
     },
     confrontationReveal: {
       id: 'confrontationReveal', title: 'The Part He Left Out', tone: 'danger',
-      text: 'Rowan looks from the cut strap to the wagon marks. His story changes: he and another man tried to divert the mill payroll wagon. The harness snapped under load and threw Rowan off balance into the ditch; his partner ran with the pouch and left him hurt. Rowan was injured in the failed theft, not by two strangers robbing him. The man with the money may still be nearby.',
-      textVariants: [{ requirements: { historyFlags: ['helped_injured_stranger'] }, text: 'Rowan recognizes the bandage on his arm. He stops denying the wagon and admits he and a partner tried to divert the mill payroll. The harness broke; the partner fled with the pouch and left him hurt. Your aid came before the truth, and the injury is no less real for it.' }],
+      text: 'Rowan looks from the cut strap to the wagon marks. His account shifts: he was near the wagon, but says the strap and pouch are not his. Without the pouch or a witness, you cannot tell whether pain has confused his account, whether he is withholding something, or whether the other man acted alone.',
+      textVariants: [
+        { requirements: { flags: ['pouchRecovered', 'helpedRowanDirectly'] }, text: 'With the pay list and pouch in view, Rowan stops denying the wagon. He admits he and a partner tried to divert the mill payroll. The harness broke under load and threw him into the ditch; his partner fled with the pouch and left him hurt. You bandaged him before knowing this, and the injury is no less real for it.' },
+        { requirements: { flags: ['pouchRecovered'] }, text: 'With the pay list and pouch in view, Rowan stops denying the wagon. He admits he and a partner tried to divert the mill payroll. The harness broke under load and threw him into the ditch; his partner fled with the pouch and left him hurt. The injury is real, though his first account was not.' },
+      ],
       choices: [
         { id: 'keepHelpingAfterReveal', label: 'Keep helping Rowan despite the theft', hint: 'He is still hurt; help does not excuse what happened.', timeCost: 6, next: 'resolutionChoice', effects: { setFlags: ['protectedManAfterReveal'], historyFlags: ['protected_man_despite_suspicion'] } },
         { id: 'takeEvidenceToWarden', label: 'Bring Rowan and the evidence to the warden', timeCost: 8, next: 'wardenAndRowan', effects: { setFlags: ['helpSummoned', 'evidenceSearched'], historyFlags: ['turned_man_over_to_authorities'] } },
-        { id: 'followPartnerTracks', label: 'Follow the partner’s tracks toward the mill', hint: 'The light is nearly gone; the injured man cannot come with you.', timeCost: 10, next: 'partnerTrail', effects: { setFlags: ['followedPartner'] } },
+        { id: 'followPartnerTracks', label: 'Follow the partner’s tracks toward the mill', hint: 'The pay list and recovered pouch point to someone fleeing with the payroll.', requirements: { flags: ['pouchRecovered'] }, timeCost: 10, next: 'partnerTrail', effects: { setFlags: ['followedPartner'] } },
         { id: 'leaveAfterReveal', label: 'Leave Rowan and the evidence here', timeCost: 1, next: 'walkAwayAfterReveal', effects: { historyFlags: ['left_injured_man_behind'] } },
       ],
     },
     resolutionChoice: {
       id: 'resolutionChoice', title: 'What Help Means Now', tone: 'warning',
-      text: 'The theft is admitted, but Rowan cannot walk unaided. The mill owner is due back along the lane, and the road warden’s post is farther away. The pay pouch can be returned, held as evidence, or left for the owner. There is no way to undo the delay or the choice that came before the truth.',
+      text: 'Rowan cannot walk unaided, and his account still has gaps. The mill owner is due back along the lane; the road warden’s post is farther away. You can get Rowan help or leave him sheltered. Without the pouch, you cannot settle what happened to the wagon or its contents. There is no way to undo the time already spent or the choice that came before the truth.',
+      textVariants: [{ requirements: { flags: ['pouchRecovered'] }, text: 'The pay list and pouch have made Rowan’s part clear: he and a partner tried to divert the mill payroll, and the partner fled. Rowan cannot walk unaided. The owner is due back along the lane, and the warden’s post is farther away; you can return the pouch, hold it as evidence, or focus on Rowan.' }],
       choices: [
         { id: 'escortRowanToFarm', label: 'Escort Rowan to the farm for treatment', hint: 'A rope or splint makes the uneven shoulder safer.', timeCost: 12, next: 'escortSuccess', effects: { historyFlags: ['escorted_injured_man', 'helped_injured_stranger'] } },
-        { id: 'waitForOwner', label: 'Wait for the mill owner with the evidence', timeCost: 8, next: 'ownerArrives', effects: { setFlags: ['awaitedOwner'], historyFlags: ['recovered_stolen_property'] } },
+        { id: 'waitForOwner', label: 'Wait for the mill owner with the pouch', requirements: { flags: ['pouchRecovered'] }, timeCost: 8, next: 'ownerArrives', effects: { setFlags: ['awaitedOwner'], historyFlags: ['recovered_stolen_property'] } },
         { id: 'sendForWarden', label: 'Leave Rowan sheltered and fetch the warden', timeCost: 18, next: 'wardenAndRowan', effects: { setFlags: ['helpSummoned'], historyFlags: ['sought_help_for_injured_stranger', 'turned_man_over_to_authorities'] } },
       ],
     },

@@ -28,6 +28,7 @@ describe('save compatibility', () => {
     expect(state.run?.visitedSceneIds).toEqual(['chapelNave']);
     expect(state.run?.elapsedMinutes).toBe(0);
     expect(state.mostRecentScenarioId).toBeNull();
+    expect(state.recentScenarioIds).toEqual([]);
     expect(state.bank).toEqual(['graveCoin']);
     expect(state.character?.historyFlags).toEqual([]);
   });
@@ -39,6 +40,7 @@ describe('save compatibility', () => {
       version: 1, bank: ['yewCharm'], character,
       run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },
       mostRecentScenarioId: 'broken-bell',
+      recentScenarioIds: ['broken-bell'],
     };
     state.run!.elapsedMinutes = 27;
     const storage = memoryStorage();
@@ -59,12 +61,20 @@ describe('save compatibility', () => {
     expect(loadSave(storage).pendingGlobalCompletions).toEqual(['run-to-retry']);
   });
 
+  it('does not migrate a QA active run into the normal repeat-avoidance history', () => {
+    const character = newCharacter('QA Save');
+    const run = { ...startRun(character, BROKEN_BELL), qaMode: true };
+    const state = loadSave(memoryStorage(JSON.stringify({ version: 1, bank: [], character, run, mostRecentScenarioId: BROKEN_BELL.id })));
+    expect(state.recentScenarioIds).toEqual([]);
+  });
+
   it('preserves the current keepsake-selection view for an unfinished successful run', () => {
     const character = newCharacter('Reward Save');
     const state: SaveData = {
       version: 1, bank: [], character,
       run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true },
       mostRecentScenarioId: BROKEN_BELL.id,
+      recentScenarioIds: [BROKEN_BELL.id],
     };
     const storage = memoryStorage();
     saveGame(state, storage);
