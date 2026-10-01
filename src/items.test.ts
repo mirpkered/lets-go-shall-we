@@ -8,4 +8,10 @@ describe('period-grounded carryable items', () => {
     expect(ITEMS.minerHeadlamp.description).toContain('water-fed burner');
     expect(ITEMS.minerHeadlamp.carryable).toBe(true);
   });
+
+  it('keeps the Joiner’s Folding Rule carryable and accurately described', () => {
+    expect(ITEMS.joinersFoldingRule.name).toBe('Joiner’s Folding Rule');
+    expect(ITEMS.joinersFoldingRule.description).toContain('measuring rule');
+    expect(ITEMS.joinersFoldingRule.carryable).toBe(true);
+  });
 });
