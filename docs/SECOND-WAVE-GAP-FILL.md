@@ -66,3 +66,62 @@ All new stories begin with a fresh traveler and can be understood without prior 
 - Work and trade choices use ordinary terms and do not ask the traveler to perform hazardous specialist tasks.
 - Existing equipment has narrow, practical uses; this batch adds no carryable items.
 - Danger is not added merely to make an adventure feel consequential. Quiet, uncertain, and uneventful outcomes are intentional.
+
+## Classification matrix
+
+This quick index makes the intended pressure legible across the batch. “Risk” describes physical danger, not whether a choice can disappoint someone. Social pressure is how much another person’s expectations weigh on the traveler. Mystery is whether the traveler is asked to resolve uncertain facts. Levels are qualitative: none, low, moderate, or central.
+
+| Adventure | Physical risk | Social pressure | Mystery / uncertainty |
+| --- | --- | --- | --- |
+| The Long Night | Low | Low | None |
+| The Doctor Is Three Miles Away | Low | Moderate | None |
+| When the Baby Comes | Low | Moderate | None |
+| The Red Flag | Low | Low | Mild |
+| The Telegram | None | Low | Mild |
+| The Wrong Letter | None | Low | Mild |
+| The Second Message | None | Moderate | Central |
+| Wire Down | Low | Low | None |
+| The Last Train Message | Low | Low | None |
+| Property Of... | Low | Moderate | Central |
+| To the Magistrate | Low | Moderate | Central |
+| The Warrant | Low | Moderate | Central |
+| What Did You See? *(existing)* | Low | Moderate | Central |
+| The Will | None | Moderate | Central |
+| Home Before Dark | Low | Moderate | Mild |
+| The Visitor | None | Moderate | Mild |
+| The Back Door | Moderate | Moderate | Mild |
+| The Wake | None | Low | None |
+| The Church Supper | None | Low | None |
+| The Old Burial Ground | Low | Moderate | Mild |
+| At the Forge | Moderate | Low | None |
+| The Morning Edition | None | Moderate | Central |
+| Hold Still | Low | Low | None |
+| The Undertaker’s Request | None | Low | None |
+| The Watchmaker | None | Moderate | Mild |
+| Before the Steamer Leaves | Low | Low | None |
+| The Missing Crate | Low | Moderate | Central |
+| Locked Through | Low | Low | None |
+| At the Landing | Low | Low | Mild |
+| First Snow | Low | Low | None |
+| The Thaw | Low | Low | None |
+| Before the Frost | Low | Low | None |
+| New Year’s Eve | None | Low | None |
+| The Traveling Players | Low | Low | None |
+| The Miracle Tonic | Low | Low | Mild |
+| Three Rounds | Low | Low | None |
+| Dance Until Midnight | None | Low | None |
+| The Speaker | None | Low | None |
+| You Must Be the New Man | Low | Low | Mild |
+| That’s Him | Low | Moderate | Mild |
+| We Were Expecting Someone Else | Low | Low | Mild |
+| The Package | Low | Low | Mild |
+| Collection Day | Low | Moderate | Central |
+| Out by Sundown | Moderate | Moderate | Mild |
+| The Mule Is Mine | Low | Moderate | Central |
+| The Sealed Crate | Low | Moderate | Central |
+| Find Her | Moderate | Moderate | Mild |
+| Dear Mary | None | Low | None |
+| The Locket | None | Low | Central |
+| Supper for Two | None | Low | None |
+| The Children’s Court | None | Low | None |
+| Still Waiting | Low | Low | Mild |
