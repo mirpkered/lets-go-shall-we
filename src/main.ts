@@ -60,6 +60,7 @@ function bindQaPanel(): void {
     if (!output) return;
     output.textContent = JSON.stringify({
       classified: audit.classified, total: audit.total, distributions: audit.distributions,
+      historicalReferenceCounts: audit.historicalReferenceCounts,
       similarityWarningCount: audit.similarityWarnings.length, exampleSimilarityWarnings: audit.similarityWarnings.slice(0, 40),
       duplicateStructuralPatternCount: audit.structuralWarnings.length, exampleStructuralWarnings: audit.structuralWarnings.slice(0, 40),
       rows: audit.rows,
