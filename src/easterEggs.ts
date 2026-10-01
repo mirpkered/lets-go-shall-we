@@ -1,4 +1,4 @@
-export type EasterEggContext = 'depot' | 'market' | 'fair' | 'inn' | 'roadside' | 'field' | 'wagon';
+export type EasterEggContext = 'depot' | 'market' | 'fair' | 'inn' | 'roadside' | 'field' | 'wagon' | 'newspaper' | 'landing';
 
 export interface EasterEgg {
   id: string;
@@ -19,8 +19,8 @@ export const EASTER_EGGS: EasterEgg[] = [
   { id: 'inland-coconut', label: 'Inland coconut', contexts: ['market', 'fair'], text: 'A seller turns a coconut over in both hands and wonders how it traveled so far inland.' },
   { id: 'empty-field-wheeze', label: 'Wheeze in an empty field', contexts: ['field', 'roadside'], text: 'A faint mechanical wheeze crosses the empty field. The grass stirs, but nothing is there.' },
   { id: 'safer-place', label: 'Artifact kept somewhere safer', contexts: ['market', 'fair'], text: 'An antiquarian declines a curious relic: “It belongs somewhere safer, where it can be kept whole.”' },
-  { id: 'traveler-with-towel', label: 'Traveler with a towel', contexts: ['inn'], text: 'A traveler folds a towel over one arm and says they never leave home without it.' },
-  { id: 'lights-over-field', label: 'Lights over a field', contexts: ['inn', 'market'], text: 'The county paper mentions lights over a field; nearby farmers disagree whether they were only lanterns.' },
+  { id: 'traveler-with-towel', label: 'Traveler with a towel', contexts: ['inn', 'landing'], text: 'A traveler folds a towel over one arm and says they never leave home without it.' },
+  { id: 'lights-over-field', label: 'Lights over a field', contexts: ['inn', 'market', 'newspaper'], text: 'The county paper mentions lights over a field; nearby farmers disagree whether they were only lanterns.' },
   { id: 'bellweather-hollow', label: 'Unlisted place on a sign', contexts: ['roadside'], text: 'A weathered sign names Bellweather Hollow, though no one nearby can place it on a map. It points nowhere you need to go.' },
 ];
 

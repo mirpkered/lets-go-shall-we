@@ -30,6 +30,16 @@ Use only if the active character still has the flag, and keep the response speci
 | `stabilized_road_collapse` | The Road Below; helped brace a road collapse | A later road crew may know the road was stabilized. |
 | `finder_took_watch_from_{{owner}}` | Finders Keepers; kept a named owner’s silver pocket watch | A matching owner/claimant can recognize that exact watch and its provenance. |
 | `saved_wagon_cargo_after_breakdown` | Broken Wheel; protected cargo after a wagon breakdown | A relevant carrier may recall this work if they plausibly heard of it. |
+| `sat_with_a_fevered_boarder` | The Long Night; sat with an ill boarder while help was arranged | A later caregiver may recognize the practical act, not infer medical skill. |
+| `helped_deliver_a_private_telegram` | The Telegram; carried a private message discreetly | A callback may note the delivery without revealing its private contents. |
+| `escorted_a_disputed_debt_claim` | To the Magistrate; accompanied a willing clerk to have both accounts heard | This records a peaceful escort, not a legal judgment or enforcement role. |
+| `shared_a_memory_at_a_wake` | The Wake; offered a modest memory during a neighbor’s wake | A callback belongs in a related remembrance, not as a reputation. |
+| `contributed_to_a_community_supper` | The Church Supper; contributed one coin to the shared meal | A local organizer may recall the contribution without treating it as status. |
+| `worked_a_half_day_at_the_forge` | At the Forge; helped with safe shop tasks | A smith may remember useful labor, not treat the traveler as a trained smith. |
+| `shared_new_year_supper_on_the_road` | New Year’s Eve; shared a road story at an inn supper | A later guest may recall the shared evening only with plausible contact. |
+| `returned_a_found_locket_to_its_owner` | The Locket; returned a modest found keepsake | If the owner is specifically established later, acknowledge this exact return. |
+| `kept_an_unidentified_found_locket` | The Locket; kept an unclaimed locket without learning its owner | Do not invent the owner or imply the traveler knows who lost it. |
+| `shared_supper_with_a_homesick_traveler` | Supper for Two; shared a meal and listened to an immigrant traveler | A callback may recall the meal, not claim a lasting bond absent further play. |
 
 Character-history flags are behavior records, not scores. The lists in source are broader than this short index; search the scenario definitions before adding or using a flag. History is character-specific and does not transfer after death, abandonment, or retirement.
 
