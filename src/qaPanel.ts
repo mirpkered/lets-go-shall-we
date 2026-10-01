@@ -23,6 +23,8 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
     recentScenarioIds: state.recentScenarioIds ?? [],
     elapsedMinutes: run?.elapsedMinutes ?? 0,
+    qualifyingStoryTransitions: run?.qualifyingStoryTransitions ?? 0,
+    qualifiesForTravelerProgression: (run?.qualifyingStoryTransitions ?? 0) > 5,
     timePhase: timing?.phase?.label ?? null,
     nextTimeThreshold: timing?.nextThreshold ?? null,
   };

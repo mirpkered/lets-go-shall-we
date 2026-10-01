@@ -1,6 +1,6 @@
 import type { SaveData } from './types';
 import { getScenario } from './scenarios';
-import { pickRunRandomSelections } from './engine';
+import { countQualifyingStoryTransitions, pickRunRandomSelections } from './engine';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
@@ -32,16 +32,17 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       parsed.run.flags ??= [];
       if (parsed.run.status !== 'active' && parsed.run.completionCountRecorded === undefined) {
+        // Older versions already evaluated endings at the time; never award progression retroactively.
         parsed.run.completionCountRecorded = true;
-        if (!parsed.run.qaMode && parsed.character) {
-          parsed.character.adventuresCompleted = (parsed.character.adventuresCompleted ?? 0) + 1;
-          if (parsed.character.adventuresCompleted === 10 || parsed.character.adventuresCompleted === 20) {
-            parsed.run.completionMilestoneReached = parsed.character.adventuresCompleted;
-          }
-        }
         migrated = true;
       }
       const scenario = getScenario(parsed.run.scenarioId);
+      if (!Number.isFinite(parsed.run.qualifyingStoryTransitions)) {
+        parsed.run.qualifyingStoryTransitions = scenario
+          ? countQualifyingStoryTransitions(scenario, parsed.run.visitedSceneIds)
+          : 0;
+        migrated = true;
+      }
       if (scenario?.saveVersion && (parsed.run.scenarioSaveVersion ?? 0) < scenario.saveVersion) {
         // Earlier versions named Silas in the opening, so an active legacy run
         // has already learned his identity even if it has not visited a new

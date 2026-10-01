@@ -4,13 +4,15 @@ Travelers do not gain levels, experience points, permanent stat upgrades, or acc
 
 ## Completion count
 
-The current traveler’s completed-adventure count increases once when they reach an authored terminal ending. This includes successful, failed, quiet, walk-away, no-reward, NPC-death, and player-death endings. Explicit abandonment, QA/test runs, and closing the browser before an ending do not count. A resumed run counts only when it later reaches an authored ending.
+The traveler’s progression count increases once only when they reach an authored terminal ending after more than five qualifying story transitions. This includes successful, failed, quiet, walk-away, no-reward, NPC-death, and player-death endings; danger or success is not required. An authored ending after zero to five transitions remains a completed story for the global community total, but does not advance this traveler’s carry milestones. Explicit abandonment and QA/test runs count toward neither total, and closing the browser before an ending does not count. A resumed run counts only when it later reaches an authored ending.
 
-The local traveler count is distinct from the optional shared global completion total. A normal authored ending records the local count immediately and idempotently with the run, so reopening an ending cannot count it again. QA endings do not change either count.
+The local traveler progression count is distinct from the shared global authored-completion total. Every normal authored ending still records globally, including an early walk-away, while traveler progression uses the six-transition threshold. Both are idempotent per run; QA endings change neither count.
+
+Qualifying transitions are forward moves into authored story scenes, including endings. Ordinary story scenes count by default. A scene authored solely to continue the same beat across a presentation/no-scroll split can set `countsForProgression: false`. UI panels, inventory views, the Bank, dialogs, and QA controls do not use story transitions and never affect this count. The per-run count is saved and resumes exactly.
 
 ## Carry capacity
 
-| Adventures completed by this traveler | Persistent carry capacity |
+| Qualifying adventures completed by this traveler | Persistent carry capacity |
 | --- | ---: |
 | 0–9 | 1 item |
 | 10–19 | 2 items |
@@ -22,4 +24,4 @@ Fresh travelers must remain able to complete every adventure with one slot or no
 
 ## Saves and legacy travelers
 
-The save retains the legacy `carriedItem` field as an alias for the first slot and stores the canonical loadout in `carriedItems`. Older saves migrate their existing item into a one-item loadout without duplication. If an older save has no traveler completion count, it starts conservatively at zero; the current local save does not provide reliable per-traveler history from which to infer a number. Already-ended legacy saves are marked as counted during migration to prevent repeated increments.
+The save retains the legacy `carriedItem` field as an alias for the first slot and stores the canonical loadout in `carriedItems`. Older saves migrate their existing item into a one-item loadout without duplication. For an older active save, qualifying transitions are reconstructed from the ordered visited scenes, honoring any presentation-only marker; otherwise the count safely defaults to zero. Already-ended legacy saves are marked as evaluated without retroactively changing the traveler count, preventing duplicate or unsupported milestone awards.

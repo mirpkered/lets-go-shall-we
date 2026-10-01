@@ -34,7 +34,15 @@ export function startRun(character: Character, scenario: Scenario, random = Math
   const inventory = [...STARTING_ITEMS];
   inventory.push(...getCarriedItems(character));
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+}
+
+export function countQualifyingStoryTransitions(scenario: Scenario, visitedSceneIds: string[] | undefined): number {
+  if (!Array.isArray(visitedSceneIds) || visitedSceneIds.length < 2) return 0;
+  return visitedSceneIds.slice(1).filter((sceneId) => {
+    const scene = scenario.scenes[sceneId];
+    return !!scene && scene.countsForProgression !== false;
+  }).length;
 }
 
 export function startAdventure(state: SaveData, scenario: Scenario): SaveData {
@@ -149,6 +157,11 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     applyEffects(next, won ? choice.chance.successEffects : choice.chance.failureEffects);
   }
 
+  const destinationScene = destination ? scenario.scenes[destination] : undefined;
+  if (destinationScene && destination !== next.run.sceneId && destinationScene.countsForProgression !== false) {
+    next.run.qualifyingStoryTransitions = Math.max(0, next.run.qualifyingStoryTransitions ?? 0) + 1;
+  }
+
   if (next.run.health <= 0) {
     next.run.status = 'death';
     next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
@@ -198,7 +211,7 @@ function recordAuthoredEnding(state: SaveData): void {
   run.completionCountRecorded = true;
   queueGlobalCompletion(state);
   recordScenarioEnding(state);
-  if (run.qaMode || !state.character) return;
+  if (run.qaMode || !state.character || (run.qualifyingStoryTransitions ?? 0) <= 5) return;
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
     run.completionMilestoneReached = state.character.adventuresCompleted;

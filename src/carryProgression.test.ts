@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { carryCapacity, choose, depositCarried, failCharacter, finishSuccess, getCarriedItems, meets, newCharacter, retireCharacter, setCarriedItems, startRun, withdrawBanked } from './engine';
-import { loadSave, SAVE_KEY } from './storage';
+import { loadSave, SAVE_KEY, saveGame } from './storage';
+import { BROKEN_BELL } from './scenarios/brokenBell';
 import type { SaveData, Scenario } from './types';
 
 const ENDING: Scenario = {
@@ -18,6 +19,22 @@ function save(count = 0, bank: string[] = []): SaveData {
   return { version: 1, bank, character, run: startRun(character, ENDING) };
 }
 
+function completeAfterTransitions(transitions: number, travelerCount = 0, presentationAt: number[] = []): SaveData {
+  const ids = transitions === 0 ? ['quiet'] : ['start', ...Array.from({ length: transitions - 1 }, (_, index) => `beat${index + 1}`), 'quiet'];
+  const scenes: Scenario['scenes'] = {};
+  ids.forEach((id, index) => {
+    const ending = id === 'quiet';
+    scenes[id] = { id, title: id, text: id, choices: ending ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1] }], ...(ending ? { ending: 'success' as const } : {}), ...(presentationAt.includes(index + 1) ? { countsForProgression: false } : {}) };
+  });
+  const scenario: Scenario = { id: 'transition-test', title: 'Transition test', subtitle: '', startScene: ids[0], scenes };
+  const character = newCharacter('Transition traveler');
+  character.adventuresCompleted = travelerCount;
+  let state: SaveData = { version: 1, bank: [], character, run: startRun(character, scenario) };
+  for (let index = 0; index < transitions; index++) state = choose(state, scenario, scenario.scenes[ids[index]].choices[0]);
+  if (transitions === 0) state.run!.status = 'success';
+  return state;
+}
+
 describe('traveler completion and carry milestones', () => {
   it('starts fresh at zero and unlocks only after authored endings at 10 and 20', () => {
     expect(carryCapacity(0)).toBe(1);
@@ -29,17 +46,17 @@ describe('traveler completion and carry milestones', () => {
 
     const ninth = save(8);
     expect(carryCapacity(ninth.character!.adventuresCompleted)).toBe(1);
-    const tenth = choose(ninth, ENDING, ENDING.scenes.start.choices[0]);
+    const tenth = completeAfterTransitions(6, 8);
     expect(tenth.character?.adventuresCompleted).toBe(9);
     expect(tenth.run?.completionMilestoneReached).toBeUndefined();
-    const milestone = choose(save(9), ENDING, ENDING.scenes.start.choices[0]);
+    const milestone = completeAfterTransitions(6, 9);
     expect(milestone.character?.adventuresCompleted).toBe(10);
     expect(milestone.run?.completionMilestoneReached).toBe(10);
     expect(milestone.run?.inventory).toHaveLength(2); // the run began with the old one-slot loadout
     const nextRun = startRun(milestone.character!, ENDING);
     expect(nextRun.inventory).toHaveLength(2);
 
-    const twentieth = choose(save(19), ENDING, ENDING.scenes.start.choices[0]);
+    const twentieth = completeAfterTransitions(6, 19);
     expect(twentieth.character?.adventuresCompleted).toBe(20);
     expect(twentieth.run?.completionMilestoneReached).toBe(20);
     expect(carryCapacity(twentieth.character!.adventuresCompleted)).toBe(3);
@@ -49,8 +66,8 @@ describe('traveler completion and carry milestones', () => {
     const deathScenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'die', label: 'Die', next: 'death' }] } } };
     const died = choose(save(4), deathScenario, deathScenario.scenes.start.choices[0]);
     expect(died.run?.status).toBe('death');
-    expect(died.character?.adventuresCompleted).toBe(5);
-    expect(choose(died, deathScenario, deathScenario.scenes.start.choices[0]).character?.adventuresCompleted).toBe(5);
+    expect(died.character?.adventuresCompleted).toBe(4);
+    expect(choose(died, deathScenario, deathScenario.scenes.start.choices[0]).character?.adventuresCompleted).toBe(4);
     expect(failCharacter(died).character).toBeNull();
     expect(carryCapacity(newCharacter().adventuresCompleted)).toBe(1);
 
@@ -62,12 +79,58 @@ describe('traveler completion and carry milestones', () => {
     expect(retireCharacter(save(20)).character).toBeNull();
   });
 
-  it('counts a quiet ending once and completion remains separate from the global queue', () => {
+  it('awards qualifying progression on a six-transition death but not a five-transition death', () => {
+    for (const transitions of [5, 6]) {
+      const ids = ['start', ...Array.from({ length: transitions - 1 }, (_, index) => `beat${index + 1}`), 'death'];
+      const scenes: Scenario['scenes'] = {};
+      ids.forEach((id, index) => {
+        const isDeath = id === 'death';
+        scenes[id] = { id, title: id, text: id, choices: isDeath ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1], ...(index === ids.length - 2 ? { effects: { health: -10 } } : {}) }], ...(isDeath ? { ending: 'death' as const } : {}) };
+      });
+      const scenario: Scenario = { id: `death-${transitions}`, title: '', subtitle: '', startScene: 'start', scenes };
+      let state = save(9);
+      for (let index = 0; index < transitions; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
+      expect(state.run?.status).toBe('death');
+      expect(state.run?.qualifyingStoryTransitions).toBe(transitions);
+      expect(state.character?.adventuresCompleted).toBe(transitions === 6 ? 10 : 9);
+      expect(state.pendingGlobalCompletions).toEqual([state.run!.runId]);
+      expect(failCharacter(state).character).toBeNull();
+    }
+  });
+
+  it('does not count explicit abandonment after a long run', () => {
+    const state = save();
+    state.run!.qualifyingStoryTransitions = 6;
+    state.pendingGlobalCompletions = undefined;
+    const abandoned = failCharacter(state);
+    expect(abandoned.character).toBeNull();
+    expect(abandoned.pendingGlobalCompletions).toBeUndefined();
+  });
+
+  it('does not count Bank operations or QA endings as story progression', () => {
+    const state = save(10, ['graveCoin']);
+    state.run!.qualifyingStoryTransitions = 5;
+    const deposited = depositCarried(state);
+    expect(deposited.run?.qualifyingStoryTransitions).toBe(5);
+    const withdrawn = withdrawBanked(deposited, 'graveCoin');
+    expect(withdrawn.run?.qualifyingStoryTransitions).toBe(5);
+
+    const qa = completeAfterTransitions(6);
+    qa.run!.qaMode = true;
+    qa.run!.completionCountRecorded = false;
+    qa.character!.adventuresCompleted = 0;
+    qa.pendingGlobalCompletions = undefined;
+    const completed = finishSuccess(qa, null);
+    expect(completed.character?.adventuresCompleted).toBe(0);
+    expect(completed.pendingGlobalCompletions).toBeUndefined();
+  });
+
+  it('keeps an early authored ending global without awarding traveler progression', () => {
     const state = save(0);
     const ended = choose(state, ENDING, ENDING.scenes.start.choices[0]);
-    expect(ended.character?.adventuresCompleted).toBe(1);
+    expect(ended.character?.adventuresCompleted).toBe(0);
     expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
-    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(1);
+    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(0);
   });
 
   it('recognizes carried gear from all slots and consumes only the named item', () => {
@@ -164,8 +227,8 @@ describe('traveler completion and carry milestones', () => {
     old.run!.completionCountRecorded = undefined;
     const memory = new Map([[SAVE_KEY, JSON.stringify(old)]]);
     const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
-    expect(loadSave(storage).character?.adventuresCompleted).toBe(4);
-    expect(loadSave(storage).character?.adventuresCompleted).toBe(4);
+    expect(loadSave(storage).character?.adventuresCompleted).toBe(3);
+    expect(loadSave(storage).character?.adventuresCompleted).toBe(3);
     const qa = save(3);
     qa.run!.status = 'success';
     qa.run!.qaMode = true;
@@ -173,6 +236,56 @@ describe('traveler completion and carry milestones', () => {
     const qaMemory = new Map([[SAVE_KEY, JSON.stringify(qa)]]);
     const qaStorage = { getItem: (key: string) => qaMemory.get(key) ?? null, setItem: (key: string, value: string) => qaMemory.set(key, value) } as unknown as Storage;
     expect(loadSave(qaStorage).character?.adventuresCompleted).toBe(3);
+  });
+
+  it('applies the 0/1/5/6 boundary and excludes presentation-only continuations', () => {
+    for (const count of [0, 1, 5]) {
+      const state = completeAfterTransitions(count);
+      const ended = count === 0 ? finishSuccess(state, null) : state;
+      expect(ended.character?.adventuresCompleted).toBe(0);
+      expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
+    }
+    const six = completeAfterTransitions(6);
+    expect(six.run?.qualifyingStoryTransitions).toBe(6);
+    expect(six.character?.adventuresCompleted).toBe(1);
+    const split = completeAfterTransitions(7, 0, [2]);
+    expect(split.run?.qualifyingStoryTransitions).toBe(6);
+    expect(split.character?.adventuresCompleted).toBe(1);
+  });
+
+  it('preserves four transitions through reload, then qualifies at six exactly once', () => {
+    const ids = ['start', 'one', 'two', 'three', 'four', 'five', 'quiet'];
+    const scenes: Scenario['scenes'] = {};
+    ids.forEach((id, index) => { scenes[id] = { id, title: id, text: '', choices: id === 'quiet' ? [] : [{ id: 'next', label: 'Next', next: ids[index + 1] }], ...(id === 'quiet' ? { ending: 'success' as const } : {}) }; });
+    const scenario: Scenario = { id: 'resume-count-test', title: '', subtitle: '', startScene: 'start', scenes };
+    let state = save();
+    for (let index = 0; index < 4; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
+    saveGame(state, storage);
+    state = loadSave(storage);
+    expect(state.run?.qualifyingStoryTransitions).toBe(4);
+    for (let index = 0; index < 2; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
+    expect(state.run?.qualifyingStoryTransitions).toBe(6);
+    expect(state.character?.adventuresCompleted).toBe(1);
+    expect(choose(state, scenario, scenario.scenes.start.choices[0]).character?.adventuresCompleted).toBe(1);
+  });
+
+  it('migrates active counters from visited scenes and leaves ended legacy progression unchanged', () => {
+    const character = newCharacter('Legacy route');
+    const legacy: SaveData = { version: 1, bank: [], character, run: startRun(character, BROKEN_BELL) };
+    legacy.run!.visitedSceneIds = ['chapelExterior', 'chapelNave', 'priestNotes'];
+    legacy.run!.qualifyingStoryTransitions = undefined;
+    const memory = new Map([[SAVE_KEY, JSON.stringify(legacy)]]);
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
+    expect(loadSave(storage).run?.qualifyingStoryTransitions).toBe(2);
+
+    const ended = save(7);
+    ended.run!.status = 'success';
+    ended.run!.completionCountRecorded = undefined;
+    const endedMemory = new Map([[SAVE_KEY, JSON.stringify(ended)]]);
+    const endedStorage = { getItem: (key: string) => endedMemory.get(key) ?? null, setItem: (key: string, value: string) => endedMemory.set(key, value) } as unknown as Storage;
+    expect(loadSave(endedStorage).character?.adventuresCompleted).toBe(7);
   });
 });
 

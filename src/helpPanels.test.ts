@@ -26,6 +26,7 @@ describe('About and Contact utilities', () => {
     const character = newCharacter();
     const state: SaveData = { version: 1, bank: ['smallKnife'], character, run: startRun(character, COLD_STORAGE) };
     state.run!.elapsedMinutes = 23;
+    state.run!.qualifyingStoryTransitions = 4;
     const before = JSON.stringify(state);
     const markup = renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS));
     expect(markup).toContain('data-open-help="about"');
@@ -33,6 +34,7 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('<strong>Cold Storage</strong>');
     expect(JSON.stringify(state)).toBe(before);
     expect(state.run?.elapsedMinutes).toBe(23);
+    expect(state.run?.qualifyingStoryTransitions).toBe(4);
   });
 
   it('targets the public Mirpworks address with the requested subject and structured body', () => {

@@ -33,7 +33,7 @@ The canonical source lives on `main`. The verified contents of `dist/` are publi
 
 ## Traveler experience through survival
 
-Each living traveler has a separate authored-adventure completion count. Carry capacity is 1 item at 0–9 endings, 2 items at 10–19, and 3 items at 20 or more. This is practical preparation, not levels or permanent account progression; it resets when the traveler dies, is abandoned, or retires. The exact counting definition, milestone timing, and legacy-save behavior are documented in [Traveler Experience Through Survival](docs/TRAVELER-PROGRESSION.md).
+Each living traveler has a separate progression-completion count: an authored ending advances it only after more than five meaningful story transitions. Carry capacity is 1 item at 0–9 qualifying endings, 2 items at 10–19, and 3 items at 20 or more. Early authored endings still count toward the global community total, but not traveler milestones. This is practical preparation, not levels or permanent account progression; it resets when the traveler dies, is abandoned, or retires. The exact counting definition, milestone timing, and legacy-save behavior are documented in [Traveler Experience Through Survival](docs/TRAVELER-PROGRESSION.md).
 
 ## Bank disposal rule
 

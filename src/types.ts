@@ -29,6 +29,8 @@ export interface RunState {
   globalCompletionQueued?: boolean;
   completionCountRecorded?: boolean;
   completionMilestoneReached?: 10 | 20;
+  /** Meaningful forward story transitions completed in this run. */
+  qualifyingStoryTransitions?: number;
   scenarioId: string;
   sceneId: string;
   health: number;
@@ -142,6 +144,8 @@ export interface Scene {
   tone?: 'safe' | 'warning' | 'danger';
   choices: Choice[];
   ending?: 'success' | 'death';
+  /** Defaults to true. Set false for a presentation-only continuation screen. */
+  countsForProgression?: boolean;
 }
 
 export interface Scenario {
