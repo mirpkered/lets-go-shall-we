@@ -73,7 +73,7 @@ The browser sends only a random run UUID to the counter service. A single Cloudf
 
 ## Current limitations
 
-- Ninety-four authored scenarios and one character slot
+- One hundred four authored scenarios and one character slot
 - One carried item slot and item-only banking
 - No sound, installable service worker, save export, or native wrapper yet
 - Random checks use browser randomness and are not seeded or replayable
