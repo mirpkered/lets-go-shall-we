@@ -275,6 +275,52 @@ export function eligibleCarryItems(state: SaveData): string[] {
   return candidates.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
 }
 
+export type RewardDestination = 'carry' | 'bank' | 'decline';
+
+export function newRewardItems(state: SaveData): string[] {
+  const run = state.run;
+  if (!run || run.status !== 'success') return [];
+  const alreadyCarried = new Set(getCarriedItems(state.character));
+  return [...new Set(run.acquiredThisRun)].filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id) && !alreadyCarried.has(id));
+}
+
+/** Opens or safely migrates an older successful run into the persisted per-item reward flow. */
+export function openRewardResolution(state: SaveData): SaveData {
+  const next = structuredClone(state);
+  if (!next.run || next.run.status !== 'success') return next;
+  next.run.rewardSelectionOpen = true;
+  next.run.rewardPendingItems ??= newRewardItems(next);
+  return next;
+}
+
+/** Places exactly one newly earned item. Pending removal makes repeat clicks/reloads idempotent. */
+export function placeReward(state: SaveData, itemId: string, destination: RewardDestination): SaveData {
+  const next = structuredClone(state);
+  const run = next.run;
+  if (!run || run.status !== 'success') return next;
+  run.rewardPendingItems ??= newRewardItems(next);
+  if (!run.rewardPendingItems.includes(itemId) || !run.inventory.includes(itemId) || !ITEMS[itemId]?.carryable) return next;
+
+  if (destination === 'carry') {
+    if (!next.character) return next;
+    const carried = getCarriedItems(next.character);
+    if (carried.length >= carryCapacity(next.character.adventuresCompleted ?? 0)) return next;
+    setCarriedItems(next.character, [...carried, itemId]);
+  } else if (destination === 'bank') {
+    if (next.bank.length >= BANK_CAPACITY || next.bank.includes(itemId)) return next;
+    next.bank.push(itemId);
+  }
+
+  run.rewardPendingItems = run.rewardPendingItems.filter((id) => id !== itemId);
+  return next;
+}
+
+/** Completes reward resolution without exposing general Bank management on the ending screen. */
+export function finishRewardResolution(state: SaveData): SaveData {
+  if (state.run?.status !== 'success' || (state.run.rewardPendingItems?.length ?? 0) > 0) return structuredClone(state);
+  return finishSuccess(state, getCarriedItems(state.character));
+}
+
 export function depositCarried(state: SaveData, replaceBankItemId?: string, carriedItemId?: string): SaveData {
   const next = structuredClone(state);
   const carried = getCarriedItems(next.character);

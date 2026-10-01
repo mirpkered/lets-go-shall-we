@@ -1,5 +1,5 @@
 import './styles.css';
-import { carryCapacity, choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, forceQaEasterEgg, getCarriedItems, meets, newCharacter, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { carryCapacity, choose, depositCarried, discardBankItem, emptyBank, failCharacter, finishRewardResolution, forceQaEasterEgg, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -258,10 +258,13 @@ function renderDeath(): void {
 }
 
 function renderSuccess(): void {
+  if (successRewardsOpen && state.run?.rewardPendingItems === undefined) {
+    state = openRewardResolution(state);
+    persist();
+  }
   const run = state.run!;
   const scenario = activeScenario()!;
   const scene = scenario.scenes[run.sceneId];
-  const eligible = eligibleCarryItems(state);
   const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
   const milestone = run.completionMilestoneReached === 10
     ? '<p class="milestone-note">Ten adventures behind you. You’ve learned to travel better prepared. Carry capacity increased to 2 items.</p>'
@@ -269,26 +272,36 @@ function renderSuccess(): void {
   if (!successRewardsOpen) {
     shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p>${milestone}<p class="traveler-ending-count">${state.character?.adventuresCompleted ?? 0} adventures completed · Carry capacity: ${capacity}</p><button class="primary" id="openRewards">Prepare for the road</button></section>`, 'centered ending-screen');
     document.querySelector('#openRewards')!.addEventListener('click', () => {
+      state = openRewardResolution(state);
       successRewardsOpen = true;
-      if (state.run) {
-        state.run.rewardSelectionOpen = true;
-        state.run.rewardCarrySelection ??= getCarriedItems(state.character).filter((id) => eligible.includes(id)).slice(0, capacity);
-      }
       persist(); render();
     });
     return;
   }
-  const selected = run.rewardCarrySelection ?? [];
-  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Prepare for the next adventure</div><h1>Choose what travels with you</h1><p>Your traveler can carry up to ${capacity} persistent item${capacity === 1 ? '' : 's'}. Select any eligible gear to keep; an unselected reward will not be carried. Nothing already carried is replaced unless you choose a different loadout.</p><div class="reward-box"><p class="carry-selection-count">Selected: ${selected.length}/${capacity}</p>${eligible.length ? eligible.map((id) => `<label class="carry-choice"><input type="checkbox" data-carry="${id}" ${selected.includes(id) ? 'checked' : ''}><span><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></span></label>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="primary" id="confirm-loadout">Confirm loadout</button><button class="text-button" id="manageBank">Manage the Bank</button></div></section>`, 'centered ending-screen');
-  document.querySelectorAll<HTMLInputElement>('[data-carry]').forEach((input) => input.addEventListener('change', () => {
-    if (!state.run) return;
-    const current = state.run.rewardCarrySelection ?? [];
-    if (input.checked && current.length >= capacity) { input.checked = false; return; }
-    state.run.rewardCarrySelection = input.checked ? [...current, input.dataset.carry!] : current.filter((id) => id !== input.dataset.carry);
+  const pending = run.rewardPendingItems ?? [];
+  const carried = getCarriedItems(state.character);
+  const carryOpen = !!state.character && carried.length < capacity;
+  const rewardId = pending[0];
+  const bankAlreadyHasReward = rewardId ? state.bank.includes(rewardId) : false;
+  const bankOpen = state.bank.length < BANK_CAPACITY && !bankAlreadyHasReward;
+  const rewardPanel = rewardId
+    ? `<h1>Keep this for the road?</h1><p><strong>${itemName(rewardId)}</strong><br>${ITEMS[rewardId]?.description ?? 'A newly earned item.'}</p><div class="reward-box"><p class="carry-selection-count">Carried: ${carried.length}/${capacity} · Bank: ${state.bank.length}/${BANK_CAPACITY}</p>${!carryOpen ? '<p class="bank-capacity-note">Your pack is full. No carried item will be replaced.</p>' : ''}${!bankOpen ? `<p class="bank-capacity-note">${bankAlreadyHasReward ? 'This item is already in the Bank.' : 'The Bank is full. No banked item will be replaced.'}</p>` : ''}<button class="primary" id="carry-reward"${carryOpen ? '' : ' disabled'}>Carry this item</button><button id="bank-reward"${bankOpen ? '' : ' disabled'}>Store this item in the Bank</button><button class="text-button" id="decline-reward">Leave this item behind</button></div>`
+    : `<h1>Ready for the road</h1><p>No new persistent item remains to place. Your existing carried gear and Bank contents are unchanged.</p><button class="primary" id="finish-rewards">Complete Adventure</button>`;
+  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Prepare for the next adventure</div>${rewardPanel}</section>`, 'centered ending-screen');
+  const chooseDestination = (destination: 'carry' | 'bank' | 'decline') => {
+    if (!rewardId) return;
+    state = placeReward(state, rewardId, destination);
     persist(); render();
-  }));
-  document.querySelector('#confirm-loadout')!.addEventListener('click', () => { state = finishSuccess(state, state.run?.rewardCarrySelection ?? []); persist(); screen = 'home'; render(); });
-  document.querySelector('#manageBank')!.addEventListener('click', () => { screen = 'bank'; render(); });
+  };
+  document.querySelector('#carry-reward')?.addEventListener('click', () => chooseDestination('carry'));
+  document.querySelector('#bank-reward')?.addEventListener('click', () => chooseDestination('bank'));
+  document.querySelector('#decline-reward')?.addEventListener('click', () => chooseDestination('decline'));
+  document.querySelector('#finish-rewards')?.addEventListener('click', () => {
+    state = finishRewardResolution(state);
+    if (state.run) return;
+    successRewardsOpen = false;
+    persist(); screen = 'home'; render();
+  });
 }
 
 function renderBank(): void {

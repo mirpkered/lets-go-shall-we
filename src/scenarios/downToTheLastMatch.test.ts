@@ -61,6 +61,32 @@ function explore(initial: SaveData): { states: SaveData[]; scenes: Set<string> }
 }
 
 describe('Down to the Last Match', () => {
+  it('keeps the final stove-fuel choice communal and makes only the blanket personal', () => {
+    const cabin = DOWN_TO_THE_LAST_MATCH.scenes.sharedShelter;
+    expect(cabin.text).toMatch(/spare blanket lies folded on the bench/i);
+    expect(cabin.text).toMatch(/one-room cabin as a whole, not separate sides/i);
+    const critical = DOWN_TO_THE_LAST_MATCH.scenes.criticalCold;
+    const burn = critical.choices.find((choice) => choice.id === 'shareLastWood')!;
+    const hold = critical.choices.find((choice) => choice.id === 'keepLastWood')!;
+    expect(burn.label).toBe('Burn the remaining wood for the room');
+    expect(burn.hint).toMatch(/one stove warms everyone/i);
+    expect(hold.label).toBe('Hold the remaining fuel for later');
+    expect(hold.hint).toMatch(/cabin stays colder/i);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.sharedLastWood.text).toMatch(/single stove.*one-room cabin/i);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.keptLastWood.text).toMatch(/remaining dry wood in reserve/i);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.keptLastWood.choices.map((choice) => choice.label)).toEqual([
+      'Keep the spare blanket for yourself', 'Give Eli the spare blanket',
+    ]);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.matchConserved.text).toContain('dry fuel aside');
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold.textVariants?.filter((entry) => entry.requirements?.flags?.includes('savedKindling')).every((entry) => /dry fuel you set aside/i.test(entry.text))).toBe(true);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.embersHeld.textVariants?.[0].text).toContain('dry fuel you set aside');
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding.textVariants?.map((entry) => entry.text).join(' ')).not.toMatch(/last bundle|your side of the stove|fuel were divided/i);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding.textVariants?.map((entry) => entry.text).join(' ')).toMatch(/spare blanket/);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.fuelTrip.text).toMatch(/dry branches/i);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.woodRecovered.title).toBe('Dry Fuel from the Shed');
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.woodRecovered.choices.find((choice) => choice.id === 'saveRecoveredWood')?.label).toBe('Set aside the dry branches for later');
+  });
+
   it('is registered for random selection and QA direct launch only', () => {
     expect(SCENARIOS).toContain(DOWN_TO_THE_LAST_MATCH);
     const afterDitch = selectScenario(SCENARIOS, 'the-man-in-the-ditch', () => 0.999);

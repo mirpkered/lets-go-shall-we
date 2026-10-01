@@ -69,11 +69,11 @@ describe('fictional adventure clock', () => {
     state.run!.elapsedMinutes = 22;
     expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'salvageGrain')?.requirements?.maxElapsedMinutes).toBe(22);
     expect(meets(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'salvageGrain')?.requirements, state)).toBe(true);
-    expect(sceneText(AWW_RATS.scenes.grainDecision, state)).toContain('try to save some');
+    expect(sceneText(AWW_RATS.scenes.grainDecision, state)).toContain('a few sacks still look clean');
     state.run!.elapsedMinutes = 23;
     expect(meets(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'salvageGrain')?.requirements, state)).toBe(false);
     expect(sceneText(AWW_RATS.scenes.grainDecision, state)).toContain('spread from the sill');
-    expect(sceneText(AWW_RATS.scenes.grainDecision, state)).not.toContain('try to save some');
+    expect(sceneText(AWW_RATS.scenes.grainDecision, state)).not.toContain('a few sacks still look clean');
     state.run!.elapsedMinutes = 35;
     const choices = AWW_RATS.scenes.grainDecision.choices.filter((choice) => meets(choice.requirements, state));
     expect(choices.map((choice) => choice.id)).toEqual(['destroyGrain', 'isolateGrain']);

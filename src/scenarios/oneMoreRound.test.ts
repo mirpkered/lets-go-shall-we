@@ -28,6 +28,15 @@ function options(state: SaveData): Choice[] {
 }
 
 describe('One More Round', () => {
+  it('reminds the player plainly of the broken-window dispute without changing the evidence chain', () => {
+    expect(ONE_MORE_ROUND.scenes.disputeEscalates.text).toContain('The old dispute over Rafe’s broken-window bill makes Sella quicker to suspect him.');
+    expect(ONE_MORE_ROUND.scenes.disputeEscalates.text).not.toContain('old window debt');
+    expect(ONE_MORE_ROUND.scenes.rafeAccount.text).toContain('did break Sella’s front window last winter');
+    expect(ONE_MORE_ROUND.scenes.disputeEscalates.choices.map((choice) => choice.id)).toContain('searchFromDispute');
+    expect(ONE_MORE_ROUND.scenes.purseFound.text).toContain('that is a different matter');
+    expect(ONE_MORE_ROUND.scenes.purseFound.choices.map((choice) => choice.id)).toContain('returnPurseNoDebt');
+  });
+
   it('registers for repeat-avoiding random play and direct QA launch', () => {
     expect(SCENARIOS).toContain(ONE_MORE_ROUND);
     expect(selectScenario(SCENARIOS, ONE_MORE_ROUND.id, () => 0)).not.toBe(ONE_MORE_ROUND);

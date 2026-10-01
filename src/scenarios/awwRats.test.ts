@@ -50,7 +50,7 @@ describe('Aww, Rats!!', () => {
     expect(state.run?.inventory).toContain('heavyLeatherGloves');
   });
 
-  it('supports controlled smoke with purchased equipment as a third distinct route', () => {
+  it('supports controlled smoke using ordinary farm-owned equipment as a third distinct route', () => {
     let state = act(fresh(), 'askAdvance');
     state = act(state, 'headToStore');
     state = act(state, 'buyBellows');
@@ -61,7 +61,7 @@ describe('Aww, Rats!!', () => {
     state = act(state, 'takeGloves');
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('costlyEnding');
-    expect(state.character?.money).toBe(1);
+    expect(state.character?.money).toBe(4);
   });
 
   it('makes grain preservation a genuine risk with understandable costs', () => {
@@ -78,15 +78,25 @@ describe('Aww, Rats!!', () => {
     expect(lost.character?.money).toBe(2);
   });
 
-  it('uses character money for optional supplies while preserving a free route', () => {
+  it('lends ordinary farm supplies without charge while preserving legitimate money paths', () => {
     let state = act(fresh(), 'askAdvance');
     state = act(state, 'headToStore');
     expect(state.character?.money).toBe(4);
     state = act(state, 'buyTraps');
-    expect(state.character?.money).toBe(1);
+    expect(state.character?.money).toBe(4);
     expect(state.run?.inventory).toContain('ratBait');
     expect(state.run?.inventory).toContain('wireTraps');
     expect(state.run?.acquiredThisRun).toContain('wireTraps');
+    const supplies = AWW_RATS.scenes.supplyShed.choices.find((choice) => choice.id === 'buyTraps')!;
+    expect(supplies.label).toMatch(/take|borrow/i);
+    expect(supplies.effects?.money ?? 0).toBe(0);
+    expect(supplies.requirements?.minMoney).toBeUndefined();
+    expect(AWW_RATS.scenes.supplyShed.text).not.toMatch(/farmer lays out|three choices|your choices/i);
+    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.label).toBe('Discard the fouled grain');
+    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.hint).toMatch(/grain dust/i);
+    expect(AWW_RATS.scenes.grainDecision.text).not.toMatch(/lays out (the )?(three )?choices/i);
+    expect(AWW_RATS.scenes.grainDecision.textVariants?.some((entry) => /leaves you to decide/i.test(entry.text))).toBe(true);
+    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.effects?.money).toBe(-2);
   });
 
   it('makes carried toolkit useful without making it necessary', () => {

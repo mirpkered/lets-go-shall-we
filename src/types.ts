@@ -45,6 +45,8 @@ export interface RunState {
   status: 'active' | 'success' | 'death';
   rewardSelectionOpen?: boolean;
   rewardCarrySelection?: string[];
+  /** Persistent item rewards not yet explicitly carried, banked, or declined. */
+  rewardPendingItems?: string[];
   message: string | null;
   startedAt: number;
   elapsedMinutes?: number;

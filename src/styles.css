@@ -153,6 +153,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .milestone-note { padding:.75rem; border:1px solid #836935; background:#2b2417; color:#e4d3a9!important; font-size:.9rem; }
 .traveler-ending-count { color:#c3b596!important; font-size:.83rem; }
 .reward-box button:not(.text-button) { width:100%; min-height:4.5rem; padding:.8rem; margin-top:.6rem; border:1px solid #66563a; background:#201c15; color:#ede3cf; text-align:left; cursor:pointer; }
+.reward-box button:disabled { opacity:.55; cursor:not-allowed; }
 .reward-box button strong,.reward-box button small { display:block; }
 .reward-box button small { margin-top:.3rem; color:#8f877a; }
 .subhead { justify-content:flex-start; }

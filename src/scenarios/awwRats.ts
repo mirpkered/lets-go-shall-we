@@ -65,20 +65,20 @@ export const AWW_RATS: Scenario = {
     },
     supplyShed: {
       id: 'supplyShed', title: 'The Farm Store',
-      text: 'The farmer lays out three choices. A shop tin holds bait and two wire traps for three coins. A hand bellows costs the same and can direct damp smoke without bringing a flame into the grain dust. Or the farmer can lend you older traps and oat scraps at no charge; they are less reliable, but usable.',
+      text: 'The farmer shows you the farm’s supplies: sturdy wire traps and bait, older traps with oat scraps, and a hand bellows that can direct damp smoke without bringing flame near the grain dust. He lends you the sturdy traps or bellows for the job; the older traps are less reliable, but usable. The choice of method is yours.',
       choices: [
-        { id: 'buyTraps', label: 'Buy bait and wire traps — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['wireTraps'] }, effects: { money: -3, gainItems: ['ratBait', 'wireTraps'], setFlags: ['boughtRatTraps'] }, next: 'grainDecision' },
-        { id: 'buyBellows', label: 'Buy the smoke bellows — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['smokeBellows'] }, effects: { money: -3, gainItems: ['smokeBellows'], setFlags: ['boughtBellows'] }, next: 'grainDecision' },
+        { id: 'buyTraps', label: 'Take the sturdy baited wire traps', timeCost: 2, requirements: { notItems: ['wireTraps'] }, effects: { gainItems: ['ratBait', 'wireTraps'], setFlags: ['boughtRatTraps'] }, next: 'grainDecision' },
+        { id: 'buyBellows', label: 'Borrow the farm’s hand bellows', timeCost: 2, requirements: { notItems: ['smokeBellows'] }, effects: { gainItems: ['smokeBellows'], setFlags: ['boughtBellows'] }, next: 'grainDecision' },
         { id: 'borrowTraps', label: 'Borrow the old traps and oat scraps', timeCost: 2, requirements: { notItems: ['wireTraps', 'ratBait'] }, effects: { gainItems: ['wireTraps', 'ratBait'], setFlags: ['borrowedRatTraps'] }, next: 'grainDecision' },
         { id: 'skipSupplies', label: 'Use the farm’s ordinary materials', next: 'grainDecision' },
       ],
     },
     grainDecision: {
       id: 'grainDecision', title: 'The Granary Gives Way', tone: 'warning',
-      text: 'A board drops inward. Under the granary, a broad nest connects several tunnels; rats stream between it and the damaged sill. Much of the grain has been fouled. The farmer lays out the choice without pretending there is an easy answer: destroy the worst sacks and lose feed now, try to save some with a real chance of spoiling it all, or isolate the grain while the nest is dealt with.',
-      textVariants: [{ requirements: { minElapsedMinutes: 23 }, text: 'A board drops inward. Under the granary, a broad nest connects several tunnels; rats have spread from the sill into the lower feed bins. The grain that looked salvageable is now fouled through. The farmer lays out the choice without pretending there is an easy answer: discard the damaged stores or isolate what remains while the nest is dealt with.' }],
+      text: 'A board drops inward. Under the granary, a broad nest connects several tunnels; rats stream between it and the damaged sill. Some grain is fouled, while a few sacks still look clean. The farmer explains that hidden spoilage may run deeper and any open route could reinfest saved feed. He leaves the decision to you.',
+      textVariants: [{ requirements: { minElapsedMinutes: 23 }, text: 'A board drops inward. Under the granary, a broad nest connects several tunnels; rats have spread from the sill into the lower feed bins. The grain that looked salvageable is now fouled through. The farmer warns the damaged stores cannot safely be kept, then leaves you to decide what to do next.' }],
       choices: [
-        { id: 'destroyGrain', label: 'Burn no flame: discard the fouled grain', timeCost: 10, hint: 'Certain feed loss, but it removes a major food source.', effects: { money: -2, setFlags: ['grainDestroyed'] }, next: 'grainDiscarded' },
+        { id: 'destroyGrain', label: 'Discard the fouled grain', timeCost: 10, hint: 'Certain feed loss, but it removes food without risking flame near grain dust.', effects: { money: -2, setFlags: ['grainDestroyed'] }, next: 'grainDiscarded' },
         { id: 'salvageGrain', label: 'Try to save the clean-looking sacks', timeCost: 12, hint: 'Some may be sound; the hidden contamination is uncertain.', requirements: { maxElapsedMinutes: 22 }, chance: { probability: 0.55, successNext: 'grainSalvaged', failureNext: 'grainSpoiled', successMessage: 'You separate a useful portion before the spoilage spreads.', failureMessage: 'The damage runs deeper than it looked; the sacks must be discarded.', successEffects: { setFlags: ['grainSaved'] }, failureEffects: { money: -2, setFlags: ['grainDestroyed', 'salvageFailed'] } } },
         { id: 'isolateGrain', label: 'Seal the grain off until the nest is handled', timeCost: 5, hint: 'Preserves the chance of saving it, but risks reinfestation.', effects: { setFlags: ['grainIsolated'] }, next: 'grainIsolated' },
       ],

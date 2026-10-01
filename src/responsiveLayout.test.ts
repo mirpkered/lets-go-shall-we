@@ -64,7 +64,11 @@ describe('global no-scroll layout contract', () => {
   it('gives success prose and reward selection separate phone-sized screens', () => {
     const phoneRules = styles.slice(styles.indexOf('@media (max-width: 559px)'), styles.indexOf('@media (max-width: 370px)'));
     expect(mainSource).toContain('if (!successRewardsOpen)');
-    expect(mainSource).toContain('data-carry=');
+    expect(mainSource).toContain('id="carry-reward"');
+    expect(mainSource).toContain('id="bank-reward"');
+    expect(mainSource).toContain('id="decline-reward"');
+    expect(mainSource).not.toContain('data-carry=');
+    expect(mainSource).not.toContain('Manage the Bank');
     expect(phoneRules).toContain('.ending-screen { height:100vh; height:100dvh;');
     expect(phoneRules).toContain('.reward-screen .reward-box button:not(.text-button) { min-height:3rem;');
   });

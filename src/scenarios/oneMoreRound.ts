@@ -151,7 +151,7 @@ export const ONE_MORE_ROUND: Scenario = {
     },
     disputeEscalates: {
       id: 'disputeEscalates', title: 'The Purse Is Missing', tone: 'warning',
-      text: 'Sella checks the counter and finds her three-silver purse missing. She accuses Rafe, who says he only reached for his coat. Pell was near the table; the bartender was working the register. The old window debt gives everyone a reason to read the same few seconds differently.',
+      text: 'Sella checks the counter and finds her three-silver purse missing. She accuses Rafe, who says he only reached for his coat. Pell was near the table; the bartender was working the register. The old dispute over Rafe’s broken-window bill makes Sella quicker to suspect him.',
       textVariants: [
         { requirements: { minElapsedMinutes: 24 }, text: 'The purse is still missing. Chairs scrape back and two patrons edge toward the door. Sella points at Rafe; Pell is on his feet, unsteady, and the bartender has moved the bottles away. No one has shown a weapon, but there is little time left for a quiet explanation.' },
         { requirements: { minElapsedMinutes: 16 }, text: 'The purse is still missing. Sella’s voice has risen; Rafe stands with his coat in one hand, while Pell sways beside the table. One patron slips out, and the bartender puts the bottles away.' },
