@@ -34,7 +34,7 @@ This is a code-checked summary of the implementation on `main`. For scenario-lev
 
 ## Content substance review snapshot
 
-The first on-demand quality audit reviewed **808 terminal routes across 175 adventures** (2026-10-01). It produced 0 HIGH, 151 MEDIUM, and 426 LOW warning records. Warning categories overlap: 72 obvious-action, 55 procedural, 0 one-wager, 2 agreement, 94 routine-task, 94 performance-feedback, and 260 possible no-visible-payoff notices. LOW/MEDIUM notices intentionally include false positives, particularly short peaceful vignettes and generic but satisfying outcomes; inspect each route rather than treating the totals as defects. The audit is a triage aid, not a score or hard gate.
+The first on-demand quality audit reviewed **809 terminal routes across 175 adventures** (2026-10-01). It produced 0 HIGH, 151 MEDIUM, and 426 LOW warning records. Warning categories overlap: 72 obvious-action, 55 procedural, 0 one-wager, 2 agreement, 94 routine-task, 94 performance-feedback, and 260 possible no-visible-payoff notices. LOW/MEDIUM notices intentionally include false positives, particularly short peaceful vignettes and generic but satisfying outcomes; inspect each route rather than treating the totals as defects. The audit is a triage aid, not a score or hard gate.
 
 ## QA and public/shared services
 
