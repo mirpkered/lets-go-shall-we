@@ -52,7 +52,7 @@ describe('adventure engine', () => {
     const completed = choose(initial, endingScenario, choice);
     expect(completed.run?.status).toBe('success');
     expect(completed.pendingGlobalCompletions).toEqual([initial.run.runId]);
-    expect(completed.character?.adventuresCompleted).toBe(0);
+    expect(completed.character?.adventuresCompleted).toBe(1);
     expect(choose(completed, endingScenario, choice).pendingGlobalCompletions).toEqual(completed.pendingGlobalCompletions);
     const resumedThenAbandoned = failCharacter(JSON.parse(JSON.stringify(initial)) as SaveData);
     expect(resumedThenAbandoned.pendingGlobalCompletions).toBeUndefined();
@@ -298,7 +298,7 @@ describe('adventure engine', () => {
     expect(seenStates.size).toBeGreaterThan(20);
   });
 
-  it('retains one selected carryable reward and strips the run', () => {
+  it('retains the selected carryable reward and strips the run', () => {
     const state = fresh();
     state.run!.status = 'success';
     state.run!.inventory.push('bronzeMaskFragment');

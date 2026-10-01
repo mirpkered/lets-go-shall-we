@@ -4,7 +4,21 @@ import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scena
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
+}
+
+export function getCarriedItems(character: Character | null | undefined): string[] {
+  if (!character) return [];
+  return [...new Set([...(Array.isArray(character.carriedItems) ? character.carriedItems : []), ...(character.carriedItem ? [character.carriedItem] : [])])];
+}
+
+export function setCarriedItems(character: Character, items: string[]): void {
+  character.carriedItems = [...new Set(items)];
+  character.carriedItem = character.carriedItems[0] ?? null;
+}
+
+export function carryCapacity(adventuresCompleted = 0): number {
+  return adventuresCompleted >= 20 ? 3 : adventuresCompleted >= 10 ? 2 : 1;
 }
 
 export function pickRunRandomSelections(scenario: Scenario, random = Math.random): Record<string, string> {
@@ -18,7 +32,7 @@ export function pickRunRandomSelections(scenario: Scenario, random = Math.random
 
 export function startRun(character: Character, scenario: Scenario, random = Math.random): RunState {
   const inventory = [...STARTING_ITEMS];
-  if (character.carriedItem) inventory.push(character.carriedItem);
+  inventory.push(...getCarriedItems(character));
   const randomSelections = pickRunRandomSelections(scenario, random);
   return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
@@ -78,9 +92,15 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.health) run.health = Math.max(0, Math.min(character.maxHealth, run.health + effects.health));
   if (effects.money) character.money = Math.max(0, character.money + effects.money);
   if (effects.loseMoney) character.money = 0;
-  if (effects.loseCarriedItem && character.carriedItem) {
-    run.inventory = without(run.inventory, [character.carriedItem]);
-    character.carriedItem = null;
+  if (effects.loseCarriedItem && getCarriedItems(character).length) {
+    const [lostItem, ...remaining] = getCarriedItems(character);
+    run.inventory = without(run.inventory, [lostItem]);
+    setCarriedItems(character, remaining);
+  }
+  if (effects.loseCarriedItems) {
+    const lostItems = getCarriedItems(character);
+    run.inventory = without(run.inventory, lostItems);
+    setCarriedItems(character, []);
   }
   if (effects.gainItems) {
     run.inventory = addUnique(run.inventory, effects.gainItems);
@@ -88,7 +108,7 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   }
   if (effects.loseItems) {
     run.inventory = without(run.inventory, effects.loseItems);
-    if (character.carriedItem && effects.loseItems.includes(character.carriedItem)) character.carriedItem = null;
+    setCarriedItems(character, getCarriedItems(character).filter((id) => !effects.loseItems!.includes(id)));
   }
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
@@ -133,8 +153,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     next.run.status = 'death';
     next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
     next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
-    queueGlobalCompletion(next);
-    recordScenarioEnding(next);
+    recordAuthoredEnding(next);
     return next;
   }
   if (destination) {
@@ -148,7 +167,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   }
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
-  if (scene?.ending) { queueGlobalCompletion(next); recordScenarioEnding(next); }
+  if (scene?.ending) recordAuthoredEnding(next);
   return next;
 }
 
@@ -173,16 +192,33 @@ function recordScenarioEnding(state: SaveData): void {
   state.recentScenarioIds = [run.scenarioId, ...(state.recentScenarioIds ?? []).filter((id) => id !== run.scenarioId)].slice(0, RECENT_SCENARIO_WINDOW);
 }
 
+function recordAuthoredEnding(state: SaveData): void {
+  const run = state.run;
+  if (!run || run.completionCountRecorded) return;
+  run.completionCountRecorded = true;
+  queueGlobalCompletion(state);
+  recordScenarioEnding(state);
+  if (run.qaMode || !state.character) return;
+  state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
+  if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
+    run.completionMilestoneReached = state.character.adventuresCompleted;
+  }
+}
+
 export function retireCharacter(state: SaveData): SaveData {
   return { ...state, character: null, run: null };
 }
 
-export function finishSuccess(state: SaveData, carriedItem: string | null): SaveData {
+export function finishSuccess(state: SaveData, carriedItems: string | string[] | null): SaveData {
   const next = structuredClone(state);
   if (!next.character) return next;
+  if (next.run?.status === 'success' && !next.run.completionCountRecorded) recordAuthoredEnding(next);
   next.character.health = next.character.maxHealth;
-  next.character.carriedItem = carriedItem;
-  next.character.adventuresCompleted += 1;
+  const requested = Array.isArray(carriedItems) ? carriedItems : carriedItems ? [carriedItems] : [];
+  const eligible = new Set([...eligibleCarryItems(next), ...requested.filter((id) => ITEMS[id]?.carryable)]);
+  const selected = [...new Set(requested.filter((id) => eligible.has(id)))];
+  if (selected.length > carryCapacity(next.character.adventuresCompleted)) return next;
+  setCarriedItems(next.character, selected);
   next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
   recordScenarioEnding(next);
   next.run = null;
@@ -192,33 +228,36 @@ export function finishSuccess(state: SaveData, carriedItem: string | null): Save
 export function eligibleCarryItems(state: SaveData): string[] {
   const run = state.run;
   if (!run) return [];
-  const candidates = [...new Set([...(state.character?.carriedItem ? [state.character.carriedItem] : []), ...run.acquiredThisRun])];
+  const candidates = [...new Set([...getCarriedItems(state.character), ...run.acquiredThisRun])];
   return candidates.filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id));
 }
 
-export function depositCarried(state: SaveData, replaceBankItemId?: string): SaveData {
+export function depositCarried(state: SaveData, replaceBankItemId?: string, carriedItemId?: string): SaveData {
   const next = structuredClone(state);
-  const item = next.character?.carriedItem;
-  if (!item || next.bank.includes(item)) return next;
+  const carried = getCarriedItems(next.character);
+  const item = carriedItemId ?? carried[0];
+  if (!next.character || !item || !carried.includes(item) || next.bank.includes(item)) return next;
   if (next.bank.length > BANK_CAPACITY) return next;
   if (next.bank.length === BANK_CAPACITY) {
     if (!replaceBankItemId) return next;
     const index = next.bank.indexOf(replaceBankItemId);
     if (index < 0) return next;
     next.bank[index] = item;
-    next.character!.carriedItem = replaceBankItemId;
+    setCarriedItems(next.character, carried.filter((id) => id !== item).concat(replaceBankItemId));
     return next;
   }
   next.bank.push(item);
-  next.character!.carriedItem = null;
+  setCarriedItems(next.character, carried.filter((id) => id !== item));
   return next;
 }
 
 export function withdrawBanked(state: SaveData, itemId: string): SaveData {
   const next = structuredClone(state);
-  if (!next.character || next.character.carriedItem || !next.bank.includes(itemId)) return next;
+  if (!next.bank.includes(itemId)) return next;
+  next.character ??= newCharacter();
+  if (getCarriedItems(next.character).length >= carryCapacity(next.character.adventuresCompleted ?? 0)) return structuredClone(state);
   next.bank = next.bank.filter((id) => id !== itemId);
-  next.character.carriedItem = itemId;
+  setCarriedItems(next.character, [...getCarriedItems(next.character), itemId]);
   return next;
 }
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadSave, SAVE_KEY, saveGame } from './storage';
+import { loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import { newCharacter, startRun } from './engine';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import type { SaveData } from './types';
@@ -18,6 +18,24 @@ function memoryStorage(initial: string | null = null): Storage {
 }
 
 describe('save compatibility', () => {
+  it('keeps QA saves separate from the normal traveler and Bank save', () => {
+    const playerCharacter = newCharacter('Player');
+    playerCharacter.adventuresCompleted = 19;
+    const playerSave: SaveData = { version: 1, bank: ['graveCoin'], character: playerCharacter, run: startRun(playerCharacter, BROKEN_BELL) };
+    const storage = memoryStorage();
+    saveGame(playerSave, storage);
+    const qaSave = loadQaSave(storage);
+    expect(qaSave.character).toBeNull();
+    qaSave.bank.push('yewCharm');
+    qaSave.character = newCharacter('QA');
+    qaSave.character.adventuresCompleted = 20;
+    saveQaGame(qaSave, storage);
+    expect(storage.getItem(QA_SAVE_KEY)).not.toBeNull();
+    expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toEqual(playerSave);
+    expect(loadSave(storage)).toMatchObject(playerSave);
+    expect(loadQaSave(storage).bank).toEqual(['yewCharm']);
+  });
+
   it('adds visited-scene and recent-scenario defaults to an older active save', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
@@ -72,7 +90,7 @@ describe('save compatibility', () => {
     const character = newCharacter('Reward Save');
     const state: SaveData = {
       version: 1, bank: [], character,
-      run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true },
+      run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true, completionCountRecorded: true },
       mostRecentScenarioId: BROKEN_BELL.id,
       recentScenarioIds: [BROKEN_BELL.id],
     };

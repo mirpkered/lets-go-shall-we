@@ -15,6 +15,8 @@ export interface Character {
   maxHealth: number;
   money: number;
   carriedItem: string | null;
+  /** Canonical persistent loadout. carriedItem remains as a legacy first-slot alias. */
+  carriedItems?: string[];
   lore: string[];
   knowledge: string[];
   adventuresCompleted: number;
@@ -25,6 +27,8 @@ export interface RunState {
   runId?: string;
   qaMode?: boolean;
   globalCompletionQueued?: boolean;
+  completionCountRecorded?: boolean;
+  completionMilestoneReached?: 10 | 20;
   scenarioId: string;
   sceneId: string;
   health: number;
@@ -35,6 +39,7 @@ export interface RunState {
   randomSelections?: Record<string, string>;
   status: 'active' | 'success' | 'death';
   rewardSelectionOpen?: boolean;
+  rewardCarrySelection?: string[];
   message: string | null;
   startedAt: number;
   elapsedMinutes?: number;
@@ -87,6 +92,7 @@ export interface Effects {
   health?: number;
   loseMoney?: boolean;
   loseCarriedItem?: boolean;
+  loseCarriedItems?: boolean;
   gainItems?: string[];
   loseItems?: string[];
   knowledge?: string[];

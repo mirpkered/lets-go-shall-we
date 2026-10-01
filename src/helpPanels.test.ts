@@ -98,10 +98,11 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('telegraphy is available only in some settlements');
   });
 
-  it('explains persistence, one-item carry, bank, death, retirement, abandonment, and autosave accurately', () => {
+  it('explains traveler carry milestones, bank, death, retirement, abandonment, and autosave accurately', () => {
     const markup = renderUtilityFeatures();
-    expect(markup).toContain('money, lore, knowledge, carried item, and history');
-    expect(markup).toContain('choose one eligible item to carry');
+    expect(markup).toContain('money, lore, knowledge, carried gear, and history');
+    expect(markup).toContain('two after ten completed adventures, and three after twenty');
+    expect(markup).toContain('prepare a loadout from eligible gear');
     expect(markup).toContain('Banked items are stored separately and survive death or retirement');
     expect(markup).toContain('If an adventurer dies or is retired');
     expect(markup).toContain('The game autosaves after meaningful choices');

@@ -118,6 +118,8 @@ describe('persistent bank capacity', () => {
     const markup = renderQaPanel(true, state, [BROKEN_BELL], ITEMS);
     expect(markup).toContain('&quot;bankCount&quot;: 5');
     expect(markup).toContain('&quot;bankCapacity&quot;: 5');
+    expect(markup).toContain('data-qa-set-completions');
+    expect(markup).toContain('&quot;carryCapacity&quot;: 1');
   });
 });
 

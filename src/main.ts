@@ -1,5 +1,5 @@
 import './styles.css';
-import { choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, meets, retireCharacter, runText, sceneText, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { carryCapacity, choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, getCarriedItems, meets, newCharacter, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -7,19 +7,19 @@ import { contactMailto, feedbackAdventureTitle, renderUtilityFeatures } from './
 import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario } from './scenarioSelection';
-import { EMPTY_SAVE, loadSave, SAVE_KEY, saveGame } from './storage';
+import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
 import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
-let state: SaveData = loadSave();
+const qaEnabled = isQaMode(window.location.search);
+let state: SaveData = qaEnabled ? loadQaSave() : loadSave();
 let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active' ? 'home' : 'home';
 let inventoryOpen = false;
 let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
 let pendingBankDestructive: { kind: 'item'; itemId: string } | { kind: 'empty' } | null = null;
 let bankConfirmReturnSelector = '#back';
-const qaEnabled = isQaMode(window.location.search);
 const homeSceneStorage: SessionSceneStorage = (() => {
   try { return window.sessionStorage; }
   catch { return { getItem: () => null, setItem: () => undefined }; }
@@ -31,9 +31,7 @@ let globalTotal: number | null = null;
 let globalTotalRequested = false;
 let completionFlushRunning = false;
 
-if (qaEnabled && state.run) { state.run.qaMode = true; saveGame(state); }
-
-function persist(): void { saveGame(state); }
+function persist(): void { qaEnabled ? saveQaGame(state) : saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
 function safeText(text: string): string { return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!); }
 function activeScenario() { return state.run ? getScenario(state.run.scenarioId) : undefined; }
@@ -52,7 +50,14 @@ function bindQaPanel(): void {
   document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
   document.querySelector('[data-qa-reset-character]')?.addEventListener('click', () => { state.character = null; state.run = null; persist(); screen = 'home'; render(); });
   document.querySelector('[data-qa-clear-save]')?.addEventListener('click', () => {
-    localStorage.removeItem(SAVE_KEY); state = structuredClone(EMPTY_SAVE); screen = 'home'; render();
+    localStorage.removeItem(QA_SAVE_KEY); state = structuredClone(EMPTY_SAVE); screen = 'home'; render();
+  });
+  document.querySelector('[data-qa-set-completions]')?.addEventListener('click', () => {
+    const input = document.querySelector<HTMLInputElement>('#qa-completions');
+    const count = Math.max(0, Math.floor(Number(input?.value ?? 0)));
+    state.character ??= newCharacter();
+    state.character.adventuresCompleted = Number.isFinite(count) ? count : 0;
+    persist(); render();
   });
   document.querySelector('[data-qa-set-health]')?.addEventListener('click', () => {
     if (!state.run || !state.character) return;
@@ -77,6 +82,16 @@ function bindQaPanel(): void {
   document.querySelector('[data-qa-add-item]')?.addEventListener('click', () => {
     const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
     if (!state.run || !itemId || !ITEMS[itemId]?.carryable) return;
+    state.run.inventory = [...new Set([...state.run.inventory, itemId])];
+    state.run.acquiredThisRun = [...new Set([...state.run.acquiredThisRun, itemId])];
+    persist(); render();
+  });
+  document.querySelector('[data-qa-add-carried]')?.addEventListener('click', () => {
+    const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
+    if (!state.run || !state.character || !itemId || !ITEMS[itemId]?.carryable) return;
+    const carried = getCarriedItems(state.character);
+    if (carried.includes(itemId) || carried.length >= carryCapacity(state.character.adventuresCompleted)) return;
+    setCarriedItems(state.character, [...carried, itemId]);
     state.run.inventory = [...new Set([...state.run.inventory, itemId])];
     state.run.acquiredThisRun = [...new Set([...state.run.acquiredThisRun, itemId])];
     persist(); render();
@@ -142,7 +157,8 @@ function render(): void {
 function renderHome(): void {
   if (state.run?.status === 'active') {
     const scenario = activeScenario();
-    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>${homeSceneQaControls()}`, 'centered home-screen resume-home', homeSceneStyle());
+    const character = state.character!;
+    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><p class="traveler-ending-count">${character.adventuresCompleted} adventures completed · Carry capacity: ${carryCapacity(character.adventuresCompleted)}</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, carried gear, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>${homeSceneQaControls()}`, 'centered home-screen resume-home', homeSceneStyle());
     bindHomeSceneQaControls();
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
@@ -157,8 +173,9 @@ function renderHome(): void {
     void readGlobalTotal(counterEndpoint).then((total) => { globalTotal = Math.max(globalTotal ?? 0, total); if (screen === 'home' && !state.run) render(); }).catch(() => { /* Counter outages never affect play. */ });
   }
   const counterLabel = globalTotal === null ? '' : `<p class="global-completions">Adventures completed by travelers: ${formatGlobalTotal(globalTotal)}</p>`;
+  const travelerStatus = state.character ? `<section class="traveler-status" aria-label="Traveler progress"><strong>${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'} completed</strong><span>Carry capacity: ${carryCapacity(state.character.adventuresCompleted)} item${carryCapacity(state.character.adventuresCompleted) === 1 ? '' : 's'}</span>${state.character.adventuresCompleted < 20 ? `<small>Next carry slot at ${state.character.adventuresCompleted < 10 ? 10 : 20}</small>` : ''}</section>` : '';
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
-    <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>
+    <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>${travelerStatus}
     <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
   bindHomeSceneQaControls();
   document.querySelector('#begin')!.addEventListener('click', () => {
@@ -181,9 +198,11 @@ function renderPlay(): void {
   const choices = scene.choices.filter((choice) => meets(choice.requirements, state));
   const timing = timeStatus(scenario, run.elapsedMinutes ?? 0);
   const healthPct = (run.health / character.maxHealth) * 100;
-  shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}">${icon('bag')}<span>${run.inventory.length}</span><b class="sr-only">Inventory</b></button></header>
+  const carriedItems = getCarriedItems(character);
+  const capacity = carryCapacity(character.adventuresCompleted);
+  shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}" aria-label="Inventory, ${carriedItems.length} of ${capacity} carried item slots used">${icon('bag')}<span>${carriedItems.length}/${capacity}</span><b class="sr-only">Inventory</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
-    ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
+    ${inventoryOpen ? `<aside class="inventory-panel"><div><span class="eyebrow">In your pack · Carried ${carriedItems.length}/${capacity}</span><button id="closeInventory" aria-label="Close inventory">×</button></div>${run.inventory.map((id) => `<article><strong>${itemName(id)}${carriedItems.includes(id) ? ' · Carried' : ''}</strong><small>${ITEMS[id].description}</small></article>`).join('')}</aside>` : ''}
     <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${timing.phase ? `<p class="story-time" aria-label="Story time: ${timing.phase.label}">${timing.phase.label}</p>` : ''}${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
     <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${safeText(runText(choice.label, state))}</strong>${choice.hint ? `<small>${safeText(runText(choice.hint, state))}</small>` : ''}</button>`).join('')}</section>`, `playing scenario-${scenario.id}`);
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
@@ -217,7 +236,10 @@ function renderDeath(): void {
   const scenario = activeScenario();
   const run = state.run;
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p><div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
+  const milestone = run?.completionMilestoneReached === 10
+    ? '<p class="milestone-note">Ten adventures behind this traveler. Their journey ends here, but they learned to travel better prepared.</p>'
+    : run?.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. This traveler knew what deserved a place in the pack.</p>' : '';
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Gear, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
 }
 
@@ -226,26 +248,40 @@ function renderSuccess(): void {
   const scenario = activeScenario()!;
   const scene = scenario.scenes[run.sceneId];
   const eligible = eligibleCarryItems(state);
-  const fullBankText = bankCapacityMessage(state.bank.length);
-  const rewardBankNote = fullBankText ? `<p class="bank-capacity-note">${safeText(fullBankText)} Your reward can still be carried; visit The Bank afterward to make an explicit swap.</p>` : '';
+  const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
+  const milestone = run.completionMilestoneReached === 10
+    ? '<p class="milestone-note">Ten adventures behind you. You’ve learned to travel better prepared. Carry capacity increased to 2 items.</p>'
+    : run.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. You know what deserves a place in your pack. Carry capacity increased to 3 items.</p>' : '';
   if (!successRewardsOpen) {
-    shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p><button class="primary" id="openRewards">Choose a keepsake</button></section>`, 'centered ending-screen');
+    shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p>${milestone}<p class="traveler-ending-count">${state.character?.adventuresCompleted ?? 0} adventures completed · Carry capacity: ${capacity}</p><button class="primary" id="openRewards">Prepare for the road</button></section>`, 'centered ending-screen');
     document.querySelector('#openRewards')!.addEventListener('click', () => {
       successRewardsOpen = true;
-      if (state.run) state.run.rewardSelectionOpen = true;
+      if (state.run) {
+        state.run.rewardSelectionOpen = true;
+        state.run.rewardCarrySelection ??= getCarriedItems(state.character).filter((id) => eligible.includes(id)).slice(0, capacity);
+      }
       persist(); render();
     });
     return;
   }
-  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Choose one item to carry</div><h1>One keepsake for the road</h1><p>Your adventure through ${scenario.title} is complete. Choose one eligible item; you can bank it before the next journey.</p><div class="reward-box">${rewardBankNote}${eligible.length ? eligible.map((id) => `<button data-carry="${id}"><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></button>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="text-button" data-carry="">Carry nothing</button></div></section>`, 'centered ending-screen');
-  document.querySelectorAll<HTMLButtonElement>('[data-carry]').forEach((button) => button.addEventListener('click', () => { state = finishSuccess(state, button.dataset.carry || null); persist(); screen = 'home'; render(); }));
+  const selected = run.rewardCarrySelection ?? [];
+  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Prepare for the next adventure</div><h1>Choose what travels with you</h1><p>Your traveler can carry up to ${capacity} persistent item${capacity === 1 ? '' : 's'}. Select any eligible gear to keep; an unselected reward will not be carried. Nothing already carried is replaced unless you choose a different loadout.</p><div class="reward-box"><p class="carry-selection-count">Selected: ${selected.length}/${capacity}</p>${eligible.length ? eligible.map((id) => `<label class="carry-choice"><input type="checkbox" data-carry="${id}" ${selected.includes(id) ? 'checked' : ''}><span><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></span></label>`).join('') : '<p class="empty">No eligible carryable items were recovered.</p>'}<button class="primary" id="confirm-loadout">Confirm loadout</button><button class="text-button" id="manageBank">Manage the Bank</button></div></section>`, 'centered ending-screen');
+  document.querySelectorAll<HTMLInputElement>('[data-carry]').forEach((input) => input.addEventListener('change', () => {
+    if (!state.run) return;
+    const current = state.run.rewardCarrySelection ?? [];
+    if (input.checked && current.length >= capacity) { input.checked = false; return; }
+    state.run.rewardCarrySelection = input.checked ? [...current, input.dataset.carry!] : current.filter((id) => id !== input.dataset.carry);
+    persist(); render();
+  }));
+  document.querySelector('#confirm-loadout')!.addEventListener('click', () => { state = finishSuccess(state, state.run?.rewardCarrySelection ?? []); persist(); screen = 'home'; render(); });
+  document.querySelector('#manageBank')!.addEventListener('click', () => { screen = 'bank'; render(); });
 }
 
 function renderBank(): void {
-  const carried = state.character?.carriedItem;
+  const carried = getCarriedItems(state.character);
+  const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
   const capacityMessage = bankCapacityMessage(state.bank.length);
-  const legacyCarryNote = state.bank.length > BANK_CAPACITY && carried ? ' Your carry slot is occupied; free it before withdrawing an item to reduce the saved bank.' : '';
-  const swapAllowed = state.bank.length === BANK_CAPACITY && Boolean(carried);
+  const legacyCarryNote = state.bank.length > BANK_CAPACITY && carried.length ? ' Your carried items remain safe; withdraw into an open slot to reduce the saved bank.' : '';
   const emptyBankCopy = emptyBankConfirmationText(state.bank.length);
   const confirmationText = pendingBankDestructive?.kind === 'empty'
     ? emptyBankCopy
@@ -255,13 +291,13 @@ function renderBank(): void {
   const confirmationTitle = pendingBankDestructive?.kind === 'empty' ? 'Empty the bank?' : `Discard ${pendingBankDestructive ? itemName(pendingBankDestructive.itemId) : 'item'}?`;
   const confirmationAction = pendingBankDestructive?.kind === 'empty' ? 'Empty Bank' : 'Discard Item';
   shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
-    <section class="bank-section"><h2>Carried by character</h2>${state.character ? (carried ? `<article class="item-row"><div><strong>${itemName(carried)}</strong><small>${ITEMS[carried].description}</small></div>${state.bank.length < BANK_CAPACITY ? '<button id="deposit">Deposit</button>' : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : '<span class="empty">Choose an item below to swap.</span>'}</article>` : '<p class="empty">The carry slot is empty.</p>') : '<p class="empty">Create a traveler to withdraw an item.</p>'}</section>
-    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div><div class="bank-item-actions">${swapAllowed ? `<button data-bank-swap="${id}">Swap with carried item</button>` : state.character && !carried ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
+    <section class="bank-section"><h2>Carried by character ${state.character ? `(${carried.length}/${capacity})` : ''}</h2>${state.character ? (carried.length ? carried.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${state.bank.length < BANK_CAPACITY ? `<button data-deposit="${id}">Deposit</button>` : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : `<details class="bank-swap-options"><summary>Swap</summary><div>${state.bank.map((bankId) => `<button data-bank-swap="${bankId}" data-carried="${id}">for ${itemName(bankId)}</button>`).join('')}</div></details>`}</article>`).join('') : '<p class="empty">No items are being carried. Withdraw from the Bank to prepare for the next adventure.</p>') : '<p class="empty">No traveler is active. Withdrawing an item will prepare a new traveler for the road.</p>'}</section>
+    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div><div class="bank-item-actions">${(!state.character || carried.length < capacity) ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
     ${emptyBankCopy ? `<section class="bank-destructive-controls"><div><h2>Permanent disposal</h2><p>Discard stored items permanently. This cannot be undone.</p></div><button type="button" class="bank-discard bank-empty-button" id="empty-bank">Empty Bank</button></section>` : ''}
     ${confirmationText ? `<dialog class="bank-confirm-dialog" id="bank-confirm-dialog" aria-labelledby="bank-confirm-title" aria-describedby="bank-confirm-message"><div class="bank-confirm-content"><span class="eyebrow">Permanent disposal</span><h2 id="bank-confirm-title">${safeText(confirmationTitle)}</h2><p id="bank-confirm-message">${safeText(confirmationText)}</p><div class="bank-confirm-actions"><button type="button" class="bank-cancel" id="cancel-bank-disposal" autofocus>Cancel</button><button type="button" class="bank-discard bank-confirm-destructive" id="confirm-bank-disposal">${confirmationAction}</button></div></div></dialog>` : ''}`, 'subscreen');
   document.querySelector('#back')!.addEventListener('click', () => { screen = 'home'; render(); });
-  document.querySelector('#deposit')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
-  document.querySelectorAll<HTMLButtonElement>('[data-bank-swap]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, button.dataset.bankSwap); persist(); render(); }));
+  document.querySelectorAll<HTMLButtonElement>('[data-deposit]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, undefined, button.dataset.deposit); persist(); render(); }));
+  document.querySelectorAll<HTMLButtonElement>('[data-bank-swap]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, button.dataset.bankSwap, button.dataset.carried); persist(); render(); }));
   document.querySelectorAll<HTMLButtonElement>('[data-withdraw]').forEach((button) => button.addEventListener('click', () => { state = withdrawBanked(state, button.dataset.withdraw!); persist(); render(); }));
   document.querySelectorAll<HTMLButtonElement>('[data-bank-discard]').forEach((button) => button.addEventListener('click', () => {
     const itemId = button.dataset.bankDiscard!;
@@ -298,10 +334,10 @@ function renderBank(): void {
 }
 
 function renderRetire(): void {
-  const carried = state.character?.carriedItem;
-  const retirementBankHint = carried && state.bank.length >= BANK_CAPACITY ? `<p class="bank-capacity-note">${safeText(bankCapacityMessage(state.bank.length) ?? '')}</p>` : '';
-  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, and personal history will end with their story. Banked items remain safe. Retiring with a carried item will lose that item unless you store it first.</p>${carried ? `<div class="retirement-item"><strong>${itemName(carried)}</strong><span>is still being carried</span>${state.bank.length < BANK_CAPACITY ? '<button id="bankFirst">Bank it first</button>' : '<button id="manageBank">Manage bank</button>'}</div>${retirementBankHint}` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
-  document.querySelector('#bankFirst')?.addEventListener('click', () => { state = depositCarried(state); persist(); render(); });
+  const carried = getCarriedItems(state.character);
+  const retirementBankHint = carried.length && state.bank.length >= BANK_CAPACITY ? `<p class="bank-capacity-note">${safeText(bankCapacityMessage(state.bank.length) ?? '')}</p>` : '';
+  shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, carry capacity, and personal history will end with their story. Banked items remain safe. Store any gear you want to preserve before retiring.</p>${carried.length ? `<div class="retirement-item"><strong>Carried gear (${carried.length})</strong>${carried.map((id) => `<span>${itemName(id)}</span>`).join('')}${state.bank.length < BANK_CAPACITY ? carried.map((id) => `<button data-retire-deposit="${id}">Bank ${itemName(id)}</button>`).join('') : '<button id="manageBank">Manage bank</button>'}</div>${retirementBankHint}` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
+  document.querySelectorAll<HTMLButtonElement>('[data-retire-deposit]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, undefined, button.dataset.retireDeposit); persist(); render(); }));
   document.querySelector('#manageBank')?.addEventListener('click', () => { screen = 'bank'; render(); });
   document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = retireCharacter(state); persist(); screen = 'home'; render(); });
   document.querySelector('#cancel')!.addEventListener('click', () => { screen = 'home'; render(); });

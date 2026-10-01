@@ -41,6 +41,9 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .masthead h1 { font-size:clamp(2.55rem,12vw,4rem); line-height:.82; margin:.35rem 0 0; letter-spacing:-.025em; }
 .masthead h1 em { color:#cba55f; font-weight:400; }
 .start-card { padding:1.5rem; border:1px solid #4a4133; background:linear-gradient(145deg,#211e18,#161512); box-shadow:0 1.2rem 3rem #0008; }
+.traveler-status { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.35rem .75rem; margin:.65rem auto 0; padding:.5rem .7rem; border-bottom:1px solid #c59a4a38; color:#b8ad99; font-size:.76rem; text-align:center; }
+.traveler-status strong { color:#d8c69f; font-weight:600; }
+.traveler-status small { color:#847b6b; }
 .start-card p { color:#c7beae; line-height:1.55; }
 .adventure-select > .eyebrow { margin-bottom:.65rem; }
 .scenario-list { display:grid; gap:1rem; }
@@ -111,7 +114,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .money svg { color:#c29d55; }
 .health-track { width:5.2rem; height:.32rem; background:#322b27; overflow:hidden; }
 .health-track i { display:block; height:100%; background:#a84e46; transition:width .25s ease; }
-.inventory-panel { position:absolute; z-index:5; top:4.8rem; right:1.1rem; left:1.1rem; padding:1.1rem; border:1px solid #5a4e3c; background:#171511; box-shadow:0 1.5rem 4rem #000d; }
+.inventory-panel { position:absolute; z-index:5; top:4.8rem; right:1.1rem; left:1.1rem; max-height:calc(100dvh - 5.5rem - env(safe-area-inset-bottom)); padding:1.1rem; overflow-y:auto; overscroll-behavior:contain; border:1px solid #5a4e3c; background:#171511; box-shadow:0 1.5rem 4rem #000d; }
 .inventory-panel > div { display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem; }
 .inventory-panel button { border:0; background:transparent; color:#ddd2bf; font-size:1.8rem; cursor:pointer; }
 .inventory-panel article { padding:.7rem 0; border-top:1px solid #312d27; }
@@ -141,6 +144,14 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .loss-list strong { color:#bba66f; }
 .reward-box { margin-top:1.5rem; padding:1rem; border:1px solid #4f4432; background:#151410; text-align:left; }
 .reward-box > p { color:#8d8578; font-size:.82rem; line-height:1.5; }
+.carry-selection-count { margin:0 0 .5rem; color:#ddc88e!important; }
+.carry-choice { display:flex; align-items:center; gap:.7rem; min-height:3.8rem; padding:.55rem .25rem; border-top:1px solid #3c3529; cursor:pointer; }
+.carry-choice input { flex:0 0 auto; width:1.25rem; height:1.25rem; accent-color:#d0a758; }
+.carry-choice span,.carry-choice strong,.carry-choice small { display:block; }
+.carry-choice strong { color:#eee3cd; }
+.carry-choice small { margin-top:.2rem; color:#8f877a; line-height:1.35; }
+.milestone-note { padding:.75rem; border:1px solid #836935; background:#2b2417; color:#e4d3a9!important; font-size:.9rem; }
+.traveler-ending-count { color:#c3b596!important; font-size:.83rem; }
 .reward-box button:not(.text-button) { width:100%; min-height:4.5rem; padding:.8rem; margin-top:.6rem; border:1px solid #66563a; background:#201c15; color:#ede3cf; text-align:left; cursor:pointer; }
 .reward-box button strong,.reward-box button small { display:block; }
 .reward-box button small { margin-top:.3rem; color:#8f877a; }
@@ -160,6 +171,10 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .bank-item-actions { display:flex; flex:0 0 auto; flex-direction:column; gap:.4rem; min-width:7rem; }
 .item-row small { max-width:26rem; margin-top:.25rem; color:#837d72; font-size:.75rem; line-height:1.4; }
 .item-row button,.retirement-item button { min-height:2.8rem; padding:0 .9rem; border:1px solid #6b5838; background:#201c15; color:#dec38d; cursor:pointer; }
+.bank-swap-options { text-align:right; }
+.bank-swap-options summary { min-height:2.8rem; padding:.65rem .9rem; border:1px solid #6b5838; color:#dec38d; cursor:pointer; }
+.bank-swap-options > div { display:grid; gap:.4rem; padding-top:.4rem; }
+.bank-swap-options button { font-size:.76rem; }
 .bank-item-actions button { width:100%; min-height:44px; padding:.4rem .55rem; line-height:1.2; }
 .bank-discard { border:1px solid #8b4f46 !important; background:#2b1918 !important; color:#e7b2a8 !important; }
 .bank-discard:hover,.bank-discard:focus-visible { border-color:#d27a6d !important; background:#3a201e !important; }
@@ -237,8 +252,9 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .reward-screen { margin:auto 0; }
   .reward-screen > p { margin-bottom:.45rem!important; }
   .reward-screen .reward-box { margin-top:.35rem; padding:.55rem; }
+  .reward-screen .carry-choice { min-height:2.6rem; padding:.35rem .2rem; }
+  .reward-screen .carry-choice small { margin-top:.15rem; font-size:.72rem; line-height:1.2; }
   .reward-screen .reward-box button:not(.text-button) { min-height:3rem; margin-top:.35rem; padding:.45rem .55rem; }
-  .reward-screen .reward-box button small { margin-top:.15rem; font-size:.72rem; line-height:1.2; }
   .reward-screen .reward-box .bank-capacity-note { font-size:.74rem; line-height:1.25; }
   .reward-screen .reward-box .text-button { min-height:2.7rem; }
 }
