@@ -1,7 +1,7 @@
 import type { SaveData } from './types';
 import { getScenario } from './scenarios';
 import { countQualifyingStoryTransitions, pickRunRandomSelections } from './engine';
-import { CATEGORY_HISTORY_WINDOW, RECENT_SCENARIO_WINDOW } from './scenarioSelection';
+import { CATEGORY_HISTORY_WINDOW, primaryScenarioCategory, RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import type { ItemCondition, PersistentItemState } from './types';
@@ -41,7 +41,11 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         else if (inventoryClass(id) === 'SUPPLY' && quantity === 0) { delete parsed.character.supplies[id]; migrated = true; }
       }
       if (!Number.isFinite(parsed.character.adventuresCompleted)) { parsed.character.adventuresCompleted = 0; migrated = true; }
-      if (!Array.isArray(parsed.character.scenarioCategoryHistory)) { parsed.character.scenarioCategoryHistory = []; migrated = true; }
+      if (!Array.isArray(parsed.character.scenarioCategoryHistory)) {
+        const activeScenario = parsed.run?.status === 'active' && !parsed.run.qaMode ? getScenario(parsed.run.scenarioId) : undefined;
+        parsed.character.scenarioCategoryHistory = activeScenario ? [primaryScenarioCategory(activeScenario)] : [];
+        migrated = true;
+      }
       else {
         const categories = parsed.character.scenarioCategoryHistory.filter((entry): entry is string => typeof entry === 'string' && entry.length > 0).slice(0, CATEGORY_HISTORY_WINDOW);
         if (JSON.stringify(categories) !== JSON.stringify(parsed.character.scenarioCategoryHistory)) migrated = true;

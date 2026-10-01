@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import { newCharacter, startRun } from './engine';
+import { primaryScenarioCategory } from './scenarioSelection';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import type { SaveData } from './types';
 
@@ -52,7 +53,7 @@ describe('save compatibility', () => {
     expect(state.recentScenarioIds).toEqual([]);
     expect(state.bank).toEqual(['yewCharm']);
     expect(state.character?.historyFlags).toEqual([]);
-    expect(state.character?.scenarioCategoryHistory).toEqual([]);
+    expect(state.character?.scenarioCategoryHistory).toEqual([primaryScenarioCategory(BROKEN_BELL)]);
     expect(state.character?.scenarioPlayCounts).toEqual({});
     expect(state.character?.carriedItems).toEqual(['graveCoin']);
     expect(state.character?.ownedAssets).toEqual([{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }]);
