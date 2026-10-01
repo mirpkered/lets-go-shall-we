@@ -115,6 +115,35 @@ describe('Under the Ice', () => {
     expect(state.run?.sceneId).toBe('bothSurvive');
   });
 
+  it('recognizes the carried cloak after extracting Calder and cannot narrate a drowning afterward', () => {
+    let state = fresh('weatherproofCloak');
+    state.run!.randomSelections!.victim = 'Calder';
+    state = act(state, 'crawlTowardVictim', 0);
+    state = act(state, 'pullVictimToShore', 0);
+    expect(state.run?.sceneId).toBe('afterExtraction');
+    expect(state.run?.flags).toContain('victimExtracted');
+    expect(options(state).map(({ id }) => id)).toContain('wrapAndShelter');
+    state = act(state, 'wrapAndShelter');
+    expect(state.run?.sceneId).toBe('bothSurvive');
+    expect(state.run?.status).toBe('success');
+    expect(sceneText(UNDER_THE_ICE.scenes.bothSurvive, state)).toContain('Calder');
+    expect(sceneText(UNDER_THE_ICE.scenes.victimLostEnding, { ...state, run: { ...state.run!, sceneId: 'victimLostEnding', status: 'success' } })).toMatch(/pulled onto the north bank.*exposure afterward/i);
+    expect(sceneText(UNDER_THE_ICE.scenes.victimLostEnding, state)).not.toMatch(/does not come back above the water/i);
+  });
+
+  it('keeps extraction state across reload and gates drowning wording behind no extraction', () => {
+    const state = act(act(fresh('travelRope'), 'throwTravelRope', 0), 'haulFromShore', 0);
+    const resumed = JSON.parse(JSON.stringify(state)) as SaveData;
+    expect(resumed.run?.sceneId).toBe('afterExtraction');
+    expect(resumed.run?.flags).toContain('victimExtracted');
+    expect(sceneText(UNDER_THE_ICE.scenes.victimLostEnding, resumed)).toMatch(/exposure afterward/i);
+    expect(UNDER_THE_ICE.scenes.victimLostEnding.text).toMatch(/does not come back above the water/i);
+    const extractionChoices = Object.values(UNDER_THE_ICE.scenes).flatMap((scene) => scene.choices)
+      .filter((choice) => choice.chance?.successNext === 'afterExtraction');
+    expect(extractionChoices.length).toBeGreaterThan(0);
+    expect(extractionChoices.every((choice) => choice.chance?.successEffects?.setFlags?.includes('victimExtracted'))).toBe(true);
+  });
+
   it('allows the player to survive while a delayed rescue fails', () => {
     let state = act(fresh(), 'runForHelp', 0.999);
     expect(state.run?.sceneId).toBe('helpUnheard');

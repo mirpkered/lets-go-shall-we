@@ -20,6 +20,13 @@ Apply this appendix to newly authored adventures unless a scenario-specific inst
 - A recurring employer or contact may create an earned opportunity through a specific referral. Use this sparingly; not every job comes from prior deeds, and recognition stays local rather than universal.
 - A recurring supernatural person, image, sound, or phenomenon should preserve its known characteristics, recur rarely, and remain unexplained where appropriate. Do not turn repetition into constant exposition.
 
+## State-aware narration
+
+- Narration and endings must reflect the current run’s actual state: actions that failed stay failed; people and objects remain where the story placed them; tools are mentioned as used only when they were used; and a rescue, injury, loss, or completed task is not silently reversed or invented.
+- Important physical state changes must be shown when they happen. If a person moves, a fire goes out, fuel is consumed, or an object changes hands, narrate that transition before later choices rely on it.
+- Distinguish current-traveler knowledge from player memory. Use current-run knowledge for private discoveries and specific fates; do not reveal an identity or consequence the traveler has not learned.
+- A substantial resolution should usually receive a concise consequence or aftermath beat before the terminal ending. Peaceful outcomes count: a reaction, practical follow-through, shared quiet, or clear departure can close the story without adding another crisis.
+
 ## Items, knowledge, and provenance
 
 - Preserve the origin of distinctive property and unusual rewards. Where practical, record who owned it or how it was acquired, then let a later recognition invite explanation, a request, suspicion, or gratitude. Do not automatically punish the player or create a theft score. Ordinary rope and gloves are not famous artifacts.

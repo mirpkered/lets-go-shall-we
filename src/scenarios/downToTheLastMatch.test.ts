@@ -78,7 +78,7 @@ describe('Down to the Last Match', () => {
       'Keep the spare blanket for yourself', 'Give Eli the spare blanket',
     ]);
     expect(DOWN_TO_THE_LAST_MATCH.scenes.matchConserved.text).toContain('dry fuel aside');
-    expect(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold.textVariants?.filter((entry) => entry.requirements?.flags?.includes('savedKindling')).every((entry) => /dry fuel you set aside/i.test(entry.text))).toBe(true);
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold.textVariants?.filter((entry) => entry.requirements?.flags?.includes('savedKindling')).every((entry) => /saved (dry )?(fuel|branches)|dry branches/i.test(entry.text))).toBe(true);
     expect(DOWN_TO_THE_LAST_MATCH.scenes.embersHeld.textVariants?.[0].text).toContain('dry fuel you set aside');
     expect(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding.textVariants?.map((entry) => entry.text).join(' ')).not.toMatch(/last bundle|your side of the stove|fuel were divided/i);
     expect(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding.textVariants?.map((entry) => entry.text).join(' ')).toMatch(/spare blanket/);
@@ -167,7 +167,8 @@ describe('Down to the Last Match', () => {
     saved = act(saved, 'conserveMatchAndKindling');
     saved = act(saved, 'waitForTheWind');
     saved = act(saved, 'holdInsideFromStorm');
-    expect(options(saved).map((choice) => choice.id)).toContain('useMatchToRelight');
+    expect(options(saved).map((choice) => choice.id)).not.toContain('useMatchToRelight');
+    expect(options(saved).map((choice) => choice.id)).toContain('feedSavedKindling');
     expect(options(saved).map((choice) => choice.id)).toContain('useMatchToSignal');
   });
 
@@ -199,6 +200,70 @@ describe('Down to the Last Match', () => {
     expect(failed.run?.health).toBe(7);
     failed = act(failed, 'returnAfterFuelSlip');
     expect(failed.run?.sceneId).toBe('criticalCold');
+  });
+
+  it('keeps the caller present after the knock and narrates only the retrieval method actually used', () => {
+    let bare = fresh();
+    bare.run!.sceneId = 'stormFront';
+    bare = act(bare, 'fetchFuelBeforeWhiteout');
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.fuelTrip, bare)).toMatch(/caller remains outside.*moving toward the shed/i);
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.fuelTrip, bare)).not.toContain('Eli');
+    bare = act(bare, 'gatherBarehanded', 0);
+    const bareText = sceneText(DOWN_TO_THE_LAST_MATCH.scenes.woodRecovered, bare);
+    expect(bareText).toMatch(/numb hands and a careful climb/i);
+    expect(bareText).not.toMatch(/gloves|line lets/i);
+    expect(bareText).toMatch(/caller is still crouched/i);
+    bare = act(bare, 'followVoiceByShed');
+    expect(DOWN_TO_THE_LAST_MATCH.scenes.travelerOutside.text).toContain('It is Eli');
+
+    let warm = fresh('heavyLeatherGloves');
+    warm.run!.sceneId = 'fuelTrip';
+    warm.run!.flags.push('callerOutside');
+    warm = act(warm, 'gatherWithWarmGear', 0);
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.woodRecovered, warm)).toMatch(/warm gear keeps feeling/i);
+
+    let rope = fresh('travelRope');
+    rope.run!.sceneId = 'fuelTrip';
+    rope.run!.flags.push('callerOutside');
+    rope = act(rope, 'pullBundleWithLine', 0);
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.woodRecovered, rope)).toMatch(/line lets you draw/i);
+  });
+
+  it('distinguishes live embers from an extinguished stove and spends saved fuel and matches once', () => {
+    let embers = fresh();
+    embers.run!.sceneId = 'criticalCold';
+    embers.run!.elapsedMinutes = 30;
+    embers.run!.flags.push('savedKindling');
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold, embers)).toMatch(/low orange coals/i);
+    expect(options(embers).map(({ id }) => id)).toContain('feedSavedKindling');
+    expect(options(embers).map(({ id }) => id)).not.toContain('useMatchToRelight');
+    embers = act(embers, 'feedSavedKindling');
+    expect(embers.run?.flags).toContain('savedKindlingUsed');
+    expect(embers.run?.flags).not.toContain('lastMatchSpent');
+
+    let cold = fresh();
+    cold.run!.sceneId = 'criticalCold';
+    cold.run!.elapsedMinutes = 40;
+    cold.run!.flags.push('savedKindling');
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold, cold)).toMatch(/gone fully out/i);
+    expect(options(cold).map(({ id }) => id)).toContain('relightSavedKindling');
+    expect(options(cold).map(({ id }) => id)).not.toContain('feedSavedKindling');
+    cold = act(cold, 'relightSavedKindling');
+    expect(cold.run?.flags).toEqual(expect.arrayContaining(['lastMatchSpent', 'savedKindlingUsed', 'fireFed']));
+
+    let spent = fresh();
+    spent.run!.sceneId = 'criticalCold';
+    spent.run!.elapsedMinutes = 40;
+    spent.run!.flags.push('lastMatchSpent', 'savedKindling');
+    expect(options(spent).map(({ id }) => id)).not.toContain('useMatchToRelight');
+    expect(options(spent).map(({ id }) => id)).not.toContain('relightSavedKindling');
+    expect(options(spent).map(({ id }) => id)).not.toContain('feedSavedKindling');
+
+    spent.run!.flags.push('savedKindlingUsed');
+    expect(options(spent).map(({ id }) => id)).not.toContain('feedSavedKindling');
+    const resumed = JSON.parse(JSON.stringify(spent)) as SaveData;
+    expect(resumed.run?.flags).toEqual(spent.run?.flags);
+    expect(options(resumed).map(({ id }) => id)).toEqual(options(spent).map(({ id }) => id));
   });
 
   it('uses item-specific repairs and safer outdoor actions', () => {
@@ -265,8 +330,8 @@ describe('Down to the Last Match', () => {
     clock.run!.sceneId = 'criticalCold';
     clock.run!.elapsedMinutes = 34;
     clock.run!.startedAt -= 86_400_000;
-    const afterWait = choose(clock, DOWN_TO_THE_LAST_MATCH, exit.find((choice) => choice.id === 'useMatchToRelight')!);
-    expect(afterWait.run?.elapsedMinutes).toBe(36);
+    const afterWait = choose(clock, DOWN_TO_THE_LAST_MATCH, exit.find((choice) => choice.id === 'holdEmbersAlone')!);
+    expect(afterWait.run?.elapsedMinutes).toBe(39);
     expect(timeStatus(DOWN_TO_THE_LAST_MATCH, afterWait.run!.elapsedMinutes).phase?.id).toBe('bitter');
   });
 
