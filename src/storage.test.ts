@@ -45,6 +45,7 @@ describe('save compatibility', () => {
     const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
     expect(state.run?.visitedSceneIds).toEqual(['chapelNave']);
     expect(state.run?.elapsedMinutes).toBe(0);
+    expect(state.run?.riskTier).toBe('HIGH');
     expect(state.mostRecentScenarioId).toBeNull();
     expect(state.recentScenarioIds).toEqual([]);
     expect(state.bank).toEqual(['graveCoin']);
@@ -65,6 +66,19 @@ describe('save compatibility', () => {
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
+  });
+
+  it('preserves risk tier, risk history, injury, inventory loss and scene through save/reload', () => {
+    const character = newCharacter('Risk Resume');
+    const run = startRun(character, BROKEN_BELL);
+    run.sceneId = 'chapelNave'; run.health = 4; run.inventory = ['smallKnife']; run.flags.push('beamUnstable');
+    const state: SaveData = { version: 1, bank: [], character, run, recentRiskHistory: [
+      { scenarioId: 'under-the-ice', tier: 'SEVERE' }, { scenarioId: 'market-day', tier: 'LOW' },
+    ] };
+    const storage = memoryStorage(); saveGame(state, storage);
+    const resumed = loadSave(storage);
+    expect(resumed.run).toMatchObject({ sceneId: 'chapelNave', health: 4, inventory: ['smallKnife'], riskTier: 'HIGH', flags: ['beamUnstable'] });
+    expect(resumed.recentRiskHistory).toEqual(state.recentRiskHistory);
   });
 
   it('migrates an older active save with one durable run ID and preserves the queued counter IDs', () => {

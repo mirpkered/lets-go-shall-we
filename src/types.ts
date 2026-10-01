@@ -1,5 +1,8 @@
 import type { EasterEggContext } from './easterEggs';
 export type ItemCategory = 'weapon' | 'armor' | 'tool' | 'charm' | 'relic' | 'consumable' | 'valuable' | 'artifact' | 'run-only';
+export type RiskTier = 'LOW' | 'MODERATE' | 'HIGH' | 'SEVERE';
+
+export interface RecentRiskEntry { scenarioId: string; tier: RiskTier }
 
 export interface Item {
   id: string;
@@ -40,6 +43,7 @@ export interface RunState {
   globalCompletionQueued?: boolean;
   /** Marks global authored-ending handling independently from traveler progression. */
   authoredEndingRecorded?: boolean;
+  riskHistoryRecorded?: boolean;
   completionCountRecorded?: boolean;
   completionMilestoneReached?: 10 | 20;
   /** Meaningful forward story transitions completed in this run. */
@@ -51,6 +55,8 @@ export interface RunState {
   inventorySources?: Record<string, InventorySource>;
   completionQualification?: 'substantive' | 'nonSubstantive';
   scenarioId: string;
+  /** Captured at run start so the selection diagnostic/history remains stable across reloads. */
+  riskTier?: RiskTier;
   sceneId: string;
   health: number;
   inventory: string[];
@@ -84,6 +90,8 @@ export interface SaveData {
   run: RunState | null;
   mostRecentScenarioId?: string | null;
   recentScenarioIds?: string[];
+  /** Newest first. Legacy saves start with an empty history; QA runs never enter it. */
+  recentRiskHistory?: RecentRiskEntry[];
   pendingGlobalCompletions?: string[];
   recentEasterEggIds?: string[];
 }

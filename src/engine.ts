@@ -1,7 +1,8 @@
 import { ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
-import type { Character, Choice, Effects, InventorySource, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
+import type { Character, Choice, Effects, InventorySource, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
+import { scenarioRiskTier } from './riskClassification';
 import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
@@ -39,7 +40,7 @@ export function startRun(character: Character, scenario: Scenario, random = Math
   const inventorySources: Record<string, InventorySource> = Object.fromEntries(inventory.map((id) => [id, 'starting' as const]));
   for (const id of carriedItems) inventorySources[id] = 'carried';
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, riskTier: scenarioRiskTier(scenario), sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function countQualifyingStoryTransitions(scenario: Scenario, visitedSceneIds: string[] | undefined): number {
@@ -241,6 +242,11 @@ function recordScenarioEnding(state: SaveData): void {
   if (!run || run.qaMode) return;
   state.mostRecentScenarioId = run.scenarioId;
   state.recentScenarioIds = [run.scenarioId, ...(state.recentScenarioIds ?? []).filter((id) => id !== run.scenarioId)].slice(0, RECENT_SCENARIO_WINDOW);
+  if (!run.riskHistoryRecorded && (run.status === 'success' || run.status === 'death')) {
+    const entry: RecentRiskEntry = { scenarioId: run.scenarioId, tier: run.riskTier ?? 'LOW' };
+    state.recentRiskHistory = [entry, ...(state.recentRiskHistory ?? [])].slice(0, 8);
+    run.riskHistoryRecorded = true;
+  }
 }
 
 function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = false): void {

@@ -15,7 +15,7 @@ This roadmap separates stabilization from possible expansion. It has no promised
 
 - Expand playtest coverage across all registered adventures and mark which have hands-on coverage.
 - Review scenario balance, risk/consequence consistency, item usefulness/overlap, and the practical money economy.
-- Review recent adventure sequencing and thematic clustering after the category taxonomy is mature; uniform random selection remains current behavior.
+- Review the risk-tier selection balance from play data and author reviews; the current selector uses soft completion-count and recent-risk weighting, without altering in-story odds.
 - Review world-continuity callbacks and high-confidence weak scenarios without forcing crossovers.
 - Reassess reward frequency from real play, keeping fictional provenance and varied narrative rewards ahead of item quotas.
 

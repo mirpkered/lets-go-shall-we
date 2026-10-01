@@ -6,6 +6,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 
 - [ ] Read the current rules and inspect the adventure roster, continuity registry, history flags, item catalog, and relevant geography/events.
 - [ ] Choose a clear premise, tone, stakes, and a fresh-traveler reason to participate. Establish time, weather, and place where they matter.
+- [ ] Assign a LOW / MODERATE / HIGH / SEVERE risk tier from actual consequence potential, not genre or atmosphere; preserve intended quiet adventures.
 - [ ] Decide whether pressure/time is useful; identify which actions advance fictional time and what visible changes follow.
 - [ ] Review NPC names for variety and intentional recurrence.
 
@@ -28,6 +29,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Choices provide real agency, understandable consequences, and consistently framed alternatives.
 - [ ] NPCs explain resources and constraints but do not decide the player’s strategy.
 - [ ] Foreshadow meaningful danger; risky actions generally retain a chance where physically possible.
+- [ ] For lethal branches, show a plausible hazard and warning/escalation; account for mitigation, retreat, and any price retreat carries. Do not add fatality as an arbitrary difficulty bump.
 - [ ] Keep a fresh, broke traveler viable. Carried tools should offer specific optional methods, not hidden prerequisites.
 - [ ] Check tool capability and accessibility; identify what each item acts on and where.
 - [ ] Consider quiet/partial outcomes and situations with no perfect solution where they fit.

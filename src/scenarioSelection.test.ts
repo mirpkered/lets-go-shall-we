@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isQaMode, selectScenario } from './scenarioSelection';
+import { isQaMode, scenarioSelectionWeights, selectScenario, selectionTierSummary } from './scenarioSelection';
 import { SCENARIOS } from './scenarios';
 import { findScenarioGraphProblems } from './scenarioGraph';
 import { failCharacter, finishSuccess, startAdventure } from './engine';
@@ -7,6 +7,7 @@ import { newCharacter } from './engine';
 import type { SaveData } from './types';
 import { ITEMS } from './items';
 import { renderQaPanel } from './qaPanel';
+import { RISK_TIERS, scenarioRiskTier } from './riskClassification';
 
 describe('player scenario selection and QA mode', () => {
   it('selects a registered scenario for a normal start', () => {
@@ -58,9 +59,71 @@ describe('player scenario selection and QA mode', () => {
     completed.run!.status = 'success';
     completed = finishSuccess(completed, null);
     expect(completed.recentScenarioIds).toEqual([SCENARIOS[1].id, SCENARIOS[0].id]);
+    expect(completed.recentRiskHistory).toHaveLength(1);
+    expect(completed.recentRiskHistory?.[0]).toMatchObject({ scenarioId: SCENARIOS[1].id, tier: scenarioRiskTier(SCENARIOS[1]) });
+    expect(abandoned.recentRiskHistory).toBeUndefined();
+    const diedRun = startAdventure(base, SCENARIOS[2]);
+    diedRun.run!.status = 'death';
+    expect(failCharacter(diedRun).recentRiskHistory).toEqual([{ scenarioId: SCENARIOS[2].id, tier: scenarioRiskTier(SCENARIOS[2]) }]);
     const qa = startAdventure(base, SCENARIOS[2]);
     qa.run!.qaMode = true;
-    expect(failCharacter(qa).recentScenarioIds).toBeUndefined();
+    const qaEnded = failCharacter(qa);
+    expect(qaEnded.recentScenarioIds).toBeUndefined();
+    expect(qaEnded.recentRiskHistory).toBeUndefined();
+  });
+
+  it('assigns every registered scenario a valid consequence-based risk tier', () => {
+    expect(SCENARIOS).toHaveLength(175);
+    for (const scenario of SCENARIOS) expect(RISK_TIERS).toContain(scenarioRiskTier(scenario));
+    for (const scenario of SCENARIOS.filter((entry) => Object.values(entry.scenes).some((scene) => scene.ending === 'death'))) {
+      expect(['HIGH', 'SEVERE']).toContain(scenarioRiskTier(scenario));
+    }
+    const distribution = Object.fromEntries(RISK_TIERS.map((tier) => [tier, SCENARIOS.filter((scenario) => scenarioRiskTier(scenario) === tier).length]));
+    expect(distribution).toEqual({ LOW: 112, MODERATE: 34, HIGH: 20, SEVERE: 9 });
+    expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'gone-fishing')!)).toBe('LOW');
+    expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'under-the-ice')!)).toBe('SEVERE');
+    expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'high-water')!)).toBe('SEVERE');
+    expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'smoke-on-the-hill')!)).toBe('HIGH');
+  });
+
+  it('increases higher-tier selection shares gradually with traveler longevity', () => {
+    const fresh = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 0 });
+    const established = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 20 });
+    const longLived = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 60 });
+    expect(established.HIGH.totalWeight + established.SEVERE.totalWeight).toBeGreaterThan(fresh.HIGH.totalWeight + fresh.SEVERE.totalWeight);
+    expect(longLived.HIGH.totalWeight + longLived.SEVERE.totalWeight).toBeGreaterThan(established.HIGH.totalWeight + established.SEVERE.totalWeight);
+    expect(fresh.LOW.totalWeight).toBeGreaterThan(fresh.HIGH.totalWeight);
+    expect(longLived.LOW.count).toBeGreaterThan(0);
+    expect(scenarioSelectionWeights(SCENARIOS, { adventuresCompleted: 80 }).filter(({ tier }) => tier === 'LOW').every(({ weight }) => weight > 0)).toBe(true);
+  });
+
+  it('keeps each risk tier possible to a fresh traveler instead of locking to a prescribed order', () => {
+    const examples = ['market-day', 'bridge-out', 'smoke-on-the-hill', 'under-the-ice'].map((id) => SCENARIOS.find((scenario) => scenario.id === id)!);
+    const weights = scenarioSelectionWeights(examples, { adventuresCompleted: 0 });
+    let cumulative = 0;
+    for (const entry of weights) {
+      expect(entry.weight).toBeGreaterThan(0);
+      expect(selectScenario(examples, null, () => cumulative + entry.weight / 2, { adventuresCompleted: 0 })?.id).toBe(entry.scenario.id);
+      cumulative += entry.weight;
+    }
+  });
+
+  it('lets an extended low-risk streak softly increase higher-risk selection weights', () => {
+    const pressure = { adventuresCompleted: 8, recentRiskHistory: Array.from({ length: 5 }, (_, index) => ({ scenarioId: `low-${index}`, tier: 'LOW' as const })) };
+    const ordinary = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 8 });
+    const afterLows = selectionTierSummary(SCENARIOS, null, pressure);
+    expect(afterLows.HIGH.totalWeight + afterLows.SEVERE.totalWeight).toBeGreaterThan(ordinary.HIGH.totalWeight + ordinary.SEVERE.totalWeight);
+    expect(selectScenario(SCENARIOS, null, () => 0, pressure)).toBeDefined();
+  });
+
+  it('does not guarantee a dangerous story on a fixed cadence and gives recent danger room to relax', () => {
+    const lowOnly = SCENARIOS.filter((entry) => scenarioRiskTier(entry) === 'LOW');
+    expect(selectScenario(lowOnly, null, () => 0, { adventuresCompleted: 80 })?.id).toBe(lowOnly[0].id);
+    const baseline = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 40 });
+    const recentDanger = selectionTierSummary(SCENARIOS, null, { adventuresCompleted: 40, recentRiskHistory: [
+      { scenarioId: 'high-a', tier: 'HIGH' }, { scenarioId: 'severe-b', tier: 'SEVERE' }, { scenarioId: 'high-c', tier: 'HIGH' },
+    ] });
+    expect(recentDanger.HIGH.totalWeight + recentDanger.SEVERE.totalWeight).toBeLessThan(baseline.HIGH.totalWeight + baseline.SEVERE.totalWeight);
   });
 
   it('starts either QA-selected scenario directly through the same run initializer', () => {
@@ -84,22 +147,25 @@ describe('player scenario selection and QA mode', () => {
     const empty: SaveData = { version: 1, bank: [], character: null, run: null };
     expect(renderQaPanel(isQaMode(''), empty, SCENARIOS, ITEMS)).toBe('');
     const tools = renderQaPanel(isQaMode('?qa=1'), empty, SCENARIOS, ITEMS);
-    expect(tools).toContain('Start For Whom the Bell Tolls');
-    expect(tools).toContain('Start All Aboard!');
-    expect(tools).toContain('Start Aww, Rats!!');
-    expect(tools).toContain('Start What’s Mine is Mine');
-    expect(tools).toContain('Start The Last Room on the Left');
-    expect(tools).toContain('Start Dead Man’s Hand');
-    expect(tools).toContain('Start Bridge Out');
-    expect(tools).toContain('Start The Long Way Home');
-    expect(tools).toContain('Start No Vacancy');
-    expect(tools).toContain('Start Cold Storage');
-    expect(tools).toContain('Start High Water');
-    expect(tools).toContain('Start One More Round');
-    expect(tools).toContain('Start The Road Below');
-    expect(tools).toContain('Start Smoke on the Hill');
-    expect(tools).toContain('Start Down to the Last Match');
-    expect(tools).toContain('Start The Man in the Ditch');
+    expect(tools).toContain('For Whom the Bell Tolls · HIGH');
+    expect(tools).toContain('All Aboard! · HIGH');
+    expect(tools).toContain('Aww, Rats!! · HIGH');
+    expect(tools).toContain('What’s Mine is Mine · HIGH');
+    expect(tools).toContain('The Last Room on the Left · HIGH');
+    expect(tools).toContain('Dead Man’s Hand · HIGH');
+    expect(tools).toContain('Bridge Out · MODERATE');
+    expect(tools).toContain('The Long Way Home · HIGH');
+    expect(tools).toContain('No Vacancy · SEVERE');
+    expect(tools).toContain('Cold Storage · HIGH');
+    expect(tools).toContain('High Water · SEVERE');
+    expect(tools).toContain('One More Round · MODERATE');
+    expect(tools).toContain('The Road Below · HIGH');
+    expect(tools).toContain('Smoke on the Hill · HIGH');
+    expect(tools).toContain('Down to the Last Match · HIGH');
+    expect(tools).toContain('The Man in the Ditch · HIGH');
+    expect(tools).toContain('Risk checks');
+    expect(tools).toContain('data-risk-tier="SEVERE"');
+    expect(tools).toContain('nextSelectionRiskWeights');
     expect(tools).toContain('Clear all local save data');
     expect(tools).toContain('data-qa-start');
   });
@@ -109,6 +175,9 @@ describe('player scenario selection and QA mode', () => {
     const active: SaveData = { version: 1, bank: [], character, run: startAdventure({ version: 1, bank: [], character, run: null }, SCENARIOS[0]).run };
     const tools = renderQaPanel(true, active, SCENARIOS, ITEMS);
     expect(tools).toContain('Clear active run');
+    expect(tools).toContain('riskTier');
+    expect(tools).toContain('recentRiskHistory');
+    expect(tools).toContain('nextSelectionRiskWeights');
     expect(tools).not.toContain('data-qa-start');
   });
 

@@ -2,6 +2,7 @@ import type { SaveData } from './types';
 import { getScenario } from './scenarios';
 import { countQualifyingStoryTransitions, pickRunRandomSelections } from './engine';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
+import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
 export const QA_SAVE_KEY = 'mirpworks.lets-go-shall-we.qa.v1';
@@ -50,6 +51,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         migrated = true;
       }
       const scenario = getScenario(parsed.run.scenarioId);
+      if (!parsed.run.riskTier && scenario) { parsed.run.riskTier = scenarioRiskTier(scenario); migrated = true; }
       if (!Number.isFinite(parsed.run.qualifyingStoryTransitions)) {
         parsed.run.qualifyingStoryTransitions = scenario
           ? countQualifyingStoryTransitions(scenario, parsed.run.visitedSceneIds)
@@ -99,6 +101,11 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     }
     parsed.mostRecentScenarioId ??= null;
     parsed.recentScenarioIds = [...new Set(Array.isArray(parsed.recentScenarioIds) ? parsed.recentScenarioIds.filter((id): id is string => typeof id === 'string') : parsed.run?.qaMode ? [] : parsed.mostRecentScenarioId ? [parsed.mostRecentScenarioId] : [])].slice(0, RECENT_SCENARIO_WINDOW);
+    if (parsed.recentRiskHistory !== undefined) {
+      const history = (Array.isArray(parsed.recentRiskHistory) ? parsed.recentRiskHistory : []).filter((entry) => entry && typeof entry.scenarioId === 'string' && RISK_TIERS.includes(entry.tier)).slice(0, 8);
+      if (JSON.stringify(history) !== JSON.stringify(parsed.recentRiskHistory)) migrated = true;
+      parsed.recentRiskHistory = history;
+    }
     if (Array.isArray(parsed.recentEasterEggIds)) parsed.recentEasterEggIds = [...new Set(parsed.recentEasterEggIds.filter((id): id is string => typeof id === 'string'))].slice(0, 6);
     if (migrated) storage.setItem?.(key, JSON.stringify(parsed));
     return parsed;

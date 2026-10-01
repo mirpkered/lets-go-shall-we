@@ -194,7 +194,10 @@ function renderHome(): void {
     <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
   bindHomeSceneQaControls();
   document.querySelector('#begin')!.addEventListener('click', () => {
-    const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId);
+    const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId, Math.random, {
+      adventuresCompleted: state.character?.adventuresCompleted ?? 0,
+      recentRiskHistory: state.recentRiskHistory,
+    });
     if (scenario) startScenario(scenario.id);
   });
   document.querySelector('#bank')!.addEventListener('click', () => { screen = 'bank'; render(); });
