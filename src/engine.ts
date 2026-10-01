@@ -46,6 +46,7 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.historyFlags || requirement.historyFlags.every((id) => (character.historyFlags ?? []).includes(id)))
     && (!requirement.minHealth || run.health >= requirement.minHealth)
     && (requirement.minMoney === undefined || character.money >= requirement.minMoney)
+    && (requirement.maxMoney === undefined || character.money <= requirement.maxMoney)
     && (requirement.minElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) >= requirement.minElapsedMinutes)
     && (requirement.maxElapsedMinutes === undefined || (run.elapsedMinutes ?? 0) <= requirement.maxElapsedMinutes)
     && (!requirement.selections || Object.entries(requirement.selections).every(([key, value]) => run.randomSelections?.[key] === value));

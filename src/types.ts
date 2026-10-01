@@ -67,6 +67,7 @@ export interface Requirement {
   historyFlags?: string[];
   minHealth?: number;
   minMoney?: number;
+  maxMoney?: number;
   minElapsedMinutes?: number;
   maxElapsedMinutes?: number;
   selections?: Record<string, string>;
