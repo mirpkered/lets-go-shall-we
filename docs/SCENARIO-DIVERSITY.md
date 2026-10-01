@@ -52,3 +52,4 @@ Use the report before every large batch:
 7. Re-check forward-only flow, fair consequence, state-aware narration, fresh-traveler viability, and mobile fit.
 
 Do not make a universal scenario template. The framework measures variety and reveals gaps; flexible scenario data remains the authoring medium.
+

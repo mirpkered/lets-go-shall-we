@@ -25,6 +25,22 @@ export interface Item {
   description: string;
   category: ItemCategory;
   carryable: boolean;
+  upgrades?: ItemUpgradeDefinition[];
+  maxUpgrades?: number;
+}
+
+export interface ItemUpgradeDefinition {
+  id: string;
+  name: string;
+  description: string;
+  /** Upgrades in the same group replace one another. */
+  group?: string;
+}
+export type ItemCondition = 'NORMAL' | 'DAMAGED' | 'BROKEN';
+export interface PersistentItemState {
+  condition: ItemCondition;
+  upgrades: { id: string; provenance?: string }[];
+  provenance: string[];
 }
 
 export interface Character {
@@ -66,6 +82,7 @@ export interface RunState {
   /** Persistent state at run start, used to recognize real completion outcomes. */
   startingMoney?: number;
   startingCarriedItems?: string[];
+  startingItemStates?: Record<string, PersistentItemState>;
   /** Provenance for the broad usable inventory shown during this adventure. */
   inventorySources?: Record<string, InventorySource>;
   completionQualification?: 'substantive' | 'nonSubstantive';
@@ -103,6 +120,8 @@ export interface SaveData {
   bank: string[];
   character: Character | null;
   run: RunState | null;
+  /** Persistent state keyed by unique item ID; carried and banked gear keep their exact state. */
+  itemStates?: Record<string, PersistentItemState>;
   mostRecentScenarioId?: string | null;
   recentScenarioIds?: string[];
   /** Newest first. Legacy saves start with an empty history; QA runs never enter it. */
@@ -113,6 +132,12 @@ export interface SaveData {
 
 export interface Requirement {
   items?: string[];
+  usableItems?: string[];
+  notUsableItems?: string[];
+  anyUsableItems?: string[];
+  itemConditions?: Record<string, ItemCondition[]>;
+  itemUpgrades?: Record<string, string[]>;
+  notItemUpgrades?: Record<string, string[]>;
   notItems?: string[];
   anyItems?: string[];
   flags?: string[];
@@ -143,6 +168,12 @@ export interface Effects {
   loseCarriedItem?: boolean;
   loseCarriedItems?: boolean;
   gainItems?: string[];
+  damageItems?: string[];
+  breakItems?: string[];
+  repairItems?: string[];
+  repairItemProvenance?: Record<string, string>;
+  addItemUpgrades?: { itemId: string; upgradeId: string; provenance?: string }[];
+  replaceItems?: { oldItemId: string; newItemId: string; provenance?: string }[];
   loseItems?: string[];
   knowledge?: string[];
   lore?: string[];
@@ -166,6 +197,7 @@ export interface ChanceBranch {
   successEffects?: Effects;
   failureEffects?: Effects;
   bonusItems?: string[];
+  bonusUpgrades?: { itemId: string; upgradeId: string }[];
   bonusFlags?: string[];
   bonusSelections?: Record<string, string>;
   penaltySelections?: Record<string, string>;
@@ -217,3 +249,4 @@ export interface RunRandomSelection {
   id: string;
   values: { value: string; weight?: number }[];
 }
+

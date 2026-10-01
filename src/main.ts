@@ -1,5 +1,5 @@
 import './styles.css';
-import { carryCapacity, choose, depositCarried, discardBankItem, emptyBank, failCharacter, finishRewardResolution, forceQaEasterEgg, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { addUpgrade, breakItem, carryCapacity, choose, depositCarried, discardBankItem, emptyBank, failCharacter, finishRewardResolution, forceQaEasterEgg, getCarriedItems, itemCondition, itemState, meets, newCharacter, openRewardResolution, placeReward, removeUpgrade, repairItem, retireCharacter, runText, sceneText, setCarriedItems, setItemCondition, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -37,6 +37,13 @@ let qaSelectionMonth: number | null = null;
 
 function persist(): void { qaEnabled ? saveQaGame(state) : saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
+function itemStateLabel(id: string): string {
+  const record = itemState(state, id);
+  const condition = record.condition === 'NORMAL' ? 'Sound' : record.condition === 'DAMAGED' ? 'Damaged' : 'Broken';
+  const upgrades = record.upgrades.map(({ id: upgradeId }) => ITEMS[id]?.upgrades?.find(({ id: candidateId }) => candidateId === upgradeId)?.name).filter((name): name is string => !!name);
+  return [condition, ...upgrades].join(' · ');
+}
+function itemDescription(id: string): string { return `${ITEMS[id]?.description ?? ''} · ${itemStateLabel(id)}`; }
 function safeText(text: string): string { return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!); }
 function activeScenario() { return state.run ? getScenario(state.run.scenarioId) : undefined; }
 function startScenario(scenarioId: string): void {
@@ -130,6 +137,34 @@ function bindQaPanel(): void {
     state.run.inventory = [...new Set([...state.run.inventory, itemId])];
     state.run.acquiredThisRun = [...new Set([...state.run.acquiredThisRun, itemId])];
     persist(); render();
+  });
+  document.querySelector('[data-qa-set-item-condition]')?.addEventListener('click', () => {
+    const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
+    const condition = document.querySelector<HTMLSelectElement>('#qa-item-condition')?.value as 'NORMAL' | 'DAMAGED' | 'BROKEN' | undefined;
+    if (!itemId || !condition) return;
+    state = setItemCondition(state, itemId, condition); persist(); render();
+  });
+  document.querySelector('[data-qa-break-item]')?.addEventListener('click', () => {
+    const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
+    if (!itemId) return;
+    state = breakItem(state, itemId); persist(); render();
+  });
+  document.querySelector('[data-qa-repair-item]')?.addEventListener('click', () => {
+    const itemId = document.querySelector<HTMLSelectElement>('#qa-item')?.value;
+    if (!itemId) return;
+    state = repairItem(state, itemId, 'QA repair'); persist(); render();
+  });
+  document.querySelector('[data-qa-add-upgrade]')?.addEventListener('click', () => {
+    const choice = document.querySelector<HTMLSelectElement>('#qa-upgrade')?.value;
+    if (!choice) return;
+    const [itemId, upgradeId] = choice.split(':');
+    state = addUpgrade(state, itemId, upgradeId, 'QA test'); persist(); render();
+  });
+  document.querySelector('[data-qa-remove-upgrade]')?.addEventListener('click', () => {
+    const choice = document.querySelector<HTMLSelectElement>('#qa-upgrade')?.value;
+    if (!choice) return;
+    const [itemId, upgradeId] = choice.split(':');
+    state = removeUpgrade(state, itemId, upgradeId); persist(); render();
   });
 }
 function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
@@ -243,7 +278,7 @@ function renderPlay(): void {
   const gearSection = (title: string, ids: string[], getDetails: (id: string) => string) => ids.length ? `<section class="gear-group"><h3>${title}</h3>${ids.map((id) => `<article><strong>${safeText(itemName(id))}</strong><small>${safeText(getDetails(id))}</small></article>`).join('')}</section>` : '';
   shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}" aria-label="Carried gear: ${carriedItems.length} of ${capacity} slots used">${icon('bag')}<span>${carriedItems.length}/${capacity}</span><b class="sr-only">Available Gear</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
-    ${inventoryOpen ? `<aside class="inventory-panel" aria-label="Available Gear"><div><span class="eyebrow">Available Gear</span><button id="closeInventory" aria-label="Close inventory">×</button></div><p class="carry-usage">Carried by traveler · ${carriedItems.length}/${capacity} slots used</p>${gearSection('Carried gear', gear.carried, (id) => ITEMS[id]?.description ?? '')}${gearSection('Available this adventure', gear.available.map(({ id }) => id), (id) => { const item = gear.available.find((entry) => entry.id === id)!; return `${item.label} · ${ITEMS[id]?.description ?? ''}`; })}${(character.ownedAssets ?? []).length ? `<section class="gear-group owned-assets"><h3>Owned property</h3>${character.ownedAssets!.map((asset) => `<article><strong>${safeText(asset.name)}</strong><small>${safeText(asset.description)}</small></article>`).join('')}</section>` : ''}${!run.inventory.length && !(character.ownedAssets ?? []).length ? '<p class="empty">No gear or property to show.</p>' : ''}</aside>` : ''}
+    ${inventoryOpen ? `<aside class="inventory-panel" aria-label="Available Gear"><div><span class="eyebrow">Available Gear</span><button id="closeInventory" aria-label="Close inventory">×</button></div><p class="carry-usage">Carried by traveler · ${carriedItems.length}/${capacity} slots used</p>${gearSection('Carried gear', gear.carried, itemDescription)}${gearSection('Available this adventure', gear.available.map(({ id }) => id), (id) => { const item = gear.available.find((entry) => entry.id === id)!; return `${item.label} · ${itemDescription(id)}`; })}${(character.ownedAssets ?? []).length ? `<section class="gear-group owned-assets"><h3>Owned property</h3>${character.ownedAssets!.map((asset) => `<article><strong>${safeText(asset.name)}</strong><small>${safeText(asset.description)}</small></article>`).join('')}</section>` : ''}${!run.inventory.length && !(character.ownedAssets ?? []).length ? '<p class="empty">No gear or property to show.</p>' : ''}</aside>` : ''}
     <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${timing.phase ? `<p class="story-time" aria-label="Story time: ${timing.phase.label}">${timing.phase.label}</p>` : ''}${run.message ? `<p class="result-message">${run.message}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
     <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${safeText(runText(choice.label, state))}</strong>${choice.hint ? `<small>${safeText(runText(choice.hint, state))}</small>` : ''}</button>`).join('')}</section>`, `playing scenario-${scenario.id}`);
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
@@ -345,8 +380,8 @@ function renderBank(): void {
   const confirmationTitle = pendingBankDestructive?.kind === 'empty' ? 'Empty the bank?' : `Discard ${pendingBankDestructive ? itemName(pendingBankDestructive.itemId) : 'item'}?`;
   const confirmationAction = pendingBankDestructive?.kind === 'empty' ? 'Empty Bank' : 'Discard Item';
   shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Persistent storage</span><h1>The Bank</h1></div></header><section class="bank-note"><p>Banked items survive death and retirement. Lore, knowledge, and character history stay with a living character and cannot be stored here.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
-    <section class="bank-section"><h2>Carried by character ${state.character ? `(${carried.length}/${capacity})` : ''}</h2>${state.character ? (carried.length ? carried.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div>${state.bank.length < BANK_CAPACITY ? `<button data-deposit="${id}">Deposit</button>` : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : `<details class="bank-swap-options"><summary>Swap</summary><div>${state.bank.map((bankId) => `<button data-bank-swap="${bankId}" data-carried="${id}">for ${itemName(bankId)}</button>`).join('')}</div></details>`}</article>`).join('') : '<p class="empty">No items are being carried. Withdraw from the Bank to prepare for the next adventure.</p>') : '<p class="empty">No traveler is active. Withdrawing an item will prepare a new traveler for the road.</p>'}</section>
-    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${ITEMS[id].description}</small></div><div class="bank-item-actions">${(!state.character || carried.length < capacity) ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
+    <section class="bank-section"><h2>Carried by character ${state.character ? `(${carried.length}/${capacity})` : ''}</h2>${state.character ? (carried.length ? carried.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${itemDescription(id)}</small></div>${state.bank.length < BANK_CAPACITY ? `<button data-deposit="${id}">Deposit</button>` : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved bank is above capacity.</span>' : `<details class="bank-swap-options"><summary>Swap</summary><div>${state.bank.map((bankId) => `<button data-bank-swap="${bankId}" data-carried="${id}">for ${itemName(bankId)}</button>`).join('')}</div></details>`}</article>`).join('') : '<p class="empty">No items are being carried. Withdraw from the Bank to prepare for the next adventure.</p>') : '<p class="empty">No traveler is active. Withdrawing an item will prepare a new traveler for the road.</p>'}</section>
+    <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${itemDescription(id)}</small></div><div class="bank-item-actions">${(!state.character || carried.length < capacity) ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
     ${emptyBankCopy ? `<section class="bank-destructive-controls"><div><h2>Permanent disposal</h2><p>Discard stored items permanently. This cannot be undone.</p></div><button type="button" class="bank-discard bank-empty-button" id="empty-bank">Empty Bank</button></section>` : ''}
     ${confirmationText ? `<dialog class="bank-confirm-dialog" id="bank-confirm-dialog" aria-labelledby="bank-confirm-title" aria-describedby="bank-confirm-message"><div class="bank-confirm-content"><span class="eyebrow">Permanent disposal</span><h2 id="bank-confirm-title">${safeText(confirmationTitle)}</h2><p id="bank-confirm-message">${safeText(confirmationText)}</p><div class="bank-confirm-actions"><button type="button" class="bank-cancel" id="cancel-bank-disposal" autofocus>Cancel</button><button type="button" class="bank-discard bank-confirm-destructive" id="confirm-bank-disposal">${confirmationAction}</button></div></div></dialog>` : ''}`, 'subscreen');
   document.querySelector('#back')!.addEventListener('click', () => { screen = 'home'; render(); });
@@ -400,3 +435,4 @@ function renderRetire(): void {
 render();
 void flushPendingGlobalCompletions();
 showLaunchSplash();
+

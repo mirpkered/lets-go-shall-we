@@ -2,6 +2,8 @@
 
 `src/items.ts` is the source of truth for item IDs, names, descriptions, and carryability. This page inventories its **44 carryable items** to support authoring and reduce duplication. Starting Small Knife and Lantern are not carryable. Local keys, clues, and temporary objects are run-only and are not listed here.
 
+Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra carry slots.
+
 “Useful in” describes a plausible capability/theme, not a guaranteed bonus or a promise that every named scenario currently checks that item. Scenario requirements and tests define actual interactions. Items do not stack generic bonuses.
 
 | ID | Player-facing name | Distinct function | Useful in | Use / overlap note |
@@ -52,3 +54,4 @@
 | `joinersFoldingRule` | Joiner’s Folding Rule | Measure and lay out simple work | Carpentry, repairs, property disputes | Reusable; supports careful measurement, not surveying-grade precision. |
 
 Before adding another carryable, check for a narrow capability already represented above. Prefer money, knowledge, history, or a narrative reward when another tool would overlap without adding a distinct future use.
+

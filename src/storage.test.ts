@@ -39,7 +39,7 @@ describe('save compatibility', () => {
   it('adds visited-scene and recent-scenario defaults to an older active save', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
-    const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, ...legacyRun } = run;
+    const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, startingItemStates: _itemStates, ...legacyRun } = run;
     const { historyFlags: _historyFlags, ...legacyCharacter } = character;
     const oldSave = { version: 1, bank: ['graveCoin'], character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave' } };
     const state = loadSave(memoryStorage(JSON.stringify(oldSave)));
@@ -50,13 +50,15 @@ describe('save compatibility', () => {
     expect(state.recentScenarioIds).toEqual([]);
     expect(state.bank).toEqual(['graveCoin']);
     expect(state.character?.historyFlags).toEqual([]);
+    expect(state.itemStates).toEqual({});
+    expect(state.run?.startingItemStates).toMatchObject({ smallKnife: { condition: 'NORMAL' }, lantern: { condition: 'NORMAL' } });
   });
 
   it('persists run history and recent scenario selection exactly', () => {
     const character = newCharacter('Recent Save');
     character.historyFlags = ['returned_for_help'];
     const state: SaveData = {
-      version: 1, bank: ['yewCharm'], character,
+      version: 1, bank: ['yewCharm'], itemStates: {}, character,
       run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },
       mostRecentScenarioId: 'broken-bell',
       recentScenarioIds: ['broken-bell'],
@@ -66,6 +68,33 @@ describe('save compatibility', () => {
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
+  });
+
+  it('persists banked and carried item condition, upgrades, provenance, and the active start snapshot exactly', () => {
+    const character = newCharacter('Gear Save');
+    character.carriedItems = ['travelRope'];
+    character.carriedItem = 'travelRope';
+    const run = startRun(character, BROKEN_BELL, Math.random, { travelRope: { condition: 'DAMAGED', upgrades: [{ id: 'splicedEyes', provenance: 'A ropewright' }], provenance: ['A ropewright'] } });
+    run.sceneId = 'chapelNave';
+    const state: SaveData = {
+      version: 1, bank: ['freightmansStrap'], character, run,
+      itemStates: {
+        travelRope: { condition: 'DAMAGED', upgrades: [{ id: 'splicedEyes', provenance: 'A ropewright' }], provenance: ['A ropewright'] },
+        freightmansStrap: { condition: 'BROKEN', upgrades: [{ id: 'stitchedBuckle' }], provenance: ['Harness maker'] },
+      },
+      mostRecentScenarioId: null, recentScenarioIds: [],
+    };
+    const storage = memoryStorage();
+    saveGame(state, storage);
+    expect(loadSave(storage)).toEqual(state);
+  });
+
+  it('safely discards unknown or unsupported equipment-state upgrades while preserving the item', () => {
+    const character = newCharacter('Old Gear Save');
+    const storage = memoryStorage(JSON.stringify({ version: 1, bank: ['travelRope'], character, run: null, itemStates: { travelRope: { condition: 'BROKEN', upgrades: [{ id: 'not-a-real-upgrade' }], provenance: [] }, unknownItem: { condition: 'DAMAGED', upgrades: [], provenance: [] } } }));
+    const migrated = loadSave(storage);
+    expect(migrated.bank).toEqual(['travelRope']);
+    expect(migrated.itemStates).toEqual({ travelRope: { condition: 'BROKEN', upgrades: [], provenance: [] } });
   });
 
   it('preserves risk tier, risk history, injury, inventory loss and scene through save/reload', () => {
@@ -103,7 +132,7 @@ describe('save compatibility', () => {
   it('preserves the current keepsake-selection view for an unfinished successful run', () => {
     const character = newCharacter('Reward Save');
     const state: SaveData = {
-      version: 1, bank: [], character,
+      version: 1, bank: [], itemStates: {}, character,
       run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true, authoredEndingRecorded: true, completionCountRecorded: true },
       mostRecentScenarioId: BROKEN_BELL.id,
       recentScenarioIds: [BROKEN_BELL.id],
@@ -136,3 +165,4 @@ describe('save compatibility', () => {
     expect(state.run?.visitedSceneIds).toContain('legacyResume');
   });
 });
+

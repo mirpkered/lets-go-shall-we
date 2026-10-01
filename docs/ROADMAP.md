@@ -9,6 +9,7 @@ This roadmap separates stabilization from possible expansion. It has no promised
 - Confirm traveler progression thresholds and multi-item carry behavior through long-lived and fresh travelers.
 - Verify the optional global counter’s actual deployment/configuration before presenting it as live.
 - Recheck recent-adventure exclusion, reward-to-Bank, full-carry/full-Bank, save migration, and QA isolation.
+- Playtest event-driven equipment damage, harness-maker repair/upgrades, and Bank/death state continuity before expanding upgrades to more items.
 - Keep documentation aligned with the implementation.
 
 ## Next — consolidate the library
@@ -36,3 +37,4 @@ This roadmap separates stabilization from possible expansion. It has no promised
 - Native packaging and additional progression ideas.
 - Analytics broader than the minimal anonymous completion aggregate.
 - Other speculative systems from older notes, only if they solve a demonstrated player need.
+

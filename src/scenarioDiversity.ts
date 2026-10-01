@@ -223,3 +223,4 @@ export const FANTASY_DENSITIES: FantasyDensity[] = ['NONE', 'AMBIGUOUS', 'EERIE'
 export const COMBAT_PRESENCES: CombatPresence[] = ['NONE', 'AVOIDABLE', 'POSSIBLE', 'LIKELY', 'UNAVOIDABLE', 'MULTIPLE'];
 export const LENGTH_CLASSES: LengthClass[] = ['VIGNETTE', 'STANDARD', 'EXTENDED', 'EPIC_SHORT'];
 export const SEASON_MONTHS = MONTHS;
+

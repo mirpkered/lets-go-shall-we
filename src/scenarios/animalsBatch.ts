@@ -122,8 +122,8 @@ export const THE_BROKEN_HARNESS: Scenario = {
   scenes: {
     cartLane: { id: 'cartLane', title: 'A Cart at the Roadside', tone: 'warning', text: 'A mule stands hitched to a small cart on the firm roadside. One leather strap from its harness has split, leaving the cart crooked but not rolling. The driver holds the mule by its lead and has already unloaded the heaviest crate. No one is hurt.', choices: [
       { id: 'inspectHarness', label: 'Look at the split strap and cart load', timeCost: 4, next: 'strapAssessed', effects: { knowledge: ['A roadside cart’s harness strap split; unloading weight and keeping the mule still made repair safer.'] } },
-      { id: 'offerStrap', label: 'Offer your Freightman’s Strap as a brace', requirements: { items: ['freightmansStrap'] }, hint: 'It can steady the load, but is not a proper harness repair.', timeCost: 3, next: 'strapBraced' },
-      { id: 'offerRope', label: 'Use your rope to keep the cart steady', requirements: { items: ['travelRope'] }, timeCost: 4, next: 'cartSecured' },
+      { id: 'offerStrap', label: 'Offer your Freightman’s Strap as a brace', requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'] }, hint: 'It can steady the load, but is not a proper harness repair.', timeCost: 3, next: 'strapBraced' },
+      { id: 'offerRope', label: 'Use your rope to keep the cart steady', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, timeCost: 4, next: 'cartSecured' },
       { id: 'leaveCart', label: 'Let the driver handle the repair', next: 'driverContinues' },
     ] },
     strapAssessed: { id: 'strapAssessed', title: 'A Split Leather Strap', tone: 'safe', text: 'The broken piece is part of the cart harness, not the mule’s leg gear. The driver has a spare buckle but needs both hands to fit a new strip. With the cart still unloaded and the mule held calmly, there is room to help.', choices: [
@@ -132,7 +132,7 @@ export const THE_BROKEN_HARNESS: Scenario = {
       { id: 'holdMuleSteady', label: 'Hold the lead while the driver repairs', timeCost: 5, next: 'harnessRepaired' },
     ] },
     strapBraced: { id: 'strapBraced', title: 'A Temporary Brace', tone: 'safe', text: 'The Freightman’s Strap holds the cart level while the mule rests. It is a brace for the journey to the next farm, not a replacement for the split harness. The driver will keep the load light.', choices: [
-      { id: 'walkToFarmBrace', label: 'Walk with the mule to the nearby farm', timeCost: 12, next: 'harnessRepaired', effects: { historyFlags: ['helped_brace_broken_cart_harness'] } },
+      { id: 'walkToFarmBrace', label: 'Walk with the mule to the nearby farm', timeCost: 12, next: 'harnessRepaired', effects: { historyFlags: ['helped_brace_broken_cart_harness'], damageItems: ['freightmansStrap'] } },
       { id: 'releaseBrace', label: 'Leave the strap and let the driver decide', next: 'driverContinues' },
     ] },
     cartSecured: { id: 'cartSecured', title: 'Stopped on Firm Ground', tone: 'safe', text: 'Your rope holds the cart still on the verge while the driver checks the harness. The mule can rest without the cart tugging against it. A nearby farm has leather and a proper buckle.', choices: [
@@ -147,7 +147,17 @@ export const THE_BROKEN_HARNESS: Scenario = {
       { id: 'takePausedToFarm', label: 'Help walk the cart to the harness maker', timeCost: 12, next: 'harnessRepaired' },
       { id: 'stepBackPaused', label: 'Leave the repair to the driver and maker', next: 'driverContinues' },
     ] },
-    harnessRepaired: ending('harnessRepaired', 'A Sound Strap Again', 'The split is replaced with sound leather. The driver reloads only after checking the buckle and giving the mule a little rest. Your help saved time without asking the animal to pull against broken gear.'),
+    harnessRepaired: { id: 'harnessRepaired', title: 'At the Harness Maker', tone: 'safe', text: 'The split harness strap is replaced with sound leather. The driver checks the buckle and gives the mule a little rest before loading again. The harness maker can mend or strengthen carried load gear if you want to take a moment.', choices: [
+      { id: 'repairFreightmansStrap', label: 'Have the maker mend your strap', requirements: { items: ['freightmansStrap'], itemConditions: { freightmansStrap: ['DAMAGED', 'BROKEN'] } }, timeCost: 5, next: 'harnessServiceDone', effects: { repairItems: ['freightmansStrap'], repairItemProvenance: { freightmansStrap: 'Mended by the harness maker' }, setFlags: ['harnessMakerMendedStrap'] } },
+      { id: 'reinforceFreightmansStrap', label: 'Ask for stronger buckle stitching', requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'], notItemUpgrades: { freightmansStrap: ['stitchedBuckle'] } }, timeCost: 6, next: 'harnessServiceDone', effects: { addItemUpgrades: [{ itemId: 'freightmansStrap', upgradeId: 'stitchedBuckle', provenance: 'Reinforced by the harness maker' }] } },
+      { id: 'spliceRopeHookEye', label: 'Have the maker bind your rope’s hook eye', requirements: { items: ['travelRope'], usableItems: ['travelRope'], notItemUpgrades: { travelRope: ['splicedEyes'] } }, timeCost: 6, next: 'harnessServiceDone', effects: { addItemUpgrades: [{ itemId: 'travelRope', upgradeId: 'splicedEyes', provenance: 'Leather-whipped by the harness maker' }] } },
+      { id: 'leaveHarnessMaker', label: 'Thank the maker and continue', next: 'harnessServiceDone' },
+    ] },
+    harnessServiceDone: { id: 'harnessServiceDone', title: 'A Sound Strap Again', tone: 'safe', text: 'The driver reloads only after checking the buckle and giving the mule a little rest. Your help saved time without asking the animal to pull against broken gear.', textVariants: [
+      { requirements: { items: ['freightmansStrap'], itemUpgrades: { freightmansStrap: ['stitchedBuckle'] } }, text: 'The driver reloads only after checking the buckle and giving the mule a little rest. The harness maker’s extra stitching sits neatly around your own strap’s buckle; your gear has been improved without taking a pack slot.' },
+      { requirements: { items: ['travelRope'], itemUpgrades: { travelRope: ['splicedEyes'] } }, text: 'The driver reloads only after checking the buckle and giving the mule a little rest. A short leather whipping now secures your rope’s hook eye more firmly; the improvement adds no pack weight.' },
+      { requirements: { flags: ['harnessMakerMendedStrap'], items: ['freightmansStrap'], itemConditions: { freightmansStrap: ['NORMAL'] } }, text: 'The driver reloads only after checking the buckle and giving the mule a little rest. Your own strap has been mended sound again, and the cart moves off at an easy walk.' },
+    ], choices: [], ending: 'success' },
     driverContinues: ending('driverContinues', 'A Pause by the Road', 'The driver keeps the mule on firm ground and plans to reach the nearby harness maker at a walk. The cart can wait; the animal is not made to pull on a failed strap.'),
   },
 };
@@ -333,3 +343,4 @@ export const THE_OLD_HORSE: Scenario = {
 };
 
 export const ANIMAL_ADVENTURES: Scenario[] = [THE_STRAY_HORSE, THE_CALF_IN_THE_MUD, THE_DOG_THAT_RETURNS, THE_BROKEN_HARNESS, LOOSE_IN_THE_MARKET, THE_OWNERLESS_MULE, THE_INJURED_DOG, THE_FRIGHTENED_TEAM, THE_BEE_YARD, THE_OLD_HORSE];
+

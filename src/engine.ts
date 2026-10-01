@@ -1,6 +1,6 @@
 import { ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
-import type { Character, Choice, Effects, InventorySource, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
+import type { Character, Choice, Effects, InventorySource, ItemCondition, PersistentItemState, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier } from './riskClassification';
 import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
@@ -33,14 +33,101 @@ export function pickRunRandomSelections(scenario: Scenario, random = Math.random
   }));
 }
 
-export function startRun(character: Character, scenario: Scenario, random = Math.random): RunState {
+export function itemState(state: SaveData, itemId: string): PersistentItemState {
+  return structuredClone(state.itemStates?.[itemId] ?? { condition: 'NORMAL', upgrades: [], provenance: [] });
+}
+
+export function itemCondition(state: SaveData, itemId: string): ItemCondition {
+  return state.itemStates?.[itemId]?.condition ?? 'NORMAL';
+}
+
+export function hasItem(state: SaveData, itemId: string): boolean {
+  return !!state.run?.inventory.includes(itemId) || getCarriedItems(state.character).includes(itemId) || state.bank.includes(itemId);
+}
+
+export function hasUpgrade(state: SaveData, itemId: string, upgradeId: string): boolean {
+  return !!state.itemStates?.[itemId]?.upgrades.some((upgrade) => upgrade.id === upgradeId);
+}
+
+function mutateItemState(state: SaveData, itemId: string, mutate: (record: PersistentItemState) => void): void {
+  const record = itemState(state, itemId);
+  mutate(record);
+  (state.itemStates ??= {})[itemId] = record;
+}
+
+export function setItemCondition(state: SaveData, itemId: string, condition: ItemCondition): SaveData {
+  const next = structuredClone(state);
+  if (!ITEMS[itemId]?.carryable || !hasItem(next, itemId)) return next;
+  mutateItemState(next, itemId, (record) => { record.condition = condition; });
+  return next;
+}
+
+export function damageItem(state: SaveData, itemId: string): SaveData {
+  const current = itemCondition(state, itemId);
+  return setItemCondition(state, itemId, current === 'NORMAL' ? 'DAMAGED' : current === 'DAMAGED' ? 'BROKEN' : 'BROKEN');
+}
+
+export function breakItem(state: SaveData, itemId: string): SaveData { return setItemCondition(state, itemId, 'BROKEN'); }
+
+export function repairItem(state: SaveData, itemId: string, provenance?: string): SaveData {
+  const next = structuredClone(state);
+  if (!ITEMS[itemId]?.carryable || !hasItem(next, itemId)) return next;
+  mutateItemState(next, itemId, (record) => { record.condition = 'NORMAL'; if (provenance) record.provenance = addUnique(record.provenance, [provenance]); });
+  return next;
+}
+
+export function addUpgrade(state: SaveData, itemId: string, upgradeId: string, provenance?: string): SaveData {
+  const next = structuredClone(state);
+  const item = ITEMS[itemId];
+  const definition = item?.upgrades?.find((upgrade) => upgrade.id === upgradeId);
+  if (!item?.carryable || !definition || !hasItem(next, itemId) || itemCondition(next, itemId) === 'BROKEN') return next;
+  mutateItemState(next, itemId, (record) => {
+    const existing = record.upgrades.find((upgrade) => upgrade.id === upgradeId);
+    if (existing) return;
+    const retained = definition.group ? record.upgrades.filter((upgrade) => ITEMS[itemId].upgrades?.find((candidate) => candidate.id === upgrade.id)?.group !== definition.group) : record.upgrades;
+    if (retained.length >= (item.maxUpgrades ?? 2)) return;
+    record.upgrades = [...retained, { id: upgradeId, ...(provenance ? { provenance } : {}) }];
+    if (provenance) record.provenance = addUnique(record.provenance, [provenance]);
+  });
+  return next;
+}
+
+export function removeUpgrade(state: SaveData, itemId: string, upgradeId: string): SaveData {
+  const next = structuredClone(state);
+  if (!hasItem(next, itemId)) return next;
+  mutateItemState(next, itemId, (record) => { record.upgrades = record.upgrades.filter((upgrade) => upgrade.id !== upgradeId); });
+  return next;
+}
+
+export function replaceItem(state: SaveData, oldItemId: string, newItemId: string, provenance?: string): SaveData {
+  const next = structuredClone(state);
+  const activelyOwned = !!next.run?.inventory.includes(oldItemId) || getCarriedItems(next.character).includes(oldItemId);
+  if (!ITEMS[oldItemId]?.carryable || !ITEMS[newItemId]?.carryable || !activelyOwned || hasItem(next, newItemId)) return next;
+  const run = next.run;
+  if (run?.inventory.includes(oldItemId)) {
+    run.inventory = run.inventory.map((id) => id === oldItemId ? newItemId : id);
+    run.inventorySources ??= {};
+    run.inventorySources[newItemId] = 'found';
+  }
+  if (run?.acquiredThisRun.includes(oldItemId)) run.acquiredThisRun = run.acquiredThisRun.map((id) => id === oldItemId ? newItemId : id);
+  if (next.character && getCarriedItems(next.character).includes(oldItemId)) setCarriedItems(next.character, getCarriedItems(next.character).map((id) => id === oldItemId ? newItemId : id));
+  const oldState = itemState(next, oldItemId);
+  delete next.itemStates?.[oldItemId];
+  const compatibleUpgrades = oldState.upgrades.filter(({ id }) => ITEMS[newItemId].upgrades?.some((upgrade) => upgrade.id === id));
+  next.itemStates ??= {};
+  next.itemStates[newItemId] = { ...oldState, condition: 'NORMAL', upgrades: compatibleUpgrades, provenance: addUnique(oldState.provenance, provenance ? [provenance] : []) };
+  return next;
+}
+
+export function startRun(character: Character, scenario: Scenario, random = Math.random, itemStates: SaveData['itemStates'] = {}): RunState {
   const inventory = [...STARTING_ITEMS];
   const carriedItems = getCarriedItems(character);
   inventory.push(...carriedItems);
   const inventorySources: Record<string, InventorySource> = Object.fromEntries(inventory.map((id) => [id, 'starting' as const]));
   for (const id of carriedItems) inventorySources[id] = 'carried';
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { runId: crypto.randomUUID(), scenarioId: scenario.id, riskTier: scenarioRiskTier(scenario), sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  const trackedAtStart = [...new Set([...STARTING_ITEMS, ...carriedItems])];
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, riskTier: scenarioRiskTier(scenario), sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, startingItemStates: Object.fromEntries(trackedAtStart.map((id) => [id, structuredClone(itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] })])), acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function countQualifyingStoryTransitions(scenario: Scenario, visitedSceneIds: string[] | undefined): number {
@@ -55,7 +142,7 @@ export function startAdventure(state: SaveData, scenario: Scenario, random = Mat
   if (state.run?.status === 'active') return state;
   const next = structuredClone(state);
   next.character ??= newCharacter();
-  next.run = startRun(next.character, scenario);
+  next.run = startRun(next.character, scenario, random, next.itemStates);
   if (qaMode) next.run.qaMode = true;
   next.mostRecentScenarioId = scenario.id;
   if (!qaMode) tryEasterEggOnSceneEntry(next, scenario, random);
@@ -68,6 +155,12 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
   const character = state.character;
   if (!run || !character) return false;
   return (!requirement.items || requirement.items.every((id) => run.inventory.includes(id)))
+    && (!requirement.usableItems || requirement.usableItems.every((id) => run.inventory.includes(id) && itemCondition(state, id) !== 'BROKEN'))
+    && (!requirement.notUsableItems || requirement.notUsableItems.every((id) => !run.inventory.includes(id) || itemCondition(state, id) === 'BROKEN'))
+    && (!requirement.anyUsableItems || requirement.anyUsableItems.some((id) => run.inventory.includes(id) && itemCondition(state, id) !== 'BROKEN'))
+    && (!requirement.itemConditions || Object.entries(requirement.itemConditions).every(([id, values]) => run.inventory.includes(id) && values.includes(itemCondition(state, id))))
+    && (!requirement.itemUpgrades || Object.entries(requirement.itemUpgrades).every(([id, upgrades]) => run.inventory.includes(id) && upgrades.every((upgradeId) => hasUpgrade(state, id, upgradeId))))
+    && (!requirement.notItemUpgrades || Object.entries(requirement.notItemUpgrades).every(([id, upgrades]) => upgrades.every((upgradeId) => !hasUpgrade(state, id, upgradeId))))
     && (!requirement.notItems || requirement.notItems.every((id) => !run.inventory.includes(id)))
     && (!requirement.anyItems || requirement.anyItems.some((id) => run.inventory.includes(id)))
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
@@ -132,11 +225,13 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     const [lostItem, ...remaining] = getCarriedItems(character);
     run.inventory = without(run.inventory, [lostItem]);
     setCarriedItems(character, remaining);
+    if (!state.bank.includes(lostItem)) delete state.itemStates?.[lostItem];
   }
   if (effects.loseCarriedItems) {
     const lostItems = getCarriedItems(character);
     run.inventory = without(run.inventory, lostItems);
     setCarriedItems(character, []);
+    for (const id of lostItems) if (!state.bank.includes(id)) delete state.itemStates?.[id];
   }
   if (effects.gainItems) {
     run.inventory = addUnique(run.inventory, effects.gainItems);
@@ -146,6 +241,43 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.loseItems) {
     run.inventory = without(run.inventory, effects.loseItems);
     setCarriedItems(character, getCarriedItems(character).filter((id) => !effects.loseItems!.includes(id)));
+    for (const id of effects.loseItems) if (!state.bank.includes(id)) delete state.itemStates?.[id];
+  }
+  for (const id of effects.damageItems ?? []) {
+    if (!run.inventory.includes(id) || !ITEMS[id]?.carryable) continue;
+    mutateItemState(state, id, (record) => { record.condition = record.condition === 'NORMAL' ? 'DAMAGED' : 'BROKEN'; });
+  }
+  for (const id of effects.breakItems ?? []) if (run.inventory.includes(id) && ITEMS[id]?.carryable) mutateItemState(state, id, (record) => { record.condition = 'BROKEN'; });
+  for (const id of effects.repairItems ?? []) if (run.inventory.includes(id) && ITEMS[id]?.carryable) mutateItemState(state, id, (record) => {
+    record.condition = 'NORMAL';
+    const source = effects.repairItemProvenance?.[id];
+    if (source) record.provenance = addUnique(record.provenance, [source]);
+  });
+  for (const upgrade of effects.addItemUpgrades ?? []) {
+    if (!run.inventory.includes(upgrade.itemId) || !ITEMS[upgrade.itemId]?.upgrades?.some(({ id }) => id === upgrade.upgradeId)) continue;
+    const item = ITEMS[upgrade.itemId];
+    const definition = item.upgrades!.find(({ id }) => id === upgrade.upgradeId)!;
+    mutateItemState(state, upgrade.itemId, (record) => {
+      if (record.condition === 'BROKEN' || record.upgrades.some(({ id }) => id === upgrade.upgradeId)) return;
+      const retained = definition.group ? record.upgrades.filter(({ id }) => item.upgrades?.find((entry) => entry.id === id)?.group !== definition.group) : record.upgrades;
+      if (retained.length >= (item.maxUpgrades ?? 2)) return;
+      record.upgrades = [...retained, { id: upgrade.upgradeId, ...(upgrade.provenance ? { provenance: upgrade.provenance } : {}) }];
+      if (upgrade.provenance) record.provenance = addUnique(record.provenance, [upgrade.provenance]);
+    });
+  }
+  for (const replacement of effects.replaceItems ?? []) {
+    const oldId = replacement.oldItemId;
+    const newId = replacement.newItemId;
+    if (!run.inventory.includes(oldId) || !ITEMS[oldId]?.carryable || !ITEMS[newId]?.carryable || hasItem(state, newId)) continue;
+    const previous = itemState(state, oldId);
+    run.inventory = run.inventory.map((id) => id === oldId ? newId : id);
+    run.inventorySources ??= {};
+    run.inventorySources[newId] = 'found';
+    if (run.acquiredThisRun.includes(oldId)) run.acquiredThisRun = run.acquiredThisRun.map((id) => id === oldId ? newId : id);
+    if (getCarriedItems(character).includes(oldId)) setCarriedItems(character, getCarriedItems(character).map((id) => id === oldId ? newId : id));
+    delete state.itemStates?.[oldId];
+    const compatibleUpgrades = previous.upgrades.filter(({ id }) => ITEMS[newId].upgrades?.some((upgrade) => upgrade.id === id));
+    (state.itemStates ??= {})[newId] = { ...previous, condition: 'NORMAL', upgrades: compatibleUpgrades, provenance: addUnique(previous.provenance, replacement.provenance ? [replacement.provenance] : []) };
   }
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
@@ -175,7 +307,8 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     destination = won ? combat.winNext : combat.lossNext;
     next.run.message = runText(won ? `You survive the fight with the ${combat.enemy}.` : `The ${combat.enemy} wounds you. You lose ${combat.damageOnLoss} health.`, next);
   } else if (choice.chance) {
-    const bonusItem = choice.chance.bonusItems?.some((item) => next.run!.inventory.includes(item)) ?? false;
+    const bonusItem = choice.chance.bonusItems?.some((item) => next.run!.inventory.includes(item) && itemCondition(next, item) !== 'BROKEN') ?? false;
+    const bonusUpgrade = choice.chance.bonusUpgrades?.some(({ itemId, upgradeId }) => next.run!.inventory.includes(itemId) && itemCondition(next, itemId) !== 'BROKEN' && hasUpgrade(next, itemId, upgradeId)) ?? false;
     const bonusFlag = choice.chance.bonusFlags?.some((flag) => next.run!.flags.includes(flag)) ?? false;
     const bonusSelection = Object.entries(choice.chance.bonusSelections ?? {}).some(([key, value]) => next.run!.randomSelections?.[key] === value);
     const penaltySelection = Object.entries(choice.chance.penaltySelections ?? {}).some(([key, value]) => next.run!.randomSelections?.[key] === value);
@@ -183,7 +316,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
       ? choice.chance.lateProbability ?? choice.chance.probability
       : choice.chance.probability;
     const probability = Math.max(0.02, Math.min(0.98, baseProbability
-      + (bonusItem || bonusFlag || bonusSelection ? choice.chance.bonusProbability ?? 0 : 0)
+      + (bonusItem || bonusUpgrade || bonusFlag || bonusSelection ? choice.chance.bonusProbability ?? 0 : 0)
       - (penaltySelection ? choice.chance.penaltyProbability ?? 0 : 0)));
     const won = random() < probability;
     destination = won ? choice.chance.successNext : choice.chance.failureNext;
@@ -233,8 +366,14 @@ function queueGlobalCompletion(state: SaveData): void {
 export function failCharacter(state: SaveData): SaveData {
   const next = structuredClone(state);
   if (next.run) { next.mostRecentScenarioId = next.run.scenarioId; recordScenarioEnding(next); }
+  retainOnlyBankedItemStates(next);
   next.character = null; next.run = null;
   return next;
+}
+
+function retainOnlyBankedItemStates(state: SaveData, additional: string[] = []): void {
+  const retained = new Set([...state.bank, ...additional]);
+  for (const id of Object.keys(state.itemStates ?? {})) if (!retained.has(id)) delete state.itemStates![id];
 }
 
 function recordScenarioEnding(state: SaveData): void {
@@ -268,7 +407,8 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
   const startingItems = [...new Set(run.startingCarriedItems ?? getCarriedItems(state.character))].sort();
   const endingItems = [...new Set(getCarriedItems(state.character))].sort();
   const inventoryChanged = JSON.stringify(startingItems) !== JSON.stringify(endingItems);
-  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged) return;
+  const changedRetainedGear = run.status === 'success' && endingItems.some((id) => JSON.stringify(state.itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }) !== JSON.stringify(run.startingItemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }));
+  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged && !changedRetainedGear) return;
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
     run.completionMilestoneReached = state.character.adventuresCompleted;
@@ -276,7 +416,11 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
 }
 
 export function retireCharacter(state: SaveData): SaveData {
-  return { ...state, character: null, run: null };
+  const next = structuredClone(state);
+  retainOnlyBankedItemStates(next);
+  next.character = null;
+  next.run = null;
+  return next;
 }
 
 export function finishSuccess(state: SaveData, carriedItems: string | string[] | null): SaveData {
@@ -288,6 +432,7 @@ export function finishSuccess(state: SaveData, carriedItems: string | string[] |
   const selected = [...new Set(requested.filter((id) => eligible.has(id)))];
   if (selected.length > carryCapacity(next.character.adventuresCompleted)) return next;
   setCarriedItems(next.character, selected);
+  retainOnlyBankedItemStates(next, [...selected, ...STARTING_ITEMS]);
   if (next.run?.status === 'success') recordAuthoredEnding(next, true);
   next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
   recordScenarioEnding(next);
@@ -382,10 +527,16 @@ export function discardBankItem(state: SaveData, itemId: string): SaveData {
   if (index < 0) return state;
   const next = structuredClone(state);
   next.bank.splice(index, 1);
+  if (!getCarriedItems(next.character).includes(itemId) && !next.run?.inventory.includes(itemId)) delete next.itemStates?.[itemId];
   return next;
 }
 
 export function emptyBank(state: SaveData): SaveData {
   if (!state.bank.length) return state;
-  return { ...state, bank: [] };
+  const next = structuredClone(state);
+  const emptied = new Set(next.bank);
+  next.bank = [];
+  for (const id of emptied) if (!getCarriedItems(next.character).includes(id) && !next.run?.inventory.includes(id)) delete next.itemStates?.[id];
+  return next;
 }
+

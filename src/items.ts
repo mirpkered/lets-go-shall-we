@@ -11,7 +11,7 @@ export const ITEMS: Record<string, Item> = {
   graveCoin: { id: 'graveCoin', name: 'Grave Coin', description: 'A silver funeral token accepted by collectors and ferrymen.', category: 'valuable', carryable: true },
   yewCharm: { id: 'yewCharm', name: 'Yew Charm', description: 'A tiny ward tied with the priest’s red thread.', category: 'charm', carryable: true },
   pocketToolkit: { id: 'pocketToolkit', name: 'Pocket Toolkit', description: 'A compact railway kit: pliers, driver, punch, and oil.', category: 'tool', carryable: true },
-  travelRope: { id: 'travelRope', name: 'Travel Rope', description: 'Twenty feet of good braided cord with a locking hook.', category: 'tool', carryable: true },
+  travelRope: { id: 'travelRope', name: 'Travel Rope', description: 'Twenty feet of good braided cord with a locking hook.', category: 'tool', carryable: true, maxUpgrades: 1, upgrades: [{ id: 'splicedEyes', name: 'Spliced hook eye', description: 'A short leather whipping binds the hook eye more securely to the rope.' }] },
   conductorWhistle: { id: 'conductorWhistle', name: 'Conductor’s Whistle', description: 'A bright brass whistle that carries over machinery and weather.', category: 'valuable', carryable: true },
   signalLens: { id: 'signalLens', name: 'Crimson Signal Lens', description: 'Thick red glass from an old railway signal, warm at its center.', category: 'artifact', carryable: true },
   railwayMap: { id: 'railwayMap', name: 'Railway Map', description: 'A folded route map marked with gradients, sidings, and mileposts.', category: 'run-only', carryable: false },
@@ -49,7 +49,7 @@ export const ITEMS: Record<string, Item> = {
   weatherproofBlanket: { id: 'weatherproofBlanket', name: 'Weatherproof Blanket', description: 'A compact wool blanket with a waxed outer layer to hold off cold rain.', category: 'armor', carryable: true },
   compactWheelWrench: { id: 'compactWheelWrench', name: 'Compact Wheel Wrench', description: 'A sturdy travel wrench for wheel hubs, bolts, and field repairs.', category: 'tool', carryable: true },
   foldingTrailMarker: { id: 'foldingTrailMarker', name: 'Folding Trail Marker', description: 'A bright, hinged marker that can be placed or hung to make a route easier to follow.', category: 'tool', carryable: true },
-  freightmansStrap: { id: 'freightmansStrap', name: 'Freightman’s Strap', description: 'A broad, well-stitched leather strap for securing awkward loads.', category: 'tool', carryable: true },
+  freightmansStrap: { id: 'freightmansStrap', name: 'Freightman’s Strap', description: 'A broad, well-stitched leather strap for securing awkward loads.', category: 'tool', carryable: true, maxUpgrades: 1, upgrades: [{ id: 'stitchedBuckle', name: 'Reinforced buckle stitching', description: 'A harness maker adds a second row of stitching around the buckle loops.' }] },
   assayersLoupe: { id: 'assayersLoupe', name: 'Assayer’s Loupe', description: 'A brass-rimmed lens for reading fine marks and inspecting small details.', category: 'tool', carryable: true },
   farmWhistle: { id: 'farmWhistle', name: 'Farm Whistle', description: 'A clear, low-pitched whistle used to call livestock and farmhands without shouting.', category: 'tool', carryable: true },
   gateHook: { id: 'gateHook', name: 'Gate Hook', description: 'A stout hooked tool for lifting latches and drawing wire clear of a gate.', category: 'tool', carryable: true },
@@ -62,3 +62,4 @@ export const ITEMS: Record<string, Item> = {
 };
 
 export const STARTING_ITEMS = ['smallKnife', 'lantern'];
+

@@ -107,3 +107,4 @@ describe('scenario diversity and seasonal framework', () => {
     expect(started.run?.scenarioId).toBe(october.id);
   });
 });
+
