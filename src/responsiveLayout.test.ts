@@ -116,6 +116,7 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('Carried by traveler · ${carriedItems.length}/${capacity} slots used');
     expect(mainSource).toContain('Available this adventure');
     expect(mainSource).toContain('Owned property');
+    expect(mainSource).toContain('Owned property: ${state.character.ownedAssets!.map');
     expect(mainSource).not.toContain('In your pack · Carried');
     expect(styles).toContain('.inventory-panel {');
     expect(styles).toContain('.inventory-panel .gear-group h3');
