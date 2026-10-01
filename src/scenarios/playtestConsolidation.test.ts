@@ -31,8 +31,10 @@ describe('playtest consolidation aftermath and continuity', () => {
 
     let failed = act(THE_LOOSE_TEAM, fresh(THE_LOOSE_TEAM), 'warnWorkers', 0.999);
     expect(failed.run?.flags).toContain('workerWarningFailed');
+    const transitionsBeforeAftermath = failed.run?.qualifyingStoryTransitions;
     failed = act(THE_LOOSE_TEAM, failed, 'openGateLate', 0);
     expect(failed.run?.sceneId).toBe('horsesTurnedAftermath');
+    expect(failed.run?.qualifyingStoryTransitions).toBe(transitionsBeforeAftermath);
     expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurnedAftermath, failed)).toMatch(/only come out after the wagon turns away/);
     expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurnedAftermath, failed)).not.toMatch(/warning sent them/);
     failed = act(THE_LOOSE_TEAM, failed, 'leaveAfterPastureTurn');
@@ -51,6 +53,7 @@ describe('playtest consolidation aftermath and continuity', () => {
   it('shows the Last Ferry overnight wait before its morning crossing', () => {
     let state = act(THE_LAST_FERRY, fresh(THE_LAST_FERRY), 'waitForMorning');
     expect(state.run?.sceneId).toBe('nightAtLanding');
+    expect(state.run?.qualifyingStoryTransitions).toBe(0);
     expect(state.character?.historyFlags).toContain('waited_for_ferry_repair');
     expect(sceneText(THE_LAST_FERRY.scenes.nightAtLanding, state)).toMatch(/current keeps up its steady noise through the dark/);
     state = act(THE_LAST_FERRY, state, 'crossAtFirstLight');
@@ -68,6 +71,7 @@ describe('playtest consolidation aftermath and continuity', () => {
     for (const [aftermathId, endingId] of immediateSuccesses) {
       const scene = THE_LOOSE_TEAM.scenes[aftermathId];
       expect(scene.ending).toBeUndefined();
+      expect(scene.countsForProgression).toBe(false);
       expect(scene.choices).toHaveLength(1);
       expect(scene.choices[0].next).toBe(endingId);
       expect(THE_LOOSE_TEAM.scenes[endingId].ending).toBe('success');
