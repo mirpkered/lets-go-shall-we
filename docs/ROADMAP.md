@@ -5,6 +5,7 @@ This roadmap separates stabilization from possible expansion. It has no promised
 ## Now — stabilize and verify
 
 - Continue hands-on playtesting across the expanded library; fix clear continuity, state, fairness, and save regressions.
+- Use the on-demand content-substance audit to triage abrupt/procedural endings before future bulk-generation passes; resolve only high-confidence cases and retain human review for soft warnings.
 - Verify payoff and reward changes in actual play, not only structural scans.
 - Confirm traveler progression thresholds and multi-item carry behavior through long-lived and fresh travelers.
 - Verify the optional global counter’s actual deployment/configuration before presenting it as live.

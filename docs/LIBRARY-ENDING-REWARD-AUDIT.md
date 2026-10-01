@@ -228,3 +228,9 @@ The current registry contains **175 playable adventures**. The inventory above i
 - The pass adds no new danger tier. Optional extra work has a communicated, nonlethal setback chance and pays less if the traveler stops after the setback.
 
 The structural route estimates in the main table remain approximate and heuristic. This follow-up records the manually examined candidates, actual edits, and already-resolved example rather than claiming every branch of all 175 adventures was freshly playtested.
+
+## Content-substance correction pass (2026-10-01)
+
+The new QA content-quality audit reviewed 808 terminal routes across 175 adventures. It currently reports 0 HIGH, 151 MEDIUM, and 426 LOW warning records (categories overlap): 72 obvious-action, 55 procedural, 0 one-wager, 2 agreement, 94 routine-task, 94 performance-feedback, and 260 possible no-visible-payoff notices. These are heuristic prompts; they deliberately over-report some concise peaceful outcomes. The three strongest live-playtest gaps fixed here were A Game of Cards, the shared-room compromise in The Landlord’s Story, and the trunk-sorting route in Before the Steamer Leaves. Winter Stores also received a meaningful counter-concern after review surfaced it as a high-confidence agreement warning.
+
+Already substantive in the current main baseline and left intact: Property Of... (evidence and sealed-item follow-through), Harvest Hand and Cutting Timber (performance/output choices), What Did You See? / A Narrow Account (limited testimony changes what neighbors inspect), and The Children’s Court (replay, rule choice, and game reaction). The content-depth regression tests exercise those existing fixes alongside the new edits. No broader batch helper was changed, and no scene-count target was introduced.

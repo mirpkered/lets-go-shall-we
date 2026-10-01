@@ -41,6 +41,15 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] For Supplies, set a stack limit and separate stack-slot need; test add/merge/full pouch/consume/empty/save/reload, and narrate quantity spent. Routine provisions remain abstract.
 - [ ] Keep Gear requirements optional for baseline success. Bank only Gear/Relics; character-bound Supplies and Assets are lost with death, abandonment, or retirement.
 - [ ] Consider quiet/partial outcomes and situations with no perfect solution where they fit.
+- [ ] Before terminal: did more than a procedure happen?
+- [ ] Did the player make a meaningful decision?
+- [ ] Did the situation change because of the player’s action?
+- [ ] Is a visible consequence present?
+- [ ] Is there a reaction or payoff?
+- [ ] Does the ending reflect actual route state, performance, costs, and current-run knowledge?
+- [ ] Would this feel complete without the words “Adventure Complete”?
+- [ ] Is the structure too similar to another adventure? Treat audit warnings as human-review prompts, not automatic rejection.
+- [ ] For a dispute, wager/game, job, testimony, or ordinary task, has the story earned its result and shown what it changes? Do not mistake length, coin changes, or task completion alone for substance.
 
 ## Structure, payoff, and rewards
 

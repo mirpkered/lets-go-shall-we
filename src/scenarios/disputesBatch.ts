@@ -175,7 +175,12 @@ export const THE_LANDLORDS_STORY: Scenario = {
       { id: 'splitAfterNoRecord', label: 'Suggest they share the repair if they agree', next: 'roomCompromise' },
       { id: 'leaveAfterNoRecord', label: 'Leave without offering a verdict', next: 'disputeUnsettled' },
     ] },
-    roomCompromise: end('roomCompromise', 'A Small Compromise', 'The landlord and boarder agree to share a modest repair cost. Neither says the other was right; both decide a small compromise is easier than arguing over an old wall.'),
+    roomCompromise: { id: 'roomCompromise', title: 'A Small Compromise', tone: 'safe', text: 'The boarder cannot pay half in coin before the week ends. The landlord says he can supply plaster, but wants the boarder to clear the bed and help patch the wall. Neither accepts blame for the crack. They look to you only to say whether those terms match the modest split you proposed.', choices: [
+      { id: 'confirmRepairTerms', label: 'Confirm the shared repair terms', next: 'roomRepairBegins', effects: { historyFlags: ['helped_negotiate_shared_room_repair'] } },
+      { id: 'withdrawFromTerms', label: 'Leave them to settle the exact terms', next: 'roomTermsUnsettled' },
+    ] },
+    roomRepairBegins: end('roomRepairBegins', 'The First Patch', 'The landlord brings a small pail of plaster; the boarder moves the bed and scrapes away loose grit. Their agreement now has a shape: materials from one, labor from the other. The wall is not finished, but the repair has begun and neither has been made to admit more than they know.'),
+    roomTermsUnsettled: end('roomTermsUnsettled', 'Terms Still Open', 'The landlord and boarder keep the possibility of a shared repair, but neither commits to labor or coin today. Your suggestion has narrowed the disagreement; the actual bargain remains theirs to make.'),
     disputeUnsettled: end('disputeUnsettled', 'The Room Remains', 'The landlord and boarder continue their discussion after you leave. The crack stays small, and you do not become the judge of a room you did not rent.'),
   },
 };

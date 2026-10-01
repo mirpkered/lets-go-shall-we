@@ -13,6 +13,7 @@ import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './co
 import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
 import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
+import { auditContentQuality } from './contentQuality';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -74,6 +75,14 @@ function bindQaPanel(): void {
     output.hidden = false;
   });
   document.querySelectorAll<HTMLButtonElement>('[data-qa-start]').forEach((button) => button.addEventListener('click', () => startScenario(button.dataset.qaStart!)));
+  document.querySelector('[data-qa-content-quality-report]')?.addEventListener('click', () => {
+    const quality = auditContentQuality(SCENARIOS);
+    const diversity = analyzeScenarioLibrary(SCENARIOS);
+    const output = document.querySelector<HTMLElement>('[data-qa-content-quality-output]');
+    if (!output) return;
+    output.textContent = JSON.stringify({ ...quality, relatedDiversity: { repeatedStructuralPatternCount: diversity.structuralWarnings.length, exampleStructuralWarnings: diversity.structuralWarnings.slice(0, 30) } }, null, 2);
+    output.hidden = false;
+  });
   document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
   document.querySelector('[data-qa-force-easter-egg]')?.addEventListener('click', () => {
     const id = document.querySelector<HTMLSelectElement>('#qa-easter-egg')?.value;

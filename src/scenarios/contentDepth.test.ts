@@ -9,6 +9,9 @@ import { HONEST_WORK_ADVENTURES, HARVEST_HAND, CUTTING_TIMBER } from './honestWo
 import { LEGAL_PROCESS_ADVENTURES } from './legalProcessBatch';
 import { LOOSE_IN_THE_MARKET } from './animalsBatch';
 import { SMALL_HUMAN_MOMENT_ADVENTURES } from './smallHumanMomentsBatch';
+import { A_GAME_OF_CARDS } from './pleasantDaysBatch';
+import { THE_LANDLORDS_STORY } from './disputesBatch';
+import { RIVER_COMMERCE_ADVENTURES } from './riverCommerceBatch';
 
 function start(scenario: Scenario, selections: Record<string, string> = {}): SaveData {
   const character = newCharacter('Content Tester');
@@ -140,5 +143,61 @@ describe('content depth and payoff audit fixes', () => {
     const left = act(short, SMALL_HUMAN_MOMENT_ADVENTURES.find(({ id }) => id === 'the-childrens-court')!, 'stayOut', 'stayOut-leave');
     expect(left.run?.status).toBe('success');
     expect(SMALL_HUMAN_MOMENT_ADVENTURES.find(({ id }) => id === 'the-childrens-court')!.scenes.watchGame.text).toContain('start over');
+  });
+
+  it('turns A Coin for the Table into a real stop-or-continue card session with bounded stakes', () => {
+    expect(findScenarioGraphProblems(A_GAME_OF_CARDS)).toEqual([]);
+    let win = start(A_GAME_OF_CARDS);
+    win.character!.money = 3;
+    win = act(win, A_GAME_OF_CARDS, 'cardTable', 'playFriendlyHand', () => 0);
+    expect(win.run?.sceneId).toBe('cardsWon');
+    expect(A_GAME_OF_CARDS.scenes.cardsWon.choices.map(({ id }) => id)).toEqual(['stopAfterWin', 'secondHandAfterWin']);
+    win = act(win, A_GAME_OF_CARDS, 'cardsWon', 'secondHandAfterWin', () => 0.99);
+    expect(win.run?.sceneId).toBe('cardsSecondLoss');
+    expect(win.character?.money).toBe(3);
+
+    let loss = start(A_GAME_OF_CARDS);
+    loss.character!.money = 2;
+    loss = act(loss, A_GAME_OF_CARDS, 'cardTable', 'playFriendlyHand', () => 0.99);
+    expect(loss.run?.sceneId).toBe('cardsLost');
+    loss = act(loss, A_GAME_OF_CARDS, 'cardsLost', 'secondHandAfterLoss', () => 0);
+    expect(loss.run?.sceneId).toBe('cardsSecondWin');
+    expect(loss.character?.money).toBe(2);
+  });
+
+  it('makes A Small Compromise spell out terms and follow through before completion', () => {
+    expect(findScenarioGraphProblems(THE_LANDLORDS_STORY)).toEqual([]);
+    let state = act(start(THE_LANDLORDS_STORY), THE_LANDLORDS_STORY, 'roomComplaint', 'hearLandlord');
+    state = act(state, THE_LANDLORDS_STORY, 'accountsCompared', 'suggestSplitRoom');
+    expect(state.run?.sceneId).toBe('roomCompromise');
+    expect(THE_LANDLORDS_STORY.scenes.roomCompromise.text).toMatch(/cannot pay half|supply plaster|help patch/i);
+    state = act(state, THE_LANDLORDS_STORY, 'roomCompromise', 'confirmRepairTerms');
+    expect(state.run?.status).toBe('success');
+    expect(THE_LANDLORDS_STORY.scenes[state.run!.sceneId].text).toMatch(/materials from one, labor from the other/);
+  });
+
+  it('gives Baggage Sorted a second useful judgment and state-aware work payoff', () => {
+    const scenario = RIVER_COMMERCE_ADVENTURES.find(({ id }) => id === 'before-the-steamer-leaves')!;
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
+    let state = act(start(scenario), scenario, 'opening', 'take-trunks');
+    state = act(state, scenario, 'trunks', 'trunks-sort');
+    expect(state.run?.sceneId).toBe('baggageTally');
+    state = act(state, scenario, 'baggageTally', 'verifyBaggageTag');
+    expect(state.run?.sceneId).toBe('baggageVerified');
+    expect(state.character?.money).toBe(2);
+    expect(scenario.scenes.baggageVerified.text).toMatch(/tag|porter|owners|two coins/i);
+
+    let slower = act(start(scenario), scenario, 'opening', 'take-trunks');
+    slower = act(slower, scenario, 'trunks', 'trunks-sort');
+    slower = act(slower, scenario, 'baggageTally', 'askBaggageOwners');
+    expect(scenario.scenes[slower.run!.sceneId].text).toMatch(/delay|one coin/i);
+    expect(slower.character?.money).toBe(1);
+
+    let trusted = act(start(scenario), scenario, 'opening', 'take-trunks');
+    trusted = act(trusted, scenario, 'trunks', 'trunks-sort');
+    trusted = act(trusted, scenario, 'baggageTally', 'trustPorterBaggage');
+    expect(trusted.run?.sceneId).toBe('trunks-sort');
+    expect(scenario.scenes[trusted.run!.sceneId].text).toMatch(/question travels with the boat|confirm the owner/i);
+    expect(trusted.character?.money).toBe(1);
   });
 });

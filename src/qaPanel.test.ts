@@ -22,6 +22,8 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('data-qa-repair-item');
     expect(markup).toContain('data-qa-add-upgrade');
     expect(markup).toContain('data-qa-remove-upgrade');
+    expect(markup).toContain('data-qa-content-quality-report');
+    expect(markup).toContain('data-qa-content-quality-report');
     expect(markup).toContain('data-qa-set-gear-capacity');
     expect(markup).toContain('data-qa-add-carried');
     expect(markup).toContain('data-qa-remove-carried');
@@ -33,6 +35,8 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('&quot;supplyStackCapacity&quot;: 4');
     expect(markup).toContain('&quot;itemStates&quot;');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('Easter egg');
+    expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');
+    expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');
     expect(JSON.stringify(state)).toBe(before);
   });
 });

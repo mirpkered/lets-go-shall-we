@@ -63,6 +63,15 @@ function explore(scenario: Scenario, selections: Record<string, string>, item?: 
 }
 
 describe('community and civic life adventure batch', () => {
+  it('makes the Winter Stores ration agreement respond to a real household concern', () => {
+    let state = act(start(WINTER_STORES), WINTER_STORES, 'storehouse', 'suggestRation');
+    expect(state.run?.sceneId).toBe('rationPlan');
+    expect(WINTER_STORES.scenes.rationPlan.text).toMatch(/youngest|portions/);
+    state = act(state, WINTER_STORES, 'rationPlan', 'trialRations');
+    expect(state.run?.status).toBe('success');
+    expect(WINTER_STORES.scenes[state.run!.sceneId].text).toMatch(/one week|reserve/);
+  });
+
   it('registers ten forward-only stories with concise, mobile-sized scenes', () => {
     expect(COMMUNITY_ADVENTURES).toHaveLength(10);
     expect(SCENARIOS).toHaveLength(175);

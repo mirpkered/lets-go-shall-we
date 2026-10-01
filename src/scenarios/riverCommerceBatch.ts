@@ -1,6 +1,6 @@
 import { authorBatch } from './secondWaveTools';
 
-export const RIVER_COMMERCE_ADVENTURES = authorBatch([
+const riverCommerceAdventures = authorBatch([
   {
     id: 'before-the-steamer-leaves', title: 'Before the Steamer Leaves', subtitle: 'The cargo must be ready before the riverboat casts off.', openingContext: 'landing',
     opening: 'A riverboat leaves in an hour, and the dock foreman offers you two coins to help organize freight. The passenger trunks are on the dry platform; marked crates wait closer to the gangplank. The crew has already weighed the boat and set a clear load limit.',
@@ -10,8 +10,8 @@ export const RIVER_COMMERCE_ADVENTURES = authorBatch([
         { id: 'load', label: 'Load the counted crates with the crew', title: 'A Correct Count', text: 'The crew loads the crates in the marked section and keeps the walkway clear. The foreman pays the agreed two coins.', effects: { money: 2 } },
         { id: 'ask', label: 'Ask the clerk to check the smudged mark', title: 'A Mark Confirmed', text: 'The clerk confirms the blurred mark belongs to the flour order. The crate goes aboard in its proper place.', effects: { money: 2 } },
       ] },
-      { id: 'trunks', label: 'Keep passenger trunks apart from freight', title: 'The Dry Platform', text: 'A porter has set two trunks beside the freight crates by mistake. The passenger names are on the tags; the manifest gives the proper car.', timeCost: 6, outcomes: [
-        { id: 'sort', label: 'Move the trunks to the passenger rack', title: 'Baggage Sorted', text: 'The porter checks each tag and moves the trunks to the covered passenger rack. Nothing is lost or delayed.' , effects: { money: 2 } },
+      { id: 'trunks', label: 'Keep passenger trunks apart from freight', title: 'The Dry Platform', text: 'A porter has set two trunks beside the freight crates by mistake. One tag is damp and its surname is hard to read; the boat leaves in less than half an hour. The porter can hold the trunks while you check the chalked passenger list or ask their owners to identify them.', timeCost: 6, outcomes: [
+        { id: 'sort', label: 'Move the trunks to the passenger rack', title: 'Baggage Sorted', text: 'You move both trunks to the covered rack before the boat calls its passengers. As they settle, the porter notices the damp tag is too blurred to read from the gangplank.' , effects: { money: 2 } },
         { id: 'askOwner', label: 'Ask the waiting passengers to identify theirs', title: 'Owners Found', text: 'The passengers identify their luggage and thank the porter. The freight crew keeps to the marked crates.' , effects: { money: 2 } },
       ] },
       { id: 'lines', label: 'Help coil the spare mooring lines', title: 'Rope Along the Landing', text: 'The deckhand asks you to coil spare line on the shore side, away from the cargo path. It is ordinary dock work, not a task aboard the moving boat.', timeCost: 5, outcomes: [
@@ -76,3 +76,31 @@ export const RIVER_COMMERCE_ADVENTURES = authorBatch([
     ],
   },
 ]);
+
+// This route has one extra authored judgment after the physical sorting: verify
+// the unclear tag with the clerk, or ask the passengers and accept a slower check.
+const steamer = riverCommerceAdventures.find(({ id }) => id === 'before-the-steamer-leaves')!;
+const trunks = steamer.scenes.trunks;
+const sortChoice = trunks.choices.find(({ id }) => id === 'trunks-sort')!;
+sortChoice.next = 'baggageTally';
+sortChoice.effects = undefined;
+steamer.scenes.baggageTally = {
+  id: 'baggageTally', title: 'One Tag Blurred', tone: 'warning',
+  text: 'The trunks are on the covered passenger rack, but one tag has run into a gray blur. The clerk’s chalk list is still legible. A quick check can protect the right owner’s luggage, though the boat is beginning its final call.',
+  choices: [
+    { id: 'verifyBaggageTag', label: 'Compare the tag with the clerk’s list', timeCost: 5, next: 'baggageVerified', effects: { money: 2, historyFlags: ['carefully_verified_passenger_baggage'] } },
+    { id: 'askBaggageOwners', label: 'Ask the passengers to identify each trunk', timeCost: 8, next: 'baggageOwnersConfirm', effects: { money: 1 } },
+    { id: 'trustPorterBaggage', label: 'Trust the porter and leave the check for arrival', next: 'trunks-sort', effects: { money: 1 } },
+  ],
+};
+steamer.scenes['trunks-sort'].text = 'The trunks go into the covered passenger rack, but the damp tag remains unreadable. The porter leaves a note for the far-stop clerk to confirm the owner before unloading. No trunk is lost, though the question travels with the boat; the foreman pays one coin for the work.';
+steamer.scenes.baggageVerified = {
+  id: 'baggageVerified', title: 'The Right Trunk Aboard', tone: 'safe', ending: 'success',
+  text: 'The clerk matches the blurred tag to the passenger list before the trunk is carried aboard. The porter thanks you for catching the uncertainty; both owners find their luggage in the proper rack, and the foreman pays the agreed two coins.', choices: [],
+};
+steamer.scenes.baggageOwnersConfirm = {
+  id: 'baggageOwnersConfirm', title: 'A Slower Count', tone: 'safe', ending: 'success',
+  text: 'The passengers identify their own trunks, though one has to return from the ticket queue to do it. Both pieces go aboard safely; the delay costs part of your pay, and the foreman gives you one coin for the careful work.', choices: [],
+};
+
+export const RIVER_COMMERCE_ADVENTURES = riverCommerceAdventures;
