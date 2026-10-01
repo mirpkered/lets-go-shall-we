@@ -36,6 +36,18 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         if (parsed.run.visitedSceneIds.some((sceneId) => ['serviceHall', 'cellarClues', 'cellarEntry', 'cellarIdentity'].includes(sceneId))) {
           parsed.run.flags = [...new Set([...parsed.run.flags, 'knowsCellar'])];
         }
+        if (parsed.run.scenarioId === 'hush-now') {
+          const oldScene = parsed.run.sceneId;
+          const oldRescueScenes = new Set(['personFound', 'braceStrain', 'neighborRescue', 'neighborLiftsNell', 'animalsHeldForLift', 'braceStrainWithHelp']);
+          const oldAfterRescueScenes = new Set(['reunited', 'heiferBreaksAway', 'neighborHeiferSearch', 'rewardOffer']);
+          parsed.run.sceneId = oldRescueScenes.has(oldScene)
+            ? 'legacyRescue'
+            : oldAfterRescueScenes.has(oldScene) ? 'legacyAfterRescue' : 'legacyResume';
+          parsed.run.visitedSceneIds = [...new Set([...parsed.run.visitedSceneIds, parsed.run.sceneId])];
+          // These names were already established in every earlier Hush Now version.
+          parsed.run.randomSelections = { ...(parsed.run.randomSelections ?? {}), farmOwner: 'Mara', farmChild: 'Ben', farmhand: 'Nell' };
+          parsed.run.message = 'Your earlier Hush Now choices and discoveries are preserved. Continue from this brief transition.';
+        }
         parsed.run.scenarioSaveVersion = scenario.saveVersion;
       }
       if (scenario?.runRandomSelections?.length && !parsed.run.randomSelections) {
