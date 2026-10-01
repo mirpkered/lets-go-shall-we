@@ -123,7 +123,9 @@ describe('grounded adventure expansion batch', () => {
   it('supports distinct shelter and weather choices without requiring carried gear', () => {
     expect(act(start(THREE_MILES_TO_RAIN), THREE_MILES_TO_RAIN, 'openRoad', 'headForInn').run?.sceneId).toBe('innArrival');
     const helped = act(start(THREE_MILES_TO_RAIN), THREE_MILES_TO_RAIN, 'openRoad', 'helpSecureCart');
-    expect(act(helped, THREE_MILES_TO_RAIN, 'cartSecured', 'waitInSheepShelter').run?.sceneId).toBe('shelterEnding');
+    const shelter = act(helped, THREE_MILES_TO_RAIN, 'cartSecured', 'waitInSheepShelter');
+    expect(shelter.run?.sceneId).toBe('sharedShelter');
+    expect(act(shelter, THREE_MILES_TO_RAIN, 'sharedShelter', 'partAfterRain').run?.sceneId).toBe('shelterEnding');
     expect(act(start(THE_EMPTY_WAGON), THE_EMPTY_WAGON, 'wagonOnRoad', 'continueRoad').run?.sceneId).toBe('wagonLeftEnding');
     expect(act(start(THE_EMPTY_WAGON), THE_EMPTY_WAGON, 'wagonOnRoad', 'followFootprints').run?.sceneId).toBe('driverFound');
     expect(act(start(THE_BELL_AFTER_MIDNIGHT), THE_BELL_AFTER_MIDNIGHT, 'innAtNight', 'stayInBed').run?.sceneId).toBe('morningAfterBell');

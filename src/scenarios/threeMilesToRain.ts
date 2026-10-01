@@ -13,7 +13,7 @@ export const THREE_MILES_TO_RAIN: Scenario = {
     ] },
     cartSecured: { id: 'cartSecured', title: 'Canvas Tied Down', tone: 'warning', text: '{{cartTraveler}}’s goods are covered again. The storm now hides the ridge, and the inn is still two miles ahead. A dry stone sheep shelter stands beside the road; it is small but open.', choices: [
       { id: 'walkTogetherToInn', label: 'Walk with {{cartTraveler}} to the inn', hint: 'The rain may catch you before you arrive.', timeCost: 10, next: 'lateInn', effects: { historyFlags: ['shared_road_to_shelter'] } },
-      { id: 'waitInSheepShelter', label: 'Wait in the stone shelter', hint: 'You both stay out of the worst rain; the inn can wait.', timeCost: 8, next: 'shelterEnding' },
+      { id: 'waitInSheepShelter', label: 'Wait in the stone shelter', hint: 'You both stay out of the worst rain; the inn can wait.', timeCost: 8, next: 'sharedShelter' },
       { id: 'leaveTravelerSheltered', label: 'Leave the traveler and continue alone', timeCost: 9, next: 'lateInn' },
     ] },
     ridgeCrossed: { id: 'ridgeCrossed', title: 'The Track Holds', tone: 'warning', text: 'You reach the lower road without slipping. Rain begins on the exposed slope behind you. The inn’s lights are visible through the trees, less than a mile away.', choices: [
@@ -28,6 +28,9 @@ export const THREE_MILES_TO_RAIN: Scenario = {
     rainAtRoad: { id: 'rainAtRoad', title: 'Rain on the Road', tone: 'warning', text: 'The shower reaches the road while you wait. Water runs along the wheel ruts, but the roadside shelter is sound and the inn remains ahead. You are damp, not in immediate danger.', choices: [
       { id: 'walkToInnInRain', label: 'Walk on to the inn', timeCost: 10, next: 'lateInn' },
       { id: 'staySheltered', label: 'Wait until the worst passes', timeCost: 8, next: 'shelterEnding' },
+    ] },
+    sharedShelter: { id: 'sharedShelter', title: 'Rain on the Stone Roof', tone: 'safe', text: 'You and {{cartTraveler}} sit beneath the low stone roof while rain drums on it. They share a heel of bread and tell you they are bound for the next market town. The cart stays dry against the wall; nothing demands your attention for a while.', choices: [
+      { id: 'partAfterRain', label: 'Part when the shower eases', timeCost: 10, next: 'shelterEnding', effects: { historyFlags: ['shared_road_to_shelter'] } },
     ] },
     innArrival: { id: 'innArrival', title: 'Under a Dry Roof', tone: 'safe', ending: 'success', choices: [], text: 'You reach the Three Lantern Inn before the road turns to mud. The storm drums on the roof while you dry your clothes. The traveler and handcart are not in sight.' },
     lateInn: { id: 'lateInn', title: 'A Wet Arrival', tone: 'warning', ending: 'success', choices: [], text: 'You reach the inn in steady rain. Your cloak or blanket would have kept more of the water off, but the road is behind you. {{cartTraveler}} reaches shelter too if you walked together.' },

@@ -92,6 +92,9 @@ describe('Smoke on the Hill', () => {
     state = act(state, 'clearFirebreakByHand');
     expect(state.run?.sceneId).toBe('firebreakHolds');
     state = act(state, 'secureHouseAfterBreak');
+    expect(state.run?.sceneId).toBe('houseAftermath');
+    expect(state.run?.status).toBe('active');
+    state = act(state, 'leaveAfterHouseFire');
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('stopped_fire_spread');
     expect(state.character?.historyFlags).toContain('protected_property_from_fire');
