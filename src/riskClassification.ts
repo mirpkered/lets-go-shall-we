@@ -4,6 +4,7 @@ const SEVERE_SCENARIOS = new Set([
   'under-the-ice', 'taking-on-water', 'high-water', 'no-vacancy', 'the-missing-boat',
   'the-burning-loft', 'the-sound-in-the-well', 'the-washout', 'the-blue-hole',
   'the-man-in-the-corn',
+  'house-with-two-cellars', 'the-red-chapel', 'below-the-old-fort', 'the-man-who-wouldnt-stay-dead',
 ]);
 
 const HIGH_SCENARIOS = new Set([
@@ -11,6 +12,7 @@ const HIGH_SCENARIOS = new Set([
   'cold-storage', 'the-road-below', 'smoke-on-the-hill', 'the-man-in-the-ditch', 'down-to-the-last-match',
   'the-fallen-tree', 'the-loose-team', 'only-one-bullet', 'bear-with-me', 'give-me-whatcha-got',
   'whats-mine', 'the-empty-cradle', 'last-light-at-millers-crossing', 'the-weight-of-gold',
+  'red-chalk-circle', 'lantern-at-the-crossing', 'thing-under-floorboards', 'the-wrong-shadow', 'the-hollow-man', 'doorway-with-no-room',
 ]);
 
 const MODERATE_SCENARIOS = new Set([
@@ -19,6 +21,9 @@ const MODERATE_SCENARIOS = new Set([
   'the-stray-fire', 'the-faint-trail', 'camp-before-dark', 'the-shortcut', 'creek-on-the-return',
   'the-fog-comes-down', 'dry-camp', 'the-ridge-or-the-valley', 'a-night-of-wind', 'the-second-sunset',
   'the-voice-in-the-mine', 'the-cold-room', 'the-long-night', 'first-snow', 'the-thaw', 'before-the-frost',
+  'seance-at-bellweather-house', 'man-who-sleeps-in-graveyard', 'the-widows-mirror', 'the-bone-box', 'the-quiet-room',
+  'the-black-thread', 'medium-knows-too-much', 'candle-that-will-not-go-out', 'book-without-a-title', 'the-empty-coffin',
+  'the-man-who-came-back-wrong', 'hanging-charms', 'the-third-knock', 'the-borrowed-face', 'last-candle-in-the-house',
 ]);
 
 /** Scenario-level authored stakes only. This never modifies a run's odds or character stats. */

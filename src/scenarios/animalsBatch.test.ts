@@ -67,7 +67,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, item?: 
 describe('animals and working stock adventure batch', () => {
   it('registers ten unique, forward-only adventures with concise mobile copy and valid item references', () => {
     expect(ANIMAL_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(187);
+    expect(SCENARIOS).toHaveLength(214);
     expect(ANIMAL_ADVENTURES.map(({ title }) => title)).toEqual([
       'The Stray Horse', 'The Calf in the Mud', 'The Dog That Returns', 'The Broken Harness',
       'Loose in the Market', 'The Ownerless Mule', 'The Injured Dog', 'The Frightened Team',

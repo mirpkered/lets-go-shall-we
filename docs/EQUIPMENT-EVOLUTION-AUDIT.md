@@ -64,5 +64,5 @@ This is an internal authoring/audit record, not a player-facing gear score. The 
 
 ## Next audit opportunities
 
-Keep the pilot small. Broaden damage only where a scenario puts a specific persistent item under unusual load and can show it. Prefer a repair scene in an already plausible workshop or service stop. Before adding another upgrade, ensure its provenance, authored acquisition, visible condition, functional advantage, capacity behavior, and save/Bank behavior all have tests. Reassess the highest-reference tools for distinct, actually reachable uses rather than granting them generic bonuses.
+Keep the pilot small. The starting Lantern now has one optional, glazier-fitted `spiritGlass` upgrade: it reveals a particular old milepost line in The Lantern at the Crossing, not supernatural presences generally. Its source, provenance, effect, and persistence are covered by occult-batch tests. Broaden damage only where a scenario puts a specific persistent item under unusual load and can show it. Prefer a repair scene in an already plausible workshop or service stop. Before adding another upgrade, ensure its provenance, authored acquisition, visible condition, functional advantage, capacity behavior, and save/Bank behavior have tests. Reassess the highest-reference tools for distinct, actually reachable uses rather than granting them generic bonuses.
 

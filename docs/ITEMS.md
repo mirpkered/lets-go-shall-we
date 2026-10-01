@@ -4,6 +4,8 @@
 
 Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra Gear slots.
 
+The starting Lantern may receive one `spiritGlass` upgrade from a glazier who examines the Widow’s Mirror. Its red-edged pane can reveal a particular old road mark in The Lantern at the Crossing; it does not detect spirits generally or identify what made a mark.
+
 “Useful in” describes a plausible capability/theme, not a guaranteed bonus or a promise that every named scenario currently checks that item. Scenario requirements and tests define actual interactions. Items do not stack generic bonuses.
 
 ## Classes and capacities

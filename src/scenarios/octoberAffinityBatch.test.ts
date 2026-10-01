@@ -69,7 +69,7 @@ describe('Halloween and October-affinity adventures', () => {
     expect(lockedIds.every((id) => (july.scenarioCounts[id] ?? 0) === 0)).toBe(true);
     expect(affinityIds.some((id) => (october.scenarioCounts[id] ?? 0) > 0)).toBe(true);
     expect(affinityIds.some((id) => (july.scenarioCounts[id] ?? 0) > 0)).toBe(true);
-    const noLockedStories = SCENARIOS.filter(({ id }) => !lockedIds.includes(id));
+    const noLockedStories = SCENARIOS.filter(({ diversity }) => diversity?.availability?.season !== 'OCTOBER');
     const octShare = selectionDiagnostics(noLockedStories, [], { selectionMonth: 10 }).scenarios.filter(({ scenario }) => affinityIds.includes(scenario.id)).reduce((sum, row) => sum + row.weight, 0);
     const julyShare = selectionDiagnostics(noLockedStories, [], { selectionMonth: 7 }).scenarios.filter(({ scenario }) => affinityIds.includes(scenario.id)).reduce((sum, row) => sum + row.weight, 0);
     expect(octShare).toBeGreaterThan(julyShare);

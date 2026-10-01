@@ -91,5 +91,41 @@ The 2026-10-01 expansion adds twelve stories to the 175-story inventory snapshot
 
 This batch deliberately does not add The Seven Knocks on the Barn, The Screaming Well, The Empty Costume, cemetery lanterns, or a second masked supper: their central hooks are too close to The Third Knock, The Sound in the Well, The Hollow Man, existing bell/graveyard stories, and The Masked Visitor respectively. The Bone Orchard / twice-dug grave / bone buyer cluster was deferred rather than multiplying burial-investigation structures already present. “The Lanterns in the Cemetery” is likewise not added because cemetery lights would overlap the graveyard/lantern library. “The Door with the Pumpkin Mark” and “The Gourd Race” were dropped: the first depends on an invented local custom and the second adds little beyond the carving contest. These are overlap decisions, not claims that the concepts are unusable after substantial retooling.
 
+## Occult investigation expansion matrix
+
+The occult batch brings the registry to 214 adventures. These authored risk counts reflect consequences, not genre labels: LOW 119, MODERATE 54, HIGH 27, SEVERE 14. Within the 27 new stories, risk is LOW 1, MODERATE 15, HIGH 7, SEVERE 4. The density spread is 9 AMBIGUOUS, 8 EERIE, 3 CONFIRMED_SUPERNATURAL, 5 FANTASY_THREAT, and 2 DUNGEON_FANTASY. Nine are October-locked; the rest remain year-round. Most have no combat; danger is concentrated in optional or likely confrontations, and dungeon encounters include retreat routes.
+
+| Adventure | Density / risk | Distinctive investigation or danger |
+|---|---|---|
+| The Séance at Bellweather House | AMBIGUOUS · MODERATE · October | A concealed bell trick shares the room with an unexplained private voice. |
+| The Red Chalk Circle | CONFIRMED_SUPERNATURAL · HIGH | A missing tenant and an empty coat react to a broken boundary. |
+| The Man Who Sleeps in the Graveyard | AMBIGUOUS · MODERATE · October | Tracks stop at a fresh grave; the family’s account remains uncertain. |
+| The Widow’s Mirror | EERIE · MODERATE | A warped backing explains some—but not the first—reflection. |
+| The Bone Box | AMBIGUOUS · MODERATE | A provenance record and shared dream complicate ownership of a tiny box. |
+| The Lantern at the Crossing | AMBIGUOUS · HIGH | A moving light folds the road’s distance and may reveal a lost traveler. |
+| The Quiet Room | EERIE · MODERATE | Sound ends at a threshold above a sealed speaking tube. |
+| The House with Two Cellars | DUNGEON_FANTASY · SEVERE · October | Optional forward-only descent, unstable powder room, skeletal guard, and retreat. |
+| The Black Thread | AMBIGUOUS · MODERATE | Doorway knots lead to a coffin handle and an empty storeroom. |
+| The Medium Who Knows Too Much | AMBIGUOUS · MODERATE | Bought descriptions explain part of a reading, but not one private detail. |
+| The Thing Under the Floorboards | FANTASY_THREAT · HIGH | A voice beneath a boarding house follows the evacuated residents. |
+| The Candle That Will Not Go Out | EERIE · MODERATE | A hidden inner wick points to a dangerous old service passage. |
+| The Book Without a Title | AMBIGUOUS · LOW | Readers report different text while sharing one fresh printer’s mark. |
+| The Voice in the Well | CONFIRMED_SUPERNATURAL · SEVERE | A speaking tube and a voice answering before speech remain difficult to separate. |
+| The Empty Coffin | AMBIGUOUS · MODERATE | A missing body becomes a living person hidden from creditors. |
+| The Man Who Came Back Wrong | EERIE · MODERATE | Two sets of bootprints diverge at a sealed mill culvert. |
+| Hanging Charms | AMBIGUOUS · MODERATE | Local doorway bundles remember a fever; one empty cottage resists easy explanation. |
+| The Third Knock | EERIE · HIGH · October | A blank letter names a dead sailor’s living shipmate after three knocks. |
+| The Wrong Shadow | CONFIRMED_SUPERNATURAL · HIGH | A shadow turns against its owner; sustained attention can be lethal. |
+| The Red Chapel | FANTASY_THREAT · SEVERE · October | A misunderstood burial rite animates an empty coat and traps a participant. |
+| The Man Who Wouldn’t Stay Dead | FANTASY_THREAT · SEVERE · October | An outlaw’s shadow, not repeated injury, reveals the stopping condition. |
+| Below the Old Fort | DUNGEON_FANTASY · SEVERE · October | Barracks, powder store, signal chamber, optional loot, skeleton, and retreat. |
+| The Barrow Door | FANTASY_THREAT · HIGH · October | Returning a stolen grave pin resolves a guardian encounter without a chapel/bell repeat. |
+| The Hollow Man | FANTASY_THREAT · HIGH · October | Work clothes, fox bones, and a figure that crosses the field. |
+| The Borrowed Face | EERIE · MODERATE | Independent witnesses share a description; a reflection answers late. |
+| The Doorway with No Room | EERIE · HIGH | A measured corridor is longer than the house that contains it. |
+| The Last Candle in the House | EERIE · MODERATE | One house-wide extinction leaves a single flame over a buried walking stick. |
+
+Relic overlap was deliberately restrained: the Grave Token fits a display mark but is not a key; the Yew Charm is recognized at a specific burial threshold but does not command guardians; the Bone Key remains a local Broken Bell object. No new persistent occult Relics were added. Ritual Chalk, Consecrated Salt, and Cold-Iron Nails are optional and explicitly consumed in scenario choices. A glazier’s provenance-backed Spirit Glass upgrade on the existing Lantern reveals a particular old road mark; it does not detect all spirits. “The Bell That Rings Below” remains rejected to protect For Whom the Bell Tolls; no second bell-centered chapel descent was authored.
+
 Do not make a universal scenario template. The framework measures variety and reveals gaps; flexible scenario data remains the authoring medium.
 

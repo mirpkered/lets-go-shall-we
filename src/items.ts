@@ -2,7 +2,7 @@ import type { InventoryClass, Item } from './types';
 
 export const ITEMS: Record<string, Item> = {
   smallKnife: { id: 'smallKnife', name: 'Small Knife', description: 'Plain, sharp, and better than bare hands.', category: 'weapon', carryable: false, inventoryClass: 'GEAR' },
-  lantern: { id: 'lantern', name: 'Lantern', description: 'Its warm flame pushes back the crypt-dark.', category: 'tool', carryable: false, inventoryClass: 'GEAR' },
+  lantern: { id: 'lantern', name: 'Lantern', description: 'Its warm flame pushes back the crypt-dark.', category: 'tool', carryable: false, inventoryClass: 'GEAR', maxUpgrades: 1, upgrades: [{ id: 'spiritGlass', name: 'Spirit glass', description: 'A specialist fits a red-edged pane that reveals certain old marks in lamplight, but does not identify what made them.' }] },
   brassCandlestick: { id: 'brassCandlestick', name: 'Brass Candlestick', description: 'Heavy enough to serve as an improvised weapon.', category: 'weapon', carryable: true },
   boneKey: { id: 'boneKey', name: 'Bone Key', description: 'A finger-bone carved with tiny warding marks.', category: 'run-only', carryable: false },
   ironHandbell: { id: 'ironHandbell', name: 'Iron Handbell', description: 'Cold iron, old soil in its seams. Its clapper is missing.', category: 'run-only', carryable: false },
