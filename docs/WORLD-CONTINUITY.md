@@ -30,6 +30,14 @@ Apply this appendix to newly authored adventures unless a scenario-specific inst
 - Keep supernatural items narrow and atmospheric. Review established artifacts before adding another; an item may react, reveal, warn, or alter one specific interaction, but is not a universal detector, key, or combat upgrade.
 - Character knowledge can unlock recognition of a particular symbol, route, custom, or artifact only when that character actually learned it. Do not grant facts because the human player has seen another adventure.
 
+## Rare Easter eggs
+
+- Easter eggs are occasional flavor, never gameplay: they cannot be required to understand or finish an adventure, change odds or endings, grant items or money, alter history/knowledge, or affect carry or traveler progression.
+- Use only a small, context-appropriate eligible-scene pool and a low chance (about 1–3% per eligible scene entry); allow no more than one event per run. Most runs should have none.
+- Keep references legible as ordinary odd remarks or coincidences to players who miss them. They do not establish crossover canon, require follow-up, or use long recognizable quotations.
+- Preserve the late-19th-century-inspired setting and avoid modern technology. Do not place a joke where it would undercut danger, grief, serious injury, rescue, or an emotionally weighty ending.
+- Persist the selected event with the active run so reload cannot reroll it. Favor unseen events using a small local recent-seen list; do not expose a collection checklist or reward discovery.
+
 ## Authoring workflow and guardrails
 
 Before implementation, inspect the scenario roster, continuity registry, relevant character-history flags, item catalog/provenance, established locations, and major events. Note strong natural connections; do not invent one to satisfy a quota. Keep callbacks conditional and give every one a fresh-character fallback.

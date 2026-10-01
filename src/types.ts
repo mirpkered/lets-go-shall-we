@@ -1,3 +1,4 @@
+import type { EasterEggContext } from './easterEggs';
 export type ItemCategory = 'weapon' | 'armor' | 'tool' | 'charm' | 'relic' | 'consumable' | 'valuable' | 'artifact' | 'run-only';
 
 export interface Item {
@@ -48,6 +49,8 @@ export interface RunState {
   startedAt: number;
   elapsedMinutes?: number;
   scenarioSaveVersion?: number;
+  easterEggEvent?: { id: string; sceneId: string; text: string };
+  qaEasterEggDisabled?: boolean;
 }
 
 export interface TimePhase {
@@ -64,6 +67,7 @@ export interface SaveData {
   mostRecentScenarioId?: string | null;
   recentScenarioIds?: string[];
   pendingGlobalCompletions?: string[];
+  recentEasterEggIds?: string[];
 }
 
 export interface Requirement {
@@ -148,6 +152,7 @@ export interface Scene {
   ending?: 'success' | 'death';
   /** Defaults to true. Set false for a presentation-only continuation screen. */
   countsForProgression?: boolean;
+  easterEggContext?: EasterEggContext;
 }
 
 export interface Scenario {

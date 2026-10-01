@@ -5,7 +5,7 @@ const ending = (id: string, title: string, text: string) => ({ id, title, text, 
 export const MARKET_AFTERNOON: Scenario = {
   id: 'market-afternoon', title: 'Market Afternoon', subtitle: 'A few unhurried hours in a market town.', startScene: 'marketSquare',
   scenes: {
-    marketSquare: { id: 'marketSquare', title: 'A Free Afternoon', tone: 'safe', text: 'The market is busy without being hurried. Baskets of apples line one stall, a cook sells hot hand pies, and a pair of musicians play beneath the guildhall eaves. You have no errand to finish before evening.', choices: [
+    marketSquare: { id: 'marketSquare', title: 'A Free Afternoon', tone: 'safe', easterEggContext: 'market', text: 'The market is busy without being hurried. Baskets of apples line one stall, a cook sells hot hand pies, and a pair of musicians play beneath the guildhall eaves. You have no errand to finish before evening.', choices: [
       { id: 'browseMarket', label: 'Browse the stalls and compare wares', timeCost: 15, next: 'marketBrowsed', effects: { knowledge: ['The market town holds its main market on this square, beneath the guildhall eaves.'] } },
       { id: 'buyPie', label: 'Buy a warm hand pie for one coin', requirements: { minMoney: 1 }, timeCost: 10, effects: { money: -1 }, next: 'marketMeal' },
       { id: 'hearMarketMusic', label: 'Listen to the musicians awhile', timeCost: 12, next: 'marketMusic', effects: { historyFlags: ['spent_a_quiet_afternoon_listening_in_market'] } },
@@ -49,7 +49,7 @@ export const GONE_FISHING: Scenario = {
 export const THE_COUNTY_FAIR: Scenario = {
   id: 'the-county-fair', title: 'The County Fair', subtitle: 'Music, games, food, and a little friendly competition.', startScene: 'fairGreen',
   scenes: {
-    fairGreen: { id: 'fairGreen', title: 'A Day on the Fair Green', tone: 'safe', text: 'A county fair fills the green beyond town. A fiddle tune drifts from the bandstand, a baker sells buns, and a ring-toss game draws a cheerful crowd. Across the field, farmers show their patient animals and talk about feed and weather.', choices: [
+    fairGreen: { id: 'fairGreen', title: 'A Day on the Fair Green', tone: 'safe', easterEggContext: 'fair', text: 'A county fair fills the green beyond town. A fiddle tune drifts from the bandstand, a baker sells buns, and a ring-toss game draws a cheerful crowd. Across the field, farmers show their patient animals and talk about feed and weather.', choices: [
       { id: 'fairRingToss', label: 'Try the ring toss for a small prize', timeCost: 10, chance: { probability: 0.48, successNext: 'fairWon', failureNext: 'fairMissed', successMessage: 'The ring settles over a peg, and the keeper hands you a small ribbon.', failureMessage: 'The ring bounces off the peg. The keeper grins and offers another player a turn.' } },
       { id: 'fairBun', label: 'Buy a bun and listen to the band', requirements: { minMoney: 1 }, timeCost: 15, effects: { money: -1 }, next: 'fairMusic' },
       { id: 'fairLivestock', label: 'Visit the livestock pens', timeCost: 12, next: 'fairPens', effects: { knowledge: ['The county fair is held on the green beyond town each autumn.'] } },
@@ -109,7 +109,7 @@ export const SUPPER_WITH_STRANGERS: Scenario = {
   id: 'supper-with-strangers', title: 'Supper with Strangers', subtitle: 'A shared meal brings out a few road stories.', startScene: 'commonTable',
   runRandomSelections: [{ id: 'supperTopic', values: [{ value: 'road' }, { value: 'harvest' }, { value: 'river' }] }],
   scenes: {
-    commonTable: { id: 'commonTable', title: 'A Place at the Common Table', tone: 'safe', text: 'The inn sets one long table for travelers who arrive near supper. Bread and stew are passed from hand to hand. No one asks for a grand introduction; the talk turns naturally to the roads people have taken.', choices: [
+    commonTable: { id: 'commonTable', title: 'A Place at the Common Table', tone: 'safe', easterEggContext: 'inn', text: 'The inn sets one long table for travelers who arrive near supper. Bread and stew are passed from hand to hand. No one asks for a grand introduction; the talk turns naturally to the roads people have taken.', choices: [
       { id: 'listenSupper', label: 'Listen to the travelers’ conversation', timeCost: 20, next: 'supperStories' },
       { id: 'shareSupperStory', label: 'Share a small story from your travels', timeCost: 12, next: 'supperShared', effects: { historyFlags: ['shared_a_travel_story_at_supper'] } },
       { id: 'askDestinationSupper', label: 'Ask where the other travelers are bound', timeCost: 8, next: 'supperDestinations' },
@@ -175,7 +175,7 @@ export const THE_OLD_MANS_STORY: Scenario = {
 export const A_GOOD_NIGHTS_SLEEP: Scenario = {
   id: 'a-good-nights-sleep', title: 'A Good Night’s Sleep', subtitle: 'A comfortable inn, a wash basin, and no reason to hurry.', startScene: 'comfortableInn',
   scenes: {
-    comfortableInn: { id: 'comfortableInn', title: 'A Comfortable Room', tone: 'safe', text: 'The inn is unusually quiet, the bed is clean, and the wash basin is filled with warm water. The innkeeper says supper will be ready soon and asks whether you need anything. Your pack can stay beside the bed while you settle in.', choices: [
+    comfortableInn: { id: 'comfortableInn', title: 'A Comfortable Room', tone: 'safe', easterEggContext: 'inn', text: 'The inn is unusually quiet, the bed is clean, and the wash basin is filled with warm water. The innkeeper says supper will be ready soon and asks whether you need anything. Your pack can stay beside the bed while you settle in.', choices: [
       { id: 'takeWarmMeal', label: 'Eat the inn’s simple supper', requirements: { minMoney: 1 }, timeCost: 20, effects: { money: -1 }, next: 'sleptWell' },
       { id: 'washComfortableInn', label: 'Wash up with the warm basin water', timeCost: 12, next: 'sleptWell' },
       { id: 'talkComfortableInn', label: 'Share a little conversation downstairs', timeCost: 15, next: 'innConversation' },

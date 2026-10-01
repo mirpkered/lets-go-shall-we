@@ -15,6 +15,9 @@ describe('QA progression inspection', () => {
     const markup = renderQaPanel(true, state, [COLD_STORAGE], items);
     expect(markup).toContain('&quot;qualifyingStoryTransitions&quot;: 5');
     expect(markup).toContain('&quot;qualifiesForTravelerProgression&quot;: false');
+    expect(markup).toContain('data-qa-force-easter-egg');
+    expect(markup).toContain('data-qa-disable-easter-eggs');
+    expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('Easter egg');
     expect(JSON.stringify(state)).toBe(before);
   });
 });

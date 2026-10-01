@@ -1,5 +1,5 @@
 import './styles.css';
-import { carryCapacity, choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, getCarriedItems, meets, newCharacter, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
+import { carryCapacity, choose, depositCarried, discardBankItem, eligibleCarryItems, emptyBank, failCharacter, finishSuccess, forceQaEasterEgg, getCarriedItems, meets, newCharacter, retireCharacter, runText, sceneText, setCarriedItems, startAdventure, timeStatus, withdrawBanked } from './engine';
 import { ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -11,6 +11,7 @@ import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, save
 import type { SaveData } from './types';
 import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
 import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
+import { EASTER_EGGS } from './easterEggs';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -39,8 +40,7 @@ function startScenario(scenarioId: string): void {
   if (state.run?.status === 'active') return;
   const scenario = getScenario(scenarioId);
   if (!scenario) return;
-  state = startAdventure(state, scenario);
-  if (state.run && qaEnabled) state.run.qaMode = true;
+  state = startAdventure(state, scenario, Math.random, qaEnabled);
   persist(); screen = 'play'; inventoryOpen = false; successRewardsOpen = false; render();
 }
 
@@ -48,6 +48,20 @@ function bindQaPanel(): void {
   if (!qaEnabled) return;
   document.querySelectorAll<HTMLButtonElement>('[data-qa-start]').forEach((button) => button.addEventListener('click', () => startScenario(button.dataset.qaStart!)));
   document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
+  document.querySelector('[data-qa-force-easter-egg]')?.addEventListener('click', () => {
+    const id = document.querySelector<HTMLSelectElement>('#qa-easter-egg')?.value;
+    const egg = EASTER_EGGS.find((entry) => entry.id === id);
+    if (!egg || !state.run?.qaMode) return;
+    state = forceQaEasterEgg(state, egg); persist(); render();
+  });
+  document.querySelector('[data-qa-disable-easter-eggs]')?.addEventListener('click', () => {
+    if (!state.run?.qaMode) return;
+    state.run.qaEasterEggDisabled = true; persist(); render();
+  });
+  document.querySelector('[data-qa-enable-easter-eggs]')?.addEventListener('click', () => {
+    if (!state.run?.qaMode) return;
+    state.run.qaEasterEggDisabled = false; persist(); render();
+  });
   document.querySelector('[data-qa-reset-character]')?.addEventListener('click', () => { state.character = null; state.run = null; persist(); screen = 'home'; render(); });
   document.querySelector('[data-qa-clear-save]')?.addEventListener('click', () => {
     localStorage.removeItem(QA_SAVE_KEY); state = structuredClone(EMPTY_SAVE); screen = 'home'; render();

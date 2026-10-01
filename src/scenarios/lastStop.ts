@@ -16,7 +16,7 @@ export const LAST_STOP: Scenario = {
   ],
   scenes: {
     stationPlatform: {
-      id: 'stationPlatform', title: 'All Aboard',
+      id: 'stationPlatform', title: 'All Aboard', easterEggContext: 'depot',
       text: 'The evening local waits beneath a haze of steam: locomotive, service car, and three green passenger coaches. Porters call destinations. A timetable promises a quiet arrival at Bellweather before midnight.',
       choices: [
         { id: 'helpPorter', label: 'Help the porter', hint: 'A few trunks remain on the platform.', timeCost: 5, effects: { money: 4, setFlags: ['earnedTip'] }, next: 'platformAfterHelp' },

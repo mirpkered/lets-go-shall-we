@@ -91,6 +91,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     }
     parsed.mostRecentScenarioId ??= null;
     parsed.recentScenarioIds = [...new Set(Array.isArray(parsed.recentScenarioIds) ? parsed.recentScenarioIds.filter((id): id is string => typeof id === 'string') : parsed.run?.qaMode ? [] : parsed.mostRecentScenarioId ? [parsed.mostRecentScenarioId] : [])].slice(0, RECENT_SCENARIO_WINDOW);
+    if (Array.isArray(parsed.recentEasterEggIds)) parsed.recentEasterEggIds = [...new Set(parsed.recentEasterEggIds.filter((id): id is string => typeof id === 'string'))].slice(0, 6);
     if (migrated) storage.setItem?.(key, JSON.stringify(parsed));
     return parsed;
   } catch {
