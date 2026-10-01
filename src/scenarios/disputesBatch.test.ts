@@ -5,7 +5,7 @@ import { findScenarioGraphProblems } from '../scenarioGraph';
 import { EMPTY_SAVE } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
-import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_FALSE_GUIDE } from './disputesBatch';
+import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_FALSE_GUIDE, THE_LANDLORDS_STORY } from './disputesBatch';
 
 const WATCH_OWNERS = ['Tavren', 'Isolde', 'Araminta', 'Fenella', 'Leofric'];
 
@@ -129,6 +129,28 @@ describe('deception, disputes, and self-interest adventure batch', () => {
     const mismatched = start(A_BORROWED_COAT, { coatClaimant: 'Tavren' }, 2, ['finder_took_watch_from_Isolde']);
     expect(sceneText(A_BORROWED_COAT.scenes.coatClaim, mismatched)).not.toContain('silver watch you took');
     expect(A_BORROWED_COAT.scenes.coatClaim.choices.filter(({ requirements }) => meets(requirements, mismatched)).map(({ id }) => id)).not.toContain('admitWatch_Tavren');
+  });
+
+  it('makes the landlord compromise earn concrete repair terms and consequences', () => {
+    let state = act(start(THE_LANDLORDS_STORY), THE_LANDLORDS_STORY, 'roomComplaint', 'hearLandlord');
+    state = act(state, THE_LANDLORDS_STORY, 'accountsCompared', 'suggestSplitRoom');
+    expect(state.run?.sceneId).toBe('roomCompromise');
+    expect(THE_LANDLORDS_STORY.scenes.roomCompromise.text).toContain('supply plaster');
+    state = act(state, THE_LANDLORDS_STORY, 'roomCompromise', 'boarderWorksForShare');
+    expect(state.run?.status).toBe('success');
+    expect(THE_LANDLORDS_STORY.scenes[state.run!.sceneId].text).toContain('repair will be made');
+    expect(findScenarioGraphProblems(THE_LANDLORDS_STORY)).toEqual([]);
+  });
+
+  it('makes safely holding the disputed coat a consequential middle step', () => {
+    let state = act(start(A_BORROWED_COAT, { coatClaimant: 'Tavren' }), A_BORROWED_COAT, 'coatClaim', 'askInnkeeperCoat');
+    expect(state.run?.sceneId).toBe('coatHeld');
+    expect(sceneText(A_BORROWED_COAT.scenes.coatHeld, state)).toContain('bought time, not settled ownership');
+    state = act(state, A_BORROWED_COAT, 'coatHeld', 'askBothReturn');
+    expect(state.run?.status).toBe('success');
+    expect(state.character?.historyFlags).toContain('kept_a_disputed_coat_safe_for_review');
+    expect(A_BORROWED_COAT.scenes[state.run!.sceneId].text).toContain('prevents a hasty handover');
+    expect(findScenarioGraphProblems(A_BORROWED_COAT)).toEqual([]);
   });
 
   it('lets the traveler hire a capable guide or safely decline every uncertain offer', () => {

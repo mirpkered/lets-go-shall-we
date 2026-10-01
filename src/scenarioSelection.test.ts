@@ -79,7 +79,7 @@ describe('player scenario selection and QA mode', () => {
       expect(['HIGH', 'SEVERE']).toContain(scenarioRiskTier(scenario));
     }
     const distribution = Object.fromEntries(RISK_TIERS.map((tier) => [tier, SCENARIOS.filter((scenario) => scenarioRiskTier(scenario) === tier).length]));
-    expect(distribution).toEqual({ LOW: 112, MODERATE: 34, HIGH: 20, SEVERE: 9 });
+    expect(distribution).toEqual({ LOW: 111, MODERATE: 35, HIGH: 20, SEVERE: 9 });
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'gone-fishing')!)).toBe('LOW');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'under-the-ice')!)).toBe('SEVERE');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'high-water')!)).toBe('SEVERE');

@@ -249,32 +249,44 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
   id: 'the-woman-at-the-crossing', title: 'The Woman at the Crossing', subtitle: 'At dusk, a figure on the far bank signals for travelers to stop.', startScene: 'crossingFigure',
   runRandomSelections: [{ id: 'crossingFigureTruth', values: [{ value: 'warning' }, { value: 'confusedTraveler' }, { value: 'prank' }, { value: 'vanishingFigure' }] }],
   scenes: {
-    crossingFigure: { id: 'crossingFigure', title: 'A Raised Hand', tone: 'warning', text: 'At dusk, you stand on the near bank before a stone bridge over a narrow stream. A woman stands on the far bank beside the road, about twenty paces beyond the bridge. She raises one hand, palm out, as if asking you to stop.', choices: [
+    crossingFigure: { id: 'crossingFigure', title: 'A Raised Hand', tone: 'warning', text: 'At dusk, you stand on the near bank of a narrow stream. A stone bridge leads to the far bank, where a woman raises her hand and points down toward the crossing. Water clouds around one bridge support; from here you cannot tell whether the stones above it are sound.', choices: [
       { id: 'callToCrossingWoman', label: 'Call across the bridge', timeCost: 2, next: 'crossingCall' },
       { id: 'inspectBridgeFromBank', label: 'Look over the bridge from here', timeCost: 3, next: 'crossingExamined' },
-      { id: 'waitAtCrossing', label: 'Wait on the near bank', timeCost: 5, next: 'crossingWaited' },
-      { id: 'takeCrossingDetour', label: 'Use the marked road around the stream', timeCost: 15, next: 'crossingPassed' },
+      { id: 'waitAtCrossing', label: 'Wait for daylight on the near bank', timeCost: 480, next: 'crossingWaited' },
+      { id: 'takeCrossingDetour', label: 'Use the marked road around the stream', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
-    crossingCall: { id: 'crossingCall', title: 'No Clear Explanation', tone: 'safe', text: 'The woman answers, but the stream and evening wind obscure her words. She remains on the far bank, away from the bridge entrance.', textVariants: [
-      { requirements: { selections: { crossingFigureTruth: 'warning' } }, text: 'You make out “loose stone” and “wait.” She points to the bridge parapet.' },
-      { requirements: { selections: { crossingFigureTruth: 'confusedTraveler' } }, text: 'She asks whether this road leads to the village. Her raised hand may have been meant to shade her eyes.' },
-      { requirements: { selections: { crossingFigureTruth: 'prank' } }, text: 'A second voice from the hedgerow laughs. The woman turns toward it, annoyed.' },
-      { requirements: { selections: { crossingFigureTruth: 'vanishingFigure' } }, text: 'No words reach you. When the wind drops, the far bank is empty.' },
+    crossingCall: { id: 'crossingCall', title: 'The Signal Across Water', tone: 'safe', text: 'The stream carries away most of your words. The woman’s gesture remains aimed toward the bridge support where the water clouds.', textVariants: [
+      { requirements: { selections: { crossingFigureTruth: 'warning' } }, text: 'You hear “stone” and “wait.” She points again to the support below the bridge.' },
+      { requirements: { selections: { crossingFigureTruth: 'confusedTraveler' } }, text: 'She asks whether the road reaches the village, then notices the cloudy water and points beneath the bridge.' },
+      { requirements: { selections: { crossingFigureTruth: 'prank' } }, text: 'A laugh comes from the hedge, but the woman’s hand is still aimed at the cloudy water under the bridge.' },
+      { requirements: { selections: { crossingFigureTruth: 'vanishingFigure' } }, text: 'The far bank empties between gusts. The water still clouds around the bridge support.' },
     ], choices: [
       { id: 'inspectStonesFromNearBank', label: 'Inspect the stones from this bank', next: 'crossingExamined' },
-      { id: 'leaveCrossingCall', label: 'Take the marked road around', timeCost: 15, next: 'crossingPassed' },
+      { id: 'leaveCrossingCall', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
-    crossingExamined: { id: 'crossingExamined', title: 'The Bridge in the Dusk', tone: 'warning', text: 'The bridge is low and narrow. One stone on the far parapet sits crooked, but the walking surface is intact. The woman is no longer at the road beyond it.', textVariants: [
-      { requirements: { selections: { crossingFigureTruth: 'warning' } }, text: 'A fresh crack runs through the crooked parapet stone. The warning was sensible, though the bridge deck remains sound.' },
-      { requirements: { selections: { crossingFigureTruth: 'confusedTraveler' } }, text: 'No new damage is visible. A traveler may have continued toward the village by another lane.' },
-      { requirements: { selections: { crossingFigureTruth: 'prank' } }, text: 'You hear footsteps retreat into the hedgerow. The prankster does not come closer.' },
-      { requirements: { selections: { crossingFigureTruth: 'vanishingFigure' } }, text: 'The far road is empty, and no footprints mark the dust where the woman stood.' },
+    crossingExamined: { id: 'crossingExamined', title: 'What the Water Shows', tone: 'warning', text: 'From the near bank, you see fresh grit washing out beneath one arch and a deck stone sitting lower than its neighbors. The crossing may hold a careful traveler, but a hurried step or loaded cart could shift it further. By the time you finish looking, the far-bank road is empty.', textVariants: [
+      { requirements: { selections: { crossingFigureTruth: 'warning' } }, text: 'The woman steps back along the far-bank road after signaling. Her warning was sound: fresh grit washes from under the arch, and one deck stone sits low.' },
+      { requirements: { selections: { crossingFigureTruth: 'confusedTraveler' } }, text: 'The woman turns toward the village after asking for directions. She may not have meant to warn you, but the washed mortar and low deck stone are real.' },
+      { requirements: { selections: { crossingFigureTruth: 'prank' } }, text: 'The woman walks off as laughter fades in the hedge. The prank explains the voice, not the washed mortar or the low deck stone.' },
+      { requirements: { selections: { crossingFigureTruth: 'vanishingFigure' } }, text: 'The far bank empties between one look and the next. No footprints remain, yet the washed mortar and low deck stone are plain to see.' },
     ], choices: [
-      { id: 'crossCarefullyAtDusk', label: 'Cross carefully while the deck is sound', timeCost: 4, next: 'crossingPassed' },
-      { id: 'waitForLightAtBridge', label: 'Wait for morning or take the detour', next: 'crossingWaited' },
+      { id: 'crossCarefullyAtDusk', label: 'Test the low stone and cross slowly', hint: 'It may hold, but the loose support could shift underfoot.', timeCost: 4, chance: { probability: 0.72, successNext: 'crossingPassed', failureNext: 'crossingScramble', successMessage: 'The low stone holds under your careful weight, though grit slips into the stream.', failureMessage: 'The stone tips underfoot. You catch the parapet and scramble back to the near bank.', failureEffects: { health: -1 } }, effects: { setFlags: ['crossingTested'] } },
+      { id: 'waitForLightAtBridge', label: 'Wait for morning', timeCost: 480, next: 'crossingWaited' },
     ] },
-    crossingWaited: end('crossingWaited', 'A Choice Made Slowly', 'You wait on the near bank until the light improves, or take the longer marked road. The figure is gone by morning. The bridge remains where it was; the reason for the signal is less certain.'),
-    crossingPassed: end('crossingPassed', 'Beyond the Crossing', 'You reach the far road without incident. The woman may have offered a useful warning, been mistaken, or disappeared before you could ask.'),
+    crossingWaited: { id: 'crossingWaited', title: 'Waiting by the Stream', tone: 'safe', text: 'You stay on the near bank until the light changes. The woman is gone, but grit continues to wash from beneath the arch. The marked road around the stream remains open.', choices: [
+      { id: 'takeDetourAtDawn', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
+      { id: 'crossAtDawn', label: 'Cross slowly in the better light', timeCost: 4, chance: { probability: 0.82, successNext: 'crossingPassed', failureNext: 'crossingScramble', successMessage: 'In the better light, you find a stable line across the uneven stones.', failureMessage: 'A loose stone rolls underfoot. You catch yourself and retreat to the near bank.', failureEffects: { health: -1 } }, effects: { setFlags: ['crossingTested'] } },
+    ] },
+    crossingScramble: { id: 'crossingScramble', title: 'A Step Back', tone: 'warning', text: 'The stone shifts and your foot strikes the edge hard. You are back on the near bank, shaken and sore; the bridge has not failed, but it is no longer a sensible crossing in the dark.', choices: [
+      { id: 'scrambleTakeDetour', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
+    ] },
+    crossingPassed: { id: 'crossingPassed', title: 'Across the Bridge', tone: 'safe', text: 'You crossed after testing the low stones, accepting a risk the woman’s signal had made visible. The woman is nowhere in sight, but the damaged arch will need repair before carts use it again.', choices: [
+      { id: 'leaveCrossingBehind', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['noticed_and_avoided_a_weak_bridge_arch'] } },
+    ] },
+    crossingDetourArrival: { id: 'crossingDetourArrival', title: 'Around the Stream', tone: 'safe', text: 'The marked road brings you around to the far bank without putting weight on the damaged arch. The woman is gone; the loose stone and washed mortar remain for the next traveler to notice.', choices: [
+      { id: 'leaveDetourCrossing', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['noticed_and_avoided_a_weak_bridge_arch'] } },
+    ] },
+    crossingClear: end('crossingClear', 'The Signal Remembered', 'You continue on with the crossing behind you. Whether the woman was warning you, asking directions, playing a trick, or something you cannot explain, stopping long enough to inspect the bridge kept you from treating a real weakness as harmless.'),
   },
 };
 
@@ -285,13 +297,12 @@ export const THE_BLACK_DOG: Scenario = {
     blackDogRoad: { id: 'blackDogRoad', title: 'A Dog in the Road', tone: 'safe', text: 'A large black dog stands in the road ahead. It does not growl or approach; it watches you, then walks to the next bend and waits. The road is open on both sides.', choices: [
       { id: 'followBlackDog', label: 'Follow at a careful distance', timeCost: 8, next: 'dogFollowed', effects: { historyFlags: ['followed_black_dog'] } },
       { id: 'callBlackDog', label: 'Call gently and wait', timeCost: 3, next: 'dogCalled' },
-      { id: 'offerBlackDogWater', label: 'Set water down and step back', timeCost: 3, next: 'dogCalled' },
       { id: 'passBlackDog', label: 'Give the dog room and continue', next: 'dogPassed' },
     ] },
     dogCalled: { id: 'dogCalled', title: 'No Sudden Trust', tone: 'safe', text: 'The dog keeps several paces between you. It sniffs the road and looks toward the next bend, but does not ask to be touched.', textVariants: [
       { requirements: { selections: { blackDogTruth: 'farmDog' } }, text: 'A farmhand’s whistle sounds from beyond the bend. The dog’s ears lift.' },
       { requirements: { selections: { blackDogTruth: 'lostTraveler' } }, text: 'A weak call for help comes from a shallow roadside ditch beyond the bend.' },
-      { requirements: { selections: { blackDogTruth: 'ordinaryDog' } }, text: 'The dog drinks, then turns toward a nearby yard when someone whistles from it.' },
+      { requirements: { selections: { blackDogTruth: 'ordinaryDog' } }, text: 'Someone whistles from a nearby yard. The dog walks past the milestone in that direction, stopping once to look back.' },
       { requirements: { selections: { blackDogTruth: 'vanishes' } }, text: 'A passing cloud dims the road. When the light returns, the dog is no longer there.' },
     ], choices: [
       { id: 'walkToDogBend', label: 'Look toward the next bend', timeCost: 3, next: 'dogFollowed', effects: { historyFlags: ['followed_black_dog'] } },
@@ -299,7 +310,7 @@ export const THE_BLACK_DOG: Scenario = {
     ] },
     dogFollowed: { id: 'dogFollowed', title: 'What Waits at the Bend', tone: 'warning', text: 'You reach the bend without approaching the dog. Nothing blocks the road, and you can return the way you came.', textVariants: [
       { requirements: { selections: { blackDogTruth: 'farmDog' } }, text: 'A farmhand opens a gate beyond the bend and calls the dog home. The animal trots to them without looking back.' },
-      { requirements: { selections: { blackDogTruth: 'lostTraveler' } }, text: 'An injured traveler lies in the shallow ditch, awake and able to answer. The dog stands nearby but keeps out of reach.' },
+      { requirements: { selections: { blackDogTruth: 'lostTraveler' } }, text: 'An injured traveler lies in the shallow ditch, awake and able to answer. Beyond the bend, an open farm gate leads from the road. The dog stands nearby but keeps out of reach.' },
       { requirements: { selections: { blackDogTruth: 'ordinaryDog' } }, text: 'The dog has stopped beside a milestone. It watches you, then takes an open track toward a farm.' },
       { requirements: { selections: { blackDogTruth: 'vanishes' } }, text: 'The road beyond the bend is empty. There is no gate, traveler, or dog, only the prints you made while following.' },
     ], choices: [
@@ -308,7 +319,12 @@ export const THE_BLACK_DOG: Scenario = {
       { id: 'leaveDogBend', label: 'Continue on the road', next: 'dogPassed' },
     ] },
     dogOwnerHeard: end('dogOwnerHeard', 'A Dog Goes Home', 'The farmhand answers and leads the dog through the gate. No one knows why it waited at the bend, but it is plainly welcome there.'),
-    dogTravelerHelped: end('dogTravelerHelped', 'A Quiet Guide', 'The traveler accepts water and help to sit up. The black dog watches from a few paces away, then disappears down the road while you find assistance.'),
+    dogTravelerHelped: { id: 'dogTravelerHelped', title: 'The Dog Knows the Way', tone: 'safe', text: 'You help the traveler sit up; they say they fell from a cart and the dog kept returning to them from the road. The dog now trots toward the open farm gate, stopping to look back. The traveler can remain where they are while you seek help, or you can call to anyone passing.', choices: [
+      { id: 'followDogForHelp', label: 'Follow the dog to the farm gate', timeCost: 5, next: 'dogHelpFound', effects: { historyFlags: ['followed_black_dog_to_get_help'] } },
+      { id: 'callForPassingHelp', label: 'Stay and call toward the road', timeCost: 4, next: 'dogPassingHelp' },
+    ] },
+    dogHelpFound: end('dogHelpFound', 'A Guide to Help', 'The dog leads you to a farmhand, who returns with you and helps the traveler walk to the nearby yard. The dog had been making the same trip back and forth; without it, you might have passed the injured stranger.'),
+    dogPassingHelp: end('dogPassingHelp', 'Help Reaches the Ditch', 'You stay beside the traveler and call until a cart answers from the road. The dog waits at the bend until the farmhand arrives, then follows them toward the gate.'),
     dogPassed: end('dogPassed', 'The Road Goes On', 'You leave the dog space and continue. It may have been lost, waiting for someone, or only resting by the road.'),
   },
 };

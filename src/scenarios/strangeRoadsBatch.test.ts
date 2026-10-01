@@ -150,6 +150,35 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(THE_PASSENGER_WHO_WASN_T_THERE.scenes.passengerAsked.text).not.toContain('ghost');
   });
 
+  it('makes the woman’s signal relevant to independently visible bridge danger', () => {
+    expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingFigure.text).toContain('Water clouds around one bridge support');
+    expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingExamined.text).toContain('fresh grit washing out beneath one arch');
+    const warning = start(THE_WOMAN_AT_THE_CROSSING, { crossingFigureTruth: 'warning' });
+    const called = act(warning, THE_WOMAN_AT_THE_CROSSING, 'crossingFigure', 'callToCrossingWoman');
+    expect(sceneText(THE_WOMAN_AT_THE_CROSSING.scenes.crossingCall, called)).toContain('She points again to the support');
+    const crossed = act(act(warning, THE_WOMAN_AT_THE_CROSSING, 'crossingFigure', 'inspectBridgeFromBank'), THE_WOMAN_AT_THE_CROSSING, 'crossingExamined', 'crossCarefullyAtDusk', () => 0);
+    expect(crossed.run?.sceneId).toBe('crossingPassed');
+    expect(sceneText(THE_WOMAN_AT_THE_CROSSING.scenes.crossingPassed, crossed)).toContain('accepting a risk');
+    const slipped = act(act(warning, THE_WOMAN_AT_THE_CROSSING, 'crossingFigure', 'inspectBridgeFromBank'), THE_WOMAN_AT_THE_CROSSING, 'crossingExamined', 'crossCarefullyAtDusk', () => 0.999999);
+    expect(slipped.run?.sceneId).toBe('crossingScramble');
+    expect(slipped.run?.health).toBe(9);
+    const detour = act(warning, THE_WOMAN_AT_THE_CROSSING, 'crossingFigure', 'takeCrossingDetour');
+    expect(sceneText(THE_WOMAN_AT_THE_CROSSING.scenes.crossingDetourArrival, detour)).toContain('marked road brings you around');
+  });
+
+  it('does not conjure water for the black dog and lets help lead to meaningful assistance', () => {
+    expect(THE_BLACK_DOG.scenes.blackDogRoad.choices.map(({ id }) => id)).not.toContain('offerBlackDogWater');
+    expect(Object.values(THE_BLACK_DOG.scenes).flatMap(({ text, textVariants = [] }) => [text, ...textVariants.map(({ text: variant }) => variant)])
+      .join(' ')).not.toContain('The dog drinks');
+    let state = act(start(THE_BLACK_DOG, { blackDogTruth: 'lostTraveler' }), THE_BLACK_DOG, 'blackDogRoad', 'followBlackDog');
+    state = act(state, THE_BLACK_DOG, 'dogFollowed', 'helpDitchTraveler');
+    expect(state.run?.sceneId).toBe('dogTravelerHelped');
+    expect(sceneText(THE_BLACK_DOG.scenes.dogTravelerHelped, state)).toContain('fell from a cart');
+    state = act(state, THE_BLACK_DOG, 'dogTravelerHelped', 'followDogForHelp');
+    expect(state.run?.status).toBe('success');
+    expect(THE_BLACK_DOG.scenes[state.run!.sceneId].text).toContain('The dog leads you to a farmhand');
+  });
+
   it('does not identify the mine voice unless the traveler reaches its source', () => {
     const state = start(THE_VOICE_IN_THE_MINE, { mineVoice: 'unexplained' });
     expect(THE_VOICE_IN_THE_MINE.scenes.mineCall.text).not.toContain('guide’s voice says');

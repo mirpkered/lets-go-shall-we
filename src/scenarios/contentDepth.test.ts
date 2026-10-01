@@ -171,9 +171,9 @@ describe('content depth and payoff audit fixes', () => {
     state = act(state, THE_LANDLORDS_STORY, 'accountsCompared', 'suggestSplitRoom');
     expect(state.run?.sceneId).toBe('roomCompromise');
     expect(THE_LANDLORDS_STORY.scenes.roomCompromise.text).toMatch(/cannot pay half|supply plaster|help patch/i);
-    state = act(state, THE_LANDLORDS_STORY, 'roomCompromise', 'confirmRepairTerms');
+    state = act(state, THE_LANDLORDS_STORY, 'roomCompromise', 'boarderWorksForShare');
     expect(state.run?.status).toBe('success');
-    expect(THE_LANDLORDS_STORY.scenes[state.run!.sceneId].text).toMatch(/materials from one, labor from the other/);
+    expect(THE_LANDLORDS_STORY.scenes[state.run!.sceneId].text).toMatch(/repair will be made|help apply it/i);
   });
 
   it('gives Baggage Sorted a second useful judgment and state-aware work payoff', () => {

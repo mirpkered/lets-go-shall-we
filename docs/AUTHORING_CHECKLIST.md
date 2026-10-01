@@ -21,6 +21,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Put the player, NPCs, hazards, exits, routes, vehicles, animals, and important objects in a usable mental map before choices depend on them.
 - [ ] Make obstacles, direction, distance, and access plausible; narrate movement and state changes.
 - [ ] Introduce every decision-relevant tool/object before mentioning it as available or using it.
+- [ ] Check every choice precondition: resources, objects, tools, routes, positions, animals, vehicles, and physical abilities are established and accessible; no choice conjures them.
 
 ## Knowledge and continuity
 
@@ -59,6 +60,9 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Work-focused stories include a meaningful workday decision/event and state-aware performance feedback (output, quality, time, setback, pay, or coworker reaction).
 - [ ] Testimony/information stories show what the account changes and what remains uncertain; do not end at “statement recorded.”
 - [ ] Administrative actions (compare, report, submit, return, or wait for an authority) lead to a visible consequence or payoff.
+- [ ] Do not end at the first offer of help, agreement, compromise, wager, routine task, or deferral; show what it changes and give a meaningful next decision when the story calls for one.
+- [ ] If a supernatural manifestation appears, connect it to the traveler’s understanding, risk, investigation, decision, consequence, or resolution—even when its nature remains uncertain.
+- [ ] Review terminal nodes directly after common first-step actions; treat these as human-review prompts, not automatic failures or a screen-count quota.
 - [ ] Quiet/recreational routes contain an interaction, choice, reaction, or memorable detail; danger is not required.
 - [ ] Endings reflect actual state: tasks, warnings, locations, tools used, injuries, losses, and current-run knowledge.
 - [ ] Consider fictional payment, item, history, relationship, lore, knowledge, cost, or a satisfying narrative payoff. Do not impose reward quotas or forget agreed wages.
