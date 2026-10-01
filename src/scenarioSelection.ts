@@ -1,21 +1,24 @@
 import type { RecentRiskEntry, RiskTier, Scenario } from './types';
 import { scenarioRiskTier } from './riskClassification';
+import { getSeasonAvailability, scenarioAvailableInMonth } from './scenarioDiversity';
 
 export const RECENT_SCENARIO_WINDOW = 5;
 
-export interface SelectionPressure { adventuresCompleted?: number; recentRiskHistory?: RecentRiskEntry[] }
+export interface SelectionPressure { adventuresCompleted?: number; recentRiskHistory?: RecentRiskEntry[]; /** QA-only callers may supply a month; normal selection uses the browser-local month. */ selectionMonth?: number }
 
 const BASE_TIER_SHARES: Record<RiskTier, number> = { LOW: 0.56, MODERATE: 0.27, HIGH: 0.13, SEVERE: 0.04 };
 const LONG_RUN_TIER_SHARES: Record<RiskTier, number> = { LOW: 0.27, MODERATE: 0.32, HIGH: 0.30, SEVERE: 0.11 };
 
-export function eligibleScenarios(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined): Scenario[] {
+export function eligibleScenarios(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, selectionMonth = new Date().getMonth() + 1): Scenario[] {
+  const inSeason = scenarios.filter((scenario) => scenarioAvailableInMonth(scenario, selectionMonth));
+  const pool = inSeason;
   const recent = Array.isArray(recentScenarioIds) ? recentScenarioIds : recentScenarioIds ? [recentScenarioIds] : [];
-  const knownRecent = [...new Set(recent)].filter((id) => scenarios.some((scenario) => scenario.id === id)).slice(0, RECENT_SCENARIO_WINDOW);
+  const knownRecent = [...new Set(recent)].filter((id) => pool.some((scenario) => scenario.id === id)).slice(0, RECENT_SCENARIO_WINDOW);
   let excluded = knownRecent.length;
-  let choices = scenarios.filter((scenario) => !knownRecent.slice(0, excluded).includes(scenario.id));
+  let choices = pool.filter((scenario) => !knownRecent.slice(0, excluded).includes(scenario.id));
   while (!choices.length && excluded > 0) {
     excluded -= 1;
-    choices = scenarios.filter((scenario) => !knownRecent.slice(0, excluded).includes(scenario.id));
+    choices = pool.filter((scenario) => !knownRecent.slice(0, excluded).includes(scenario.id));
   }
   return choices;
 }
@@ -56,12 +59,13 @@ export function scenarioSelectionWeights(scenarios: Scenario[], pressure: Select
   const availableShare = [...tierCounts.keys()].reduce((sum, tier) => sum + shares[tier], 0);
   return scenarios.map((scenario) => {
     const tier = tiers.get(scenario)!;
-    return { scenario, tier, weight: (shares[tier] / availableShare) / tierCounts.get(tier)! };
+    const seasonalBoost = Math.max(1, Math.min(2.25, getSeasonAvailability(scenario).weightBoost ?? 1));
+    return { scenario, tier, weight: ((shares[tier] / availableShare) / tierCounts.get(tier)!) * seasonalBoost };
   });
 }
 
 export function selectionTierSummary(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, pressure: SelectionPressure = {}): Record<RiskTier, { count: number; totalWeight: number }> {
-  const weighted = scenarioSelectionWeights(eligibleScenarios(scenarios, recentScenarioIds), pressure);
+  const weighted = scenarioSelectionWeights(eligibleScenarios(scenarios, recentScenarioIds, pressure.selectionMonth ?? new Date().getMonth() + 1), pressure);
   const summary: Record<RiskTier, { count: number; totalWeight: number }> = {
     LOW: { count: 0, totalWeight: 0 }, MODERATE: { count: 0, totalWeight: 0 }, HIGH: { count: 0, totalWeight: 0 }, SEVERE: { count: 0, totalWeight: 0 },
   };
@@ -70,7 +74,7 @@ export function selectionTierSummary(scenarios: Scenario[], recentScenarioIds: s
 }
 
 export function selectScenario(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, random = Math.random, pressure: SelectionPressure = {}): Scenario | undefined {
-  const weighted = scenarioSelectionWeights(eligibleScenarios(scenarios, recentScenarioIds), pressure);
+  const weighted = scenarioSelectionWeights(eligibleScenarios(scenarios, recentScenarioIds, pressure.selectionMonth ?? new Date().getMonth() + 1), pressure);
   if (!weighted.length) return undefined;
   const total = weighted.reduce((sum, entry) => sum + entry.weight, 0);
   let point = Math.min(0.999999999, Math.max(0, random())) * total;

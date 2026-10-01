@@ -2,7 +2,7 @@ import { authorBatch } from './secondWaveTools';
 
 export const SEASONAL_LIFE_ADVENTURES = authorBatch([
   {
-    id: 'first-snow', title: 'First Snow', subtitle: 'A light snowfall changes the road before anyone expected it.', openingContext: 'roadside',
+    id: 'first-snow', title: 'First Snow', subtitle: 'A light snowfall changes the road before anyone expected it.', openingContext: 'roadside', diversity: { distinctiveHook: 'A peaceful first-snow travel vignette offers shelter, useful work, or continued travel without forcing a crisis.', availability: { season: 'WINTER', weightBoost: 1.5 } },
     opening: 'The season’s first snow begins as you reach a roadside inn. It is only a few inches deep, and the main road remains visible. The keeper is bringing in firewood; two travelers are deciding whether to stay the night or continue to the next settlement.',
     routes: [
       { id: 'shelter', label: 'Stay at the inn for the evening', title: 'A Warm Room', text: 'The inn has a spare bed and a place to dry your coat. The keeper says the road will be easier to judge in the morning.', outcomes: [
@@ -20,7 +20,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
     ],
   },
   {
-    id: 'the-thaw', title: 'The Thaw', subtitle: 'Spring mud asks for patience more often than courage.', opening: 'The thaw has softened the road through a small farming district. A shallow creek runs wider than usual, and a fence rail lies beside the lane where the ground slumped. No one is trapped; the farmers are simply trying to keep carts and animals off the wettest ground.',
+    id: 'the-thaw', title: 'The Thaw', subtitle: 'Spring mud asks for patience more often than courage.', diversity: { distinctiveHook: 'A quiet spring-mud maintenance vignette contrasts small repair work with choosing a safer detour.', availability: { season: 'SPRING', weightBoost: 1.5 } }, opening: 'The thaw has softened the road through a small farming district. A shallow creek runs wider than usual, and a fence rail lies beside the lane where the ground slumped. No one is trapped; the farmers are simply trying to keep carts and animals off the wettest ground.',
     routes: [
       { id: 'road', label: 'Help lay boards over the soft rut', title: 'A Plank across the Mud', text: 'A farmer has two spare boards and asks you to lay them across the rut. They will help an empty cart pass, but not a heavy wagon.', outcomes: [
         { id: 'place', label: 'Set the boards and test them on foot', title: 'A Narrow Crossing', text: 'The boards hold a person and a handcart. The farmer marks them as a temporary path until the ground dries.' },
@@ -37,7 +37,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
     ],
   },
   {
-    id: 'before-the-frost', title: 'Before the Frost', subtitle: 'A farmer hires extra hands to save what can be gathered before night.', openingContext: 'field',
+    id: 'before-the-frost', title: 'Before the Frost', subtitle: 'A farmer hires extra hands to save what can be gathered before night.', openingContext: 'field', diversity: { distinctiveHook: 'The traveler chooses what work to prioritize before a forecast frost, with no way to save every crop.', availability: { season: 'AUTUMN', weightBoost: 1.5 } },
     opening: 'An early frost is forecast for tonight. A small orchard still holds late apples, and the farmer offers two coins for an hour of gathering. The lower branches are ready; the highest fruit would take ladders and more time than the weather allows.',
     timePhases: [{ id: 'afternoon', label: 'Late afternoon', atMinutes: 0 }, { id: 'dusk', label: 'Dusk', atMinutes: 40 }, { id: 'night', label: 'Frost settling', atMinutes: 70 }],
     routes: [
@@ -56,7 +56,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
     ],
   },
   {
-    id: 'new-years-eve', title: 'New Year’s Eve', subtitle: 'An inn sets out a modest supper for anyone still on the road.',
+    id: 'new-years-eve', title: 'New Year’s Eve', subtitle: 'An inn sets out a modest supper for anyone still on the road.', diversity: { distinctiveHook: 'A low-stakes New Year gathering lets the traveler share a story, secure a morning seat, or simply listen.', availability: { season: 'DECEMBER', weightBoost: 1.5 } },
     opening: 'Snow stays outside a small inn while the keeper lays bread, stew, and two candles on the common-room table. A schoolteacher is waiting for the morning coach; a teamster has no plans beyond a warm meal. The gathering is simple and open to travelers.',
     routes: [
       { id: 'supper', label: 'Join the shared supper', title: 'A Table before Midnight', text: 'The keeper asks each guest to bring a bowl and make room. The meal is plain, and no one is expected to give a speech.', outcomes: [

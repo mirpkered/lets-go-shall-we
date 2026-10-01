@@ -13,6 +13,7 @@ import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './co
 import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
 import { EASTER_EGGS } from './easterEggs';
 import { partitionAvailableGear } from './inventoryPresentation';
+import { analyzeScenarioLibrary } from './scenarioDiversity';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -32,6 +33,7 @@ const counterEndpoint = (import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLE
 let globalTotal: number | null = null;
 let globalTotalRequested = false;
 let completionFlushRunning = false;
+let qaSelectionMonth: number | null = null;
 
 function persist(): void { qaEnabled ? saveQaGame(state) : saveGame(state); }
 function itemName(id: string): string { return ITEMS[id]?.name ?? id; }
@@ -47,6 +49,23 @@ function startScenario(scenarioId: string): void {
 
 function bindQaPanel(): void {
   if (!qaEnabled) return;
+  document.querySelector<HTMLSelectElement>('[data-qa-season-month]')?.addEventListener('change', (event) => {
+    const value = (event.currentTarget as HTMLSelectElement).value;
+    qaSelectionMonth = value ? Number(value) : null;
+    render();
+  });
+  document.querySelector<HTMLButtonElement>('[data-qa-diversity-report]')?.addEventListener('click', () => {
+    const audit = analyzeScenarioLibrary(SCENARIOS);
+    const output = document.querySelector<HTMLElement>('[data-qa-diversity-output]');
+    if (!output) return;
+    output.textContent = JSON.stringify({
+      classified: audit.classified, total: audit.total, distributions: audit.distributions,
+      similarityWarningCount: audit.similarityWarnings.length, exampleSimilarityWarnings: audit.similarityWarnings.slice(0, 40),
+      duplicateStructuralPatternCount: audit.structuralWarnings.length, exampleStructuralWarnings: audit.structuralWarnings.slice(0, 40),
+      rows: audit.rows,
+    }, null, 2);
+    output.hidden = false;
+  });
   document.querySelectorAll<HTMLButtonElement>('[data-qa-start]').forEach((button) => button.addEventListener('click', () => startScenario(button.dataset.qaStart!)));
   document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
   document.querySelector('[data-qa-force-easter-egg]')?.addEventListener('click', () => {
@@ -123,7 +142,7 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = '', style = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -197,6 +216,7 @@ function renderHome(): void {
     const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId, Math.random, {
       adventuresCompleted: state.character?.adventuresCompleted ?? 0,
       recentRiskHistory: state.recentRiskHistory,
+      ...(qaEnabled && qaSelectionMonth !== null ? { selectionMonth: qaSelectionMonth } : {}),
     });
     if (scenario) startScenario(scenario.id);
   });

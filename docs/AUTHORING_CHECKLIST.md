@@ -9,6 +9,9 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Assign a LOW / MODERATE / HIGH / SEVERE risk tier from actual consequence potential, not genre or atmosphere; preserve intended quiet adventures.
 - [ ] Decide whether pressure/time is useful; identify which actions advance fictional time and what visible changes follow.
 - [ ] Review NPC names for variety and intentional recurrence.
+- [ ] Review the generated diversity matrix and library gaps; pick underrepresented combinations rather than repeating the last batch’s formula.
+- [ ] Give the adventure a distinctive hook beyond changed names or scenery; vary structure, role, pacing, risk, tone, entry, decision pattern, outcome, and payoff across the batch.
+- [ ] Set seasonal availability only when the story is genuinely date-bound; mention of weather or a season alone does not require calendar gating. Classify fantasy density and combat separately from tone and risk.
 
 ## Opening and spatial setup
 
@@ -42,6 +45,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Endings reflect actual state: tasks, warnings, locations, tools used, injuries, losses, and current-run knowledge.
 - [ ] Consider fictional payment, item, history, relationship, lore, knowledge, cost, or a satisfying narrative payoff. Do not impose reward quotas or forget agreed wages.
 - [ ] Ensure item rewards have believable ownership/provenance, distinct capability, no unintended duplicate, and a safe carry/Bank/decline flow.
+- [ ] Compare the completed scenario with existing metadata and structural warnings. Similarity is a prompt for human review, never an automatic rejection.
 
 ## Release checks
 

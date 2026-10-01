@@ -1,4 +1,4 @@
-import type { Effects, Requirement, Scenario, TimePhase } from '../types';
+import type { Effects, Requirement, Scenario, ScenarioDiversity, TimePhase } from '../types';
 
 export interface EndingOption {
   id: string;
@@ -33,6 +33,7 @@ export interface AdventureDraft {
   openingVariants?: { requirements: Requirement; text: string }[];
   timePhases?: TimePhase[];
   runRandomSelections?: Scenario['runRandomSelections'];
+  diversity?: Partial<ScenarioDiversity>;
   routes: [StoryRoute, StoryRoute, StoryRoute] | [StoryRoute, StoryRoute, StoryRoute, StoryRoute];
 }
 
@@ -87,6 +88,7 @@ export function authorAdventure(draft: AdventureDraft): Scenario {
     startScene,
     timePhases: draft.timePhases,
     runRandomSelections: draft.runRandomSelections,
+    diversity: draft.diversity,
     scenes,
   };
 }

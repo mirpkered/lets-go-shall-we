@@ -18,6 +18,8 @@ This roadmap separates stabilization from possible expansion. It has no promised
 - Review the risk-tier selection balance from play data and author reviews; the current selector uses soft completion-count and recent-risk weighting, without altering in-story odds.
 - Review world-continuity callbacks and high-confidence weak scenarios without forcing crossovers.
 - Reassess reward frequency from real play, keeping fictional provenance and varied narrative rewards ahead of item quotas.
+- Treat long-term library growth (potentially 1,000+ adventures) as a core creative goal, but put meaningful diversity ahead of raw quantity. Use the diversity matrix and its gap/similarity warnings before any large generation batch.
+- Seasonal availability is now supported. Future October and December batches are possibilities, not dated commitments; fantasy, skeleton/undead, and choice-driven combat stories fit the taxonomy without requiring a general combat engine.
 
 ## Later — presentation and optional platform work
 

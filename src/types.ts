@@ -2,6 +2,18 @@ import type { EasterEggContext } from './easterEggs';
 export type ItemCategory = 'weapon' | 'armor' | 'tool' | 'charm' | 'relic' | 'consumable' | 'valuable' | 'artifact' | 'run-only';
 export type RiskTier = 'LOW' | 'MODERATE' | 'HIGH' | 'SEVERE';
 
+export type FantasyDensity = 'NONE' | 'AMBIGUOUS' | 'EERIE' | 'CONFIRMED_SUPERNATURAL' | 'FANTASY_THREAT' | 'DUNGEON_FANTASY';
+export type CombatPresence = 'NONE' | 'AVOIDABLE' | 'POSSIBLE' | 'LIKELY' | 'UNAVOIDABLE' | 'MULTIPLE';
+export type LengthClass = 'VIGNETTE' | 'STANDARD' | 'EXTENDED' | 'EPIC_SHORT';
+export type SeasonKey = 'ALL_YEAR' | 'OCTOBER' | 'DECEMBER' | 'WINTER' | 'SPRING' | 'SUMMER' | 'AUTUMN' | 'CUSTOM';
+export interface SeasonAvailability { season: SeasonKey; months?: number[]; startMonthDay?: string; endMonthDay?: string; weightBoost?: number }
+export interface ScenarioDiversity {
+  playerRoles: string[]; activities: string[]; structures: string[]; tones: string[]; settings: string[];
+  riskTier: RiskTier; fantasyDensity: FantasyDensity; supernaturalThreats: string[]; combat: CombatPresence; length: LengthClass;
+  entryShapes: string[]; outcomeShapes: string[]; rewardShapes: string[]; consequenceShapes: string[];
+  distinctiveHook: string; availability: SeasonAvailability;
+}
+
 export interface RecentRiskEntry { scenarioId: string; tier: RiskTier }
 
 export interface Item {
@@ -193,6 +205,8 @@ export interface Scenario {
   saveVersion?: number;
   timePhases?: TimePhase[];
   runRandomSelections?: RunRandomSelection[];
+  /** Optional authorial overrides; legacy scenarios receive audited keyword/content classification. */
+  diversity?: Partial<ScenarioDiversity>;
   scenes: Record<string, Scene>;
 }
 
