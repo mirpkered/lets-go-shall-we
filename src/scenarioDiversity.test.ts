@@ -63,9 +63,12 @@ describe('scenario diversity and seasonal framework', () => {
     expect(analyzeScenarioLibrary([cameo]).historicalReferenceCounts).toEqual({ 'Wild Bill Hickok': 1 });
   });
 
-  it('keeps historical metadata out of normal scenario selection', () => {
-    const tagged: Scenario = { ...annual, diversity: { historicalPresence: 'CAMEO', historicalReferences: ['Calamity Jane'], historicalPortrayal: 'GROUNDED' } };
-    expect(scenarioSelectionWeights([annual, tagged]).map(({ weight }) => weight)).toEqual(scenarioSelectionWeights([annual, { ...tagged, diversity: undefined }]).map(({ weight }) => weight));
+  it('applies only a modest historical-content modifier in normal scenario selection', () => {
+    const tagged: Scenario = { ...annual, id: 'historical-cameo-test', diversity: { historicalPresence: 'CAMEO', historicalReferences: ['Calamity Jane'], historicalPortrayal: 'GROUNDED' } };
+    const weights = scenarioSelectionWeights([annual, tagged]);
+    expect(weights.find(({ scenario }) => scenario.id === tagged.id)!.historicalWeight).toBeLessThan(1);
+    expect(weights.find(({ scenario }) => scenario.id === tagged.id)!.weight).toBeGreaterThan(0);
+    expect(weights.find(({ scenario }) => scenario.id === annual.id)!.weight).toBeGreaterThan(weights.find(({ scenario }) => scenario.id === tagged.id)!.weight);
   });
 
   it('gates October and December scenarios by the selected local month', () => {

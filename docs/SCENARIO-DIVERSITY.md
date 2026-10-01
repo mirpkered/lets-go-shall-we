@@ -18,9 +18,26 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Seasonal availability
 
-Season is explicit metadata (`Scenario.diversity.availability`): ALL_YEAR, a named month, broad season, or CUSTOM with explicit months. Optional month/day bounds and a bounded selection boost leave room for future date windows. Current random selection reads the browser’s local month and performs only a cheap metadata filter; it does not scan story text or call a service. October and December tags mean the entire month, not only a single holiday date. A modest per-scenario boost applies after recent-story exclusion and risk-tier weighting, capped so a seasonal story cannot overwhelm the pool. New games are filtered; active saves and earned property/rewards are untouched.
+Season is explicit metadata (`Scenario.diversity.availability`): ALL_YEAR, a named month, broad season, or CUSTOM with explicit months. Optional month/day bounds and a bounded selection boost leave room for future date windows. Current random selection reads the browser’s local month and performs a metadata filter; it does not call a service. October and December tags mean the entire month, not only a single holiday date. Out-of-season stories are ineligible; a modest per-scenario seasonal boost is applied only after category and risk weighting, capped so a seasonal story cannot overwhelm the pool. New games are filtered; active saves and earned property/rewards are untouched.
 
 QA can temporarily override the effective selection month and directly launch any registered seasonal adventure at any time. The override is held in QA UI memory only, not in player saves. A seasonal scenario can later be offered in an explicit archive without changing its normal-rotation availability.
+
+## Normal adventure selection and anti-repetition
+
+Normal selection is a two-stage weighted draw, not a fixed rotation. Stage one chooses evenly among the distinct **primary activity** categories present in the season-eligible, recent-excluded pool. The category reuses `ScenarioDiversity.activities`: its first authored/inferred tag is the primary category, so there is no parallel category registry. A broad category therefore receives a fair chance without gaining extra influence merely because it contains more adventures.
+
+Recent category starts gently reduce that category’s stage-one weight. The bounded, newest-first traveler history holds up to eight categories; each matching entry contributes `1 / (1 + 0.45 × position)` to recent representation, and the category multiplier is `max(0.18, 1 / (1 + 1.15 × representation))`. A category absent from the recent window recovers to full weight. This is pressure, not a rotation guarantee.
+
+Stage two chooses an adventure inside the chosen category. Its relative weight is the product of:
+
+- the current soft risk-tier share divided among available adventures of that tier within the category (including the existing long-traveler and recent-danger adjustments);
+- the authored seasonal boost, clamped to 1–2.25, after out-of-season filtering;
+- a modest historical-presence factor: NONE/INSPIRED 1.00, CAMEO 0.82, FEATURED 0.68, HISTORICAL_EVENT 0.74;
+- the per-traveler replay factor: first completed play 1.00, second 0.15, third 0.045, fourth and later 0.012.
+
+All weights remain positive. A traveler’s scenario-play map is sparse and increases exactly once on reaching an authored success or death ending; QA runs, abandonment, refresh, and incomplete exits do not count as completed plays. Category history records a normal scenario start (including a later-abandoned run). Both histories belong to that traveler and disappear on death, retirement, or abandonment. Existing exact scenario recency remains device-level across travelers: the latest five ended/abandoned normal scenarios are excluded when possible, releasing the oldest exclusion only when the seasonal pool would otherwise be empty. Legacy saves receive empty traveler histories; active runs resume unchanged. QA simulation copies all histories and never mutates the real save. Easter-egg recency remains a separate flavor system and is not a scenario-selection input.
+
+Season and historical presence are the currently authored special-selection metadata; the project has no independent scenario-level “special” field. Do not make Easter-egg contexts or recent Easter-egg appearances affect adventure weighting.
 
 Existing clearly seasonal entries: First Snow (WINTER), The Thaw (SPRING), Before the Frost (AUTUMN), and New Year’s Eve (DECEMBER). Autumn, winter, spring, and year-round stories remain distinct; a seasonal setting does not make a story supernatural. October content space may include peaceful harvest/fair stories, masks, bonfires, eerie roads, burial places, skeletons, revenants, monster hunts, rituals, mini-dungeons, or comic misunderstandings. December space may include community gatherings, deliveries, winter travel, lodging, charity, folklore, supernatural visitors, danger, and quiet festive stories. These are possibilities for future batches, not a generated queue or a requirement that each theme be used.
 
@@ -32,7 +49,7 @@ The QA panel’s “Generate library diversity report” builds one row per regi
 
 The first generated snapshot for 175 registered adventures (2026-10-01) is a prompt for human review, not a definitive score. Tags overlap, and legacy keyword classification can mistake a passing mention for a central activity. The QA report is the current data source.
 
-- **Risk:** 112 LOW, 34 MODERATE, 20 HIGH, 9 SEVERE. Low-risk stories dominate by count, while meaningful lethal danger remains a smaller share.
+- **Risk:** 111 LOW, 35 MODERATE, 20 HIGH, 9 SEVERE. Low-risk stories dominate by count, while meaningful lethal danger remains a smaller share.
 - **Fantasy/combat:** 169 NONE, 5 EERIE, 1 CONFIRMED_SUPERNATURAL; no current scenario classifies as an explicit fantasy threat or dungeon fantasy. Combat presence is NONE 163, AVOIDABLE 6, POSSIBLE 5, MULTIPLE 1 (the broader literary word matcher and explicit combat metadata need author review). Grounded social content is therefore the clear center of gravity; exceptional undead/monster and compact dungeon experiences are a genuine future option, not a required quota.
 - **Length:** 3 VIGNETTE, 138 STANDARD, 13 EXTENDED, 21 EPIC_SHORT. Short focused stories are likely undercounted by the scene-count fallback and deserve explicit overrides when reviewed.
 - **Tone/settings:** town/market/inn (106), domestic interior (87), farm (84), river/ferry/lake (80), and road/bridge (129) appear frequently. Shore/dock (13), workshop/mill/quarry/warehouse (12), and church/graveyard/ruin (14) are comparatively sparse. Peaceful (112) and hopeful/warm (155) coexist with tension (109); humorous/absurd tone (10) and grim tone (3) are less common.

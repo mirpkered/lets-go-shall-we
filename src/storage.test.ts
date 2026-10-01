@@ -40,7 +40,7 @@ describe('save compatibility', () => {
     const character = newCharacter('Old Save');
     const run = startRun(character, BROKEN_BELL);
     const { visitedSceneIds: _visited, elapsedMinutes: _elapsed, startingItemStates: _itemStates, supplies: _supplies, startingSupplies: _startingSupplies, ...legacyRun } = run;
-    const { historyFlags: _historyFlags, supplies: _characterSupplies, ...legacyCharacter } = character;
+    const { historyFlags: _historyFlags, supplies: _characterSupplies, scenarioCategoryHistory: _categoryHistory, scenarioPlayCounts: _scenarioPlays, ...legacyCharacter } = character;
     legacyCharacter.carriedItem = 'graveCoin';
     legacyCharacter.ownedAssets = [{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }];
     const oldSave = { version: 1, bank: ['yewCharm'], itemStates: { graveCoin: { condition: 'DAMAGED', upgrades: [], provenance: ['Old save'] } }, character: legacyCharacter, run: { ...legacyRun, sceneId: 'chapelNave', inventory: ['smallKnife', 'lantern', 'graveCoin'], flags: ['heard_below'], health: 6 } };
@@ -52,6 +52,8 @@ describe('save compatibility', () => {
     expect(state.recentScenarioIds).toEqual([]);
     expect(state.bank).toEqual(['yewCharm']);
     expect(state.character?.historyFlags).toEqual([]);
+    expect(state.character?.scenarioCategoryHistory).toEqual([]);
+    expect(state.character?.scenarioPlayCounts).toEqual({});
     expect(state.character?.carriedItems).toEqual(['graveCoin']);
     expect(state.character?.ownedAssets).toEqual([{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }]);
     expect(state.character?.supplies).toEqual({});
@@ -63,6 +65,8 @@ describe('save compatibility', () => {
   it('persists run history and recent scenario selection exactly', () => {
     const character = newCharacter('Recent Save');
     character.historyFlags = ['returned_for_help'];
+    character.scenarioCategoryHistory = ['social interaction', 'labor/repair'];
+    character.scenarioPlayCounts = { 'market-day': 2, 'gone-fishing': 1 };
     const state: SaveData = {
       version: 1, bank: ['yewCharm'], itemStates: {}, character,
       run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },

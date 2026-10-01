@@ -23,6 +23,10 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('data-qa-add-upgrade');
     expect(markup).toContain('data-qa-remove-upgrade');
     expect(markup).toContain('data-qa-content-quality-report');
+    expect(markup).toContain('data-qa-simulate-selection="100"');
+    expect(markup).toContain('data-qa-simulate-selection="1000"');
+    expect(markup).toContain('selectionCategoryHistory');
+    expect(markup).toContain('nextSelection');
     expect(markup).toContain('data-qa-content-quality-report');
     expect(markup).toContain('data-qa-set-gear-capacity');
     expect(markup).toContain('data-qa-add-carried');

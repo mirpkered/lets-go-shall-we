@@ -63,6 +63,10 @@ export interface Character {
   knowledge: string[];
   adventuresCompleted: number;
   historyFlags: string[];
+  /** Newest-first primary activity categories started by this traveler. */
+  scenarioCategoryHistory?: string[];
+  /** Sparse counts of authored endings reached; abandoned and QA runs are excluded. */
+  scenarioPlayCounts?: Record<string, number>;
   /** Character-bound property; unlike gear, these assets are not carried or banked. */
   ownedAssets?: OwnedAsset[];
   /** Character-bound limited-use resources, keyed by supply item ID. */

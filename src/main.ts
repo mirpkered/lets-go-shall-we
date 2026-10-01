@@ -6,7 +6,7 @@ import { showLaunchSplash } from './launchSplash';
 import { contactMailto, feedbackAdventureTitle, renderUtilityFeatures } from './helpPanels';
 import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
-import { isQaMode, selectScenario } from './scenarioSelection';
+import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioSelection';
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
@@ -56,6 +56,20 @@ function startScenario(scenarioId: string): void {
 
 function bindQaPanel(): void {
   if (!qaEnabled) return;
+  document.querySelectorAll<HTMLButtonElement>('[data-qa-simulate-selection]').forEach((button) => button.addEventListener('click', () => {
+    const draws = Number(button.dataset.qaSimulateSelection) === 1000 ? 1000 : 100;
+    const result = simulateScenarioSelection(SCENARIOS, state.recentScenarioIds ?? [], {
+      adventuresCompleted: state.character?.adventuresCompleted ?? 0,
+      recentRiskHistory: state.recentRiskHistory ?? [],
+      categoryHistory: state.character?.scenarioCategoryHistory ?? [],
+      scenarioPlayCounts: state.character?.scenarioPlayCounts ?? {},
+      ...(qaSelectionMonth !== null ? { selectionMonth: qaSelectionMonth } : {}),
+    }, draws);
+    const output = document.querySelector<HTMLElement>('[data-qa-selection-simulation]');
+    if (!output) return;
+    output.textContent = JSON.stringify({ ...result, topScenarios: Object.entries(result.scenarioCounts).sort((a, b) => b[1] - a[1]).slice(0, 30) }, null, 2);
+    output.hidden = false;
+  }));
   document.querySelector<HTMLSelectElement>('[data-qa-season-month]')?.addEventListener('change', (event) => {
     const value = (event.currentTarget as HTMLSelectElement).value;
     qaSelectionMonth = value ? Number(value) : null;
@@ -294,6 +308,8 @@ function renderHome(): void {
     const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId, Math.random, {
       adventuresCompleted: state.character?.adventuresCompleted ?? 0,
       recentRiskHistory: state.recentRiskHistory,
+      categoryHistory: state.character?.scenarioCategoryHistory ?? [],
+      scenarioPlayCounts: state.character?.scenarioPlayCounts ?? {},
       ...(qaEnabled && qaSelectionMonth !== null ? { selectionMonth: qaSelectionMonth } : {}),
     });
     if (scenario) startScenario(scenario.id);

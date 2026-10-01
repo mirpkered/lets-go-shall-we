@@ -1,13 +1,13 @@
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
 import type { Character, Choice, Effects, InventorySource, ItemCondition, PersistentItemState, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
-import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
+import { CATEGORY_HISTORY_WINDOW, primaryScenarioCategory, RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier } from './riskClassification';
 import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], ownedAssets: [], supplies: {} };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {} };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -232,6 +232,10 @@ export function startAdventure(state: SaveData, scenario: Scenario, random = Mat
   next.character ??= newCharacter();
   next.run = startRun(next.character, scenario, random, next.itemStates);
   if (qaMode) next.run.qaMode = true;
+  else {
+    next.character.scenarioCategoryHistory = [primaryScenarioCategory(scenario), ...(next.character.scenarioCategoryHistory ?? [])].slice(0, CATEGORY_HISTORY_WINDOW);
+    next.character.scenarioPlayCounts ??= {};
+  }
   next.mostRecentScenarioId = scenario.id;
   if (!qaMode) tryEasterEggOnSceneEntry(next, scenario, random);
   return next;
@@ -528,6 +532,10 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
     run.authoredEndingRecorded = true;
     queueGlobalCompletion(state);
     recordScenarioEnding(state);
+    if (!run.qaMode && state.character && (run.status === 'success' || run.status === 'death')) {
+      state.character.scenarioPlayCounts ??= {};
+      state.character.scenarioPlayCounts[run.scenarioId] = Math.max(0, Math.floor(state.character.scenarioPlayCounts[run.scenarioId] ?? 0)) + 1;
+    }
   }
   if (run.completionCountRecorded) return;
   if (!resolveTravelerProgression) {
