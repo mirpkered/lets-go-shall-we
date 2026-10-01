@@ -9,7 +9,7 @@ import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioSelection';
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
-import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
+import { formatGlobalTotal, normalizeCounterEndpoint, readGlobalTotal, submitGlobalCompletionWithRetry } from './completionCounter';
 import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
 import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
@@ -29,10 +29,11 @@ const homeSceneStorage: SessionSceneStorage = (() => {
 })();
 let activeHomeScene = getOrCreateHomeScene(homeSceneStorage);
 const assetBaseUrl = (import.meta as ImportMeta & { env: { BASE_URL: string } }).env.BASE_URL;
-const counterEndpoint = (import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL ?? '';
+const counterEndpoint = normalizeCounterEndpoint((import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL);
 let globalTotal: number | null = null;
 let globalTotalRequested = false;
 let completionFlushRunning = false;
+let counterLastRequestResult = counterEndpoint ? 'Not requested' : 'Not configured';
 let qaSelectionMonth: number | null = null;
 
 function persist(): void { qaEnabled ? saveQaGame(state) : saveGame(state); }
@@ -233,7 +234,7 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = '', style = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth)}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -280,6 +281,7 @@ function render(): void {
 }
 
 function renderHome(): void {
+  requestGlobalTotal();
   if (state.run?.status === 'active') {
     const scenario = activeScenario();
     const character = state.character!;
@@ -293,11 +295,7 @@ function renderHome(): void {
   }
 
   const hasCharacter = Boolean(state.character);
-  if (counterEndpoint && !globalTotalRequested) {
-    globalTotalRequested = true;
-    void readGlobalTotal(counterEndpoint).then((total) => { globalTotal = Math.max(globalTotal ?? 0, total); if (screen === 'home' && !state.run) render(); }).catch(() => { /* Counter outages never affect play. */ });
-  }
-  const counterLabel = globalTotal === null ? '' : `<p class="global-completions">Adventures completed by travelers: ${formatGlobalTotal(globalTotal)}</p>`;
+  const counterLabel = globalTotal === null ? '' : `<p class="global-completions" role="status" aria-live="polite" aria-atomic="true">Adventures completed by travelers: ${formatGlobalTotal(globalTotal)}</p>`;
   const homeRelicCount = getCarriedRelics(state.character).length;
   const travelerStatus = state.character ? `<section class="traveler-status" aria-label="Traveler progress"><strong>${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'} completed</strong><span>Gear capacity: ${carryCapacity(state.character.adventuresCompleted)} slot${carryCapacity(state.character.adventuresCompleted) === 1 ? '' : 's'}</span><small>Supplies: ${Object.values(state.character.supplies ?? {}).filter((qty) => qty > 0).length}/${SUPPLY_STACK_CAPACITY} stacks · Relics: ${homeRelicCount}${homeRelicCount >= RELIC_SOFT_CAPACITY ? ' (unusually many)' : ''}</small>${state.character.adventuresCompleted < 20 ? `<small>Next Gear slot at ${state.character.adventuresCompleted < 10 ? 10 : 20}</small>` : ''}${(state.character.ownedAssets ?? []).length ? `<small class="owned-property-summary">Owned property: ${state.character.ownedAssets!.map(({ name }) => safeText(name)).join(', ')}</small>` : ''}</section>` : '';
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
@@ -316,6 +314,43 @@ function renderHome(): void {
   });
   document.querySelector('#bank')!.addEventListener('click', () => { screen = 'bank'; render(); });
   document.querySelector('#retire')?.addEventListener('click', () => { screen = 'retire'; render(); });
+}
+
+function counterDiagnostics() {
+  return {
+    endpointConfigured: !!counterEndpoint,
+    endpoint: counterEndpoint || null,
+    currentGlobalTotal: globalTotal,
+    currentRunId: state.run?.runId ?? null,
+    currentRunQA: state.run?.qaMode ?? false,
+    currentRunQueuedForSubmission: state.run?.globalCompletionQueued ?? false,
+    pendingRetryCount: state.pendingGlobalCompletions?.length ?? 0,
+    lastRequestResult: counterLastRequestResult,
+  };
+}
+
+function updateCounterQaInspector(): void {
+  if (!qaEnabled) return;
+  const output = document.querySelector<HTMLElement>('[data-qa-counter-inspection]');
+  if (output) output.textContent = JSON.stringify(counterDiagnostics(), null, 2);
+}
+
+function requestGlobalTotal(): void {
+  if (!counterEndpoint || globalTotalRequested) return;
+  globalTotalRequested = true;
+  counterLastRequestResult = 'Loading current total';
+  updateCounterQaInspector();
+  void readGlobalTotal(counterEndpoint)
+    .then((total) => {
+      globalTotal = Math.max(globalTotal ?? 0, total);
+      counterLastRequestResult = 'Current total loaded';
+      updateCounterQaInspector();
+      if (screen === 'home' && !state.run) render();
+    })
+    .catch(() => {
+      counterLastRequestResult = 'Current total unavailable; play is unaffected';
+      updateCounterQaInspector();
+    });
 }
 
 function renderPlay(): void {
@@ -358,16 +393,21 @@ async function flushPendingGlobalCompletions(): Promise<void> {
   completionFlushRunning = true;
   try {
     for (const runId of [...(state.pendingGlobalCompletions ?? [])]) {
+      // Older saves may have queued a success before its reward screen was resolved.
+      if (state.run?.status === 'success' && state.run.runId === runId) continue;
       let total: number;
-      try { total = await submitGlobalCompletion(counterEndpoint, runId); }
+      try { total = await submitGlobalCompletionWithRetry(counterEndpoint, runId); }
       catch {
-        await new Promise((resolve) => window.setTimeout(resolve, 1500));
-        try { total = await submitGlobalCompletion(counterEndpoint, runId); }
-        catch { continue; }
+        counterLastRequestResult = 'Completion pending; service unavailable after retry';
+        updateCounterQaInspector();
+        continue;
       }
       state.pendingGlobalCompletions = (state.pendingGlobalCompletions ?? []).filter((pendingId) => pendingId !== runId);
       globalTotal = Math.max(globalTotal ?? 0, total);
+      counterLastRequestResult = 'Completion counted or already counted';
       persist();
+      updateCounterQaInspector();
+      if (screen === 'home' && !state.run) render();
     }
   } finally { completionFlushRunning = false; }
 }
@@ -380,7 +420,7 @@ function renderDeath(): void {
     ? '<p class="milestone-note">Ten adventures behind this traveler. Their journey ends here, but they learned to travel better prepared.</p>'
     : run?.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. This traveler knew what deserved a place in the pack.</p>' : '';
   shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Unbanked Gear, Relics, Supplies, assets, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
-  document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); });
+  document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); void flushPendingGlobalCompletions(); });
 }
 
 function renderSuccess(): void {
@@ -427,7 +467,7 @@ function renderSuccess(): void {
     state = finishRewardResolution(state);
     if (state.run) return;
     successRewardsOpen = false;
-    persist(); screen = 'home'; render();
+    persist(); screen = 'home'; render(); void flushPendingGlobalCompletions();
   });
 }
 

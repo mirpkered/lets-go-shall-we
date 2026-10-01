@@ -7,11 +7,22 @@ import { scenarioRiskTier } from './riskClassification';
 import { selectionDiagnostics, selectionTierSummary } from './scenarioSelection';
 import { classifyScenario, getSeasonAvailability, scenarioAvailableInMonth } from './scenarioDiversity';
 
+export interface CounterDiagnostics {
+  endpointConfigured: boolean;
+  endpoint: string | null;
+  currentGlobalTotal: number | null;
+  currentRunId: string | null;
+  currentRunQA: boolean;
+  currentRunQueuedForSubmission: boolean;
+  pendingRetryCount: number;
+  lastRequestResult: string;
+}
+
 function safeText(text: string): string {
   return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]!));
 }
 
-export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scenario[], items: Record<string, Item>, monthOverride: number | null = null): string {
+export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scenario[], items: Record<string, Item>, monthOverride: number | null = null, counter?: CounterDiagnostics): string {
   if (!enabled) return '';
   const run = state.run;
   const character = state.character;
@@ -25,6 +36,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
   const selection = selectionDiagnostics(scenarios, state.recentScenarioIds ?? state.mostRecentScenarioId, selectorPressure);
   const riskTier = run?.riskTier ?? (scenario ? scenarioRiskTier(scenario) : null);
   const inspection = {
+    counter: counter ?? { endpointConfigured: false, endpoint: null, currentGlobalTotal: null, currentRunId: run?.runId ?? null, currentRunQA: !!run?.qaMode, currentRunQueuedForSubmission: !!run?.globalCompletionQueued, pendingRetryCount: state.pendingGlobalCompletions?.length ?? 0, lastRequestResult: 'Not configured' },
     scenario: run ? scenario?.title ?? run.scenarioId : null,
     riskTier,
     diversity: run && scenario ? classifyScenario(scenario) : null,
@@ -64,6 +76,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     const seasonalScenarios = scenarios.filter((entry) => { const availability = getSeasonAvailability(entry); return availability.season !== 'ALL_YEAR' || (availability.months?.length ?? 0) < 12 || !!availability.affinityMonths?.length; });
   return `<details class="qa-panel"><summary>QA Tools</summary><div class="qa-body">
     <section class="qa-timing"><strong>Scenario selection simulation</strong><span>Uses local copies of the displayed histories; no real save state is changed.</span><div class="qa-launches"><button type="button" data-qa-simulate-selection="100">Simulate 100 starts</button><button type="button" data-qa-simulate-selection="1000">Simulate 1,000 starts</button></div><pre data-qa-selection-simulation hidden></pre></section>
+      <section class="qa-timing"><strong>Anonymous global counter</strong><span>Read-only service status; QA runs never submit completions.</span><pre data-qa-counter-inspection>${safeText(JSON.stringify(inspection.counter, null, 2))}</pre></section>
       <section class="qa-timing"><strong>Seasonal selection</strong><span>Device local date: ${actualDate.toLocaleDateString()} · month ${actualMonth}</span><span>Effective selection month: ${selectionMonth}${monthOverride === null ? ' (device date)' : ' (QA override)'}</span><label>Test selection month <select data-qa-season-month>${monthOptions}</select></label><span>Season-tagged or affinity adventures: ${seasonalScenarios.length}</span>${seasonalScenarios.map((entry) => { const meta = classifyScenario(entry); const hasAffinity = meta.availability.season === 'ALL_YEAR' && !!meta.availability.affinityMonths?.length; const affinityActive = hasAffinity && meta.availability.affinityMonths!.includes(selectionMonth); const seasonalStatus = scenarioAvailableInMonth(entry, selectionMonth) ? (affinityActive ? `eligible · October affinity ×${meta.availability.weightBoost ?? 1}` : hasAffinity ? 'eligible · October affinity inactive' : 'eligible') : 'out of season'; return `<small>${safeText(entry.title)} · ${safeText(meta.availability.season)} · ${safeText(seasonalStatus)} · direct QA launch remains available</small>`; }).join('')}</section>
     <section class="qa-timing"><strong>Library diversity</strong><span>Metadata rows and similarity warnings are generated only when requested.</span><button type="button" data-qa-diversity-report>Generate library diversity report (${scenarios.length} adventures)</button><pre data-qa-diversity-output hidden></pre></section>
     <section class="qa-timing"><strong>Content substance review</strong><span>Heuristic route warnings are for human review only; they never block play or deployment. Similar structure warnings are included for comparison.</span><button type="button" data-qa-content-quality-report>Generate content quality report (${scenarios.length} adventures)</button><pre data-qa-content-quality-output hidden></pre></section>

@@ -495,7 +495,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
 
 function queueGlobalCompletion(state: SaveData): void {
   const run = state.run;
-  if (!run || run.qaMode || run.globalCompletionQueued || !run.runId) return;
+  if (!run || run.qaMode || !run.runId) return;
   state.pendingGlobalCompletions = [...new Set([...(state.pendingGlobalCompletions ?? []), run.runId])];
   run.globalCompletionQueued = true;
 }
@@ -530,7 +530,7 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
   if (!run) return;
   if (!run.authoredEndingRecorded) {
     run.authoredEndingRecorded = true;
-    queueGlobalCompletion(state);
+    if (run.status === 'death') queueGlobalCompletion(state);
     recordScenarioEnding(state);
     if (!run.qaMode && state.character && (run.status === 'success' || run.status === 'death')) {
       state.character.scenarioPlayCounts ??= {};
@@ -574,7 +574,11 @@ export function finishSuccess(state: SaveData, carriedItems: string | string[] |
   if (selected.filter((id) => inventoryClass(id) === 'GEAR').length > gearCapacity(next.character.adventuresCompleted)) return next;
   setCarriedItems(next.character, selected);
   retainOnlyBankedItemStates(next, [...selected, ...STARTING_ITEMS]);
-  if (next.run?.status === 'success') recordAuthoredEnding(next, true);
+  if (next.run?.status === 'success') {
+    recordAuthoredEnding(next, true);
+    // Save the final local reward/progression state before allowing the remote count to flush.
+    queueGlobalCompletion(next);
+  }
   next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
   recordScenarioEnding(next);
   next.run = null;

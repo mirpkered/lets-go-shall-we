@@ -10,9 +10,10 @@ describe('QA progression inspection', () => {
     state.run!.qualifyingStoryTransitions = 5;
     const before = JSON.stringify(state);
     const items = {};
+    const counter = { endpointConfigured: true, endpoint: 'https://counter.example', currentGlobalTotal: 14, currentRunId: state.run!.runId!, currentRunQA: false, currentRunQueuedForSubmission: false, pendingRetryCount: 1, lastRequestResult: 'Completion pending' };
 
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).toBe('');
-    const markup = renderQaPanel(true, state, [COLD_STORAGE], items);
+    const markup = renderQaPanel(true, state, [COLD_STORAGE], items, null, counter);
     expect(markup).toContain('&quot;qualifyingStoryTransitions&quot;: 5');
     expect(markup).toContain('&quot;qualifiesForTravelerProgression&quot;: false');
     expect(markup).toContain('data-qa-force-easter-egg');
@@ -38,6 +39,10 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('&quot;carriedRelics&quot;');
     expect(markup).toContain('&quot;supplyStackCapacity&quot;: 4');
     expect(markup).toContain('&quot;itemStates&quot;');
+    expect(markup).toContain('data-qa-counter-inspection');
+    expect(markup).toContain('&quot;currentGlobalTotal&quot;: 14');
+    expect(markup).toContain('&quot;pendingRetryCount&quot;: 1');
+    expect(renderQaPanel(false, state, [COLD_STORAGE], items, null, counter)).not.toContain('counter.example');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('Easter egg');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');

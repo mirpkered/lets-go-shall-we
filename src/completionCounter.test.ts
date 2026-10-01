@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { formatGlobalTotal, readGlobalTotal, submitGlobalCompletion } from './completionCounter';
+import { formatGlobalTotal, normalizeCounterEndpoint, readGlobalTotal, submitGlobalCompletion, submitGlobalCompletionWithRetry } from './completionCounter';
 
 describe('global completion counter client', () => {
   it('reads the aggregate total', async () => {
@@ -12,6 +12,23 @@ describe('global completion counter client', () => {
     await expect(submitGlobalCompletion('https://counter.example', '5c4a9c8b-9ec0-42b6-a470-20a7a1bf7488', request)).resolves.toBe(9);
     expect(JSON.parse(String(request.mock.calls[0][1]?.body))).toEqual({ runId: '5c4a9c8b-9ec0-42b6-a470-20a7a1bf7488' });
     expect(formatGlobalTotal(1284)).toBe(new Intl.NumberFormat().format(1284));
+  });
+  it('normalizes only HTTPS production endpoints and localhost developer endpoints', () => {
+    expect(normalizeCounterEndpoint('https://counter.example/')).toBe('https://counter.example');
+    expect(normalizeCounterEndpoint('http://localhost:8787')).toBe('http://localhost:8787');
+    expect(normalizeCounterEndpoint('')).toBe('');
+    expect(normalizeCounterEndpoint('http://counter.example')).toBe('');
+    expect(normalizeCounterEndpoint('https://counter.example/path')).toBe('');
+  });
+  it('retries the same opaque ID after a transient failure', async () => {
+    const request = vi.fn<typeof fetch>()
+      .mockRejectedValueOnce(new Error('offline'))
+      .mockResolvedValueOnce(new Response('{"total":1}', { status: 200 }));
+    const wait = vi.fn(async () => undefined);
+    await expect(submitGlobalCompletionWithRetry('https://counter.example', '5c4a9c8b-9ec0-42b6-a470-20a7a1bf7488', request, wait)).resolves.toBe(1);
+    expect(request).toHaveBeenCalledTimes(2);
+    expect(JSON.parse(String(request.mock.calls[0][1]?.body))).toEqual(JSON.parse(String(request.mock.calls[1][1]?.body)));
+    expect(wait).toHaveBeenCalledWith(1500);
   });
   it('surfaces offline and invalid responses for bounded retry without throwing into gameplay', async () => {
     await expect(readGlobalTotal('https://counter.example', vi.fn<typeof fetch>().mockRejectedValue(new Error('offline')))).rejects.toThrow('offline');

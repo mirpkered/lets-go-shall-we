@@ -7,6 +7,43 @@ const ALLOWED_ORIGINS = new Set([
   'http://127.0.0.1:5173',
 ]);
 const RUN_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const MAX_COMPLETION_BODY_BYTES = 128;
+
+async function readCompletionBody(request: Request): Promise<{ runId: string } | Response> {
+  const contentType = request.headers.get('Content-Type')?.split(';', 1)[0].trim().toLowerCase();
+  if (contentType !== 'application/json') return json({ error: 'JSON required' }, 415);
+  const contentLength = request.headers.get('Content-Length');
+  if (contentLength && (!/^\d+$/.test(contentLength) || Number(contentLength) > MAX_COMPLETION_BODY_BYTES)) return json({ error: 'Request too large' }, 413);
+  if (!request.body) return json({ error: 'Invalid JSON' }, 400);
+
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_COMPLETION_BODY_BYTES) {
+        await reader.cancel();
+        return json({ error: 'Request too large' }, 413);
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    const body: unknown = JSON.parse(new TextDecoder().decode(bytes));
+    if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).length !== 1 || !('runId' in body) || typeof body.runId !== 'string' || !RUN_ID.test(body.runId)) {
+      return json({ error: 'Invalid run ID' }, 400);
+    }
+    return { runId: body.runId };
+  } catch {
+    return json({ error: 'Invalid JSON' }, 400);
+  } finally {
+    reader.releaseLock();
+  }
+}
 
 function json(body: unknown, status = 200, origin: string | null = null): Response {
   const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
@@ -39,11 +76,8 @@ export default {
 
     let runId: string | null = null;
     if (url.pathname === '/v1/complete') {
-      let body: unknown;
-      try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
-      if (!body || typeof body !== 'object' || !('runId' in body) || typeof body.runId !== 'string' || !RUN_ID.test(body.runId)) {
-        return json({ error: 'Invalid run ID' }, 400, origin);
-      }
+      const body = await readCompletionBody(request);
+      if (body instanceof Response) return withAllowedOrigin(body, origin);
       runId = body.runId;
     }
 
@@ -58,6 +92,14 @@ export default {
     return json(resultBody, result.status, origin);
   },
 };
+
+function withAllowedOrigin(response: Response, origin: string | null): Response {
+  if (!origin || !ALLOWED_ORIGINS.has(origin)) return response;
+  const headers = new Headers(response.headers);
+  headers.set('Access-Control-Allow-Origin', origin);
+  headers.set('Vary', 'Origin');
+  return new Response(response.body, { status: response.status, headers });
+}
 
 export class CompletionCounter {
   private readonly ready: Promise<void>;

@@ -8,7 +8,7 @@ This roadmap separates stabilization from possible expansion. It has no promised
 - Use the on-demand content-substance audit to triage abrupt/procedural endings before future bulk-generation passes; resolve only high-confidence cases and retain human review for soft warnings.
 - Verify payoff and reward changes in actual play, not only structural scans.
 - Confirm traveler progression thresholds and multi-item carry behavior through long-lived and fresh travelers.
-- Verify the optional global counter’s actual deployment/configuration before presenting it as live.
+- Complete deployment and verification of the anonymous global Adventure Counter using the existing `dark-scene-308e` Worker; add the returned HTTPS `workers.dev` URL to the static production build before presenting the total as live.
 - Recheck recent-adventure exclusion, reward-to-Bank, full-carry/full-Bank, save migration, and QA isolation.
 - Playtest event-driven equipment damage, harness-maker repair/upgrades, and Bank/death state continuity before expanding upgrades to more items.
 - Keep documentation aligned with the implementation.

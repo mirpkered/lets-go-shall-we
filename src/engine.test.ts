@@ -51,7 +51,7 @@ describe('adventure engine', () => {
     const choice = endingScenario.scenes.start.choices[0];
     const completed = choose(initial, endingScenario, choice);
     expect(completed.run?.status).toBe('success');
-    expect(completed.pendingGlobalCompletions).toEqual([initial.run.runId]);
+    expect(completed.pendingGlobalCompletions).toBeUndefined();
     expect(completed.character?.adventuresCompleted).toBe(0);
     expect(choose(completed, endingScenario, choice).pendingGlobalCompletions).toEqual(completed.pendingGlobalCompletions);
     const resumedThenAbandoned = failCharacter(JSON.parse(JSON.stringify(initial)) as SaveData);
@@ -62,6 +62,7 @@ describe('adventure engine', () => {
     const qaRun = { ...startRun(character, endingScenario), qaMode: true };
     const qaCompleted = choose({ ...initial, run: qaRun }, endingScenario, choice);
     expect(qaCompleted.pendingGlobalCompletions).toBeUndefined();
+    expect(finishSuccess(qaCompleted, null).pendingGlobalCompletions).toBeUndefined();
 
     const lethalScenario = { ...endingScenario, scenes: {
       start: { id: 'start', title: 'Start', text: 'Danger.', choices: [{ id: 'fall', label: 'Take the risk', next: 'fatal' as const, effects: { health: -10 } }] },

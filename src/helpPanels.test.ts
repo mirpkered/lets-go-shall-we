@@ -100,6 +100,16 @@ describe('About and Contact utilities', () => {
     expect(markup).toContain('telegraphy is available only in some settlements');
   });
 
+  it('explains the anonymous completion counter accurately and distinguishes it from save data', () => {
+    const markup = renderUtilityFeatures();
+    expect(markup).toContain('The anonymous adventure count');
+    expect(markup).toContain('a random ID for that completed run');
+    expect(markup).toContain('does not require an account');
+    expect(markup).toContain('does not require an account or record story choices, inventory, character identity, or save data');
+    expect(markup).toContain('Abandoned runs and QA play are not counted');
+    expect(markup).toContain('your adventure still completes normally');
+  });
+
   it('explains traveler carry milestones, bank, death, retirement, abandonment, and autosave accurately', () => {
     const markup = renderUtilityFeatures();
     expect(markup).toContain('money, lore, knowledge, equipment, and history');

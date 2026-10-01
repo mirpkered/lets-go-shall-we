@@ -128,12 +128,14 @@ describe('traveler completion and carry milestones', () => {
     const trivial: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
     const ended = choose(state, trivial, trivial.scenes.start.choices[0]);
     expect(ended.character?.adventuresCompleted).toBe(0);
-    expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
+    // Successful endings are counted only after reward/progression finalization.
+    expect(ended.pendingGlobalCompletions).toBeUndefined();
     expect(ended.run?.authoredEndingRecorded).toBe(true);
     expect(ended.run?.completionCountRecorded).toBe(false);
     const finalized = finishSuccess(ended, null);
     expect(finalized.character?.adventuresCompleted).toBe(0);
     expect(finalized.run).toBeNull();
+    expect(finalized.pendingGlobalCompletions).toEqual([state.run!.runId]);
   });
 
   it('guards global authored recording and traveler progression independently', () => {
@@ -152,7 +154,8 @@ describe('traveler completion and carry milestones', () => {
     progressionOnly.run!.globalCompletionQueued = true;
     progressionOnly.run!.startingMoney = -1;
     const travelerOnly = finishSuccess(progressionOnly, null);
-    expect(travelerOnly.pendingGlobalCompletions).toBeUndefined();
+    // Legacy/stale queued IDs are safely re-asserted; the server deduplicates by run ID.
+    expect(travelerOnly.pendingGlobalCompletions).toEqual([progressionOnly.run!.runId]);
     expect(travelerOnly.character?.adventuresCompleted).toBe(1);
   });
 
