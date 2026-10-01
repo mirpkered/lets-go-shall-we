@@ -22,7 +22,17 @@ export interface Character {
   knowledge: string[];
   adventuresCompleted: number;
   historyFlags: string[];
+  /** Character-bound property; unlike gear, these assets are not carried or banked. */
+  ownedAssets?: OwnedAsset[];
 }
+
+export interface OwnedAsset {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export type InventorySource = 'starting' | 'carried' | 'found' | 'temporary' | 'borrowed' | 'supplied';
 
 export interface RunState {
   runId?: string;
@@ -34,6 +44,12 @@ export interface RunState {
   completionMilestoneReached?: 10 | 20;
   /** Meaningful forward story transitions completed in this run. */
   qualifyingStoryTransitions?: number;
+  /** Persistent state at run start, used to recognize real completion outcomes. */
+  startingMoney?: number;
+  startingCarriedItems?: string[];
+  /** Provenance for the broad usable inventory shown during this adventure. */
+  inventorySources?: Record<string, InventorySource>;
+  completionQualification?: 'substantive' | 'nonSubstantive';
   scenarioId: string;
   sceneId: string;
   health: number;
@@ -108,6 +124,8 @@ export interface Effects {
   knowledge?: string[];
   lore?: string[];
   historyFlags?: string[];
+  gainOwnedAssets?: OwnedAsset[];
+  inventorySources?: Record<string, InventorySource>;
   money?: number;
   setFlags?: string[];
   clearFlags?: string[];
@@ -152,6 +170,8 @@ export interface Scene {
   tone?: 'safe' | 'warning' | 'danger';
   choices: Choice[];
   ending?: 'success' | 'death';
+  /** Explicitly classify the story outcome; persistent money/gear changes can qualify automatically. */
+  completionQualification?: 'substantive' | 'nonSubstantive';
   /** Defaults to true. Set false for a presentation-only continuation screen. */
   countsForProgression?: boolean;
   easterEggContext?: EasterEggContext;

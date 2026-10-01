@@ -1,12 +1,12 @@
 import { ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
-import type { Character, Choice, Effects, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
+import type { Character, Choice, Effects, InventorySource, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
 import { RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [] };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], ownedAssets: [] };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -34,9 +34,12 @@ export function pickRunRandomSelections(scenario: Scenario, random = Math.random
 
 export function startRun(character: Character, scenario: Scenario, random = Math.random): RunState {
   const inventory = [...STARTING_ITEMS];
-  inventory.push(...getCarriedItems(character));
+  const carriedItems = getCarriedItems(character);
+  inventory.push(...carriedItems);
+  const inventorySources: Record<string, InventorySource> = Object.fromEntries(inventory.map((id) => [id, 'starting' as const]));
+  for (const id of carriedItems) inventorySources[id] = 'carried';
   const randomSelections = pickRunRandomSelections(scenario, random);
-  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
+  return { runId: crypto.randomUUID(), scenarioId: scenario.id, sceneId: scenario.startScene, health: character.maxHealth, inventory, inventorySources, startingMoney: character.money, startingCarriedItems: carriedItems, acquiredThisRun: [], flags: [], visitedSceneIds: [scenario.startScene], qualifyingStoryTransitions: 0, randomSelections, status: 'active', message: null, startedAt: Date.now(), elapsedMinutes: 0, ...(scenario.saveVersion === undefined ? {} : { scenarioSaveVersion: scenario.saveVersion }) };
 }
 
 export function countQualifyingStoryTransitions(scenario: Scenario, visitedSceneIds: string[] | undefined): number {
@@ -137,6 +140,7 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.gainItems) {
     run.inventory = addUnique(run.inventory, effects.gainItems);
     run.acquiredThisRun = addUnique(run.acquiredThisRun, effects.gainItems);
+    for (const id of effects.gainItems) (run.inventorySources ??= {})[id] = effects.inventorySources?.[id] ?? (ITEMS[id]?.carryable ? 'found' : 'temporary');
   }
   if (effects.loseItems) {
     run.inventory = without(run.inventory, effects.loseItems);
@@ -145,6 +149,10 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
   if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags.map((entry) => runText(entry, state)));
+  if (effects.gainOwnedAssets) {
+    const assets = character.ownedAssets ??= [];
+    for (const asset of effects.gainOwnedAssets) if (!assets.some(({ id }) => id === asset.id)) assets.push({ ...asset });
+  }
   if (effects.setFlags) run.flags = addUnique(run.flags, effects.setFlags);
   if (effects.clearFlags) run.flags = without(run.flags, effects.clearFlags);
 }
@@ -191,7 +199,8 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     next.run.status = 'death';
     next.run.sceneId = destination && scenario.scenes[destination]?.ending === 'death' ? destination : '__death';
     next.run.visitedSceneIds = addUnique(next.run.visitedSceneIds ?? [next.run.sceneId], [next.run.sceneId]);
-    recordAuthoredEnding(next);
+    next.run.completionQualification = scenario.scenes[next.run.sceneId]?.completionQualification;
+    recordAuthoredEnding(next, true);
     return next;
   }
   if (destination) {
@@ -205,7 +214,10 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   }
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
-  if (scene?.ending) recordAuthoredEnding(next);
+  if (scene?.ending) {
+    next.run.completionQualification = scene.completionQualification;
+    recordAuthoredEnding(next, scene.ending === 'death');
+  }
   else if (destination && destination !== originSceneId) tryEasterEggOnSceneEntry(next, scenario, random);
   return next;
 }
@@ -231,7 +243,7 @@ function recordScenarioEnding(state: SaveData): void {
   state.recentScenarioIds = [run.scenarioId, ...(state.recentScenarioIds ?? []).filter((id) => id !== run.scenarioId)].slice(0, RECENT_SCENARIO_WINDOW);
 }
 
-function recordAuthoredEnding(state: SaveData): void {
+function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = false): void {
   const run = state.run;
   if (!run) return;
   if (!run.authoredEndingRecorded) {
@@ -240,8 +252,17 @@ function recordAuthoredEnding(state: SaveData): void {
     recordScenarioEnding(state);
   }
   if (run.completionCountRecorded) return;
+  if (!resolveTravelerProgression) {
+    if (run.status === 'success') run.completionCountRecorded = false;
+    return;
+  }
   run.completionCountRecorded = true;
-  if (run.qaMode || !state.character || (run.qualifyingStoryTransitions ?? 0) <= 5) return;
+  if (run.qaMode || !state.character || run.completionQualification === 'nonSubstantive') return;
+  const moneyChanged = state.character.money !== (run.startingMoney ?? state.character.money);
+  const startingItems = [...new Set(run.startingCarriedItems ?? getCarriedItems(state.character))].sort();
+  const endingItems = [...new Set(getCarriedItems(state.character))].sort();
+  const inventoryChanged = JSON.stringify(startingItems) !== JSON.stringify(endingItems);
+  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged) return;
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
     run.completionMilestoneReached = state.character.adventuresCompleted;
@@ -255,13 +276,13 @@ export function retireCharacter(state: SaveData): SaveData {
 export function finishSuccess(state: SaveData, carriedItems: string | string[] | null): SaveData {
   const next = structuredClone(state);
   if (!next.character) return next;
-  if (next.run?.status === 'success' && (!next.run.authoredEndingRecorded || !next.run.completionCountRecorded)) recordAuthoredEnding(next);
   next.character.health = next.character.maxHealth;
   const requested = Array.isArray(carriedItems) ? carriedItems : carriedItems ? [carriedItems] : [];
   const eligible = new Set([...eligibleCarryItems(next), ...requested.filter((id) => ITEMS[id]?.carryable)]);
   const selected = [...new Set(requested.filter((id) => eligible.has(id)))];
   if (selected.length > carryCapacity(next.character.adventuresCompleted)) return next;
   setCarriedItems(next.character, selected);
+  if (next.run?.status === 'success') recordAuthoredEnding(next, true);
   next.mostRecentScenarioId = next.run?.scenarioId ?? next.mostRecentScenarioId ?? null;
   recordScenarioEnding(next);
   next.run = null;

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
+import { choose, failCharacter, finishSuccess, getCarriedItems, meets, newCharacter, retireCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, SAVE_KEY } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -144,6 +144,35 @@ describe('animals and working stock adventure batch', () => {
     const bought = act(deal, THE_OLD_HORSE, 'horseTerms', 'buyOlderHorse');
     expect(bought.character?.money).toBe(2);
     expect(bought.character?.historyFlags).toContain('bought_older_horse_for_light_work');
+    expect(bought.character?.ownedAssets).toEqual([{ id: 'olderChestnutHorse', name: 'Older Chestnut Horse', description: 'Your horse, boarded at the farm where you bought her. Suited to light work and an easy pace.' }]);
+    expect(getCarriedItems(bought.character)).toEqual([]);
+    const worker = act(act(start(THE_OLD_HORSE), THE_OLD_HORSE, 'horseOffer', 'askPriceTerms'), THE_OLD_HORSE, 'horseTerms', 'workForHorse');
+    expect(worker.character?.ownedAssets?.map(({ id }) => id)).toEqual(['olderChestnutHorse']);
+    expect(worker.character?.money).toBe(0);
+    expect(worker.run?.completionQualification).toBe('substantive');
+    const persisted = finishSuccess({ ...worker, run: { ...worker.run!, rewardSelectionOpen: false } }, null);
+    expect(persisted.character?.ownedAssets?.[0].id).toBe('olderChestnutHorse');
+    expect(persisted.bank).toEqual([]);
+    const memory = new Map([[SAVE_KEY, JSON.stringify(persisted)]]);
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
+    expect(loadSave(storage).character?.ownedAssets?.[0].name).toBe('Older Chestnut Horse');
+    expect(failCharacter(persisted).character).toBeNull();
+    expect(retireCharacter(persisted).character).toBeNull();
+    const declined = act(start(THE_OLD_HORSE), THE_OLD_HORSE, 'horseOffer', 'declineOldHorse');
+    expect(declined.character?.ownedAssets).toEqual([]);
+  });
+
+  it('gives successful loose-goat routes a distinct market aftermath before completion', () => {
+    const initial = start(LOOSE_IN_THE_MARKET);
+    const reached = act(initial, LOOSE_IN_THE_MARKET, 'marketLane', 'standClearMarket');
+    expect(reached.run?.sceneId).toBe('ownerHandlesGoat');
+    const aftermath = act(reached, LOOSE_IN_THE_MARKET, 'ownerHandlesGoat', 'marketAftercareOwner');
+    expect(aftermath.run?.sceneId).toBe('marketAftercare');
+    const complete = act(aftermath, LOOSE_IN_THE_MARKET, 'marketAftercare', 'declineMarketCoin');
+    expect(complete.run?.sceneId).toBe('marketHelpComplete');
+    expect(complete.run?.completionQualification).toBe('substantive');
+    expect(complete.run?.status).toBe('success');
+    expect(complete.character?.historyFlags).toContain('helped_return_market_goat');
   });
 
   it('keeps the team and apiary safe without forcing contact or a dramatic incident', () => {

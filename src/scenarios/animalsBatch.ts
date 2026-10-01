@@ -173,8 +173,13 @@ export const LOOSE_IN_THE_MARKET: Scenario = {
       { id: 'waitFeed', label: 'Hold the lane open while it eats', timeCost: 3, next: 'goatReturned' },
       { id: 'stepBackFeed', label: 'Step back and give the owner room', next: 'ownerHandlesGoat' },
     ] },
-    goatReturned: ending('goatReturned', 'Back Behind the Rail', 'The goat steps into its pen and the owner closes the gate. The shoppers return to their stalls, a little more carefully around the latch.'),
-    ownerHandlesGoat: ending('ownerHandlesGoat', 'Room for the Owner', 'The owner uses familiar feed and a quiet voice to bring the goat back. You kept the lane clear and avoided turning a manageable market mishap into a chase.'),
+    goatReturned: { id: 'goatReturned', title: 'Back Behind the Rail', tone: 'safe', text: 'The goat is back inside its pen, and the owner has the gate latched. Shoppers return to their stalls while the owner checks that nothing was knocked over.', choices: [{ id: 'marketAftercare', label: 'Stay while the market settles', next: 'marketAftercare', effects: { setFlags: ['marketGoatReturned'] } }] },
+    ownerHandlesGoat: { id: 'ownerHandlesGoat', title: 'Room for the Owner', tone: 'safe', text: 'The owner uses familiar feed and a quiet voice to bring the goat back. You kept the lane clear and avoided turning a manageable market mishap into a chase.', choices: [{ id: 'marketAftercareOwner', label: 'Stay while the market settles', next: 'marketAftercare', effects: { setFlags: ['marketGoatOwnerHandled'] } }] },
+    marketAftercare: { id: 'marketAftercare', title: 'The Lane Clears', tone: 'safe', text: 'The owner checks the latch and gathers the scattered feed while the shoppers make room. The goat is settled, the stalls are undamaged, and the lane begins to sound like a market again. “You gave me a hand when I needed one,” the owner says, offering a coin for your time.', choices: [
+      { id: 'acceptMarketCoin', label: 'Accept the owner’s coin and move on', next: 'marketHelpComplete', effects: { money: 1, historyFlags: ['helped_return_market_goat'] } },
+      { id: 'declineMarketCoin', label: 'Decline the coin and wish them well', next: 'marketHelpComplete', effects: { historyFlags: ['helped_return_market_goat'] } },
+    ] },
+    marketHelpComplete: { id: 'marketHelpComplete', title: 'Market Business Resumes', text: 'The owner returns to the pen, and the shoppers reclaim the lane without further trouble. You leave after seeing the goat safely settled.', ending: 'success', completionQualification: 'substantive', choices: [] },
   },
 };
 
@@ -318,11 +323,11 @@ export const THE_OLD_HORSE: Scenario = {
       { id: 'declineInspectedHorse', label: 'Decline rather than overwork it', next: 'horseDeclined' },
     ] },
     horseTerms: { id: 'horseTerms', title: 'A Price and an Honest Limit', tone: 'safe', text: 'The seller accepts that the horse’s useful work is limited and lowers the price. It will still cost three coins, and a buyer should have a place to keep it. You can buy, offer work in exchange, or leave the agreement alone.', choices: [
-      { id: 'buyOlderHorse', label: 'Buy the horse for three coins', requirements: { minMoney: 3 }, effects: { money: -3, historyFlags: ['bought_older_horse_for_light_work'] }, next: 'horseBought' },
-      { id: 'workForHorse', label: 'Offer a day’s farm work instead', timeCost: 25, next: 'horseBought', effects: { historyFlags: ['worked_for_older_horse'] } },
+      { id: 'buyOlderHorse', label: 'Buy the horse for three coins', requirements: { minMoney: 3 }, effects: { money: -3, historyFlags: ['bought_older_horse_for_light_work'], gainOwnedAssets: [{ id: 'olderChestnutHorse', name: 'Older Chestnut Horse', description: 'Your horse, boarded at the farm where you bought her. Suited to light work and an easy pace.' }] }, next: 'horseBought' },
+      { id: 'workForHorse', label: 'Offer a day’s farm work instead', timeCost: 25, next: 'horseBought', effects: { historyFlags: ['worked_for_older_horse'], gainOwnedAssets: [{ id: 'olderChestnutHorse', name: 'Older Chestnut Horse', description: 'Your horse, boarded at the farm where you bought her. Suited to light work and an easy pace.' }] } },
       { id: 'walkFromHorseDeal', label: 'Leave without buying', next: 'horseDeclined' },
     ] },
-    horseBought: ending('horseBought', 'A Lighter Arrangement', 'The horse stays at the farm while you arrange suitable care and a modest workload. You have not bought a miracle or a bargain without limits—only an older animal whose price and work were honestly discussed.'),
+    horseBought: { ...ending('horseBought', 'A Lighter Arrangement', 'The older chestnut is yours now, but she stays boarded at the farm while suitable care and a modest workload are arranged. She is suited to light work and an easy pace, not a long or heavy journey.'), completionQualification: 'substantive' },
     horseDeclined: ending('horseDeclined', 'No Deal Needed', 'The seller keeps the horse in its familiar stall. It will continue at the easy pace it knows, and you continue without taking on an animal you cannot properly keep.'),
   },
 };

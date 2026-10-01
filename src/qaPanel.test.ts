@@ -4,7 +4,7 @@ import { renderQaPanel } from './qaPanel';
 import { COLD_STORAGE } from './scenarios/coldStorage';
 
 describe('QA progression inspection', () => {
-  it('shows the saved transition count and qualification without exposing them outside QA', () => {
+  it('shows transition diagnostics and state-based qualification without exposing QA outside QA', () => {
     const character = newCharacter();
     const state = { version: 1 as const, bank: [], character, run: startRun(character, COLD_STORAGE) };
     state.run!.qualifyingStoryTransitions = 5;

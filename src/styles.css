@@ -120,6 +120,9 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .inventory-panel article { padding:.7rem 0; border-top:1px solid #312d27; }
 .inventory-panel article strong,.inventory-panel article small { display:block; }
 .inventory-panel article small { margin-top:.25rem; color:#888174; line-height:1.4; }
+.inventory-panel .carry-usage { margin:.1rem 0 .8rem; color:#c8b58f; font-size:.82rem; }
+.inventory-panel .gear-group h3 { margin:.9rem 0 .15rem; color:#c8b58f; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; }
+.inventory-panel .gear-group:first-of-type h3 { margin-top:.2rem; }
 .story-card { position:relative; min-height:18rem; padding:2rem 1.35rem 1.5rem; color:var(--ink); background:linear-gradient(165deg,#eee7d8,#d4c9b5); box-shadow:0 1rem 3rem #0007; overflow:hidden; }
 .story-card::before { content:''; position:absolute; inset:.45rem; border:1px solid #5a503d45; pointer-events:none; }
 .scene-ornament { position:absolute; top:.85rem; right:1rem; color:#786641; opacity:.55; }

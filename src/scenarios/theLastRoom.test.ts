@@ -232,7 +232,7 @@ describe('The Last Room on the Left', () => {
     const completed = finishSuccess({ ...state, run: { ...state.run!, sceneId: 'quietEnding', status: 'success' } }, 'brassRoomKey');
     expect(completed.character?.historyFlags).toContain('intervened_in_inn_dispute');
     expect(completed.character?.carriedItem).toBe('brassRoomKey');
-    expect(completed.character?.adventuresCompleted).toBe(0);
+    expect(completed.character?.adventuresCompleted).toBe(1);
     expect(ITEMS.innCellarKey.carryable).toBe(false);
     expect(ITEMS.foldingPryTool.carryable).toBe(true);
     expect(ITEMS.brassRoomKey.carryable).toBe(true);

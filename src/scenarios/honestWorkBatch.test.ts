@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, finishSuccess, meets, newCharacter, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE } from '../storage';
 import type { SaveData, Scenario } from '../types';
@@ -91,6 +91,16 @@ describe('honest work adventure batch', () => {
     expect(state.character?.money).toBe(scenario.scenes.ordinaryFinish ? 4 : 0);
     expect(state.character?.historyFlags).toContain('completed_paid_livestock_drive');
     expect(state.character?.knowledge.length).toBeGreaterThan(0);
+  });
+
+  it('credits short completed timber work and labels the foreman’s predetermined question specifically', () => {
+    const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'cutting-timber')!;
+    expect(scenario.scenes.hiring.choices.find(({ id }) => id === 'askThenWork')?.label).toContain('bound saw safely');
+    let state = act(start(scenario, 'quiet'), scenario, 'hiring', 'askThenWork');
+    state = act(state, scenario, 'work', 'finishQuiet');
+    expect(state.run?.completionQualification).toBe('substantive');
+    expect(state.character?.money).toBe(4);
+    expect(finishSuccess(state, null).character?.adventuresCompleted).toBe(1);
   });
 
   it('supports a fresh-character resolution, an item-assisted approach, and an imperfect failed check', () => {

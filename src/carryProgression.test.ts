@@ -24,14 +24,14 @@ function completeAfterTransitions(transitions: number, travelerCount = 0, presen
   const scenes: Scenario['scenes'] = {};
   ids.forEach((id, index) => {
     const ending = id === 'quiet';
-    scenes[id] = { id, title: id, text: id, choices: ending ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1] }], ...(ending ? { ending: 'success' as const } : {}), ...(presentationAt.includes(index + 1) ? { countsForProgression: false } : {}) };
+    scenes[id] = { id, title: id, text: id, choices: ending ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1] }], ...(ending ? { ending: 'success' as const, completionQualification: 'substantive' as const } : {}), ...(presentationAt.includes(index + 1) ? { countsForProgression: false } : {}) };
   });
   const scenario: Scenario = { id: 'transition-test', title: 'Transition test', subtitle: '', startScene: ids[0], scenes };
   const character = newCharacter('Transition traveler');
   character.adventuresCompleted = travelerCount;
   let state: SaveData = { version: 1, bank: [], character, run: startRun(character, scenario) };
   for (let index = 0; index < transitions; index++) state = choose(state, scenario, scenario.scenes[ids[index]].choices[0]);
-  if (transitions === 0) state.run!.status = 'success';
+  if (transitions === 0) { state.run!.status = 'success'; state.run!.completionQualification = 'substantive'; }
   return state;
 }
 
@@ -46,19 +46,17 @@ describe('traveler completion and carry milestones', () => {
 
     const ninth = save(8);
     expect(carryCapacity(ninth.character!.adventuresCompleted)).toBe(1);
-    const tenth = completeAfterTransitions(6, 8);
+    const tenth = finishSuccess(completeAfterTransitions(6, 8), null);
     expect(tenth.character?.adventuresCompleted).toBe(9);
     expect(tenth.run?.completionMilestoneReached).toBeUndefined();
-    const milestone = completeAfterTransitions(6, 9);
+    const milestone = finishSuccess(completeAfterTransitions(6, 9), null);
     expect(milestone.character?.adventuresCompleted).toBe(10);
-    expect(milestone.run?.completionMilestoneReached).toBe(10);
-    expect(milestone.run?.inventory).toHaveLength(2); // the run began with the old one-slot loadout
+    expect(milestone.run).toBeNull();
     const nextRun = startRun(milestone.character!, ENDING);
     expect(nextRun.inventory).toHaveLength(2);
 
-    const twentieth = completeAfterTransitions(6, 19);
+    const twentieth = finishSuccess(completeAfterTransitions(6, 19), null);
     expect(twentieth.character?.adventuresCompleted).toBe(20);
-    expect(twentieth.run?.completionMilestoneReached).toBe(20);
     expect(carryCapacity(twentieth.character!.adventuresCompleted)).toBe(3);
   });
 
@@ -79,20 +77,20 @@ describe('traveler completion and carry milestones', () => {
     expect(retireCharacter(save(20)).character).toBeNull();
   });
 
-  it('awards qualifying progression on a six-transition death but not a five-transition death', () => {
+  it('awards a substantive death ending regardless of transition count', () => {
     for (const transitions of [5, 6]) {
       const ids = ['start', ...Array.from({ length: transitions - 1 }, (_, index) => `beat${index + 1}`), 'death'];
       const scenes: Scenario['scenes'] = {};
       ids.forEach((id, index) => {
         const isDeath = id === 'death';
-        scenes[id] = { id, title: id, text: id, choices: isDeath ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1], ...(index === ids.length - 2 ? { effects: { health: -10 } } : {}) }], ...(isDeath ? { ending: 'death' as const } : {}) };
+        scenes[id] = { id, title: id, text: id, choices: isDeath ? [] : [{ id: 'next', label: 'Continue', next: ids[index + 1], ...(index === ids.length - 2 ? { effects: { health: -10 } } : {}) }], ...(isDeath ? { ending: 'death' as const, completionQualification: 'substantive' as const } : {}) };
       });
       const scenario: Scenario = { id: `death-${transitions}`, title: '', subtitle: '', startScene: 'start', scenes };
       let state = save(9);
       for (let index = 0; index < transitions; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
       expect(state.run?.status).toBe('death');
       expect(state.run?.qualifyingStoryTransitions).toBe(transitions);
-      expect(state.character?.adventuresCompleted).toBe(transitions === 6 ? 10 : 9);
+      expect(state.character?.adventuresCompleted).toBe(10);
       expect(state.pendingGlobalCompletions).toEqual([state.run!.runId]);
       expect(failCharacter(state).character).toBeNull();
     }
@@ -127,12 +125,15 @@ describe('traveler completion and carry milestones', () => {
 
   it('keeps an early authored ending global without awarding traveler progression', () => {
     const state = save(0);
-    const ended = choose(state, ENDING, ENDING.scenes.start.choices[0]);
+    const trivial: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
+    const ended = choose(state, trivial, trivial.scenes.start.choices[0]);
     expect(ended.character?.adventuresCompleted).toBe(0);
     expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
     expect(ended.run?.authoredEndingRecorded).toBe(true);
-    expect(ended.run?.completionCountRecorded).toBe(true);
-    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(0);
+    expect(ended.run?.completionCountRecorded).toBe(false);
+    const finalized = finishSuccess(ended, null);
+    expect(finalized.character?.adventuresCompleted).toBe(0);
+    expect(finalized.run).toBeNull();
   });
 
   it('guards global authored recording and traveler progression independently', () => {
@@ -149,6 +150,7 @@ describe('traveler completion and carry milestones', () => {
     progressionOnly.run!.qualifyingStoryTransitions = 6;
     progressionOnly.run!.authoredEndingRecorded = true;
     progressionOnly.run!.globalCompletionQueued = true;
+    progressionOnly.run!.startingMoney = -1;
     const travelerOnly = finishSuccess(progressionOnly, null);
     expect(travelerOnly.pendingGlobalCompletions).toBeUndefined();
     expect(travelerOnly.character?.adventuresCompleted).toBe(1);
@@ -259,25 +261,18 @@ describe('traveler completion and carry milestones', () => {
     expect(loadSave(qaStorage).character?.adventuresCompleted).toBe(3);
   });
 
-  it('applies the 0/1/5/6 boundary and excludes presentation-only continuations', () => {
-    for (const count of [0, 1, 5]) {
-      const state = completeAfterTransitions(count);
-      const ended = count === 0 ? finishSuccess(state, null) : state;
-      expect(ended.character?.adventuresCompleted).toBe(0);
-      expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
-    }
-    const six = completeAfterTransitions(6);
-    expect(six.run?.qualifyingStoryTransitions).toBe(6);
-    expect(six.character?.adventuresCompleted).toBe(1);
-    const split = completeAfterTransitions(7, 0, [2]);
-    expect(split.run?.qualifyingStoryTransitions).toBe(6);
-    expect(split.character?.adventuresCompleted).toBe(1);
+  it('does not use transition count as a progression gate', () => {
+    const short = finishSuccess(completeAfterTransitions(1), null);
+    expect(short.character?.adventuresCompleted).toBe(1);
+    const long = completeAfterTransitions(7, 0, [2]);
+    expect(long.run?.qualifyingStoryTransitions).toBe(6);
+    expect(finishSuccess(long, null).character?.adventuresCompleted).toBe(1);
   });
 
-  it('preserves four transitions through reload, then qualifies at six exactly once', () => {
+  it('preserves run-start snapshots through reload and records currency qualification exactly once', () => {
     const ids = ['start', 'one', 'two', 'three', 'four', 'five', 'quiet'];
     const scenes: Scenario['scenes'] = {};
-    ids.forEach((id, index) => { scenes[id] = { id, title: id, text: '', choices: id === 'quiet' ? [] : [{ id: 'next', label: 'Next', next: ids[index + 1] }], ...(id === 'quiet' ? { ending: 'success' as const } : {}) }; });
+    ids.forEach((id, index) => { scenes[id] = { id, title: id, text: '', choices: id === 'quiet' ? [] : [{ id: 'next', label: 'Next', next: ids[index + 1], ...(id === 'five' ? { effects: { money: 1 } } : {}) }], ...(id === 'quiet' ? { ending: 'success' as const } : {}) }; });
     const scenario: Scenario = { id: 'resume-count-test', title: '', subtitle: '', startScene: 'start', scenes };
     let state = save();
     for (let index = 0; index < 4; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
@@ -286,10 +281,43 @@ describe('traveler completion and carry milestones', () => {
     saveGame(state, storage);
     state = loadSave(storage);
     expect(state.run?.qualifyingStoryTransitions).toBe(4);
-    for (let index = 0; index < 2; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
-    expect(state.run?.qualifyingStoryTransitions).toBe(6);
+    for (let index = 0; index < 3; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
+    expect(state.run?.status).toBe('success');
+    expect(state.character?.adventuresCompleted).toBe(0);
+    state = finishSuccess(state, null);
     expect(state.character?.adventuresCompleted).toBe(1);
-    expect(choose(state, scenario, scenario.scenes.start.choices[0]).character?.adventuresCompleted).toBe(1);
+    expect(state.run).toBeNull();
+  });
+
+  it('qualifies when final money differs from run start, but not after a full reversal', () => {
+    for (const [starting, change] of [[0, 1], [3, -3], [5, -2]]) {
+      const state = save(); state.character!.money = starting; state.run!.startingMoney = starting;
+      const scenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'pay', label: 'Change money', next: 'quiet', effects: { money: change } }] } } };
+      const ended = choose(state, scenario, scenario.scenes.start.choices[0]);
+      expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(1);
+    }
+    const state = save(); state.character!.money = 4; state.run!.startingMoney = 4;
+    const scenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'gain', label: 'Gain', next: 'middle', effects: { money: 2 } }] }, middle: { id: 'middle', title: '', text: '', choices: [{ id: 'repay', label: 'Repay', next: 'quiet', effects: { money: -2 } }] } } };
+    const ended = choose(choose(state, scenario, scenario.scenes.start.choices[0]), scenario, scenario.scenes.middle.choices[0]);
+    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(0);
+  });
+
+  it('qualifies only for persistent carried-gear changes, not supplied adventure equipment', () => {
+    const character = newCharacter(); setCarriedItems(character, ['travelRope']);
+    const lost = startRun(character, ENDING);
+    const loseScenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'lose', label: 'Lose it', next: 'quiet', effects: { loseItems: ['travelRope'] } }] } } };
+    const lostState = choose({ version: 1, bank: [], character, run: lost }, loseScenario, loseScenario.scenes.start.choices[0]);
+    expect(finishSuccess(lostState, null).character?.adventuresCompleted).toBe(1);
+
+    const fresh = newCharacter();
+    const run = startRun(fresh, ENDING);
+    const suppliedScenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'borrow', label: 'Borrow', next: 'quiet', effects: { gainItems: ['heavyLeatherGloves'], inventorySources: { heavyLeatherGloves: 'supplied' } } }] } } };
+    const supplied = choose({ version: 1, bank: [], character: fresh, run }, suppliedScenario, suppliedScenario.scenes.start.choices[0]);
+    expect(supplied.run?.inventorySources?.heavyLeatherGloves).toBe('supplied');
+    expect(finishSuccess(supplied, null).character?.adventuresCompleted).toBe(0);
+    const carried = finishSuccess(supplied, 'heavyLeatherGloves');
+    expect(carried.character?.adventuresCompleted).toBe(1);
+    expect(getCarriedItems(carried.character)).toContain('heavyLeatherGloves');
   });
 
   it('migrates active counters from visited scenes and leaves ended legacy progression unchanged', () => {
@@ -300,6 +328,8 @@ describe('traveler completion and carry milestones', () => {
     const memory = new Map([[SAVE_KEY, JSON.stringify(legacy)]]);
     const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
     expect(loadSave(storage).run?.qualifyingStoryTransitions).toBe(2);
+    expect(loadSave(storage).run?.startingMoney).toBe(character.money);
+    expect(loadSave(storage).character?.ownedAssets).toEqual([]);
 
     const ended = save(7);
     ended.run!.status = 'success';

@@ -32,6 +32,7 @@ These rules govern new adventures and focused revisions. They are consolidated f
 - **Physical Evidence Rule:** Clues must be observable under the scene’s actual weather, light, distance, water, and viewpoint. Do not assume tracks, sounds, or objects could be perceived when conditions prevent it.
 - **Important-Detail Reinforcement Rule:** Repeat a decision-critical fact when it affects a choice after a branch or delay. Keep the reminder natural rather than tutorial-like.
 - **Equipment Accessibility Rule:** Carried inventory is not automatically in hand. Respect gear set aside, left behind, inaccessible, wet, damaged, or impractical in the current position.
+- **Short Does Not Mean Nonqualifying:** A brief adventure qualifies when the traveler meaningfully resolves its objective or makes a persistent carried-gear or money change; length alone is not a progression gate. Explicit trivial refusals may be marked non-substantive. Responsible routes should receive fitting acknowledgment and payoff without manufactured danger.
 - **Tool Capability Rule:** Use tools only for tasks their shape and strength support. State what the tool acts on and what it can achieve; avoid generic unexplained bonuses.
 - **Employer-Supplied Tools Rule:** When asked to do ordinary work, the traveler should normally be given or lent the employer’s basic tools and materials. Do not sell an employer’s ordinary supplies back to the traveler; carried gear may offer a distinct safer or faster method.
 - **NPC Information, Player Decision Rule:** NPCs explain available resources, facts, limits, and risks. The player chooses the strategy; avoid having an NPC enumerate the solution menu.
@@ -56,7 +57,8 @@ These rules govern new adventures and focused revisions. They are consolidated f
 
 ## Systems and authoring constraints
 
-- **Traveler Progression Completion Rule:** Only an authored ending after more than five qualifying story transitions advances that living traveler’s carry milestones. Early endings may count globally but not for progression; QA counts for neither. See [Traveler Progression](TRAVELER-PROGRESSION.md).
+- **Traveler Progression Completion Rule:** An authored ending advances the living traveler’s completion count when it is marked substantive or resolves with changed persistent carried gear or money. Adventure length is not a gate; QA, abandonment, and explicitly non-substantive endings never qualify. See [Traveler Progression](TRAVELER-PROGRESSION.md).
+- **Owned Property Rule:** Durable character-bound property (such as an animal kept at a farm) is visible separately from carried gear, consumes no carry slot, cannot be banked, and ends with its traveler.
 - **Easter Egg Rule:** Rare events are optional flavor only. They never affect choices, odds, endings, inventory, money, history, knowledge, or progression; most runs should see none. Persist the event for resume and avoid undercutting serious scenes. They do not establish crossover canon.
 - **Grounded Supernatural Rule:** Supernatural events are exceptional, quiet, and serious within the period-inspired world. Preserve ambiguity where intended; avoid routine fantasy classes, spell systems, or supernatural stat bonuses.
 - **Thematic Selection Rule:** Until the library has a reviewed category taxonomy, normal random selection is uniform among eligible adventures with recent-repeat exclusion. Do not describe thematic sequencing as implemented.

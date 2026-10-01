@@ -109,4 +109,15 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain("url('./assets/adventure-backdrop.svg')");
     expect(styles).toContain('.qa-home-scene-actions button { min-width:3.75rem; min-height:44px;');
   });
+
+  it('labels persistent carried slots separately from available adventure gear and owned property', () => {
+    expect(mainSource).toContain('aria-label="Carried gear: ${carriedItems.length} of ${capacity} slots used"');
+    expect(mainSource).toContain('aria-label="Available Gear"');
+    expect(mainSource).toContain('Carried by traveler · ${carriedItems.length}/${capacity} slots used');
+    expect(mainSource).toContain('Available this adventure');
+    expect(mainSource).toContain('Owned property');
+    expect(mainSource).not.toContain('In your pack · Carried');
+    expect(styles).toContain('.inventory-panel {');
+    expect(styles).toContain('.inventory-panel .gear-group h3');
+  });
 });

@@ -22,6 +22,7 @@ interface WorkSpec {
   failedEnding: string;
   history: string;
   knowledge: string;
+  questionLabel?: string;
   goodPay: number;
   reducedPay: number;
   failureHealth?: number;
@@ -56,7 +57,7 @@ function workAdventure(spec: WorkSpec): Scenario {
         id: 'hiring', title: 'The Day’s Work', tone: 'safe', text: spec.opening,
         choices: [
           { id: 'beginWork', label: 'Take the job', hint: 'The pay and the work are agreed before you begin.', next: 'work', timeCost: 5 },
-          { id: 'askThenWork', label: 'Ask one question, then begin', hint: 'Clarify the day’s arrangement before lifting a hand.', next: 'work', timeCost: 5, effects: { knowledge: [spec.knowledge] } },
+          { id: 'askThenWork', label: spec.questionLabel ?? 'Ask what the day’s work involves, then begin', hint: spec.questionLabel ? 'Ask the foreman to explain how to handle a bound saw safely.' : 'Clarify the day’s arrangement before lifting a hand.', next: 'work', timeCost: 5, effects: { knowledge: [spec.knowledge] } },
         ],
       },
       work: {
@@ -78,9 +79,9 @@ function workAdventure(spec: WorkSpec): Scenario {
           { id: 'askForHelp', label: spec.askForHelp, hint: 'The work will take longer and the agreed pay will be smaller.', timeCost: 20, next: helpedFinish.id, effects: { money: spec.reducedPay, historyFlags: [spec.history, `${spec.history}_shared_work`], knowledge: [spec.knowledge] } },
         ],
       },
-      ordinaryFinish: { id: 'ordinaryFinish', title: 'A Day Well Spent', text: spec.normalEnding, ending: 'success', choices: [] },
-      rushedFinish: { id: 'rushedFinish', title: 'The Shift Is Done', text: spec.rushedEnding, ending: 'success', choices: [] },
-      earlyFinish: { id: 'earlyFinish', title: 'An Early Finish', text: spec.earlyEnding, ending: 'success', choices: [] },
+      ordinaryFinish: { id: 'ordinaryFinish', title: 'A Day Well Spent', text: spec.normalEnding, ending: 'success', completionQualification: 'substantive', choices: [] },
+      rushedFinish: { id: 'rushedFinish', title: 'The Shift Is Done', text: spec.rushedEnding, ending: 'success', completionQualification: 'substantive', choices: [] },
+      earlyFinish: { id: 'earlyFinish', title: 'An Early Finish', text: spec.earlyEnding, ending: 'success', completionQualification: 'substantive', choices: [] },
       cleanFinish,
       helpedFinish,
       imperfectFinish,
@@ -248,7 +249,7 @@ export const CUTTING_TIMBER = workAdventure({
   carefulEnding: 'The sawyer shifts the branch from the marked side while you ease the blade free. You return to trimming smaller lengths.',
   helpedEnding: 'The experienced sawyer takes the branch while you steady the saw. No one stands in the springing path, and the tool comes free.',
   failedEnding: 'The branch springs a short distance and scratches your forearm. You step clear and leave the bound cut for the sawyer; the day’s pay is reduced.',
-  history: 'completed_paid_timber_work', knowledge: 'A bound saw should be released by moving the wood from a clear side, not by pulling harder.', goodPay: 4, reducedPay: 2, failureHealth: 1,
+  history: 'completed_paid_timber_work', knowledge: 'A bound saw should be released by moving the wood from a clear side, not by pulling harder.', questionLabel: 'Ask how to handle a bound saw safely', goodPay: 4, reducedPay: 2, failureHealth: 1,
 });
 
 export const THE_DELIVERY_RUN = workAdventure({

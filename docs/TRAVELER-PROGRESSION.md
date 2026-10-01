@@ -4,11 +4,13 @@ Travelers do not gain levels, experience points, permanent stat upgrades, or acc
 
 ## Completion count
 
-The traveler’s progression count increases once only when they reach an authored terminal ending after more than five qualifying story transitions. This includes successful, failed, quiet, walk-away, no-reward, NPC-death, and player-death endings; danger or success is not required. An authored ending after zero to five transitions remains a completed story for the global community total, but does not advance this traveler’s carry milestones. Explicit abandonment and QA/test runs count toward neither total, and closing the browser before an ending does not count. A resumed run counts only when it later reaches an authored ending.
+The traveler’s progression count increases at most once when a run reaches and resolves an authored terminal ending. A run qualifies when its ending is explicitly marked substantive, or when persistent carried inventory or money differs from the run-start snapshot. Adventure length alone does not determine qualification: a short completed job can count, while a long but explicitly non-substantive refusal can be excluded. Temporary, borrowed, or supplied run gear does not qualify by itself. QA/test runs and explicit abandonment never advance progression; browser closure preserves the active run without counting. A resumed run is evaluated only when its ending and any reward placement are resolved.
 
-The local traveler progression count is distinct from the shared global authored-completion total. Every normal authored ending still records globally, including an early walk-away, while traveler progression uses the six-transition threshold. Separate per-run markers make the two records independently idempotent; QA endings change neither count.
+The local traveler progression count is distinct from the shared global authored-completion total. Every normal authored ending still records globally, including an early walk-away, while traveler progression uses authored outcome and persistent-state criteria. Separate per-run markers make the two records independently idempotent; QA endings change neither count.
 
-Qualifying transitions are forward moves into authored story scenes, including endings. Ordinary story scenes count by default. A scene authored solely to continue the same beat across a presentation/no-scroll split can set `countsForProgression: false`. UI panels, inventory views, the Bank, dialogs, and QA controls do not use story transitions and never affect this count. The per-run count is saved and resumes exactly.
+Forward story-transition count remains available as a QA diagnostic and authoring metric. Ordinary story scenes count by default. A scene authored solely to continue the same beat across a presentation/no-scroll split can set `countsForProgression: false`. UI panels, inventory views, the Bank, dialogs, and QA controls do not use story transitions and never affect progression qualification.
+
+Character-bound property such as an owned animal is recorded separately from carried gear. It is visible in the traveler’s Available Gear panel, does not use carry capacity, and is not bankable. Such property ends with its traveler at death, abandonment, or retirement.
 
 ## Carry capacity
 

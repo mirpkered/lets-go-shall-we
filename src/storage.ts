@@ -16,6 +16,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     let migrated = false;
     if (parsed.character) {
       parsed.character.historyFlags ??= [];
+      if (!Array.isArray(parsed.character.ownedAssets)) { parsed.character.ownedAssets = []; migrated = true; }
       if (!Number.isFinite(parsed.character.adventuresCompleted)) { parsed.character.adventuresCompleted = 0; migrated = true; }
       const carriedItems = [...new Set([...(Array.isArray(parsed.character.carriedItems) ? parsed.character.carriedItems.filter((id): id is string => typeof id === 'string') : []), ...(parsed.character.carriedItem ? [parsed.character.carriedItem] : [])])];
       if (JSON.stringify(carriedItems) !== JSON.stringify(parsed.character.carriedItems ?? [])) migrated = true;
@@ -31,6 +32,13 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       parsed.run.elapsedMinutes = Number.isFinite(parsed.run.elapsedMinutes) ? Math.max(0, Math.floor(parsed.run.elapsedMinutes!)) : 0;
       parsed.run.visitedSceneIds ??= [parsed.run.sceneId];
       parsed.run.flags ??= [];
+      if (!Array.isArray(parsed.run.startingCarriedItems)) { parsed.run.startingCarriedItems = parsed.character ? [...new Set([...(parsed.character.carriedItems ?? []), ...(parsed.character.carriedItem ? [parsed.character.carriedItem] : [])])] : []; migrated = true; }
+      if (!Number.isFinite(parsed.run.startingMoney)) { parsed.run.startingMoney = parsed.character?.money ?? 0; migrated = true; }
+      if (!parsed.run.inventorySources || typeof parsed.run.inventorySources !== 'object') {
+        const carried = new Set(parsed.run.startingCarriedItems);
+        parsed.run.inventorySources = Object.fromEntries((parsed.run.inventory ?? []).map((id) => [id, carried.has(id) ? 'carried' : ['smallKnife', 'lantern'].includes(id) ? 'starting' : 'temporary']));
+        migrated = true;
+      }
       if (parsed.run.status !== 'active' && parsed.run.completionCountRecorded === undefined) {
         // Older versions already evaluated endings at the time; never award progression retroactively.
         parsed.run.completionCountRecorded = true;
