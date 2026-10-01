@@ -6,6 +6,7 @@ import { ONE_HORSE_SHORT } from './oneHorseShort';
 import { THREE_MILES_TO_RAIN } from './threeMilesToRain';
 import { THE_MISSING_BOAT } from './missingBoat';
 import { SMOKE_ON_THE_HILL } from './smokeOnTheHill';
+import { THE_LAST_FERRY } from './lastFerry';
 
 function fresh(scenario: Scenario): SaveData {
   const character = newCharacter('Playtest');
@@ -31,13 +32,49 @@ describe('playtest consolidation aftermath and continuity', () => {
     let failed = act(THE_LOOSE_TEAM, fresh(THE_LOOSE_TEAM), 'warnWorkers', 0.999);
     expect(failed.run?.flags).toContain('workerWarningFailed');
     failed = act(THE_LOOSE_TEAM, failed, 'openGateLate', 0);
+    expect(failed.run?.sceneId).toBe('horsesTurnedAftermath');
+    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurnedAftermath, failed)).toMatch(/only come out after the wagon turns away/);
+    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurnedAftermath, failed)).not.toMatch(/warning sent them/);
+    failed = act(THE_LOOSE_TEAM, failed, 'leaveAfterPastureTurn');
     expect(failed.run?.sceneId).toBe('horsesTurned');
-    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurned, failed)).toMatch(/scatter behind the marker only after the road clears/);
-    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurned, failed)).not.toMatch(/warning sent them/);
+    expect(failed.run?.status).toBe('success');
 
     let warned = act(THE_LOOSE_TEAM, fresh(THE_LOOSE_TEAM), 'warnWorkers', 0);
     warned = act(THE_LOOSE_TEAM, warned, 'openGateNow', 0);
-    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurned, warned)).toMatch(/warning sent them/);
+    expect(warned.run?.sceneId).toBe('horsesTurnedAftermath');
+    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurnedAftermath, warned)).toMatch(/where your warning sent them/);
+    warned = act(THE_LOOSE_TEAM, warned, 'leaveAfterPastureTurn');
+    expect(warned.run?.sceneId).toBe('horsesTurned');
+    expect(sceneText(THE_LOOSE_TEAM.scenes.horsesTurned, warned)).toMatch(/safe behind the marker/);
+  });
+
+  it('shows the Last Ferry overnight wait before its morning crossing', () => {
+    let state = act(THE_LAST_FERRY, fresh(THE_LAST_FERRY), 'waitForMorning');
+    expect(state.run?.sceneId).toBe('nightAtLanding');
+    expect(state.character?.historyFlags).toContain('waited_for_ferry_repair');
+    expect(sceneText(THE_LAST_FERRY.scenes.nightAtLanding, state)).toMatch(/current keeps up its steady noise through the dark/);
+    state = act(THE_LAST_FERRY, state, 'crossAtFirstLight');
+    expect(state.run?.sceneId).toBe('morningFerry');
+    expect(state.run?.status).toBe('success');
+  });
+
+  it('gives each major Loose Team resolution an aftermath before its preserved ending', () => {
+    const immediateSuccesses = [
+      ['horsesTurnedAftermath', 'horsesTurned'],
+      ['wagonTurnedAftermath', 'wagonTurned'],
+      ['teamStoppedAftermath', 'teamStopped'],
+      ['wagonLostAftermath', 'wagonLost'],
+    ] as const;
+    for (const [aftermathId, endingId] of immediateSuccesses) {
+      const scene = THE_LOOSE_TEAM.scenes[aftermathId];
+      expect(scene.ending).toBeUndefined();
+      expect(scene.choices).toHaveLength(1);
+      expect(scene.choices[0].next).toBe(endingId);
+      expect(THE_LOOSE_TEAM.scenes[endingId].ending).toBe('success');
+      expect(scene.text.length).toBeGreaterThan(80);
+    }
+    expect(THE_LOOSE_TEAM.scenes.teamStoppedAftermath.textVariants?.some(({ text }) => /bruised leg/.test(text))).toBe(true);
+    expect(THE_LOOSE_TEAM.scenes.wagonLostAftermath.textVariants?.some((variant) => variant.requirements.flags?.includes('workerWarningFailed') && /scramble clear only as the team veers away/.test(variant.text))).toBe(true);
   });
 
   it('gives the horse-safe, job-lost route a quiet payoff before completion', () => {

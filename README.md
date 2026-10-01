@@ -1,6 +1,6 @@
 # Let’s Go, Shall We?
 
-A mobile-first, choice-driven text RPG prototype by Mirpworks. The current build includes 124 complete adventures across mystery, travel, work, community, commerce, animal, quiet-day, and supernatural themes, plus a reusable data-driven scenario engine, local autosave, character mortality, one-slot item continuity, and a death-proof bank.
+A mobile-first, choice-driven text RPG by Mirpworks. The current registry contains 175 playable adventures across mystery, travel, work, community, commerce, animal, quiet-day, and supernatural themes. It uses a reusable data-driven scenario engine, local autosave, character mortality, traveler carry capacity that grows from one to three items through qualifying completions, and a five-item death-proof Bank.
 
 ## Run locally
 

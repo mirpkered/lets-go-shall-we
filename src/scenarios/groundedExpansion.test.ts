@@ -160,7 +160,7 @@ describe('grounded adventure expansion batch', () => {
     overShelf.run!.visitedSceneIds = ['emptyLanding', 'downstreamBank', 'ferryHelp', 'waterOverShelf'];
     expect(act(overShelf, THE_MISSING_BOAT, 'waterOverShelf', 'waitBoatCrew').run?.sceneId).toBe('lastCrewAttempt');
 
-    expect(act(start(THE_LOOSE_TEAM), THE_LOOSE_TEAM, 'roadJunction', 'openPastureGate').run?.sceneId).toBe('horsesTurned');
+    expect(act(start(THE_LOOSE_TEAM), THE_LOOSE_TEAM, 'roadJunction', 'openPastureGate').run?.sceneId).toBe('horsesTurnedAftermath');
     const reckless = act(start(THE_LOOSE_TEAM), THE_LOOSE_TEAM, 'roadJunction', 'runAlongside', () => 0.99);
     expect(reckless.run?.sceneId).toBe('wagonAtFork');
 
