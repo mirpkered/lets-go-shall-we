@@ -9,6 +9,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Assign a LOW / MODERATE / HIGH / SEVERE risk tier from actual consequence potential, not genre or atmosphere; preserve intended quiet adventures.
 - [ ] Decide whether pressure/time is useful; identify which actions advance fictional time and what visible changes follow.
 - [ ] Review NPC names for variety and intentional recurrence.
+- [ ] Classify historical presence (NONE / INSPIRED / CAMEO / FEATURED / HISTORICAL_EVENT). Keep real figures/events rare and grounded; avoid exact-year/geography anchors, distinguish fact from reputation and later legend, and identify any named reference and portrayal where applicable.
 - [ ] Review the generated diversity matrix and library gaps; pick underrepresented combinations rather than repeating the last batch’s formula.
 - [ ] Give the adventure a distinctive hook beyond changed names or scenery; vary structure, role, pacing, risk, tone, entry, decision pattern, outcome, and payoff across the batch.
 - [ ] Set seasonal availability only when the story is genuinely date-bound; mention of weather or a season alone does not require calendar gating. Classify fantasy density and combat separately from tone and risk.

@@ -46,6 +46,28 @@ describe('scenario diversity and seasonal framework', () => {
     expect(metadata.combat).toBe('NONE');
   });
 
+  it('classifies legacy adventures as having no historical presence unless explicitly tagged', () => {
+    const audit = analyzeScenarioLibrary(SCENARIOS);
+    expect(audit.distributions.historicalPresence).toEqual({ NONE: SCENARIOS.length });
+    expect(audit.historicalReferenceCounts).toEqual({});
+    expect(audit.rows.every(({ metadata }) => metadata.historicalReferences.length === 0 && metadata.historicalPortrayal === 'NOT_APPLICABLE')).toBe(true);
+  });
+
+  it('validates cameo, inspired, and historical-event references without requiring names for inspired settings', () => {
+    const inspired: Scenario = { ...annual, id: 'inspired-history', diversity: { historicalPresence: 'INSPIRED' } };
+    const cameo: Scenario = { ...annual, id: 'cameo-history', diversity: { historicalPresence: 'CAMEO', historicalReferences: ['Wild Bill Hickok'], historicalPortrayal: 'MIXED' } };
+    const event: Scenario = { ...annual, id: 'event-history', diversity: { historicalPresence: 'HISTORICAL_EVENT', historicalReferences: ['A regional cattle drive'], historicalPortrayal: 'GROUNDED' } };
+    expect(validateScenarioMetadata([inspired, cameo, event])).toEqual([]);
+    expect(validateScenarioMetadata([{ ...cameo, diversity: { historicalPresence: 'CAMEO' } }])).toContain('cameo-history: CAMEO requires a named historical reference');
+    expect(validateScenarioMetadata([{ ...event, diversity: { historicalPresence: 'HISTORICAL_EVENT' } }])).toContain('event-history: HISTORICAL_EVENT requires a named event reference');
+    expect(analyzeScenarioLibrary([cameo]).historicalReferenceCounts).toEqual({ 'Wild Bill Hickok': 1 });
+  });
+
+  it('keeps historical metadata out of normal scenario selection', () => {
+    const tagged: Scenario = { ...annual, diversity: { historicalPresence: 'CAMEO', historicalReferences: ['Calamity Jane'], historicalPortrayal: 'GROUNDED' } };
+    expect(scenarioSelectionWeights([annual, tagged]).map(({ weight }) => weight)).toEqual(scenarioSelectionWeights([annual, { ...tagged, diversity: undefined }]).map(({ weight }) => weight));
+  });
+
   it('gates October and December scenarios by the selected local month', () => {
     expect(scenarioAvailableInMonth(october, 10)).toBe(true);
     expect(scenarioAvailableInMonth(october, 6)).toBe(false);

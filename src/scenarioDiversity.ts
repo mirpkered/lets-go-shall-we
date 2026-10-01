@@ -1,4 +1,4 @@
-import type { CombatPresence, FantasyDensity, LengthClass, Scenario, ScenarioDiversity, SeasonAvailability } from './types';
+import type { CombatPresence, FantasyDensity, HistoricalPortrayal, HistoricalPresence, LengthClass, Scenario, ScenarioDiversity, SeasonAvailability } from './types';
 import { hasAuthoredDeathEnding, hasHealthLossBranch, scenarioRiskTier } from './riskClassification';
 
 const MONTHS: Record<string, number[]> = {
@@ -88,6 +88,9 @@ export function classifyScenario(scenario: Scenario): ScenarioDiversity {
     consequenceShapes: [...(hasHealthLossBranch(scenario) ? ['health/injury'] : []), ...(death ? ['death'] : []), ...(matching(text, [['money/wages', /lose .*coin|payment|wages|fee|price/], ['gear/property/objective', /lose .*item|broken|destroy|abandon|property|objective fails/], ['time/opportunity', /too late|missed|wait|delay|by morning/], ['relationship', /angry|trust|argument|relationship/]])), ...(!death && !hasHealthLossBranch(scenario) ? ['no serious physical loss detected'] : [])],
     distinctiveHook: scenario.diversity?.distinctiveHook ?? scenario.subtitle.slice(0, 180),
     availability: inferredAvailability(scenario, text),
+    historicalPresence: 'NONE',
+    historicalReferences: [],
+    historicalPortrayal: 'NOT_APPLICABLE',
   };
   const metadata = scenario.diversity;
   const complete = { ...inferred, ...metadata, riskTier: risk, availability: inferredAvailability(scenario, text) } as ScenarioDiversity;
@@ -136,10 +139,10 @@ function similarity(a: ScenarioDiversity, b: ScenarioDiversity): { score: number
 }
 
 /** Audit-time O(n²) only; never called by normal Begin Adventure selection. */
-export function analyzeScenarioLibrary(scenarios: Scenario[]): { classified: number; total: number; rows: { id: string; title: string; metadata: ScenarioDiversity; sceneCount: number; choiceCounts: string }[]; distributions: Record<string, Record<string, number>>; similarityWarnings: SimilarityWarning[]; structuralWarnings: { firstId: string; secondId: string; sceneCount: number; choiceCounts: string }[] } {
+export function analyzeScenarioLibrary(scenarios: Scenario[]): { classified: number; total: number; rows: { id: string; title: string; metadata: ScenarioDiversity; sceneCount: number; choiceCounts: string }[]; distributions: Record<string, Record<string, number>>; historicalReferenceCounts: Record<string, number>; similarityWarnings: SimilarityWarning[]; structuralWarnings: { firstId: string; secondId: string; sceneCount: number; choiceCounts: string }[] } {
   const entries = scenarios.map((scenario) => ({ scenario, metadata: classifyScenario(scenario) }));
   const rows = entries.map(({ scenario, metadata }) => ({ id: scenario.id, title: scenario.title, metadata, sceneCount: Object.keys(scenario.scenes).length, choiceCounts: Object.values(scenario.scenes).map((scene) => scene.choices.length).join('-') }));
-  const dimensions: (keyof ScenarioDiversity)[] = ['playerRoles', 'activities', 'structures', 'tones', 'settings', 'riskTier', 'fantasyDensity', 'supernaturalThreats', 'combat', 'length', 'entryShapes', 'outcomeShapes', 'rewardShapes', 'consequenceShapes', 'availability'];
+  const dimensions: (keyof ScenarioDiversity)[] = ['playerRoles', 'activities', 'structures', 'tones', 'settings', 'riskTier', 'fantasyDensity', 'supernaturalThreats', 'combat', 'length', 'entryShapes', 'outcomeShapes', 'rewardShapes', 'consequenceShapes', 'availability', 'historicalPresence', 'historicalPortrayal'];
   const distributions: Record<string, Record<string, number>> = {};
   for (const dimension of dimensions) {
     const counts: Record<string, number> = {};
@@ -149,6 +152,11 @@ export function analyzeScenarioLibrary(scenarios: Scenario[]): { classified: num
       for (const tag of values) counts[String(tag)] = (counts[String(tag)] ?? 0) + 1;
     }
     distributions[dimension] = counts;
+  }
+  const historicalReferenceCounts: Record<string, number> = {};
+  for (const { metadata } of entries) for (const reference of metadata.historicalReferences) {
+    const normalized = reference.trim();
+    if (normalized) historicalReferenceCounts[normalized] = (historicalReferenceCounts[normalized] ?? 0) + 1;
   }
   const similarityWarnings: SimilarityWarning[] = [];
   const structuralWarnings: { firstId: string; secondId: string; sceneCount: number; choiceCounts: string }[] = [];
@@ -161,7 +169,7 @@ export function analyzeScenarioLibrary(scenarios: Scenario[]): { classified: num
     const aShape = shape(first.scenario), bShape = shape(second.scenario);
     if (first.scenario.id !== second.scenario.id && Object.keys(first.scenario.scenes).length === Object.keys(second.scenario.scenes).length && aShape === bShape) structuralWarnings.push({ firstId: first.scenario.id, secondId: second.scenario.id, sceneCount: Object.keys(first.scenario.scenes).length, choiceCounts: aShape });
   }
-  return { classified: entries.filter(({ metadata }) => !!metadata.distinctiveHook && !!metadata.availability && !!metadata.length).length, total: scenarios.length, rows, distributions, similarityWarnings, structuralWarnings };
+  return { classified: entries.filter(({ metadata }) => !!metadata.distinctiveHook && !!metadata.availability && !!metadata.length).length, total: scenarios.length, rows, distributions, historicalReferenceCounts, similarityWarnings, structuralWarnings };
 }
 
 export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
@@ -179,6 +187,8 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
     rewardShapes: ['money/item/knowledge/history possible', 'lodging/food', 'relationship/referral', 'narrative-only payoff', 'no tangible persistent reward detected'],
     consequenceShapes: ['health/injury', 'death', 'money/wages', 'gear/property/objective', 'time/opportunity', 'relationship', 'no serious physical loss detected', 'scenario-defined consequence'],
   };
+  const historicalPresences: HistoricalPresence[] = ['NONE', 'INSPIRED', 'CAMEO', 'FEATURED', 'HISTORICAL_EVENT'];
+  const historicalPortrayals: HistoricalPortrayal[] = ['GROUNDED', 'LEGENDARY', 'MIXED', 'NOT_APPLICABLE'];
   for (const scenario of scenarios) {
     if (ids.has(scenario.id)) issues.push(`Duplicate scenario ID: ${scenario.id}`);
     ids.add(scenario.id);
@@ -188,6 +198,14 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
     if (!COMBAT_PRESENCES.includes(metadata.combat)) issues.push(`${scenario.id}: invalid combat presence`);
     if (!LENGTH_CLASSES.includes(metadata.length)) issues.push(`${scenario.id}: invalid length class`);
     if (!['LOW', 'MODERATE', 'HIGH', 'SEVERE'].includes(metadata.riskTier)) issues.push(`${scenario.id}: invalid risk tier`);
+    if (!historicalPresences.includes(metadata.historicalPresence)) issues.push(`${scenario.id}: invalid historical presence`);
+    if (!historicalPortrayals.includes(metadata.historicalPortrayal)) issues.push(`${scenario.id}: invalid historical portrayal`);
+    if (metadata.historicalPresence === 'CAMEO' || metadata.historicalPresence === 'FEATURED') {
+      if (!metadata.historicalReferences.length || metadata.historicalReferences.some((reference) => !reference.trim())) issues.push(`${scenario.id}: ${metadata.historicalPresence} requires a named historical reference`);
+      if (metadata.historicalPortrayal === 'NOT_APPLICABLE') issues.push(`${scenario.id}: ${metadata.historicalPresence} requires a portrayal label`);
+    }
+    if (metadata.historicalPresence === 'HISTORICAL_EVENT' && !metadata.historicalReferences.length) issues.push(`${scenario.id}: HISTORICAL_EVENT requires a named event reference`);
+    if (metadata.historicalPresence === 'NONE' && metadata.historicalReferences.length) issues.push(`${scenario.id}: NONE cannot list historical references`);
     for (const [dimension, allowed] of Object.entries(tagRules)) {
       const values = metadata[dimension as keyof ScenarioDiversity];
       if (Array.isArray(values)) for (const value of values) if (!allowed!.includes(value)) issues.push(`${scenario.id}: invalid ${dimension} tag “${value}”`);

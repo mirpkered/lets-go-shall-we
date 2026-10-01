@@ -6,12 +6,15 @@ export type FantasyDensity = 'NONE' | 'AMBIGUOUS' | 'EERIE' | 'CONFIRMED_SUPERNA
 export type CombatPresence = 'NONE' | 'AVOIDABLE' | 'POSSIBLE' | 'LIKELY' | 'UNAVOIDABLE' | 'MULTIPLE';
 export type LengthClass = 'VIGNETTE' | 'STANDARD' | 'EXTENDED' | 'EPIC_SHORT';
 export type SeasonKey = 'ALL_YEAR' | 'OCTOBER' | 'DECEMBER' | 'WINTER' | 'SPRING' | 'SUMMER' | 'AUTUMN' | 'CUSTOM';
+export type HistoricalPresence = 'NONE' | 'INSPIRED' | 'CAMEO' | 'FEATURED' | 'HISTORICAL_EVENT';
+export type HistoricalPortrayal = 'GROUNDED' | 'LEGENDARY' | 'MIXED' | 'NOT_APPLICABLE';
 export interface SeasonAvailability { season: SeasonKey; months?: number[]; startMonthDay?: string; endMonthDay?: string; weightBoost?: number }
 export interface ScenarioDiversity {
   playerRoles: string[]; activities: string[]; structures: string[]; tones: string[]; settings: string[];
   riskTier: RiskTier; fantasyDensity: FantasyDensity; supernaturalThreats: string[]; combat: CombatPresence; length: LengthClass;
   entryShapes: string[]; outcomeShapes: string[]; rewardShapes: string[]; consequenceShapes: string[];
   distinctiveHook: string; availability: SeasonAvailability;
+  historicalPresence: HistoricalPresence; historicalReferences: string[]; historicalPortrayal: HistoricalPortrayal;
 }
 
 export interface RecentRiskEntry { scenarioId: string; tier: RiskTier }
