@@ -36,6 +36,11 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         parsed.run.completionCountRecorded = true;
         migrated = true;
       }
+      if (parsed.run.status !== 'active' && parsed.run.authoredEndingRecorded === undefined) {
+        // Legacy terminal saves already handled their ending/global queue; do not replay it during migration.
+        parsed.run.authoredEndingRecorded = true;
+        migrated = true;
+      }
       const scenario = getScenario(parsed.run.scenarioId);
       if (!Number.isFinite(parsed.run.qualifyingStoryTransitions)) {
         parsed.run.qualifyingStoryTransitions = scenario

@@ -27,6 +27,8 @@ export interface RunState {
   runId?: string;
   qaMode?: boolean;
   globalCompletionQueued?: boolean;
+  /** Marks global authored-ending handling independently from traveler progression. */
+  authoredEndingRecorded?: boolean;
   completionCountRecorded?: boolean;
   completionMilestoneReached?: 10 | 20;
   /** Meaningful forward story transitions completed in this run. */

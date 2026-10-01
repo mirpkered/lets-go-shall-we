@@ -130,7 +130,28 @@ describe('traveler completion and carry milestones', () => {
     const ended = choose(state, ENDING, ENDING.scenes.start.choices[0]);
     expect(ended.character?.adventuresCompleted).toBe(0);
     expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
+    expect(ended.run?.authoredEndingRecorded).toBe(true);
+    expect(ended.run?.completionCountRecorded).toBe(true);
     expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(0);
+  });
+
+  it('guards global authored recording and traveler progression independently', () => {
+    const state = save();
+    state.run!.status = 'success';
+    state.run!.qualifyingStoryTransitions = 6;
+    state.run!.completionCountRecorded = true;
+    const globalOnly = finishSuccess(state, null);
+    expect(globalOnly.pendingGlobalCompletions).toEqual([state.run!.runId]);
+    expect(globalOnly.character?.adventuresCompleted).toBe(0);
+
+    const progressionOnly = save();
+    progressionOnly.run!.status = 'success';
+    progressionOnly.run!.qualifyingStoryTransitions = 6;
+    progressionOnly.run!.authoredEndingRecorded = true;
+    progressionOnly.run!.globalCompletionQueued = true;
+    const travelerOnly = finishSuccess(progressionOnly, null);
+    expect(travelerOnly.pendingGlobalCompletions).toBeUndefined();
+    expect(travelerOnly.character?.adventuresCompleted).toBe(1);
   });
 
   it('recognizes carried gear from all slots and consumes only the named item', () => {
@@ -286,6 +307,7 @@ describe('traveler completion and carry milestones', () => {
     const endedMemory = new Map([[SAVE_KEY, JSON.stringify(ended)]]);
     const endedStorage = { getItem: (key: string) => endedMemory.get(key) ?? null, setItem: (key: string, value: string) => endedMemory.set(key, value) } as unknown as Storage;
     expect(loadSave(endedStorage).character?.adventuresCompleted).toBe(7);
+    expect(loadSave(endedStorage).run?.authoredEndingRecorded).toBe(true);
   });
 });
 

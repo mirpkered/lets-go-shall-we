@@ -90,7 +90,7 @@ describe('save compatibility', () => {
     const character = newCharacter('Reward Save');
     const state: SaveData = {
       version: 1, bank: [], character,
-      run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true, completionCountRecorded: true },
+      run: { ...startRun(character, BROKEN_BELL), status: 'success', sceneId: 'peaceEnding', rewardSelectionOpen: true, authoredEndingRecorded: true, completionCountRecorded: true },
       mostRecentScenarioId: BROKEN_BELL.id,
       recentScenarioIds: [BROKEN_BELL.id],
     };

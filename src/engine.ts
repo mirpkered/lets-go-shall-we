@@ -207,10 +207,14 @@ function recordScenarioEnding(state: SaveData): void {
 
 function recordAuthoredEnding(state: SaveData): void {
   const run = state.run;
-  if (!run || run.completionCountRecorded) return;
+  if (!run) return;
+  if (!run.authoredEndingRecorded) {
+    run.authoredEndingRecorded = true;
+    queueGlobalCompletion(state);
+    recordScenarioEnding(state);
+  }
+  if (run.completionCountRecorded) return;
   run.completionCountRecorded = true;
-  queueGlobalCompletion(state);
-  recordScenarioEnding(state);
   if (run.qaMode || !state.character || (run.qualifyingStoryTransitions ?? 0) <= 5) return;
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
@@ -225,7 +229,7 @@ export function retireCharacter(state: SaveData): SaveData {
 export function finishSuccess(state: SaveData, carriedItems: string | string[] | null): SaveData {
   const next = structuredClone(state);
   if (!next.character) return next;
-  if (next.run?.status === 'success' && !next.run.completionCountRecorded) recordAuthoredEnding(next);
+  if (next.run?.status === 'success' && (!next.run.authoredEndingRecorded || !next.run.completionCountRecorded)) recordAuthoredEnding(next);
   next.character.health = next.character.maxHealth;
   const requested = Array.isArray(carriedItems) ? carriedItems : carriedItems ? [carriedItems] : [];
   const eligible = new Set([...eligibleCarryItems(next), ...requested.filter((id) => ITEMS[id]?.carryable)]);
