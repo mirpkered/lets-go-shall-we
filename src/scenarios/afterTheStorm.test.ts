@@ -63,4 +63,27 @@ describe('After the Storm', () => {
     expect(text).toContain('goats remain beyond the gate');
     expect(options(state).map((choice) => choice.id)).toEqual(['takeLeaveFromFarm']);
   });
+
+  it('reconstructs completed work for older active saves already at a follow-up scene', () => {
+    let goatsSave = fresh();
+    goatsSave.run!.sceneId = 'goatsReturned';
+    goatsSave.run!.flags = [];
+    goatsSave = act(goatsSave, 'leaveAfterGoats');
+    expect(goatsSave.run?.flags).toContain('goatsReturned');
+    expect(sceneText(AFTER_THE_STORM.scenes.stormAftermath, goatsSave)).toMatch(/goats are penned again/i);
+
+    let armSave = fresh();
+    armSave.run!.sceneId = 'armWrapped';
+    armSave.run!.flags = [];
+    armSave = act(armSave, 'leaveAfterArm');
+    expect(armSave.run?.flags).toContain('armTreated');
+    expect(sceneText(AFTER_THE_STORM.scenes.stormAftermath, armSave)).toMatch(/arm is cleanly wrapped/i);
+
+    let roofSave = fresh();
+    roofSave.run!.sceneId = 'roofSecured';
+    roofSave.run!.flags = [];
+    roofSave = act(roofSave, 'leaveAfterRoof');
+    expect(roofSave.run?.flags).toContain('roofSecured');
+    expect(sceneText(AFTER_THE_STORM.scenes.stormAftermath, roofSave)).toMatch(/line holds the roof corner/i);
+  });
 });
