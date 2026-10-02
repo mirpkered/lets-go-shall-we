@@ -197,6 +197,23 @@ describe('player scenario selection and QA mode', () => {
     expect(weights.find(({ scenario }) => scenario.id === 'fresh')!.weight).toBeGreaterThan(weights.find(({ scenario }) => scenario.id === 'played')!.weight * 50);
   });
 
+  it('keeps replay pressure when a category has only one eligible story', () => {
+    const affinityStory = selectionFixture('affinity-story', 'social interaction', {
+      availability: { season: 'ALL_YEAR', months: Array.from({ length: 12 }, (_, index) => index + 1), affinityMonths: [10], weightBoost: 2.25 },
+      historicalPresence: 'CAMEO',
+    });
+    const alternatives = [selectionFixture('fresh-work', 'labor/repair'), selectionFixture('fresh-travel', 'travel/navigation')];
+    const atCompletionCount = [1, 2, 3].map((completedPlays) => scenarioSelectionWeights([affinityStory, ...alternatives], {
+      scenarioPlayCounts: { 'affinity-story': completedPlays }, selectionMonth: 10,
+    }).find(({ scenario }) => scenario.id === affinityStory.id)!);
+    const freshWork = scenarioSelectionWeights([affinityStory, ...alternatives], { selectionMonth: 10 }).find(({ scenario }) => scenario.id === 'fresh-work')!;
+    expect(atCompletionCount.map(({ replayWeight }) => replayWeight)).toEqual([0.15, 0.045, 0.012]);
+    expect(atCompletionCount[0].weight).toBeGreaterThan(0);
+    expect(atCompletionCount[0].weight).toBeLessThan(freshWork.weight / 2);
+    expect(atCompletionCount[1].weight).toBeLessThan(atCompletionCount[0].weight);
+    expect(atCompletionCount[2].weight).toBeLessThan(atCompletionCount[1].weight);
+  });
+
   it('applies seasonal hard eligibility and bounded seasonal affinity only after category balancing', () => {
     const winter = selectionFixture('winter', 'social interaction', { availability: { season: 'WINTER', months: [12], weightBoost: 2 } });
     const ordinary = selectionFixture('ordinary', 'social interaction');

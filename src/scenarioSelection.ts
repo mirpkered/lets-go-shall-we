@@ -151,10 +151,20 @@ export function selectionDiagnostics(scenarios: Scenario[], recentScenarioIds: s
     groups.set(category, group);
   }
 
-  const categoryRows = normalized([...groups.keys()].sort().map((category) => ({
-    category,
-    weight: categoryRecencyWeight(category, pressure.categoryHistory ?? []),
-  })));
+  const categoryRows = normalized([...groups.keys()].sort().map((category) => {
+    const members = groups.get(category)!;
+    // Replay pressure must survive the two-stage draw. Without this factor, a
+    // category containing only one eligible story would normalize that story's
+    // replay penalty away and make it just as likely as before.
+    const replayExposure = members.reduce((sum, scenario) => {
+      const completedPlays = Math.max(0, Math.floor(pressure.scenarioPlayCounts?.[scenario.id] ?? 0));
+      return sum + replayWeight(completedPlays);
+    }, 0) / members.length;
+    return {
+      category,
+      weight: categoryRecencyWeight(category, pressure.categoryHistory ?? []) * replayExposure,
+    };
+  }));
   const categoryWeights = Object.fromEntries(categoryRows.map(({ category, weight }) => [category, weight]));
   const shares = tierShares(pressure);
   const output: ScenarioSelectionWeight[] = [];

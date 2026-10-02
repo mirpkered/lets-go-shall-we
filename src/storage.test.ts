@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import { newCharacter, startRun } from './engine';
-import { primaryScenarioCategory } from './scenarioSelection';
+import { primaryScenarioCategory, scenarioSelectionWeights, simulateScenarioSelection } from './scenarioSelection';
 import { BROKEN_BELL } from './scenarios/brokenBell';
+import { SCENARIOS } from './scenarios';
 import type { SaveData } from './types';
 
 function memoryStorage(initial: string | null = null): Storage {
@@ -177,5 +178,90 @@ describe('save compatibility', () => {
     expect(state.run?.flags).toContain('hasClapper');
     expect(state.bank).toEqual(['graveCoin']);
     expect(state.run?.visitedSceneIds).toContain('legacyResume');
+  });
+
+  it('preserves one traveler and additive selector history across sequential content deployments', () => {
+    const character = newCharacter('Same Traveler');
+    character.adventuresCompleted = 14;
+    character.money = 17;
+    character.carriedItems = ['travelRope'];
+    character.carriedItem = 'travelRope';
+    character.lore = ['A local road floods after the second hard rain.'];
+    character.knowledge = ['Miller’s Ford healer uses only sound willow bark.'];
+    character.historyFlags = ['helped_a_ford_community'];
+    character.scenarioCategoryHistory = ['rescue/protection', 'social interaction', 'labor/repair'];
+    character.scenarioPlayCounts = { 'the-witch-at-millers-ford': 3, 'older-scenario-no-longer-in-registry': 2 };
+    character.quickExitCreditRemainder = 2;
+    character.quickExitEndingIds = ['market-day:leaveEarly'];
+    character.ownedAssets = [{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }];
+    character.supplies = { ritualChalk: 2 };
+    const run = startRun(character, BROKEN_BELL);
+    run.sceneId = 'priestNotes';
+    run.visitedSceneIds = ['chapelExterior', 'chapelNave', 'priestNotes'];
+    run.health = 5;
+    run.flags = ['heard_below'];
+    run.inventory = ['smallKnife', 'lantern', 'travelRope'];
+    run.elapsedMinutes = 31;
+    run.supplies = { ritualChalk: 1 };
+    const state: SaveData = {
+      version: 1, bank: ['graveCoin'], character, run,
+      itemStates: { travelRope: { condition: 'DAMAGED', upgrades: [], provenance: ['A ropewright in Miller’s Ford'] } },
+      mostRecentScenarioId: 'the-witch-at-millers-ford',
+      recentScenarioIds: ['the-witch-at-millers-ford', 'the-speaker'],
+      recentRiskHistory: [{ scenarioId: 'the-witch-at-millers-ford', tier: 'LOW' }],
+    };
+    const storage = memoryStorage();
+    saveGame(state, storage);
+
+    // New content arrives in two separate deployments. Neither addition is a
+    // traveler lifecycle event, and old IDs need not remain in the registry.
+    const addedOne = structuredClone(BROKEN_BELL); addedOne.id = 'deployment-added-one'; addedOne.title = 'Added One';
+    const addedTwo = structuredClone(BROKEN_BELL); addedTwo.id = 'deployment-added-two'; addedTwo.title = 'Added Two';
+    const registryAfterFirst = [...SCENARIOS, addedOne];
+    const afterFirstDeployment = loadSave(storage);
+    expect(registryAfterFirst.some(({ id }) => id === addedOne.id)).toBe(true);
+    saveGame(afterFirstDeployment, storage);
+    const registryAfterSecond = [...registryAfterFirst, addedTwo];
+    const afterSecondDeployment = loadSave(storage);
+    expect(registryAfterSecond.some(({ id }) => id === addedTwo.id)).toBe(true);
+
+    expect(afterSecondDeployment).toMatchObject({
+      bank: ['graveCoin'],
+      mostRecentScenarioId: 'the-witch-at-millers-ford',
+      recentScenarioIds: ['the-witch-at-millers-ford', 'the-speaker'],
+      recentRiskHistory: [{ scenarioId: 'the-witch-at-millers-ford', tier: 'LOW' }],
+      character: {
+        id: character.id, adventuresCompleted: 14, money: 17, carriedItems: ['travelRope'],
+        lore: character.lore, knowledge: character.knowledge, historyFlags: character.historyFlags,
+        scenarioCategoryHistory: character.scenarioCategoryHistory,
+        scenarioPlayCounts: { 'the-witch-at-millers-ford': 3, 'older-scenario-no-longer-in-registry': 2 },
+        quickExitCreditRemainder: 2, quickExitEndingIds: ['market-day:leaveEarly'],
+        ownedAssets: character.ownedAssets, supplies: { ritualChalk: 2 },
+      },
+      run: { scenarioId: BROKEN_BELL.id, sceneId: 'priestNotes', status: 'active', health: 5,
+        visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'], flags: ['heard_below'], elapsedMinutes: 31,
+        inventory: ['smallKnife', 'lantern', 'travelRope'], supplies: { ritualChalk: 1 } },
+      itemStates: { travelRope: { condition: 'DAMAGED', upgrades: [], provenance: ['A ropewright in Miller’s Ford'] } },
+    });
+
+    const history = afterSecondDeployment.character!.scenarioPlayCounts!;
+    const weights = scenarioSelectionWeights(registryAfterSecond, { scenarioPlayCounts: history, selectionMonth: 10 });
+    expect(weights.find(({ scenario }) => scenario.id === 'the-witch-at-millers-ford')?.replayWeight).toBe(0.012);
+    expect(weights.find(({ scenario }) => scenario.id === addedOne.id)?.completedPlays).toBe(0);
+    expect(weights.find(({ scenario }) => scenario.id === addedTwo.id)?.completedPlays).toBe(0);
+    expect(weights.find(({ scenario }) => scenario.id === 'older-scenario-no-longer-in-registry')?.scenario).toBeUndefined();
+
+    const seeded = (seed: number) => () => ((seed = (seed * 48271) % 2147483647) - 1) / 2147483646;
+    const withHistory = simulateScenarioSelection(registryAfterSecond, [], {
+      adventuresCompleted: 14, categoryHistory: character.scenarioCategoryHistory,
+      scenarioPlayCounts: history, recentRiskHistory: state.recentRiskHistory, selectionMonth: 10,
+    }, 1000, seeded(3917));
+    const withoutHistory = simulateScenarioSelection(registryAfterSecond, [], {
+      adventuresCompleted: 14, categoryHistory: character.scenarioCategoryHistory,
+      scenarioPlayCounts: {}, recentRiskHistory: state.recentRiskHistory, selectionMonth: 10,
+    }, 1000, seeded(3917));
+    expect(withHistory.draws).toBe(1000);
+    expect(withHistory.scenarioCounts['the-witch-at-millers-ford'] ?? 0)
+      .toBeLessThan(withoutHistory.scenarioCounts['the-witch-at-millers-ford'] ?? 0);
   });
 });

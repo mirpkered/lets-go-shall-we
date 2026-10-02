@@ -92,3 +92,22 @@ export const ENTERTAINMENT_ADVENTURES = authorBatch([
     ],
   },
 ]);
+
+// Preserve the old scene ID for any active save at this point, but make the
+// second demonstration a player-facing decision rather than an NPC-only ending.
+const SPEAKER_STORY = ENTERTAINMENT_ADVENTURES.find(({ id }) => id === 'the-speaker')!;
+const clearerDemonstration = SPEAKER_STORY.scenes['question-listen'];
+delete clearerDemonstration.ending;
+clearerDemonstration.text = 'The naturalist resets the paper vane and lets it settle, then turns the instrument toward a second breeze. It shows the wind shifting now; it cannot say whether tomorrow will bring rain. A listener asks whether the first reading was a forecast after all. The naturalist waits for your answer.';
+clearerDemonstration.choices = [
+  { id: 'explainLimit', label: 'Explain what the vane can measure', next: 'speakerExplainsLimit' },
+  { id: 'askForComparison', label: 'Ask the naturalist to compare readings', next: 'speakerComparesReadings' },
+];
+SPEAKER_STORY.scenes.speakerExplainsLimit = {
+  id: 'speakerExplainsLimit', title: 'A Useful Instrument, Not a Forecast', tone: 'safe', ending: 'success', choices: [],
+  text: 'You explain that the vane records the wind’s direction at this moment, not the weather tomorrow. The naturalist adds that a written series of readings may help someone notice a pattern, but one turn of the paper cannot promise rain. The listener nods, and the crowd begins asking practical questions instead of treating the first gust as a prediction.',
+};
+SPEAKER_STORY.scenes.speakerComparesReadings = {
+  id: 'speakerComparesReadings', title: 'Two Moments in the Wind', tone: 'safe', ending: 'success', choices: [],
+  text: 'The naturalist points out the vane’s earlier direction and its present one. The difference shows that the breeze shifted; it does not tell the crowd what tomorrow will bring. The listeners understand why the first reading changed, and the naturalist carries on with questions about birds and weather records.',
+};

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
+import { choose, finishSuccess, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -12,6 +12,7 @@ import { SMALL_HUMAN_MOMENT_ADVENTURES } from './smallHumanMomentsBatch';
 import { A_GAME_OF_CARDS } from './pleasantDaysBatch';
 import { THE_LANDLORDS_STORY } from './disputesBatch';
 import { RIVER_COMMERCE_ADVENTURES } from './riverCommerceBatch';
+import { ENTERTAINMENT_ADVENTURES } from './entertainmentBatch';
 
 function start(scenario: Scenario, selections: Record<string, string> = {}): SaveData {
   const character = newCharacter('Content Tester');
@@ -109,17 +110,22 @@ describe('content depth and payoff audit fixes', () => {
     expect(sceneText(WHAT_DID_YOU_SEE.scenes[limited.run!.sceneId], limited)).toContain('next question is narrower');
   });
 
-  it('gives the marble-game story an interactive replay and peaceful consequence', () => {
+  it('makes the marble replay one fair shot per child, without a second arbitration', () => {
     const scenario = SMALL_HUMAN_MOMENT_ADVENTURES.find(({ id }) => id === 'the-childrens-court')!;
     expect(findScenarioGraphProblems(scenario)).toEqual([]);
     let state = act(start(scenario), scenario, 'opening', 'take-listen');
     state = act(state, scenario, 'listen', 'listen-replay');
     state = act(state, scenario, 'accounts', 'replayMarked');
+    expect(scenario.scenes.replaySetup.text).toContain('each child will take one shot');
     state = act(state, scenario, 'replaySetup', 'takeReplayShot', () => 0);
     expect(state.run?.sceneId).toBe('clearShot');
-    state = act(state, scenario, 'clearShot', 'giveNextTurn');
+    expect(scenario.scenes.clearShot.text).toContain('exactly one shot');
+    state = act(state, scenario, 'clearShot', 'settleClearReplay');
     expect(state.run?.status).toBe('success');
-    expect(scenario.scenes[state.run!.sceneId].text).toContain('the game continues');
+    const endingText = scenario.scenes[state.run!.sceneId].text;
+    state = finishSuccess(state, []);
+    expect(state.character?.adventuresCompleted).toBe(1);
+    expect(endingText).toContain('without reopening the first argument');
 
     let close = act(start(scenario), scenario, 'opening', 'take-listen');
     close = act(close, scenario, 'listen', 'listen-replay');
@@ -127,7 +133,25 @@ describe('content depth and payoff audit fixes', () => {
     close = act(close, scenario, 'replaySetup', 'takeReplayShot', () => 0.999999);
     expect(close.run?.sceneId).toBe('closeShot');
     close = act(close, scenario, 'closeShot', 'shareCloseTurns');
-    expect(scenario.scenes[close.run!.sceneId].text).toContain('Neither has to win the old argument');
+    expect(scenario.scenes[close.run!.sceneId].text).toContain('each take one shot');
+    close = finishSuccess(close, []);
+    expect(close.character?.adventuresCompleted).toBe(1);
+  });
+
+  it('gives The Speaker’s second demonstration a traveler decision and authored completion', () => {
+    const scenario = ENTERTAINMENT_ADVENTURES.find(({ id }) => id === 'the-speaker')!;
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
+    let state = act(start(scenario), scenario, 'opening', 'take-question');
+    state = act(state, scenario, 'question', 'question-listen');
+    expect(state.run?.sceneId).toBe('question-listen');
+    expect(scenario.scenes[state.run!.sceneId].choices).toHaveLength(2);
+    expect(state.run?.status).toBe('active');
+    state = act(state, scenario, 'question-listen', 'explainLimit');
+    expect(state.run?.status).toBe('success');
+    const endingText = scenario.scenes[state.run!.sceneId].text;
+    state = finishSuccess(state, []);
+    expect(state.character?.adventuresCompleted).toBe(1);
+    expect(endingText).toContain('crowd begins asking practical questions');
   });
 
   it('keeps a deliberate short opt-out in the marble story and all reviewed graphs forward-only', () => {
