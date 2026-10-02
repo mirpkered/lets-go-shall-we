@@ -176,7 +176,7 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
   const issues: string[] = [];
   const ids = new Set<string>();
   const tagRules: Partial<Record<keyof ScenarioDiversity, string[]>> = {
-    playerRoles: ['worker', 'helper/rescuer', 'witness', 'traveler/passenger', 'investigator/explorer', 'negotiator/buyer/seller', 'guest', 'accidental participant', 'other role'],
+    playerRoles: ['worker', 'helper/rescuer', 'witness', 'traveler/passenger', 'investigator/explorer', 'negotiator/buyer/seller', 'guest', 'accidental participant', 'participant', 'audience participant', 'judge', 'performer', 'mediator', 'customer', 'messenger', 'caretaker', 'skeptic', 'competitor', 'accidental culprit', 'accomplice', 'buyer', 'seller', 'negotiator', 'teacher', 'student', 'temporary worker', 'opportunist', 'other role'],
     activities: ['labor/repair', 'rescue/care', 'survival', 'negotiation/trade', 'investigation/mystery', 'travel/exploration', 'social interaction', 'animals', 'combat/defense', 'puzzle/problem-solving', 'moral prioritization', 'communication/witness', 'competition/game', 'other activity'],
     structures: ['short focused sequence', 'multi-stage sequence', 'branching narrative', 'time-pressure sequence', 'run-specific variable', 'other structure'],
     tones: ['peaceful', 'warm/hopeful', 'humorous/absurd', 'mysterious/eerie', 'adventurous', 'tense/dangerous', 'melancholy/tragic', 'grim', 'other tone'],
