@@ -2,7 +2,7 @@ import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, 
 
 const T = (hook: string, role: string, tone: string, setting: string, structures: string[], entry: string, reward = ['narrative-only payoff']) => tags({ hook, activities: ['competition/game', 'social interaction'], role, tone, risk: 'LOW', setting, structures, entry, rewards: reward, consequences: ['time/opportunity', 'relationship'] });
 
-export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring Toss', 'A fairground game has one ring left and three people certain it was theirs.', T('The player enters a fairground ring toss after its last ring lands between three chalked prizes, then must decide how to settle an honest near-tie.', 'competitor', 'humorous/absurd', 'county fair green', ['branching narrative', 'multi-stage sequence'], 'already participating in event', ['money/item/knowledge/history possible', 'narrative-only payoff']), 'toss', {
+export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring Toss', 'A fairground game has one ring left and three people certain it was theirs.', T('The player enters a fairground ring toss after its last ring lands between three chalked prizes, then must decide how to settle an honest near-tie.', 'competitor', 'humorous/absurd', 'county fair green', ['branching narrative', 'multi-stage sequence'], 'already participating in event', ['narrative-only payoff']), 'toss', {
   toss: scene('toss', 'The Last Ring', 'At the fairground ring toss, a wooden ring lands across the line between a tin cup and a painted duck. The stall keeper says a clean landing wins, but the crowd disagrees about which prize is nearer.', [
     { id: 'inspectLine', label: 'Ask to see the chalk line', next: 'line' },
     { id: 'offerRerun', label: 'Offer the ring back for another throw', next: 'rerun' },
@@ -16,23 +16,23 @@ export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring 
     { id: 'sharePrize', label: 'Suggest sharing the painted duck', next: 'shared' },
     { id: 'letKeeperChoose', label: 'Leave the call to the keeper', next: 'keeper' },
   ]),
-  keeper: scene('keeper', 'The Keeper’s Rule', 'The keeper admits the rule was not posted clearly. The prizes are his to award, but he asks whether you want a fair call or simply your coin back.', [
-    { id: 'refundTheThrows', label: 'Refund the disputed throws', next: 'refunded' },
-    { id: 'acceptSmallPrize', label: 'Accept the tin cup as a tie', next: 'cup' },
+  keeper: scene('keeper', 'The Keeper’s Rule', 'The keeper admits the rule was not posted clearly. The prizes are his to award, but the three players deserve a clear call before another round begins.', [
+    { id: 'refundTheThrows', label: 'Close the round without a prize', next: 'refunded' },
+    { id: 'acceptSmallPrize', label: 'Accept the keeper’s tie call', next: 'cup' },
     { id: 'askForRerun', label: 'Ask for a clean round next time', next: 'future' },
   ]),
-  choice: scene('choice', 'A Fairer Call', 'The stall keeper offers to refund every player or give the disputed duck to the next clear winner. Nobody is owed a prize from a scuffed line.', [
-    { id: 'refundThePlayers', label: 'Refund the players', next: 'refunded' },
-    { id: 'leaveDuck', label: 'Let the next winner try for it', next: 'future' },
+  choice: scene('choice', 'A Fairer Call', 'The stall keeper offers to close the disputed round without a prize or reserve the duck for the next clear winner. Nobody is owed a prize from a scuffed line.', [
+    { id: 'refundThePlayers', label: 'Close this round without a prize', next: 'refunded' },
+    { id: 'leaveDuck', label: 'Let the next clear winner try', next: 'future' },
   ]),
   duck: end('duck', 'A Prize Taken by Argument', 'The keeper gives you the duck rather than prolong the dispute. The other players leave without a rematch. You win the toy, though not by a call everyone accepts.'),
   shared: end('shared', 'A Fairground Tie', 'The other players agree to share the painted duck. The keeper marks the line again before the next round, and the crowd returns to the music.'),
-  refunded: end('refunded', 'Coins Returned', 'The keeper returns the players’ coins and redraws the line. You leave without a prize, but the next players know exactly where a winning ring must land.'),
-  cup: end('cup', 'A Small Prize for a Close Call', 'The tin cup is not the prize you hoped for, but the players accept the keeper’s tie. The next round begins on a clearer line.'),
+  refunded: end('refunded', 'Round Closed', 'The keeper ends the disputed round without awarding the duck and redraws the line. You leave without a prize, but the next players know exactly where a winning ring must land.'),
+  cup: end('cup', 'A Tie Called Fairly', 'The keeper records the throw as a tie rather than guessing which prize it touched. The players accept the call, and the next round begins on a clearer line.'),
   future: end('future', 'The Next Round', 'You step aside while the keeper resets the game. The decision changes how the stall runs; it does not make the near-tie a clean victory.'),
 });
 
-export const THE_LAST_VERSE_CONTEST = story('the-last-verse-contest', 'The Last Verse Contest', 'A recitation prize depends on remembering what the printed broadside left out.', T('In a public recitation, a missing final verse makes faithful memory more important than confidence or volume.', 'performer', 'warm/hopeful', 'town hall stage', ['performance with information fork', 'memory-gated payoff'], 'traveler is asked to judge contest', ['money/item/knowledge/history possible']), 'broadside', {
+export const THE_LAST_VERSE_CONTEST = story('the-last-verse-contest', 'The Last Verse Contest', 'A recitation prize depends on remembering what the printed broadside left out.', T('In a public recitation, a missing final verse makes faithful memory more important than confidence or volume.', 'performer', 'warm/hopeful', 'town hall stage', ['performance with information fork', 'memory-gated payoff'], 'traveler is asked to judge contest'), 'broadside', {
   broadside: scene('broadside', 'A Verse Missing from Print', 'Three reciters compete for a modest book prize. The broadside ends one verse early, and the judge asks you to help decide whether a contestant’s remembered ending is genuine or invented.', [
     { id: 'askForSource', label: 'Ask where the verse was learned', next: 'source' },
     { id: 'hearAllReciters', label: 'Hear each reciter before judging', next: 'recitals' },

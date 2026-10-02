@@ -290,13 +290,13 @@ export const THE_TRESTLE_TABLE = story('the-trestle-table', 'The Trestle Table',
   paid: end('paid', 'A Coin for Careful Work', 'The seller pays you a coin for keeping the display upright. The table still needs a proper repair; the crate is only a safe stopgap.'),
 });
 
-export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 'The Favor Returned in Flour', 'A baker remembers a small kindness and asks the traveler to choose how it should be returned.', T('A baker offers a sack of flour after the traveler previously helped carry supplies; accepting may burden a family who needs the flour more.', ['social interaction', 'negotiation/trade'], 'guest', 'warm/hopeful', 'village bakery', ['conditional favor callback', 'resource choice', 'relationship consequence'], 'invited/known contact', ['lodging/food', 'relationship/referral']), 'bakery', {
-  bakery: scene('bakery', 'A Sack Set Aside', 'The baker recognizes you from an earlier day carrying flour to the mill. She offers a small sack in thanks. A neighbor has just asked whether any flour remains for a family supper.', [
-    { id: 'acceptSack', label: 'Accept the sack', next: 'accepted' },
+export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 'The Favor Returned in Flour', 'A baker remembers a small kindness and asks the traveler to choose how it should be returned.', T('A baker offers a loaf after the traveler previously helped carry flour; accepting means sharing it at the counter, while a neighbor may need the remaining flour for supper.', ['social interaction', 'negotiation/trade'], 'guest', 'warm/hopeful', 'village bakery', ['conditional favor callback', 'resource choice', 'relationship consequence'], 'invited/known contact', ['lodging/food', 'relationship/referral']), 'bakery', {
+  bakery: scene('bakery', 'A Loaf Set Aside', 'The baker recognizes you from an earlier day carrying flour to the mill. She sets aside one warm loaf in thanks. A neighbor has just asked whether any flour remains for a family supper.', [
+    { id: 'acceptSack', label: 'Share the loaf at the counter', next: 'accepted' },
     { id: 'askAboutNeighbor', label: 'Ask whether the neighbor can have it', next: 'neighbor' },
     { id: 'declineGift', label: 'Decline and thank the baker', next: 'declined' },
   ]),
-  neighbor: scene('neighbor', 'Enough for One Loaf', 'The neighbor needs enough flour for one loaf before evening. The baker can sell her some, give her some, or keep the sack as payment for your earlier work.', [
+  neighbor: scene('neighbor', 'Enough for One Loaf', 'The neighbor needs enough flour for one loaf before evening. The baker can sell her some, give her some, or keep the flour for tomorrow’s baking.', [
     { id: 'letBakerDecide', label: 'Let the baker choose what is fair', next: 'decision' },
     { id: 'offerToPayForNeighbor', label: 'Offer one coin toward the flour', requirements: { minMoney: 1 }, next: 'paidFor', effects: { money: -1 } },
   ]),
@@ -304,10 +304,10 @@ export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 
     { id: 'giftNeighborQuietly', label: 'Suggest a quiet measure for the neighbor', next: 'shared' },
     { id: 'keepSackForBaker', label: 'Let the baker keep her flour', next: 'accepted' },
   ]),
-  accepted: end('accepted', 'A Gift Freely Given', 'You accept the sack, and the baker keeps enough flour for her own ovens. The earlier favor is repaid in a form she chose; neither of you owes more.'),
+  accepted: end('accepted', 'A Gift Freely Given', 'You share the warm loaf at the counter, and the baker keeps her flour for the shop. The earlier favor is repaid in a form she chose; neither of you owes more.'),
   shared: end('shared', 'A Loaf without a Debt', 'The baker measures flour for the neighbor without naming it a gift. She keeps the rest for her ovens, and your earlier help is remembered without becoming a balance due.'),
   paidFor: end('paidFor', 'A Loaf Bought Quietly', 'The baker accepts your coin toward the neighbor’s flour. The neighbor takes the measure without a public explanation, and the baker keeps enough for tomorrow’s baking.'),
-  declined: end('declined', 'No Ledger Kept', 'The baker accepts your thanks and keeps the sack. The favor is not a debt, and neither of you has to settle it further.'),
+  declined: end('declined', 'No Ledger Kept', 'The baker accepts your thanks and keeps the loaf. The favor is not a debt, and neither of you has to settle it further.'),
 });
 
 export const THE_STAGE_RIGGING = story('the-stage-rigging', 'The Stage Rigging', 'A rope above a crowded rehearsal room is visibly fraying while a heavy painted flat is raised.', T('A fraying stage rope supports a heavy painted flat over workers; the player must stop the lift or choose a narrow, warned chance to secure it.', ['labor/repair', 'survival', 'moral prioritization'], 'helper/rescuer', 'tense/dangerous', 'town theater stage', ['visible escalating hazard', 'time-pressure sequence', 'rescue/retreat choice'], 'witnesses incident', ['narrative-only payoff'], 'HIGH'), 'stage', {

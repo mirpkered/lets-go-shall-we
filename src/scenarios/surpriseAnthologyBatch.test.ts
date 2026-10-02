@@ -123,6 +123,10 @@ describe('surprise anthology and library gap-fill', () => {
   });
 
   it('lets the traveler err, exploit ambiguity, and see a consequence without guaranteed moral punishment', () => {
+    const toss = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-three-ring-toss')!;
+    expect(Object.values(toss.scenes).flatMap(({ choices }) => choices).every(({ effects }) => effects?.money === undefined)).toBe(true);
+    expect(toss.diversity?.rewardShapes).toEqual(['narrative-only payoff']);
+
     const parcel = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-parcel-with-no-address')!;
     let state = act(start(parcel), parcel, 'counter', 'askEachMercer');
     state = act(state, parcel, 'claims', 'takeWrongfulRisk');
