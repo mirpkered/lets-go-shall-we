@@ -97,14 +97,19 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('<section class="choices count-${choices.length}"');
   });
 
-  it('keeps title-screen art session-scoped, QA-only controls hidden from players, and gameplay backdrop unchanged', () => {
-    expect(mainSource).toContain('getOrCreateHomeScene(homeSceneStorage)');
-    expect(mainSource).toContain('sessionStorage');
+  it('rotates title-screen art only at Home entry, hides preview tools from players, and leaves gameplay backdrop unchanged', () => {
+    expect(mainSource).toContain('createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey)');
+    expect(mainSource).toContain('homeSceneRotation.enterHome()');
+    expect(mainSource).not.toContain('sessionStorage');
+    const homeRenderer = mainSource.slice(mainSource.indexOf('function renderHome(): void'), mainSource.indexOf('function counterDiagnostics()'));
+    expect(homeRenderer.match(/rotateHomeScene\(\)/g)).toHaveLength(1);
+    expect(homeRenderer).toContain("if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); rotateHomeScene(); render(); }");
     expect(mainSource).toContain('if (!qaEnabled) return \'\';');
     expect(mainSource).toContain('data-home-scene-next');
     expect(mainSource).toContain('homeSceneQaControls()');
     expect(styles).toContain('.home-screen { position:relative; isolation:isolate; background-color:#101313;');
     expect(styles).toContain('var(--home-scene-art)');
+    expect(styles).toContain('var(--home-scene-position,50% 50%)');
     expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
     expect(styles).toContain("url('./assets/adventure-backdrop.svg')");
     expect(styles).toContain('.qa-home-scene-actions button { min-width:3.75rem; min-height:44px;');
@@ -112,10 +117,17 @@ describe('global no-scroll layout contract', () => {
 
   it('anchors home About and Contact controls above the safe-area-aware footer', () => {
     expect(styles).toContain('.home-screen > .utility-links { flex:none; margin:auto auto .35rem; padding-top:.55rem; }');
-    expect(styles).toContain('.home-screen > footer { margin-top:0; padding-top:1rem; }');
+    expect(styles).toContain('.home-screen > footer { margin-top:0; padding-top:1rem; color:#928a7c; text-shadow:0 1px 4px #000d; }');
     expect(styles).toContain('padding:clamp(1.2rem, 5vw, 2.5rem) 1.1rem max(1.25rem, env(safe-area-inset-bottom));');
     expect(styles).toContain('footer { margin-top:auto;');
     expect(mainSource.indexOf('${renderQaPanel(qaEnabled')).toBeLessThan(mainSource.indexOf('${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}'));
+  });
+
+  it('balances the lone Bank action when no traveler exists and keeps Bank/Retire as paired cards otherwise', () => {
+    expect(mainSource).toContain('class="home-tools${hasCharacter ? \'\' : \' single-tool\'}"');
+    expect(styles).toContain('.home-tools.single-tool { grid-template-columns:1fr; }');
+    expect(styles).toContain('.home-tools { display:grid; grid-template-columns:1fr 1fr;');
+    expect(mainSource).toContain('<button id="retire">');
   });
 
   it('keeps the active-run home card compact on the narrowest supported phone width without shrinking text', () => {

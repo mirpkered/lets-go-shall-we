@@ -10,7 +10,7 @@ import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioS
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, normalizeCounterEndpoint, readGlobalTotal, submitGlobalCompletionWithRetry } from './completionCounter';
-import { getOrCreateHomeScene, HOME_SCENES, homeSceneIndex, setHomeSceneForSession, type SessionSceneStorage } from './homeScenes';
+import { createHomeSceneRotation, HOME_SCENE_LAST_KEY, HOME_SCENES, homeSceneIndex, QA_HOME_SCENE_LAST_KEY, type HomeSceneStorage } from './homeScenes';
 import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
 import { auditContentQuality } from './contentQuality';
@@ -23,11 +23,13 @@ let inventoryOpen = false;
 let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
 let pendingBankDestructive: { kind: 'item'; itemId: string } | { kind: 'empty' } | null = null;
 let bankConfirmReturnSelector = '#back';
-const homeSceneStorage: SessionSceneStorage = (() => {
-  try { return window.sessionStorage; }
+const homeSceneStorage: HomeSceneStorage = (() => {
+  try { return window.localStorage; }
   catch { return { getItem: () => null, setItem: () => undefined }; }
 })();
-let activeHomeScene = getOrCreateHomeScene(homeSceneStorage);
+const homeSceneStorageKey = qaEnabled ? QA_HOME_SCENE_LAST_KEY : HOME_SCENE_LAST_KEY;
+const homeSceneRotation = createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey);
+let activeHomeScene = homeSceneRotation.current;
 const assetBaseUrl = (import.meta as ImportMeta & { env: { BASE_URL: string } }).env.BASE_URL;
 const counterEndpoint = normalizeCounterEndpoint((import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL);
 let globalTotal: number | null = null;
@@ -98,7 +100,7 @@ function bindQaPanel(): void {
     output.textContent = JSON.stringify({ ...quality, relatedDiversity: { repeatedStructuralPatternCount: diversity.structuralWarnings.length, exampleStructuralWarnings: diversity.structuralWarnings.slice(0, 30) } }, null, 2);
     output.hidden = false;
   });
-  document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); screen = 'home'; render(); });
+  document.querySelector('[data-qa-clear-run]')?.addEventListener('click', () => { state.run = null; persist(); rotateHomeScene(); screen = 'home'; render(); });
   document.querySelector('[data-qa-force-easter-egg]')?.addEventListener('click', () => {
     const id = document.querySelector<HTMLSelectElement>('#qa-easter-egg')?.value;
     const egg = EASTER_EGGS.find((entry) => entry.id === id);
@@ -113,9 +115,9 @@ function bindQaPanel(): void {
     if (!state.run?.qaMode) return;
     state.run.qaEasterEggDisabled = false; persist(); render();
   });
-  document.querySelector('[data-qa-reset-character]')?.addEventListener('click', () => { state.character = null; state.run = null; persist(); screen = 'home'; render(); });
+  document.querySelector('[data-qa-reset-character]')?.addEventListener('click', () => { state.character = null; state.run = null; persist(); rotateHomeScene(); screen = 'home'; render(); });
   document.querySelector('[data-qa-clear-save]')?.addEventListener('click', () => {
-    localStorage.removeItem(QA_SAVE_KEY); state = structuredClone(EMPTY_SAVE); screen = 'home'; render();
+    localStorage.removeItem(QA_SAVE_KEY); state = structuredClone(EMPTY_SAVE); rotateHomeScene(); screen = 'home'; render();
   });
   document.querySelector('[data-qa-set-completions]')?.addEventListener('click', () => {
     const input = document.querySelector<HTMLInputElement>('#qa-completions');
@@ -251,7 +253,11 @@ function shell(content: string, extra = '', style = ''): void {
 }
 
 function homeSceneStyle(): string {
-  return `--home-scene-art:url(${assetBaseUrl}home-scenes/${activeHomeScene.file})`;
+  return `--home-scene-art:url(${assetBaseUrl}home-scenes/${activeHomeScene.file});--home-scene-position:${activeHomeScene.focalPosition}`;
+}
+
+function rotateHomeScene(): void {
+  activeHomeScene = homeSceneRotation.enterHome();
 }
 
 function homeSceneQaControls(): string {
@@ -264,7 +270,7 @@ function bindHomeSceneQaControls(): void {
   if (!qaEnabled) return;
   const move = (direction: number) => {
     const index = (homeSceneIndex(activeHomeScene.id) + direction + HOME_SCENES.length) % HOME_SCENES.length;
-    activeHomeScene = setHomeSceneForSession(homeSceneStorage, HOME_SCENES[index].id) ?? activeHomeScene;
+    activeHomeScene = homeSceneRotation.preview(HOME_SCENES[index].id) ?? activeHomeScene;
     renderHome();
   };
   document.querySelector('[data-home-scene-previous]')?.addEventListener('click', () => move(-1));
@@ -289,7 +295,7 @@ function renderHome(): void {
     bindHomeSceneQaControls();
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
-      if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); render(); }
+      if (confirm('Abandon this adventure? Your active character and everything not banked will be lost.')) { state = failCharacter(state); persist(); rotateHomeScene(); render(); }
     });
     return;
   }
@@ -300,7 +306,7 @@ function renderHome(): void {
   const travelerStatus = state.character ? `<section class="traveler-status" aria-label="Traveler progress"><strong>${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'} completed</strong><span>Gear capacity: ${carryCapacity(state.character.adventuresCompleted)} slot${carryCapacity(state.character.adventuresCompleted) === 1 ? '' : 's'}</span><small>Supplies: ${Object.values(state.character.supplies ?? {}).filter((qty) => qty > 0).length}/${SUPPLY_STACK_CAPACITY} stacks · Relics: ${homeRelicCount}${homeRelicCount >= RELIC_SOFT_CAPACITY ? ' (unusually many)' : ''}</small>${state.character.adventuresCompleted < 20 ? `<small>Next Gear slot at ${state.character.adventuresCompleted < 10 ? 10 : 20}</small>` : ''}${(state.character.ownedAssets ?? []).length ? `<small class="owned-property-summary">Owned property: ${state.character.ownedAssets!.map(({ name }) => safeText(name)).join(', ')}</small>` : ''}</section>` : '';
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
     <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>${travelerStatus}
-    <nav class="home-tools" aria-label="Character options"><button id="bank">${icon('bank')}<span>Inventory &amp; Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
+    <nav class="home-tools${hasCharacter ? '' : ' single-tool'}" aria-label="Character options"><button id="bank">${icon('bank')}<span>Inventory &amp; Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
   bindHomeSceneQaControls();
   document.querySelector('#begin')!.addEventListener('click', () => {
     const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId, Math.random, {
@@ -420,7 +426,7 @@ function renderDeath(): void {
     ? '<p class="milestone-note">Ten adventures behind this traveler. Their journey ends here, but they learned to travel better prepared.</p>'
     : run?.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. This traveler knew what deserved a place in the pack.</p>' : '';
   shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Unbanked Gear, Relics, Supplies, assets, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
-  document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); screen = 'home'; render(); void flushPendingGlobalCompletions(); });
+  document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); rotateHomeScene(); screen = 'home'; render(); void flushPendingGlobalCompletions(); });
 }
 
 function renderSuccess(): void {
@@ -471,7 +477,7 @@ function renderSuccess(): void {
     state = finishRewardResolution(state);
     if (state.run) return;
     successRewardsOpen = false;
-    persist(); screen = 'home'; render(); void flushPendingGlobalCompletions();
+    persist(); rotateHomeScene(); screen = 'home'; render(); void flushPendingGlobalCompletions();
   });
 }
 
@@ -543,7 +549,7 @@ function renderRetire(): void {
   shell(`<section class="resume-card"><div class="eyebrow">Voluntary retirement</div><h1>Lay down the lantern?</h1><p>This survivor’s money, lore, knowledge, Gear, Relics, Supplies, assets, and personal history will end with their story. Banked Gear and Relics remain safe. Store any equipment you want to preserve before retiring; Supplies cannot be Banked.</p>${carried.length ? `<div class="retirement-item"><strong>Unbanked equipment (${carried.length})</strong>${carried.map((id) => `<span>${itemName(id)}</span>`).join('')}${state.bank.length < BANK_CAPACITY ? carried.map((id) => `<button data-retire-deposit="${id}">Bank ${itemName(id)}</button>`).join('') : '<button id="manageBank">Manage bank</button>'}</div>${retirementBankHint}` : ''}${Object.keys(state.character?.supplies ?? {}).length ? `<p class="fine-print">Unbanked Supplies: ${Object.entries(state.character!.supplies!).filter(([, n]) => n > 0).map(([id,n]) => `${itemName(id)} ×${n}`).join(', ')} will be lost at retirement.</p>` : ''}<div class="stack"><button class="danger-ghost" id="confirmRetire">Retire Character</button><button class="text-button" id="cancel">Keep Adventuring</button></div></section>`, 'centered');
   document.querySelectorAll<HTMLButtonElement>('[data-retire-deposit]').forEach((button) => button.addEventListener('click', () => { state = depositCarried(state, undefined, button.dataset.retireDeposit); persist(); render(); }));
   document.querySelector('#manageBank')?.addEventListener('click', () => { screen = 'bank'; render(); });
-  document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = retireCharacter(state); persist(); screen = 'home'; render(); });
+  document.querySelector('#confirmRetire')!.addEventListener('click', () => { state = retireCharacter(state); persist(); rotateHomeScene(); screen = 'home'; render(); });
   document.querySelector('#cancel')!.addEventListener('click', () => { screen = 'home'; render(); });
 }
 

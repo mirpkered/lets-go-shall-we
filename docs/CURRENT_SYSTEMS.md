@@ -29,6 +29,7 @@ This document describes the checked-in implementation at the current source revi
 | Special content / Easter eggs | IMPLEMENTED | Rare optional scene flavor is separate from scenario selection. It has a 2% roll at eligible scene entry, at most one event per run, local recent-seen history, and no gameplay/reward/progression effect. There is no separate scenario-level “special” selector field. |
 | Scenario diversity audit | IMPLEMENTED | All 431 scenarios receive metadata; similarity and structural-pattern checks are on-demand authoring warnings, not quality scores or selection gates. |
 | Content-quality audit | IMPLEMENTED | On-demand route-level heuristics flag possible thin/procedural/payoff issues with evidence. Warnings overlap and can be false positives; review routes manually. This is not a hard release gate. Its first 175-scenario report is a dated snapshot, not a current 431-scenario audit. |
+| Home Screen backgrounds | IMPLEMENTED | Six supplied portrait illustrations are registered in `src/homeScenes.ts` and stored as WebP in `public/home-scenes/`. A background is selected once per Home visit, avoiding the previous ID; it is presentation-only and does not affect gameplay saves or selector history. QA preview uses a separate last-scene key. |
 | Responsive / no-scroll standard | PARTIAL | The 320×720 and 390×844 no-scroll target is canonical and has responsive/layout tests. It remains an authoring/release check, not a guarantee that every long scene or utility panel in all 431 adventures has been manually verified at both sizes. |
 | QA tools and selector diagnostics | IMPLEMENTED | `?qa=1` uses a separate save. It offers direct scenario launch, run/character/save controls, state inspection and test controls, fictional month override, selector weights/diagnostics and isolated 100/1,000-start simulation, diversity report, content-quality report, and Easter-egg/home-art previews. QA does not mutate normal player history or count toward progression/counter. |
 | Hosting | IMPLEMENTED | Static GitHub Pages under `/lets-go-shall-we/`; gameplay and local saves require no backend. No accounts, cloud saves, multiplayer, or server-side gameplay. A mobile wrapper/PWA is not currently implemented. |
@@ -49,9 +50,14 @@ Major represented content families include commerce and property; community/dome
 | Living character | Money, carried Gear, item condition/upgrades/provenance, Supplies, Lore, Knowledge, History, owned Assets, qualifying completion count, category-start history, and per-scenario authored-ending play counts. |
 | Device-level local save | Bank; most-recent/recent ended scenario IDs (up to five); recent risk history (up to eight); recent Easter-egg IDs; pending counter submissions. Exact scenario-repeat history survives character death/retirement. |
 | Bank-persistent | Gear and Relics only; five normal slots. No money, Supplies, Assets, Lore, Knowledge, or History. |
+| Presentation-only device preference | Last Home background ID; normal and QA preview histories use separate keys. It is not part of the traveler save and is not reset by character lifecycle changes. |
 | World-public / shared | No shared story-world state. If separately deployed and configured, the optional counter exposes only one anonymous aggregate completion total. |
 
 QA state uses a separate local-storage key; QA activity is isolated from the normal save. Legacy category/replay histories default safely when absent, and active runs receive targeted migrations rather than a blanket save reset.
+
+## Home Screen backgrounds
+
+The six all-year illustrations are `road-at-dawn.webp`, `evening-inn.webp`, `railway-stop.webp`, `camp-beside-the-road.webp`, `river-crossing.webp`, and `town-at-dusk.webp` in `public/home-scenes/`. `src/homeScenes.ts` is the canonical registry: each stable ID maps to its asset, QA-only label, seasonal-extension tag, and focal position for cover cropping. The current selection stays in memory for that Home visit; only fresh app entry or a normal return after completion, death, retirement, or abandonment selects another. The device remembers only the last ID so the next choice can exclude it. Rerenders and opening/closing About, Contact, or Inventory do not rotate the art. Seasonal tags are metadata only; there is no seasonal background filtering yet. The QA preview uses a separate local-storage key and does not change the player’s last-background history.
 
 ## Scenario selection: implemented pipeline
 
