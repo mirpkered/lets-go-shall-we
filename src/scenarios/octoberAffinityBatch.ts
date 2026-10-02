@@ -99,7 +99,7 @@ export const OCTOBER_AFFINITY_ADVENTURES: Scenario[] = [
   },
   {
     id: 'the-halloween-dare', title: 'The Halloween Dare', subtitle: 'A foolish overnight challenge is made more dangerous by an old building.', startScene: 'dareInvitation',
-    diversity: d('A voluntary overnight dare in a visibly unsound toll house offers safe refusal, cautious supervision, or a genuinely dangerous entry.', 'survival', 'road/bridge', 'SEVERE', 'AMBIGUOUS', 'LOCKED', 'helper/rescuer'),
+    diversity: d('A voluntary overnight dare in a visibly unsound toll house offers safe refusal, cautious supervision, or a genuinely dangerous entry.', 'survival', 'road/bridge', 'HIGH', 'AMBIGUOUS', 'LOCKED', 'helper/rescuer'),
     scenes: {
       dareInvitation: { id: 'dareInvitation', title: 'The Old Toll House', tone: 'warning', text: 'On Halloween evening, you pass the abandoned toll house and find three local youths gathered outside. One has gone in while the others watch from the road; a cracked stone lintel hangs over loose doorway boards, and a voice calls from the back room. They ask you to help decide what to do.', choices: [
         { id: 'declineDare', label: 'Decline and leave the dare to them', next: 'dareDeclined' }, { id: 'callYouthOut', label: 'Call the youth back to the doorway', next: 'dareCall' },

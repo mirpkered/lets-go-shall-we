@@ -5,13 +5,23 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 ## How to add one adventure correctly
 
 1. Create a readable typed `Scenario` data module under `src/scenarios/`. Keep stable scenario and scene IDs; author the scene graph directly unless an existing helper exactly matches the story’s structure.
-2. Set `diversity` metadata in the current schema, including intended `depthClass`, risk, fantasy, combat, availability, and historical fields where applicable. Legacy inference exists for old content; new content should not rely on it for authorial intent. Effective runtime risk is currently owned by `src/riskClassification.ts`; do not assume a declared `diversity.riskTier` changes selection until that compatibility model is reconciled.
+2. Set `diversity` metadata in the current schema, including intended `depthClass`, an explicit `riskTier`, fantasy, combat, availability, and historical fields where applicable. Explicit `diversity.riskTier` is canonical for runtime, selection, and QA. The classifier’s stable-ID/mechanics fallback exists only for the pre-metadata legacy scenarios; do not add new content that relies on it.
 3. Register the scenario once in `src/scenarios/index.ts`. That root registry is the source used by normal selection and QA direct launch; do not add it to a second list.
 4. Express persistent outcomes as authored `Effects` on choices. The shared engine and reward resolver own completion, inventory, money, supplies, knowledge/history, relationships, and lifecycle persistence. Never mutate saved traveler state in scenario helpers.
 5. Add focused scenario tests for important branches, required state, payoff, and save-sensitive behavior. The global registry release test checks graph targets, stable-reference catalogs, metadata, and IDs; use `validateScenarioRegistry` for focused fixtures when useful.
 6. Launch it in QA and inspect substantive endings, reward resolution, and the longest mobile scenes. Completion is handled by canonical terminal qualification, not bespoke scenario code.
 
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
+
+## Choosing a depth class
+
+`depthClass` describes the experience the route gives the player, not raw node count or tone. Author it explicitly on every new scenario. When the field is missing, the compatibility fallback is always `ADVENTURE`; scene-count or length inference must never assign `ENCOUNTER` to new content.
+
+- **ENCOUNTER**: one focused situation with clear follow-through and a compact payoff. Examples: “The Bell After Midnight” turns one unexplained bell stroke into a brief, grounded check of the inn yard; “The Sixth Chair” resolves one supper-table problem through distinct practical choices. A quiet or funny experience can be an Encounter without danger or a large reward.
+- **ADVENTURE**: the anthology’s middle lane, with meaningful development, optional approaches or clues, and consequences that reflect decisions. “The Last Room on the Left” develops an innkeeper’s account into investigation, a hidden cellar, and a rescue with materially different outcomes; it is not Deep Exploration merely because its graph is long.
+- **DEEP_EXPLORATION**: the place itself is explored through connected areas, optional depth, discoveries, retreat, and greater risk at greater depth. “For Whom the Bell Tolls” branches through the chapel, hidden stair, and older burial, while “What’s Mine is Mine” offers alternate mine descents, a deeper rescue, an optional silver seam, and a valid retreat. The newer Wren’s Mill and Iron Orchard adventures are further examples.
+
+Do not promote a long linear rescue or investigation to Deep Exploration because it has many nodes. Do not keep a one-situation story in Adventure merely because a builder defaults there. When a helper’s default does not fit, override the resulting `depthClass` in the scenario metadata. These classes do not currently alter normal scenario selection; metadata truth comes first.
 
 ## Persistent memory: choose the right record
 
@@ -28,6 +38,11 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Read the current rules and inspect the adventure roster, continuity registry, history flags, item catalog, and relevant geography/events.
 - [ ] Choose a clear premise, tone, stakes, and a fresh-traveler reason to participate. Establish time, weather, and place where they matter.
 - [ ] Assign a LOW / MODERATE / HIGH / SEVERE risk tier from actual consequence potential, not genre or atmosphere; preserve intended quiet adventures.
+  - LOW: ordinary engaged routes have little credible danger of injury or death; costs are mainly social, economic, time, comfort, or opportunity.
+  - MODERATE: an ordinary route or visible optional hazard can cause injury or serious loss, but survival is not the defining stake.
+  - HIGH: meaningful physical peril or possible death exists on a consequential route, while mitigation or retreat can materially help.
+  - SEVERE: survival is central and lethal outcomes are a major possibility across ordinary engaged routes; a single optional lethal branch alone does not make the whole scenario SEVERE.
+  - Judge the authored route experience, including environmental danger, confrontation, commitment/escape difficulty, and consequence severity. Do not infer risk from scene count, combat tags, fantasy density, or one implementation effect.
 - [ ] Decide whether pressure/time is useful; identify which actions advance fictional time and what visible changes follow.
 - [ ] Review NPC names for variety and intentional recurrence.
 - [ ] Classify historical presence (NONE / INSPIRED / CAMEO / FEATURED / HISTORICAL_EVENT). Keep real figures/events rare and grounded; avoid exact-year/geography anchors, distinguish fact from reputation and later legend, and identify any named reference and portrayal where applicable.

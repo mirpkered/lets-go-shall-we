@@ -5,6 +5,7 @@ const ending = (id: string, title: string, text: string) => ({ id, title, text, 
 
 export const MARKET_AFTERNOON: Scenario = {
   id: 'market-afternoon', title: 'Market Afternoon', subtitle: 'A few unhurried hours in a market town.', startScene: 'marketSquare',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     marketSquare: { id: 'marketSquare', title: 'A Free Afternoon', tone: 'safe', easterEggContext: 'market', text: 'The market is busy without being hurried. Baskets of apples line one stall, a cook sells hot hand pies, and a pair of musicians play beneath the guildhall eaves. You have no errand to finish before evening.', choices: [
       { id: 'browseMarket', label: 'Browse the stalls and compare wares', timeCost: 15, next: 'marketBrowsed', effects: { knowledge: ['The market town holds its main market on this square, beneath the guildhall eaves.'] } },
@@ -21,6 +22,7 @@ export const MARKET_AFTERNOON: Scenario = {
 
 export const GONE_FISHING: Scenario = {
   id: 'gone-fishing', title: 'Gone Fishing', subtitle: 'A quiet bank, patient company, and whatever the water gives.', startScene: 'fishingBank',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'fishingDay', values: [{ value: 'fish' }, { value: 'nothing' }, { value: 'oldFloat' }] }],
   scenes: {
     fishingBank: { id: 'fishingBank', title: 'A Place by the Water', tone: 'safe', text: 'A few local fishers sit along a slow, clear reach of the creek. One has room beside them and offers you a spare line. The bank is grassy and dry, and the water makes an easy sound over the stones.', choices: [
@@ -49,6 +51,7 @@ export const GONE_FISHING: Scenario = {
 
 export const THE_COUNTY_FAIR: Scenario = {
   id: 'the-county-fair', title: 'The County Fair', subtitle: 'Music, games, food, and a little friendly competition.', startScene: 'fairGreen',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     fairGreen: { id: 'fairGreen', title: 'A Day on the Fair Green', tone: 'safe', easterEggContext: 'fair', text: 'A county fair fills the green beyond town. A fiddle tune drifts from the bandstand, a baker sells buns, and a ring-toss game draws a cheerful crowd. Across the field, farmers show their patient animals and talk about feed and weather.', choices: [
       { id: 'fairRingToss', label: 'Try the ring toss for a small prize', timeCost: 10, chance: { probability: 0.48, successNext: 'fairWon', failureNext: 'fairMissed', successMessage: 'The ring settles over a peg, and the keeper hands you a small ribbon.', failureMessage: 'The ring bounces off the peg. The keeper grins and offers another player a turn.' } },
@@ -93,6 +96,7 @@ export const A_GAME_OF_CARDS: Scenario = {
 
 export const THE_SWIMMING_HOLE: Scenario = {
   id: 'the-swimming-hole', title: 'The Swimming Hole', subtitle: 'A sheltered pool on a warm, peaceful day.', startScene: 'poolBank',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'shoreCuriosity', values: [{ value: 'blueGlass' }, { value: 'smoothStone' }, { value: 'nothing' }] }],
   scenes: {
     poolBank: { id: 'poolBank', title: 'A Peaceful Pool', tone: 'safe', text: 'A broad, sheltered pool lies below the road, with a grassy bank and a shallow shelf of clean stone. A few locals are swimming and talking in the sun. The water is calm; your pack and clothes can stay on the dry bank while you wade.', choices: [
@@ -118,6 +122,7 @@ export const THE_SWIMMING_HOLE: Scenario = {
 
 export const SUPPER_WITH_STRANGERS: Scenario = {
   id: 'supper-with-strangers', title: 'Supper with Strangers', subtitle: 'A shared meal brings out a few road stories.', startScene: 'commonTable',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'supperTopic', values: [{ value: 'road' }, { value: 'harvest' }, { value: 'river' }] }],
   scenes: {
     commonTable: { id: 'commonTable', title: 'A Place at the Common Table', tone: 'safe', easterEggContext: 'inn', text: 'The inn sets one long table for travelers who arrive near supper. Bread and stew are passed from hand to hand. No one asks for a grand introduction; the talk turns naturally to the roads people have taken.', choices: [
@@ -144,6 +149,7 @@ export const SUPPER_WITH_STRANGERS: Scenario = {
 
 export const THE_MUSIC_OUTSIDE: Scenario = {
   id: 'the-music-outside', title: 'The Music Outside', subtitle: 'A few musicians have gathered where the road meets town.', startScene: 'streetMusic',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     streetMusic: { id: 'streetMusic', title: 'A Tune by the Inn', tone: 'safe', text: 'Outside the inn, a fiddler and a small drum keep an easy tune. A few neighbors listen from the stoop; one couple dances on the packed earth. The musicians have set a cup nearby for anyone who wishes to leave a coin.', choices: [
       { id: 'listenStreetMusic', label: 'Listen to the tune from the stoop', timeCost: 12, next: 'musicListened', effects: { historyFlags: ['paused_to_listen_to_local_musicians'] } },
@@ -160,6 +166,7 @@ export const THE_MUSIC_OUTSIDE: Scenario = {
 
 export const THE_OLD_MANS_STORY: Scenario = {
   id: 'the-old-mans-story', title: 'The Old Man’s Story', subtitle: 'A long evening and a story told at its own pace.', startScene: 'storyBench',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'eveningTale', values: [{ value: 'roadstone' }, { value: 'rainbow' }, { value: 'lostBell' }] }],
   scenes: {
     storyBench: { id: 'storyBench', title: 'The Bench by the Stove', tone: 'safe', text: 'An older traveler sits by the inn stove, polishing a small wooden whistle. They offer a story if you have time to listen. Their voice is calm and unhurried; there is no request for help or payment.', choices: [
@@ -185,6 +192,7 @@ export const THE_OLD_MANS_STORY: Scenario = {
 
 export const A_GOOD_NIGHTS_SLEEP: Scenario = {
   id: 'a-good-nights-sleep', title: 'A Good Night’s Sleep', subtitle: 'A comfortable inn, a wash basin, and no reason to hurry.', startScene: 'comfortableInn',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     comfortableInn: { id: 'comfortableInn', title: 'A Comfortable Room', tone: 'safe', easterEggContext: 'inn', text: 'The inn is unusually quiet, the bed is clean, and the wash basin is filled with warm water. The innkeeper says supper will be ready soon and asks whether you need anything. Your pack can stay beside the bed while you settle in.', choices: [
       { id: 'takeWarmMeal', label: 'Eat the inn’s simple supper', requirements: { minMoney: 1 }, timeCost: 20, effects: { money: -1 }, next: 'sleptWell' },
@@ -202,6 +210,7 @@ export const A_GOOD_NIGHTS_SLEEP: Scenario = {
 
 export const SKIPPING_STONES: Scenario = {
   id: 'skipping-stones', title: 'Skipping Stones', subtitle: 'A short pause beside a gentle reach of water.', startScene: 'riverbank',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'shoreFind', values: [{ value: 'feather' }, { value: 'pottery' }, { value: 'nothing' }] }],
   scenes: {
     riverbank: { id: 'riverbank', title: 'A Quiet Reach', tone: 'safe', text: 'The river runs gently around a grassy bank. A traveler sits on a flat stone with a small pile of skipping stones nearby. There is room to sit without blocking the path, and no need to cross the water.', choices: [

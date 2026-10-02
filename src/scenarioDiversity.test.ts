@@ -33,10 +33,12 @@ describe('scenario diversity and seasonal framework', () => {
   });
 
   it('rejects duplicate IDs and impossible enum or seasonal metadata without turning similarity warnings into failures', () => {
-    const invalid: Scenario = { ...october, id: 'invalid-metadata', diversity: { fantasyDensity: 'ALIEN' as never, depthClass: 'CINEMATIC' as never, availability: { season: 'CUSTOM', months: [0, 13] } as never } };
+    const invalid: Scenario = { ...october, id: 'invalid-metadata', diversity: { fantasyDensity: 'ALIEN' as never, depthClass: 'CINEMATIC' as never, riskTier: 'EXTREME' as never, availability: { season: 'CUSTOM', months: [0, 13] } as never } };
     expect(validateScenarioMetadata([annual, { ...annual }])).toContain(`Duplicate scenario ID: ${annual.id}`);
     expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('invalid fantasy density'))).toBe(true);
     expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('invalid scenario depth class'))).toBe(true);
+    expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('invalid risk tier'))).toBe(true);
+    expect(validateScenarioMetadata([{ ...october, id: 'missing-authored-risk', diversity: { availability: { season: 'OCTOBER' } } }])).toContain('missing-authored-risk: explicit diversity metadata requires an authored risk tier');
     expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('seasonal month configuration'))).toBe(true);
     expect(analyzeScenarioLibrary([annual, { ...annual, id: 'similar-but-valid' }]).similarityWarnings.length).toBeGreaterThan(0);
   });
@@ -57,18 +59,34 @@ describe('scenario diversity and seasonal framework', () => {
 
   it('reports intended depth separately from raw scene-count length', () => {
     const audit = analyzeScenarioLibrary(SCENARIOS);
-    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 8, ADVENTURE: 423, DEEP_EXPLORATION: 14 });
+    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 49, ADVENTURE: 380, DEEP_EXPLORATION: 16 });
     expect(DEEP_EXPLORATION_ADVENTURES).toHaveLength(14);
-    expect(DEEP_EXPLORATION_ADVENTURES.every((scenario) => classifyScenario(scenario).depthClass === 'DEEP_EXPLORATION')).toBe(true);
-    expect(audit.rows.filter(({ metadata }) => metadata.depthClass === 'DEEP_EXPLORATION')).toHaveLength(14);
+    expect(audit.rows.filter(({ metadata }) => metadata.depthClass === 'DEEP_EXPLORATION')).toHaveLength(16);
+    expect(['broken-bell', 'whats-mine', ...DEEP_EXPLORATION_ADVENTURES.map(({ id }) => id)].every((id) => classifyScenario(SCENARIOS.find((scenario) => scenario.id === id)!).depthClass === 'DEEP_EXPLORATION')).toBe(true);
+    for (const id of ['payment-in-kind', 'market-day', 'the-old-mans-story', 'skipping-stones', 'the-sixth-chair', 'the-sheep-counting-exam', 'the-candle-ends', 'the-music-outside', 'the-bell-after-midnight', 'a-seat-by-the-fire', 'the-bee-yard', 'the-swimming-hole', 'the-county-fair', 'a-night-of-wind', 'creek-on-the-return', 'the-burnt-barn-fund', 'the-meeting-hall', 'a-place-to-bury-him', 'the-pawned-tool', 'market-afternoon', 'gone-fishing', 'supper-with-strangers', 'the-wrong-shadow', 'the-markers-stop', 'the-rocks-start-moving', 'the-public-apology', 'a-chair-beside-the-sickbed', 'the-lamp-left-in-the-window', 'the-stage-rigging', 'the-back-room-lantern', 'the-wardrobe-on-the-roof', 'the-house-with-two-doorbells', 'the-pigeon-postscript', 'the-tinsmiths-tiny-door', 'the-barnyard-weather-report', 'the-pearl-button', 'the-ferrymans-sign', 'the-misplaced-pigeonhole', 'camp-before-dark', 'dry-camp', 'the-second-sunset']) {
+      expect(classifyScenario(SCENARIOS.find((scenario) => scenario.id === id)!).depthClass, id).toBe('ENCOUNTER');
+    }
+    expect(classifyScenario(SCENARIOS.find(({ id }) => id === 'the-last-room')!).depthClass).toBe('ADVENTURE');
+  });
+
+  it('honors an explicitly authored class even when legacy length inference would disagree', () => {
+    const authored: Scenario = { ...annual, id: 'new-depth-fixture', diversity: { riskTier: 'LOW', length: 'VIGNETTE', depthClass: 'ADVENTURE' } };
+    expect(classifyScenario(authored).depthClass).toBe('ADVENTURE');
+    expect(validateScenarioMetadata([authored])).toEqual([]);
+  });
+
+  it('does not infer Encounter from a short graph when new content omits its authored depth', () => {
+    const untagged: Scenario = { ...annual, id: 'new-short-unclassified', scenes: { only: { id: 'only', title: 'One scene', text: 'A brief situation.', ending: 'success', choices: [] } }, startScene: 'only' };
+    expect(classifyScenario(untagged).length).toBe('VIGNETTE');
+    expect(classifyScenario(untagged).depthClass).toBe('ADVENTURE');
   });
 
   it('validates cameo, inspired, and historical-event references without requiring names for inspired settings', () => {
-    const inspired: Scenario = { ...annual, id: 'inspired-history', diversity: { historicalPresence: 'INSPIRED' } };
-    const cameo: Scenario = { ...annual, id: 'cameo-history', diversity: { historicalPresence: 'CAMEO', historicalReferences: ['Wild Bill Hickok'], historicalPortrayal: 'MIXED' } };
-    const event: Scenario = { ...annual, id: 'event-history', diversity: { historicalPresence: 'HISTORICAL_EVENT', historicalReferences: ['A regional cattle drive'], historicalPortrayal: 'GROUNDED' } };
+    const inspired: Scenario = { ...annual, id: 'inspired-history', diversity: { riskTier: 'LOW', historicalPresence: 'INSPIRED' } };
+    const cameo: Scenario = { ...annual, id: 'cameo-history', diversity: { riskTier: 'LOW', historicalPresence: 'CAMEO', historicalReferences: ['Wild Bill Hickok'], historicalPortrayal: 'MIXED' } };
+    const event: Scenario = { ...annual, id: 'event-history', diversity: { riskTier: 'LOW', historicalPresence: 'HISTORICAL_EVENT', historicalReferences: ['A regional cattle drive'], historicalPortrayal: 'GROUNDED' } };
     expect(validateScenarioMetadata([inspired, cameo, event])).toEqual([]);
-    expect(validateScenarioMetadata([{ ...cameo, diversity: { historicalPresence: 'CAMEO' } }])).toContain('cameo-history: CAMEO requires a named historical reference');
+    expect(validateScenarioMetadata([{ ...cameo, diversity: { riskTier: 'LOW', historicalPresence: 'CAMEO' } }])).toContain('cameo-history: CAMEO requires a named historical reference');
     expect(validateScenarioMetadata([{ ...event, diversity: { historicalPresence: 'HISTORICAL_EVENT' } }])).toContain('event-history: HISTORICAL_EVENT requires a named event reference');
     expect(analyzeScenarioLibrary([cameo]).historicalReferenceCounts).toEqual({ 'Wild Bill Hickok': 1 });
   });
@@ -79,6 +97,13 @@ describe('scenario diversity and seasonal framework', () => {
     expect(weights.find(({ scenario }) => scenario.id === tagged.id)!.historicalWeight).toBeLessThan(1);
     expect(weights.find(({ scenario }) => scenario.id === tagged.id)!.weight).toBeGreaterThan(0);
     expect(weights.find(({ scenario }) => scenario.id === annual.id)!.weight).toBeGreaterThan(weights.find(({ scenario }) => scenario.id === tagged.id)!.weight);
+  });
+
+  it('does not change selector weights when only depth classification changes', () => {
+    const compact: Scenario = { ...annual, id: 'same-story-encounter', diversity: { ...(annual.diversity ?? {}), depthClass: 'ENCOUNTER' } };
+    const regular: Scenario = { ...annual, id: 'same-story-adventure', diversity: { ...(annual.diversity ?? {}), depthClass: 'ADVENTURE' } };
+    const weights = scenarioSelectionWeights([compact, regular]);
+    expect(weights[0].weight).toBeCloseTo(weights[1].weight);
   });
 
   it('gates October and December scenarios by the selected local month', () => {
@@ -108,6 +133,8 @@ describe('scenario diversity and seasonal framework', () => {
     expect(qa).toContain('Effective selection month: 10 (QA override)');
     expect(qa).toContain('OCTOBER');
     expect(qa).toContain('data-qa-start="october-test"');
+    const depthInspection = renderQaPanel(true, { version: 1, bank: [], character: null, run: { scenarioId: annual.id, sceneId: annual.startScene, health: 10, inventory: [], acquiredThisRun: [], flags: [], status: 'active', message: null, startedAt: 0 } }, [annual], {});
+    expect(depthInspection).toContain('&quot;depthClass&quot;: &quot;ADVENTURE&quot;');
     expect(renderQaPanel(false, { version: 1, bank: [], character: null, run: null }, [annual, october, december], {})).toBe('');
   });
 

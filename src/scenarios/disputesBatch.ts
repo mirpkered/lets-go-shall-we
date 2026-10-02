@@ -136,6 +136,7 @@ export const A_VERY_GOOD_DEAL: Scenario = {
 
 export const THE_BROKEN_PROMISE: Scenario = {
   id: 'the-broken-promise', title: 'The Broken Promise', subtitle: 'You heard only part of an agreement between travelers.', startScene: 'roadsideDispute',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'heardFragment', values: [{ value: 'oneCoin' }, { value: 'ifPaid' }, { value: 'noTerms' }] }],
   scenes: {
     roadsideDispute: { id: 'roadsideDispute', title: 'A Promise Recalled Differently', tone: 'warning', text: 'Two travelers disagree beside a resting cart. One says the other promised to pay for help; the other says they only discussed it. You passed them earlier and heard one short part of their conversation, but not how it began.', textVariants: [

@@ -7,7 +7,7 @@ import { newCharacter } from './engine';
 import type { SaveData } from './types';
 import { ITEMS } from './items';
 import { renderQaPanel } from './qaPanel';
-import { RISK_TIERS, scenarioRiskTier } from './riskClassification';
+import { legacyScenarioRiskTier, RISK_TIERS, scenarioRiskTier } from './riskClassification';
 import type { Scenario } from './types';
 import { classifyScenario } from './scenarioDiversity';
 
@@ -128,11 +128,12 @@ describe('player scenario selection and QA mode', () => {
       expect(['HIGH', 'SEVERE']).toContain(scenarioRiskTier(scenario));
     }
     const distribution = Object.fromEntries(RISK_TIERS.map((tier) => [tier, SCENARIOS.filter((scenario) => scenarioRiskTier(scenario) === tier).length]));
-    expect(distribution).toEqual({ LOW: 221, MODERATE: 101, HIGH: 87, SEVERE: 36 });
+    expect(distribution).toEqual({ LOW: 197, MODERATE: 115, HIGH: 94, SEVERE: 39 });
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'gone-fishing')!)).toBe('LOW');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'under-the-ice')!)).toBe('SEVERE');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'high-water')!)).toBe('SEVERE');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'smoke-on-the-hill')!)).toBe('HIGH');
+    expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'the-halloween-dare')!)).toBe('HIGH');
   });
 
   it('increases higher-tier selection shares gradually with traveler longevity', () => {
@@ -160,6 +161,57 @@ describe('player scenario selection and QA mode', () => {
       let rollIndex = 0;
       expect(selectScenario(examples, null, () => rolls[rollIndex++] ?? 0.5, { adventuresCompleted: 0, selectionMonth: 7 })?.id).toBe(entry.scenario.id);
     }
+  });
+
+  it('uses authored risk metadata as the sole authority whenever present', () => {
+    const declared = SCENARIOS.filter(({ diversity }) => diversity?.riskTier);
+    expect(declared).toHaveLength(302);
+    for (const scenario of declared) expect(scenarioRiskTier(scenario), scenario.title).toBe(scenario.diversity!.riskTier);
+
+    const optionalLethal: Scenario = {
+      id: 'optional-lethal-risk-test', title: 'Optional Lethal Route', subtitle: '', startScene: 'start',
+      diversity: { riskTier: 'MODERATE' },
+      scenes: {
+        start: { id: 'start', title: 'Start', text: 'A safe route is available beside one visibly unstable tunnel.', choices: [{ id: 'enter', label: 'Enter the unstable tunnel', next: 'death' }] },
+        death: { id: 'death', title: 'Death', text: 'The tunnel collapses.', ending: 'death', choices: [] },
+      },
+    };
+    const severeOrdinaryPath = selectionFixture('severe-without-death-test', 'survival', { riskTier: 'SEVERE' });
+    expect(scenarioRiskTier(optionalLethal)).toBe('MODERATE');
+    expect(scenarioRiskTier(severeOrdinaryPath)).toBe('SEVERE');
+  });
+
+  it('retains a compatibility fallback for older scenarios without authored risk metadata', () => {
+    const legacyDeath: Scenario = {
+      id: 'legacy-risk-death-test', title: 'Legacy Danger', subtitle: '', startScene: 'death',
+      scenes: { death: { id: 'death', title: 'Death', text: 'The traveler dies.', ending: 'death', choices: [] } },
+    };
+    const legacyInjury: Scenario = {
+      id: 'legacy-risk-injury-test', title: 'Legacy Hazard', subtitle: '', startScene: 'start',
+      scenes: { start: { id: 'start', title: 'Start', text: 'A test hazard.', choices: [{ id: 'fall', label: 'Fall', next: 'end', effects: { health: -1 } }] }, end: { id: 'end', title: 'After', text: 'You are safe.', ending: 'success', choices: [] } },
+    };
+    expect(scenarioRiskTier(legacyDeath)).toBe('HIGH');
+    expect(scenarioRiskTier(legacyInjury)).toBe('MODERATE');
+  });
+
+  it('changes only risk distribution, not category/season eligibility, against the legacy selector baseline', () => {
+    const legacyRiskBaseline = SCENARIOS.map((scenario) => ({
+      ...scenario,
+      diversity: { ...scenario.diversity, riskTier: legacyScenarioRiskTier(scenario) },
+    }));
+    for (const selectionMonth of [7, 10]) for (const adventuresCompleted of [0, 20, 60]) {
+      const before = selectionDiagnostics(legacyRiskBaseline, null, { selectionMonth, adventuresCompleted });
+      const after = selectionDiagnostics(SCENARIOS, null, { selectionMonth, adventuresCompleted });
+      expect(after.seasonEligibleCount).toBe(before.seasonEligibleCount);
+      expect(after.categoryWeights).toEqual(before.categoryWeights);
+      expect(Object.values(after.tierSummary).reduce((sum, entry) => sum + entry.totalWeight, 0)).toBeCloseTo(1, 8);
+    }
+    const octoberBefore = selectionDiagnostics(legacyRiskBaseline, null, { selectionMonth: 10, adventuresCompleted: 20 });
+    const octoberAfter = selectionDiagnostics(SCENARIOS, null, { selectionMonth: 10, adventuresCompleted: 20 });
+    const deathRouteShare = (diagnostics: ReturnType<typeof selectionDiagnostics>) => diagnostics.scenarios
+      .filter(({ scenario }) => Object.values(scenario.scenes).some(({ ending }) => ending === 'death'))
+      .reduce((sum, entry) => sum + entry.weight, 0);
+    expect(deathRouteShare(octoberAfter)).toBeLessThan(deathRouteShare(octoberBefore));
   });
 
   it('lets an extended low-risk streak softly increase higher-risk selection weights', () => {

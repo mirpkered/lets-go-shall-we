@@ -42,4 +42,4 @@ Append `?qa=1` to the public URL to reveal mobile-friendly testing tools. QA has
 - [World continuity appendix and registry](docs/WORLD-CONTINUITY.md) · [registry](docs/WORLD-CONTINUITY-REGISTRY.md)
 - [Library ending/reward audit](docs/LIBRARY-ENDING-REWARD-AUDIT.md)
 
-Player feedback is voluntary through the in-game Contact & Feedback utility. It opens the player’s email app; messages are not submitted to a game server.
+The Contact & Feedback source now uses an in-game form and a server-side route on the existing Cloudflare Worker; production sending is pending Worker/provider and Pages endpoint configuration. Feedback is designed to be anonymous; an optional reply address is used only as reply-to when supplied. Only the message and small diagnostic context are sent, never the local save. Provider credentials remain server-side.

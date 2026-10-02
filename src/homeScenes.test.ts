@@ -53,6 +53,21 @@ describe('rotating Home Screen backgrounds', () => {
     expect(draws).toBe(2);
   });
 
+  it('restores a run-pinned scene without selecting or recording a new Home scene', () => {
+    const device = storage();
+    const lastHomeScene = HOME_SCENES[1].id;
+    const runScene = HOME_SCENES[4];
+    device.setItem(HOME_SCENE_LAST_KEY, lastHomeScene);
+    let draws = 0;
+    const resumed = createHomeSceneRotation(device, HOME_SCENE_LAST_KEY, () => { draws += 1; return 0; }, runScene.id);
+    expect(resumed.current).toEqual(runScene);
+    expect(draws).toBe(0);
+    expect(device.getItem(HOME_SCENE_LAST_KEY)).toBe(lastHomeScene);
+    const nextHomeVisit = resumed.enterHome();
+    expect(nextHomeVisit.id).not.toBe(lastHomeScene);
+    expect(draws).toBe(1);
+  });
+
   it('handles missing, legacy, and unknown background history without failing', () => {
     const device = storage();
     device.setItem('lgws.home-scene.v1', 'moonlit-road');

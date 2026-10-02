@@ -135,6 +135,8 @@ export interface RunState {
   inventorySources?: Record<string, InventorySource>;
   completionQualification?: 'substantive' | 'nonSubstantive';
   scenarioId: string;
+  /** Decorative Home artwork pinned for this run; older saves safely fall back on first render. */
+  homeSceneId?: string;
   /** Captured at run start so the selection diagnostic/history remains stable across reloads. */
   riskTier?: RiskTier;
   sceneId: string;

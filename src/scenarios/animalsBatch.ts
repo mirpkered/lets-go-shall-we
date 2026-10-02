@@ -294,6 +294,7 @@ export const THE_FRIGHTENED_TEAM: Scenario = {
 
 export const THE_BEE_YARD: Scenario = {
   id: 'the-bee-yard', title: 'The Bee Yard', subtitle: 'A quiet apiary has one hive leaning out of line.', startScene: 'apiaryGate',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     apiaryGate: { id: 'apiaryGate', title: 'Beyond the Low Fence', tone: 'warning', text: 'A small apiary stands behind a low fence, its wooden hives set in rows. A goat has rubbed one stand crooked; bees circle the shifted lid, but there is no swarm in the air. The beekeeper is away in the orchard. The public path is outside the fence.', choices: [
       { id: 'waitBeekeeper', label: 'Wait outside for the beekeeper', timeCost: 8, next: 'beekeeperReturns' },

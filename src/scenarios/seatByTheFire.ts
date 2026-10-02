@@ -2,6 +2,7 @@ import type { Scenario } from '../types';
 
 export const A_SEAT_BY_THE_FIRE: Scenario = {
   id: 'a-seat-by-the-fire', title: 'A Seat by the Fire', subtitle: 'There is warmth enough for some, not all.', startScene: 'crowdedRoom',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'parentName', values: ['Velma', 'Rafe', 'Celia', 'Bastian', 'Juno'].map((value) => ({ value })) }],
   scenes: {
     crowdedRoom: { id: 'crowdedRoom', title: 'One Dry Cot Left', tone: 'warning', text: 'Rain has filled the small inn’s common room. The keeper introduces {{parentName}}, a parent with a sleeping child, and a laborer whose shift begins before dawn. The keeper offers the only dry cot beside the stove to you or either traveler. A bench by the door is dry but cold; no one is hurt.', choices: [

@@ -43,14 +43,22 @@ const MODERATE_SCENARIOS = new Set([
   'the-white-stag', 'the-barrow-hound', 'the-millers-beast', 'the-widows-beast', 'the-cellar-thing', 'the-pale-children-of-the-quarry', 'the-broken-antler', 'the-three-toed-track', 'the-skin-in-the-tree',
 ]);
 
-/** Scenario-level authored stakes only. This never modifies a run's odds or character stats. */
-export function scenarioRiskTier(scenario: Pick<Scenario, 'id' | 'scenes'>): RiskTier {
+/**
+ * Explicit diversity risk is canonical. ID lists and mechanics below are retained only
+ * as a compatibility fallback for pre-metadata legacy scenarios. New authored
+ * scenarios must not rely on incidental implementation details for their risk tier.
+ */
+export function legacyScenarioRiskTier(scenario: Pick<Scenario, 'id' | 'scenes'>): RiskTier {
   if (SEVERE_SCENARIOS.has(scenario.id)) return 'SEVERE';
   if (HIGH_SCENARIOS.has(scenario.id)) return 'HIGH';
   if (MODERATE_SCENARIOS.has(scenario.id)) return 'MODERATE';
   if (Object.values(scenario.scenes).some((scene) => scene.ending === 'death')) return 'HIGH';
   if (Object.values(scenario.scenes).some((scene) => scene.choices.some((choice) => choice.effects?.health !== undefined || choice.chance?.failureEffects?.health !== undefined || choice.chance?.successEffects?.health !== undefined || choice.effects?.combat !== undefined))) return 'MODERATE';
   return 'LOW';
+}
+
+export function scenarioRiskTier(scenario: Pick<Scenario, 'id' | 'scenes'> & Partial<Pick<Scenario, 'diversity'>>): RiskTier {
+  return scenario.diversity?.riskTier ?? legacyScenarioRiskTier(scenario);
 }
 
 export const RISK_TIERS: RiskTier[] = ['LOW', 'MODERATE', 'HIGH', 'SEVERE'];

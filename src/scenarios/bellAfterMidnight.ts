@@ -2,6 +2,7 @@ import type { Scenario } from '../types';
 
 export const THE_BELL_AFTER_MIDNIGHT: Scenario = {
   id: 'the-bell-after-midnight', title: 'The Bell After Midnight', subtitle: 'One stroke from the town bell, then silence.', startScene: 'innAtNight',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'stablehand', values: ['Violet', 'Cyrus', 'Mina', 'Rufus', 'Dell'].map((value) => ({ value })) }],
   scenes: {
     innAtNight: { id: 'innAtNight', title: 'One Bell Stroke', tone: 'warning', text: 'At the roadside inn, one hard stroke of its yard bell wakes you after midnight. The keeper told guests that three measured peals mean fire or flood; one stroke usually calls help at the stable. From your window, a dim orange glow shows near the stable.', choices: [

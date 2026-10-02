@@ -77,7 +77,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .utility-links .utility-icon:active { transform:translateY(1px); }
 .utility-links .utility-icon:focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 .playing .utility-links { flex:none; width:max-content; margin:auto auto 0; padding-top:.45rem; border-top:1px solid #c59a4a29; }
-.playing footer { margin-top:0; }
+.playing footer { margin-top:0; color:#c7bdab; text-shadow:0 1px 4px #000; }
 .utility-dialog { width:min(calc(100vw - 2rem), 40rem); max-width:none; max-height:min(88dvh, 54rem); margin:auto; padding:0; overflow-y:auto; overscroll-behavior:contain; border:1px solid #75603a; background:#171613; color:#e8e0d2; box-shadow:0 1.5rem 5rem #000d; }
 .utility-dialog::backdrop { background:#050504d9; backdrop-filter:blur(3px); }
 .utility-dialog-header { position:sticky; z-index:2; top:0; display:flex; align-items:center; justify-content:space-between; gap:.7rem; min-height:4rem; padding:.8rem 1rem; border-bottom:1px solid #3b352b; background:#171613f5; }
@@ -95,8 +95,18 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .contact-dialog .contact-adventure { padding:.65rem .75rem; border-left:2px solid var(--brass); background:#211e18; }
 .contact-category { display:grid; gap:.4rem; margin:.8rem 0; color:#c4bcaf; font-size:.82rem; }
 .contact-category select { width:100%; min-height:2.9rem; padding:.55rem .7rem; border:1px solid #5b4c32; border-radius:0; background:#11110f; color:#eee8da; font:inherit; }
-.contact-email { display:grid; place-items:center; min-height:3.35rem; margin:.4rem 0 .75rem; text-decoration:none; }
-.contact-address { margin:0!important; text-align:center; font-size:.78rem!important; }
+.contact-context-note { margin-top:-.45rem; font-size:.75rem!important; }
+.contact-dialog form { display:grid; gap:.65rem; }
+.contact-field { display:grid; gap:.38rem; color:#d5cdbd; font-size:.82rem; }
+.contact-field > span,.contact-field small { color:#988f80; font-size:.72rem; line-height:1.4; }
+.contact-field textarea,.contact-field input { width:100%; min-width:0; min-height:2.9rem; padding:.65rem .7rem; border:1px solid #5b4c32; border-radius:0; background:#11110f; color:#eee8da; font:inherit; font-size:.9rem; }
+.contact-field textarea { min-height:7.5rem; resize:vertical; line-height:1.45; }
+.feedback-honeypot { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+.feedback-status { min-height:1.5em; margin:.15rem 0 0!important; color:#c4bcaf!important; font-size:.8rem!important; }
+.contact-form-actions { position:sticky; bottom:0; display:grid; grid-template-columns:1fr 1fr; gap:.65rem; padding:.55rem 0; background:linear-gradient(180deg,#17161300,#171613 24%); }
+.contact-form-actions button { min-height:3.2rem; padding:.65rem; }
+.contact-form-actions .text-button { border:1px solid #4a4133; text-decoration:none; }
+.contact-form-actions button:disabled { opacity:.65; cursor:wait; }
 .utility-dialog :focus-visible { outline:3px solid #f0c675; outline-offset:3px; }
 .resume-card { width:100%; padding:1.6rem 1.35rem; border-top:2px solid var(--brass); background:#171613; box-shadow:0 1.5rem 5rem #0009; }
 .resume-card h1 { font-size:2.5rem; margin:.5rem 0 .75rem; }
@@ -104,15 +114,15 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .stack { display:grid; gap:.8rem; margin-top:1.5rem; }
 .fine-print { margin:1.25rem 0 0!important; color:#777066!important; font-size:.76rem; line-height:1.5!important; }
 .play-header,.subhead { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:1px solid #292621; }
-.playing { position:relative; isolation:isolate; }
-.playing::before { content:''; position:absolute; z-index:-1; inset:0 0 auto; height:10rem; pointer-events:none; background:linear-gradient(180deg,#090b0ef2 0%,#0b0c0fe8 58%,#0b0c0f9c 82%,transparent 100%); }
-.playing .play-header { position:relative; z-index:2; background:#10110ff2; box-shadow:0 0 0 1px #51452f,0 .45rem 1rem #0007; }
+.run-background { position:relative; isolation:isolate; background:transparent; }
+.run-background::before { content:''; position:fixed; z-index:-1; inset:0; pointer-events:none; background-color:#0b0c0f; background-image:linear-gradient(180deg,#080a0d70 0%,#090b0d82 48%,#08090ba3 100%),var(--home-scene-art); background-size:cover,cover; background-position:center,var(--home-scene-position,50% 50%); background-repeat:no-repeat; }
+.playing .play-header { position:relative; z-index:2; background:#10110fe3; box-shadow:0 0 0 1px #51452f,0 .45rem 1rem #0007; }
 .playing .scene-count { color:#c8c0b2; }
 .play-header .eyebrow,.scene-count { display:block; }
 .scene-count { margin-top:.25rem; color:#999184; font:1.15rem 'IM Fell English',serif; }
 .icon-button { position:relative; display:grid; place-items:center; width:3rem; height:3rem; border:1px solid #826a3f; background:#11100e; color:#e0bd72; box-shadow:0 0 0 2px #10110f,0 .2rem .7rem #0008; cursor:pointer; }
 .icon-button span { position:absolute; top:-.4rem; right:-.4rem; min-width:1.3rem; height:1.3rem; padding:0 .25rem; display:grid; place-items:center; border:2px solid #10110f; border-radius:1rem; background:#edc16a; color:#17130c; font-size:.68rem; font-weight:700; box-shadow:0 1px 3px #000a; }
-.playing .status-row { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; margin-top:1px; padding:.65rem .8rem; border-top:1px solid #3c3529; background:#10100ef2; color:#e0d8c9; box-shadow:0 .4rem 1rem #0006; }
+.playing .status-row { position:relative; z-index:1; display:flex; justify-content:space-between; align-items:center; margin-top:1px; padding:.65rem .8rem; border-top:1px solid #3c3529; background:#10100ee3; color:#e0d8c9; box-shadow:0 .4rem 1rem #0006; }
 .health-block,.money { display:flex; align-items:center; gap:.5rem; }
 .health-block svg { color:#ad564d; }
 .money svg { color:#c29d55; }
@@ -120,11 +130,16 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .health-track i { display:block; height:100%; background:#a84e46; transition:width .25s ease; }
 .inventory-panel { position:absolute; z-index:5; top:4.8rem; right:1.1rem; left:1.1rem; max-height:calc(100dvh - 5.5rem - env(safe-area-inset-bottom)); padding:1.1rem; overflow-y:auto; overscroll-behavior:contain; border:1px solid #5a4e3c; background:#171511; box-shadow:0 1.5rem 4rem #000d; }
 .inventory-panel > div { display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem; }
-.inventory-panel button { border:0; background:transparent; color:#ddd2bf; font-size:1.8rem; cursor:pointer; }
+.inventory-panel button { min-width:44px; min-height:44px; border:0; background:transparent; color:#ddd2bf; font-size:1.8rem; cursor:pointer; }
 .inventory-panel article { padding:.7rem 0; border-top:1px solid #312d27; }
 .inventory-panel article strong,.inventory-panel article small { display:block; }
 .inventory-panel article small { margin-top:.25rem; color:#888174; line-height:1.4; }
 .inventory-panel .carry-usage { margin:.1rem 0 .8rem; color:#c8b58f; font-size:.82rem; }
+.inventory-panel .traveler-condition { margin:.15rem 0 .85rem; color:#bcb29f; font-size:.82rem; }
+.inventory-panel .traveler-memory .memory-count { margin:.3rem 0; color:#a49a87; font-size:.8rem; }
+.inventory-panel .traveler-memory details { margin-top:.4rem; color:#d2c8b6; }
+.inventory-panel .traveler-memory details p { margin:.55rem 0; color:#bdb4a4; font-size:.84rem; line-height:1.45; }
+.inventory-panel .owned-assets small,.inventory-panel .banked-items small { overflow-wrap:anywhere; }
 .inventory-panel .gear-group h3 { margin:.9rem 0 .15rem; color:#c8b58f; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; }
 .inventory-panel .gear-group:first-of-type h3 { margin-top:.2rem; }
 .story-card { position:relative; min-height:18rem; padding:2rem 1.35rem 1.5rem; color:var(--ink); background:linear-gradient(165deg,#eee7d8,#d4c9b5); box-shadow:0 1rem 3rem #0007; overflow:hidden; }
@@ -137,7 +152,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .story-text { position:relative; margin:0; white-space:pre-line; font:1.14rem/1.68 'IM Fell English',Georgia,serif; }
 .result-message { position:relative; margin:0 0 1rem; padding:.6rem .75rem; border-left:3px solid #a47731; background:#b2a58b42; color:#5c411c; font-size:.83rem; font-weight:700; }
 .choices { display:grid; gap:.7rem; padding-top:.85rem; }
-.choices button { min-height:5rem; padding:.85rem 1rem; border:1px solid #50493e; background:#181713; color:#eee7d9; text-align:left; cursor:pointer; box-shadow:inset 0 0 0 1px #0b0b0a; }
+.choices button { min-height:5rem; padding:.85rem 1rem; border:1px solid #50493e; background:#181713ed; color:#eee7d9; text-align:left; cursor:pointer; box-shadow:inset 0 0 0 1px #0b0b0a; }
 .choices button:active { background:#252119; border-color:#9f7c40; }
 .choices strong,.choices small { display:block; }
 .choices strong { font-size:.97rem; }
@@ -168,6 +183,9 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .back { min-width:3.5rem; min-height:3.5rem; border:1px solid #35312b; background:#151412; color:#c7bda9; cursor:pointer; }
 .bank-note { margin:1rem 0; padding:1rem; border-left:2px solid var(--brass); background:#161511; }
 .bank-note p { margin:0; color:#aaa294; font-size:.85rem; line-height:1.55; }
+.traveler-overview { border-left-color:#78613b; background:#1c1913; }
+.traveler-overview p { color:#d3c49e; }
+.traveler-overview strong { color:#ead7a9; }
 .bank-capacity-note { border-left-color:var(--brass); background:#201c13; }
 .bank-capacity-note p { color:#e0c88f; }
 .bank-section { padding:1rem 0; }
@@ -247,7 +265,7 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .playing .choices strong { font-size:.875rem; line-height:1.2; overflow-wrap:anywhere; }
   .playing .choices small { margin-top:.2rem; font-size:.72rem; line-height:1.25; overflow-wrap:anywhere; }
   .playing .utility-links { flex:none; margin:auto auto 0; padding-top:.35rem; }
-  .playing footer { flex:none; margin-top:0; padding:.25rem .2rem .25rem; font-size:.6rem; letter-spacing:.05em; }
+  .playing footer { flex:none; margin-top:0; padding:.25rem .2rem .25rem; font-size:.6rem; letter-spacing:.05em; color:#c7bdab; text-shadow:0 1px 4px #000; }
   .ending-screen { height:100vh; height:100dvh; min-height:0; justify-content:flex-start; padding:max(.65rem,env(safe-area-inset-top)) .85rem max(.55rem,env(safe-area-inset-bottom)); }
   .ending-screen .ending { margin:auto 0; }
   .ending-screen .ending-mark { width:2.5rem; height:2.5rem; margin:0 auto .65rem; font-size:1.35rem; }

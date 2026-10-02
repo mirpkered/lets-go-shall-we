@@ -4,6 +4,7 @@ const ending = (id: string, title: string, text: string): Scene => ({ id, title,
 
 export const PAYMENT_IN_KIND: Scenario = {
   id: 'payment-in-kind', title: 'Payment in Kind', subtitle: 'A fair wage, in a form you did not expect.', startScene: 'settlement',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   timePhases: [{ id: 'afternoon', label: 'After the work', atMinutes: 0 }, { id: 'marketEve', label: 'Before market day', atMinutes: 30 }],
   scenes: {
     settlement: { id: 'settlement', title: 'The Wage Chest Is Light', tone: 'safe', text: 'The small repair job is finished, and the owner agrees the work was done well. The wage was set at four coins, but the owner has only two in the cash box until the next market. On a dry shelf are two sacks of flour and an old joiner’s folding rule from the workshop. The owner offers a choice rather than pretending the goods are coin.', choices: [
@@ -54,6 +55,7 @@ export const SHORT_ON_THE_WAGES: Scenario = {
 
 export const MARKET_DAY: Scenario = {
   id: 'market-day', title: 'Market Day', subtitle: 'A lively square, and no need to hurry.', startScene: 'marketSquare',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   timePhases: [{ id: 'morning', label: 'Morning market', atMinutes: 0 }, { id: 'midday', label: 'Midday', atMinutes: 45 }, { id: 'afternoon', label: 'Market thinning', atMinutes: 90 }],
   scenes: {
     marketSquare: { id: 'marketSquare', title: 'Stalls in the Square', tone: 'safe', easterEggContext: 'market', text: 'The market square is busy but unhurried. A cloth seller folds bolts beneath a striped awning; a provisions stall has clean bandages and wrapped dry goods. A tool seller has a joiner’s folding rule for three coins. Merchants call their prices openly, and you have time to compare before buying.', choices: [
@@ -189,6 +191,7 @@ export const SOMEBODY_ELSES_LAND: Scenario = {
 
 export const THE_PAWNED_TOOL: Scenario = {
   id: 'the-pawned-tool', title: 'The Pawned Tool', subtitle: 'A low price, and a story with a gap.', startScene: 'stall',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'sellerAccount', values: [{ value: 'inheritance' }, { value: 'auction' }, { value: 'unclear', weight: 2 }] }],
   scenes: {
     stall: { id: 'stall', title: 'A Rule for Two Coins', tone: 'warning', text: 'At a roadside market, a seller offers a joiner’s folding rule for two coins—less than the tool appears to be worth. The seller says they need coin before leaving town. The hardwood rule is in their hand; its brass hinge moves freely and a maker’s mark is partly worn. You have not seen a claim ticket or proof of purchase.', choices: [

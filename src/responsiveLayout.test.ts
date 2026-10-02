@@ -82,23 +82,24 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('requestAnimationFrame(() => document.querySelector<HTMLElement>(bankConfirmReturnSelector)?.focus())');
   });
 
-  it('keeps the gameplay HUD crisp above atmosphere and utilities anchored below choices', () => {
-    expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
-    expect(styles).toContain('.playing::before { content:\'\'; position:absolute; z-index:-1;');
-    expect(styles).toContain('.playing .play-header { position:relative; z-index:2; background:#10110ff2;');
+  it('keeps the gameplay HUD crisp above the full-viewport run artwork and utilities anchored below choices', () => {
+    expect(styles).toContain('.run-background { position:relative; isolation:isolate; background:transparent; }');
+    expect(styles).toContain('.run-background::before { content:\'\'; position:fixed; z-index:-1; inset:0;');
+    expect(styles).toContain('var(--home-scene-art)');
+    expect(styles).toContain('.playing .play-header { position:relative; z-index:2; background:#10110fe3;');
     expect(styles).toContain('.playing .status-row { position:relative; z-index:1;');
     expect(styles).toContain('.icon-button span { position:absolute; top:-.4rem; right:-.4rem; min-width:1.3rem;');
     expect(styles).toContain('.playing .utility-links { flex:none; width:max-content; margin:auto auto 0;');
-    expect(styles).toContain('.playing footer { margin-top:0; }');
+    expect(styles).toContain('.playing footer { margin-top:0; color:#c7bdab; text-shadow:0 1px 4px #000; }');
     expect(styles).toContain('.playing .play-header > div { min-width:0; overflow-wrap:anywhere; }');
     expect(styles).toContain('padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom));');
     expect(styles).toContain('min-height:44px');
-    expect(mainSource).toContain('${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}');
+    expect(mainSource).toContain('${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackContext(state, SCENARIOS, qaEnabled, window.innerWidth))}');
     expect(mainSource).toContain('<section class="choices count-${choices.length}"');
   });
 
-  it('rotates title-screen art only at Home entry, hides preview tools from players, and leaves gameplay backdrop unchanged', () => {
-    expect(mainSource).toContain('createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey)');
+  it('pins the chosen Home art to an adventure, restores it on resume, and isolates QA controls', () => {
+    expect(mainSource).toContain('createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey, Math.random, state.run?.homeSceneId)');
     expect(mainSource).toContain('homeSceneRotation.enterHome()');
     expect(mainSource).not.toContain('sessionStorage');
     const homeRenderer = mainSource.slice(mainSource.indexOf('function renderHome(): void'), mainSource.indexOf('function counterDiagnostics()'));
@@ -110,7 +111,11 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain('.home-screen { position:relative; isolation:isolate; background-color:#101313;');
     expect(styles).toContain('var(--home-scene-art)');
     expect(styles).toContain('var(--home-scene-position,50% 50%)');
-    expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
+    expect(mainSource).toContain('state.run.homeSceneId = activeHomeScene.id');
+    expect(mainSource).toContain('createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey, Math.random, state.run?.homeSceneId)');
+    expect(mainSource).toContain('`playing run-background scenario-${scenario.id}`, homeSceneStyle(runScene)');
+    expect(mainSource.match(/centered ending-screen run-background/g)).toHaveLength(3);
+    expect(styles).toContain('.run-background { position:relative; isolation:isolate; background:transparent; }');
     expect(styles).toContain("url('./assets/adventure-backdrop.svg')");
     expect(styles).toContain('.qa-home-scene-actions button { min-width:3.75rem; min-height:44px;');
   });
@@ -120,7 +125,9 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain('.home-screen > footer { margin-top:0; padding-top:1rem; color:#928a7c; text-shadow:0 1px 4px #000d; }');
     expect(styles).toContain('padding:clamp(1.2rem, 5vw, 2.5rem) 1.1rem max(1.25rem, env(safe-area-inset-bottom));');
     expect(styles).toContain('footer { margin-top:auto;');
-    expect(mainSource.indexOf('${renderQaPanel(qaEnabled')).toBeLessThan(mainSource.indexOf('${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}'));
+    expect(mainSource.indexOf('${renderQaPanel(qaEnabled')).toBeLessThan(mainSource.indexOf('${renderUtilityFeatures(feedbackContext(state, SCENARIOS, qaEnabled, window.innerWidth))}'));
+    expect(styles).toContain('.contact-field textarea { min-height:7.5rem;');
+    expect(styles).toContain('.contact-form-actions { position:sticky; bottom:0; display:grid; grid-template-columns:1fr 1fr;');
   });
 
   it('balances the lone Bank action when no traveler exists and keeps Bank/Retire as paired cards otherwise', () => {
@@ -142,11 +149,43 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource).toContain('Gear ${carriedGear.length}/${capacity}');
     expect(mainSource).toContain('Supplies ${supplies.length}/${SUPPLY_STACK_CAPACITY} stacks');
     expect(mainSource).toContain('Relics ${carriedRelics.length}');
-    expect(mainSource).toContain("gearSection('Gear available this adventure'");
+    expect(mainSource).toContain("gearSection('Available Gear · not carried'");
     expect(mainSource).toContain('Owned property');
     expect(mainSource).toContain('Owned property: ${state.character.ownedAssets!.map');
     expect(mainSource).not.toContain('In your pack · Carried');
     expect(styles).toContain('.inventory-panel {');
     expect(styles).toContain('.inventory-panel .gear-group h3');
+  });
+
+  it('surfaces the traveler record during an adventure without changing gameplay state', () => {
+    expect(mainSource).toContain('aria-label="Traveler and possessions"');
+    expect(mainSource).toContain('${safeText(character.name)} · Traveler');
+    expect(mainSource).toContain('adventures completed · Gear ${carriedGear.length}/${capacity} slots');
+    expect(mainSource).toContain('· ${character.money} coin');
+    expect(mainSource).toContain('Wounded during this adventure');
+    expect(mainSource).toContain('No wounds in this adventure');
+    expect(mainSource).toContain('Carried Gear');
+    expect(mainSource).toContain('Supplies · not Bankable');
+    expect(mainSource).toContain('Banked · safe deposit, not carried');
+    expect(mainSource).toContain('Owned property');
+    expect(mainSource).toContain('Location is not tracked here; this does not mean it is physically with you.');
+    expect(mainSource).toContain('Recent Knowledge');
+    expect(mainSource).toContain('Recent Lore');
+    expect(mainSource).not.toContain('character.historyFlags.map');
+    expect(mainSource).toContain("document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });");
+    expect(mainSource).toContain("document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });");
+    expect(mainSource).not.toContain("document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; persist();");
+  });
+
+  it('keeps the traveler drawer compact when empty and scrollable when continuity grows', () => {
+    expect(mainSource).toContain("if (!contacts.length && !favors.length) return '';");
+    expect(mainSource).toContain('No Gear carried. Starting tools do not use Gear slots.');
+    expect(mainSource).toContain("const memorySection = memory.knowledge.length || memory.lore.length");
+    expect(mainSource).toContain('Recent Knowledge');
+    expect(mainSource).toContain('Recent Lore');
+    expect(styles).toContain('max-height:calc(100dvh - 5.5rem - env(safe-area-inset-bottom))');
+    expect(styles).toContain('overflow-y:auto; overscroll-behavior:contain;');
+    expect(styles).toContain('min-width:44px; min-height:44px;');
+    expect(styles).toContain('.traveler-overview');
   });
 });

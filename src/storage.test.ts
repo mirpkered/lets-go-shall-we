@@ -24,6 +24,7 @@ describe('save compatibility', () => {
     const playerCharacter = newCharacter('Player');
     playerCharacter.adventuresCompleted = 19;
     const playerSave: SaveData = { version: 1, bank: ['graveCoin'], character: playerCharacter, run: startRun(playerCharacter, BROKEN_BELL) };
+    playerSave.run!.homeSceneId = 'road-at-dawn';
     const storage = memoryStorage();
     saveGame(playerSave, storage);
     const qaSave = loadQaSave(storage);
@@ -31,11 +32,15 @@ describe('save compatibility', () => {
     qaSave.bank.push('yewCharm');
     qaSave.character = newCharacter('QA');
     qaSave.character.adventuresCompleted = 20;
+    qaSave.run = startRun(qaSave.character, BROKEN_BELL);
+    qaSave.run.homeSceneId = 'town-at-dusk';
     saveQaGame(qaSave, storage);
     expect(storage.getItem(QA_SAVE_KEY)).not.toBeNull();
     expect(JSON.parse(storage.getItem(SAVE_KEY)!)).toEqual(playerSave);
     expect(loadSave(storage)).toMatchObject(playerSave);
     expect(loadQaSave(storage).bank).toEqual(['yewCharm']);
+    expect(loadSave(storage).run?.homeSceneId).toBe('road-at-dawn');
+    expect(loadQaSave(storage).run?.homeSceneId).toBe('town-at-dusk');
   });
 
   it('adds visited-scene and recent-scenario defaults to an older active save', () => {
@@ -71,7 +76,7 @@ describe('save compatibility', () => {
     character.scenarioPlayCounts = { 'market-day': 2, 'gone-fishing': 1 };
     const state: SaveData = {
       version: 1, bank: ['yewCharm'], itemStates: {}, character,
-      run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'] },
+      run: { ...startRun(character, BROKEN_BELL), sceneId: 'priestNotes', visitedSceneIds: ['chapelExterior', 'chapelNave', 'priestNotes'], homeSceneId: 'river-crossing' },
       mostRecentScenarioId: 'broken-bell',
       recentScenarioIds: ['broken-bell'],
     };
@@ -83,6 +88,7 @@ describe('save compatibility', () => {
     saveGame(state, storage);
     expect(loadSave(storage)).toEqual(state);
     expect(loadSave(storage).character?.historyFlags).toEqual(['returned_for_help']);
+    expect(loadSave(storage).run?.homeSceneId).toBe('river-crossing');
   });
 
   it('persists banked and carried item condition, upgrades, provenance, and the active start snapshot exactly', () => {

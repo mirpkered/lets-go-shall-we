@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { newCharacter, startRun } from './engine';
-import { contactMailto, CONTACT_EMAIL, CONTACT_SUBJECT, feedbackAdventureTitle, renderUtilityFeatures } from './helpPanels';
+import { feedbackAdventureTitle, feedbackContext, FEEDBACK_CATEGORIES, renderUtilityFeatures } from './helpPanels';
 import { COLD_STORAGE } from './scenarios/coldStorage';
 import { SCENARIOS } from './scenarios';
 import type { SaveData } from './types';
@@ -28,7 +28,7 @@ describe('About and Contact utilities', () => {
     state.run!.elapsedMinutes = 23;
     state.run!.qualifyingStoryTransitions = 4;
     const before = JSON.stringify(state);
-    const markup = renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS));
+    const markup = renderUtilityFeatures(feedbackContext(state, SCENARIOS, false, 390));
     expect(markup).toContain('data-open-help="about"');
     expect(markup).toContain('data-open-help="contact"');
     expect(markup).toContain('<strong>Cold Storage</strong>');
@@ -37,48 +37,44 @@ describe('About and Contact utilities', () => {
     expect(state.run?.qualifyingStoryTransitions).toBe(4);
   });
 
-  it('targets the public Mirpworks address with the requested subject and structured body', () => {
-    const mailto = contactMailto('Cold Storage');
-    expect(mailto.startsWith(`mailto:${CONTACT_EMAIL}?`)).toBe(true);
-    const query = mailto.slice(mailto.indexOf('?') + 1);
-    const params = new URLSearchParams(query);
-    expect(params.get('subject')).toBe(CONTACT_SUBJECT);
-    expect(params.get('subject')).toBe('Let’s Go, Shall We? — Feedback');
-    expect(params.get('body')).toContain('Game: Let’s Go, Shall We?');
-    expect(params.get('body')).toContain('Adventure: Cold Storage');
-    expect(params.get('body')).toContain('Feedback:');
-    expect(params.get('body')).toContain('If reporting a problem, what happened just before it?');
-    expect(params.get('body')).toContain('A screenshot may help; attach one if you have it.');
-    expect(params.get('body')).not.toContain('flags');
-    expect(params.get('body')).not.toContain('roll');
-    expect(params.get('body')).not.toContain('inventory');
-    expect(mailto).not.toContain('attach=');
+  it('opens a self-contained anonymous form with optional reply email and no external mail behavior', () => {
+    const markup = renderUtilityFeatures();
+    expect(markup).toContain('data-feedback-form');
+    expect(markup).toContain('data-feedback-submit');
+    expect(markup).toContain('textarea id="feedback-message"');
+    expect(markup).toContain('required');
+    expect(markup).toContain('type="email" maxlength="254" autocomplete="off"');
+    expect(markup).toContain('Leave blank to stay anonymous');
+    expect(markup).toContain('no mail app opens');
+    expect(markup).not.toContain('mailto:');
+    expect(markup).not.toContain('contact@mirpworks.com');
+    expect(markup).not.toContain('type="file"');
+    expect(FEEDBACK_CATEGORIES).toEqual(['Bug', 'Confusing', 'Too short / weak payoff', 'Too repetitive', 'Balance / danger', 'UI / mobile', 'Story / content suggestion', 'Other']);
   });
 
-  it('supports general feedback and an optional category without requiring adventure context', () => {
-    const general = new URLSearchParams(contactMailto().split('?')[1]).get('body')!;
-    expect(general).toContain('Adventure: General Feedback');
-    expect(general).not.toContain('Category:');
-    const categorized = new URLSearchParams(contactMailto(undefined, 'Something felt unfair').split('?')[1]).get('body')!;
-    expect(categorized).toContain('Category: Something felt unfair');
-  });
-
-  it('uses the active adventure or most recently played display title, never an internal ID', () => {
+  it('includes only concise, non-personal active scenario and presentation context', () => {
     const activeState: SaveData = { version: 1, bank: [], character: newCharacter(), run: startRun(newCharacter(), COLD_STORAGE) };
     expect(feedbackAdventureTitle(activeState, SCENARIOS)).toBe(COLD_STORAGE.title);
     expect(feedbackAdventureTitle({ run: null, mostRecentScenarioId: COLD_STORAGE.id }, SCENARIOS)).toBe(COLD_STORAGE.title);
     expect(feedbackAdventureTitle({ run: null, mostRecentScenarioId: null }, SCENARIOS)).toBeUndefined();
-    expect(renderUtilityFeatures(COLD_STORAGE.title)).toContain('<strong>Cold Storage</strong>');
-    expect(renderUtilityFeatures(COLD_STORAGE.title)).not.toContain(COLD_STORAGE.id);
+    activeState.run!.sceneId = 'wellMouth';
+    const context = feedbackContext(activeState, SCENARIOS, true, 390);
+    expect(context).toEqual({ gameVersion: '0.1.0', scenarioId: COLD_STORAGE.id, scenarioTitle: COLD_STORAGE.title, sceneId: 'wellMouth', qaMode: true, activeRun: true, viewportClass: 'small' });
+    const markup = renderUtilityFeatures(context);
+    expect(markup).toContain('<strong>Cold Storage</strong>');
+    expect(markup).toContain(COLD_STORAGE.id);
+    expect(markup).toContain('Current adventure information will be included');
+    const contactMarkup = markup.split('<dialog class="utility-dialog contact-dialog"')[1];
+    expect(contactMarkup).not.toContain('inventory');
+    expect(contactMarkup).not.toContain('knowledgeKeys');
+    expect(feedbackContext(activeState, SCENARIOS, false, 800).viewportClass).toBe('large');
   });
 
-  it('explicitly invites screenshots and story ideas without claiming to upload attachments', () => {
+  it('does not claim screenshot support that the form does not provide', () => {
     const markup = renderUtilityFeatures();
     expect(markup).toContain('Found something odd, unfair, confusing, or especially fun? Feedback is welcome.');
-    expect(markup).toContain('stories you liked or disliked');
-    expect(markup).toContain('item interactions that felt useful or forced');
-    expect(markup).toContain('Screenshots can help with a problem');
-    expect(markup).toContain('This page does not upload them');
+    expect(markup).toContain('Feedback can be anonymous');
+    expect(markup).not.toContain('Screenshots can help');
   });
 
   it('describes the implemented adventure, choice, risk, and no-parser loop', () => {

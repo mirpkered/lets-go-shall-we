@@ -15,6 +15,7 @@ export const BROKEN_BELL: Scenario = {
   title: 'For Whom the Bell Tolls',
   subtitle: 'Three silent nights. A missing priest. Something waiting below.',
   startScene: 'chapelExterior',
+  diversity: { depthClass: 'DEEP_EXPLORATION', riskTier: 'HIGH' },
   timePhases: [
     { id: 'early', label: 'Night Settling In', atMinutes: 0 },
     { id: 'pressing', label: 'The Night Deepens', atMinutes: 20 },

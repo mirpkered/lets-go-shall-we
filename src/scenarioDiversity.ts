@@ -95,7 +95,9 @@ export function classifyScenario(scenario: Scenario): ScenarioDiversity {
   };
   const metadata = scenario.diversity;
   const complete = { ...inferred, ...metadata, riskTier: risk, availability: inferredAvailability(scenario, text) } as ScenarioDiversity;
-  complete.depthClass = metadata?.depthClass ?? (complete.length === 'VIGNETTE' ? 'ENCOUNTER' : 'ADVENTURE');
+  // Keep legacy omissions in the middle lane. New scenarios must author this field;
+  // length/node-count inference cannot reliably distinguish an Encounter.
+  complete.depthClass = metadata?.depthClass ?? 'ADVENTURE';
   const listFallbacks: Partial<Record<keyof ScenarioDiversity, string>> = { playerRoles: 'other role', activities: 'other activity', structures: 'other structure', tones: 'other tone', settings: 'other setting', supernaturalThreats: 'none specified', entryShapes: 'other entry', outcomeShapes: 'scenario-defined resolution', rewardShapes: 'narrative-only payoff', consequenceShapes: 'scenario-defined consequence' };
   for (const [field, fallback] of Object.entries(listFallbacks)) if (!(complete[field as keyof ScenarioDiversity] as string[]).length) Object.assign(complete, { [field]: [fallback] });
   complete.distinctiveHook = complete.distinctiveHook.trim() || scenario.subtitle.trim() || scenario.title;
@@ -195,6 +197,7 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
   for (const scenario of scenarios) {
     if (ids.has(scenario.id)) issues.push(`Duplicate scenario ID: ${scenario.id}`);
     ids.add(scenario.id);
+    if (scenario.diversity && !scenario.diversity.riskTier) issues.push(`${scenario.id}: explicit diversity metadata requires an authored risk tier`);
     const metadata = classifyScenario(scenario);
     if (!metadata.distinctiveHook.trim()) issues.push(`${scenario.id}: missing distinguishing hook`);
     if (!FANTASY_DENSITIES.includes(metadata.fantasyDensity)) issues.push(`${scenario.id}: invalid fantasy density`);

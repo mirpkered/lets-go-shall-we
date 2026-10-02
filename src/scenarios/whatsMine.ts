@@ -47,6 +47,7 @@ export const WHATS_MINE: Scenario = {
   title: 'What’s Mine is Mine',
   subtitle: 'A missing brother. An abandoned mine. A choice about what is worth bringing back.',
   startScene: 'mineRequest',
+  diversity: { depthClass: 'DEEP_EXPLORATION', riskTier: 'HIGH' },
   timePhases: [
     { id: 'search', label: 'The Search Begins', atMinutes: 0 },
     { id: 'shifting', label: 'The Supports Shift', atMinutes: 20 },

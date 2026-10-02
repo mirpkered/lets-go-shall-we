@@ -3,14 +3,15 @@ import { addSupply, addUpgrade, breakItem, carryCapacity, choose, consumeSupply,
 import { inventoryClass, ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
-import { contactMailto, feedbackAdventureTitle, renderUtilityFeatures } from './helpPanels';
+import { feedbackContext, renderUtilityFeatures } from './helpPanels';
+import { normalizeFeedbackEndpoint, submitFeedback } from './feedback';
 import { renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioSelection';
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, normalizeCounterEndpoint, readGlobalTotal, submitGlobalCompletionWithRetry } from './completionCounter';
-import { createHomeSceneRotation, HOME_SCENE_LAST_KEY, HOME_SCENES, homeSceneIndex, QA_HOME_SCENE_LAST_KEY, type HomeSceneStorage } from './homeScenes';
+import { createHomeSceneRotation, HOME_SCENE_LAST_KEY, HOME_SCENES, homeSceneIndex, QA_HOME_SCENE_LAST_KEY, type HomeScene, type HomeSceneStorage } from './homeScenes';
 import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
 import { auditContentQuality } from './contentQuality';
@@ -29,10 +30,11 @@ const homeSceneStorage: HomeSceneStorage = (() => {
   catch { return { getItem: () => null, setItem: () => undefined }; }
 })();
 const homeSceneStorageKey = qaEnabled ? QA_HOME_SCENE_LAST_KEY : HOME_SCENE_LAST_KEY;
-const homeSceneRotation = createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey);
+const homeSceneRotation = createHomeSceneRotation(homeSceneStorage, homeSceneStorageKey, Math.random, state.run?.homeSceneId);
 let activeHomeScene = homeSceneRotation.current;
 const assetBaseUrl = (import.meta as ImportMeta & { env: { BASE_URL: string } }).env.BASE_URL;
 const counterEndpoint = normalizeCounterEndpoint((import.meta as ImportMeta & { env: { VITE_GLOBAL_COMPLETION_COUNTER_URL?: string } }).env.VITE_GLOBAL_COMPLETION_COUNTER_URL);
+const feedbackEndpoint = normalizeFeedbackEndpoint((import.meta as ImportMeta & { env: { VITE_FEEDBACK_ENDPOINT?: string } }).env.VITE_FEEDBACK_ENDPOINT);
 let globalTotal: number | null = null;
 let globalTotalRequested = false;
 let completionFlushRunning = false;
@@ -47,12 +49,16 @@ function itemStateLabel(id: string): string {
   const upgrades = record.upgrades.map(({ id: upgradeId }) => ITEMS[id]?.upgrades?.find(({ id: candidateId }) => candidateId === upgradeId)?.name).filter((name): name is string => !!name);
   return [condition, ...upgrades].join(' · ');
 }
-function itemDescription(id: string): string { return `${ITEMS[id]?.description ?? ''} · ${itemStateLabel(id)}`; }
+function itemDescription(id: string): string {
+  const provenance = itemState(state, id).provenance.at(-1);
+  return `${ITEMS[id]?.description ?? ''} · ${itemStateLabel(id)}${provenance ? ` · ${provenance}` : ''}`;
+}
 function safeText(text: string): string { return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!); }
 function continuityMarkup(character: SaveData['character'], sectionClass = 'gear-group'): string {
   const contacts = character?.contacts ?? [];
   const favors = character?.favors ?? [];
-  return `<section class="${sectionClass} traveler-connections"><h3>Contacts &amp; Favors</h3>${contacts.length ? `<div class="continuity-list"><strong>Contacts</strong>${contacts.map((contact) => `<article><strong>${safeText(contact.name)} · ${safeText(contact.role)}</strong>${contact.notes ? `<small>${safeText(contact.notes)}</small>` : ''}</article>`).join('')}</div>` : '<p class="empty">No Contacts recorded.</p>'}${favors.length ? `<div class="continuity-list"><strong>Favors</strong>${favors.map((favor) => { const contact = contacts.find(({ id }) => id === favor.contactId); return `<article><strong>${safeText(favor.description)} · ${favor.status === 'available' ? 'Available' : 'Used'}</strong><small>${contact ? `From ${safeText(contact.name)} · ` : ''}${favor.status === 'available' ? 'A specific offer this Traveler may use once.' : 'This offer has been used.'}</small></article>`; }).join('')}</div>` : '<p class="empty">No Favors available or used.</p>'}</section>`;
+  if (!contacts.length && !favors.length) return '';
+  return `<section class="${sectionClass} traveler-connections"><h3>Contacts &amp; Favors</h3>${contacts.length ? `<div class="continuity-list"><strong>Contacts</strong>${contacts.map((contact) => `<article><strong>${safeText(contact.name)} · ${safeText(contact.role)}</strong>${contact.notes ? `<small>${safeText(contact.notes)}</small>` : ''}</article>`).join('')}</div>` : ''}${favors.length ? `<div class="continuity-list"><strong>Favors</strong>${favors.map((favor) => { const contact = contacts.find(({ id }) => id === favor.contactId); return `<article><strong>${safeText(favor.description)} · ${favor.status === 'available' ? 'Available' : 'Used'}</strong><small>${contact ? `From ${safeText(contact.name)} · ` : ''}${favor.status === 'available' ? 'A specific offer this Traveler may use once.' : 'This offer has been used.'}</small></article>`; }).join('')}</div>` : ''}</section>`;
 }
 function activeScenario() { return state.run ? getScenario(state.run.scenarioId) : undefined; }
 function startScenario(scenarioId: string): void {
@@ -60,6 +66,7 @@ function startScenario(scenarioId: string): void {
   const scenario = getScenario(scenarioId);
   if (!scenario) return;
   state = startAdventure(state, scenario, Math.random, qaEnabled);
+  if (state.run) state.run.homeSceneId = activeHomeScene.id;
   persist(); screen = 'play'; inventoryOpen = false; successRewardsOpen = false; render();
 }
 
@@ -242,7 +249,7 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = '', style = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackContext(state, SCENARIOS, qaEnabled, window.innerWidth))}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -250,16 +257,61 @@ function shell(content: string, extra = '', style = ''): void {
   document.querySelectorAll<HTMLButtonElement>('[data-close-help]').forEach((button) => button.addEventListener('click', () => {
     button.closest('dialog')?.close();
   }));
-  document.querySelector<HTMLSelectElement>('[data-feedback-category]')?.addEventListener('change', (event) => {
-    const category = (event.currentTarget as HTMLSelectElement).value;
-    const email = document.querySelector<HTMLAnchorElement>('[data-contact-email]');
-    if (email) email.href = contactMailto(feedbackAdventureTitle(state, SCENARIOS), category || undefined);
+  document.querySelector<HTMLFormElement>('[data-feedback-form]')?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    if (!form.reportValidity() || form.dataset.sending === 'true') return;
+    const status = form.querySelector<HTMLElement>('[data-feedback-status]');
+    const submit = form.querySelector<HTMLButtonElement>('[data-feedback-submit]');
+    const contextText = form.dataset.context ?? '{}';
+    let context;
+    try { context = JSON.parse(contextText); }
+    catch { if (status) status.textContent = 'Feedback context was invalid. Please close and reopen the form.'; return; }
+    const data = new FormData(form);
+    const replyEmail = String(data.get('replyEmail') ?? '').trim();
+    const payload = {
+      category: String(data.get('category') ?? ''),
+      message: String(data.get('message') ?? ''),
+      ...(replyEmail ? { replyEmail } : {}),
+      context,
+      website: String(data.get('website') ?? ''),
+    };
+    form.dataset.sending = 'true';
+    form.setAttribute('aria-busy', 'true');
+    if (submit) { submit.disabled = true; submit.textContent = 'Sending…'; }
+    if (status) status.textContent = 'Sending your feedback…';
+    void submitFeedback(feedbackEndpoint, payload)
+      .then(() => {
+        if (status) status.textContent = 'Thanks — your feedback was sent.';
+        form.dataset.sent = 'true';
+        if (submit) submit.textContent = 'Sent';
+        form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input, textarea, select').forEach((field) => { field.disabled = true; });
+      })
+      .catch((error: unknown) => {
+        if (status) status.textContent = error instanceof Error ? error.message : 'We could not send that just now. Your message is still here; please try again.';
+      })
+      .finally(() => {
+        form.dataset.sending = 'false';
+        form.removeAttribute('aria-busy');
+        if (submit && form.dataset.sent !== 'true') { submit.disabled = false; submit.textContent = 'Try again'; }
+      });
   });
   bindQaPanel();
 }
 
-function homeSceneStyle(): string {
-  return `--home-scene-art:url(${assetBaseUrl}home-scenes/${activeHomeScene.file});--home-scene-position:${activeHomeScene.focalPosition}`;
+function homeSceneStyle(scene: HomeScene = activeHomeScene): string {
+  return `--home-scene-art:url(${assetBaseUrl}home-scenes/${scene.file});--home-scene-position:${scene.focalPosition}`;
+}
+
+function activeRunHomeScene(): HomeScene {
+  const run = state.run;
+  const assigned = run && HOME_SCENES.find(({ id }) => id === run.homeSceneId);
+  if (assigned) return assigned;
+  if (run) {
+    run.homeSceneId = activeHomeScene.id;
+    persist();
+  }
+  return activeHomeScene;
 }
 
 function rotateHomeScene(): void {
@@ -297,7 +349,8 @@ function renderHome(): void {
   if (state.run?.status === 'active') {
     const scenario = activeScenario();
     const character = state.character!;
-    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><p class="traveler-ending-count">${character.adventuresCompleted} adventures completed · Gear capacity: ${carryCapacity(character.adventuresCompleted)}</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, all unbanked gear, relics, supplies, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>${homeSceneQaControls()}`, 'centered home-screen resume-home', homeSceneStyle());
+    const runScene = activeRunHomeScene();
+    shell(`<section class="resume-card"><div class="eyebrow">An adventure waits</div><h1>Where were we?</h1><p>Your journey through <strong>${scenario?.title ?? 'an unfinished adventure'}</strong> is still waiting. Closing the page never abandons a run.</p><p class="traveler-ending-count">${character.adventuresCompleted} adventures completed · Gear capacity: ${carryCapacity(character.adventuresCompleted)}</p><div class="stack"><button class="primary" id="continue">Continue Adventure</button><button class="danger-ghost" id="abandon">Abandon Adventure</button></div><p class="fine-print">Abandoning is a failed run. This character, all unbanked gear, relics, supplies, money, lore, knowledge, and personal history will be lost. Banked items remain safe.</p></section>${homeSceneQaControls()}`, 'centered home-screen resume-home', homeSceneStyle(runScene));
     bindHomeSceneQaControls();
     document.querySelector('#continue')!.addEventListener('click', () => { screen = 'play'; render(); });
     document.querySelector('#abandon')!.addEventListener('click', () => {
@@ -373,6 +426,7 @@ function renderPlay(): void {
   if (!scenario) { state.run = null; persist(); screen = 'home'; return render(); }
   if (run.status === 'death') return renderDeath();
   if (run.status === 'success') return renderSuccess();
+  const runScene = activeRunHomeScene();
   const scene = scenario.scenes[run.sceneId];
   const choices = scene.choices.filter((choice) => meets(choice.requirements, state));
   const timing = timeStatus(scenario, run.elapsedMinutes ?? 0);
@@ -387,11 +441,17 @@ function renderPlay(): void {
   const availableRelics = availableThisRun.filter((id) => inventoryClass(id) === 'RELIC');
   const temporary = availableThisRun.filter((id) => inventoryClass(id) === 'TEMPORARY' || ['borrowed', 'supplied', 'temporary'].includes(run.inventorySources?.[id] ?? ''));
   const supplies = Object.entries(character.supplies ?? {}).filter(([id, quantity]) => inventoryClass(id) === 'SUPPLY' && quantity > 0);
+  const banked = [...new Set(state.bank)];
+  const memory = travelerMemoryPreview(character.knowledge, character.lore);
+  const conditionLabel = run.health < character.maxHealth ? 'Wounded during this adventure' : 'No wounds in this adventure';
+  const memorySection = memory.knowledge.length || memory.lore.length
+    ? `<section class="gear-group traveler-memory"><h3>Traveler’s memory</h3><p class="memory-count">${memory.knowledgeCount} learned fact${memory.knowledgeCount === 1 ? '' : 's'} · ${memory.loreCount} remembered tale${memory.loreCount === 1 ? '' : 's'}</p>${memory.knowledge.length ? `<details><summary>Recent Knowledge</summary>${memory.knowledge.map((entry) => `<p>${safeText(entry)}</p>`).join('')}</details>` : ''}${memory.lore.length ? `<details><summary>Recent Lore</summary>${memory.lore.map((entry) => `<p>${safeText(entry)}</p>`).join('')}</details>` : ''}</section>`
+    : '';
   shell(`<header class="play-header"><div><span class="eyebrow">${scenario.title}</span><span class="scene-count">${scene.title}</span></div><button class="icon-button" id="inventory" aria-expanded="${inventoryOpen}" aria-label="Carried gear: ${carriedGear.length} of ${capacity} slots used">${icon('bag')}<span>${carriedGear.length}/${capacity}</span><b class="sr-only">Inventory</b></button></header>
     <section class="status-row"><div class="health-block">${icon('heart')}<strong>${run.health}/${character.maxHealth}</strong><div class="health-track"><i style="width:${healthPct}%"></i></div></div><div class="money">${icon('coin')}<strong>${character.money}</strong></div></section>
-    ${inventoryOpen ? `<aside class="inventory-panel" aria-label="Traveler inventory"><div><span class="eyebrow">Traveler inventory</span><button id="closeInventory" aria-label="Close inventory">×</button></div><p class="carry-usage">Gear ${carriedGear.length}/${capacity} · Supplies ${supplies.length}/${SUPPLY_STACK_CAPACITY} stacks · Relics ${carriedRelics.length}${carriedRelics.length >= RELIC_SOFT_CAPACITY ? ' (unusually many)' : ''}</p>${gearSection('Gear', carriedGear, itemDescription)}${gearSection('Relics', carriedRelics, itemDescription)}${supplies.length ? `<section class="gear-group"><h3>Supplies · character-bound</h3>${supplies.map(([id, quantity]) => `<article><strong>${safeText(itemName(id))} ×${quantity}</strong><small>${safeText(ITEMS[id].description)} · stack limit ${ITEMS[id].stackLimit}</small></article>`).join('')}</section>` : ''}${(character.ownedAssets ?? []).length ? `<section class="gear-group owned-assets"><h3>Owned assets</h3>${character.ownedAssets!.map((asset) => `<article><strong>${safeText(asset.name)}</strong><small>${safeText(asset.description)}</small></article>`).join('')}</section>` : ''}${continuityMarkup(character)}${gearSection('Gear available this adventure', availableGear, itemDescription)}${gearSection('Relics found this adventure', availableRelics, itemDescription)}${gearSection('Current adventure equipment', temporary, (id) => `${run.inventorySources?.[id] ?? 'Temporary'} · ${ITEMS[id]?.description ?? ''}`)}</aside>` : ''}
+    ${inventoryOpen ? `<aside class="inventory-panel" aria-label="Traveler and possessions"><div><span class="eyebrow">${safeText(character.name)} · Traveler</span><button id="closeInventory" aria-label="Close traveler record">×</button></div><p class="carry-usage">${character.adventuresCompleted} adventures completed · Gear ${carriedGear.length}/${capacity} slots · ${character.money} coin${character.money === 1 ? '' : 's'} · Supplies ${supplies.length}/${SUPPLY_STACK_CAPACITY} stacks · Relics ${carriedRelics.length}${carriedRelics.length >= RELIC_SOFT_CAPACITY ? ' (unusually many)' : ''}</p><p class="traveler-condition" role="status">${conditionLabel}</p>${gearSection('Carried Gear', carriedGear, itemDescription) || '<section class="gear-group"><h3>Carried Gear</h3><p class="empty">No Gear carried. Starting tools do not use Gear slots.</p></section>'}${gearSection('Carried Relics', carriedRelics, itemDescription)}${supplies.length ? `<section class="gear-group"><h3>Supplies · not Bankable</h3>${supplies.map(([id, quantity]) => `<article><strong>${safeText(itemName(id))} ×${quantity}</strong><small>${safeText(ITEMS[id].description)} · stack limit ${ITEMS[id].stackLimit}</small></article>`).join('')}</section>` : ''}${(character.ownedAssets ?? []).length ? `<section class="gear-group owned-assets"><h3>Owned property</h3>${character.ownedAssets!.map((asset) => `<article><strong>${safeText(asset.name)} · Owned</strong><small>${safeText(asset.description)} · Location is not tracked here; this does not mean it is physically with you.</small></article>`).join('')}</section>` : ''}${continuityMarkup(character)}${banked.length ? `<section class="gear-group banked-items"><h3>Banked · safe deposit, not carried (${banked.length}/${BANK_CAPACITY})</h3>${banked.map((id) => `<article><strong>${safeText(itemName(id))}</strong><small>${safeText(inventoryClass(id))} · ${safeText(itemDescription(id))}</small></article>`).join('')}</section>` : ''}${memorySection}${gearSection('Available Gear · not carried', availableGear, itemDescription)}${gearSection('Available Relics · not carried', availableRelics, itemDescription)}${gearSection('Current adventure equipment · temporary', temporary, (id) => `${safeText(run.inventorySources?.[id] ?? 'Temporary')} · ${ITEMS[id]?.description ?? ''}`)}</aside>` : ''}
     <article class="story-card ${scene.tone ?? ''}"><div class="scene-ornament">${scene.tone === 'danger' ? '!' : '◆'}</div><h1>${scene.title}</h1>${timing.phase ? `<p class="story-time" aria-label="Story time: ${timing.phase.label}">${timing.phase.label}</p>` : ''}${run.message ? `<p class="result-message">${run.message}</p>` : ''}${run.supplyNotice ? `<p class="result-message">${safeText(run.supplyNotice)}</p>` : ''}<p class="story-text">${sceneText(scene, state)}</p></article>
-    <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${safeText(runText(choice.label, state))}</strong>${choice.hint ? `<small>${safeText(runText(choice.hint, state))}</small>` : ''}</button>`).join('')}</section>`, `playing scenario-${scenario.id}`);
+    <section class="choices count-${choices.length}" aria-label="Actions">${choices.map((choice) => `<button data-choice="${choice.id}"><strong>${safeText(runText(choice.label, state))}</strong>${choice.hint ? `<small>${safeText(runText(choice.hint, state))}</small>` : ''}</button>`).join('')}</section>`, `playing run-background scenario-${scenario.id}`, homeSceneStyle(runScene));
   document.querySelector('#inventory')!.addEventListener('click', () => { inventoryOpen = !inventoryOpen; render(); });
   document.querySelector('#closeInventory')?.addEventListener('click', () => { inventoryOpen = false; render(); });
   document.querySelectorAll<HTMLButtonElement>('[data-choice]').forEach((button) => button.addEventListener('click', () => {
@@ -427,11 +487,12 @@ async function flushPendingGlobalCompletions(): Promise<void> {
 function renderDeath(): void {
   const scenario = activeScenario();
   const run = state.run;
+  const runScene = activeRunHomeScene();
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
   const milestone = run?.completionMilestoneReached === 10
     ? '<p class="milestone-note">Ten adventures behind this traveler. Their journey ends here, but they learned to travel better prepared.</p>'
     : run?.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. This traveler knew what deserved a place in the pack.</p>' : '';
-  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Unbanked Gear, Relics, Supplies, assets, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen');
+  shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Unbanked Gear, Relics, Supplies, assets, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen run-background', homeSceneStyle(runScene));
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); rotateHomeScene(); screen = 'home'; render(); void flushPendingGlobalCompletions(); });
 }
 
@@ -447,12 +508,13 @@ function renderSuccess(): void {
   const run = state.run!;
   const scenario = activeScenario()!;
   const scene = scenario.scenes[run.sceneId];
+  const runScene = activeRunHomeScene();
   const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
   const milestone = run.completionMilestoneReached === 10
     ? '<p class="milestone-note">Ten adventures behind you. You’ve learned to travel better prepared. Gear capacity increased to 2 slots.</p>'
     : run.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. You know what deserves a place in your pack. Gear capacity increased to 3 slots.</p>' : '';
   if (!successRewardsOpen) {
-    shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p>${milestone}<p class="traveler-ending-count">${state.character?.adventuresCompleted ?? 0} adventures completed · Gear capacity: ${capacity}</p><button class="primary" id="openRewards">Prepare for the road</button></section>`, 'centered ending-screen');
+    shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p>${milestone}<p class="traveler-ending-count">${state.character?.adventuresCompleted ?? 0} adventures completed · Gear capacity: ${capacity}</p><button class="primary" id="openRewards">Prepare for the road</button></section>`, 'centered ending-screen run-background', homeSceneStyle(runScene));
     document.querySelector('#openRewards')!.addEventListener('click', () => {
       state = openRewardResolution(state);
       successRewardsOpen = true;
@@ -470,7 +532,7 @@ function renderSuccess(): void {
   const rewardPanel = rewardId
     ? `<h1>Keep this for the road?</h1><p><strong>${itemName(rewardId)}</strong><br>${ITEMS[rewardId]?.description ?? 'A newly earned item.'}</p><div class="reward-box"><p class="carry-selection-count">Gear: ${carriedGear.length}/${capacity} · Relics: ${getCarriedRelics(state.character).length} · Bank: ${state.bank.length}/${BANK_CAPACITY}</p>${!carryOpen ? '<p class="bank-capacity-note">Gear capacity is full. No item will be replaced.</p>' : ''}${!bankOpen ? `<p class="bank-capacity-note">${bankAlreadyHasReward ? 'This item is already in the Bank.' : 'The Bank is full. No banked item will be replaced.'}</p>` : ''}<button class="primary" id="carry-reward"${carryOpen ? '' : ' disabled'}>Carry this item</button><button id="bank-reward"${bankOpen ? '' : ' disabled'}>Store this item in the Bank</button><button class="text-button" id="decline-reward">Leave this item behind</button></div>`
     : `<h1>Ready for the road</h1><p>No new persistent item remains to place. Your existing carried gear and Bank contents are unchanged.</p><button class="primary" id="finish-rewards">Complete Adventure</button>`;
-  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Prepare for the next adventure</div>${rewardPanel}</section>`, 'centered ending-screen');
+  shell(`<section class="ending success-ending reward-screen"><div class="eyebrow">Prepare for the next adventure</div>${rewardPanel}</section>`, 'centered ending-screen run-background', homeSceneStyle(runScene));
   const chooseDestination = (destination: 'carry' | 'bank' | 'decline') => {
     if (!rewardId) return;
     state = placeReward(state, rewardId, destination);
@@ -504,7 +566,7 @@ function renderBank(): void {
   const confirmationTitle = pendingBankDestructive?.kind === 'empty' ? 'Empty the bank?' : `Discard ${pendingBankDestructive ? itemName(pendingBankDestructive.itemId) : 'item'}?`;
   const confirmationAction = pendingBankDestructive?.kind === 'empty' ? 'Empty Bank' : 'Discard Item';
   const carriedRows = (ids: string[]) => ids.map((id) => `<article class="item-row"><div><strong>${itemName(id)}</strong><small>${itemDescription(id)}</small></div>${state.bank.length < BANK_CAPACITY ? `<button data-deposit="${id}">Deposit</button>` : state.bank.length > BANK_CAPACITY ? '<span class="empty">Deposit unavailable while the saved Bank is above capacity.</span>' : `<details class="bank-swap-options"><summary>Swap</summary><div>${state.bank.map((bankId) => `<button data-bank-swap="${bankId}" data-carried="${id}">for ${itemName(bankId)}</button>`).join('')}</div></details>`}</article>`).join('');
-  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">Traveler inventory</span><h1>Inventory &amp; Bank</h1></div></header><section class="bank-note"><p>Gear and Relics may be Banked. Supplies belong to this traveler and cannot be stored. Death or retirement loses all unbanked possessions; the Bank survives.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
+  shell(`<header class="subhead"><button class="back" id="back">← <span>Back</span></button><div><span class="eyebrow">${state.character ? `${safeText(state.character.name)} · Traveler record` : 'Traveler inventory'}</span><h1>Inventory &amp; Bank</h1></div></header>${state.character ? `<section class="bank-note traveler-overview" aria-label="Traveler progress"><p><strong>${state.character.adventuresCompleted} adventures completed</strong> · ${state.character.money} coin${state.character.money === 1 ? '' : 's'} · Gear capacity ${capacity} slot${capacity === 1 ? '' : 's'}</p></section>` : ''}<section class="bank-note"><p>Gear and Relics may be Banked. Supplies belong to this traveler and cannot be stored. Death or retirement loses all unbanked possessions; the Bank survives.</p></section>${capacityMessage ? `<section class="bank-note bank-capacity-note" role="status"><p>${safeText(capacityMessage + legacyCarryNote)}</p></section>` : ''}
     <section class="bank-section"><h2>Gear (${carriedGear.length}/${capacity} slots)</h2>${carriedGear.length ? carriedRows(carriedGear) : '<p class="empty">No Gear carried. Starting tools do not use Gear slots.</p>'}</section>
     ${carriedRelics.length ? `<section class="bank-section"><h2>Relics (${carriedRelics.length}; separate from Gear capacity${carriedRelics.length >= RELIC_SOFT_CAPACITY ? ', unusually many' : ''})</h2>${carriedRows(carriedRelics)}</section>` : ''}
     <section class="bank-section"><h2>Supplies (${supplies.length}/${SUPPLY_STACK_CAPACITY} stacks · character-bound)</h2>${supplies.length ? supplies.map(([id, quantity]) => `<article class="item-row"><div><strong>${itemName(id)} ×${quantity}</strong><small>${safeText(ITEMS[id].description)} · limit ${ITEMS[id].stackLimit}; never Banked</small></div></article>`).join('') : '<p class="empty">No persistent Supplies.</p>'}</section>

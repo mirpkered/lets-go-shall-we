@@ -29,6 +29,7 @@ export const THE_FAINT_TRAIL: Scenario = {
 
 export const CAMP_BEFORE_DARK: Scenario = {
   id: 'camp-before-dark', title: 'Camp Before Dark', subtitle: 'There is still time to choose where the night finds you.', startScene: 'forkAtDusk',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   timePhases: [{ id: 'afternoon', label: 'Late afternoon', atMinutes: 0 }, { id: 'sunset', label: 'Sunset nearing', atMinutes: 35 }, { id: 'dusk', label: 'Dusk', atMinutes: 65 }],
   scenes: {
     forkAtDusk: { id: 'forkAtDusk', title: 'A Choice Before Sunset', tone: 'warning', text: 'The sun is low, and the road divides around a scrubby hill. A level shelf nearby has dry ground and room to camp. A known travelers’ shelter lies farther along the east road; pushing there may beat full dark, but there is no need to hurry if you stop here.', choices: [
@@ -79,6 +80,7 @@ export const THE_SHORTCUT: Scenario = {
 
 export const CREEK_ON_THE_RETURN: Scenario = {
   id: 'creek-on-the-return', title: 'Creek on the Return', subtitle: 'The crossing you used this morning has changed.', startScene: 'nearBank',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   timePhases: [{ id: 'afternoon', label: 'Afternoon rain', atMinutes: 0 }, { id: 'rising', label: 'Water rising', atMinutes: 20 }, { id: 'evening', label: 'Evening', atMinutes: 55 }],
   runRandomSelections: [{ id: 'creekTrend', values: [{ value: 'steady', weight: 2 }, { value: 'easing' }] }],
   scenes: {
@@ -142,6 +144,7 @@ export const THE_FOG_COMES_DOWN: Scenario = {
 
 export const DRY_CAMP: Scenario = {
   id: 'dry-camp', title: 'Dry Camp', subtitle: 'The planned stopping place has no nearby water.', startScene: 'dryHollow',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   timePhases: [{ id: 'afternoon', label: 'Late afternoon', atMinutes: 0 }, { id: 'sunset', label: 'Sunset', atMinutes: 35 }, { id: 'dusk', label: 'Dusk', atMinutes: 70 }],
   scenes: {
     dryHollow: { id: 'dryHollow', title: 'No Water at the Hollow', tone: 'warning', text: 'The hollow is level and sheltered, but the shallow pool you expected is dry. You have enough water for the evening if you ration it; the nearest marked spring is back along the path, and daylight is fading.', choices: [
@@ -224,6 +227,7 @@ export const MARKS_ON_THE_TRAIL: Scenario = {
 
 export const A_NIGHT_OF_WIND: Scenario = {
   id: 'a-night-of-wind', title: 'A Night of Wind', subtitle: 'A camp can be made safer before the gusts arrive.', startScene: 'windyCamp',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   timePhases: [{ id: 'evening', label: 'Evening wind', atMinutes: 0 }, { id: 'night', label: 'Night gusts', atMinutes: 25 }, { id: 'morning', label: 'Morning', atMinutes: 70 }],
   scenes: {
     windyCamp: { id: 'windyCamp', title: 'Gusts over the Camp', tone: 'warning', text: 'You have made camp on a low, open shelf. Strong wind rattles the branches and begins to tug at your loose blanket and bedroll. The trees shelter one side of camp, but the fire is small and the ground is dry. Nothing has been lost yet.', choices: [
@@ -249,6 +253,7 @@ export const A_NIGHT_OF_WIND: Scenario = {
 
 export const THE_SECOND_SUNSET: Scenario = {
   id: 'the-second-sunset', title: 'The Second Sunset', subtitle: 'The destination is farther than the day allows.', startScene: 'longRoadEvening',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   timePhases: [{ id: 'lateAfternoon', label: 'Late afternoon', atMinutes: 0 }, { id: 'sunset', label: 'Sunset', atMinutes: 25 }, { id: 'dark', label: 'Darkness', atMinutes: 60 }],
   scenes: {
     longRoadEvening: { id: 'longRoadEvening', title: 'Not There by Nightfall', tone: 'warning', text: 'The next settlement is still beyond the far ridge. You had hoped to reach it before dark, but the road’s last miles are longer than they looked. Two travelers walk ahead, also looking for a place to stop. A dry knoll is close by, and a farmhouse lantern glimmers on a side lane; you can stop or continue with care.', choices: [

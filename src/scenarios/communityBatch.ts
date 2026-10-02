@@ -63,6 +63,7 @@ export const ONE_BOAT_TOO_MANY: Scenario = {
 
 export const THE_MEETING_HALL: Scenario = {
   id: 'the-meeting-hall', title: 'The Meeting Hall', subtitle: 'A practical question brings the neighbors together.', startScene: 'openMeeting',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'meetingMatter', values: [{ value: 'road' }, { value: 'fuel' }, { value: 'livestock' }] }],
   scenes: {
     openMeeting: { id: 'openMeeting', title: 'An Open Door', tone: 'safe', text: 'Rain drives you beneath the meeting hall’s eaves. Inside, neighbors have gathered around a plain table to settle one practical matter before the week is out. No one knows you, and no one expects you to decide it; you are welcome to listen, offer a hand, speak briefly, or keep walking.', textVariants: [
@@ -88,7 +89,7 @@ export const THE_MEETING_HALL: Scenario = {
 
 export const WHAT_DID_YOU_SEE: Scenario = {
   id: 'what-did-you-see', title: 'What Did You See?', subtitle: 'A careful account matters more than a confident guess.', startScene: 'roadsideQuestion',
-  diversity: { length: 'VIGNETTE', depthClass: 'ENCOUNTER' },
+  diversity: { length: 'VIGNETTE', depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   runRandomSelections: [{ id: 'cartIncident', values: [{ value: 'wheel' }, { value: 'driver' }, { value: 'road' }] }],
   scenes: {
     roadsideQuestion: { id: 'roadsideQuestion', title: 'A Question at the Roadside', tone: 'safe', text: 'A small cart sits on its side beyond the road edge. The driver is safe; two neighbors disagree about how it tipped. They ask what you saw, not whose fault it was.', textVariants: [
@@ -132,6 +133,7 @@ export const WHAT_DID_YOU_SEE: Scenario = {
 
 export const THE_BURNT_BARN_FUND: Scenario = {
   id: 'the-burnt-barn-fund', title: 'The Burnt Barn Fund', subtitle: 'A family needs help, and the offer is yours to make.', startScene: 'barnyard',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     barnyard: { id: 'barnyard', title: 'After the Fire', tone: 'safe', text: 'A family’s small barn burned the previous evening. The fire is out; no one was hurt, and the cause is not in question here. Neighbors have set a box on a dry bench for voluntary coin, and a few are offering repair labor. The family asks for neither pity nor a promise.', choices: [
       { id: 'donateOne', label: 'Add one coin to the repair fund', requirements: { minMoney: 1 }, timeCost: 1, next: 'donated', effects: { money: -1, historyFlags: ['donated_to_burnt_barn_repair'] } },
@@ -209,6 +211,7 @@ export const THE_ROAD_CREW: Scenario = {
 
 export const A_PLACE_TO_BURY_HIM: Scenario = {
   id: 'a-place-to-bury-him', title: 'A Place to Bury Him', subtitle: 'A quiet duty after an ordinary death.', startScene: 'chapelYard',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'LOW' },
   scenes: {
     chapelYard: { id: 'chapelYard', title: 'No Family Nearby', tone: 'safe', text: 'An older traveler died during the night after a long illness. The local healer has confirmed it was not an accident, and the body rests under a clean sheet in the chapel yard. His few belongings—a coat, a folded letter, and a purse—are laid on a table for safekeeping. No family is nearby; the neighbors are arranging a respectful burial.', choices: [
       { id: 'checkBelongings', label: 'Help list the belongings for a notice', hint: 'You handle only the items on the table, not the body.', timeCost: 15, next: 'belongingsRecorded', effects: { knowledge: ['The traveler’s table held a coat, folded letter, and purse; the letter names a home settlement but no nearby family.'], historyFlags: ['helped_record_unclaimed_travelers_belongings'] } },
@@ -229,6 +232,7 @@ export const A_PLACE_TO_BURY_HIM: Scenario = {
 
 export const THE_STRAY_FIRE: Scenario = {
   id: 'the-stray-fire', title: 'The Stray Fire', subtitle: 'A shed is damaged; its cause is less certain.', startScene: 'afterFlames',
+  diversity: { depthClass: 'ENCOUNTER', riskTier: 'MODERATE' },
   runRandomSelections: [{ id: 'fireClue', values: [{ value: 'wind' }, { value: 'stove' }, { value: 'lateArrival' }] }],
   scenes: {
     afterFlames: { id: 'afterFlames', title: 'Smoke Over the Washhouse', tone: 'safe', text: 'A small fire has been put out at the shared washhouse. One wall is blackened and a stack of dry boards is lost; nobody was hurt. The neighbors are checking the damage, not seeking a culprit. You arrived in time to see one detail, though not enough to know the whole cause.', textVariants: [

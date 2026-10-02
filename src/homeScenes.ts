@@ -52,8 +52,8 @@ export function chooseHomeScene(storage: HomeSceneStorage, random: () => number 
 }
 
 /** Keeps one choice stable through Home renders; only lifecycle entry rotates it. */
-export function createHomeSceneRotation(storage: HomeSceneStorage, key = HOME_SCENE_LAST_KEY, random: () => number = Math.random): HomeSceneRotation {
-  let current = chooseHomeScene(storage, random, key);
+export function createHomeSceneRotation(storage: HomeSceneStorage, key = HOME_SCENE_LAST_KEY, random: () => number = Math.random, initialSceneId?: string): HomeSceneRotation {
+  let current = sceneById(initialSceneId ?? null) ?? chooseHomeScene(storage, random, key);
   return {
     get current() { return current; },
     enterHome() { current = chooseHomeScene(storage, random, key); return current; },
