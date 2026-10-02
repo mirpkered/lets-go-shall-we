@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import { newCharacter, startRun } from './engine';
-import { primaryScenarioCategory, scenarioSelectionWeights, simulateScenarioSelection } from './scenarioSelection';
+import { eligibleScenarioResult, primaryScenarioCategory, scenarioSelectionWeights, simulateScenarioSelection } from './scenarioSelection';
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import { SCENARIOS } from './scenarios';
 import type { SaveData } from './types';
@@ -245,6 +245,8 @@ describe('save compatibility', () => {
     });
 
     const history = afterSecondDeployment.character!.scenarioPlayCounts!;
+    expect(eligibleScenarioResult(registryAfterSecond, afterSecondDeployment.recentScenarioIds, 10).scenarios.map(({ id }) => id))
+      .not.toContain('the-witch-at-millers-ford');
     const weights = scenarioSelectionWeights(registryAfterSecond, { scenarioPlayCounts: history, selectionMonth: 10 });
     expect(weights.find(({ scenario }) => scenario.id === 'the-witch-at-millers-ford')?.replayWeight).toBe(0.012);
     expect(weights.find(({ scenario }) => scenario.id === addedOne.id)?.completedPlays).toBe(0);
