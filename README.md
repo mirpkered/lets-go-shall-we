@@ -32,6 +32,7 @@ Append `?qa=1` to the public URL to reveal mobile-friendly testing tools. QA has
 ## Canonical references
 
 - [Implemented systems and verified status](docs/CURRENT_SYSTEMS.md)
+- [Architecture and scale audit](docs/ARCHITECTURE-SCALE-AUDIT.md)
 - [Canonical design rules](docs/DESIGN_RULES.md)
 - [Adventure authoring checklist](docs/AUTHORING_CHECKLIST.md)
 - [Adventure library status](docs/ADVENTURE_LIBRARY.md)
