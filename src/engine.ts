@@ -7,7 +7,7 @@ import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {} };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, quickExitCreditRemainder: 0, quickExitEndingIds: [], historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {} };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -486,7 +486,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   const scene = scenario.scenes[next.run.sceneId];
   if (scene?.ending) next.run.status = scene.ending;
   if (scene?.ending) {
-    next.run.completionQualification = scene.completionQualification;
+    next.run.completionQualification = scene.ending === 'success' ? scene.completionQualification ?? 'substantive' : scene.completionQualification;
     recordAuthoredEnding(next, scene.ending === 'death');
   }
   else if (destination && destination !== originSceneId) tryEasterEggOnSceneEntry(next, scenario, random);
@@ -543,13 +543,29 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
     return;
   }
   run.completionCountRecorded = true;
-  if (run.qaMode || !state.character || run.completionQualification === 'nonSubstantive') return;
-  const moneyChanged = state.character.money !== (run.startingMoney ?? state.character.money);
-  const startingItems = [...new Set(run.startingCarriedItems ?? getCarriedItems(state.character))].sort();
-  const endingItems = [...new Set(getCarriedItems(state.character))].sort();
-  const inventoryChanged = JSON.stringify(startingItems) !== JSON.stringify(endingItems);
-  const changedRetainedGear = run.status === 'success' && endingItems.some((id) => JSON.stringify(state.itemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }) !== JSON.stringify(run.startingItemStates?.[id] ?? { condition: 'NORMAL', upgrades: [], provenance: [] }));
-  if (run.completionQualification !== 'substantive' && !moneyChanged && !inventoryChanged && !changedRetainedGear && !run.supplyRewarded) return;
+  if (run.qaMode || !state.character || !run.authoredEndingRecorded) return;
+  if (run.status === 'death') {
+    // Preserve the established authored-death completion marker for the ending card;
+    // the traveler is then removed by failCharacter, which also discards quick credits.
+    if (run.completionQualification === 'substantive') {
+      state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
+      if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) run.completionMilestoneReached = state.character.adventuresCompleted;
+    }
+    return;
+  }
+  if (run.status !== 'success') return;
+  if (run.completionQualification === 'nonSubstantive') {
+    const endingKey = `${run.scenarioId}:${run.sceneId}`;
+    state.character.quickExitEndingIds ??= [];
+    if (state.character.quickExitEndingIds.includes(endingKey)) return;
+    state.character.quickExitEndingIds.push(endingKey);
+    const remainder = Math.max(0, Math.min(2, Math.floor(state.character.quickExitCreditRemainder ?? 0)));
+    if (remainder < 2) {
+      state.character.quickExitCreditRemainder = (remainder + 1) as 1 | 2;
+      return;
+    }
+    state.character.quickExitCreditRemainder = 0;
+  }
   state.character.adventuresCompleted = Math.max(0, state.character.adventuresCompleted ?? 0) + 1;
   if (state.character.adventuresCompleted === 10 || state.character.adventuresCompleted === 20) {
     run.completionMilestoneReached = state.character.adventuresCompleted;
@@ -574,7 +590,7 @@ export function finishSuccess(state: SaveData, carriedItems: string | string[] |
   if (selected.filter((id) => inventoryClass(id) === 'GEAR').length > gearCapacity(next.character.adventuresCompleted)) return next;
   setCarriedItems(next.character, selected);
   retainOnlyBankedItemStates(next, [...selected, ...STARTING_ITEMS]);
-  if (next.run?.status === 'success') {
+  if (next.run?.status === 'success' && next.run.authoredEndingRecorded) {
     recordAuthoredEnding(next, true);
     // Save the final local reward/progression state before allowing the remote count to flush.
     queueGlobalCompletion(next);

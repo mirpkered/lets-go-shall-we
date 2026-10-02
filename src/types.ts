@@ -62,6 +62,10 @@ export interface Character {
   lore: string[];
   knowledge: string[];
   adventuresCompleted: number;
+  /** Hidden traveler-bound quick exits; three unique endings earn one full completion. */
+  quickExitCreditRemainder?: 0 | 1 | 2;
+  /** Exact scenario/ending pairs already credited, preventing repeat farming. */
+  quickExitEndingIds?: string[];
   historyFlags: string[];
   /** Newest-first primary activity categories started by this traveler. */
   scenarioCategoryHistory?: string[];
@@ -253,7 +257,7 @@ export interface Scene {
   tone?: 'safe' | 'warning' | 'danger';
   choices: Choice[];
   ending?: 'success' | 'death';
-  /** Explicitly classify the story outcome; persistent money/gear changes can qualify automatically. */
+  /** Success endings count as substantive by default; brief authored exits opt into hidden quick credit. */
   completionQualification?: 'substantive' | 'nonSubstantive';
   /** Defaults to true. Set false for a presentation-only continuation screen. */
   countsForProgression?: boolean;

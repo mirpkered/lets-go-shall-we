@@ -237,7 +237,7 @@ export const THE_INJURED_DOG: Scenario = {
     ] },
     dogOwnerSought: { id: 'dogOwnerSought', title: 'A Familiar Coat', tone: 'safe', text: 'A nearby resident recognizes the dog as a working animal from the next farm. They will fetch its handler, who knows how to approach it. Until then, the dog remains by the trough.', choices: [
       { id: 'waitForDogHandler', label: 'Wait at a distance for the handler', timeCost: 8, next: 'dogHandlerArrives' },
-      { id: 'leaveDogOwner', label: 'Tell the resident and continue on', next: 'dogHandlerArrives' },
+      { id: 'leaveDogOwner', label: 'Tell the resident and continue on', next: 'dogHandlerLater' },
     ] },
     dogFoodSet: { id: 'dogFoodSet', title: 'No Sudden Touch', tone: 'safe', text: 'You put the food down and retreat. The dog eats only after you are several paces away, then settles beside the water. It has not become tame, but its breathing is easier.', choices: [
       { id: 'fetchDogHandler', label: 'Ask the nearby farm to send its handler', timeCost: 6, next: 'dogHandlerArrives' },
@@ -247,7 +247,13 @@ export const THE_INJURED_DOG: Scenario = {
       { id: 'leaveBandageHandler', label: 'Leave the bandage with the resident', next: 'dogHandlerArrives' },
       { id: 'stepAwayBandage', label: 'Put the bandage away and give it space', next: 'dogWaterLeft' },
     ] },
-    dogHandlerArrives: ending('dogHandlerArrives', 'Known Hands', 'The dog’s handler arrives with a lead and a familiar voice. They will inspect the paw in a safe place; your clean bandage may help cover a small cut, but the handler—not a stranger—decides how to treat it.'),
+    dogHandlerArrives: { id: 'dogHandlerArrives', title: 'Known Hands', tone: 'safe', text: 'The handler arrives with a lead and a familiar voice. The dog lowers its head but keeps the paw raised. The handler asks what you noticed before they guide it away; they will decide how to inspect and treat their own dog.', choices: [
+      { id: 'describeDogPaw', label: 'Describe the raised paw and the trough', next: 'dogHandlerObserved', effects: { historyFlags: ['helped a familiar handler find an injured dog'] } },
+      { id: 'letHandlerApproach', label: 'Step back and let them approach', next: 'dogHandlerQuiet' },
+    ] },
+    dogHandlerObserved: ending('dogHandlerObserved', 'A Useful Observation', 'The handler checks the paw in the yard, away from the road, and thanks you for noting where the dog had settled. The handler makes the treatment decision; you helped them begin with a clearer picture.'),
+    dogHandlerQuiet: ending('dogHandlerQuiet', 'The Dog Goes Home', 'The dog follows its handler at an easy pace, still favoring the paw. You leave them space to inspect it safely at the farm.'),
+    dogHandlerLater: ending('dogHandlerLater', 'Help Left in Good Hands', 'You tell the resident where the dog is resting, then continue on. The handler will come from the next farm and approach it in familiar surroundings.'),
     dogWaterLeft: ending('dogWaterLeft', 'Room to Rest', 'The dog has water and room to retreat. Someone nearby knows where it was resting and can check again. You have helped without demanding trust from an injured animal.'),
   },
 };

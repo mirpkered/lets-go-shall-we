@@ -9,7 +9,7 @@ export const THE_INJURED_TRAVELER: Scenario = {
   scenes: {
     roadsideRequest: { id: 'roadsideRequest', title: 'A Request by the Road', tone: 'safe', text: 'A traveler sits beside a milestone holding one wrist close. They say it is badly injured and ask for two coins to reach a healer. You can see swelling, but have no way to judge how serious it is. They are calm and able to speak.', choices: [
       { id: 'giveInjuryMoney', label: 'Give two coins for the healer', requirements: { minMoney: 2 }, effects: { money: -2, historyFlags: ['gave_money_to_injured_traveler'] }, next: 'moneyGiven' },
-      { id: 'offerWaterInjury', label: 'Offer water and ask what happened', timeCost: 5, next: 'accountHeard', effects: { knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] } },
+      { id: 'offerWaterInjury', label: 'Ask what happened and listen', timeCost: 5, next: 'accountHeard', effects: { knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] } },
       { id: 'sendForInnkeeper', label: 'Ask the nearby innkeeper to come over', timeCost: 6, next: 'innkeeperArrives' },
       { id: 'declineInjury', label: 'Wish them well and continue on', next: 'continuedRoad' },
     ] },
@@ -24,11 +24,16 @@ export const THE_INJURED_TRAVELER: Scenario = {
     ] },
     innkeeperArrives: { id: 'innkeeperArrives', title: 'Help Without a Verdict', tone: 'safe', text: 'The innkeeper brings a cup of water and offers the traveler a place to sit while a healer is sent for. No one asks you to decide whether the pain is as bad as claimed.', choices: [
       { id: 'stayForHealer', label: 'Stay until the healer is sent for', timeCost: 8, next: 'localHelp' },
-      { id: 'leaveAfterInnkeeper', label: 'Leave once the innkeeper takes over', next: 'localHelp' },
+      { id: 'leaveAfterInnkeeper', label: 'Leave once the innkeeper takes over', next: 'localHelpDeparture' },
     ] },
     moneyGiven: end('moneyGiven', 'Help Given Freely', 'The traveler thanks you and heads toward the inn, holding the wrist close. You cannot know whether the two coins were necessary, but you chose to help without requiring proof.'),
     partialHelp: end('partialHelp', 'A Smaller Offer', 'The traveler accepts the coin and says they will ask the innkeeper for directions. You have helped within your means without claiming to know how serious the injury is.'),
-    localHelp: end('localHelp', 'Someone Nearby Can Help', 'The innkeeper takes responsibility for sending word to a healer. The traveler remains sore and uncertain, but is no longer alone beside the road.'),
+    localHelp: { id: 'localHelp', title: 'Someone Nearby Can Help', text: 'The innkeeper settles the traveler on a bench inside, brings water, and sends a stable boy to fetch the healer. Their breathing has steadied, and the innkeeper knows where to find them if you go. You can stay for the messenger’s return or leave now that the traveler is safe indoors.', choices: [
+      { id: 'stayForMessenger', label: 'Stay until the messenger returns', timeCost: 8, next: 'localHelpStayed' },
+      { id: 'leaveInnAfterCare', label: 'Leave after they are settled', next: 'localHelpDeparture' },
+    ] },
+    localHelpStayed: end('localHelpStayed', 'A Stable Place to Wait', 'The messenger returns with word that the healer is on the way. The traveler rests on the bench with water close by; you leave once the innkeeper has the situation in hand.'),
+    localHelpDeparture: end('localHelpDeparture', 'Care Is Underway', 'You leave after seeing the traveler settled indoors and the healer summoned. The innkeeper remains with them until help arrives.'),
     continuedRoad: end('continuedRoad', 'Onward', 'You continue down the road. The traveler can still reach the nearby inn, and you do not pretend to know whether the injury or request was exaggerated.'),
   },
 };

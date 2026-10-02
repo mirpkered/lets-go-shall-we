@@ -3,12 +3,12 @@ import { authorBatch } from './secondWaveTools';
 export const COMMUNICATION_ADVENTURES = authorBatch([
   {
     id: 'the-telegram', title: 'The Telegram', subtitle: 'A message has arrived, but its recipient is nowhere in sight.', openingTitle: 'At the Telegraph Office', openingContext: 'depot',
-    opening: 'The telegraph operator knows you are staying at the station inn and asks a favor: a telegram has arrived for a traveler who left no forwarding address. The message is sealed. The operator has checked the hotel register and found a likely recipient, but the name is smudged.',
+    opening: 'The telegraph operator knows you are staying at the station inn and asks a favor: a sealed telegram has arrived for a traveler who left no forwarding address. The name on its outside is smudged, and two guests in the common room have similar surnames. The operator will not open it to guess.',
     runRandomSelections: [{ id: 'telegramMatter', values: [{ value: 'family' }, { value: 'employment' }, { value: 'travel' }] }],
     openingVariants: [
-      { requirements: { selections: { telegramMatter: 'family' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a telegram has arrived for a traveler whose family is waiting nearby. The message is sealed. The operator has checked the hotel register and found a likely recipient, but the name is smudged.' },
-      { requirements: { selections: { telegramMatter: 'employment' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a telegram about a possible position has arrived for a traveler who left no forwarding address. The message is sealed. The operator has checked the hotel register and found a likely recipient, but the name is smudged.' },
-      { requirements: { selections: { telegramMatter: 'travel' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a telegram about a delayed connection has arrived for a traveler who left no forwarding address. The message is sealed. The operator has checked the hotel register and found a likely recipient, but the name is smudged.' },
+      { requirements: { selections: { telegramMatter: 'family' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a sealed telegram has arrived for a traveler whose family is waiting nearby. The outside name is smudged, and two guests have similar surnames. The operator will not open it to guess.' },
+      { requirements: { selections: { telegramMatter: 'employment' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a sealed telegram about a possible position has arrived. The outside name is smudged, and two guests have similar surnames. The operator will not open it to guess.' },
+      { requirements: { selections: { telegramMatter: 'travel' } }, text: 'The telegraph operator knows you are staying at the station inn and asks a favor: a sealed telegram about a delayed connection has arrived. The outside name is smudged, and two guests have similar surnames. The operator will not open it to guess.' },
     ],
     routes: [
       { id: 'register', label: 'Compare the register with the operator', title: 'A Name in the Book', text: 'The register contains two similar surnames. The operator can confirm which one matches the telegram without showing you its contents.', outcomes: [
@@ -16,7 +16,7 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
         { id: 'wait', label: 'Wait while the operator checks again', title: 'A Careful Match', text: 'A second entry in the ledger settles the spelling. The operator delivers the message themselves, satisfied that no stranger has read it.' },
       ] },
       { id: 'ask', label: 'Ask the operator what may be shared', title: 'Only What Is Needed', text: 'The operator can confirm that the sender asks for a reply, but cannot read private contents aloud. The two likely guests are both in the common room.', outcomes: [
-        { id: 'askGuests', label: 'Ask each guest which sender they know', title: 'The Right Recipient', text: 'One guest recognizes the sender’s town and name. The operator carries the sealed telegram to them without opening it.' },
+        { id: 'askGuests', label: 'Ask each guest what they recognize', title: 'Two Plausible Names', text: 'One guest recognizes the sender’s town. The other knows a family with the same surname there and says messages sometimes pass between them. Neither can prove who the telegram is for.' },
         { id: 'decline', label: 'Leave the choice to the operator', title: 'Not Your Message', text: 'You decide not to guess. The operator waits for a clearer confirmation before delivering a private message.' },
       ] },
       { id: 'search', label: 'Look for the named traveler at the inn', title: 'A Search of the Common Room', text: 'You ask at the desk and common room without announcing the message. A traveler matching one name is willing to speak with the operator.', outcomes: [
@@ -105,3 +105,39 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
     ],
   },
 ]);
+
+// The recipient clue is a midpoint, not an automatic delivery ending: the traveler
+// must weigh two plausible guests and decide how much verification is appropriate.
+const telegram = COMMUNICATION_ADVENTURES.find(({ id }) => id === 'the-telegram')!;
+const recipientClue = telegram.scenes['ask-askGuests'];
+recipientClue.ending = undefined;
+recipientClue.choices = [
+  { id: 'checkRegister', label: 'Ask the operator to check the register', next: 'recipientVerified' },
+  { id: 'hearSecondGuest', label: 'Ask the other guest what they know', next: 'recipientSecondAccount' },
+];
+telegram.scenes.recipientSecondAccount = {
+  id: 'recipientSecondAccount', title: 'A Family Connection',
+  text: 'The second guest knows the sender’s family but says the telegram is probably meant for the other branch of the household. They are willing to let the operator compare the outside address with the register; neither guest asks to see the message.',
+  choices: [
+    { id: 'verifyAfterAccount', label: 'Let the operator compare names privately', next: 'recipientVerified' },
+    { id: 'holdAfterAccount', label: 'Keep it sealed until the sender replies', next: 'recipientHeld' },
+  ],
+};
+telegram.scenes.recipientVerified = {
+  id: 'recipientVerified', title: 'The Name in the Register',
+  text: 'The operator compares the legible town on the envelope with the two register entries and finds the matching guest’s full surname in an earlier station note. The other guest recognizes the family but not the named traveler. The message stays sealed.',
+  choices: [
+    { id: 'deliverVerified', label: 'Deliver it privately to the match', next: 'recipientDelivered', effects: { knowledge: ['At the station inn, a town clue and the register distinguished two guests with similar surnames without opening a private telegram.'], historyFlags: ['helped deliver a private telegram to its verified recipient'] } },
+    { id: 'holdVerified', label: 'Let the operator wait for confirmation', next: 'recipientHeld' },
+  ],
+};
+telegram.scenes.recipientDelivered = {
+  id: 'recipientDelivered', title: 'The Right Recipient',
+  text: 'The operator carries the sealed telegram to the matching guest in private. The other guest returns to supper without being made to explain their family connection, and the message reaches the person named on its outside.',
+  ending: 'success', choices: [],
+};
+telegram.scenes.recipientHeld = {
+  id: 'recipientHeld', title: 'A Message Kept Sealed',
+  text: 'The operator records why the delivery is delayed and keeps the telegram locked in the office. The two guests are spared a public guess, and the sender will be asked to confirm the full name.',
+  ending: 'success', choices: [],
+};

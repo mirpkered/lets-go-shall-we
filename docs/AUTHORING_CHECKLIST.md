@@ -57,6 +57,7 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Would this feel complete without the words “Adventure Complete”?
 - [ ] Is the structure too similar to another adventure? Treat audit warnings as human-review prompts, not automatic rejection.
 - [ ] For a dispute, wager/game, job, testimony, or ordinary task, has the story earned its result and shown what it changes? Do not mistake length, coin changes, or task completion alone for substance.
+- [ ] If responsibility or information is handed to an NPC, healer, clerk, or authority, does the traveler see a consequence, reaction, stabilization, or aftermath before completion?
 
 ## Structure, payoff, and rewards
 

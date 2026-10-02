@@ -39,7 +39,7 @@ export const QUESTIONABLE_EMPLOYMENT_ADVENTURES = authorBatch([
   },
   {
     id: 'the-mule-is-mine', title: 'The Mule Is Mine', subtitle: 'A collateral agreement and a disputed payment meet at a stable yard.',
-    opening: 'A creditor asks you to accompany them to collect a mule pledged against a loan. The borrower says the last payment cleared the debt; the creditor’s paper lists one balance still due. The mule is calm in its pen with feed and water. No one asks you to take the animal by force.',
+    opening: 'A creditor asks you to accompany them to collect a mule pledged against a loan. The lender is away until afternoon, so the creditor carries the account papers. The borrower says the last payment cleared the debt; the creditor’s copy lists one balance still due. The mule is calm in its pen with feed and water. No one asks you to take the animal by force.',
     routes: [
       { id: 'paper', label: 'Compare the payment note with the pledge', title: 'Two Papers', text: 'The pledge names the mule and the loan. The payment note has a date but no creditor’s signature; the borrower says the lender was traveling that day.', outcomes: [
         { id: 'wait', label: 'Ask both to wait for the lender’s return', title: 'No Animal Moved', text: 'The creditor agrees to keep the mule in its pen until the lender can check the payment. The borrower remains responsible for feeding it.' },
@@ -97,3 +97,36 @@ export const QUESTIONABLE_EMPLOYMENT_ADVENTURES = authorBatch([
     ],
   },
 ]);
+
+// Comparing dates changes the dispute, but the comparison itself is not the resolution.
+const muleDispute = QUESTIONABLE_EMPLOYMENT_ADVENTURES.find(({ id }) => id === 'the-mule-is-mine')!;
+const copiedAccount = muleDispute.scenes['paper-copy'];
+copiedAccount.ending = undefined;
+copiedAccount.text = 'You copy both dates and leave the originals with their owners. The lender is due back this afternoon and can compare the papers without the mule changing hands.';
+copiedAccount.choices = [
+  { id: 'bringPapersTogether', label: 'Wait and show both papers together', next: 'muleDatesCompared' },
+  { id: 'leaveCopies', label: 'Leave the copies with the creditor', next: 'muleRecordHeld' },
+];
+muleDispute.scenes.muleDatesCompared = {
+  id: 'muleDatesCompared', title: 'The Dates Do Not Settle It',
+  text: 'The lender returns and reads the copied dates beside the originals. The payment note predates the pledge, but its missing signature leaves the last payment uncertain. The lender orders the mule to remain in its familiar pen while the borrower and creditor bring any witness tomorrow.',
+  choices: [
+    { id: 'confirmMuleCare', label: 'Ask who will pay for the feed tonight', next: 'muleCareAgreed', effects: { setFlags: ['muleCareAgreed'] } },
+    { id: 'leaveAfterComparison', label: 'Leave them with the written plan', next: 'mulePlanRecorded' },
+  ],
+};
+muleDispute.scenes.muleCareAgreed = {
+  id: 'muleCareAgreed', title: 'The Mule Is Fed',
+  text: 'The borrower keeps the usual feeding routine, and the creditor agrees to pay tonight’s feed while the claim is checked. The mule stays where it knows the water trough; your comparison has prevented a disputed paper from moving the animal before the lender could read it.',
+  ending: 'success', choices: [],
+};
+muleDispute.scenes.mulePlanRecorded = {
+  id: 'mulePlanRecorded', title: 'A Plan for Morning',
+  text: 'The lender writes down that the mule will remain in the borrower’s pen until both can return with a witness. The payment is still disputed, but neither side can later claim the papers or the animal vanished before review.',
+  ending: 'success', choices: [],
+};
+muleDispute.scenes.muleRecordHeld = {
+  id: 'muleRecordHeld', title: 'A Copy Left Behind',
+  text: 'The creditor keeps your copy and agrees to show it to the returning lender. The mule stays in its familiar pen for now; you leave knowing the date has been preserved, though no one has yet settled what it proves.',
+  ending: 'success', choices: [],
+};

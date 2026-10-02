@@ -31,7 +31,7 @@ function completeAfterTransitions(transitions: number, travelerCount = 0, presen
   character.adventuresCompleted = travelerCount;
   let state: SaveData = { version: 1, bank: [], character, run: startRun(character, scenario) };
   for (let index = 0; index < transitions; index++) state = choose(state, scenario, scenario.scenes[ids[index]].choices[0]);
-  if (transitions === 0) { state.run!.status = 'success'; state.run!.completionQualification = 'substantive'; }
+  if (transitions === 0) { state.run!.status = 'success'; state.run!.completionQualification = 'substantive'; state.run!.authoredEndingRecorded = true; }
   return state;
 }
 
@@ -123,7 +123,7 @@ describe('traveler completion and carry milestones', () => {
     expect(completed.pendingGlobalCompletions).toBeUndefined();
   });
 
-  it('keeps an early authored ending global without awarding traveler progression', () => {
+  it('awards one hidden quick-exit credit for an explicitly brief authored ending', () => {
     const state = save(0);
     const trivial: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
     const ended = choose(state, trivial, trivial.scenes.start.choices[0]);
@@ -134,14 +134,22 @@ describe('traveler completion and carry milestones', () => {
     expect(ended.run?.completionCountRecorded).toBe(false);
     const finalized = finishSuccess(ended, null);
     expect(finalized.character?.adventuresCompleted).toBe(0);
+    expect(finalized.character?.quickExitCreditRemainder).toBe(1);
+    expect(finalized.character?.quickExitEndingIds).toEqual(['milestone-test:quiet']);
     expect(finalized.run).toBeNull();
     expect(finalized.pendingGlobalCompletions).toEqual([state.run!.runId]);
+    const replay = { ...finalized, run: startRun(finalized.character!, trivial) };
+    const replayEnded = choose(replay, trivial, trivial.scenes.start.choices[0]);
+    const replayFinalized = finishSuccess(replayEnded, null);
+    expect(replayFinalized.character?.quickExitCreditRemainder).toBe(1);
+    expect(replayFinalized.character?.adventuresCompleted).toBe(0);
   });
 
   it('guards global authored recording and traveler progression independently', () => {
     const state = save();
     state.run!.status = 'success';
     state.run!.qualifyingStoryTransitions = 6;
+    state.run!.authoredEndingRecorded = true;
     state.run!.completionCountRecorded = true;
     const globalOnly = finishSuccess(state, null);
     expect(globalOnly.pendingGlobalCompletions).toEqual([state.run!.runId]);
@@ -157,6 +165,77 @@ describe('traveler completion and carry milestones', () => {
     // Legacy/stale queued IDs are safely re-asserted; the server deduplicates by run ID.
     expect(travelerOnly.pendingGlobalCompletions).toEqual([progressionOnly.run!.runId]);
     expect(travelerOnly.character?.adventuresCompleted).toBe(1);
+  });
+
+  it('counts no-reward, Knowledge/Lore, money, injury, and quiet authored endings once', () => {
+    const outcomes = [
+      { id: 'no-reward', effects: undefined },
+      { id: 'knowledge', effects: { knowledge: ['A detail learned in this story.'] } },
+      { id: 'lore', effects: { lore: ['A local account worth remembering.'] } },
+      { id: 'money', effects: { money: 1 } },
+      { id: 'injury', effects: { health: -1 } },
+    ];
+    for (const outcome of outcomes) {
+      const scenario: Scenario = { ...ENDING, id: `substantive-${outcome.id}`, scenes: {
+        start: { ...ENDING.scenes.start, choices: [{ id: 'resolve', label: 'Resolve', next: 'quiet', effects: outcome.effects }] },
+        quiet: { ...ENDING.scenes.quiet, completionQualification: undefined },
+      } };
+      const begun = { ...save(4), run: startRun(newCharacter(), scenario) };
+      const character = begun.character!;
+      begun.run = startRun(character, scenario);
+      const ended = choose(begun, scenario, scenario.scenes.start.choices[0]);
+      expect(ended.run?.completionQualification, outcome.id).toBe('substantive');
+      const completed = finishSuccess(ended, null);
+      expect(completed.character?.adventuresCompleted, outcome.id).toBe(5);
+      expect(completed.character?.quickExitCreditRemainder, outcome.id).toBe(0);
+      expect(finishSuccess(completed, null).character?.adventuresCompleted, outcome.id).toBe(5);
+    }
+  });
+
+  it('converts only three distinct quick exits into one full completion and persists the remainder', () => {
+    const traveler = newCharacter('Quick-exit traveler');
+    const banked: SaveData = { version: 1, bank: ['graveCoin'], character: traveler, run: null };
+    let state = banked;
+    for (const id of ['quick-a', 'quick-b']) {
+      const scenario: Scenario = { ...ENDING, id, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
+      state.run = startRun(state.character!, scenario);
+      state = choose(state, scenario, scenario.scenes.start.choices[0]);
+      state = finishSuccess(state, null);
+      expect(state.character?.adventuresCompleted).toBe(0);
+      expect(state.character?.quickExitCreditRemainder).toBe(id === 'quick-a' ? 1 : 2);
+    }
+    const memory = new Map([[SAVE_KEY, JSON.stringify(state)]]);
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) } as unknown as Storage;
+    state = loadSave(storage);
+    expect(state.character?.quickExitCreditRemainder).toBe(2);
+    const third: Scenario = { ...ENDING, id: 'quick-c', scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
+    state.run = startRun(state.character!, third);
+    state = finishSuccess(choose(state, third, third.scenes.start.choices[0]), null);
+    expect(state.character?.adventuresCompleted).toBe(1);
+    expect(state.character?.quickExitCreditRemainder).toBe(0);
+    expect(state.bank).toEqual(['graveCoin']);
+  });
+
+  it('does not credit QA, malformed endings, or explicit abandon, and retirement/death end the traveler-bound remainder', () => {
+    const quick: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
+    const qa = save(); qa.run!.qaMode = true;
+    const qaEnded = choose(qa, quick, quick.scenes.start.choices[0]);
+    expect(finishSuccess(qaEnded, null).character?.quickExitCreditRemainder).toBe(0);
+
+    const malformed = save(); malformed.run!.status = 'success';
+    expect(finishSuccess(malformed, null).character?.adventuresCompleted).toBe(0);
+    expect(finishSuccess(malformed, null).pendingGlobalCompletions).toBeUndefined();
+
+    let twoCredits = save();
+    twoCredits.character!.quickExitCreditRemainder = 2;
+    const abandoned = failCharacter(twoCredits);
+    expect(abandoned.character).toBeNull();
+    expect(abandoned.bank).toEqual(twoCredits.bank);
+    expect(retireCharacter(twoCredits).character).toBeNull();
+    const death = choose(twoCredits, { ...quick, scenes: { ...quick.scenes, start: { ...quick.scenes.start, choices: [{ id: 'die', label: 'Die', next: 'death' }] } } }, { id: 'die', label: 'Die', next: 'death' });
+    expect(death.run?.status).toBe('death');
+    expect(failCharacter(death).character).toBeNull();
+    expect(newCharacter().quickExitCreditRemainder).toBe(0);
   });
 
   it('recognizes carried gear from all slots and consumes only the named item', () => {
@@ -292,7 +371,7 @@ describe('traveler completion and carry milestones', () => {
     expect(state.run).toBeNull();
   });
 
-  it('qualifies when final money differs from run start, but not after a full reversal', () => {
+  it('counts substantive authored endings independently from net money change', () => {
     for (const [starting, change] of [[0, 1], [3, -3], [5, -2]]) {
       const state = save(); state.character!.money = starting; state.run!.startingMoney = starting;
       const scenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'pay', label: 'Change money', next: 'quiet', effects: { money: change } }] } } };
@@ -302,10 +381,10 @@ describe('traveler completion and carry milestones', () => {
     const state = save(); state.character!.money = 4; state.run!.startingMoney = 4;
     const scenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'gain', label: 'Gain', next: 'middle', effects: { money: 2 } }] }, middle: { id: 'middle', title: '', text: '', choices: [{ id: 'repay', label: 'Repay', next: 'quiet', effects: { money: -2 } }] } } };
     const ended = choose(choose(state, scenario, scenario.scenes.start.choices[0]), scenario, scenario.scenes.middle.choices[0]);
-    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(0);
+    expect(finishSuccess(ended, null).character?.adventuresCompleted).toBe(1);
   });
 
-  it('qualifies only for persistent carried-gear changes, not supplied adventure equipment', () => {
+  it('counts substantive endings whether or not run-supplied equipment is retained', () => {
     const character = newCharacter(); setCarriedItems(character, ['travelRope']);
     const lost = startRun(character, ENDING);
     const loseScenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'lose', label: 'Lose it', next: 'quiet', effects: { loseItems: ['travelRope'] } }] } } };
@@ -317,7 +396,7 @@ describe('traveler completion and carry milestones', () => {
     const suppliedScenario: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, start: { ...ENDING.scenes.start, choices: [{ id: 'borrow', label: 'Borrow', next: 'quiet', effects: { gainItems: ['heavyLeatherGloves'], inventorySources: { heavyLeatherGloves: 'supplied' } } }] } } };
     const supplied = choose({ version: 1, bank: [], character: fresh, run }, suppliedScenario, suppliedScenario.scenes.start.choices[0]);
     expect(supplied.run?.inventorySources?.heavyLeatherGloves).toBe('supplied');
-    expect(finishSuccess(supplied, null).character?.adventuresCompleted).toBe(0);
+    expect(finishSuccess(supplied, null).character?.adventuresCompleted).toBe(1);
     const carried = finishSuccess(supplied, 'heavyLeatherGloves');
     expect(carried.character?.adventuresCompleted).toBe(1);
     expect(getCarriedItems(carried.character)).toContain('heavyLeatherGloves');

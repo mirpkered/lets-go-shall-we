@@ -229,7 +229,12 @@ describe('The Last Room on the Left', () => {
     state = pick(state, 'believeNell');
     expect(state.character?.historyFlags).toContain('trusted_testimony_over_evidence');
     expect(state.character?.historyFlags).toContain('intervened_in_inn_dispute');
-    const completed = finishSuccess({ ...state, run: { ...state.run!, sceneId: 'quietEnding', status: 'success' } }, 'brassRoomKey');
+    state = pick(state, 'inspectCellarScuffs');
+    state = pick(state, 'openAfterClues');
+    state = pick(state, 'getHelpForSilas');
+    state = pick(state, 'guideTheLift');
+    state = pick(state, 'acceptBrassKey');
+    const completed = finishSuccess(state, 'brassRoomKey');
     expect(completed.character?.historyFlags).toContain('intervened_in_inn_dispute');
     expect(completed.character?.carriedItem).toBe('brassRoomKey');
     expect(completed.character?.adventuresCompleted).toBe(1);

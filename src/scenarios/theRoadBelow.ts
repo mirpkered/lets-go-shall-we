@@ -388,6 +388,7 @@ export const THE_ROAD_BELOW: Scenario = {
     turnBackEnding: {
       id: 'turnBackEnding', title: 'Firm Ground', ending: 'success',
       text: 'You take the sound side of the road and leave the opening behind. Rain keeps falling, but the cracked shoulder is out of your path. You do not know what lies under the road.',
+      completionQualification: 'nonSubstantive',
       choices: [],
     },
   },

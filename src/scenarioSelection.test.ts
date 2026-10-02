@@ -59,14 +59,18 @@ describe('player scenario selection and QA mode', () => {
 
   it('records finished and abandoned normal adventures, but not QA runs', () => {
     const base: SaveData = { version: 1, bank: [], character: newCharacter(), run: null };
-    const abandoned = failCharacter(startAdventure(base, SCENARIOS[0]));
-    expect(abandoned.recentScenarioIds).toEqual([SCENARIOS[0].id]);
-    let completed = startAdventure(abandoned, SCENARIOS[1]);
-    completed.run!.status = 'success';
+    const scenario = selectionFixture('selection-finish', 'social interaction');
+    scenario.scenes.start.ending = undefined;
+    scenario.scenes.start.choices = [{ id: 'finish', label: 'Resolve the matter', next: 'end' }];
+    scenario.scenes.end = { id: 'end', title: 'Afterward', text: 'The matter is resolved.', ending: 'success', choices: [] };
+    const abandoned = failCharacter(startAdventure(base, scenario));
+    expect(abandoned.recentScenarioIds).toEqual([scenario.id]);
+    let completed = startAdventure(abandoned, scenario);
+    completed = choose(completed, scenario, scenario.scenes.start.choices[0]);
     completed = finishSuccess(completed, null);
-    expect(completed.recentScenarioIds).toEqual([SCENARIOS[1].id, SCENARIOS[0].id]);
+    expect(completed.recentScenarioIds).toEqual([scenario.id]);
     expect(completed.recentRiskHistory).toHaveLength(1);
-    expect(completed.recentRiskHistory?.[0]).toMatchObject({ scenarioId: SCENARIOS[1].id, tier: scenarioRiskTier(SCENARIOS[1]) });
+    expect(completed.recentRiskHistory?.[0]).toMatchObject({ scenarioId: scenario.id, tier: scenarioRiskTier(scenario) });
     expect(abandoned.recentRiskHistory).toBeUndefined();
     const diedRun = startAdventure(base, SCENARIOS[2]);
     diedRun.run!.status = 'death';
@@ -81,6 +85,9 @@ describe('player scenario selection and QA mode', () => {
 
   it('records category on a normal start, counts only authored endings, and resets traveler history on loss or retirement', () => {
     const scenario = selectionFixture('selection-life', 'social interaction');
+    scenario.scenes.start.ending = undefined;
+    scenario.scenes.start.choices = [{ id: 'finish', label: 'Resolve the matter', next: 'end' }];
+    scenario.scenes.end = { id: 'end', title: 'Afterward', text: 'The matter is resolved.', ending: 'success', choices: [] };
     const base: SaveData = { version: 1, bank: [], character: newCharacter(), run: null };
     const started = startAdventure(base, scenario);
     expect(started.character?.scenarioCategoryHistory).toEqual(['social interaction']);
@@ -89,8 +96,8 @@ describe('player scenario selection and QA mode', () => {
     expect(abandoned.character).toBeNull();
     expect(abandoned.recentScenarioIds).toEqual([scenario.id]);
 
-    const readyToComplete = startAdventure(base, scenario);
-    readyToComplete.run!.status = 'success';
+    let readyToComplete = startAdventure(base, scenario);
+    readyToComplete = choose(readyToComplete, scenario, scenario.scenes.start.choices[0]);
     const completed = finishSuccess(readyToComplete, null);
     expect(completed.character?.scenarioPlayCounts).toEqual({ [scenario.id]: 1 });
     expect(completed.character?.scenarioCategoryHistory).toEqual(['social interaction']);

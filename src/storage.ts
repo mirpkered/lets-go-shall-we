@@ -41,6 +41,15 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         else if (inventoryClass(id) === 'SUPPLY' && quantity === 0) { delete parsed.character.supplies[id]; migrated = true; }
       }
       if (!Number.isFinite(parsed.character.adventuresCompleted)) { parsed.character.adventuresCompleted = 0; migrated = true; }
+      if (!Array.isArray(parsed.character.quickExitEndingIds)) { parsed.character.quickExitEndingIds = []; migrated = true; }
+      else {
+        const endings = [...new Set(parsed.character.quickExitEndingIds.filter((id): id is string => typeof id === 'string' && id.length > 0))];
+        if (JSON.stringify(endings) !== JSON.stringify(parsed.character.quickExitEndingIds)) migrated = true;
+        parsed.character.quickExitEndingIds = endings;
+      }
+      const quickExitRemainder = Math.max(0, Math.min(2, Math.floor(Number.isFinite(parsed.character.quickExitCreditRemainder) ? parsed.character.quickExitCreditRemainder! : 0))) as 0 | 1 | 2;
+      if (parsed.character.quickExitCreditRemainder !== quickExitRemainder) migrated = true;
+      parsed.character.quickExitCreditRemainder = quickExitRemainder;
       if (!Array.isArray(parsed.character.scenarioCategoryHistory)) {
         const activeScenario = parsed.run?.status === 'active' && !parsed.run.qaMode ? getScenario(parsed.run.scenarioId) : undefined;
         parsed.character.scenarioCategoryHistory = activeScenario ? [primaryScenarioCategory(activeScenario)] : [];

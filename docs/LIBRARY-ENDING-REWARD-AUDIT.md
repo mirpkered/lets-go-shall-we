@@ -1,6 +1,6 @@
 # Library Ending, Payoff & Reward Audit
 
-Baseline: main at `f22ba58e3467bf49243371b4438107d25455c1fb`, before the original audit pass. The registry at that baseline contained **175 playable adventures**. The current registry has since grown to **301**; the measurements below remain a dated structural snapshot of the earlier 175-story library, not a freshly recomputed analysis of the later adventures or every subsequent authored edit. Scenario source/tests are authoritative for current behavior. This is an internal audit, not player-facing content.
+Baseline: main at `f22ba58e3467bf49243371b4438107d25455c1fb`, before the original audit pass. The registry at that baseline contained **175 playable adventures**. The current registry has since grown to **431**; the older route/payoff table below remains a dated structural snapshot of the earlier 175-story library, not a freshly recomputed analysis of the current registry. Scenario source/tests are authoritative for current behavior. This is an internal audit, not player-facing content.
 
 ## Method and limits
 
@@ -9,6 +9,12 @@ Route length is an approximate count of scene screens (including terminal card),
 The six named playtest cases were checked against their full current authored routes. One Horse Short, Three Miles to Rain, The Missing Boat, and Smoke on the Hill already had payoff beats in baseline and were retained. The Last Ferry and The Loose Team were changed in this pass. No generic “choose a keepsake” reward was found: the post-ending placement panel only handles named persistent items actually earned by the scenario; carry/Bank/decline remains explicit and choose-one offers remain distinct.
 
 Possible reward presence in baseline (scenario can award this on at least one route): money **44/175**, carryable items **27/175**, history flags **109/175**, knowledge **83/175**, lore **6/175**. These overlap and are not frequency guarantees. Many adventures intentionally conclude with narrative/history rather than material payment. Employment and explicit paid-work stories were cross-checked for authored money effects; no broad reward inflation was justified.
+
+## Current reward-opportunity recount
+
+The current 431-scenario registry was scanned for authored choice and chance-branch effects. This is a coarse opportunity count (overlapping types, not a probability or guaranteed payout): **27** scenarios can award carryable Gear, **2** can award Relics, **1** can award Supplies, **59** can increase money, **241** can grant Knowledge, **14** can grant Lore, **283** can add History, **1** can grant an Owned Asset, and **2** can repair/upgrade/replace equipment. **352** offer no tangible reward on any scanned branch. Item-bearing scenarios are concentrated in the classifier’s labor/repair (**24**) and rescue/care (**4**) primary activities. Contacts and Favors are not current structured reward types.
+
+The item opportunities are comparatively sparse, but the named QA stories in the current correction pass mostly resolve through privacy, knowledge, safety, or human payoff; adding unrelated keepsakes to them would be artificial. This pass therefore makes no reward-distribution edits and preserves the useful Market Day purchase choice. Treat broader item-opportunity diversification across other activities as a separate fiction-led balancing pass, not a reason to add loot to every story.
 
 ## Scenario inventory
 
