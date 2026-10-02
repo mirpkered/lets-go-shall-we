@@ -7,7 +7,8 @@ import { scenarioRiskTier } from '../riskClassification';
 import { simulateScenarioSelection } from '../scenarioSelection';
 import { renderQaPanel } from '../qaPanel';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave } from '../storage';
+import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
 import { COMPETITION_SURPRISE_ADVENTURES } from './surpriseCompetitionBatch';
@@ -102,9 +103,10 @@ describe('surprise anthology and library gap-fill', () => {
   it('uses current-run history, knowledge, and carried gear only when the related experience exists', () => {
     const supper = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'supper-at-the-inn')!;
     const fresh = start(supper);
-    expect(supper.scenes.kitchen.choices.find(({ id }) => id === 'callOnOldCourtesy')?.requirements?.historyFlags).toEqual(['improvised_a_kitchen_work_cloth_from_clean_sack']);
+    expect(supper.scenes.kitchen.choices.find(({ id }) => id === 'callOnOldCourtesy')?.requirements).toEqual({ contacts: [NESSA_CONTACT.id], favors: [NESSA_MEAL_FAVOR.id] });
     expect(meets(supper.scenes.kitchen.choices.find(({ id }) => id === 'callOnOldCourtesy')!.requirements, fresh)).toBe(false);
-    const returning = start(supper, ['improvised_a_kitchen_work_cloth_from_clean_sack']);
+    const legacy = start(supper, ['improvised_a_kitchen_work_cloth_from_clean_sack']);
+    const returning = loadSave({ getItem: () => JSON.stringify(legacy) });
     expect(meets(supper.scenes.kitchen.choices.find(({ id }) => id === 'callOnOldCourtesy')!.requirements, returning)).toBe(true);
 
     const lamp = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-back-room-lantern')!;

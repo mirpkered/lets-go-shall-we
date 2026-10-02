@@ -1,13 +1,13 @@
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import { BANK_CAPACITY } from './bank';
-import type { Character, Choice, Effects, InventorySource, ItemCondition, PersistentItemState, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase } from './types';
+import type { Character, Choice, Effects, InventorySource, ItemCondition, PersistentItemState, RecentRiskEntry, Requirement, RunState, SaveData, Scenario, TimePhase, TravelerContact, TravelerFavor } from './types';
 import { CATEGORY_HISTORY_WINDOW, primaryScenarioCategory, RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier } from './riskClassification';
 import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, quickExitCreditRemainder: 0, quickExitEndingIds: [], historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {} };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, quickExitCreditRemainder: 0, quickExitEndingIds: [], historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {}, contacts: [], favors: [] };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -64,6 +64,43 @@ export function hasTemporaryEquipment(state: SaveData, itemId: string): boolean 
 
 export function hasOwnedAsset(state: SaveData, assetId: string): boolean {
   return !!state.character?.ownedAssets?.some(({ id }) => id === assetId);
+}
+
+export function hasContact(character: Character | null | undefined, contactId: string): boolean {
+  return !!character?.contacts?.some(({ id }) => id === contactId);
+}
+
+export function hasFavor(character: Character | null | undefined, favorId: string): boolean {
+  return !!character?.favors?.some(({ id, status }) => id === favorId && status === 'available');
+}
+
+/** Stable IDs are idempotent; the first authored record remains canonical. */
+export function grantContact(state: SaveData, contact: TravelerContact): SaveData {
+  const next = structuredClone(state);
+  if (!next.character) return next;
+  next.character.contacts ??= [];
+  if (!next.character.contacts.some(({ id }) => id === contact.id)) next.character.contacts.push(structuredClone(contact));
+  return next;
+}
+
+/** Favor IDs are single-use records; re-granting an existing ID never stacks or refreshes it. */
+export function grantFavor(state: SaveData, favor: TravelerFavor): SaveData {
+  const next = structuredClone(state);
+  if (!next.character) return next;
+  next.character.favors ??= [];
+  if (!next.character.favors.some(({ id }) => id === favor.id)) next.character.favors.push(structuredClone(favor));
+  return next;
+}
+
+/** Consumes only an available Favor and retains its associated Contact and consumed record. */
+export function consumeFavor(state: SaveData, favorId: string): SaveData {
+  const next = structuredClone(state);
+  const favor = next.character?.favors?.find(({ id, status }) => id === favorId && status === 'available');
+  if (favor) {
+    favor.status = 'consumed';
+    if (next.run) next.run.message = `Favor used: ${favor.description}.`;
+  }
+  return next;
 }
 
 function supplyFits(character: Character, supplyId: string, quantity: number): boolean {
@@ -258,6 +295,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.relics || requirement.relics.every((id) => hasRelic(state, id)))
     && (!requirement.supplies || Object.entries(requirement.supplies).every(([id, quantity]) => inventoryClass(id) === 'SUPPLY' && hasSupply(character, id, quantity)))
     && (!requirement.canAddSupplies || Object.entries(requirement.canAddSupplies).every(([id, quantity]) => supplyFits(character, id, quantity)))
+    && (!requirement.contacts || requirement.contacts.every((id) => hasContact(character, id)))
+    && (!requirement.favors || requirement.favors.every((id) => hasFavor(character, id)))
     && (!requirement.ownedAssets || requirement.ownedAssets.every((id) => hasOwnedAsset(state, id)))
     && (!requirement.temporaryEquipment || requirement.temporaryEquipment.every((id) => hasTemporaryEquipment(state, id)))
     && (!requirement.notItemUpgrades || Object.entries(requirement.notItemUpgrades).every(([id, upgrades]) => upgrades.every((upgradeId) => !hasUpgrade(state, id, upgradeId))))
@@ -421,6 +460,20 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.gainOwnedAssets) {
     const assets = character.ownedAssets ??= [];
     for (const asset of effects.gainOwnedAssets) if (!assets.some(({ id }) => id === asset.id)) assets.push({ ...asset });
+  }
+  if (effects.gainContacts) {
+    const contacts = character.contacts ??= [];
+    for (const contact of effects.gainContacts) if (!contacts.some(({ id }) => id === contact.id)) contacts.push(structuredClone(contact));
+  }
+  if (effects.gainFavors) {
+    const favors = character.favors ??= [];
+    for (const favor of effects.gainFavors) if (!favors.some(({ id }) => id === favor.id)) favors.push(structuredClone(favor));
+  }
+  if (effects.consumeFavors) for (const favorId of effects.consumeFavors) {
+    const favor = character.favors?.find(({ id, status }) => id === favorId && status === 'available');
+    if (!favor) continue;
+    favor.status = 'consumed';
+    run.message = `Favor used: ${favor.description}.`;
   }
   if (effects.setFlags) run.flags = addUnique(run.flags, effects.setFlags);
   if (effects.clearFlags) run.flags = without(run.flags, effects.clearFlags);

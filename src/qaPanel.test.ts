@@ -27,6 +27,8 @@ describe('QA progression inspection', () => {
     expect(markup).toContain('data-qa-simulate-selection="100"');
     expect(markup).toContain('data-qa-simulate-selection="1000"');
     expect(markup).toContain('selectionCategoryHistory');
+    expect(markup).toContain('&quot;contacts&quot;: []');
+    expect(markup).toContain('&quot;favors&quot;: []');
     expect(markup).toContain('nextSelection');
     expect(markup).toContain('data-qa-content-quality-report');
     expect(markup).toContain('data-qa-set-gear-capacity');

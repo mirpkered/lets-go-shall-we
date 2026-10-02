@@ -46,7 +46,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
     visitedSceneIds: run?.visitedSceneIds ?? (run ? [run.sceneId] : []),
     randomSelections: run?.randomSelections ?? {},
     inventory: run?.inventory ?? [], carriedItems: getCarriedItems(character), inventoryClasses: Object.fromEntries(Object.keys(items).map((id) => [id, inventoryClass(id)])), supplies: character?.supplies ?? {}, itemStates: state.itemStates ?? {}, ownedAssets: character?.ownedAssets ?? [], gearCapacity: carryCapacity(character?.adventuresCompleted ?? 0), carriedGear: getCarriedGearItems(character), carriedRelics: getCarriedRelics(character), supplyStackCapacity: SUPPLY_STACK_CAPACITY, travelerAdventuresCompleted: character?.adventuresCompleted ?? null, flags: run?.flags ?? [], money: character?.money ?? null,
-    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], bank: state.bank, bankCount: state.bank.length, bankCapacity: BANK_CAPACITY,
+    health: run?.health ?? null, lore: character?.lore ?? [], knowledge: character?.knowledge ?? [], historyFlags: character?.historyFlags ?? [], contacts: character?.contacts ?? [], favors: character?.favors ?? [], bank: state.bank, bankCount: state.bank.length, bankCapacity: BANK_CAPACITY,
     mostRecentScenarioId: state.mostRecentScenarioId ?? null,
     recentScenarioIds: state.recentScenarioIds ?? [],
     recentRiskHistory: state.recentRiskHistory ?? [],

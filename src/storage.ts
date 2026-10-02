@@ -4,7 +4,8 @@ import { countQualifyingStoryTransitions, pickRunRandomSelections } from './engi
 import { CATEGORY_HISTORY_WINDOW, primaryScenarioCategory, RECENT_SCENARIO_WINDOW } from './scenarioSelection';
 import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
-import type { ItemCondition, PersistentItemState } from './types';
+import type { ItemCondition, PersistentItemState, TravelerContact, TravelerFavor } from './types';
+import { LEGACY_CONTINUITY_MIGRATIONS } from './travelerContinuity';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
 export const QA_SAVE_KEY = 'mirpworks.lets-go-shall-we.qa.v1';
@@ -34,6 +35,32 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     }
     if (parsed.character) {
       parsed.character.historyFlags ??= [];
+      if (!Array.isArray(parsed.character.contacts)) { parsed.character.contacts = []; migrated = true; }
+      else {
+        const contacts = parsed.character.contacts.filter((entry): entry is TravelerContact => !!entry && typeof entry.id === 'string' && !!entry.id && typeof entry.name === 'string' && typeof entry.role === 'string' && typeof entry.sourceScenarioId === 'string')
+          .map(({ id, name, role, sourceScenarioId, notes }) => ({ id, name, role, sourceScenarioId, ...(typeof notes === 'string' ? { notes } : {}) }))
+          .filter((entry, index, all) => all.findIndex((candidate) => candidate.id === entry.id) === index);
+        if (JSON.stringify(contacts) !== JSON.stringify(parsed.character.contacts)) migrated = true;
+        parsed.character.contacts = contacts;
+      }
+      if (!Array.isArray(parsed.character.favors)) { parsed.character.favors = []; migrated = true; }
+      else {
+        const favors = parsed.character.favors.filter((entry): entry is TravelerFavor => !!entry && typeof entry.id === 'string' && !!entry.id && typeof entry.description === 'string' && typeof entry.sourceScenarioId === 'string' && ['available', 'consumed'].includes(entry.status))
+          .map(({ id, contactId, description, sourceScenarioId, status }) => ({ id, ...(typeof contactId === 'string' ? { contactId } : {}), description, sourceScenarioId, status }))
+          .filter((entry, index, all) => all.findIndex((candidate) => candidate.id === entry.id) === index);
+        if (JSON.stringify(favors) !== JSON.stringify(parsed.character.favors)) migrated = true;
+        parsed.character.favors = favors;
+      }
+      for (const migration of LEGACY_CONTINUITY_MIGRATIONS) if (parsed.character.historyFlags.includes(migration.historyFlag)) {
+        if (!parsed.character.contacts.some(({ id }) => id === migration.contact.id)) {
+          parsed.character.contacts.push(structuredClone(migration.contact));
+          migrated = true;
+        }
+        if ('favor' in migration && migration.favor && !parsed.character.favors.some(({ id }) => id === migration.favor.id)) {
+          parsed.character.favors.push(structuredClone(migration.favor));
+          migrated = true;
+        }
+      }
       if (!Array.isArray(parsed.character.ownedAssets)) { parsed.character.ownedAssets = []; migrated = true; }
       if (!parsed.character.supplies || typeof parsed.character.supplies !== 'object' || Array.isArray(parsed.character.supplies)) { parsed.character.supplies = {}; migrated = true; }
       else for (const [id, quantity] of Object.entries(parsed.character.supplies)) {

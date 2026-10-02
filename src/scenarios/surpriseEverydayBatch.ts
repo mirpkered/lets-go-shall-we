@@ -1,4 +1,5 @@
 import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, anthologyTags as tags } from './surpriseAnthologyTools';
+import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
 
 const T = (hook: string, activities: string[], role: string, tone: string, setting: string, structures: string[], entry: string, reward = ['narrative-only payoff'], risk: 'LOW' | 'MODERATE' | 'HIGH' = 'LOW') => tags({ hook, activities, role, tone, risk, setting, structures, entry, rewards: reward, consequences: risk === 'LOW' ? ['time/opportunity', 'relationship'] : ['time/opportunity', 'health/injury', 'relationship'] });
 
@@ -82,7 +83,7 @@ export const SUPPER_AT_THE_INN = story('supper-at-the-inn', 'Supper at the Inn',
     { id: 'takeServingWork', label: 'Help carry the first dishes', next: 'service' },
     { id: 'askWhatIsNeeded', label: 'Ask which task matters most', next: 'needs' },
     { id: 'declineKitchen', label: 'Wish her a steady evening', next: 'leave' },
-  { id: 'callOnOldCourtesy', label: 'Ask for a simple meal first', requirements: { historyFlags: ['improvised_a_kitchen_work_cloth_from_clean_sack'] }, next: 'meal' },
+  { id: 'callOnOldCourtesy', label: 'Use Nessa’s offer of a simple meal', requirements: { contacts: [NESSA_CONTACT.id], favors: [NESSA_MEAL_FAVOR.id] }, effects: { consumeFavors: [NESSA_MEAL_FAVOR.id] }, next: 'meal' },
   ]),
   needs: scene('needs', 'One Meal Behind', 'The cook has enough hands for the stove but not for serving. The clean cloths will be ready in a few minutes; carrying hot plates now would be unsafe.', [
     { id: 'waitForCloths', label: 'Wait for the cloths, then serve', next: 'service' },
@@ -96,7 +97,7 @@ export const SUPPER_AT_THE_INN = story('supper-at-the-inn', 'Supper at the Inn',
     { id: 'bringColdDishes', label: 'Serve the cold dishes first', next: 'service' },
     { id: 'tellGuestsWhy', label: 'Explain the short delay to guests', next: 'service' },
   ]),
-  meal: end('meal', 'A Bowl Before the Work', 'Nessa sets aside a bowl before the rush. She remembers your practical help and asks no favor in return; you can decide whether to stay and lend a hand afterward.'),
+  meal: end('meal', 'A Bowl Before the Work', 'Nessa honors her offer with a bowl before the rush. She asks no work or debt in return; you can decide whether to stay and lend a hand afterward.'),
   paid: end('paid', 'A Full Shift of Help', 'Nessa pays the promised coin. The supper runs late but safely, and the guests remember the meal more than the wait.'),
   partial: end('partial', 'A First Round Served', 'The first tables are fed, but Nessa must finish the room without you. She thanks you for the useful start and makes no claim that the whole shift is done.'),
   leave: end('leave', 'A Kitchen Left to Its Cook', 'You leave Nessa to her own staff. The supper bell rings a little late, and no one mistakes courtesy for a promise to work.'),

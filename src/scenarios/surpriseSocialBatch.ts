@@ -1,4 +1,5 @@
 import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, anthologyTags as tags } from './surpriseAnthologyTools';
+import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
 
 const T = (hook: string, activity: string[], role: string, tone: string, setting: string, structures: string[], entry: string, rewards = ['narrative-only payoff']) => tags({ hook, activities: activity, role, tone, risk: 'LOW', setting, structures, entry, rewards, consequences: ['time/opportunity', 'relationship'] });
 
@@ -215,13 +216,13 @@ export const THE_LAST_CLEAN_APRON = story('the-last-clean-apron', 'The Last Clea
     { id: 'giveDishwasherApron', label: 'Give the apron to the dishwasher', next: 'washing' },
   ], 'warning'),
   cupboard: scene('cupboard', 'A Clean Flour Sack', 'A clean flour sack can be cut into a rough waist cloth. It will keep splashes off, but not protect anyone from a hot pan. The innkeeper can spare it if the cook agrees.', [
-    { id: 'cutSack', label: 'Make a temporary waist cloth', next: 'plating', effects: { historyFlags: ['improvised_a_kitchen_work_cloth_from_clean_sack'] } },
+    { id: 'cutSack', label: 'Make a temporary waist cloth', hint: 'Nessa promises one simple meal next time you pass through.', next: 'plating', effects: { historyFlags: ['improvised_a_kitchen_work_cloth_from_clean_sack'], gainContacts: [NESSA_CONTACT], gainFavors: [NESSA_MEAL_FAVOR] } },
     { id: 'useApronOnHotPans', label: 'Keep the apron for the hot pans', next: 'washing' },
   ]),
   plating: scene('plating', 'The Supper Goes Out', 'The cook plates the meal on time. The dishwasher works slower without the apron and asks you to carry two cooled trays, not the hot pans.', [
     { id: 'carryCooledTrays', label: 'Carry the cooled trays to the dining room', next: 'paid', effects: { money: 1 } },
     { id: 'checkDishwasher', label: 'Check that the dishwasher is managing', next: 'thanks' },
-  ]),
+  ], 'safe', [{ requirements: { historyFlags: ['improvised_a_kitchen_work_cloth_from_clean_sack'] }, text: 'The cook plates the meal on time. The dishwasher works slower without the apron and asks you to carry two cooled trays, not the hot pans. Nessa says to remember her offer of a simple meal when you pass this way again.' }]),
   washing: scene('washing', 'Hot Pans, Slower Supper', 'The dishwasher handles the pans safely. The cook sends supper out several minutes late and asks you to explain the delay to the waiting tables.', [
     { id: 'explainDelay', label: 'Explain the kitchen’s safety choice', next: 'thanks' },
     { id: 'offerMoreWork', label: 'Help carry the finished plates', next: 'paid', effects: { money: 1 } },

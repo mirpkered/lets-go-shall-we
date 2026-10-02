@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, itemState, meets, newCharacter, startRun } from '../engine';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { classifyScenario } from '../scenarioDiversity';
 import type { SaveData, Scenario } from '../types';
@@ -19,6 +19,12 @@ function act(state: SaveData, scenario: Scenario, id: string, roll = 0): SaveDat
   if (!choice) throw new Error(`No ${scenario.title}.${scene.id}.${id}`);
   if (!meets(choice.requirements, state)) throw new Error(`Unavailable ${scenario.title}.${scene.id}.${id}`);
   return choose(state, scenario, choice, () => roll);
+}
+function roundTrip(state: SaveData): SaveData {
+  let raw: string | null = null;
+  const storage = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
+  saveGame(state, storage);
+  return loadSave(storage);
 }
 function linkTargets(scene: Scenario['scenes'][string]): string[] {
   return scene.choices.flatMap((c) => [c.next, c.chance?.successNext, c.chance?.failureNext, c.effects?.combat?.winNext, c.effects?.combat?.lossNext].filter((x): x is string => !!x));
@@ -126,6 +132,54 @@ describe('occult investigation adventures', () => {
     full = act(full, scenario, 'declineChapelChalk');
     expect(full.run?.status).toBe('success');
     expect(full.character?.supplies?.ritualChalk).toBe(4);
+  });
+
+  it('offers scarce Salt on a year-round fresh-traveler route and consumes it only for the matching thread threat', () => {
+    const scenario = adventures.find((s) => s.id === 'the-black-thread')!;
+    let state = fresh(scenario);
+    const offer = scenario.scenes.blackThreadStreet.choices.find((c) => c.id === 'takeThreadSalt')!;
+    expect(meets(offer.requirements, state)).toBe(true);
+    state = act(state, scenario, 'takeThreadSalt');
+    expect(state.character?.supplies).toEqual({ consecratedSalt: 1 });
+    expect(state.run?.sceneId).toBe('threadWitness');
+    state = roundTrip(state);
+    expect(state.character?.supplies?.consecratedSalt).toBe(1);
+    expect(state.run?.sceneId).toBe('threadWitness');
+    state = act(state, scenario, 'findTailorYard');
+    state = act(state, scenario, 'inspectRing');
+    state = act(state, scenario, 'useSaltThread');
+    expect(state.character?.supplies?.consecratedSalt).toBeUndefined();
+    expect(state.run?.supplyNotice).toContain('1 → 0');
+    const resumed = JSON.parse(JSON.stringify(state)) as SaveData;
+    expect(resumed.character?.supplies?.consecratedSalt).toBeUndefined();
+    expect(resumed.run?.sceneId).toBe('threadAfter');
+
+    let full = fresh(scenario, undefined, { consecratedSalt: 3 });
+    expect(meets(offer.requirements, full)).toBe(false);
+    full = act(full, scenario, 'traceThread');
+    expect(full.run?.sceneId).toBe('threadTailor');
+  });
+
+  it('offers two marked Nails without prior state, preserves the no-supply route, and consumes them explicitly at the arch', () => {
+    const scenario = adventures.find((s) => s.id === 'house-with-two-cellars')!;
+    let state = fresh(scenario);
+    const offer = scenario.scenes.twoCellars.choices.find((c) => c.id === 'takeMarkedNailsAndDescend')!;
+    expect(meets(offer.requirements, state)).toBe(true);
+    state = act(state, scenario, 'takeMarkedNailsAndDescend');
+    expect(state.character?.supplies).toEqual({ coldIronNails: 2 });
+    expect(state.run?.sceneId).toBe('cellarLanding');
+    const saved = roundTrip(state);
+    expect(saved.character?.supplies?.coldIronNails).toBe(2);
+    expect(saved.run?.sceneId).toBe('cellarLanding');
+    state = act(state, scenario, 'nailArch');
+    expect(state.character?.supplies?.coldIronNails).toBeUndefined();
+    expect(state.run?.supplyNotice).toContain('2 → 0');
+
+    let full = fresh(scenario, undefined, { coldIronNails: 6 });
+    expect(meets(offer.requirements, full)).toBe(false);
+    full = act(full, scenario, 'descendTwoCellars');
+    expect(full.run?.sceneId).toBe('cellarLanding');
+    expect(meets(scenario.scenes.cellarLanding.choices.find((c) => c.id === 'nailArch')!.requirements, full)).toBe(true);
   });
 
   it('uses the existing Grave Token and Yew Charm for narrow discoveries, not universal protection', () => {

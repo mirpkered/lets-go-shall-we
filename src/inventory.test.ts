@@ -78,6 +78,21 @@ describe('class-aware inventory model', () => {
     expect(state.run?.supplyNotice).toContain('1 → 0');
   });
 
+  it('respects each canonical Supply stack limit and keeps Supplies out of carried items and the Bank', () => {
+    let state = saveWithLoadout([]);
+    state = addSupply(state, 'ritualChalk', 4);
+    state = addSupply(state, 'consecratedSalt', 3);
+    state = addSupply(state, 'coldIronNails', 6);
+    expect(state.character?.supplies).toEqual({ ritualChalk: 4, consecratedSalt: 3, coldIronNails: 6 });
+    expect(meets({ canAddSupplies: { consecratedSalt: 1 } }, state)).toBe(false);
+    expect(meets({ canAddSupplies: { coldIronNails: 1 } }, state)).toBe(false);
+    expect(getCarriedItems(state.character)).toEqual([]);
+    const before = state.character?.supplies;
+    state = depositCarried(state, undefined, 'ritualChalk');
+    expect(state.bank).toEqual([]);
+    expect(state.character?.supplies).toEqual(before);
+  });
+
   it('rejects a fifth distinct Supply stack without silently replacing anything', () => {
     const extra = ['testSupplyFour', 'testSupplyFive'];
     const definitions: Item[] = extra.map((id) => ({ id, name: id, description: 'Test only.', category: 'consumable', carryable: false, inventoryClass: 'SUPPLY', stackLimit: 1 }));
@@ -144,7 +159,7 @@ describe('class-aware inventory model', () => {
 
   it('loses traveler-held supplies and Relics on death while preserving banked property', () => {
     let state = saveWithLoadout(['bronzeMaskFragment']);
-    state.character!.supplies = { ritualChalk: 2 };
+    state.character!.supplies = { ritualChalk: 2, consecratedSalt: 1, coldIronNails: 2 };
     state.bank = ['graveCoin'];
     state.itemStates = { bronzeMaskFragment: { condition: 'NORMAL', upgrades: [], provenance: [] }, graveCoin: { condition: 'NORMAL', upgrades: [], provenance: [] } };
     state = failCharacter(state);
@@ -155,7 +170,7 @@ describe('class-aware inventory model', () => {
 
   it('also loses character-bound inventory and Assets on retirement while preserving the Bank', () => {
     const state = saveWithLoadout(['yewCharm']);
-    state.character!.supplies = { consecratedSalt: 2 };
+    state.character!.supplies = { ritualChalk: 1, consecratedSalt: 2, coldIronNails: 3 };
     state.character!.ownedAssets = [{ id: 'horse', name: 'Old Horse', description: 'A steady pack animal.' }];
     state.character!.money = 17;
     state.bank = ['travelRope'];

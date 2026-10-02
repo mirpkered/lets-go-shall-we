@@ -38,6 +38,24 @@ export interface Item {
 
 export type SupplyInventory = Record<string, number>;
 
+/** A named, character-bound person/relationship the Traveler may plausibly meet again. */
+export interface TravelerContact {
+  id: string;
+  name: string;
+  role: string;
+  sourceScenarioId: string;
+  notes?: string;
+}
+
+/** A specific, non-stackable offer. Re-granting an existing ID never refreshes consumption. */
+export interface TravelerFavor {
+  id: string;
+  contactId?: string;
+  description: string;
+  sourceScenarioId: string;
+  status: 'available' | 'consumed';
+}
+
 export interface ItemUpgradeDefinition {
   id: string;
   name: string;
@@ -77,6 +95,10 @@ export interface Character {
   ownedAssets?: OwnedAsset[];
   /** Character-bound limited-use resources, keyed by supply item ID. */
   supplies?: SupplyInventory;
+  /** Named, character-bound relationships; not reputation or a score. */
+  contacts?: TravelerContact[];
+  /** Named, character-bound callable offers/obligations; not currency. */
+  favors?: TravelerFavor[];
 }
 
 export interface OwnedAsset {
@@ -167,6 +189,9 @@ export interface Requirement {
   relics?: string[];
   supplies?: Record<string, number>;
   canAddSupplies?: Record<string, number>;
+  contacts?: string[];
+  /** Requires each named Favor to still be available. */
+  favors?: string[];
   ownedAssets?: string[];
   temporaryEquipment?: string[];
   notItemUpgrades?: Record<string, string[]>;
@@ -213,6 +238,9 @@ export interface Effects {
   lore?: string[];
   historyFlags?: string[];
   gainOwnedAssets?: OwnedAsset[];
+  gainContacts?: TravelerContact[];
+  gainFavors?: TravelerFavor[];
+  consumeFavors?: string[];
   inventorySources?: Record<string, InventorySource>;
   money?: number;
   setFlags?: string[];
