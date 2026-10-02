@@ -43,6 +43,11 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] Keep Gear requirements optional for baseline success. Bank only Gear/Relics; character-bound Supplies and Assets are lost with death, abandonment, or retirement.
 - [ ] Consider quiet/partial outcomes and situations with no perfect solution where they fit.
 - [ ] Before terminal: did more than a procedure happen?
+- [ ] If the hook is a discovered place, can curiosity start the story without inventing a quest-giver?
+- [ ] Do physical details let the player infer recent activity, danger, or history before explanatory confirmation?
+- [ ] If a site looks abandoned, have ownership, heirs, caretaking, occupants, and signs of return been kept distinct from appearance?
+- [ ] For salvage or a claim, are provenance and competing evidence clear enough for the player to choose whether to take, leave, share, or conceal?
+- [ ] If exploration deepens risk, is that risk visible before the choice, and can the traveler leave with partial knowledge?
 - [ ] Apply the No Checklist Ending Rule: an explicit refusal may end briefly, but engaged participation should show judgment, performance, complication, consequence, reaction, or payoff; do not add scenes to satisfy a quota.
 - [ ] Did the player make a meaningful decision?
 - [ ] Did the situation change because of the player’s action?

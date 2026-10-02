@@ -55,6 +55,20 @@ These rules govern new adventures and focused revisions. They are consolidated f
 
 ## Spatial, physical, and item logic
 
+- **No Quest-Giver Required Rule:** An adventure may begin because the traveler notices a place, trace, structure, or other evidence. A job, contract, or request is not required when curiosity itself is a credible hook.
+- **Environmental Storytelling Rule:** Let physical details reveal history, danger, ownership, recent activity, and abandonment before an NPC explains them where practical.
+- **Interpretation Before Explanation Rule:** Give the player observable evidence from which to form a theory before confirming what happened. Distinguish evidence from inference.
+- **Abandoned Does Not Automatically Mean Unowned Rule:** A derelict-looking site may still have an owner, heir, claim, caretaker, occupant, or returning user. Do not present its contents as free by default.
+- **Possession Is Not Automatically Ownership Rule:** Occupancy, paperwork, improvements, markers, witnesses, and local custom can each support a claim without alone settling it.
+- **Salvage Has Context Rule:** Establish whether a find appears discarded, stored, hidden, active, owned, dangerous, or ambiguous before treating it as a reward.
+- **Looting Is a Real Choice Rule:** Permit opportunistic taking, concealment, trespass, or theft when the fiction allows it. Such choices may succeed and need not be punished immediately; record plausible consequences rather than applying automatic moral penalties.
+- **Claim Evidence Rule:** Ground ownership disputes in observable evidence such as markers, records, improvements, work, witnesses, or local practice. One NPC’s assertion is not proof.
+- **Claim Conflict Is Not Automatically Law vs. Criminal Rule:** Competing claims may both be partial, mistaken, inherited, locally recognized, or fraudulent. Avoid automatic hero/villain framing.
+- **Remote Structure Risk Rule:** Derelict buildings, mines, machinery, slopes, and waterworks can be active hazards even without an enemy. Make the physical danger and a return route legible.
+- **Curiosity Has a Cost Rule:** Deeper investigation may cost time, safety, gear, or access; show the developing risk and preserve meaningful opportunities to stop.
+- **Leaving Early Is Valid Rule:** A traveler may leave with partial knowledge, a marked route, or an unresolved question. Early departure is a real outcome, not automatically a failed story.
+- **Discovery Is a Reward Rule:** Understanding a place, identifying a route, learning ownership, or recognizing danger can be a satisfying outcome without coin or gear.
+
 - **Spatial Clarity / Physical Setup Rule:** Before a decision depends on positions, routes, barriers, vehicles, animals, hazards, or connections, establish them in ordinary language. Narrate movement explicitly; do not teleport people or objects, or rely on unseen equipment.
 - **Physical Evidence Rule:** Clues must be observable under the scene’s actual weather, light, distance, water, and viewpoint. Do not assume tracks, sounds, or objects could be perceived when conditions prevent it.
 - **Important-Detail Reinforcement Rule:** Repeat a decision-critical fact when it affects a choice after a branch or delay. Keep the reminder natural rather than tutorial-like.

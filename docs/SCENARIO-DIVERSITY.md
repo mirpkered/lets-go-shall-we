@@ -18,7 +18,9 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 330 adventures. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 330 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 370 adventures. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 370 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+
+The 40-adventure remote-discovery/frontier-claims batch is all-year and grounded (fantasy density NONE). Its openings mostly use voluntary curiosity; claim evidence, salvage provenance, remote occupation, and structural hazards are represented in the authored hooks and scene graphs. Existing selection category weighting and recent-scenario exclusion apply normally. The batch does not add Contacts/Favors, items, or a parallel persistence model.
 
 ## Seasonal availability
 
