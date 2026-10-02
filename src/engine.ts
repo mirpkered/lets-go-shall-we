@@ -7,7 +7,7 @@ import { RECENT_EASTER_EGG_WINDOW, rollEasterEgg } from './easterEggs';
 import type { EasterEgg } from './easterEggs';
 
 export function newCharacter(name = 'The Traveler'): Character {
-  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], adventuresCompleted: 0, quickExitCreditRemainder: 0, quickExitEndingIds: [], historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {}, contacts: [], favors: [] };
+  return { id: crypto.randomUUID(), name, health: 10, maxHealth: 10, money: 0, carriedItem: null, carriedItems: [], lore: [], knowledge: [], knowledgeKeys: [], adventuresCompleted: 0, quickExitCreditRemainder: 0, quickExitEndingIds: [], historyFlags: [], scenarioCategoryHistory: [], scenarioPlayCounts: {}, ownedAssets: [], supplies: {}, contacts: [], favors: [] };
 }
 
 export function getCarriedItems(character: Character | null | undefined): string[] {
@@ -305,6 +305,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))
     && (!requirement.knowledge || requirement.knowledge.every((id) => character.knowledge.includes(id)))
+    && (!requirement.knowledgeKeys || requirement.knowledgeKeys.every((id) => (character.knowledgeKeys ?? []).includes(id)))
+    && (!requirement.notKnowledgeKeys || requirement.notKnowledgeKeys.every((id) => !(character.knowledgeKeys ?? []).includes(id)))
     && (!requirement.notKnowledge || requirement.notKnowledge.every((id) => !character.knowledge.includes(id)))
     && (!requirement.historyFlags || requirement.historyFlags.every((id) => (character.historyFlags ?? []).includes(id)))
     && (!requirement.minHealth || run.health >= requirement.minHealth)
@@ -455,6 +457,10 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     (state.itemStates ??= {})[newId] = { ...previous, condition: 'NORMAL', upgrades: compatibleUpgrades, provenance: addUnique(previous.provenance, replacement.provenance ? [replacement.provenance] : []) };
   }
   if (effects.knowledge) character.knowledge = addUnique(character.knowledge, effects.knowledge.map((entry) => runText(entry, state)));
+  if (effects.knowledgeEntries) {
+    character.knowledge = addUnique(character.knowledge, effects.knowledgeEntries.map(({ text }) => runText(text, state)));
+    character.knowledgeKeys = addUnique(character.knowledgeKeys ?? [], effects.knowledgeEntries.map(({ id }) => id));
+  }
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
   if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags.map((entry) => runText(entry, state)));
   if (effects.gainOwnedAssets) {

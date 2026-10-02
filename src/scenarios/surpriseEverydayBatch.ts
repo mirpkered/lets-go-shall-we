@@ -1,5 +1,6 @@
 import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, anthologyTags as tags } from './surpriseAnthologyTools';
 import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 const T = (hook: string, activities: string[], role: string, tone: string, setting: string, structures: string[], entry: string, reward = ['narrative-only payoff'], risk: 'LOW' | 'MODERATE' | 'HIGH' = 'LOW') => tags({ hook, activities, role, tone, risk, setting, structures, entry, rewards: reward, consequences: risk === 'LOW' ? ['time/opportunity', 'relationship'] : ['time/opportunity', 'health/injury', 'relationship'] });
 
@@ -206,7 +207,7 @@ export const A_CHAIR_BESIDE_THE_SICKBED = story('a-chair-beside-the-sickbed', 'A
     { id: 'leaveThemRest', label: 'Let the guest rest alone', next: 'rest' },
   ]),
   company: scene('company', 'A Conversation about Ordinary Things', 'The guest would rather talk about the river road than the fever. They ask if you know whether the ferry still runs at dusk; you do not know unless you have learned it.', [
-    { id: 'shareKnownRiverFact', label: 'Share what you know about the ferry', requirements: { knowledge: ['A ferryman said river bends are shallow this season, but can change after rain.'] }, next: 'talk' },
+    { id: 'shareKnownRiverFact', label: 'Share what you know about the ferry', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.riverBendSupper.id] }, next: 'talk' },
     { id: 'admitNotKnowing', label: 'Admit you do not know', next: 'talk' },
     { id: 'offerStory', label: 'Tell a small road story instead', next: 'story' },
   ]),

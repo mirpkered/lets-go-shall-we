@@ -1,7 +1,6 @@
 import type { Choice, Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
-const MAP_KNOWLEDGE = 'The old survey map marks a side drift that reaches the lower workings above the flooded rail bed.';
-const AIR_KNOWLEDGE = 'The mine air is poorer near the flooded rail bed; a lantern flame leans low there, while the upper ledges still draw air.';
 const RESCUE_HISTORY = ['rescued_missing_person', 'kept_rescue_promise'];
 
 function extractionChoices(delayed: boolean): Choice[] {
@@ -76,7 +75,7 @@ export const WHATS_MINE: Scenario = {
       id: 'preparation', title: 'Before the Descent',
       text: 'The retired foreman lives nearby and still checks the sealed property. He has only a few pieces of his old work kit left: an upper-level survey map, a coil of travel rope, and a miner’s headlamp. If you have coins to spare, he will part with one to help pay for keeping the gate road clear. You can also go in with what you brought. None of it makes the old supports safe.',
       choices: [
-        { id: 'buyMap', label: 'Take the old survey map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['mineSurveyMap'] }, effects: { money: -2, gainItems: ['mineSurveyMap'], knowledge: [MAP_KNOWLEDGE] }, next: 'mineMouth' },
+        { id: 'buyMap', label: 'Take the old survey map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['mineSurveyMap'] }, effects: { money: -2, gainItems: ['mineSurveyMap'], knowledgeEntries: [KNOWLEDGE_FACTS.mineSideDrift] }, next: 'mineMouth' },
         { id: 'buyRope', label: 'Take the travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'mineMouth' },
         { id: 'buyHeadlamp', label: 'Take the miner’s headlamp — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['minerHeadlamp'] }, effects: { money: -4, gainItems: ['minerHeadlamp'] }, next: 'mineMouth' },
         { id: 'enterWithoutPurchase', label: 'Enter with what you have', timeCost: 1, next: 'mineMouth' },
@@ -93,7 +92,7 @@ export const WHATS_MINE: Scenario = {
       ],
     },
     railGallery: { id: 'railGallery', title: 'A Tool in the Dust', text: 'A small wrench lies beside a fresh scrape in the rail. Eli dropped it in a hurry. Beyond it, the rails disappear under a low rock shelf.', choices: [{ id: 'duckUnderShelf', label: 'Follow the scrape under the shelf', effects: { knowledge: ['Eli passed through the main rail drift and continued below the low shelf.'] }, next: 'lowerTunnel' }] },
-    ladderLanding: { id: 'ladderLanding', title: 'The Bent Ladder’s Foot', text: 'The ladder flexed, but holds. On the landing, an oil lamp burns low beside a chalk arrow pointing toward the upper air current.', choices: [{ id: 'crossLanding', label: 'Follow the chalk arrow', effects: { knowledge: [AIR_KNOWLEDGE] }, next: 'lowerTunnel' }] },
+    ladderLanding: { id: 'ladderLanding', title: 'The Bent Ladder’s Foot', text: 'The ladder flexed, but holds. On the landing, an oil lamp burns low beside a chalk arrow pointing toward the upper air current.', choices: [{ id: 'crossLanding', label: 'Follow the chalk arrow', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.floodedMineAir] }, next: 'lowerTunnel' }] },
     ladderFall: { id: 'ladderFall', title: 'A Hard Landing', tone: 'warning', text: 'You land against the rock shelf, bruised but able to stand. The bottom rungs sway above you. A scrape in the dust leads onward, away from the damaged ladder.', choices: [{ id: 'leaveBrokenLadder', label: 'Follow the scrape deeper', next: 'lowerTunnel' }] },
     mappedDrift: { id: 'mappedDrift', title: 'The Upper Side Drift', text: 'The map guides you onto an old ventilation ledge above the flooded rails. Fresh boot marks cross a chalk line; Eli came this way, avoiding the lower water.', choices: [{ id: 'followMapMarks', label: 'Follow Eli’s boot marks', effects: { setFlags: ['highAirRoute'] }, next: 'lowerTunnel' }] },
     ropeDescent: { id: 'ropeDescent', title: 'A Controlled Descent', text: 'You anchor the rope to a sound iron ring and lower yourself past the broken ladder. A fresh boot mark at the bottom points toward the upper workings, not the flooded rails.', choices: [{ id: 'followRopeBootmark', label: 'Follow the fresh mark', next: 'lowerTunnel' }] },
@@ -106,7 +105,7 @@ export const WHATS_MINE: Scenario = {
         { id: 'inspectSilverVein', label: 'Look closer at the exposed silver', timeCost: 8, effects: { setFlags: ['silverVeinFound'] }, next: 'silverSeam' },
       ],
     },
-    airPocket: { id: 'airPocket', title: 'Where the Flame Leans', tone: 'warning', text: 'Your lantern flame gutters low near the flooded rail bed. On the upper ledge it straightens again. The old mine carries air unevenly; the side ledge is safer to breathe along, but the tapping comes from below.', choices: [{ id: 'keepToUpperAir', label: 'Stay on the upper ledge toward the tapping', effects: { knowledge: [AIR_KNOWLEDGE], setFlags: ['highAirRoute'] }, next: 'supportApproach' }] },
+    airPocket: { id: 'airPocket', title: 'Where the Flame Leans', tone: 'warning', text: 'Your lantern flame gutters low near the flooded rail bed. On the upper ledge it straightens again. The old mine carries air unevenly; the side ledge is safer to breathe along, but the tapping comes from below.', choices: [{ id: 'keepToUpperAir', label: 'Stay on the upper ledge toward the tapping', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.floodedMineAir], setFlags: ['highAirRoute'] }, next: 'supportApproach' }] },
     silverSeam: {
       id: 'silverSeam', title: 'The Silver Showing',
       text: 'A narrow seam of bright ore lies loose at the crack. It could be sold, but pulling it free will take a few minutes under the failing supports. The tapping below stops, then starts again.',
@@ -123,7 +122,7 @@ export const WHATS_MINE: Scenario = {
         { id: 'braceSupports', label: 'Brace the timber with loose rail ties', hint: 'A firm brace could steady this stretch; the wood is cracked.', chance: { probability: 0.72, successNext: 'bracedApproach', failureNext: 'supportShift', successMessage: 'The tie holds the beam for now.', failureMessage: 'The brace slips and the ceiling sheds stone.', successEffects: { setFlags: ['tunnelBraced'] }, failureEffects: { health: -1, setFlags: ['rescueStructureShifted'] } } },
         { id: 'squeezePastSupport', label: 'Squeeze along the narrow shelf', hint: 'There is room, but the ledge crumbles at the edge.', chance: { probability: 0.67, successNext: 'squeezeApproach', failureNext: 'supportShift', successMessage: 'You keep low and clear the beam.', failureMessage: 'The shelf breaks under your heel.', failureEffects: { health: -2, setFlags: ['rescueStructureShifted'] } } },
         { id: 'followMetalTaps', label: 'Call out and follow the answer', next: 'trappedEli' },
-        { id: 'useKnownAirway', label: 'Take the upper ventilation ledge', requirements: { knowledge: [AIR_KNOWLEDGE] }, effects: { setFlags: ['highAirRoute'] }, next: 'ventilationRoute' },
+        { id: 'useKnownAirway', label: 'Take the upper ventilation ledge', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.floodedMineAir.id] }, effects: { setFlags: ['highAirRoute'] }, next: 'ventilationRoute' },
       ],
     },
     bracedApproach: { id: 'bracedApproach', title: 'A Beam Held in Place', text: 'The rail tie bites against the wall. The timber still complains, but the passage is stable for the moment. The breathing behind the rock is closer now.', choices: [{ id: 'movePastBrace', label: 'Go to the voice beyond the beam', next: 'trappedEli' }] },
@@ -157,8 +156,8 @@ export const WHATS_MINE: Scenario = {
       text: 'You reach the surface and return with the retired foreman and two local miners. Eli is still answering below. The crew has a surface winch, but needs a route that will not send them through the flooded level.',
       textVariants: [{ requirements: { minElapsedMinutes: 45 }, text: 'The climb out and return for help has taken precious time. The foreman and two local miners reach the mine with a surface winch; Eli is still answering below, but more weakly now. The crew needs a route that will not send them through the flooded level.' }],
       choices: [
-        { id: 'guideBySurveyMap', label: 'Guide them along the mapped side drift', timeCost: 8, requirements: { knowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.86, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The map brings the crew to the stable upper ledge.', failureMessage: 'A washed-out mark costs the crew precious time.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
-        { id: 'guideWithoutMap', label: 'Lead the crew by the fresh bootprints', timeCost: 15, requirements: { notKnowledge: [MAP_KNOWLEDGE] }, chance: { probability: 0.67, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The fresh tracks lead the crew to Eli.', failureMessage: 'A drift of rock hides the prints; the crew has to search again.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
+        { id: 'guideBySurveyMap', label: 'Guide them along the mapped side drift', timeCost: 8, requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.mineSideDrift.id] }, chance: { probability: 0.86, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The map brings the crew to the stable upper ledge.', failureMessage: 'A washed-out mark costs the crew precious time.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
+        { id: 'guideWithoutMap', label: 'Lead the crew by the fresh bootprints', timeCost: 15, requirements: { notKnowledgeKeys: [KNOWLEDGE_FACTS.mineSideDrift.id] }, chance: { probability: 0.67, successNext: 'thanksHelp', failureNext: 'helpDelayed', successMessage: 'The fresh tracks lead the crew to Eli.', failureMessage: 'A drift of rock hides the prints; the crew has to search again.', successEffects: { historyFlags: [...RESCUE_HISTORY, 'returned_for_help'] }, failureEffects: { historyFlags: ['returned_for_help'] } } },
       ],
     },
     helpDelayed: { id: 'helpDelayed', title: 'The Crew Loses Time', tone: 'warning', text: 'The first route has shifted. The foreman can rig the winch from a safer ledge, though Eli is growing weaker; a direct lift would be faster and rougher.', choices: [

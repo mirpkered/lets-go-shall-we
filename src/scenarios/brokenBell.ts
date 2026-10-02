@@ -1,10 +1,9 @@
 import type { Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
-const DO_NOT_RING = 'The soot inscription reads: DO NOT RING IT BELOW.';
 const RELIC_HISTORY = 'The priest removed an iron handbell and black clapper from an older burial beneath the chapel.';
-const HAND_BELL_KNOWLEDGE = 'A cold iron handbell was taken from beneath the chapel.';
 
-const takeBellEffects = { gainItems: ['ironHandbell', 'graveCoin'], knowledge: [HAND_BELL_KNOWLEDGE], setFlags: ['bellRecovered'] };
+const takeBellEffects = { gainItems: ['ironHandbell', 'graveCoin'], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell], setFlags: ['bellRecovered'] };
 const returnBothEffects = {
   loseItems: ['ironHandbell', 'blackClapper'], gainItems: ['bronzeMaskFragment'],
   lore: ['The masked keeper guards the old burial; it is not inherently evil.'],
@@ -26,7 +25,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'chapelExterior', title: 'The Silent Chapel', tone: 'warning',
       text: 'You reach the village chapel beneath a low moon. Its bell rope sways though the night is still. Muddy prints lead from the graveyard gate to the open chapel door; the priest who went to investigate has not returned. Somewhere below the stones, a faint knock answers the wind.',
       choices: [
-        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', timeCost: 2, effects: { knowledge: [DO_NOT_RING], setFlags: ['calledOut'] }, next: 'voiceBelow' },
+        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', timeCost: 2, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelInscription], setFlags: ['calledOut'] }, next: 'voiceBelow' },
         { id: 'inspectRope', label: 'Examine the bell rope', hint: 'The cut may tell you where the bell went.', timeCost: 4, effects: { knowledge: ['The bell rope was cut from below, not from the tower.'], setFlags: ['inspectedRope'] }, next: 'ropeClue' },
         { id: 'enter', label: 'Enter the chapel', timeCost: 1, next: 'chapelNave' },
         { id: 'cellarWindow', label: 'Try the narrow cellar window', hint: 'Broken glass and a hard drop are visible.', timeCost: 3, next: 'cellarWindow' },
@@ -94,7 +93,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestNotes', title: 'The Priest’s Notes',
       text: 'A page lies crushed beneath a muddy bootprint: “Handbell and clapper recovered from the old burial. Parish display after cleaning.” Below, in a shaking hand: “It followed the sound. I was wrong.”',
       choices: [
-        { id: 'readNotes', label: 'Remember the warning and follow the prints', timeCost: 4, effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
+        { id: 'readNotes', label: 'Remember the warning and follow the prints', timeCost: 4, effects: { knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell, KNOWLEDGE_FACTS.chapelInscription], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
       ],
     },
     notesLeadBelow: {
@@ -121,7 +120,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'underStairs', title: 'Beneath the Chapel', tone: 'warning',
       text: 'Stone steps descend into an ossuary. Soot-black letters cross the arch: DO NOT RING IT BELOW. A wooden chest sits beneath them. Beyond it, a bronze door stands ajar; behind the door comes a faint, pained breath.',
       choices: [
-        { id: 'readWarning', label: 'Study the soot-black warning', timeCost: 2, effects: { knowledge: [DO_NOT_RING], lore: ['The warning was carved before the chapel was built.'], setFlags: ['knowsWarning'] }, next: 'warningRemembered' },
+        { id: 'readWarning', label: 'Study the soot-black warning', timeCost: 2, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelInscription], lore: ['The warning was carved before the chapel was built.'], setFlags: ['knowsWarning'] }, next: 'warningRemembered' },
         { id: 'inspectChest', label: 'Examine the wooden chest', timeCost: 5, next: 'chestClue' },
         { id: 'findPriestBelow', label: 'Follow the pained breath', timeCost: 3, effects: { setFlags: ['foundPriest'] }, next: 'priestAfterHound' },
         { id: 'passBronzeDoor', label: 'Continue toward the bronze door', timeCost: 3, next: 'burialApproach' },
@@ -168,16 +167,16 @@ export const BROKEN_BELL: Scenario = {
       text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.',
       textVariants: [{ requirements: { minElapsedMinutes: 25 }, text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. His breaths have grown shallower while you searched the chapel. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.' }],
       choices: [
-        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', timeCost: 10, effects: { knowledge: [DO_NOT_RING, HAND_BELL_KNOWLEDGE], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
-        { id: 'askPriest', label: 'Ask what he removed from the burial', timeCost: 4, effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
-        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', timeCost: 1, effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'burialApproach' },
+        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', timeCost: 10, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelInscription, KNOWLEDGE_FACTS.chapelHandbell], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
+        { id: 'askPriest', label: 'Ask what he removed from the burial', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'priestAccount' },
+        { id: 'leavePriest', label: 'Leave him resting and follow the keeper', timeCost: 1, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'burialApproach' },
       ],
     },
     priestStabilized: {
       id: 'priestStabilized', title: 'A Steadier Breath',
       text: 'The binding holds. The priest can breathe without choking on each word. The key and yew ward remain at his belt; he watches you, waiting for the question he fears.',
       choices: [
-        { id: 'askAfterBinding', label: 'Ask about the old burial', effects: { knowledge: [HAND_BELL_KNOWLEDGE] }, next: 'priestAccount' },
+        { id: 'askAfterBinding', label: 'Ask about the old burial', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'priestAccount' },
         { id: 'leaveAfterBinding', label: 'Leave him to rest and go on', next: 'burialApproach' },
       ],
     },
@@ -185,8 +184,8 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestAccount', title: 'What the Priest Took',
       text: 'The priest tells you he lifted an iron handbell and its black clapper from a burial older than the chapel. The keeper followed the sound, then stood between him and the relics. “It never struck me while I was trapped,” he says. That may be fear speaking—or a clue.',
       choices: [
-        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE, DO_NOT_RING], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
-        { id: 'leaveKeyWithPriest', label: 'Leave the key with him and continue', effects: { knowledge: [RELIC_HISTORY, HAND_BELL_KNOWLEDGE] }, next: 'priestFarewell' },
+        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell, KNOWLEDGE_FACTS.chapelInscription], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
+        { id: 'leaveKeyWithPriest', label: 'Leave the key with him and continue', effects: { knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'priestFarewell' },
       ],
     },
     priestFarewell: {
@@ -235,7 +234,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'Roots thread through ancient stone. A dark iron weight rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the iron, it lowers into a warning crouch. A faint metallic vibration threads through the stones, and the chamber seems to draw sound inward.',
       textVariants: [
         { requirements: { items: ['ironHandbell'] }, text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. The handbell in your possession seems to pull every sound toward this room.' },
-        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. You remember the iron handbell taken from below; every sound seems to gather in this room.' },
+        { requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.chapelHandbell.id] }, text: 'Roots thread through ancient stone. A black iron clapper rests inside a ring of white bones. Across the chamber stands a tall creature in a cracked bronze mask. It raises empty hands; when you move toward the clapper, it lowers into a warning crouch. You remember the iron handbell taken from below; every sound seems to gather in this room.' },
       ],
       choices: [
         { id: 'speak', label: 'Show empty hands', hint: 'It has warned you, but has not attacked.', effects: { setFlags: ['showedPeace'] }, next: 'maskedParley' },
@@ -278,7 +277,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'The keeper’s hands are empty. It stands between you and the old altar, but does not advance. One hand points to the hollow; the other gestures toward the objects you carry. You cannot yet tell whether it is warning you away or asking something of you.',
       choices: [
         { id: 'observeGesture', label: 'Watch for another sign', next: 'keeperSign' },
-        { id: 'rememberWarning', label: 'Keep the bell silent and show the warning', requirements: { knowledge: [DO_NOT_RING] }, effects: { setFlags: ['keptBellSilent'] }, next: 'keeperSign' },
+        { id: 'rememberWarning', label: 'Keep the bell silent and show the warning', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.chapelInscription.id] }, effects: { setFlags: ['keptBellSilent'] }, next: 'keeperSign' },
         { id: 'attackAtParley', label: 'Attack while it waits', hint: 'It still may be defending the burial.', effects: { combat: { enemy: 'masked keeper', winChance: 0.42, damageOnWin: 3, damageOnLoss: 7, winNext: 'keeperDefeated', lossNext: 'keeperAfterFight' } } },
         { id: 'leaveParley', label: 'Back away from the chamber', next: 'retreatEnding' },
       ],
@@ -288,7 +287,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'The creature turns its palm up. It points to the clapper, then to the hollow. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.',
       textVariants: [
         { requirements: { items: ['ironHandbell'] }, text: 'The creature turns its palm up. The handbell in your possession seems to fit the hollow beside the clapper. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.' },
-        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'The creature turns its palm up. You remember the handbell taken from below; now it points to the clapper and the hollow beside it. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.' },
+        { requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.chapelHandbell.id] }, text: 'The creature turns its palm up. You remember the handbell taken from below; now it points to the clapper and the hollow beside it. It has watched you cross the chamber without striking. Returning what was taken may be the answer—but its strength is still plain, and you may choose otherwise.' },
       ],
       choices: [
         { id: 'signReturnBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },
@@ -307,7 +306,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the hollow. Its warning has become harder to mistake for a threat.',
       textVariants: [
         { requirements: { items: ['ironHandbell'] }, text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the handbell you carry and the hollow. Its warning has become harder to mistake for a threat.' },
-        { requirements: { knowledge: [HAND_BELL_KNOWLEDGE] }, text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the handbell and the hollow. Its warning has become harder to mistake for a threat.' },
+        { requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.chapelHandbell.id] }, text: 'The black iron is colder than the chamber. The creature’s raised hand stops short of you, then points toward the handbell and the hollow. Its warning has become harder to mistake for a threat.' },
       ],
       choices: [
         { id: 'returnNowWithBoth', label: 'Return both relics and accept the mask shard', requirements: { items: ['ironHandbell', 'blackClapper'], notItems: ['bronzeMaskFragment'] }, effects: returnBothEffects, next: 'peaceEnding' },

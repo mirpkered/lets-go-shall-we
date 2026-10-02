@@ -11,6 +11,7 @@ import { EMPTY_SAVE, loadSave } from '../storage';
 import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 import { COMPETITION_SURPRISE_ADVENTURES } from './surpriseCompetitionBatch';
 import { EVERYDAY_SURPRISE_ADVENTURES } from './surpriseEverydayBatch';
 import { SOCIAL_SURPRISE_ADVENTURES } from './surpriseSocialBatch';
@@ -118,8 +119,9 @@ describe('surprise anthology and library gap-fill', () => {
     expect(lamp.scenes.shop.choices.some(({ id }) => id === 'searchByTouch')).toBe(true);
 
     const care = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'a-chair-beside-the-sickbed')!;
-    const knows = start(care, ['A ferryman said river bends are shallow this season, but can change after rain.']);
-    knows.character!.knowledge = ['A ferryman said river bends are shallow this season, but can change after rain.'];
+    const knows = start(care, [KNOWLEDGE_FACTS.riverBendSupper.text]);
+    knows.character!.knowledge = [KNOWLEDGE_FACTS.riverBendSupper.text];
+    knows.character!.knowledgeKeys = [KNOWLEDGE_FACTS.riverBendSupper.id];
     expect(meets(care.scenes.company.choices.find(({ id }) => id === 'shareKnownRiverFact')!.requirements, knows)).toBe(true);
     expect(meets(care.scenes.company.choices.find(({ id }) => id === 'shareKnownRiverFact')!.requirements, start(care))).toBe(false);
   });

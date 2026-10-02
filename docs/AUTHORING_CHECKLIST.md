@@ -13,6 +13,16 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
+## Persistent memory: choose the right record
+
+- **Knowledge** is a reusable fact the Traveler actually learned: a route, mechanism, identity, hazard, or reliable method. Use it when later content may reasonably rely on that fact. For reusable facts, add a stable ID and display text to `src/knowledgeFacts.ts`, award it with `knowledgeEntries`, and query with `knowledgeKeys` / `notKnowledgeKeys`. Save migration maps an exact known legacy sentence to its ID while retaining the original prose. One-off memories may continue using `knowledge` prose without an ID. Keep uncertainty explicit in the fact.
+- **Lore** is a remembered account, custom, belief, or tale whose value may be cultural or uncertain rather than a verified reusable fact. Do not use it as a hidden mechanical prerequisite unless the Traveler has learned a specific actionable fact separately.
+- **History** records what this Traveler did, suffered, chose, or experienced. Use stable snake_case event keys for it, not item possession or a fact about the world. Prefer consequential choices and outcomes over routine button presses. Existing descriptive/history strings remain valid legacy values; do not rename them without migration and query audit.
+- **Contact/Favor** represents a named relationship or a specific callable offer/obligation. Do not encode a promise or relationship only as History when the structured system fits.
+- **Narration only** is appropriate for ordinary actions and details with no expected future callback. Persistence is not a requirement for every remembered moment.
+
+Knowledge and Lore are shown as a small recent preview in Inventory & Bank; History keys are internal continuity state and are not presented as a journal. All three remain traveler-bound, save with the character, and end with that Traveler. Use stable-key records only for facts reused as mechanics; do not create IDs for one-off memories. Migrate deliberately with legacy-save compatibility instead of matching mutable display prose ad hoc.
+
 ## Before drafting
 
 - [ ] Read the current rules and inspect the adventure roster, continuity registry, history flags, item catalog, and relevant geography/events.

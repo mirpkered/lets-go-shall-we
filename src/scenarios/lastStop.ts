@@ -1,7 +1,5 @@
 import type { Scenario } from '../types';
-
-const BRAKE_KNOWLEDGE = 'The baggage-car handwheel can vent the vacuum brake line if it is turned, held, then locked.';
-const ROUTE_KNOWLEDGE = 'Beyond Milepost 47, a maintenance siding climbs away before the broken Blackstone Bridge.';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 export const LAST_STOP: Scenario = {
   id: 'last-stop',
@@ -20,7 +18,7 @@ export const LAST_STOP: Scenario = {
       text: 'The evening local waits beneath a haze of steam: locomotive, service car, and three green passenger coaches. Porters call destinations. A timetable promises a quiet arrival at Bellweather before midnight.',
       choices: [
         { id: 'helpPorter', label: 'Help the porter', hint: 'A few trunks remain on the platform.', timeCost: 5, effects: { money: 4, setFlags: ['earnedTip'] }, next: 'platformAfterHelp' },
-        { id: 'studyRoute', label: 'Study the route board', hint: 'The map shows grades and sidings.', timeCost: 4, effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['studiedRoute'] }, next: 'platformAfterStudy' },
+        { id: 'studyRoute', label: 'Study the route board', hint: 'The map shows grades and sidings.', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding], setFlags: ['studiedRoute'] }, next: 'platformAfterStudy' },
         { id: 'visitKiosk', label: 'Visit the platform kiosk', timeCost: 3, next: 'stationKiosk' },
         { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
       ],
@@ -47,7 +45,7 @@ export const LAST_STOP: Scenario = {
       choices: [
         { id: 'buyTools', label: 'Toolkit — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
         { id: 'buyRope', label: 'Travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
-        { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledge: [ROUTE_KNOWLEDGE] }, next: 'kioskPurchase' },
+        { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding] }, next: 'kioskPurchase' },
         { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
       ],
     },
@@ -62,7 +60,7 @@ export const LAST_STOP: Scenario = {
       choices: [
         { id: 'conductor', label: 'Speak with the conductor', timeCost: 4, next: 'conductorCar' },
         { id: 'service', label: 'Explore the service car', timeCost: 5, next: 'serviceCar' },
-        { id: 'surveyor', label: 'Talk to the surveyor', timeCost: 5, effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['talkedSurveyor'] }, next: 'surveyorAfterTalk' },
+        { id: 'surveyor', label: 'Talk to the surveyor', timeCost: 5, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding], setFlags: ['talkedSurveyor'] }, next: 'surveyorAfterTalk' },
         { id: 'settle', label: 'Watch the countryside', hint: 'Let the journey carry you awhile.', timeCost: 18, next: 'quietJourney' },
       ],
     },
@@ -79,7 +77,7 @@ export const LAST_STOP: Scenario = {
       id: 'conductorCar', title: 'The Conductor’s Alcove',
       text: 'Conductor Vale points out the red emergency cabinet. “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” A square iron key hangs beside his timetable; the locked maintenance case is in the service car.',
       choices: [
-        { id: 'learn', label: 'Remember the procedure', timeCost: 3, effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
+        { id: 'learn', label: 'Remember the procedure', timeCost: 3, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
         { id: 'inspectKey', label: 'Ask Vale for the cabinet key', timeCost: 2, effects: { gainItems: ['brakeKey'] }, next: 'conductorKeyHandoff' },
         { id: 'service', label: 'Visit the service car', next: 'serviceCar' },
         { id: 'seat', label: 'Return to your seat', next: 'quietJourney' },
@@ -105,7 +103,7 @@ export const LAST_STOP: Scenario = {
       id: 'serviceCar', title: 'Baggage and Brass',
       text: 'Crates are strapped beneath a wall-mounted brake handwheel. A faded diagram shows the pipe running beneath every coach. Leather work gloves rest beside a locked maintenance case; through its slats you can make out a compact toolkit.',
       choices: [
-        { id: 'studyBrake', label: 'Study the brake diagram', timeCost: 6, effects: { knowledge: [BRAKE_KNOWLEDGE], setFlags: ['learnedBrake'] }, next: 'serviceDiscovery' },
+        { id: 'studyBrake', label: 'Study the brake diagram', timeCost: 6, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel], setFlags: ['learnedBrake'] }, next: 'serviceDiscovery' },
         { id: 'takeGloves', label: 'Take the work gloves', timeCost: 1, effects: { gainItems: ['workGloves'] }, next: 'serviceDiscovery' },
         { id: 'openCase', label: 'Open the maintenance case', timeCost: 4, requirements: { items: ['brakeKey'], notItems: ['pocketToolkit'] }, effects: { gainItems: ['pocketToolkit'] }, next: 'serviceDiscovery' },
         { id: 'seats', label: 'Leave the baggage car', next: 'serviceDiscovery' },
@@ -123,7 +121,7 @@ export const LAST_STOP: Scenario = {
       text: 'Vale’s breathing steadies. Grateful, he unclips his brass whistle and presses it into your hand, then repeats the brake procedure. The remaining passengers are waiting for someone to take charge.',
       choices: [
         { id: 'emergencyAfterCare', label: 'Move through the train', next: 'emergencyHub' },
-        { id: 'routeAfterCare', label: 'Ask about the track', effects: { knowledge: [ROUTE_KNOWLEDGE] }, next: 'routeBriefing' },
+        { id: 'routeAfterCare', label: 'Ask about the track', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding] }, next: 'routeBriefing' },
       ],
     },
     routeBriefing: {
@@ -146,8 +144,8 @@ export const LAST_STOP: Scenario = {
       id: 'firstSigns', title: 'Something Is Wrong', tone: 'warning',
       text: 'Vale lies against a partition, dazed and bleeding. “Regulator jammed open,” he says. “Engineer hurt. Blackstone Bridge washed out this morning. We have six miles of descent.” The coaches sway harder with every turn.',
       choices: [
-        { id: 'helpVale', label: 'Bind Vale’s wound', effects: { gainItems: ['conductorWhistle'], knowledge: [BRAKE_KNOWLEDGE], setFlags: ['helpedVale'] }, next: 'valeAftercare' },
-        { id: 'askRoute', label: 'Ask about the track', effects: { knowledge: [ROUTE_KNOWLEDGE], setFlags: ['askedRoute'] }, next: 'routeBriefing' },
+        { id: 'helpVale', label: 'Bind Vale’s wound', effects: { gainItems: ['conductorWhistle'], knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel], setFlags: ['helpedVale'] }, next: 'valeAftercare' },
+        { id: 'askRoute', label: 'Ask about the track', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding], setFlags: ['askedRoute'] }, next: 'routeBriefing' },
         { id: 'takeCharge', label: 'Move through the train', next: 'emergencyHub' },
       ],
     },
@@ -183,7 +181,7 @@ export const LAST_STOP: Scenario = {
       id: 'baggageBrake', title: 'The Shuddering Handwheel', tone: 'danger',
       text: 'The wheel is hot and fighting the pressure. Its locking tooth is cracked. Turn too little and nothing happens; vent too quickly and the rear brakes may seize, throwing the coaches sideways.',
       choices: [
-        { id: 'knownMethod', label: 'Turn, hold, then lock', timeCost: 6, requirements: { knowledge: [BRAKE_KNOWLEDGE] }, effects: { setFlags: ['brakesApplied'] }, next: 'brakesHolding' },
+        { id: 'knownMethod', label: 'Turn, hold, then lock', timeCost: 6, requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.baggageBrakeHandwheel.id] }, effects: { setFlags: ['brakesApplied'] }, next: 'brakesHolding' },
         { id: 'toolRepair', label: 'Repair the locking tooth', timeCost: 4, requirements: { items: ['pocketToolkit'] }, effects: { setFlags: ['brakesApplied', 'brakeRepaired'] }, next: 'brakesHolding' },
         { id: 'wedgeBrass', label: 'Wedge it with the candlestick', timeCost: 5, requirements: { items: ['brassCandlestick'] }, effects: { setFlags: ['brakesApplied'], loseItems: ['brassCandlestick'] }, next: 'brakesHolding' },
         { id: 'forceWheel', label: 'Force the wheel', timeCost: 8, hint: 'It may slow the train—or kick free.', chance: { probability: 0.55, successNext: 'brakesHolding', failureNext: 'brakeKickback', successMessage: 'The line hisses. Brakes bite along the train.', failureMessage: 'The wheel kicks loose and throws you into the crates.', successEffects: { setFlags: ['brakesApplied'] }, failureEffects: { health: -4 } } },
@@ -327,7 +325,7 @@ export const LAST_STOP: Scenario = {
       text: 'A long gravel bank rises beside the track before the gorge. Jumping at this speed could break every bone; staying aboard risks the missing bridge. This route saves only you.',
       choices: [
         { id: 'ropeExit', label: 'Lower yourself by rope', requirements: { items: ['travelRope'] }, effects: { health: -2 }, next: 'escapeEnding' },
-        { id: 'mappedJump', label: 'Jump at the soft shoulder', requirements: { knowledge: [ROUTE_KNOWLEDGE] }, chance: { probability: 0.72, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'You hit mud, roll, and stop short of the rocks.', failureMessage: 'You mistime the leap and slam into the slope.', failureEffects: { health: -5 } } },
+        { id: 'mappedJump', label: 'Jump at the soft shoulder', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding.id] }, chance: { probability: 0.72, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'You hit mud, roll, and stop short of the rocks.', failureMessage: 'You mistime the leap and slam into the slope.', failureEffects: { health: -5 } } },
         { id: 'blindJump', label: 'Jump for the gravel', hint: 'The landing is fast, rough, and uncertain.', chance: { probability: 0.45, successNext: 'escapeEnding', failureNext: 'escapeInjury', successMessage: 'The gravel tears at you, but you survive.', failureMessage: 'The ground hits harder than expected.', failureEffects: { health: -6 } } },
         { id: 'stay', label: 'Stay aboard and brace', next: 'escapeInjury' },
       ],

@@ -1,6 +1,7 @@
 import { ITEMS, inventoryClass } from './items';
 import { validateScenarioMetadata } from './scenarioDiversity';
 import { findScenarioGraphProblems } from './scenarioGraph';
+import { KNOWLEDGE_FACTS_BY_ID } from './knowledgeFacts';
 import type { Effects, Requirement, Scenario } from './types';
 
 export interface ScenarioRegistryReport {
@@ -17,6 +18,7 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
   const knownContacts = new Set<string>();
   const knownFavors = new Set<string>();
   const knownAssets = new Set<string>();
+  const knownKnowledgeKeys = new Map<string, string>();
   const itemId = (id: string, where: string) => {
     if (!ITEMS[id]) errors.push(`${where}: unknown item ID “${id}”`);
   };
@@ -42,6 +44,13 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
       for (const contact of choice.effects?.gainContacts ?? []) knownContacts.add(contact.id);
       for (const favor of choice.effects?.gainFavors ?? []) knownFavors.add(favor.id);
       for (const asset of choice.effects?.gainOwnedAssets ?? []) knownAssets.add(asset.id);
+      for (const fact of choice.effects?.knowledgeEntries ?? []) {
+        const previousText = knownKnowledgeKeys.get(fact.id);
+        if (previousText !== undefined && previousText !== fact.text) errors.push(`${scenario.id}.${scene.id}.${choice.id}: Knowledge key ${fact.id} has conflicting text`);
+        knownKnowledgeKeys.set(fact.id, fact.text);
+        if (!fact.id.trim() || !fact.text.trim()) errors.push(`${scenario.id}.${scene.id}.${choice.id}: Knowledge entries need a stable ID and readable text`);
+        if (!KNOWLEDGE_FACTS_BY_ID[fact.id]) errors.push(`${scenario.id}.${scene.id}.${choice.id}: unknown canonical Knowledge key ${fact.id}`);
+      }
     }
   }
 
@@ -49,6 +58,7 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
   const itemMaps: (keyof Requirement)[] = ['itemConditions', 'itemUpgrades', 'gearUpgrades', 'notItemUpgrades'];
   const inspectRequirement = (requirement: Requirement | undefined, where: string) => {
     if (!requirement) return;
+    if (requirement.knowledge?.length || requirement.notKnowledge?.length) warnings.push(`${where}: exact prose Knowledge matching is legacy; use a stable knowledge key for reusable facts.`);
     for (const field of itemLists) for (const id of requirement[field] as string[] | undefined ?? []) itemId(id, `${where}.${field}`);
     for (const field of itemMaps) for (const id of Object.keys(requirement[field] as Record<string, unknown> | undefined ?? {})) itemId(id, `${where}.${field}`);
     for (const [id, quantity] of Object.entries(requirement.supplies ?? requirement.canAddSupplies ?? {})) {
@@ -66,10 +76,17 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
     for (const id of requirement.ownedAssets ?? []) if (!knownAssets.has(id)) errors.push(`${where}: no registered effect grants owned asset ${id}`);
     for (const id of requirement.contacts ?? []) if (!knownContacts.has(id)) errors.push(`${where}: no registered effect grants Contact ${id}`);
     for (const id of requirement.favors ?? []) if (!knownFavors.has(id)) errors.push(`${where}: no registered effect grants Favor ${id}`);
+    for (const id of requirement.knowledgeKeys ?? []) if (!knownKnowledgeKeys.has(id) && !KNOWLEDGE_FACTS_BY_ID[id]) errors.push(`${where}: unknown Knowledge key ${id}`);
+    for (const id of requirement.notKnowledgeKeys ?? []) if (!knownKnowledgeKeys.has(id) && !KNOWLEDGE_FACTS_BY_ID[id]) errors.push(`${where}: unknown Knowledge key ${id}`);
   };
   const inspectEffects = (effects: Effects | undefined, where: string) => {
     if (!effects) return;
     for (const field of ['gainItems', 'loseItems', 'damageItems', 'breakItems', 'repairItems'] as const) for (const id of effects[field] ?? []) itemId(id, `${where}.${field}`);
+    for (const fact of effects.knowledgeEntries ?? []) {
+      if (!fact.id.trim() || !fact.text.trim()) errors.push(`${where}: Knowledge entries need a stable ID and readable text`);
+      if (!KNOWLEDGE_FACTS_BY_ID[fact.id]) errors.push(`${where}: unknown canonical Knowledge key ${fact.id}`);
+      if (knownKnowledgeKeys.get(fact.id) !== fact.text) errors.push(`${where}: Knowledge key ${fact.id} has conflicting text`);
+    }
     for (const [field, supplies] of [['gainSupplies', effects.gainSupplies], ['consumeSupplies', effects.consumeSupplies]] as const) {
       for (const [id, quantity] of Object.entries(supplies ?? {})) {
         itemId(id, `${where}.${field}`);

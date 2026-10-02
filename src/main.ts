@@ -14,6 +14,7 @@ import { createHomeSceneRotation, HOME_SCENE_LAST_KEY, HOME_SCENES, homeSceneInd
 import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
 import { auditContentQuality } from './contentQuality';
+import { travelerMemoryPreview } from './travelerMemoryPresentation';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -491,6 +492,7 @@ function renderBank(): void {
   const carriedRelics = getCarriedRelics(state.character);
   const supplies = Object.entries(state.character?.supplies ?? {}).filter(([id, quantity]) => inventoryClass(id) === 'SUPPLY' && quantity > 0);
   const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
+  const memory = travelerMemoryPreview(state.character?.knowledge, state.character?.lore);
   const capacityMessage = bankCapacityMessage(state.bank.length);
   const legacyCarryNote = state.bank.length > BANK_CAPACITY && carriedGear.length ? ' Your carried Gear remains safe; withdraw into an open Gear slot to reduce the saved bank.' : '';
   const emptyBankCopy = emptyBankConfirmationText(state.bank.length);
@@ -508,6 +510,7 @@ function renderBank(): void {
     <section class="bank-section"><h2>Supplies (${supplies.length}/${SUPPLY_STACK_CAPACITY} stacks · character-bound)</h2>${supplies.length ? supplies.map(([id, quantity]) => `<article class="item-row"><div><strong>${itemName(id)} ×${quantity}</strong><small>${safeText(ITEMS[id].description)} · limit ${ITEMS[id].stackLimit}; never Banked</small></div></article>`).join('') : '<p class="empty">No persistent Supplies.</p>'}</section>
     ${(state.character?.ownedAssets ?? []).length ? `<section class="bank-section"><h2>Owned assets</h2>${state.character!.ownedAssets!.map((asset) => `<article class="item-row"><div><strong>${safeText(asset.name)}</strong><small>${safeText(asset.description)} · character-bound, not Bankable</small></div></article>`).join('')}</section>` : ''}
     ${continuityMarkup(state.character, 'bank-section')}
+    <section class="bank-section traveler-memory"><h2>Traveler’s memory</h2><p class="empty">${memory.knowledgeCount} learned fact${memory.knowledgeCount === 1 ? '' : 's'} · ${memory.loreCount} remembered tale${memory.loreCount === 1 ? '' : 's'}</p>${memory.knowledge.length ? `<details><summary>Recent Knowledge</summary>${memory.knowledge.map((entry) => `<p>${safeText(entry)}</p>`).join('')}</details>` : '<p class="empty">No Knowledge recorded yet.</p>'}${memory.lore.length ? `<details><summary>Recent Lore</summary>${memory.lore.map((entry) => `<p>${safeText(entry)}</p>`).join('')}</details>` : '<p class="empty">No Lore recorded yet.</p>'}</section>
     <section class="bank-section"><h2>Safe deposit (${bankCapacityLabel(state.bank.length)})</h2>${state.bank.length ? state.bank.map((id) => `<article class="item-row bank-item-row"><div><strong>${itemName(id)}</strong><small>${safeText(inventoryClass(id))} · ${itemDescription(id)}</small></div><div class="bank-item-actions">${(!state.character || inventoryClass(id) !== 'GEAR' || carriedGear.length < capacity) ? `<button data-withdraw="${id}">Withdraw</button>` : ''}<button class="bank-discard" data-bank-discard="${id}" aria-label="Discard ${safeText(itemName(id))}" title="Permanently discard this banked item">Discard</button></div></article>`).join('') : '<p class="empty">Nothing has been banked yet.</p>'}</section>
     ${emptyBankCopy ? `<section class="bank-destructive-controls"><div><h2>Permanent disposal</h2><p>Discard stored items permanently. This cannot be undone.</p></div><button type="button" class="bank-discard bank-empty-button" id="empty-bank">Empty Bank</button></section>` : ''}
     ${confirmationText ? `<dialog class="bank-confirm-dialog" id="bank-confirm-dialog" aria-labelledby="bank-confirm-title" aria-describedby="bank-confirm-message"><div class="bank-confirm-content"><span class="eyebrow">Permanent disposal</span><h2 id="bank-confirm-title">${safeText(confirmationTitle)}</h2><p id="bank-confirm-message">${safeText(confirmationText)}</p><div class="bank-confirm-actions"><button type="button" class="bank-cancel" id="cancel-bank-disposal" autofocus>Cancel</button><button type="button" class="bank-discard bank-confirm-destructive" id="confirm-bank-disposal">${confirmationAction}</button></div></div></dialog>` : ''}`, 'subscreen');

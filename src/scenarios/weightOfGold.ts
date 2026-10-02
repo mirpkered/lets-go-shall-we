@@ -1,4 +1,5 @@
 import type { Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 const FIELD_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'compactWheelWrench', 'bridgewrightHammer', 'brassCandlestick', 'steelWedge'];
 
@@ -24,7 +25,7 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
       ],
       choices: [
         { id: 'treatGuardFirst', label: 'Help the injured guard', hint: 'She is pale and bleeding; the wagon is still shifting.', timeCost: 7, next: 'guardTreated', effects: { historyFlags: ['prioritized_injured_person'] } },
-        { id: 'inspectWreck', label: 'Inspect the broken axle', timeCost: 4, next: 'axleEvidence', effects: { knowledge: ['The freight wagon broke at a deep rut; the axle is cracked, not cleanly cut.'] } },
+        { id: 'inspectWreck', label: 'Inspect the broken axle', timeCost: 4, next: 'axleEvidence', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.freightWagonAxle] } },
         { id: 'inspectExposedCargo', label: 'Look over the exposed cargo', timeCost: 3, next: 'cargoEvidence' },
         { id: 'callForMissingCrew', label: 'Call for the missing guard', timeCost: 2, next: 'tracksEvidence', effects: { historyFlags: ['searched_for_missing_guard'] } },
       ],
@@ -140,7 +141,7 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
     pellFound: {
       id: 'pellFound', title: 'A Guard in the Quarry Cut', tone: 'warning',
       text: 'Pell is crouched behind a low quarry marker with a gold bar wrapped in his coat. He has a deep cut on one hand. The bar matches the empty cradle; he admits he took it after the axle broke, then stumbled on the track. He says he planned to return the wagon to the road before anyone noticed. His story is plausible, but not complete.',
-      textVariants: [{ requirements: { knowledge: ['The freight wagon broke at a deep rut; the axle is cracked, not cleanly cut.'] }, text: 'Pell is crouched behind a quarry marker with a gold bar wrapped in his coat and a cut hand. Your knowledge of the axle confirms his account of the crash: it was a real accident. He admits taking the bar afterward, hoping to return the wagon before anyone noticed.' }],
+      textVariants: [{ requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.freightWagonAxle.id] }, text: 'Pell is crouched behind a quarry marker with a gold bar wrapped in his coat and a cut hand. Your knowledge of the axle confirms his account of the crash: it was a real accident. He admits taking the bar afterward, hoping to return the wagon before anyone noticed.' }],
       choices: [
         { id: 'askPellAboutRoute', label: 'Ask why he chose this unlisted road', timeCost: 2, next: 'insideJobRevealed', effects: { knowledge: ['Pell chose the unlisted route to create a chance to take a bar after an expected axle failure.'], historyFlags: ['exposed_inside_job'] } },
         { id: 'offerPellMedicalHelp', label: 'Treat Pell and bring him back', hint: 'His hand is bleeding; the bar and the walk back make this slower.', timeCost: 9, next: 'pellReturned', effects: { historyFlags: ['rescued_missing_guard'] } },

@@ -81,6 +81,8 @@ export interface Character {
   carriedItems?: string[];
   lore: string[];
   knowledge: string[];
+  /** Stable IDs for reusable Knowledge facts; prose remains in knowledge for player display. */
+  knowledgeKeys?: string[];
   adventuresCompleted: number;
   /** Hidden traveler-bound quick exits; three unique endings earn one full completion. */
   quickExitCreditRemainder?: 0 | 1 | 2;
@@ -200,6 +202,9 @@ export interface Requirement {
   flags?: string[];
   notFlags?: string[];
   knowledge?: string[];
+  /** Stable reusable Knowledge IDs. Legacy saves are upgraded from known matching prose. */
+  knowledgeKeys?: string[];
+  notKnowledgeKeys?: string[];
   notKnowledge?: string[];
   historyFlags?: string[];
   minHealth?: number;
@@ -235,6 +240,8 @@ export interface Effects {
   replaceItems?: { oldItemId: string; newItemId: string; provenance?: string }[];
   loseItems?: string[];
   knowledge?: string[];
+  /** Award readable fact text and its stable query identity together. */
+  knowledgeEntries?: { id: string; text: string }[];
   lore?: string[];
   historyFlags?: string[];
   gainOwnedAssets?: OwnedAsset[];

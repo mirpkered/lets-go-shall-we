@@ -6,6 +6,7 @@ import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import type { ItemCondition, PersistentItemState, TravelerContact, TravelerFavor } from './types';
 import { LEGACY_CONTINUITY_MIGRATIONS } from './travelerContinuity';
+import { KNOWLEDGE_KEY_MIGRATIONS } from './knowledgeFacts';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
 export const QA_SAVE_KEY = 'mirpworks.lets-go-shall-we.qa.v1';
@@ -35,6 +36,12 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     }
     if (parsed.character) {
       parsed.character.historyFlags ??= [];
+      if (!Array.isArray(parsed.character.knowledgeKeys)) { parsed.character.knowledgeKeys = []; migrated = true; }
+      const knowledgeKeys = new Set(parsed.character.knowledgeKeys.filter((id): id is string => typeof id === 'string'));
+      for (const fact of KNOWLEDGE_KEY_MIGRATIONS) if (parsed.character.knowledge.includes(fact.text)) knowledgeKeys.add(fact.id);
+      const migratedKnowledgeKeys = [...knowledgeKeys];
+      if (JSON.stringify(migratedKnowledgeKeys) !== JSON.stringify(parsed.character.knowledgeKeys)) migrated = true;
+      parsed.character.knowledgeKeys = migratedKnowledgeKeys;
       if (!Array.isArray(parsed.character.contacts)) { parsed.character.contacts = []; migrated = true; }
       else {
         const contacts = parsed.character.contacts.filter((entry): entry is TravelerContact => !!entry && typeof entry.id === 'string' && !!entry.id && typeof entry.name === 'string' && typeof entry.role === 'string' && typeof entry.sourceScenarioId === 'string')

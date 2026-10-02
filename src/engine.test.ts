@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, depositCarried, failCharacter, finishSuccess, meets, newCharacter, sceneText, startRun, withdrawBanked } from './engine';
 import { BROKEN_BELL } from './scenarios/brokenBell';
+import { KNOWLEDGE_FACTS } from './knowledgeFacts';
 import { findScenarioGraphProblems } from './scenarioGraph';
 import type { SaveData } from './types';
 
@@ -179,7 +180,8 @@ describe('adventure engine', () => {
     const unknown = fresh();
     expect(sceneText(scene, unknown).toLowerCase()).not.toContain('bell');
     const known = fresh();
-    known.character!.knowledge.push('A cold iron handbell was taken from beneath the chapel.');
+    known.character!.knowledge.push(KNOWLEDGE_FACTS.chapelHandbell.text);
+    known.character!.knowledgeKeys!.push(KNOWLEDGE_FACTS.chapelHandbell.id);
     expect(sceneText(scene, known)).toContain('remember the iron handbell taken from below');
     const carrying = fresh();
     carrying.run!.inventory.push('ironHandbell');

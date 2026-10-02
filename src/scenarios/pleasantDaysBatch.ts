@@ -1,4 +1,5 @@
 import type { Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 const ending = (id: string, title: string, text: string) => ({ id, title, text, ending: 'success' as const, choices: [] as [] });
 
@@ -132,7 +133,7 @@ export const SUPPER_WITH_STRANGERS: Scenario = {
     ], choices: [
       { id: 'rememberRoadSupper', label: 'Remember the east road and ford', requirements: { selections: { supperTopic: 'road' } }, next: 'supperQuiet', effects: { knowledge: ['At supper, a carter said the east road was dry but the low ford might still be muddy.'] } },
       { id: 'rememberHarvestSupper', label: 'Remember the harvest dance', requirements: { selections: { supperTopic: 'harvest' } }, next: 'supperQuiet', effects: { lore: ['A southern village keeps a lively harvest dance after the hay is cut.'] } },
-      { id: 'rememberRiverSupper', label: 'Remember the river bends', requirements: { selections: { supperTopic: 'river' } }, next: 'supperQuiet', effects: { knowledge: ['A ferryman said river bends are shallow this season, but can change after rain.'] } },
+      { id: 'rememberRiverSupper', label: 'Remember the river bends', requirements: { selections: { supperTopic: 'river' } }, next: 'supperQuiet', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.riverBendSupper] } },
       { id: 'leaveSupperStories', label: 'Let the conversation drift on', next: 'supperQuiet' },
     ] },
     supperShared: ending('supperShared', 'A Story in Return', 'Your small story earns a laugh and another slice of bread. By the time the plates are cleared, the strangers have become easy company for an hour.'),

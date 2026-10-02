@@ -1,4 +1,5 @@
 import type { Choice, Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 const strategies = (): Choice[] => [
   { id: 'tryTraps', label: 'Set a line of baited traps', hint: 'Quiet and selective; success depends on bait and placement.', next: 'trapPlan' },
@@ -50,7 +51,7 @@ export const AWW_RATS: Scenario = {
       id: 'tracksClue', title: 'Tracks Beneath the Barn',
       text: 'Small tracks thread between the barn and the feed store. One set disappears under a loose sill; another runs toward a drain that slopes to the creek. The barn floor flexes above a hollow pocket.',
       choices: [
-        { id: 'markCreekRoute', label: 'Mark the drain and continue', timeCost: 4, effects: { knowledge: ['A tunnel under the barn drains toward the creek.'], setFlags: ['creekRouteMarked'] }, next: 'supplyShed' },
+        { id: 'markCreekRoute', label: 'Mark the drain and continue', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.barnDrainToCreek], setFlags: ['creekRouteMarked'] }, next: 'supplyShed' },
         { id: 'inspectOuterRun', label: 'Inspect the hollow with your card mirror', hint: 'You can look beneath the loose sill without stepping onto the weak boards.', requirements: { items: ['foldingCardMirror'] }, timeCost: 3, effects: { knowledge: ['The folding mirror shows an outer rat run beneath the loose sill; the hollow boards should not be crossed.'], setFlags: ['outerRunViewed'] }, next: 'supplyShed' },
         { id: 'inspectFeed', label: 'Check what is feeding them', timeCost: 5, effects: { knowledge: ['Rats are feeding on spilled grain between the barn and store.'] }, next: 'supplyShed' },
       ],
@@ -155,7 +156,7 @@ export const AWW_RATS: Scenario = {
       id: 'smokeDrifts', title: 'Smoke at the Pens', tone: 'warning',
       text: 'The smoke shifts toward the animal pens. The farmhand shuts the inner gate while the farmer opens the creek-side outlet. The rats are moving toward that opening, but the path is narrow and the floor still trembles.',
       choices: [
-        { id: 'openCreekGate', label: 'Open the marked creek outlet from firm ground', requirements: { knowledge: ['A tunnel under the barn drains toward the creek.'] }, next: 'rewardCostly' },
+        { id: 'openCreekGate', label: 'Open the marked creek outlet from firm ground', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.barnDrainToCreek.id] }, next: 'rewardCostly' },
         { id: 'useBellowsAgain', label: 'Redirect the smoke with the bellows', requirements: { items: ['smokeBellows'] }, chance: { probability: 0.72, successNext: 'rewardCostly', failureNext: 'rewardContained', successMessage: 'The bellows pushes the swarm through the creek outlet.', failureMessage: 'You stop the smoke and keep the rats penned away from the animals.' } },
         { id: 'stopTheSmoke', label: 'Douse the brazier and protect the animals', next: 'rewardContained' },
       ],

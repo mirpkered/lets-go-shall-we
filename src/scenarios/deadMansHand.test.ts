@@ -5,6 +5,7 @@ import { findScenarioGraphProblems } from '../scenarioGraph';
 import { SCENARIOS } from './index';
 import { DEAD_MANS_HAND } from './deadMansHand';
 import type { SaveData } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
 function fresh(money = 0, carriedItem: string | null = null, historyFlags: string[] = []): SaveData {
   const character = newCharacter('Traveler');
@@ -218,7 +219,8 @@ describe('Dead Man’s Hand', () => {
     expect(sceneText(DEAD_MANS_HAND.scenes.risingTension, unknowing).toLowerCase()).not.toContain('half-moon nick');
     expect(DEAD_MANS_HAND.scenes.markedDeckProof.text.toLowerCase()).toContain('half-moon nicks');
     const informed = structuredClone(unknowing);
-    informed.character!.knowledge.push('Mercer marked the backs of three aces with tiny half-moon nicks and reads them by touch.');
+    informed.character!.knowledge.push(KNOWLEDGE_FACTS.markedAces.text);
+    informed.character!.knowledgeKeys!.push(KNOWLEDGE_FACTS.markedAces.id);
     expect(sceneText(DEAD_MANS_HAND.scenes.readyConfrontation, informed)).toContain('three aces carry matching half-moon nicks');
   });
 

@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 
-const MARK_KNOWLEDGE = 'Mercer marked the backs of three aces with tiny half-moon nicks and reads them by touch.';
 const DEBT_KNOWLEDGE = 'Boone is three dollars behind on his marker and is afraid of losing his room.';
 const CUT_CARD_KNOWLEDGE = 'The red card Ada passed across the table was the ordinary cut card, not a signal.';
 const TOOL_ITEMS = ['pocketToolkit', 'foremanMultiTool', 'ratCatchersHook', 'foldingCardMirror', 'assayersLoupe'];
@@ -84,8 +84,8 @@ export const DEAD_MANS_HAND: Scenario = {
         { requirements: { minElapsedMinutes: 14 }, text: 'Another round has passed. Boone is standing now, one hand near his belt. Mabel has begun putting away the glassware. The deputy’s office across the street is dark; no one can fetch him before the room turns.' },
       ],
       choices: [
-        { id: 'inspectWithTool', label: 'Check the discarded cards carefully', hint: 'A toolkit, hook, or mirror reaches the cards quickly; the loupe makes fine edge nicks easier to distinguish.', requirements: { anyItems: TOOL_ITEMS }, timeCost: 3, effects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces'] }, next: 'markedDeckProof' },
-        { id: 'inspectWithoutTool', label: 'Study the discarded cards by hand', hint: 'Takes longer and risks drawing attention.', requirements: { notItems: TOOL_ITEMS }, timeCost: 8, chance: { probability: 0.68, successNext: 'markedDeckProof', failureNext: 'uncertainCards', successMessage: 'Three aces have tiny crescent nicks at the same corner. Mercer’s thumb fits the marks.', failureMessage: 'The cards are worn from use; none gives you certain proof.', successEffects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces'] }, failureEffects: { setFlags: ['searchDrewAttention'] } } },
+        { id: 'inspectWithTool', label: 'Check the discarded cards carefully', hint: 'A toolkit, hook, or mirror reaches the cards quickly; the loupe makes fine edge nicks easier to distinguish.', requirements: { anyItems: TOOL_ITEMS }, timeCost: 3, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.markedAces], setFlags: ['foundMarkedAces'] }, next: 'markedDeckProof' },
+        { id: 'inspectWithoutTool', label: 'Study the discarded cards by hand', hint: 'Takes longer and risks drawing attention.', requirements: { notItems: TOOL_ITEMS }, timeCost: 8, chance: { probability: 0.68, successNext: 'markedDeckProof', failureNext: 'uncertainCards', successMessage: 'Three aces have tiny crescent nicks at the same corner. Mercer’s thumb fits the marks.', failureMessage: 'The cards are worn from use; none gives you certain proof.', successEffects: { knowledgeEntries: [KNOWLEDGE_FACTS.markedAces], setFlags: ['foundMarkedAces'] }, failureEffects: { setFlags: ['searchDrewAttention'] } } },
         { id: 'speakPrivatelyToBoone', label: 'Ask Boone what he actually saw', timeCost: 4, next: 'boonePrivate' },
         { id: 'speakPrivatelyToAda', label: 'Ask Ada why she is afraid', timeCost: 4, next: 'adaPrivate' },
         { id: 'fetchMarshal', label: 'Fetch the marshal while voices are low', hint: 'Only possible before the argument has boiled over.', requirements: { maxElapsedMinutes: 13 }, timeCost: 4, effects: { historyFlags: ['called_for_help_at_saloon'], setFlags: ['marshalAtDoor'] }, next: 'marshalOutside' },
@@ -125,7 +125,7 @@ export const DEAD_MANS_HAND: Scenario = {
       id: 'adaPrivate', title: 'Ada Behind the Bar',
       text: 'Ada says she is afraid Boone will draw on Mercer, not afraid of the cards. The red card she passed was the house cut card. She has twice asked Mercer to cut the deck; both times he used his right hand and covered the edges with his thumb.',
       choices: [
-        { id: 'askAdaToShowDeck', label: 'Ask Ada to show you the deck', timeCost: 2, effects: { knowledge: [MARK_KNOWLEDGE], setFlags: ['foundMarkedAces', 'heardAdaAccount'] }, next: 'markedDeckProof' },
+        { id: 'askAdaToShowDeck', label: 'Ask Ada to show you the deck', timeCost: 2, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.markedAces], setFlags: ['foundMarkedAces', 'heardAdaAccount'] }, next: 'markedDeckProof' },
         { id: 'askAdaAboutCutCard', label: 'Ask her to explain the red card', timeCost: 1, effects: { knowledge: [CUT_CARD_KNOWLEDGE], setFlags: ['heardAboutCutCard', 'heardAdaAccount'] }, next: 'readyConfrontation' },
       ],
     },
@@ -143,10 +143,10 @@ export const DEAD_MANS_HAND: Scenario = {
       textVariants: [
         { requirements: { minElapsedMinutes: 20 }, text: 'Boone stands, hand near his belt. Mercer has put his cards down but keeps one hand below the table. Ada asks them both to stop; Mabel has begun moving patrons toward the back. There is little time to collect more testimony without risking the room.' },
         { requirements: { flags: ['marshalAtDoor'] }, text: 'Boone stands, hand near his belt. Mercer has put his cards down but keeps one hand below the table. The marshal is at the door, ready to keep them apart, but will not decide who is right for you.' },
-        { requirements: { knowledge: [MARK_KNOWLEDGE] }, text: 'Boone stands. Mercer has put his cards down but keeps one hand below the table. You know the three aces carry matching half-moon nicks. Ada asks you not to turn a piece of evidence into a reason for someone to draw.' },
+        { requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.markedAces.id] }, text: 'Boone stands. Mercer has put his cards down but keeps one hand below the table. You know the three aces carry matching half-moon nicks. Ada asks you not to turn a piece of evidence into a reason for someone to draw.' },
       ],
       choices: [
-        { id: 'showMarkedAces', label: 'Show the table the three marked aces', requirements: { knowledge: [MARK_KNOWLEDGE] }, timeCost: 1, effects: { historyFlags: ['exposed_card_cheat', 'prevented_saloon_violence', 'intervened_in_saloon_dispute'], setFlags: ['cheatExposed'] }, next: 'exposureReward' },
+        { id: 'showMarkedAces', label: 'Show the table the three marked aces', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.markedAces.id] }, timeCost: 1, effects: { historyFlags: ['exposed_card_cheat', 'prevented_saloon_violence', 'intervened_in_saloon_dispute'], setFlags: ['cheatExposed'] }, next: 'exposureReward' },
         { id: 'tellBooneToStandDown', label: 'Ask Boone to lower his hand', hint: 'He may hear you—or decide you are taking Mercer’s side.', timeCost: 1, chance: { probability: 0.56, bonusFlags: ['heardBooneDebt', 'showedCardEvidence', 'marshalAtDoor'], bonusProbability: 0.2, successNext: 'peacefulEnding', failureNext: 'gunDrawn', successMessage: 'Boone looks at the table, then lowers his hand. The room exhales.', failureMessage: 'Boone hears an accusation in your voice and reaches for his pistol.', successEffects: { historyFlags: ['prevented_saloon_violence', 'intervened_in_saloon_dispute'] }, failureEffects: { historyFlags: ['escalated_saloon_dispute', 'intervened_in_saloon_dispute'] } } },
         { id: 'accuseAda', label: 'Accuse Ada of signaling Mercer', hint: 'The red card and her nerves support a theory, not a certainty.', timeCost: 1, effects: { historyFlags: ['falsely_accused_ada', 'escalated_saloon_dispute', 'intervened_in_saloon_dispute'] }, next: 'wrongAccusationEnding' },
         { id: 'separateThem', label: 'Ask the marshal to separate them', requirements: { flags: ['marshalAtDoor'] }, effects: { historyFlags: ['prevented_saloon_violence', 'intervened_in_saloon_dispute'] }, next: 'partialEnding' },
@@ -172,7 +172,7 @@ export const DEAD_MANS_HAND: Scenario = {
     gunDrawn: {
       id: 'gunDrawn', title: 'A Pistol in Boone’s Hand', tone: 'danger',
       text: 'Boone has drawn a pistol. Mabel has stopped the music, and patrons are pressed against the far wall. His finger is on the trigger; charging him could get you shot. Mercer has both hands on the table. You have one moment to lower the danger or escape.',
-      textVariants: [{ requirements: { knowledge: [MARK_KNOWLEDGE] }, text: 'Boone has drawn a pistol. Mabel has stopped the music, and patrons are pressed against the far wall. His finger is on the trigger; charging him could get you shot. The marked aces are visible on the table, but Boone is not looking at them.' }],
+      textVariants: [{ requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.markedAces.id] }, text: 'Boone has drawn a pistol. Mabel has stopped the music, and patrons are pressed against the far wall. His finger is on the trigger; charging him could get you shot. The marked aces are visible on the table, but Boone is not looking at them.' }],
       choices: [
         { id: 'keepHandsVisible', label: 'Keep your hands visible and speak slowly', timeCost: 1, chance: { probability: 0.68, bonusFlags: ['marshalAtDoor', 'showedCardEvidence'], bonusProbability: 0.18, successNext: 'partialEnding', failureNext: 'gunshotAftermath', successMessage: 'Boone’s aim wavers. The marshal steps in and gets everyone clear.', failureMessage: 'The pistol fires into the floorboards; splinters strike your leg.', successEffects: { historyFlags: ['prevented_saloon_violence'] }, failureEffects: { health: -3, historyFlags: ['escalated_saloon_dispute'] } } },
         { id: 'knockPistolAside', label: 'Knock the pistol aside with a small weapon', hint: 'The pistol is raised. Failure could be fatal.', requirements: { anyItems: WEAPON_ITEMS }, timeCost: 1, chance: { probability: 0.42, bonusItems: ['brassCandlestick', 'ratCatchersHook', 'dealerCardKnife'], bonusProbability: 0.18, successNext: 'weaponDown', failureNext: '__death', successMessage: 'The blow knocks the pistol across the floor.', failureMessage: 'Boone fires before you reach his wrist.' , successEffects: { health: -1 }, failureEffects: { historyFlags: ['escalated_saloon_dispute'] } } },
