@@ -128,7 +128,7 @@ export const THE_TRAIN_THAT_DIDNT_STOP = A('the-train-that-didnt-stop', 'The Tra
   trainAftermath: scene('trainAftermath', 'Passengers on the Ballast', 'The passenger train is stopped or held only after the next signal crew acts. A brakeman has a burned hand and the passengers are shaken; the north goods train is safe if the warning reached it. The stationmaster writes down exactly what signals you sent.', [
     { id: 'trainReport', label: 'Give the stationmaster your account', next: 'trainEnd', effects: { knowledge: ['The north signal box can hold a train when the wire is working; the hand lamp is the fallback.'], historyFlags: ['helped avert a rail collision at a country station'] } },
   ]),
-  trainEnd: end('trainEnd', 'Held Before the Junction', 'No collision follows. The passenger train must be inspected before it travels again, and one damaged step will cost the railway time. The stationmaster keeps your clear account with the signal log.'),
+  trainEnd: end('trainEnd', 'Held Before the Junction', 'No collision follows. The passenger train must be inspected before it travels again, and one damaged step will cost the railway time. A passenger grips your hand and thanks you for keeping them off the line; the stationmaster says your clear account gave the crews time to act and keeps it with the signal log.'),
   trainDeath: end('trainDeath', 'The Live Points', 'The train reaches the switch before you can get clear of its moving iron.', 'death'),
 }, 'platform');
 

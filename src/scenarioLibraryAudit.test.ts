@@ -30,6 +30,7 @@ describe('registered scenario graph audit', () => {
       'hush-now': ['legacyAfterRescue', 'legacyRescue', 'legacyResume'],
       'smoke-over-main-street': ['fireDeath'],
       'the-last-room': ['guestAccused', 'wrongAccusationEnding'],
+      'the-last-train-message': ['deliver-private', 'deliver-wait', 'porter-deliverNow', 'verify-carry'],
       'the-last-shot': ['lastShotDeath'],
       'the-roof-comes-in': ['roofDeath'],
     };

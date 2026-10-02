@@ -106,6 +106,37 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
   },
 ]);
 
+// Delivery is the hinge, not the terminal: after the passenger reads the note,
+// show the choice it prompted and let the Traveler decide whether to carry a
+// limited reply. Keep the old terminal nodes in place for active-save safety.
+const lastTrainMessage = COMMUNICATION_ADVENTURES.find(({ id }) => id === 'the-last-train-message')!;
+for (const outcomeId of ['deliver-private', 'deliver-wait', 'verify-carry', 'porter-deliverNow']) {
+  const previousEnding = lastTrainMessage.scenes[outcomeId];
+  if (previousEnding) previousEnding.ending = 'success';
+  const parentChoice = Object.values(lastTrainMessage.scenes).flatMap(({ choices }) => choices).find(({ next }) => next === outcomeId);
+  if (parentChoice) parentChoice.next = 'passengerDecision';
+}
+lastTrainMessage.scenes.passengerDecision = {
+  id: 'passengerDecision', title: 'A Choice before the Whistle',
+  text: 'The passenger folds the note, hands the conductor their ticket, and steps back from the last train. They will stay for the next one. They ask you to tell the sender only that the message was received; its words remain private.',
+  choices: [
+    { id: 'carryReceipt', label: 'Offer to carry that brief reply', next: 'receiptCarried', effects: { historyFlags: ['carried a private receipt after a passenger chose to miss the last train'] } },
+    { id: 'leaveReplyPrivate', label: 'Respect their privacy and leave it there', next: 'privacyKept', effects: { historyFlags: ['respected a passenger’s privacy after a delayed departure'] } },
+  ],
+};
+lastTrainMessage.scenes.receiptCarried = {
+  id: 'receiptCarried', title: 'Only the Necessary Words',
+  text: 'You carry back only the fact that the passenger received the note and chose to stay. The sender thanks you without asking what was written; the train departs without them.', ending: 'success', choices: [],
+};
+lastTrainMessage.scenes.privacyKept = {
+  id: 'privacyKept', title: 'A Message Kept Private',
+  text: 'You leave the passenger to their decision and carry no answer back. They remain on the platform as the train departs, with the note still their own.', ending: 'success', choices: [],
+};
+const heldLastTrain = lastTrainMessage.scenes['verify-hold'];
+if (heldLastTrain) heldLastTrain.text = 'The passenger boards without interruption. The clerk keeps the sealed note for the sender to claim; you chose not to deliver a message whose recipient could not be reached in time.';
+const returnedLastTrain = lastTrainMessage.scenes['porter-return'];
+if (returnedLastTrain) returnedLastTrain.text = 'The sender is still near the station gate and approaches the passenger directly. They exchange a few private words; the passenger stays behind as the train leaves, and you do not learn what was written.';
+
 // The recipient clue is a midpoint, not an automatic delivery ending: the traveler
 // must weigh two plausible guests and decide how much verification is appropriate.
 const telegram = COMMUNICATION_ADVENTURES.find(({ id }) => id === 'the-telegram')!;

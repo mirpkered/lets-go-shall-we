@@ -3,16 +3,16 @@ import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, 
 const T = (hook: string, role: string, tone: string, setting: string, structures: string[], entry: string, reward = ['narrative-only payoff']) => tags({ hook, activities: ['competition/game', 'social interaction'], role, tone, risk: 'LOW', setting, structures, entry, rewards: reward, consequences: ['time/opportunity', 'relationship'] });
 
 export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring Toss', 'A fairground game has one ring left and three people certain it was theirs.', T('The player enters a fairground ring toss after its last ring lands between three chalked prizes, then must decide how to settle an honest near-tie.', 'competitor', 'humorous/absurd', 'county fair green', ['branching narrative', 'multi-stage sequence'], 'already participating in event', ['narrative-only payoff']), 'toss', {
-  toss: scene('toss', 'The Last Ring', 'At the fairground ring toss, a wooden ring lands across the line between a tin cup and a painted duck. The stall keeper says a clean landing wins, but the crowd disagrees about which prize is nearer.', [
+  toss: scene('toss', 'The Last Ring', 'At the fair booth, a tin cup and painted duck sit side by side on a waist-high shelf. Throwers stand at a chalked toe-line two paces away. Your wooden ring rests on the shelf between the prizes, closer to the duck, but the keeper says the nearer prize wins only if the throw began behind the line.', [
     { id: 'inspectLine', label: 'Ask to see the chalk line', next: 'line' },
     { id: 'offerRerun', label: 'Offer the ring back for another throw', next: 'rerun' },
     { id: 'callForKeeper', label: 'Ask the stall keeper to decide', next: 'keeper' },
   ]),
-  line: scene('line', 'A Chalk Mark Moved', 'A boot scuffed the chalk after the throw. No one can prove whether the ring crossed the line before or after the mark shifted.', [
+  line: scene('line', 'A Chalk Mark Moved', 'A boot scuffed the official toe-line after the throw. The mark no longer shows whether the thrower stayed behind it, so the ring’s position is visible but the toss may not count.', [
     { id: 'admitUncertainty', label: 'Say the mark proves nothing now', next: 'choice' },
-    { id: 'argueForDuck', label: 'Argue that the duck is nearer', next: 'duck', effects: { historyFlags: ['argued_for_a_fairground_prize_after_the_line_was_scuffed'] } },
+    { id: 'argueForDuck', label: 'Argue that the duck is nearer', next: 'duck', effects: { historyFlags: ['argued_for_a_fairground_prize_after_the_line_was_scuffed', 'won_a_painted_duck_that_was_not_travel_gear'] } },
   ]),
-  rerun: scene('rerun', 'One More Throw', 'The three players agree to one last throw each. Yours lands short; the other two land close enough that the stall keeper refuses to call either a clear win.', [
+  rerun: scene('rerun', 'One More Throw', 'The three players agree to one last throw each from the redrawn toe-line. Yours lands short; the other two land close enough that the stall keeper refuses to call either a clear win.', [
     { id: 'sharePrize', label: 'Suggest sharing the painted duck', next: 'shared' },
     { id: 'letKeeperChoose', label: 'Leave the call to the keeper', next: 'keeper' },
   ]),
@@ -25,7 +25,7 @@ export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring 
     { id: 'refundThePlayers', label: 'Close this round without a prize', next: 'refunded' },
     { id: 'leaveDuck', label: 'Let the next clear winner try', next: 'future' },
   ]),
-  duck: end('duck', 'A Prize Taken by Argument', 'The keeper gives you the duck rather than prolong the dispute. The other players leave without a rematch. You win the toy, though not by a call everyone accepts.'),
+  duck: end('duck', 'A Prize Taken by Argument', 'The keeper puts the painted duck in your hands rather than prolong the dispute. The other players leave without a rematch. It is a small fairground prize, not usable travel Gear, so it does not occupy a pack slot; the disputed win remains part of your journey’s history.'),
   shared: end('shared', 'A Fairground Tie', 'The other players agree to share the painted duck. The keeper marks the line again before the next round, and the crowd returns to the music.'),
   refunded: end('refunded', 'Round Closed', 'The keeper ends the disputed round without awarding the duck and redraws the line. You leave without a prize, but the next players know exactly where a winning ring must land.'),
   cup: end('cup', 'A Tie Called Fairly', 'The keeper records the throw as a tie rather than guessing which prize it touched. The players accept the call, and the next round begins on a clearer line.'),

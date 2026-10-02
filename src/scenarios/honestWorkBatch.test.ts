@@ -57,7 +57,9 @@ describe('honest work adventure batch', () => {
     for (const scenario of HONEST_WORK_ADVENTURES) {
       expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);
       expect(scenario.timePhases?.[0].atMinutes).toBe(0);
-      expect(scenario.runRandomSelections?.[0].values.find(({ value }) => value === 'quiet')?.weight).toBeGreaterThan(1);
+      const quietWeight = scenario.runRandomSelections?.[0].values.find(({ value }) => value === 'quiet')?.weight;
+      if (scenario.id === 'unload-before-dark') expect(quietWeight).toBe(0);
+      else expect(quietWeight).toBeGreaterThan(1);
       const equipment = Object.values(scenario.scenes).flatMap(({ choices }) => choices).find(({ id }) => id === 'useCarriedTool')?.requirements?.items?.[0];
       if (equipment) expect(ITEMS[equipment]?.carryable, `${scenario.title} equipment`).toBe(true);
       for (const scene of Object.values(scenario.scenes)) {

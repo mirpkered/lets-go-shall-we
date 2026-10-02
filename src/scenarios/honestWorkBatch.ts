@@ -26,6 +26,7 @@ interface WorkSpec {
   goodPay: number;
   reducedPay: number;
   failureHealth?: number;
+  complicationOnly?: boolean;
 }
 
 const issue: Requirement = { selections: { shift: 'complication' } };
@@ -51,7 +52,7 @@ function workAdventure(spec: WorkSpec): Scenario {
     subtitle: spec.subtitle,
     startScene: 'hiring',
     timePhases: spec.timePhases,
-    runRandomSelections: [{ id: 'shift', values: [{ value: 'quiet', weight: 4 }, { value: 'complication' }] }],
+    runRandomSelections: [{ id: 'shift', values: [{ value: 'quiet', weight: spec.complicationOnly ? 0 : 4 }, { value: 'complication' }] }],
     scenes: {
       hiring: {
         id: 'hiring', title: 'The Day’s Work', tone: 'safe', text: spec.opening,
@@ -232,6 +233,7 @@ export const UNLOAD_BEFORE_DARK = workAdventure({
   helpedEnding: 'The foreman brings two more workers. With everyone on the same count, the crate comes down without anyone reaching beneath it.',
   failedEnding: 'The crate tilts and one pot breaks against the wagon rail. The crew sets it down safely and finishes the remaining loads at a slower pace.',
   history: 'completed_paid_freight_unloading', knowledge: 'A shifted crate should be stabilized and given a clear path before anyone lifts it.', goodPay: 4, reducedPay: 2,
+  complicationOnly: true,
 });
 
 export const THE_MILL_JOB = workAdventure({

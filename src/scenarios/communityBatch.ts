@@ -88,6 +88,7 @@ export const THE_MEETING_HALL: Scenario = {
 
 export const WHAT_DID_YOU_SEE: Scenario = {
   id: 'what-did-you-see', title: 'What Did You See?', subtitle: 'A careful account matters more than a confident guess.', startScene: 'roadsideQuestion',
+  diversity: { length: 'VIGNETTE', depthClass: 'ENCOUNTER' },
   runRandomSelections: [{ id: 'cartIncident', values: [{ value: 'wheel' }, { value: 'driver' }, { value: 'road' }] }],
   scenes: {
     roadsideQuestion: { id: 'roadsideQuestion', title: 'A Question at the Roadside', tone: 'safe', text: 'A small cart sits on its side beyond the road edge. The driver is safe; two neighbors disagree about how it tipped. They ask what you saw, not whose fault it was.', textVariants: [

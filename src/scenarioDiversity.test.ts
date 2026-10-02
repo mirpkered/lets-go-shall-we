@@ -57,7 +57,7 @@ describe('scenario diversity and seasonal framework', () => {
 
   it('reports intended depth separately from raw scene-count length', () => {
     const audit = analyzeScenarioLibrary(SCENARIOS);
-    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 7, ADVENTURE: 424, DEEP_EXPLORATION: 14 });
+    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 8, ADVENTURE: 423, DEEP_EXPLORATION: 14 });
     expect(DEEP_EXPLORATION_ADVENTURES).toHaveLength(14);
     expect(DEEP_EXPLORATION_ADVENTURES.every((scenario) => classifyScenario(scenario).depthClass === 'DEEP_EXPLORATION')).toBe(true);
     expect(audit.rows.filter(({ metadata }) => metadata.depthClass === 'DEEP_EXPLORATION')).toHaveLength(14);

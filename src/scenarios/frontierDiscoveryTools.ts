@@ -15,6 +15,7 @@ export function frontierAdventure(card: FrontierCard): Scenario {
   const start = `${id}Start`, evidence = `${id}Evidence`, decision = `${id}Decision`;
   const claimCounter = `${id}CounterAccount`, hazardEdge = `${id}HazardEdge`;
   const cautiousEnd = `${id}Cautious`, boldEnd = `${id}Bold`, leftEnd = `${id}Left`, mishap = `${id}Mishap`;
+  const evidenceLeftEnd = `${id}EvidenceLeft`;
   const fatalEnd = `${id}Fatal`;
   const closure = card.closure ?? 'You leave the site as you found it. The trail back remains clear, and the evidence does not prove more than you observed.';
   const activities: Record<Shape, string> = {
@@ -62,24 +63,24 @@ export function frontierAdventure(card: FrontierCard): Scenario {
     : [
       { id: 'readEvidence', label: card.cautious, next: decision, effects: { knowledge: [card.insight] } },
       { id: 'followEvidence', label: card.bold, hint: 'Going farther may clarify the find, but costs time and leaves the easy route behind.', next: card.shape === 'claim' ? claimCounter : decision, effects: { historyFlags: [`investigated ${card.title.toLowerCase()} beyond the first clues`] } },
-      { id: 'leaveEvidence', label: card.leave, next: leftEnd },
+      { id: 'leaveEvidence', label: card.leave, next: evidenceLeftEnd, effects: { knowledge: [card.insight], historyFlags: [`left ${card.title.toLowerCase()} after recording its visible evidence`] } },
     ];
   const finalChoices: Scene['choices'] = card.shape === 'claim'
     ? [
       { id: 'shareRecord', label: 'Give both sides the same account', next: cautiousEnd, effects: { historyFlags: [`shared evidence about ${card.title.toLowerCase()}`] } },
       { id: 'keepRecord', label: 'Keep your finding private', next: boldEnd, effects: { knowledge: [card.insight] } },
-      { id: 'walkFromClaim', label: 'Leave the claim unsettled', next: leftEnd },
+      { id: 'walkFromClaim', label: 'Leave the claim unsettled', next: evidenceLeftEnd, effects: { knowledge: [card.insight] } },
     ]
     : card.shape === 'salvage'
       ? [
         { id: 'takeCareful', label: card.cautious, next: cautiousEnd, effects: card.cautiousEffects ?? { knowledge: [card.insight] } },
         { id: 'takeRisk', label: card.bold, hint: card.boldRisk === false ? undefined : 'The evidence does not establish that the object is yours to take.', ...(card.boldRisk === false ? { next: boldEnd, effects: card.boldEffects } : { chance: { probability: card.danger ?? 0.58, successNext: boldEnd, failureNext: mishap, successMessage: card.turn, successEffects: card.boldEffects, failureMessage: 'The material shifts and the object slips beyond safe reach.', failureEffects: { health: -2 } } }) },
-        { id: 'leaveSalvage', label: card.leave, next: leftEnd },
+        { id: 'leaveSalvage', label: card.leave, next: evidenceLeftEnd, effects: { knowledge: [card.insight] } },
       ]
       : [
         { id: 'closeCarefully', label: card.cautious, next: cautiousEnd, effects: { historyFlags: [`left a clear account of ${card.title.toLowerCase()}`], knowledge: [card.insight] } },
         { id: 'continueSearch', label: card.bold, next: boldEnd, effects: { knowledge: [card.insight] } },
-        { id: 'departNow', label: card.leave, next: leftEnd },
+        { id: 'departNow', label: card.leave, next: evidenceLeftEnd, effects: { knowledge: [card.insight] } },
       ];
   const scenes: Record<string, Scene> = {
     [start]: largeScene(start, card.title, card.opening, [
@@ -92,10 +93,11 @@ export function frontierAdventure(card: FrontierCard): Scenario {
     [cautiousEnd]: largeEnd(cautiousEnd, card.endingTitle ?? 'A Careful Account', card.endingText ?? `${closure} You leave with the important distinction that ${card.insight.toLowerCase()}`),
     [boldEnd]: largeEnd(boldEnd, card.endingTitle ?? 'The Find Has a Cost', card.endingText ?? `${card.turn} ${closure} What you learned is useful; what happens to the place after you go is not yours to decide.`),
     [leftEnd]: largeEnd(leftEnd, 'No Further In', `You decide not to go farther into ${card.title.toLowerCase()}. The visible signs were enough to make you stop, but not enough to settle what the place means. You return to the road without claiming what you have not examined.`),
+    [evidenceLeftEnd]: largeEnd(evidenceLeftEnd, 'No Further In', `You turn back with one grounded observation: ${card.insight} The place remains unresolved, but you can describe what was there without claiming what you did not examine.`),
   };
   if (card.shape === 'claim') scenes[claimCounter] = largeScene(claimCounter, 'The Other Side of the Record', `You take time to compare what the site itself can show. ${card.turn} The evidence adds context, but it does not settle title by itself.`, [
     { id: 'bringBothAccounts', label: 'Share the evidence without choosing sides', next: decision, effects: { knowledge: [card.insight] } },
-    { id: 'keepBothAccounts', label: 'Keep both accounts and leave', next: leftEnd },
+    { id: 'keepBothAccounts', label: 'Keep both accounts and leave', next: evidenceLeftEnd, effects: { knowledge: [card.insight] } },
   ], 'safe');
   if (card.shape === 'hazard') scenes[hazardEdge] = largeScene(hazardEdge, 'A Stable Place to Decide', `From the sound ground, the risk is easier to read. ${card.turn} The way back is still open.`, [
     { id: 'advanceFromStable', label: 'Continue only as far as the firm edge', next: decision },

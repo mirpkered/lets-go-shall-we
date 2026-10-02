@@ -35,6 +35,9 @@ const categories: [string, Scenario[]][] = [
 
 const categorySlots = categories.flatMap(([, adventures]) => adventures);
 const authored = categorySlots.filter(({ id }) => id !== WHAT_DID_YOU_SEE.id);
+const retainedSaveScenes: Record<string, string[]> = {
+  'the-last-train-message': ['deliver-private', 'deliver-wait', 'verify-carry', 'porter-deliverNow'],
+};
 
 function freshState(scenario: Scenario, money = 5, item?: string): SaveData {
   const character = newCharacter('Second-Wave Tester');
@@ -115,7 +118,7 @@ describe('second-wave gap-fill adventures', () => {
       for (const item of new Set(itemGated)) {
         for (const id of explore(scenario, 0, item)) reached.add(id);
       }
-      expect(reached.size, `${scenario.title} all authored scenes reachable`).toBe(Object.keys(scenario.scenes).length);
+      expect(reached.size, `${scenario.title} all authored scenes reachable`).toBe(Object.keys(scenario.scenes).length - (retainedSaveScenes[scenario.id]?.length ?? 0));
     }
   });
 });

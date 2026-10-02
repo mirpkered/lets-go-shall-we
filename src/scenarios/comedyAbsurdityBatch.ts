@@ -66,13 +66,17 @@ export const THE_CLERKS_SECOND_STAMP = story('the-clerks-second-stamp', 'The Cle
     { id: 'scrape', label: 'Let the clerk scrape the ink carefully', next: 'scraped' },
     { id: 'wait', label: 'Wait for the afternoon paper', next: 'waited' },
   ]),
-  purpose: scene('purpose', 'A Form for a Bed', 'The clerk learns the inn only needs your name and the date. The witness box is optional for travelers who sign in person; no one had explained that when the form was handed over.', [
-    { id: 'signNow', label: 'Sign the certificate at the counter', next: 'signed' },
+  purpose: scene('purpose', 'A Form for a Bed', 'The inn needs your name and arrival date, not a witness. The clerk had mistaken the witness line for the traveler’s declaration. You are signing your own check-in record, not certifying anyone else’s.', [
+    { id: 'signNow', label: 'Sign the traveler declaration', next: 'signatureCheck' },
     { id: 'keepCopy', label: 'Ask for a note explaining the marks', next: 'note' },
   ]),
-  scraped: end('scraped', 'A Thin but Valid Copy', 'The ink lifts without tearing the sheet. The clerk signs beside the clean witness line and adds a small note for the innkeeper about the doubled stamp.'),
+  signatureCheck: scene('signatureCheck', 'The Correct Line', 'Before you sign, the clerk lays the form flat and points out the two boxes: one for your own name and arrival date, one for a witness. The ink has not damaged the declaration, but the doubled stamp could still make the innkeeper question it.', [
+    { id: 'signCorrectLine', label: 'Sign only your own declaration', next: 'signed' },
+    { id: 'askClerkInitial', label: 'Have the clerk initial the stamp error first', next: 'scraped' },
+  ]),
+  scraped: end('scraped', 'A Thin but Valid Copy', 'The clerk initials the doubled stamp as their own mistake before you sign. The innkeeper gets a usable certificate, and the clerk keeps the corrected copy as a reminder to separate witness and traveler lines.'),
   waited: end('waited', 'One Form after Another', 'You return after the register is copied. The clerk has prepared a clean sheet and now keeps the stamp beside the correct box.'),
-  signed: end('signed', 'The Form Was Waiting for a Name', 'Your signature completes the certificate. The clerk sets the stamp aside, and the innkeeper will get the form they actually needed.'),
+  signed: end('signed', 'The Form Was Waiting for a Name', 'Your signature completes only your own check-in declaration. The clerk sets the stamp aside, and the innkeeper receives a valid form instead of a false witness record.'),
   note: end('note', 'A Note beside the Stamps', 'The clerk writes that the doubled marks are their own mistake. You leave with a usable explanation and a story the innkeeper has heard before.'),
   accepted: end('accepted', 'Legible Enough', 'The innkeeper accepts the readable form, though the doubled stamp earns a raised eyebrow. The clerk promises to mark the boxes more clearly for the next traveler.'),
 });
@@ -98,12 +102,12 @@ export const THE_PATIENT_PIG = story('the-patient-pig', 'The Patient Pig', 'A fa
 });
 
 export const THE_WARDROBE_ON_THE_ROOF = story('the-wardrobe-on-the-roof', 'The Wardrobe on the Roof', 'A gust carries a laundry basket to the roof—not the clothesline.', T('A light wicker laundry basket blows onto a low stable roof; the traveler and its owner choose a safe retrieval method rather than climbing onto weak boards.', ['puzzle/problem-solving', 'social interaction'], 'helper', 'inn stable yard', ['physical retrieval', 'risk assessment', 'property consequence'], 'accidental encounter'), 'yard', {
-  yard: scene('yard', 'A Basket above the Stable', 'A wicker laundry basket rests on the low roof of the inn stable after a wind gust. The roof boards are old and one corner sags. The owner has a long broom inside the washroom, while the stable ladder is lashed to the far wall.', [
+  yard: scene('yard', 'A Basket above the Stable', 'A wind gust has caught the wicker basket sideways against the stable’s low porch roof, just above the gutter. Its rim still holds most of the shirts. The near roof corner sags, but the eave is low enough for the owner’s long washroom broom to reach from firm ground; the ladder is lashed to the far wall.', [
     { id: 'fetchBroom', label: 'Fetch the long broom', next: 'broom' },
     { id: 'inspectLadder', label: 'Check the stable ladder', next: 'ladder' },
     { id: 'waitForKeeper', label: 'Ask the stable keeper to help', next: 'keeper' },
   ]),
-  broom: scene('broom', 'Just Within Reach', 'The broom handle reaches the basket from firm ground, but the roof edge slopes toward the gutter. The owner asks you not to tear the basket while pulling it down.', [
+  broom: scene('broom', 'Just Within Reach', 'From the stable yard, the broom head can catch the basket’s rim at the eave. The roof slopes toward the gutter, so the owner asks you not to drag the wicker across the shingles.', [
     { id: 'steadyPull', label: 'Pull it slowly from below', next: 'saved' },
     { id: 'leaveClothes', label: 'Let the loose clothes fall free', next: 'clothes' },
   ]),
@@ -111,7 +115,7 @@ export const THE_WARDROBE_ON_THE_ROOF = story('the-wardrobe-on-the-roof', 'The W
     { id: 'useSoundSide', label: 'Ask the keeper to reach from the sound side', next: 'saved' },
     { id: 'waitWind', label: 'Wait for the gusts to ease', next: 'waited' },
   ]),
-  keeper: scene('keeper', 'A Hand from the Stable', 'The keeper brings the ladder and braces it against the stable wall. The basket is near the weak corner; no one needs to step onto the roof if the broom is long enough.', [
+  keeper: scene('keeper', 'A Hand from the Stable', 'The keeper braces the ladder below the low eave, staying on its rungs rather than stepping onto the sagging boards. The basket is caught near the gutter, where the broom can reach it.', [
     { id: 'broomNow', label: 'Use the broom from the ladder', next: 'saved' },
     { id: 'lowerClothes', label: 'Lower the basket empty', next: 'clothes' },
   ]),
@@ -501,7 +505,7 @@ export const THE_MISPLACED_PIGEONHOLE = story('the-misplaced-pigeonhole', 'The M
     { id: 'correctLabels', label: 'Fix the cubby labels first', next: 'held' },
   ]),
   sorted: end('sorted', 'Letters in the Right Rooms', 'The keeper turns the labels and places each sealed letter in the proper cubby. No one opens a message, and the next post can be sorted without repeating the mistake.'),
-  held: end('held', 'One Letter Held for Its Owner', 'The blurred letter stays sealed until its addressee returns to the desk. The labels are fixed, and the keeper adds a small mark to distinguish six from nine.'),
+  held: end('held', 'One Letter Held for Its Owner', 'The blurred letter stays sealed rather than being guessed into the wrong room. The keeper corrects the labels and adds a clear six-or-nine mark to the register, preventing the next batch from repeating the mistake.'),
   left: end('left', 'The Mail Can Wait', 'You leave the sealed letters with the keeper. The labels remain turned, but no private message is opened in the name of haste.'),
 });
 
