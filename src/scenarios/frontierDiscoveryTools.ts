@@ -101,7 +101,7 @@ export function frontierAdventure(card: FrontierCard): Scenario {
     { id: 'advanceFromStable', label: 'Continue only as far as the firm edge', next: decision },
     { id: 'retreatFromStable', label: 'Retreat while the way is clear', next: leftEnd },
   ], 'warning');
-  if (card.shape === 'salvage' || (card.shape === 'hazard' && card.boldRisk !== false && !card.fatalFailure)) scenes[mishap] = largeEnd(mishap, 'A Warning from the Ground', `You retreat from ${card.title.toLowerCase()} hurt but alive. ${card.closure}`);
+  if ((card.shape === 'salvage' && card.boldRisk !== false) || (card.shape === 'hazard' && card.boldRisk !== false && !card.fatalFailure)) scenes[mishap] = largeEnd(mishap, 'A Warning from the Ground', `You retreat from ${card.title.toLowerCase()} hurt but alive. ${card.closure}`);
   if (card.fatalFailure) scenes[fatalEnd] = largeEnd(fatalEnd, 'The Structure Gives Way', card.fatalText ?? `The warned hazard becomes fatal before you can reach the return path at ${card.title.toLowerCase()}.`, 'death');
   return largeAdventure(id, card.title, card.subtitle, diversity, start, scenes);
 }

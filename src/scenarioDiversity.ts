@@ -1,4 +1,4 @@
-import type { CombatPresence, FantasyDensity, HistoricalPortrayal, HistoricalPresence, LengthClass, Scenario, ScenarioDiversity, SeasonAvailability } from './types';
+import type { CombatPresence, FantasyDensity, HistoricalPortrayal, HistoricalPresence, LengthClass, Scenario, ScenarioDepthClass, ScenarioDiversity, SeasonAvailability } from './types';
 import { hasAuthoredDeathEnding, hasHealthLossBranch, scenarioRiskTier } from './riskClassification';
 
 const MONTHS: Record<string, number[]> = {
@@ -82,6 +82,7 @@ export function classifyScenario(scenario: Scenario): ScenarioDiversity {
     supernaturalThreats: threats,
     combat,
     length: sceneCount <= 4 ? 'VIGNETTE' : sceneCount <= 11 ? 'STANDARD' : sceneCount <= 20 ? 'EXTENDED' : 'EPIC_SHORT',
+    depthClass: 'ADVENTURE',
     entryShapes: matching(text, [['hired/posted work', /hired|job offer|posted work|employer/], ['stranded during travel', /stranded|missed the|cannot cross|blocked road/], ['witnesses incident', /witness|you see|you hear|nearby when/], ['asks for lodging', /inn|lodging|room for the night/], ['accidental encounter', /by chance|happens upon|come across|finds? .* on the road/], ['invited/known contact', /invited|friend|acquaintance|knows you/], ['voluntary curiosity', /curious|decide to investigate|follow the sound/], ['buys/sells/trades', /buy|sell|trade|market|merchant/]]).slice(0, 2),
     outcomeShapes: [...(endings.some((e) => e.ending === 'success') ? ['success/partial success'] : []), ...(death ? ['death'] : []), ...(risk === 'SEVERE' ? ['costly success/no-perfect-outcome possible'] : []), ...(matching(text, [['peaceful resolution', /peacefully|calm|settle|reconcile|returns? home/], ['escape/survival', /escape|survive|retreat|leave safely/], ['unresolved mystery', /never learn|remains unknown|unresolved/], ['walk-away/refusal', /walk away|leave without|refuse|move on/], ['negotiated compromise', /compromise|agree to|meet halfway/]]))],
     rewardShapes: [...(persistentReward ? ['money/item/knowledge/history possible'] : []), ...(matching(text, [['lodging/food', /meal|food|room for the night|shelter/], ['relationship/referral', /referral|recommend|remember your help|trusts you/], ['narrative-only payoff', /thanks|conversation|part ways|quiet evening/]])), ...(!persistentReward ? ['no tangible persistent reward detected'] : [])],
@@ -94,6 +95,7 @@ export function classifyScenario(scenario: Scenario): ScenarioDiversity {
   };
   const metadata = scenario.diversity;
   const complete = { ...inferred, ...metadata, riskTier: risk, availability: inferredAvailability(scenario, text) } as ScenarioDiversity;
+  complete.depthClass = metadata?.depthClass ?? (complete.length === 'VIGNETTE' ? 'ENCOUNTER' : 'ADVENTURE');
   const listFallbacks: Partial<Record<keyof ScenarioDiversity, string>> = { playerRoles: 'other role', activities: 'other activity', structures: 'other structure', tones: 'other tone', settings: 'other setting', supernaturalThreats: 'none specified', entryShapes: 'other entry', outcomeShapes: 'scenario-defined resolution', rewardShapes: 'narrative-only payoff', consequenceShapes: 'scenario-defined consequence' };
   for (const [field, fallback] of Object.entries(listFallbacks)) if (!(complete[field as keyof ScenarioDiversity] as string[]).length) Object.assign(complete, { [field]: [fallback] });
   complete.distinctiveHook = complete.distinctiveHook.trim() || scenario.subtitle.trim() || scenario.title;
@@ -142,7 +144,7 @@ function similarity(a: ScenarioDiversity, b: ScenarioDiversity): { score: number
 export function analyzeScenarioLibrary(scenarios: Scenario[]): { classified: number; total: number; rows: { id: string; title: string; metadata: ScenarioDiversity; sceneCount: number; choiceCounts: string }[]; distributions: Record<string, Record<string, number>>; historicalReferenceCounts: Record<string, number>; similarityWarnings: SimilarityWarning[]; structuralWarnings: { firstId: string; secondId: string; sceneCount: number; choiceCounts: string }[] } {
   const entries = scenarios.map((scenario) => ({ scenario, metadata: classifyScenario(scenario) }));
   const rows = entries.map(({ scenario, metadata }) => ({ id: scenario.id, title: scenario.title, metadata, sceneCount: Object.keys(scenario.scenes).length, choiceCounts: Object.values(scenario.scenes).map((scene) => scene.choices.length).join('-') }));
-  const dimensions: (keyof ScenarioDiversity)[] = ['playerRoles', 'activities', 'structures', 'tones', 'settings', 'riskTier', 'fantasyDensity', 'supernaturalThreats', 'combat', 'length', 'entryShapes', 'outcomeShapes', 'rewardShapes', 'consequenceShapes', 'availability', 'historicalPresence', 'historicalPortrayal'];
+  const dimensions: (keyof ScenarioDiversity)[] = ['playerRoles', 'activities', 'structures', 'tones', 'settings', 'riskTier', 'fantasyDensity', 'supernaturalThreats', 'combat', 'length', 'depthClass', 'entryShapes', 'outcomeShapes', 'rewardShapes', 'consequenceShapes', 'availability', 'historicalPresence', 'historicalPortrayal'];
   const distributions: Record<string, Record<string, number>> = {};
   for (const dimension of dimensions) {
     const counts: Record<string, number> = {};
@@ -189,6 +191,7 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
   };
   const historicalPresences: HistoricalPresence[] = ['NONE', 'INSPIRED', 'CAMEO', 'FEATURED', 'HISTORICAL_EVENT'];
   const historicalPortrayals: HistoricalPortrayal[] = ['GROUNDED', 'LEGENDARY', 'MIXED', 'NOT_APPLICABLE'];
+  const depthClasses: ScenarioDepthClass[] = ['ENCOUNTER', 'ADVENTURE', 'DEEP_EXPLORATION'];
   for (const scenario of scenarios) {
     if (ids.has(scenario.id)) issues.push(`Duplicate scenario ID: ${scenario.id}`);
     ids.add(scenario.id);
@@ -197,6 +200,7 @@ export function validateScenarioMetadata(scenarios: Scenario[]): string[] {
     if (!FANTASY_DENSITIES.includes(metadata.fantasyDensity)) issues.push(`${scenario.id}: invalid fantasy density`);
     if (!COMBAT_PRESENCES.includes(metadata.combat)) issues.push(`${scenario.id}: invalid combat presence`);
     if (!LENGTH_CLASSES.includes(metadata.length)) issues.push(`${scenario.id}: invalid length class`);
+    if (!depthClasses.includes(metadata.depthClass)) issues.push(`${scenario.id}: invalid scenario depth class`);
     if (!['LOW', 'MODERATE', 'HIGH', 'SEVERE'].includes(metadata.riskTier)) issues.push(`${scenario.id}: invalid risk tier`);
     if (!historicalPresences.includes(metadata.historicalPresence)) issues.push(`${scenario.id}: invalid historical presence`);
     if (!historicalPortrayals.includes(metadata.historicalPortrayal)) issues.push(`${scenario.id}: invalid historical portrayal`);

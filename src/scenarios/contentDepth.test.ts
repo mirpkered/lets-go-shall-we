@@ -13,6 +13,7 @@ import { A_GAME_OF_CARDS } from './pleasantDaysBatch';
 import { THE_LANDLORDS_STORY } from './disputesBatch';
 import { RIVER_COMMERCE_ADVENTURES } from './riverCommerceBatch';
 import { ENTERTAINMENT_ADVENTURES } from './entertainmentBatch';
+import { MEDICAL_CARE_ADVENTURES } from './medicalBatch';
 
 function start(scenario: Scenario, selections: Record<string, string> = {}): SaveData {
   const character = newCharacter('Content Tester');
@@ -155,6 +156,35 @@ describe('content depth and payoff audit fixes', () => {
     state = finishSuccess(state, []);
     expect(state.character?.adventuresCompleted).toBe(1);
     expect(endingText).toContain('crowd begins asking practical questions');
+  });
+
+  it('shows branch-specific stabilization after the midwife takes over', () => {
+    const scenario = MEDICAL_CARE_ADVENTURES.find(({ id }) => id === 'when-the-baby-comes')!;
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
+    const outcomes = scenario.scenes.opening.choices.flatMap((routeChoice) => {
+      const route = scenario.scenes[routeChoice.next!];
+      return route.choices.map((outcomeChoice) => scenario.scenes[outcomeChoice.next!]);
+    });
+    expect(outcomes).toHaveLength(6);
+    expect(outcomes.every((ending) => ending.ending === 'success' && ending.text.length > 100)).toBe(true);
+    expect(outcomes.some(({ text }) => text.includes('the sister thanks you'))).toBe(true);
+    expect(outcomes.some(({ text }) => text.includes('quieted'))).toBe(true);
+    for (const ending of outcomes) {
+      let state = start(scenario);
+      const [routeChoice, outcomeChoice] = (() => {
+        for (const first of scenario.scenes.opening.choices) {
+          const route = scenario.scenes[first.next!];
+          for (const second of route.choices) if (second.next === ending.id) return [first, second] as const;
+        }
+        throw new Error(`No path to ${ending.id}`);
+      })();
+      state = choose(state, scenario, routeChoice, () => 0);
+      state = choose(state, scenario, outcomeChoice, () => 0);
+      expect(state.run?.status, ending.id).toBe('success');
+      expect(state.run?.completionQualification, ending.id).toBe('substantive');
+      state = finishSuccess(state, []);
+      expect(state.character?.adventuresCompleted, ending.id).toBe(1);
+    }
   });
 
   it('keeps a deliberate short opt-out in the marble story and all reviewed graphs forward-only', () => {

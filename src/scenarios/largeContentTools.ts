@@ -41,7 +41,7 @@ export function largeTags(input: {
     tones, settings: [setting], riskTier: input.risk,
     fantasyDensity: input.fantasy ?? 'NONE',
     supernaturalThreats: (input.fantasy ?? 'NONE') === 'NONE' ? ['none specified'] : ['unexplained phenomenon'],
-    combat: input.combat ?? 'NONE', length: input.risk === 'SEVERE' ? 'EXTENDED' : 'STANDARD',
+    combat: input.combat ?? 'NONE', length: input.risk === 'SEVERE' ? 'EXTENDED' : 'STANDARD', depthClass: 'ADVENTURE',
     entryShapes: input.entry ?? ['accidental encounter'],
     outcomeShapes: (input.outcomes ?? ['success/partial success', 'walk-away/refusal', ...(dangerous ? ['escape/survival', 'costly success/no-perfect-outcome possible'] : [])]).filter((tag) => OUTCOME_TAGS.includes(tag)),
     rewardShapes: ['money/item/knowledge/history possible', 'narrative-only payoff'],

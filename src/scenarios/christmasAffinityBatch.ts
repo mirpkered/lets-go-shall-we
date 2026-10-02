@@ -16,7 +16,7 @@ const tags = (hook: string, activity: Activity, role: string, tone: Tone, risk: 
   return {
     distinctiveHook: hook, playerRoles: [role], activities: [activity], structures, tones: [tone], settings: [setting], riskTier: risk,
     fantasyDensity: fantasy, supernaturalThreats: fantasy === 'NONE' ? ['none specified'] : ['unexplained phenomenon'],
-    combat, length: risk === 'SEVERE' ? 'EXTENDED' : 'STANDARD',
+    combat, length: risk === 'SEVERE' ? 'EXTENDED' : 'STANDARD', depthClass: 'ADVENTURE',
     entryShapes: mode === 'LOCKED' ? ['invited/known contact', 'accidental encounter'] : ['stranded during travel', 'accidental encounter'],
     outcomeShapes: ['success/partial success', 'walk-away/refusal', ...(danger ? ['escape/survival', 'costly success/no-perfect-outcome possible'] : []), ...(risk === 'SEVERE' ? ['death'] : [])],
     rewardShapes: ['relationship/referral', 'money/item/knowledge/history possible', 'narrative-only payoff'],
@@ -417,7 +417,7 @@ export const CHRISTMAS_ADVENTURES: Scenario[] = [
     creek: scene('creek', 'The Old Crossing', 'A broken boot print ends before the creek; there is no sign that anyone entered the water. A mile marker points toward the mill road, where the tracks turn away from the ice.', [{ id: 'takeMillRoad', label: 'Carry the letter toward the mill', next: 'mill' }, { id: 'returnInn', label: 'Return to the inn with the satchel', next: 'inn' }]),
     mill: scene('mill', 'The Intended Recipient', 'The miller recognizes the seal as a letter from his sister, who works in another town. He asks you not to open it; a courier will carry it onward tomorrow. The account book and dry gloves belong to the worker and are returned with the satchel.', [{ id: 'secureLetter', label: 'Keep the letter sealed for the courier', next: 'letterEnd', effects: { knowledge: ['The miller’s sister sends letters through the mill courier; the sealed letter was not an emergency warning.'] } }, { id: 'askMiller', label: 'Ask whether he expects urgent news', next: 'letterContext' }]),
     owner: scene('owner', 'The Worker Returns', 'The worker returns to the inn cold but unharmed. They lost the satchel when a strap broke, not in a struggle. The letter is for the miller; the worker is grateful it was not opened.', [{ id: 'returnSatchel', label: 'Return the satchel and letter together', next: 'letterEnd' }]),
-    letterContext: scene('letterContext', 'No Urgent Message', 'The miller says his sister writes about family matters, not danger. He will wait for the courier rather than risk damaging the seal in the cold.', [{ id: 'contextEnd', label: 'Leave the letter in his care', next: 'letterEnd' }]),
+    letterContext: scene('letterContext', 'No Urgent Message', 'The miller says his sister writes about family matters, not danger. He will wait for the courier rather than risk damaging the seal in the cold.', [{ id: 'contextEnd', label: 'Leave the letter in his care', next: 'contextEnd' }]),
     marked: end('marked', 'A Letter Left in Ice', 'You leave the satchel undisturbed and mark its place. The owner may find it before the thaw, though the letter remains unread.'),
     letterEnd: end('letterEnd', 'The Seal Intact', 'The letter reaches its proper route unopened. The miller and worker agree to mend the satchel strap before the next delivery.'),
     contextEnd: end('contextEnd', 'A Message Can Wait', 'The letter is not an emergency, and its owner has been found. The seal stays intact until it can be carried safely.'),

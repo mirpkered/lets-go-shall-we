@@ -42,16 +42,16 @@ export const MEDICAL_CARE_ADVENTURES = authorBatch([
     opening: 'At a farm, labor begins earlier than the family expected. The experienced midwife is coming from the next settlement. The mother is attended by her sister, who asks you to help with ordinary preparations; no one asks you to take the midwife’s place.',
     routes: [
       { id: 'fetch', label: 'Ride to meet the midwife', title: 'The Road to the Midwife', text: 'The family gives you the dry lane and a lantern for the return. The midwife is already traveling, but the meeting could save time.', outcomes: [
-        { id: 'meet', label: 'Bring the midwife directly to the house', title: 'An Experienced Arrival', text: 'You meet the midwife at the lane fork and guide her to the house. The family lets her take the lead.' },
-        { id: 'signal', label: 'Send word back that she is close', title: 'A Welcome Warning', text: 'You reach a farmhand who carries word ahead. The household has time to prepare the room before the midwife arrives.' },
+        { id: 'meet', label: 'Bring the midwife directly to the house', title: 'An Experienced Arrival', text: 'You meet the midwife at the lane fork and guide her to the house. The sister gives her the room at once; by the time you leave, she has taken charge and the family has quieted around her.' },
+        { id: 'signal', label: 'Send word back that she is close', title: 'A Welcome Warning', text: 'You reach a farmhand who carries word ahead. The household prepares the room before the midwife arrives, and the sister thanks you for giving them those few unhurried minutes.' },
       ] },
       { id: 'prepare', label: 'Bring clean cloth and warm water', title: 'The Room Prepared', text: 'You carry clean folded cloth and a kettle of warm water to the room, setting them where the midwife can reach them.', outcomes: [
-        { id: 'check', label: 'Ask the sister what else is needed', title: 'A Useful List', text: 'She asks you to keep the children nearby and the doorway clear. You do so, and the midwife arrives to a settled household.' },
-        { id: 'leave', label: 'Wait outside the room', title: 'Space to Work', text: 'You give the family privacy and stay close enough to fetch anything the midwife requests.' },
+        { id: 'check', label: 'Ask the sister what else is needed', title: 'A Useful List', text: 'She asks you to keep the children nearby and the doorway clear. When the midwife arrives, the room is ready and the hallway stays calm; the sister can turn her attention fully to the work ahead.' },
+        { id: 'leave', label: 'Wait outside the room', title: 'Space to Work', text: 'You give the family privacy and stay close enough to fetch anything the midwife requests. Once she arrives, the sister nods through the doorway: your quiet watch kept the hall clear, and she no longer needs you to wait.' },
       ] },
       { id: 'children', label: 'Keep the children occupied', title: 'A Quieter Hallway', text: 'The younger children have questions and keep returning to the door. You find them a place at the kitchen table and a small task to do.', outcomes: [
-        { id: 'story', label: 'Read aloud until the midwife arrives', title: 'A Story at the Table', text: 'The children listen, ask a few questions, and leave the hallway clear. The midwife arrives without a crowd at the door.' },
-        { id: 'message', label: 'Ask an older child to carry a note', title: 'One More Message', text: 'The child takes a note to a nearby aunt, who comes to help with the household while the midwife attends the mother.' },
+        { id: 'story', label: 'Read aloud until the midwife arrives', title: 'A Story at the Table', text: 'The children listen, ask a few questions, and leave the hallway clear. When the midwife arrives, they stay at the table by choice, and the sister offers you a grateful smile before returning to the room.' },
+        { id: 'message', label: 'Ask an older child to carry a note', title: 'One More Message', text: 'The child takes a note to a nearby aunt, who comes to help with the household while the midwife attends the mother. The sister sees the extra pair of hands arrive and can stop managing the whole house alone.' },
       ] },
     ],
   },

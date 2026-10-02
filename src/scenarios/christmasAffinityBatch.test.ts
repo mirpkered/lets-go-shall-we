@@ -103,6 +103,18 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(station.scenes.sharedMeal, shared)).not.toMatch(/children receive the first hot bowls/i);
   });
 
+  it('keeps the non-urgent miller-letter branch reachable as its own deliberate ending', () => {
+    const letter = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-frozen-letter')!;
+    let state = pick(fresh(letter), letter, 'liftSatchel');
+    state = pick(state, letter, 'takeToMill');
+    state = pick(state, letter, 'askMiller');
+    state = pick(state, letter, 'contextEnd');
+    expect(state.run?.status).toBe('success');
+    expect(state.run?.sceneId).toBe('contextEnd');
+    expect(letter.scenes.contextEnd.text).toContain('not an emergency');
+    expect(findScenarioGraphProblems(letter)).toEqual([]);
+  });
+
   it('lets a foreshadowed route under snow succeed and keeps its failed escalation stateful', () => {
     const road = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'road-under-snow')!;
     let safe = pick(fresh(road), road, 'traceFence');

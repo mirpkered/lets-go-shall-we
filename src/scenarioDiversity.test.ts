@@ -5,6 +5,7 @@ import { renderQaPanel } from './qaPanel';
 import { startAdventure, newCharacter } from './engine';
 import { SCENARIOS } from './scenarios';
 import { COLD_STORAGE } from './scenarios/coldStorage';
+import { DEEP_EXPLORATION_ADVENTURES } from './scenarios/deepExplorationBatch';
 import type { Scenario } from './types';
 
 const seasonalFixture = (season: 'OCTOBER' | 'DECEMBER', id: string): Scenario => ({
@@ -32,9 +33,10 @@ describe('scenario diversity and seasonal framework', () => {
   });
 
   it('rejects duplicate IDs and impossible enum or seasonal metadata without turning similarity warnings into failures', () => {
-    const invalid: Scenario = { ...october, id: 'invalid-metadata', diversity: { fantasyDensity: 'ALIEN' as never, availability: { season: 'CUSTOM', months: [0, 13] } as never } };
+    const invalid: Scenario = { ...october, id: 'invalid-metadata', diversity: { fantasyDensity: 'ALIEN' as never, depthClass: 'CINEMATIC' as never, availability: { season: 'CUSTOM', months: [0, 13] } as never } };
     expect(validateScenarioMetadata([annual, { ...annual }])).toContain(`Duplicate scenario ID: ${annual.id}`);
     expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('invalid fantasy density'))).toBe(true);
+    expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('invalid scenario depth class'))).toBe(true);
     expect(validateScenarioMetadata([invalid]).some((issue) => issue.includes('seasonal month configuration'))).toBe(true);
     expect(analyzeScenarioLibrary([annual, { ...annual, id: 'similar-but-valid' }]).similarityWarnings.length).toBeGreaterThan(0);
   });
@@ -51,6 +53,14 @@ describe('scenario diversity and seasonal framework', () => {
     expect(audit.distributions.historicalPresence).toEqual({ NONE: SCENARIOS.length });
     expect(audit.historicalReferenceCounts).toEqual({});
     expect(audit.rows.every(({ metadata }) => metadata.historicalReferences.length === 0 && metadata.historicalPortrayal === 'NOT_APPLICABLE')).toBe(true);
+  });
+
+  it('reports intended depth separately from raw scene-count length', () => {
+    const audit = analyzeScenarioLibrary(SCENARIOS);
+    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 7, ADVENTURE: 424, DEEP_EXPLORATION: 14 });
+    expect(DEEP_EXPLORATION_ADVENTURES).toHaveLength(14);
+    expect(DEEP_EXPLORATION_ADVENTURES.every((scenario) => classifyScenario(scenario).depthClass === 'DEEP_EXPLORATION')).toBe(true);
+    expect(audit.rows.filter(({ metadata }) => metadata.depthClass === 'DEEP_EXPLORATION')).toHaveLength(14);
   });
 
   it('validates cameo, inspired, and historical-event references without requiring names for inspired settings', () => {

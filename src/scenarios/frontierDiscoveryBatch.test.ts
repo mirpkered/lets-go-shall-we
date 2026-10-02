@@ -91,6 +91,7 @@ describe('remote discovery and frontier claims batch', () => {
     expect(cacheDecision.text).toMatch(/stored property, not random debris/i);
     expect(cacheDecision.choices.some(({ label }) => /take/i.test(label))).toBe(true);
     expect(cacheDecision.choices.some(({ label }) => /restore/i.test(label))).toBe(true);
+    expect(cache.scenes[`${cache.id}Mishap`]).toBeUndefined();
     const quiet = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-claim-cabin')!;
     expect(Object.values(quiet.scenes).some(({ text }) => /no letter explains|no certain account/i.test(text))).toBe(true);
     expect(quiet.diversity?.fantasyDensity).toBe('NONE');

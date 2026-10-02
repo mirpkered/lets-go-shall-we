@@ -6,13 +6,15 @@ export type RiskTier = 'LOW' | 'MODERATE' | 'HIGH' | 'SEVERE';
 export type FantasyDensity = 'NONE' | 'AMBIGUOUS' | 'EERIE' | 'CONFIRMED_SUPERNATURAL' | 'FANTASY_THREAT' | 'DUNGEON_FANTASY';
 export type CombatPresence = 'NONE' | 'AVOIDABLE' | 'POSSIBLE' | 'LIKELY' | 'UNAVOIDABLE' | 'MULTIPLE';
 export type LengthClass = 'VIGNETTE' | 'STANDARD' | 'EXTENDED' | 'EPIC_SHORT';
+/** Intended content lane; length alone never implies quality or exploration depth. */
+export type ScenarioDepthClass = 'ENCOUNTER' | 'ADVENTURE' | 'DEEP_EXPLORATION';
 export type SeasonKey = 'ALL_YEAR' | 'OCTOBER' | 'DECEMBER' | 'WINTER' | 'SPRING' | 'SUMMER' | 'AUTUMN' | 'CUSTOM';
 export type HistoricalPresence = 'NONE' | 'INSPIRED' | 'CAMEO' | 'FEATURED' | 'HISTORICAL_EVENT';
 export type HistoricalPortrayal = 'GROUNDED' | 'LEGENDARY' | 'MIXED' | 'NOT_APPLICABLE';
 export interface SeasonAvailability { season: SeasonKey; months?: number[]; startMonthDay?: string; endMonthDay?: string; weightBoost?: number; /** Optional months in which an ALL_YEAR affinity boost applies. */ affinityMonths?: number[] }
 export interface ScenarioDiversity {
   playerRoles: string[]; activities: string[]; structures: string[]; tones: string[]; settings: string[];
-  riskTier: RiskTier; fantasyDensity: FantasyDensity; supernaturalThreats: string[]; combat: CombatPresence; length: LengthClass;
+  riskTier: RiskTier; fantasyDensity: FantasyDensity; supernaturalThreats: string[]; combat: CombatPresence; length: LengthClass; depthClass: ScenarioDepthClass;
   entryShapes: string[]; outcomeShapes: string[]; rewardShapes: string[]; consequenceShapes: string[];
   distinctiveHook: string; availability: SeasonAvailability;
   historicalPresence: HistoricalPresence; historicalReferences: string[]; historicalPortrayal: HistoricalPortrayal;

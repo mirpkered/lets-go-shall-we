@@ -45,8 +45,24 @@ describe('content-substance audit', () => {
     expect(report.warnings.some(({ code }) => code === 'OBVIOUS_ACTION_TERMINAL')).toBe(false);
   });
 
+  it('does not mistake physical grave stakes for wagers or conclusive death outcomes for missing payoff', () => {
+    const grave = scenario('grave-stake', 'Iron Stakes', 'A rusted iron stake marks the disturbed grave.', 'Pull the stake free', 'The marker comes loose, exposing an older stone beneath it.');
+    const death: Scenario = { ...scenario('warned-death', 'The Bowed Prop', 'The roof is shedding stone; another fall may kill you.', 'Crawl beneath the bowed timber', 'The prop snaps and the roof falls before you can retreat.'), scenes: {
+      start: { id: 'start', title: 'Start', text: 'The roof is shedding stone; another fall may kill you.', choices: [{ id: 'risk', label: 'Crawl beneath the bowed timber', next: 'end' }] },
+      end: { id: 'end', title: 'Under the Prop', text: 'The prop snaps and the roof falls before you can retreat.', ending: 'death', choices: [] },
+    } };
+    const report = auditContentQuality([grave, death]);
+    expect(report.warnings.filter(({ code }) => code === 'ONE_WAGER_TERMINAL')).toEqual([]);
+    expect(report.warnings.filter(({ scenarioId, code }) => scenarioId === death.id && ['OBVIOUS_ACTION_TERMINAL', 'NO_VISIBLE_PAYOFF'].includes(code))).toEqual([]);
+  });
+
+  it('keeps explicit refusal and walk-away routes brief without treating them as thin engaged stories', () => {
+    const refusal = scenario('refusal', 'A Private Matter', 'The innkeeper asks you to intervene in a dispute.', 'Decline and continue on', 'You leave the inn to its own business.');
+    expect(auditContentQuality([refusal]).warnings).toEqual([]);
+  });
+
   it('reviews the registered library using warning-only heuristics', () => {
     const report = auditContentQuality(SCENARIOS);
-    expect(report.scenarioCount).toBe(445);
+    expect(report.scenarioCount).toBe(SCENARIOS.length);
   });
 });

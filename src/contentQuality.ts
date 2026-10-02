@@ -24,7 +24,8 @@ const CODES: ContentWarningCode[] = ['OBVIOUS_ACTION_TERMINAL', 'PROCEDURAL_TERM
 const genericEnding = /\b(finish the work|everyone thanks you|you report what happened|go on your way|the matter is settled|nothing is lost or delayed|the task is complete)\b/i;
 const visibleResult = /\b(coin|pay|wage|paid|lost|saved|found|repaired|agreed|remains|returns|reaction|thanks|laugh|smile|argue|change|cost|delay|injur|row|load|trunk|stake|hand|win|lose|witness|uncertain|leave|depart|share|split|teach|part|promise|offer|choice|decide|memory|story)\b/i;
 const performanceEvidence = /\b(row|load|crate|trunk|coin|pay|wage|quality|pace|time|hand|stake|won|lost|saved|recovered|delayed|damage|repair|helped|team|tally|result|mistake|output|assigned|extra)\b/i;
-const wagerContext = /\b(card|wager|bet|stake|marble|race|contest|game|hand at the table)\b/i;
+// Do not treat a physical stake (for example, an iron grave marker) as a wager.
+const wagerContext = /\b(card|wager|bet|marble|race|contest|game|hand at the table)\b/i;
 const taskContext = /\b(work|wage|job|sort|baggage|delivery|deliver|repair|cargo|load|transport|organize|cleanup|clean up|harvest|timber|task)\b/i;
 const procedureContext = /\b(report|statement|sign|submit|turn in|hand over|sort|deliver|record|finish|wait for|return|agree|compromise)\b/i;
 
@@ -74,8 +75,9 @@ export function auditContentQuality(scenarios: Scenario[]): ContentQualityReport
       const endingText = `${terminal.title} ${terminal.text}`;
       const direct = terminalDepth <= 1;
       const shallow = terminalDepth <= 2;
+      const explicitQuickExit = direct && /\b(decline|refuse|turn away|walk away|leave without|keep walking|continue on|not get involved|stay out|pass on)\b/i.test(incomingLabels);
       const hasPayoff = visibleResult.test(endingText) && !genericEnding.test(endingText);
-      const wager = wagerContext.test(parentText) && /\b(bet|stake|wager|race|marble|play .{0,24}hand|risk .{0,20}coin)\b/i.test(incomingLabels);
+      const wager = wagerContext.test(parentText) && /\b(bet|wager|race|marble|play .{0,24}hand|risk .{0,20}coin)\b/i.test(incomingLabels);
       const workOrGame = wager || taskContext.test(`${parentText} ${terminal.title}`);
       const proposal = /\b(agree|agreement|compromise|settle|split)\b/i.test(endingText)
         && /\b(suggest|propose|split|compromise|agree to share)\b/i.test(incomingLabels);
@@ -84,11 +86,15 @@ export function auditContentQuality(scenarios: Scenario[]): ContentQualityReport
 
       if (direct && wager) warnings.push(warning(scenario, terminal.id, 'ONE_WAGER_TERMINAL', 'HIGH', 'A wager/game action can reach this ending without a later strategic or continue/stop decision.', 'Consider a brief next-hand, stake, or stop/continue decision before resolving the game.'));
       if (shallow && proposal && !/\b(then|after|begins|pays|repair begins|follow through|concedes|remains open|still|terms|cost|labor|materials)\b/i.test(endingText)) warnings.push(warning(scenario, terminal.id, 'AGREEMENT_TERMINAL', direct ? 'HIGH' : 'MEDIUM', 'An agreement or compromise is the last visible event, with little evidence of terms or follow-through.', 'Show the agreed terms, who contributes, what changes, or why the matter remains open.'));
-      if (direct && !hasPayoff) warnings.push(warning(scenario, terminal.id, 'OBVIOUS_ACTION_TERMINAL', emptyPayoff ? 'HIGH' : 'LOW', 'One action reaches a generic or minimally consequential terminal beat.', 'Add a meaningful result, reaction, consequence, or intentionally strong vignette payoff.'));
-      if (shallow && proceduralAction && (genericEnding.test(endingText) || !hasPayoff)) warnings.push(warning(scenario, terminal.id, 'PROCEDURAL_TERMINAL', 'MEDIUM', 'A report, sorting, delivery, agreement, or other procedure appears to end the route without a visible change.', 'Show what the procedure changes and who responds.'));
-      if (shallow && taskContext.test(`${parentText} ${terminal.title}`) && (genericEnding.test(endingText) || !performanceEvidence.test(endingText))) warnings.push(warning(scenario, terminal.id, 'ROUTINE_TASK_TERMINAL', 'MEDIUM', 'A work/task route ends quickly and gives little concrete performance feedback.', 'Consider reporting output, quality, time, pay, cost, or another person’s reaction.'));
-      if (shallow && workOrGame && !performanceEvidence.test(endingText)) warnings.push(warning(scenario, terminal.id, 'NO_PERFORMANCE_FEEDBACK', 'LOW', 'The terminal text may not tell the player how the work/game/task went.', 'Check whether a specific performance result or deliberate narrative reason to omit one belongs here.'));
-      if (shallow && !hasPayoff && !genericEnding.test(endingText)) warnings.push(warning(scenario, terminal.id, 'NO_VISIBLE_PAYOFF', 'LOW', 'A short route may resolve mechanically without showing a reaction or consequence.', 'Review the route manually; concise closure is enough if the ending already feels complete.'));
+      // A clearly authored death is itself a conclusive outcome; assess its fairness
+      // through risk tests instead of asking it to provide an aftermath first.
+      if (terminal.ending !== 'death' && !explicitQuickExit) {
+        if (direct && !hasPayoff) warnings.push(warning(scenario, terminal.id, 'OBVIOUS_ACTION_TERMINAL', emptyPayoff ? 'HIGH' : 'LOW', 'One action reaches a generic or minimally consequential terminal beat.', 'Add a meaningful result, reaction, consequence, or intentionally strong vignette payoff.'));
+        if (shallow && proceduralAction && (genericEnding.test(endingText) || !hasPayoff)) warnings.push(warning(scenario, terminal.id, 'PROCEDURAL_TERMINAL', 'MEDIUM', 'A report, sorting, delivery, agreement, or other procedure appears to end the route without a visible change.', 'Show what the procedure changes and who responds.'));
+        if (shallow && taskContext.test(`${parentText} ${terminal.title}`) && (genericEnding.test(endingText) || !performanceEvidence.test(endingText))) warnings.push(warning(scenario, terminal.id, 'ROUTINE_TASK_TERMINAL', 'MEDIUM', 'A work/task route ends quickly and gives little concrete performance feedback.', 'Consider reporting output, quality, time, pay, cost, or another person’s reaction.'));
+        if (shallow && workOrGame && !performanceEvidence.test(endingText)) warnings.push(warning(scenario, terminal.id, 'NO_PERFORMANCE_FEEDBACK', 'LOW', 'The terminal text may not tell the player how the work/game/task went.', 'Check whether a specific performance result or deliberate narrative reason to omit one belongs here.'));
+        if (shallow && !hasPayoff && !genericEnding.test(endingText)) warnings.push(warning(scenario, terminal.id, 'NO_VISIBLE_PAYOFF', 'LOW', 'A short route may resolve mechanically without showing a reaction or consequence.', 'Review the route manually; concise closure is enough if the ending already feels complete.'));
+      }
     }
   }
   const warningCounts = Object.fromEntries(CODES.map((code) => [code, warnings.filter((entry) => entry.code === code).length])) as Record<ContentWarningCode, number>;
