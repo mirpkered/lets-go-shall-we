@@ -1,6 +1,6 @@
 # Library Ending, Payoff & Reward Audit
 
-Baseline: main at `f22ba58e3467bf49243371b4438107d25455c1fb`, before the original audit pass. The registry at that baseline contained **175 playable adventures**. The current registry was rechecked during the 2026-10-01 documentation reconciliation and also contains 175. This report’s route and reward measurements remain a dated structural snapshot, not a freshly recomputed analysis of every later authored edit; scenario source/tests are authoritative for current behavior. This is an internal audit, not player-facing content.
+Baseline: main at `f22ba58e3467bf49243371b4438107d25455c1fb`, before the original audit pass. The registry at that baseline contained **175 playable adventures**. The current registry has since grown to **301**; the measurements below remain a dated structural snapshot of the earlier 175-story library, not a freshly recomputed analysis of the later adventures or every subsequent authored edit. Scenario source/tests are authoritative for current behavior. This is an internal audit, not player-facing content.
 
 ## Method and limits
 
@@ -209,7 +209,7 @@ The table’s short-route signals are intended as a living triage queue. Opt-out
 
 ## Content depth and procedural-ending follow-up
 
-The current registry contains **175 playable adventures**. The inventory above is the structural pass across all 175. For this focused follow-up, route-level review concentrated on six high-confidence playtest examples and the shared work-story pattern; it did not treat scene count alone as a defect. Five adventures were adjusted; **Loose in the Market** was verified as already having a sufficient recovery and aftercare sequence and was left unchanged.
+At the time of this focused follow-up, the registry contained **175 playable adventures**. The inventory above is the structural pass across those 175. Route-level review concentrated on six high-confidence playtest examples and the shared work-story pattern; it did not treat scene count alone as a defect. Five adventures were adjusted; **Loose in the Market** was verified as already having a sufficient recovery and aftercare sequence and was left unchanged. Later scenarios are outside this report’s route-level scope.
 
 | Adventure | Approx. engaged route | Previous weakness | Category | Payoff / consequence | Reward | Action |
 |---|---:|---|---|---|---|---|

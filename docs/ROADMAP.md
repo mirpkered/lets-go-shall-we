@@ -1,41 +1,49 @@
 # Roadmap
 
-This roadmap separates stabilization from possible expansion. It has no promised dates; completed work belongs in current-system documentation, not in an open-task list.
+This is an actionable project roadmap, not a transcript of every proposed idea. Status is based on the checked-in source and tests; see [Current Systems](CURRENT_SYSTEMS.md) for implementation detail. No dates or delivery promises are implied.
 
-## Now — stabilize and verify
+## Now — trust and validate the expanded library
 
-- Continue hands-on playtesting across the expanded library; fix clear continuity, state, fairness, and save regressions.
-- Use the on-demand content-substance audit to triage abrupt/procedural endings before future bulk-generation passes; resolve only high-confidence cases and retain human review for soft warnings.
-- Verify payoff and reward changes in actual play, not only structural scans.
-- Confirm traveler progression thresholds and multi-item carry behavior through long-lived and fresh travelers.
-- Complete deployment and verification of the anonymous global Adventure Counter using the existing `dark-scene-308e` Worker; add the returned HTTPS `workers.dev` URL to the static production build before presenting the total as live.
-- Recheck recent-adventure exclusion, reward-to-Bank, full-carry/full-Bank, save migration, and QA isolation.
-- Playtest event-driven equipment damage, harness-maker repair/upgrades, and Bank/death state continuity before expanding upgrades to more items.
-- Keep documentation aligned with the implementation.
+- Continue hands-on playtesting across the 301-adventure library; fix confirmed continuity, state, fairness, save, payoff, and reward defects surgically.
+- Use QA content-quality, diversity, and selector diagnostics as review aids; manually verify high-confidence findings instead of treating heuristic warnings as failures.
+- Track hands-on coverage separately from authored/test coverage so “registered” is not mistaken for “playtested.”
+- Validate long-lived and fresh travelers through the 10/20 completion Gear-capacity milestones, death, abandonment, retirement, Bank, reward resolution, and legacy save migration.
+- Playtest event-driven Gear wear, repair, upgrades, replacement, and Bank/death continuity across more items before expanding durability mechanics.
+- Confirm deployment/configuration of the optional global Adventure Counter before describing it as live; the client requires a verified Worker URL in the production build.
+- Keep current-state documentation aligned with code after each systems or large-content pass.
 
-## Next — consolidate the library
+## Next — focused foundations
 
-- Expand playtest coverage across all registered adventures and mark which have hands-on coverage.
-- Review scenario balance, risk/consequence consistency, item usefulness/overlap, and the practical money economy.
-- Review the risk-tier selection balance from play data and author reviews; the current selector uses soft completion-count and recent-risk weighting, without altering in-story odds.
-- Review world-continuity callbacks and high-confidence weak scenarios without forcing crossovers.
-- Reassess reward frequency from real play, keeping fictional provenance and varied narrative rewards ahead of item quotas.
-- Treat long-term library growth (potentially 1,000+ adventures) as a core creative goal, but put meaningful diversity ahead of raw quantity. Use the diversity matrix and its gap/similarity warnings before any large generation batch.
-- Seasonal availability is now supported. Future October and December batches are possibilities, not dated commitments; fantasy, skeleton/undead, and choice-driven combat stories fit the taxonomy without requiring a general combat engine.
+- Complete the next requested architecture audit against the documented system boundaries; fix only demonstrated issues and preserve local-save compatibility.
+- Improve the Journey Record / traveler-history presentation if playtesting shows the current status and accumulated continuity are hard to understand.
+- Review persistent callback quality: History/Knowledge flags should be specific, reusable, and surfaced only when the current traveler learned them.
+- Continue item/reward economy review using fictional provenance and distinct function; avoid reward quotas and redundant carryables.
+- Keep testing mobile screens at 320×720 and 390×844; address confirmed no-scroll failures without shrinking text or touch targets.
 
-## Later — presentation and optional platform work
+## Later — accepted but not immediate
 
-- Replace the five subdued home-scene SVG variants with distinct, detailed illustrations while preserving the existing rotation framework; prevent immediate repeat across sessions.
-- Consider additional audio/atmosphere and further visual polish.
-- Explore a PWA or mobile-app wrapper without moving saves or gameplay to a backend.
-- Improve the Journey Record / traveler-history presentation if playtesting shows a need.
-- Reconcile public feedback in focused passes.
+- Replace the five subdued home-scene SVG variants with distinct, recognizable illustrations and prevent immediate repetition across new sessions.
+- Consider a lightweight PWA or native wrapper while keeping gameplay and saves client-side; no backend migration is implied.
+- Consider richer structured Contacts/Favors, injury/recovery, or persistent-threat models only if repeated authored needs justify the additional state and migration burden. These are not implemented systems today.
+- Revisit counter deployment and abuse limitations if a verified anonymous aggregate becomes a product priority.
 
-## Maybe — exploratory, not committed
+## Maybe — exploratory
 
-- Thematic-aware sequencing beyond exact recent-repeat exclusion.
-- More extensive world-event propagation or collectible/curiosity systems.
-- Native packaging and additional progression ideas.
-- Analytics broader than the minimal anonymous completion aggregate.
-- Other speculative systems from older notes, only if they solve a demonstrated player need.
+- Additional selection dimensions beyond the implemented category/risk/season/historical/replay weights.
+- Shared world-state callbacks or collectible/curiosity systems beyond current character History/Knowledge and device-local state.
+- Additional content lanes such as maritime/river, traveling show, industrial/rail-yard, medical/recovery, folklore, monster hunt, heist/infiltration, mystery/disappearance, or hospitality/inn stories. These are candidate themes, not committed queues.
+- Analytics beyond the minimal anonymous completion aggregate.
 
+## Done — major foundations in the current codebase
+
+- Static GitHub Pages hosting under `/lets-go-shall-we/`, with no gameplay backend, accounts, cloud saves, or multiplayer.
+- Data-driven forward-only scenario engine; local autosave/resume; fictional story time; death, abandonment, and retirement behavior.
+- Five-slot persistent Bank for Gear/Relics; 1→2→3 Gear capacity milestones; typed Supplies, Relics, Assets, item condition, upgrades, repair, and safe ending-reward placement.
+- Normal weighted scenario selection with seasonal eligibility, category recovery, risk pressure, historical-presence modifier, character replay penalty, and recent exact-scenario exclusion.
+- Separate QA save with direct launch, state tools, selector simulation/diagnostics, seasonal override, diversity report, and content-quality audit.
+- Scenario metadata and broad content foundations: commerce/property, community/domestic, work, animals, recreation, disputes, crime/noir-lite, comedy/absurdity, occult, survival/expedition, Halloween/October, Christmas/December, disaster/rescue, Western/outlaw, and treasure/exploration/lost places.
+- Anonymous global counter implementation and deployment workflow; production activation remains unverified/configuration-dependent as documented in [Current Systems](CURRENT_SYSTEMS.md).
+
+## Content pipeline status
+
+The content families listed under **Done** are represented in the current registry; their presence does not mean every route has been hand-playtested. No additional named batch is marked queued by this roadmap. Older batch proposals and structural snapshots remain historical planning references unless explicitly moved into Now or Next. Seasonal locking and affinity are implemented, but future October/December stories are not presumed or scheduled.
