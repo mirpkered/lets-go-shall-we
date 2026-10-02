@@ -68,7 +68,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, money =
 describe('day off and pleasant encounters adventure batch', () => {
   it('registers ten distinct, concise, forward-only adventures', () => {
     expect(PLEASANT_DAY_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(237);
+    expect(SCENARIOS).toHaveLength(265);
     expect(PLEASANT_DAY_ADVENTURES.map(({ title }) => title)).toEqual([
       'Market Afternoon', 'Gone Fishing', 'The County Fair', 'A Game of Cards',
       'The Swimming Hole', 'Supper with Strangers', 'The Music Outside',

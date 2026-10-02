@@ -82,7 +82,7 @@ describe('second-wave gap-fill adventures', () => {
     ]);
     expect(categorySlots).toHaveLength(52);
     expect(authored).toHaveLength(51);
-    expect(SCENARIOS).toHaveLength(237);
+    expect(SCENARIOS).toHaveLength(265);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     expect(SCENARIOS.filter(({ id }) => id === WHAT_DID_YOU_SEE.id)).toHaveLength(1);
   });

@@ -16,6 +16,7 @@ const HIGH_SCENARIOS = new Set([
   'red-chalk-circle', 'lantern-at-the-crossing', 'thing-under-floorboards', 'the-wrong-shadow', 'the-hollow-man', 'doorway-with-no-room',
   'the-broken-axle', 'the-cave-before-the-storm', 'the-lost-survey-party', 'three-days-to-the-railhead', 'the-long-way-around-expedition',
   'night-on-the-ridge', 'the-washed-out-cut', 'the-tree-across-the-creek', 'the-wind-changes', 'the-load-must-go',
+  'christmas-tree-millers-hill', 'red-scarf-in-the-snow', 'the-empty-sleigh', 'road-under-snow', 'frozen-millwheel', 'evergreen-door',
 ]);
 
 const MODERATE_SCENARIOS = new Set([
@@ -28,6 +29,9 @@ const MODERATE_SCENARIOS = new Set([
   'the-black-thread', 'medium-knows-too-much', 'candle-that-will-not-go-out', 'book-without-a-title', 'the-empty-coffin',
   'the-man-who-came-back-wrong', 'hanging-charms', 'the-third-knock', 'the-borrowed-face', 'last-candle-in-the-house',
   'no-water-at-millers-spring', 'the-wrong-valley', 'the-abandoned-camp', 'hold-until-morning',
+  'last-parcel-before-christmas', 'gift-with-no-name', 'christmas-at-the-station', 'toymakers-last-order', 'the-pageant-problem',
+  'snowbound-inn', 'footprints-around-the-house', 'house-with-warm-window', 'the-frozen-letter', 'the-longest-night', 'ice-lanterns', 'visitor-at-midnight',
+  'the-christmas-visitor', 'empty-chair-at-midnight', 'gift-that-came-back',
 ]);
 
 /** Scenario-level authored stakes only. This never modifies a run's odds or character stats. */

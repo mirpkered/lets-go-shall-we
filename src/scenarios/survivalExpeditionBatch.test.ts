@@ -65,7 +65,7 @@ function explore(scenario: Scenario, gear: string[] = [], ownedAssets: NonNullab
 describe('survival and expedition adventure batch', () => {
   it('registers 23 unique, forward-only adventures with complete current diversity metadata', () => {
     expect(SURVIVAL_EXPEDITION_ADVENTURES).toHaveLength(23);
-    expect(SCENARIOS).toHaveLength(237);
+    expect(SCENARIOS).toHaveLength(265);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     expect(validateScenarioMetadata(SCENARIOS)).toEqual([]);
     for (const scenario of SURVIVAL_EXPEDITION_ADVENTURES) expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);
