@@ -272,6 +272,10 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 
 @media (max-width: 370px) {
   .app-shell { padding-inline:.8rem; }
+  .resume-card { padding:.95rem 1rem; }
+  .resume-card h1 { margin:.35rem 0 .55rem; }
+  .resume-card p { line-height:1.45; }
+  .resume-card .fine-print { margin-top:.65rem!important; line-height:1.35!important; }
   .story-card { min-height:17rem; padding:1.7rem 1.1rem 1.3rem; }
   .story-text { font-size:1.04rem; }
   .choices button { padding:.7rem; }

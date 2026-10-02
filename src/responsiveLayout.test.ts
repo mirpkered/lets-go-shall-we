@@ -118,6 +118,13 @@ describe('global no-scroll layout contract', () => {
     expect(mainSource.indexOf('${renderQaPanel(qaEnabled')).toBeLessThan(mainSource.indexOf('${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}'));
   });
 
+  it('keeps the active-run home card compact on the narrowest supported phone width without shrinking text', () => {
+    expect(styles).toContain('@media (max-width: 370px)');
+    expect(styles).toContain('.resume-card { padding:.95rem 1rem; }');
+    expect(styles).toContain('.resume-card p { line-height:1.45; }');
+    expect(styles).toContain('.resume-card .fine-print { margin-top:.65rem!important; line-height:1.35!important; }');
+  });
+
   it('labels Gear slots separately from Supplies, Relics, available adventure gear, and owned property', () => {
     expect(mainSource).toContain('aria-label="Carried gear: ${carriedGear.length} of ${capacity} slots used"');
     expect(mainSource).toContain('Gear ${carriedGear.length}/${capacity}');
