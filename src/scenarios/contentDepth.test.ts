@@ -113,6 +113,9 @@ describe('content depth and payoff audit fixes', () => {
   it('makes the marble replay one fair shot per child, without a second arbitration', () => {
     const scenario = SMALL_HUMAN_MOMENT_ADVENTURES.find(({ id }) => id === 'the-childrens-court')!;
     expect(findScenarioGraphProblems(scenario)).toEqual([]);
+    expect(scenario.scenes.listen.text).not.toBe(scenario.scenes.accounts.text);
+    expect(scenario.scenes.listen.text).toContain('The first child');
+    expect(scenario.scenes.accounts.text).toContain('The second child');
     let state = act(start(scenario), scenario, 'opening', 'take-listen');
     state = act(state, scenario, 'listen', 'listen-replay');
     state = act(state, scenario, 'accounts', 'replayMarked');
