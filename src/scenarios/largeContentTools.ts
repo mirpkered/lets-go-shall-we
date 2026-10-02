@@ -3,7 +3,7 @@ import type { Scenario, ScenarioDiversity, Scene, SeasonAvailability } from '../
 export type LargeRisk = ScenarioDiversity['riskTier'];
 export type LargeFantasy = ScenarioDiversity['fantasyDensity'];
 
-export const largeScene = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe'): Scene => ({ id, title, text, choices, tone });
+export const largeScene = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', textVariants?: Scene['textVariants']): Scene => ({ id, title, text, choices, tone, ...(textVariants ? { textVariants } : {}) });
 export const largeEnd = (id: string, title: string, text: string, ending: 'success' | 'death' = 'success'): Scene => ({ id, title, text, ending, choices: [] });
 
 const ACTIVITY_TAGS = ['labor/repair', 'rescue/care', 'survival', 'negotiation/trade', 'investigation/mystery', 'travel/exploration', 'social interaction', 'animals', 'combat/defense', 'puzzle/problem-solving', 'moral prioritization', 'communication/witness'];

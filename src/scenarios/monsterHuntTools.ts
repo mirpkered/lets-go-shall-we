@@ -1,8 +1,7 @@
-import type { ScenarioDiversity, Scene, SeasonAvailability } from '../types';
+import type { ScenarioDiversity, SeasonAvailability } from '../types';
 import { largeTags } from './largeContentTools';
 
-export const huntScene = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe'): Scene => ({ id, title, text, choices, tone });
-export const huntEnd = (id: string, title: string, text: string, ending: 'success' | 'death' = 'success'): Scene => ({ id, title, text, ending, choices: [] });
+export { largeScene as huntScene, largeEnd as huntEnd } from './largeContentTools';
 
 export function huntMetadata(input: {
   hook: string; activity: string; role: string; tone: string; risk: ScenarioDiversity['riskTier']; setting: string;

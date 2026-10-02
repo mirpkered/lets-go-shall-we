@@ -1,5 +1,5 @@
-import type { Scenario, ScenarioDiversity, Scene } from '../types';
-import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
+import type { ScenarioDiversity } from '../types';
+import { largeTags } from './largeContentTools';
 
 export type SurpriseRisk = ScenarioDiversity['riskTier'];
 
@@ -37,6 +37,4 @@ export function anthologyTags(input: {
   return result;
 }
 
-export const anthologyScene = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', textVariants?: Scene['textVariants']): Scene => ({ ...largeScene(id, title, text, choices, tone), ...(textVariants ? { textVariants } : {}) });
-export const anthologyEnd = (id: string, title: string, text: string, ending: 'success' | 'death' = 'success'): Scene => largeEnd(id, title, text, ending);
-export const anthologyStory = (id: string, title: string, subtitle: string, diversity: ScenarioDiversity, startScene: string, scenes: Record<string, Scene>): Scenario => largeAdventure(id, title, subtitle, diversity, startScene, scenes);
+export { largeScene as anthologyScene, largeEnd as anthologyEnd, largeAdventure as anthologyStory } from './largeContentTools';

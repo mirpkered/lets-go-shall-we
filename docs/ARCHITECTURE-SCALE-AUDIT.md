@@ -4,6 +4,18 @@ Audit snapshot: 2026-10-01
 Source baseline: `56326232d926c7ee1f8bed7002b1fb1adfdb31b1`  
 Scope: architecture, authoring path, scale and verification. No scenario content or gameplay code was changed.
 
+## Follow-up: authoring architecture at 445 scenarios (2026-10-02)
+
+This section records the follow-up implementation; the 301-scenario measurements below remain historical and are not current counts.
+
+- `src/scenarios/index.ts` remains the sole registry assembly point. The same `SCENARIOS` collection feeds normal selection, ID lookup, and QA direct launch. A new release-time `validateScenarioRegistry()` composes metadata and graph validation with duplicate display-title warnings and item, Supply, Contact, Favor, and owned-asset reference checks. It is exercised by one global test and a 1,000-entry synthetic registry test; it does not run on app startup.
+- The anthology and monster-hunt scene/end constructors were exact pass-through duplicates of `largeScene` / `largeEnd`. They now re-export those canonical constructors. `largeScene` gained optional `textVariants` support so that consolidation retains the anthology adapter’s prior capability. No scenario files, scenario IDs, scene IDs, or authored outcomes needed migration.
+- Metadata adapters remain family-specific: `anthologyTags` carries broader structure/entry normalization, and `huntMetadata` handles threat/season/reward metadata. The specialized frontier/deep-exploration and legacy `authorAdventure` builders remain optional shape-specific tools. `authorAdventure` still produces a fixed opening→route→two-endings pattern; it is not the default authoring pathway and should only be used when that authored structure fits.
+- One malformed requirement was found by the new reference gate in *The Island When the Water Falls*: `roadmanLantern` did not match the catalog ID `roadmansLantern`. The requirement now uses the existing catalog ID. This fixes the signal-route item check without changing the scenario or save identifiers.
+- Risk remains a known compatibility exception: effective runtime risk is currently owned by `src/riskClassification.ts`, while optional `diversity.riskTier` declarations can disagree. The earlier audit found 47 such disagreements in the then-current roster. This pass did not change selector weights or reclassify those scenarios because doing so without a scenario-by-scenario compatibility reconciliation could change live selection behavior. New authors are told which runtime classifier currently governs; a later migration should reconcile this explicitly.
+
+The canonical authoring entry point is documented in `docs/AUTHORING_CHECKLIST.md` under “How to add one adventure correctly.”
+
 ## Executive summary
 
 The codebase is in good shape for continued growth from its current **301 registered adventures**. Scenario execution is data-driven, lookup is indexed, core persistent systems have central owners, and the full test suite passed. A big-bang rewrite is not warranted.

@@ -2,6 +2,17 @@
 
 Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. Mark an item not applicable when the story does not need it.
 
+## How to add one adventure correctly
+
+1. Create a readable typed `Scenario` data module under `src/scenarios/`. Keep stable scenario and scene IDs; author the scene graph directly unless an existing helper exactly matches the story’s structure.
+2. Set `diversity` metadata in the current schema, including intended `depthClass`, risk, fantasy, combat, availability, and historical fields where applicable. Legacy inference exists for old content; new content should not rely on it for authorial intent. Effective runtime risk is currently owned by `src/riskClassification.ts`; do not assume a declared `diversity.riskTier` changes selection until that compatibility model is reconciled.
+3. Register the scenario once in `src/scenarios/index.ts`. That root registry is the source used by normal selection and QA direct launch; do not add it to a second list.
+4. Express persistent outcomes as authored `Effects` on choices. The shared engine and reward resolver own completion, inventory, money, supplies, knowledge/history, relationships, and lifecycle persistence. Never mutate saved traveler state in scenario helpers.
+5. Add focused scenario tests for important branches, required state, payoff, and save-sensitive behavior. The global registry release test checks graph targets, stable-reference catalogs, metadata, and IDs; use `validateScenarioRegistry` for focused fixtures when useful.
+6. Launch it in QA and inspect substantive endings, reward resolution, and the longest mobile scenes. Completion is handled by canonical terminal qualification, not bespoke scenario code.
+
+Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
+
 ## Before drafting
 
 - [ ] Read the current rules and inspect the adventure roster, continuity registry, history flags, item catalog, and relevant geography/events.

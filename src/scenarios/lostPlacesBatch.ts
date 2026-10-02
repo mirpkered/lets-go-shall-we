@@ -192,7 +192,7 @@ export const THE_ISLAND_WHEN_THE_WATER_FALLS = E('the-island-when-the-water-fall
     { id: 'tinDeeper', label: 'Search the far edge for more remains', hint: 'The water is rising on that side and the bar is narrowing.', chance: { probability: 0.42, successNext: 'discovery', failureNext: 'islandStranded', successMessage: 'You find only a second marker and reach shore in time.', failureMessage: 'The channel closes behind the bar.', failureEffects: { health: -2 } } },
   ], 'warning'),
   islandStranded: scene('islandStranded', 'Water between You and Shore', 'The shallow channel is now too strong to wade. The far bank is farther but has a ferry landing; the gravel bar is still above water for a little while. A signal can be seen from the road.', [
-    { id: 'strandSignal', label: 'Signal the road from the survey post', requirements: { anyUsableItems: ['conductorWhistle', 'roadsideSignalMirror', 'roadmanLantern'] }, next: 'rescued' },
+    { id: 'strandSignal', label: 'Signal the road from the survey post', requirements: { anyUsableItems: ['conductorWhistle', 'roadsideSignalMirror', 'roadmansLantern'] }, next: 'rescued' },
     { id: 'strandWait', label: 'Wait on the high stone foundation', next: 'rescued', effects: { health: -1 } },
     { id: 'strandSwim', label: 'Swim for the near bank', hint: 'The current is carrying debris through the channel.', chance: { probability: 0.29, successNext: 'discovery', failureNext: 'islandDeath', successMessage: 'You catch the gravel edge and crawl onto the near bank.', failureMessage: 'The current pulls you away from the bar.', failureEffects: { health: -4 } } },
   ], 'danger'),
