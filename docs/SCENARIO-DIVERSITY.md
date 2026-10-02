@@ -127,5 +127,39 @@ The occult batch brings the registry to 214 adventures. These authored risk coun
 
 Relic overlap was deliberately restrained: the Grave Token fits a display mark but is not a key; the Yew Charm is recognized at a specific burial threshold but does not command guardians; the Bone Key remains a local Broken Bell object. No new persistent occult Relics were added. Ritual Chalk, Consecrated Salt, and Cold-Iron Nails are optional and explicitly consumed in scenario choices. A glazier’s provenance-backed Spirit Glass upgrade on the existing Lantern reveals a particular old road mark; it does not detect all spirits. “The Bell That Rings Below” remains rejected to protect For Whom the Bell Tolls; no second bell-centered chapel descent was authored.
 
+## Survival & Expedition batch
+
+The survival family adds 23 adventures and brings the playable registry to 237. Its authored risk distribution is LOW 2, MODERATE 4, HIGH 10, SEVERE 7. Availability is ALL_YEAR 19, SPRING 1, WINTER 3. Scene graphs range from short focused vignettes to multi-stage branches; all are intended to remain standard bite-sized adventures rather than long expeditions. Terrain, navigation, transport, shelter, rescues, and deliberate retreat are not interchangeable versions of a generic storm escalation.
+
+The library-shape heuristic raises five review pairs because they share scene-count and per-scene choice-count signatures: No Water at Miller’s Spring / The Rocks Start Moving (water search vs. rockfall response), Whiteout / The Wrong Valley (group movement in a blizzard vs. route correction), The Last Rope / The Markers Stop (rescue-tool triage vs. trail interpretation), The Empty Cabin / The Wind Changes (shelter and signs vs. fire movement), and The Ice Gives Warning / The Abandoned Camp (ice crossing vs. property and tracks). Review found these are different situations and decision themes; the warnings reflect graph shape only, not a repeated authored choice sequence. Retain them as candidates for human review if later stories make the choice rhythm feel repetitive.
+
+| Adventure | Risk / entry | Structure, climax, and outcome shape | Distinctive hook |
+|---|---|---|---|
+| The Pass Before Snow | SEVERE · WINTER · stranded party | Retreat window → exposed saddle or shelter → descent, rescue, crossing, or death | The party can turn back while the trail is still visible. |
+| No Water at Miller’s Spring | MODERATE · ALL_YEAR · dry source | Terrain reading / household knowledge → locate seep, accept water, or turn back | Effort conservation matters more than a thirst meter. |
+| The Broken Axle | HIGH · ALL_YEAR · accidental encounter | Repair, unload, fetch help, or move slowly → graded cargo/transport result | Driver and child are safe while wagon, cargo, and daylight compete. |
+| Across the Floodplain | SEVERE · SPRING · witness/helper | Water spreads across separate mounds → choose people, cart, or sheep | A rising broad flood changes the available ground during play. |
+| The Cave Before the Storm | HIGH · ALL_YEAR · shelter decision | Read animal sign and flood marks → enter, withdraw, or risk a dry ledge | The cave is both animal den and known runoff channel. |
+| The Lost Survey Party | HIGH · ALL_YEAR · requested search | Notebook, prints, creek, and signal clues split the search | A clue is used to decide where not to search; retreat is valid. |
+| Three Days to the Railhead | HIGH · ALL_YEAR · injured companion | Litter, borrowed cart, owned horse, split party, pacing | Transport and patient condition shape a multi-day evacuation. |
+| Whiteout | SEVERE · WINTER · group already exposed | Navigation by bearing, windbreak, posts, rope, or waiting | Rope keeps companions together; a compass gives direction, not footing. |
+| The Last Rope | SEVERE · ALL_YEAR · rescue witness | Inspect anchor, spend the rope, take a stone route, or call a crew | The single line cannot safely serve the rescuer, porter, and cargo. |
+| The Empty Cabin | LOW · ALL_YEAR · shelter found | Read a note, follow prints, wait, or leave | A quiet shelter mystery has no compulsory danger or stolen supplies. |
+| The Long Way Around | HIGH · ALL_YEAR · courier-by-circumstance | Route commitment changes later terrain, parcel risk, and daylight | The story explores consequences after the route has already been chosen. |
+| River without a Bridge | SEVERE · ALL_YEAR · blocked courier route | Find ford, ferry, work skiff, signal, or risk the current | A vanished bridge creates a route and communication problem, not a bridge repair. |
+| Night on the Ridge | HIGH · ALL_YEAR · solo exposure | Descent versus lightning shelter, then injury-aware movement | The climax is shelter placement during a storm, not rescue. |
+| The Markers Stop | LOW · ALL_YEAR · navigation curiosity | Inspect, follow work stones, find old path, or return | The marker gap has ordinary explanations and no hidden crisis. |
+| The Ice Gives Warning | SEVERE · WINTER · witness before an accident | Warn a cart traveler; use a gravel bend or dry mill road | Preventive rescue avoids repeating an under-ice victim scenario. |
+| The Washed-Out Cut | HIGH · ALL_YEAR · road blockage | Signal across, traverse upper lip, wait for repair, or retreat | The gap is a collapsed hillside cut with a foot route but no cart route. |
+| The Wrong Valley | MODERATE · ALL_YEAR · route error discovered | Infer direction from sun/water/slope; choose farm road, notch, or tracks | An unknown valley can still offer a safe exit. |
+| The Rocks Start Moving | SEVERE · ALL_YEAR · observed rockfall | Short high-pressure warning / recess / retreat / rescue | A stone recess and clear retreat race a visibly moving slope. |
+| The Tree across the Creek | HIGH · ALL_YEAR · improvised crossing | Test trunk, secure line, throw pack, ford, or return | The fallen tree may work once but is never assumed to be a bridge. |
+| The Abandoned Camp | MODERATE · ALL_YEAR · incidental discovery | Compare tracks, call, follow one trail, leave property, or take food | Absence is not automatically a crisis; ownership choices still matter. |
+| The Wind Changes | HIGH · ALL_YEAR · environmental sign | Read ash/birds, leave, signal farm, or risk late warning | Fire is inferred from wind and animal movement before smoke appears. |
+| The Load Must Go | HIGH · ALL_YEAR · hired freight by circumstance | Sacrifice oil or bedding, brace, wait, save the driver, or risk the wagon | The choice names the cargo cost rather than silently losing a load. |
+| Hold until Morning | MODERATE · ALL_YEAR · night shelter | Stay put, answer, investigate along a high path, or return | Waiting is a substantive safe choice; the light proves ordinary by dawn. |
+
+No new persistent Gear or mundane Supply was added. Existing rope, compass, lanterns, signal devices, wheel wrench, wedge, blankets, bandage, and character-owned horse alter specific routes. Injury uses the existing persistent health value; no separate medical or contact system was invented. Favor/referral callbacks use character history and knowledge fields where the fiction supports them. Owned-horse access is optional, and no asset is silently removed. Sacrifices and losses are explicit in the authored choice effects.
+
 Do not make a universal scenario template. The framework measures variety and reveals gaps; flexible scenario data remains the authoring medium.
 

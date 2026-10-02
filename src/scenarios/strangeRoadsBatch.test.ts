@@ -72,7 +72,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, carried
 describe('strange roads and supernatural adventure batch', () => {
   it('registers ten compact, forward-only adventures with no unknown item references', () => {
     expect(STRANGE_ROADS_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(214);
+    expect(SCENARIOS).toHaveLength(237);
     expect(STRANGE_ROADS_ADVENTURES.map(({ title }) => title)).toEqual([
       'The Lantern in the Marsh', 'The House That Knocks', 'The Grave Bell',
       'The Passenger Who Wasn’t There', 'The Cold Room', 'The Voice in the Mine',

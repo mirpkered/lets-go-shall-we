@@ -52,7 +52,7 @@ describe('occult investigation adventures', () => {
   it('registers 27 distinct new stories without adding the rejected bell duplicate', () => {
     expect(adventures).toHaveLength(27);
     expect(new Set(SCENARIOS.map((s) => s.id)).size).toBe(SCENARIOS.length);
-    expect(SCENARIOS).toHaveLength(214);
+    expect(SCENARIOS).toHaveLength(237);
     expect(SCENARIOS.some((s) => s.title === 'The Bell That Rings Below')).toBe(false);
   });
 
