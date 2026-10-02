@@ -1,6 +1,6 @@
 # Scenario Risk Audit
 
-Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The current 301-adventure registry has risk distribution LOW 129, MODERATE 83, HIGH 60, SEVERE 29 (verified against the scenario classifier); see [Current Systems](CURRENT_SYSTEMS.md). Risk class describes authored stakes, not tone, and does not change success odds once a scenario begins. Re-run the full tests after registry changes; `scenarioSelection.test.ts` checks each registered scenario receives a valid classification.
+Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot; the current 445-adventure distribution is LOW 221, MODERATE 101, HIGH 87, SEVERE 36 (verified against the scenario classifier; see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored stakes, not tone, and does not change success odds once a scenario begins. Re-run the full tests after registry changes; `scenarioSelection.test.ts` checks each registered scenario receives a valid classification.
 
 ## Tier definitions
 

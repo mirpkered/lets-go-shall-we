@@ -4,7 +4,7 @@ This is an actionable project roadmap, not a transcript of every proposed idea. 
 
 ## Now — trust and validate the expanded library
 
-- Continue hands-on playtesting across the 301-adventure library; fix confirmed continuity, state, fairness, save, payoff, and reward defects surgically.
+- Continue hands-on playtesting across the 445-adventure library; fix confirmed continuity, state, fairness, save, payoff, and reward defects surgically.
 - Use QA content-quality, diversity, and selector diagnostics as review aids; manually verify high-confidence findings instead of treating heuristic warnings as failures.
 - Track hands-on coverage separately from authored/test coverage so “registered” is not mistaken for “playtested.”
 - Validate long-lived and fresh travelers through the 10/20 completion Gear-capacity milestones, death, abandonment, retirement, Bank, reward resolution, and legacy save migration.
