@@ -66,6 +66,11 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 - [ ] For occult items, name a narrow function and limit; check Yew Charm, Grave Token, Bone Key, existing Gear upgrades, and Supplies before adding another persistent Relic.
 - [ ] Make occult Supplies optional, explicitly consumed, and useful without making them prerequisites for a fresh traveler’s viable route.
 - [ ] Give any supernatural threat a discoverable, specific behavior or stopping condition; confirm whether the story is fraud, ambiguous, eerie, supernatural, fantasy-threat, or dungeon-fantasy without forcing a universal answer.
+- [ ] For creature stories, do not assume the hunt must end in a kill. Consider protection, exposure, containment, retreat, escape, coexistence, or a mundane explanation; establish evidence before certainty where useful.
+- [ ] Make preparation matter without making prior gear mandatory: check item condition, supplies, light, position, terrain, knowledge, allies, injuries, timing, and a plausible retreat route.
+- [ ] Give a supernatural weakness only to the specific creature/tradition that supports it; do not make silver, salt, iron, holy objects, or Relics universal counters.
+- [ ] If a creature escapes or a hunt fails, show what changed or was learned. If a creature dies, a trophy stays narrative/history unless it has a distinct future use or provenance.
+- [ ] After a creature encounter, show the effect on people, animals, property, evidence, remaining danger, and traveler where needed; do not end merely because a kill, trap, retreat, or hoax reveal occurred.
 - [ ] After supernatural danger ends, show the immediate aftermath and what remains known, unknown, damaged, or unresolved.
 - [ ] Review terminal nodes directly after common first-step actions; treat these as human-review prompts, not automatic failures or a screen-count quota.
 - [ ] Quiet/recreational routes contain an interaction, choice, reaction, or memorable detail; danger is not required.

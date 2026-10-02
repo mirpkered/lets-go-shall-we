@@ -7,6 +7,7 @@ const SEVERE_SCENARIOS = new Set([
   'house-with-two-cellars', 'the-red-chapel', 'below-the-old-fort', 'the-man-who-wouldnt-stay-dead',
   'the-pass-before-snow', 'across-the-floodplain', 'whiteout', 'the-last-rope', 'river-without-a-bridge', 'the-ice-gives-warning', 'the-rocks-start-moving',
   'the-bridge-goes-down', 'the-mine-gives-way', 'water-through-the-door', 'the-ferry-lists', 'after-the-tornado', 'the-second-wave-large', 'the-last-shot', 'the-house-under-the-hill',
+  'teeth-in-the-mine', 'the-bone-eater', 'the-ashen-man', 'thing-beneath-the-ice', 'the-antlered-thing', 'the-man-eater-of-millers-gap', 'the-red-maw',
 ]);
 
 const HIGH_SCENARIOS = new Set([
@@ -21,6 +22,8 @@ const HIGH_SCENARIOS = new Set([
   'smoke-over-main-street', 'the-train-that-didnt-stop', 'the-boiler-room', 'the-crowd-breaks', 'the-roof-comes-in', 'the-powder-wagon',
   'the-man-at-the-end-of-the-bar', 'the-stage-was-hit', 'the-empty-jail', 'three-men-at-the-water-trough', 'a-gun-on-the-table', 'the-false-deputy', 'one-horse-two-riders',
   'the-sealed-mine-office', 'the-island-when-the-water-falls', 'the-cave-with-worked-stone', 'the-riverboat-cache',
+  'thing-at-black-creek', 'something-in-the-corn', 'the-red-eyed-boar', 'the-lantern-eater', 'the-mire-horse', 'the-river-devil',
+  'the-man-who-sheds-his-skin', 'the-last-trap', 'the-cinder-hound', 'the-beast-at-the-toll-road', 'thing-that-mimics-the-whistle', 'the-stoneback',
 ]);
 
 const MODERATE_SCENARIOS = new Set([
@@ -37,6 +40,7 @@ const MODERATE_SCENARIOS = new Set([
   'snowbound-inn', 'footprints-around-the-house', 'house-with-warm-window', 'the-frozen-letter', 'the-longest-night', 'ice-lanterns', 'visitor-at-midnight',
   'the-christmas-visitor', 'empty-chair-at-midnight', 'gift-that-came-back',
   'wanted-in-red-creek', 'the-bounty-poster', 'the-rustled-herd', 'the-outlaws-mother', 'the-map-in-the-ledger', 'the-old-survey-stone', 'the-room-behind-the-chimney', 'the-forgotten-station', 'the-lost-payroll', 'the-last-room-in-the-fort',
+  'the-white-stag', 'the-barrow-hound', 'the-millers-beast', 'the-widows-beast', 'the-cellar-thing', 'the-pale-children-of-the-quarry', 'the-broken-antler', 'the-three-toed-track', 'the-skin-in-the-tree',
 ]);
 
 /** Scenario-level authored stakes only. This never modifies a run's odds or character stats. */

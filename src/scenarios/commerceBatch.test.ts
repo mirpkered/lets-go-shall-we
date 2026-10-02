@@ -61,7 +61,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, item?: 
 describe('commerce, bargains, and property adventure batch', () => {
   it('registers ten distinct stories with forward-only graphs and concise mobile copy', () => {
     expect(COMMERCE_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(301);
+    expect(SCENARIOS).toHaveLength(330);
     expect(COMMERCE_ADVENTURES.map(({ title }) => title)).toEqual([
       'Payment in Kind', 'Short on the Wages', 'Market Day', 'The Horse Trade', 'The Broken Crate',
       'Half Now', 'Somebody Else’s Land', 'The Pawned Tool', 'Last Room, Higher Price', 'Who Owns the Mule?',

@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 301 adventures. The primary-activity distribution, exact risk counts, seasonal availability counts, and historical-presence state are recorded in [Current Systems](CURRENT_SYSTEMS.md). The historical-presence distribution is currently 301 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 330 adventures. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 330 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
 
 ## Seasonal availability
 
@@ -27,6 +27,48 @@ Season is explicit metadata (`Scenario.diversity.availability`): ALL_YEAR, a nam
 QA can temporarily override the effective selection month and directly launch any registered seasonal adventure at any time. The override is held in QA UI memory only, not in player saves. A seasonal scenario can later be offered in an explicit archive without changing its normal-rotation availability.
 
 An ALL_YEAR entry may declare `affinityMonths` to receive its `weightBoost` only in those months while remaining eligible in every month. October affinity therefore enriches October selection without acting as a lock. It uses the same category → risk → replay weighted selector; it does not bypass category balancing, current-traveler replay pressure, or recent-scenario exclusion. The QA seasonal panel names the effective boost for its selected month. The Halloween expansion uses a modest 1.35 boost in October and 1.0 otherwise. The only October-locked premises are **The Jack-o’-Lantern Contest**, **All Hallows at the Boarding House**, **The Masked Visitor**, and **The Halloween Dare**, each dependent on a locally observed Halloween gathering, contest, or dare.
+
+## Monster Hunt / Creature Threat batch
+
+This 29-adventure batch is a new library pillar, not a genre conversion. Its range includes grounded wildlife, uncertain reports, human hoaxes, folklore, confirmed supernatural entities, and one compact dungeon-fantasy threat. Stable IDs are registered in `src/scenarios/index.ts`; each has authored risk, fantasy, combat, activity, role, setting, structure, and distinctive-hook metadata. `src/riskClassification.ts` explicitly matches the authored risk tiers. No new item, trophy, parallel Contacts/Favors model, or persistent-threat subsystem was added; character discoveries use existing Knowledge/History, and damage uses existing item-condition state.
+
+| Adventure | Stable ID | Risk / explanation | Combat | Season | Activity / player role | Structure and distinctive hook |
+|---|---|---|---|---|---|---|
+| The Thing at Black Creek | `thing-at-black-creek` | HIGH / AMBIGUOUS | POSSIBLE | ALL_YEAR | investigation / investigator | Tracks converge on an injured bear raiding a fish weir; territorial boundary |
+| Teeth in the Mine | `teeth-in-the-mine` | SEVERE / FANTASY_THREAT | AVOIDABLE | ALL_YEAR | rescue / helper | Sound-led mine rescue; predator copies the warning bell |
+| Something in the Corn | `something-in-the-corn` | HIGH / AMBIGUOUS | POSSIBLE | ALL_YEAR; October affinity | animals / helper | Farm watch and open-field boundary; missing hens draw a low shape |
+| The Barrow Hound | `the-barrow-hound` | MODERATE / NONE | NONE | ALL_YEAR | rescue / helper | A working hound warns of unstable burial ground while a sheep is freed from the firm west slope |
+| The White Stag | `the-white-stag` | MODERATE / AMBIGUOUS | NONE | ALL_YEAR | animals / witness | Separates crop damage from tracks; ethical refusal remains viable |
+| The Red-Eyed Boar | `the-red-eyed-boar` | HIGH / NONE | POSSIBLE | ALL_YEAR | animals / helper | Wind and an escape corridor matter more than cornering a boar |
+| The Bone-Eater | `the-bone-eater` | SEVERE / CONFIRMED_SUPERNATURAL | AVOIDABLE | ALL_YEAR | investigation / helper | Cemetery feeding boundary; protect mourners rather than kill |
+| The Lantern-Eater | `the-lantern-eater` | HIGH / CONFIRMED_SUPERNATURAL | AVOIDABLE | ALL_YEAR | survival / helper | Exposed light draws a presence away from a shared camp |
+| The Mire Horse | `the-mire-horse` | HIGH / AMBIGUOUS | AVOIDABLE | ALL_YEAR | travel / investigator | Safe-plank route and hoof evidence distinguish lure from horse |
+| The River Devil | `the-river-devil` | HIGH / AMBIGUOUS | NONE | ALL_YEAR | travel / helper | Hull strikes are diagnosed from shore as a submerged log hazard |
+| The Miller’s Beast | `the-millers-beast` | MODERATE / AMBIGUOUS | AVOIDABLE | ALL_YEAR | labor / investigator | Wheel cadence routes a mill visitor; stopping machinery enables capture |
+| The Ashen Man | `the-ashen-man` | SEVERE / CONFIRMED_SUPERNATURAL | AVOIDABLE | ALL_YEAR | investigation / witness | Compare fire witnesses and contain the ember it follows |
+| The Thing Beneath the Ice | `thing-beneath-the-ice` | SEVERE / FANTASY_THREAT | AVOIDABLE | WINTER | survival / accidental participant | Sound-following shadow makes the ice itself the urgent hazard |
+| The Goat That Wouldn’t Stay Dead | `the-goat-that-wouldnt-stay-dead` | LOW / AMBIGUOUS | NONE | ALL_YEAR | investigation / investigator | Dark comedy tested by ear notches and a feed ledger |
+| The Widow’s Beast | `the-widows-beast` | MODERATE / AMBIGUOUS | AVOIDABLE | ALL_YEAR | social / investigator | Widow’s wary guardian also keeps a real predator away |
+| The Cellar Thing | `the-cellar-thing` | MODERATE / AMBIGUOUS | AVOIDABLE | ALL_YEAR | investigation / investigator | Sound localization leads outside through an abandoned coal passage |
+| The Man Who Sheds His Skin | `the-man-who-sheds-his-skin` | HIGH / AMBIGUOUS | POSSIBLE | ALL_YEAR | investigation / investigator | Costume changes and laundry marks test a transformation rumor |
+| The Pale Children of the Quarry | `the-pale-children-of-the-quarry` | MODERATE / EERIE | NONE | ALL_YEAR | investigation / investigator | Viewpoint reconnaissance reveals adult night workers, not endangered children |
+| The Antlered Thing | `the-antlered-thing` | SEVERE / FANTASY_THREAT | AVOIDABLE | ALL_YEAR | survival / accidental participant | Marked territorial arches and explicit evacuation routes |
+| The Last Trap | `the-last-trap` | HIGH / AMBIGUOUS | POSSIBLE | ALL_YEAR | social / helper | Trapper’s obsession creates the competing-risk decision |
+| The Broken Antler | `the-broken-antler` | MODERATE / NONE | POSSIBLE | ALL_YEAR | animals / helper | Injury drives aggression; clear an escape corridor instead of cornering |
+| The Man-Eater of Miller’s Gap | `the-man-eater-of-millers-gap` | SEVERE / NONE | LIKELY | ALL_YEAR | combat / helper | Grounded predator hunt weighs livestock defense against retreat |
+| The Cinder Hound | `the-cinder-hound` | HIGH / CONFIRMED_SUPERNATURAL | AVOIDABLE | ALL_YEAR | investigation / investigator | A specific buried ember anchors the hound to an unfinished fire |
+| The Three-Toed Track | `the-three-toed-track` | MODERATE / AMBIGUOUS | AVOIDABLE | ALL_YEAR | investigation / investigator | Conflicting scale reports resolve as a poacher’s three-pronged shoe |
+| The Red Maw | `the-red-maw` | SEVERE / DUNGEON_FANTASY | AVOIDABLE | ALL_YEAR | survival / accidental participant | Reconnaissance, bait, two exits, and retreat from a feeding chamber |
+| The Beast at the Toll Road | `the-beast-at-the-toll-road` | HIGH / AMBIGUOUS | POSSIBLE | ALL_YEAR | investigation / helper | A hide-frame hoax and genuine loose horse share a narrow bend |
+| The Skin in the Tree | `the-skin-in-the-tree` | MODERATE / EERIE | AVOIDABLE | ALL_YEAR | investigation / investigator | Vertical hide evidence reveals a poaching signal and live snare |
+| The Thing That Mimics the Whistle | `thing-that-mimics-the-whistle` | HIGH / CONFIRMED_SUPERNATURAL | AVOIDABLE | ALL_YEAR | communication / traveler | A changed note and impossible sound position warn against a ravine |
+| The Stoneback | `the-stoneback` | HIGH / FANTASY_THREAT | AVOIDABLE | ALL_YEAR | labor / helper | Quarry vibration threatens stacks; rerouting avoids its den |
+
+The batch uses no generic trophy rewards. Current systems do not provide structured Contacts, Favors, or persistent-threat records, so this pass deliberately does not invent parallel data models; durable outcomes are expressed through established history, knowledge, health, and gear-condition fields. No seasonal lock was added except the winter-bound ice threat; the October corn adventure remains available all year with an October affinity.
+
+### Overlap decisions
+
+**The Bell-Worm** remains excluded to protect the identity of **For Whom the Bell Tolls**. **The Borrowed Face** was not duplicated because it already exists. **The Chapel Beast** was dropped after comparison with **For Whom the Bell Tolls** and **Red Chapel**. **The Rag Man** was dropped as too close to **The Hollow Man**. **The Thing in the Smokehouse** was dropped as too close to **The Cellar Thing**. **The Night Feeder** was dropped because its farm stakeout overlaps **Something in the Corn**. **The Screamer in the Pines** overlaps the sound-led **Thing That Mimics the Whistle**. **The Wolf at Black Creek** and **The Hollow Tracks** were not included because they add less structural distance than the creek evidence and track-investigation stories already selected. No new bell-, chapel-, well-, or generic tracks-to-monster story was added; **Barrow Door**, **Below the Old Fort**, **The Third Knock**, and **Aww, Rats!!** remain separate existing adventures and were not rewritten.
 
 ## Normal adventure selection and anti-repetition
 
