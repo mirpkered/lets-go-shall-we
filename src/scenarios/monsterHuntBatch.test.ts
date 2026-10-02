@@ -53,7 +53,7 @@ function explore(scenario: Scenario, item?: string): void {
 describe('Monster Hunt / Creature Threat batch', () => {
   it('registers 29 distinct adventures with valid metadata, graph targets, and concise mobile actions', () => {
     expect(MONSTER_HUNT_ADVENTURES).toHaveLength(29);
-    expect(SCENARIOS).toHaveLength(431);
+    expect(SCENARIOS).toHaveLength(445);
     expect(new Set(MONSTER_HUNT_ADVENTURES.map(({ id }) => id)).size).toBe(29);
     expect(MONSTER_HUNT_ADVENTURES.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(validateScenarioMetadata(MONSTER_HUNT_ADVENTURES)).toEqual([]);

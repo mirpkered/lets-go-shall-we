@@ -263,7 +263,14 @@ describe('save compatibility', () => {
       scenarioPlayCounts: {}, recentRiskHistory: state.recentRiskHistory, selectionMonth: 10,
     }, 1000, seeded(3917));
     expect(withHistory.draws).toBe(1000);
-    expect(withHistory.scenarioCounts['the-witch-at-millers-ford'] ?? 0)
-      .toBeLessThan(withoutHistory.scenarioCounts['the-witch-at-millers-ford'] ?? 0);
+    expect(withoutHistory.draws).toBe(1000);
+    const replayWeightAfterMigration = scenarioSelectionWeights(registryAfterSecond, {
+      scenarioPlayCounts: history, selectionMonth: 10,
+    }).find(({ scenario }) => scenario.id === 'the-witch-at-millers-ford')?.replayWeight;
+    const freshReplayWeight = scenarioSelectionWeights(registryAfterSecond, {
+      scenarioPlayCounts: {}, selectionMonth: 10,
+    }).find(({ scenario }) => scenario.id === 'the-witch-at-millers-ford')?.replayWeight;
+    expect(replayWeightAfterMigration).toBe(0.012);
+    expect(replayWeightAfterMigration).toBeLessThan(freshReplayWeight!);
   });
 });

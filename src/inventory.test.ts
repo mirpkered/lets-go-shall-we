@@ -29,8 +29,11 @@ describe('class-aware inventory model', () => {
   it('resolves every catalog entry into exactly one class and keeps class rosters distinct', () => {
     expect(Object.values(ITEMS).every(({ inventoryClass: itemClass }) => ['GEAR', 'SUPPLY', 'RELIC', 'ASSET', 'TEMPORARY'].includes(itemClass ?? ''))).toBe(true);
     expect(itemsOfClass('GEAR').some(({ id }) => id === 'smallKnife')).toBe(true);
-    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(40);
-    expect(itemsOfClass('RELIC').map(({ id }) => id).sort()).toEqual(['bronzeMaskFragment', 'graveCoin', 'signalLens', 'yewCharm']);
+    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(41);
+    expect(itemsOfClass('RELIC').map(({ id }) => id).sort()).toEqual([
+      'blackMillingStone', 'briarHouseSkeletonKey', 'bronzeMaskFragment', 'graveCoin',
+      'ironOrchardRodFragment', 'numberedLanternWick', 'redDoorToken', 'signalLens', 'yewCharm',
+    ]);
     expect(itemsOfClass('SUPPLY').map(({ id }) => id).sort()).toEqual(['coldIronNails', 'consecratedSalt', 'ritualChalk']);
     expect(itemsOfClass('ASSET')).toEqual([]); // Character-owned assets have their own structured field, not item IDs.
     expect(inventoryClass('boneKey')).toBe('TEMPORARY');

@@ -1,6 +1,6 @@
 # Persistent Item Roster
 
-`src/items.ts` is the source of truth for item IDs, names, descriptions, resolved inventory class, stack limits, and carryability. This page inventories its **44 persistent Gear/Relic items** to support authoring and reduce duplication. The 1/2/3 progression is Gear Capacity only. Starting Small Knife and Lantern are Gear supplied at every run but do not use capacity. Local keys, clues, and temporary objects remain run-only.
+`src/items.ts` is the source of truth for item IDs, names, descriptions, resolved inventory class, stack limits, and carryability. This page inventories its **50 persistent Gear/Relic items** to support authoring and reduce duplication. The 1/2/3 progression is Gear Capacity only. Starting Small Knife and Lantern are Gear supplied at every run but do not use capacity. Local keys, clues, and temporary objects remain run-only.
 
 Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra Gear slots.
 
@@ -10,8 +10,8 @@ The starting Lantern may receive one `spiritGlass` upgrade from a glazier who ex
 
 ## Classes and capacities
 
-- **Gear:** 40 reusable carryable items, plus the starting Small Knife and Lantern supplied at each run. Only persistent carried Gear uses the traveler’s 1/2/3 Gear Capacity. Gear can be damaged, broken, repaired, upgraded, and Banked.
-- **Relics:** Bronze Mask Fragment, Grave Coin, Yew Charm, and Crimson Signal Lens. These have separate inventory display and do not consume Gear slots. There is no hard Relic cap in v0.1; three is a soft “unusually many” UI cue. They are normally Bankable and character-bound while carried.
+- **Gear:** 41 reusable carryable items, plus the starting Small Knife and Lantern supplied at each run. Only persistent carried Gear uses the traveler’s 1/2/3 Gear Capacity. Gear can be damaged, broken, repaired, upgraded, and Banked.
+- **Relics:** Bronze Mask Fragment, Grave Coin, Yew Charm, Crimson Signal Lens, Briar House Skeleton Key, Red Door Token, Iron Orchard Rod Fragment, Numbered Lantern Wick, and Black Milling Stone. These have separate inventory display and do not consume Gear slots. There is no hard Relic cap in v0.1; three is a soft “unusually many” UI cue. They are normally Bankable and character-bound while carried.
 - **Supplies:** Ritual Chalk ×4, Consecrated Salt ×3, and Cold-Iron Nails ×6 are the pilot definitions. A traveler has four distinct Supply stacks; quantities do not use Gear slots and Supplies cannot be Banked. They are character-bound and lost on death, abandonment, or retirement. Ordinary provisions remain abstract.
 - **Assets:** Character-owned property such as the Older Chestnut Horse remains in `ownedAssets`, outside the item catalog and all capacities. Assets are not Bankable and end with the character.
 - **Temporary:** Lent, supplied, local, and quest equipment stays in the active run inventory with its source label and normally disappears when the run ends. A temporary object becomes persistent only through an explicit authored award.
@@ -25,6 +25,12 @@ Items retain stable IDs through classification changes. The former `carriedItem`
 | `graveCoin` | Grave Coin | Valuable trade token | Bargaining, ferries, collectors | Reusable until spent; overlaps currency only in specific fiction. |
 | `yewCharm` | Yew Charm | Small protective keepsake with narrow story meaning | Folklore/supernatural scenes | Reusable; not a general protection stat. |
 | `pocketToolkit` | Pocket Toolkit | Pliers, driver, punch, and oil for compact repairs | Railway/mechanical work | Reusable; not a heavy pry tool or universal repair kit. |
+| `collapsibleSoundingRod` | Collapsible Sounding Rod | Brass-tipped folding probe for depth, silt, and hollow ground from firm footing | Reservoir edges, caves, hidden drains | Reusable; not a climbing support or a way to make unstable ground safe. |
+| `briarHouseSkeletonKey` | Briar House Skeleton Key | Old key left by the traveler hidden in Briar House | Briar House history | Relic; its odd teeth fit no known modern lock. |
+| `redDoorToken` | Red Door Token | Red-marked fitting from an underground waystation seal | Buried road/crossing discoveries | Relic; provenance is limited to authored routes that reveal matching doors. |
+| `ironOrchardRodFragment` | Iron Orchard Rod Fragment | Piece of an iron rod found already driven into worked stone | Iron Orchard evidence | Relic; does not function as a generic iron tool. |
+| `numberedLanternWick` | Numbered Lantern Wick | Brass-tagged wick from a former inn travel office | Lantern Vault records | Relic; a record of the room, not a key to every numbered door. |
+| `blackMillingStone` | Black Milling Stone | Loose wafer from the older wheel beneath Wren’s Mill | Wren’s Mill discovery | Relic; no known practical use; only available after stabilizing the wheel. |
 | `travelRope` | Travel Rope | Braided line with locking hook | Rescue, hauling, securing, climbing | Reusable; access, anchor, reach, and load still matter. |
 | `conductorWhistle` | Conductor’s Whistle | Loud signal over machinery/weather | Rail or distant signaling | Reusable; does not guarantee anyone hears or responds. |
 | `signalLens` | Crimson Signal Lens | Red glass with an unusual warmth | Rail signals / narrow artifact callbacks | Reusable; atmospheric, not a universal clue reader. |

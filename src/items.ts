@@ -62,6 +62,12 @@ export const ITEMS: Record<string, Item> = {
   roadsideSignalMirror: { id: 'roadsideSignalMirror', name: 'Roadside Signal Mirror', description: 'A polished steel mirror with a sighting notch for signaling across open country.', category: 'tool', carryable: true },
   foundPocketWatch: { id: 'foundPocketWatch', name: 'Silver Pocket Watch', description: 'A working silver watch with a former owner’s name engraved inside.', category: 'valuable', carryable: true },
   joinersFoldingRule: { id: 'joinersFoldingRule', name: 'Joiner’s Folding Rule', description: 'A hinged hardwood measuring rule, worn smooth at the joints but accurate for careful layout work.', category: 'tool', carryable: true },
+  collapsibleSoundingRod: { id: 'collapsibleSoundingRod', name: 'Collapsible Sounding Rod', description: 'A brass-tipped folding probe for testing depth, silt, and hollow ground from firm footing; it is not a climbing support.', category: 'tool', carryable: true },
+  briarHouseSkeletonKey: { id: 'briarHouseSkeletonKey', name: 'Briar House Skeleton Key', description: 'A narrow old key left by the traveler once hidden in Briar House. Its odd teeth fit no known modern lock.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  redDoorToken: { id: 'redDoorToken', name: 'Red Door Token', description: 'A red-marked fitting from an old underground waystation seal. Its maker and wider purpose are unknown.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  ironOrchardRodFragment: { id: 'ironOrchardRodFragment', name: 'Iron Orchard Rod Fragment', description: 'A short piece of an iron rod found already driven into the Orchard’s worked stone. It vibrates faintly near no known mechanism.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  numberedLanternWick: { id: 'numberedLanternWick', name: 'Numbered Lantern Wick', description: 'A brass-tagged wick from the Lantern Vault’s former travel office. It is a record of the room, not a key to every numbered door.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  blackMillingStone: { id: 'blackMillingStone', name: 'Black Milling Stone', description: 'A small black stone wafer from the older wheel beneath Wren’s Mill. Its marks predate the mill and have no known practical use.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
 };
 
 const relicIds = new Set(['bronzeMaskFragment', 'graveCoin', 'signalLens', 'yewCharm']);
