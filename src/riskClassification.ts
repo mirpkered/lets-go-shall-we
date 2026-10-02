@@ -6,6 +6,7 @@ const SEVERE_SCENARIOS = new Set([
   'the-man-in-the-corn',
   'house-with-two-cellars', 'the-red-chapel', 'below-the-old-fort', 'the-man-who-wouldnt-stay-dead',
   'the-pass-before-snow', 'across-the-floodplain', 'whiteout', 'the-last-rope', 'river-without-a-bridge', 'the-ice-gives-warning', 'the-rocks-start-moving',
+  'the-bridge-goes-down', 'the-mine-gives-way', 'water-through-the-door', 'the-ferry-lists', 'after-the-tornado', 'the-second-wave-large', 'the-last-shot', 'the-house-under-the-hill',
 ]);
 
 const HIGH_SCENARIOS = new Set([
@@ -17,6 +18,9 @@ const HIGH_SCENARIOS = new Set([
   'the-broken-axle', 'the-cave-before-the-storm', 'the-lost-survey-party', 'three-days-to-the-railhead', 'the-long-way-around-expedition',
   'night-on-the-ridge', 'the-washed-out-cut', 'the-tree-across-the-creek', 'the-wind-changes', 'the-load-must-go',
   'christmas-tree-millers-hill', 'red-scarf-in-the-snow', 'the-empty-sleigh', 'road-under-snow', 'frozen-millwheel', 'evergreen-door',
+  'smoke-over-main-street', 'the-train-that-didnt-stop', 'the-boiler-room', 'the-crowd-breaks', 'the-roof-comes-in', 'the-powder-wagon',
+  'the-man-at-the-end-of-the-bar', 'the-stage-was-hit', 'the-empty-jail', 'three-men-at-the-water-trough', 'a-gun-on-the-table', 'the-false-deputy', 'one-horse-two-riders',
+  'the-sealed-mine-office', 'the-island-when-the-water-falls', 'the-cave-with-worked-stone', 'the-riverboat-cache',
 ]);
 
 const MODERATE_SCENARIOS = new Set([
@@ -32,6 +36,7 @@ const MODERATE_SCENARIOS = new Set([
   'last-parcel-before-christmas', 'gift-with-no-name', 'christmas-at-the-station', 'toymakers-last-order', 'the-pageant-problem',
   'snowbound-inn', 'footprints-around-the-house', 'house-with-warm-window', 'the-frozen-letter', 'the-longest-night', 'ice-lanterns', 'visitor-at-midnight',
   'the-christmas-visitor', 'empty-chair-at-midnight', 'gift-that-came-back',
+  'wanted-in-red-creek', 'the-bounty-poster', 'the-rustled-herd', 'the-outlaws-mother', 'the-map-in-the-ledger', 'the-old-survey-stone', 'the-room-behind-the-chimney', 'the-forgotten-station', 'the-lost-payroll', 'the-last-room-in-the-fort',
 ]);
 
 /** Scenario-level authored stakes only. This never modifies a run's odds or character stats. */

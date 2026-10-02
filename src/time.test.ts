@@ -108,7 +108,7 @@ describe('fictional adventure clock', () => {
   });
 
   it('uses fictional-time phases when authored and leaves other adventures timeless', () => {
-    expect(SCENARIOS).toHaveLength(265);
+    expect(SCENARIOS).toHaveLength(301);
     for (const scenario of SCENARIOS) {
       if (scenario.timePhases?.length) expect(scenario.timePhases[0].atMinutes).toBe(0);
       if (scenario.timePhases?.length) expect(timeStatus(scenario, 0).phase?.label).toBeTruthy();

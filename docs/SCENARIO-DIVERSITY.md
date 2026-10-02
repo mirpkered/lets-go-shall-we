@@ -45,7 +45,7 @@ Existing clearly seasonal entries: First Snow (WINTER), The Thaw (SPRING), Befor
 
 ## Christmas / December-affinity batch
 
-The Christmas / December-affinity batch adds 28 adventures, bringing the registry to 265. Sixteen depend on Christmas customs or the holiday itself and are December-locked at ×1.6. Twelve remain available all year: seven receive a December-only ×1.35 affinity and five receive a winter-month (December–February) ×1.25 affinity. These boosts use the existing category → risk → replay selector; they do not bypass recent-scenario exclusion or current-traveler replay pressure. Christmas is not a primary selection category.
+The Christmas / December-affinity batch added 28 adventures, bringing the registry to 265 at that release. Sixteen depend on Christmas customs or the holiday itself and are December-locked at ×1.6. Twelve remain available all year: seven receive a December-only ×1.35 affinity and five receive a winter-month (December–February) ×1.25 affinity. These boosts use the existing category → risk → replay selector; they do not bypass recent-scenario exclusion or current-traveler replay pressure. Christmas is not a primary selection category.
 
 The Twelve Knocks was omitted after comparison with The Third Knock and Seven Knocks on the Barn: its repeated-knock structure did not have enough distance from both existing stories. No new persistent gear or supply was needed. Durable Contact/Favor fields are not present in the current character model; story-specific continuity is represented with existing history and knowledge records.
 
@@ -80,7 +80,17 @@ The Twelve Knocks was omitted after comparison with The Third Knock and Seven Kn
 | The Frozen Millwheel | labor/repair | winter affinity · Dec–Feb ×1.25 | worker · time-pressure/multi-stage · stranded/accidental | tense · HIGH · NONE · NONE | Lower water pressure before warming the bearing; wait, repair, damage, or die in the race. |
 | The Visitor at Midnight | social interaction | December affinity · ×1.35 | traveler · branching/multi-stage · stranded/accidental | eerie · MODERATE · AMBIGUOUS · NONE | Check an inconsistent shelter request at a safe threshold; the old key remains unexplained. |
 
-Primary activities span animals (2), travel/exploration (2), social interaction (4), labor/repair (3), investigation/mystery (10), moral prioritization (2), puzzle/problem-solving (2), competition/game (1), rescue/care (1), and survival (1). Seasonal weighting remains independent of these categories. The selector’s authored risk classification is LOW 7, MODERATE 15, HIGH 6, SEVERE 0; three scenarios contain narrowly authored death routes, each classified HIGH and foreshadowed in the scene. Fantasy density is NONE 18, AMBIGUOUS 7, EERIE 3, with no confirmed-supernatural or fantasy-threat entry and no combat route. Across the full 265-story library, risk distribution is LOW 128, MODERATE 73, HIGH 43, SEVERE 21.
+Primary activities span animals (2), travel/exploration (2), social interaction (4), labor/repair (3), investigation/mystery (10), moral prioritization (2), puzzle/problem-solving (2), competition/game (1), rescue/care (1), and survival (1). Seasonal weighting remains independent of these categories. The selector’s authored risk classification is LOW 7, MODERATE 15, HIGH 6, SEVERE 0; three scenarios contain narrowly authored death routes, each classified HIGH and foreshadowed in the scene. Fantasy density is NONE 18, AMBIGUOUS 7, EERIE 3, with no confirmed-supernatural or fantasy-threat entry and no combat route. At the 265-story snapshot, risk distribution was LOW 128, MODERATE 73, HIGH 43, SEVERE 21.
+
+## Disaster, western, and lost-places expansion
+
+The 36-story expansion raises the current registry to **301**. The twelve disaster/rescue stories emphasize triage and state-aware aftermath; the western stories center on reputation, evidence, standoffs, property, and survival; the lost-places stories balance discovery against ownership, limited access, and retreat. All are year-round and use existing engine/state systems without adding equipment categories or backend features. Current risk distribution is LOW 129, MODERATE 83, HIGH 60, SEVERE 29.
+
+Disaster & Rescue: The Bridge Goes Down; Smoke over Main Street; The Train That Didn’t Stop; The Mine Gives Way; Water Through the Door; The Boiler Room; The Crowd Breaks; The Ferry Lists; The Roof Comes In; The Powder Wagon; After the Tornado; The Second Wave.
+
+Western / Outlaw: Wanted in Red Creek; The Man at the End of the Bar; The Stage Was Hit; The Bounty Poster; The Empty Jail; Three Men at the Water Trough; The Rustled Herd; A Gun on the Table; The Outlaw’s Mother; The False Deputy; One Horse, Two Riders; The Last Shot.
+
+Treasure, Exploration & Lost Places: The Map in the Ledger; The Town That Moved; The Old Survey Stone; The Sealed Mine Office; The Room Behind the Chimney; The Island When the Water Falls; The Forgotten Station; The Cave with Worked Stone; The Lost Payroll; The House under the Hill; The Riverboat Cache; The Last Room in the Fort.
 
 ## Library audit and future batches
 
