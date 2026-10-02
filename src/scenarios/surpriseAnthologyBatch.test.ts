@@ -61,14 +61,14 @@ function explore(scenario: Scenario): number {
 describe('surprise anthology and library gap-fill', () => {
   it('adds 36 distinct all-year adventures without changing existing stable IDs', () => {
     expect(ANTHOLOGY).toHaveLength(36);
-    expect(SCENARIOS).toHaveLength(406);
+    expect(SCENARIOS).toHaveLength(431);
     expect(new Set(ANTHOLOGY.map(({ id }) => id)).size).toBe(36);
     expect(ANTHOLOGY.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(ANTHOLOGY.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioMetadata(ANTHOLOGY)).toEqual([]);
     expect(ANTHOLOGY.filter(({ diversity }) => diversity?.activities?.includes('competition/game')).length).toBeGreaterThanOrEqual(5);
     expect(ANTHOLOGY.filter(({ diversity }) => diversity?.activities?.includes('communication/witness')).length).toBeGreaterThanOrEqual(5);
-    expect(SCENARIOS.slice(370).map(({ id }) => id)).toEqual(ANTHOLOGY.map(({ id }) => id));
+    expect(SCENARIOS.slice(370, 406).map(({ id }) => id)).toEqual(ANTHOLOGY.map(({ id }) => id));
     const qaMarkup = renderQaPanel(true, structuredClone(EMPTY_SAVE), SCENARIOS, ITEMS);
     for (const scenario of ANTHOLOGY) expect(qaMarkup).toContain(`data-qa-start="${scenario.id}"`);
   });

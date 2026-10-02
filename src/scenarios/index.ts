@@ -77,6 +77,7 @@ import { FRONTIER_DISCOVERY_ADVENTURES } from './frontierDiscoveryBatch';
 import { SOCIAL_SURPRISE_ADVENTURES } from './surpriseSocialBatch';
 import { COMPETITION_SURPRISE_ADVENTURES } from './surpriseCompetitionBatch';
 import { EVERYDAY_SURPRISE_ADVENTURES } from './surpriseEverydayBatch';
+import { THE_COMEDY_ABSURDITY_ADVENTURES } from './comedyAbsurdityBatch';
 
 export const SCENARIOS: Scenario[] = [
   BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME,
@@ -103,6 +104,7 @@ export const SCENARIOS: Scenario[] = [
   ...SOCIAL_SURPRISE_ADVENTURES,
   ...COMPETITION_SURPRISE_ADVENTURES,
   ...EVERYDAY_SURPRISE_ADVENTURES,
+  ...THE_COMEDY_ABSURDITY_ADVENTURES,
 ];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));

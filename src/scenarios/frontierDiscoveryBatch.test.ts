@@ -40,7 +40,7 @@ function explore(scenarioIndex: number): void {
 describe('remote discovery and frontier claims batch', () => {
   it('registers 40 distinct all-year adventures with valid diversity metadata', () => {
     expect(FRONTIER_DISCOVERY_ADVENTURES).toHaveLength(40);
-    expect(SCENARIOS).toHaveLength(406);
+    expect(SCENARIOS).toHaveLength(431);
     expect(new Set(FRONTIER_DISCOVERY_ADVENTURES.map(({ id }) => id)).size).toBe(40);
     expect(FRONTIER_DISCOVERY_ADVENTURES.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(validateScenarioMetadata(FRONTIER_DISCOVERY_ADVENTURES)).toEqual([]);
