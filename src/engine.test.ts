@@ -51,8 +51,8 @@ describe('adventure engine', () => {
     const choice = endingScenario.scenes.start.choices[0];
     const completed = choose(initial, endingScenario, choice);
     expect(completed.run?.status).toBe('success');
-    expect(completed.pendingGlobalCompletions).toBeUndefined();
-    expect(completed.character?.adventuresCompleted).toBe(0);
+    expect(completed.pendingGlobalCompletions).toEqual([initial.run.runId]);
+    expect(completed.character?.adventuresCompleted).toBe(1);
     expect(choose(completed, endingScenario, choice).pendingGlobalCompletions).toEqual(completed.pendingGlobalCompletions);
     const resumedThenAbandoned = failCharacter(JSON.parse(JSON.stringify(initial)) as SaveData);
     expect(resumedThenAbandoned.pendingGlobalCompletions).toBeUndefined();

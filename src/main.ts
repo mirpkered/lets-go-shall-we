@@ -1,5 +1,5 @@
 import './styles.css';
-import { addSupply, addUpgrade, breakItem, carryCapacity, choose, consumeSupply, depositCarried, discardBankItem, emptyBank, failCharacter, finishRewardResolution, forceQaEasterEgg, getCarriedGearItems, getCarriedItems, getCarriedRelics, itemCondition, itemState, meets, newCharacter, openRewardResolution, placeReward, RELIC_SOFT_CAPACITY, removeUpgrade, repairItem, retireCharacter, runText, sceneText, setCarriedItems, setItemCondition, setSupplyQuantity, startAdventure, SUPPLY_STACK_CAPACITY, timeStatus, withdrawBanked } from './engine';
+import { addSupply, addUpgrade, breakItem, carryCapacity, choose, consumeSupply, depositCarried, discardBankItem, emptyBank, failCharacter, finishRewardResolution, forceQaEasterEgg, getCarriedGearItems, getCarriedItems, getCarriedRelics, itemCondition, itemState, meets, newCharacter, openRewardResolution, placeReward, RELIC_SOFT_CAPACITY, removeUpgrade, repairItem, resolveSuccessfulEndingProgress, retireCharacter, runText, sceneText, setCarriedItems, setItemCondition, setSupplyQuantity, startAdventure, SUPPLY_STACK_CAPACITY, timeStatus, withdrawBanked } from './engine';
 import { inventoryClass, ITEMS } from './items';
 import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirmationText } from './bank';
 import { showLaunchSplash } from './launchSplash';
@@ -234,7 +234,7 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = '', style = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -424,6 +424,10 @@ function renderDeath(): void {
 }
 
 function renderSuccess(): void {
+  if (state.run?.authoredEndingRecorded && !state.run.completionCountRecorded) {
+    state = resolveSuccessfulEndingProgress(state);
+    persist();
+  }
   if (successRewardsOpen && state.run?.rewardPendingItems === undefined) {
     state = openRewardResolution(state);
     persist();

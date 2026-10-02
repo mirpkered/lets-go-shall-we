@@ -487,7 +487,10 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   if (scene?.ending) next.run.status = scene.ending;
   if (scene?.ending) {
     next.run.completionQualification = scene.ending === 'success' ? scene.completionQualification ?? 'substantive' : scene.completionQualification;
-    recordAuthoredEnding(next, scene.ending === 'death');
+    // Completion and replay history belong to the authored terminal itself,
+    // not to the later reward-placement screen. A closed tab after the story
+    // has ended must not make a completed adventure disappear from progression.
+    recordAuthoredEnding(next, scene.ending === 'death' || scene.ending === 'success');
   }
   else if (destination && destination !== originSceneId) tryEasterEggOnSceneEntry(next, scenario, random);
   return next;
@@ -498,6 +501,15 @@ function queueGlobalCompletion(state: SaveData): void {
   if (!run || run.qaMode || !run.runId) return;
   state.pendingGlobalCompletions = [...new Set([...(state.pendingGlobalCompletions ?? []), run.runId])];
   run.globalCompletionQueued = true;
+}
+
+/** Safely resolves a successful terminal saved by an older build before progression was committed. */
+export function resolveSuccessfulEndingProgress(state: SaveData): SaveData {
+  const next = structuredClone(state);
+  if (next.run?.status === 'success' && next.run.authoredEndingRecorded && !next.run.completionCountRecorded) {
+    recordAuthoredEnding(next, true);
+  }
+  return next;
 }
 
 export function failCharacter(state: SaveData): SaveData {
@@ -530,7 +542,7 @@ function recordAuthoredEnding(state: SaveData, resolveTravelerProgression = fals
   if (!run) return;
   if (!run.authoredEndingRecorded) {
     run.authoredEndingRecorded = true;
-    if (run.status === 'death') queueGlobalCompletion(state);
+    if (run.status === 'death' || run.status === 'success') queueGlobalCompletion(state);
     recordScenarioEnding(state);
     if (!run.qaMode && state.character && (run.status === 'success' || run.status === 'death')) {
       state.character.scenarioPlayCounts ??= {};

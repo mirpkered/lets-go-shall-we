@@ -65,7 +65,12 @@ export const THE_SHORTCUT: Scenario = {
       { id: 'roadAfterAsking', label: 'Use the established road', timeCost: 5, next: 'steadyRoad' },
       { id: 'waitForDryWeather', label: 'Rest here and let the track dry', timeCost: 60, next: 'waitedAtFork' },
     ] },
-    shortRoute: ending('shortRoute', 'Miles Saved', 'The ground holds, and the cut rejoins the road beyond the hill. The shortcut was simply a shortcut this time.'),
+    shortRoute: { id: 'shortRoute', title: 'Miles Saved', tone: 'safe', text: 'The ground holds, and the cut rejoins the road beyond the hill. At the junction, an old row of white stones follows the firm ridge while the longer road bends around the wet hollow. The shortcut was simply a shortcut this time—and now you can see how it rejoins the road.', choices: [
+      { id: 'noteFirmCut', label: 'Remember the firm ridge route', next: 'shortRouteComplete', effects: { knowledge: ['The shortcut over the rise follows white stones across firm ridge ground and rejoins the old road beyond the wet hollow.'] } },
+      { id: 'enjoyViewFromRise', label: 'Pause to take in the view', next: 'shortRouteComplete', effects: { historyFlags: ['paused at the ridge after taking a quiet shortcut'] } },
+      { id: 'continuePastJunction', label: 'Continue along the road', next: 'shortRouteComplete' },
+    ] },
+    shortRouteComplete: ending('shortRouteComplete', 'The Road Rejoined', 'You continue with the miles saved. From the rise, the old road and the stream hollow make sense together; there was no hidden danger, only a useful line across the country.'),
     roughCutoff: ending('roughCutoff', 'A Longer Shortcut', 'The track breaks across loose ground and makes you walk slowly around a shallow wash. You reach the same road later than planned, with no injury and no mystery behind the delay.'),
     steadyRoad: ending('steadyRoad', 'The Marked Way', 'The established road takes longer, but its mileposts and firm surface make the day easy to judge. The drover continues in the other direction.'),
     waitedAtFork: ending('waitedAtFork', 'No Need to Rush', 'You rest near the fork until the ground feels firmer beneath your boots. Whether the saved miles were worth waiting is a matter of preference, not a test with one right answer.'),

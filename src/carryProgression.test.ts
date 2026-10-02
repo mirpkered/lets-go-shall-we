@@ -128,10 +128,9 @@ describe('traveler completion and carry milestones', () => {
     const trivial: Scenario = { ...ENDING, scenes: { ...ENDING.scenes, quiet: { ...ENDING.scenes.quiet, completionQualification: 'nonSubstantive' } } };
     const ended = choose(state, trivial, trivial.scenes.start.choices[0]);
     expect(ended.character?.adventuresCompleted).toBe(0);
-    // Successful endings are counted only after reward/progression finalization.
-    expect(ended.pendingGlobalCompletions).toBeUndefined();
+    expect(ended.pendingGlobalCompletions).toEqual([state.run!.runId]);
     expect(ended.run?.authoredEndingRecorded).toBe(true);
-    expect(ended.run?.completionCountRecorded).toBe(false);
+    expect(ended.run?.completionCountRecorded).toBe(true);
     const finalized = finishSuccess(ended, null);
     expect(finalized.character?.adventuresCompleted).toBe(0);
     expect(finalized.character?.quickExitCreditRemainder).toBe(1);
@@ -365,7 +364,7 @@ describe('traveler completion and carry milestones', () => {
     expect(state.run?.qualifyingStoryTransitions).toBe(4);
     for (let index = 0; index < 3; index++) state = choose(state, scenario, scenario.scenes[state.run!.sceneId].choices[0]);
     expect(state.run?.status).toBe('success');
-    expect(state.character?.adventuresCompleted).toBe(0);
+    expect(state.character?.adventuresCompleted).toBe(1);
     state = finishSuccess(state, null);
     expect(state.character?.adventuresCompleted).toBe(1);
     expect(state.run).toBeNull();

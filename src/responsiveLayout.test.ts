@@ -93,7 +93,7 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain('.playing .play-header > div { min-width:0; overflow-wrap:anywhere; }');
     expect(styles).toContain('padding:max(.6rem,env(safe-area-inset-top)) 1.1rem max(.6rem,env(safe-area-inset-bottom));');
     expect(styles).toContain('min-height:44px');
-    expect(mainSource).toContain('${content}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}');
+    expect(mainSource).toContain('${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}');
     expect(mainSource).toContain('<section class="choices count-${choices.length}"');
   });
 
@@ -108,6 +108,14 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain('.playing { position:relative; isolation:isolate; }');
     expect(styles).toContain("url('./assets/adventure-backdrop.svg')");
     expect(styles).toContain('.qa-home-scene-actions button { min-width:3.75rem; min-height:44px;');
+  });
+
+  it('anchors home About and Contact controls above the safe-area-aware footer', () => {
+    expect(styles).toContain('.home-screen > .utility-links { flex:none; margin:auto auto .35rem; padding-top:.55rem; }');
+    expect(styles).toContain('.home-screen > footer { margin-top:0; padding-top:1rem; }');
+    expect(styles).toContain('padding:clamp(1.2rem, 5vw, 2.5rem) 1.1rem max(1.25rem, env(safe-area-inset-bottom));');
+    expect(styles).toContain('footer { margin-top:auto;');
+    expect(mainSource.indexOf('${renderQaPanel(qaEnabled')).toBeLessThan(mainSource.indexOf('${renderUtilityFeatures(feedbackAdventureTitle(state, SCENARIOS))}'));
   });
 
   it('labels Gear slots separately from Supplies, Relics, available adventure gear, and owned property', () => {

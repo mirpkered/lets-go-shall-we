@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, newCharacter, startRun } from '../engine';
+import { choose, finishSuccess, newCharacter, startRun } from '../engine';
 import { scenarioAvailableInMonth, classifyScenario } from '../scenarioDiversity';
 import { eligibleScenarios, scenarioSelectionWeights, selectionDiagnostics, simulateScenarioSelection } from '../scenarioSelection';
 import type { SaveData, Scenario } from '../types';
@@ -8,6 +8,7 @@ import { renderQaPanel } from '../qaPanel';
 import { ITEMS } from '../items';
 import { SCENARIOS } from './index';
 import { OCTOBER_AFFINITY_ADVENTURES } from './octoberAffinityBatch';
+import { loadSave, SAVE_KEY, saveGame } from '../storage';
 
 function stateAt(scenario: Scenario): SaveData {
   const character = newCharacter('Test Traveler');
@@ -100,7 +101,61 @@ describe('Halloween and October-affinity adventures', () => {
     expect(ended.run?.sceneId).toBe('contestComplete');
     expect(ended.run?.status).toBe('success');
     expect(ended.character?.lore.some((entry) => entry.includes('Halloween carving contest'))).toBe(true);
+    expect(ended.character?.adventuresCompleted).toBe(1);
+
+    let judge = stateAt(contest);
+    for (const choice of ['judge', 'describeEvidence', 'contestThanks']) judge = pick(judge, contest, choice);
+    expect(judge.run?.sceneId).toBe('contestSocialAftermath');
+    expect(judge.character?.money).toBe(0);
+    expect(judge.run?.status).toBe('success');
+    expect(contest.scenes.contestSocialAftermath.textVariants?.[0].text).toContain('not a share of the entrants’ purse');
+    expect(judge.character?.adventuresCompleted).toBe(1);
+
+    let helper = stateAt(contest);
+    for (const choice of ['helpDisplay', 'holdCover', 'contestThanks']) helper = pick(helper, contest, choice);
+    expect(helper.run?.sceneId).toBe('contestSocialAftermath');
+    expect(contest.scenes.contestSocialAftermath.textVariants?.[1].text).toContain('holding the canvas');
+    expect(helper.character?.money).toBe(0);
   });
+
+  it('preserves a completed contest replay penalty across sequential content additions', () => {
+    const contest = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'jack-o-lantern-contest')!;
+    let state = stateAt(contest);
+    for (const choice of ['enterCarve', 'simpleFace', 'shareAfterContest', 'contestComplete']) state = pick(state, contest, choice);
+    expect(state.character?.adventuresCompleted).toBe(1);
+    expect(state.character?.scenarioPlayCounts?.[contest.id]).toBe(1);
+    expect(state.recentScenarioIds?.[0]).toBe(contest.id);
+    state = finishSuccess(state, null);
+    const data = new Map<string, string>();
+    const storage = { getItem: (key: string) => data.get(key) ?? null, setItem: (key: string, value: string) => data.set(key, value) } as unknown as Storage;
+    saveGame(state, storage);
+    const addedOne = { ...contest, id: 'migration-added-october-one', title: 'New October Story One' };
+    const firstDeployment = loadSave(storage);
+    saveGame(firstDeployment, storage);
+    const addedTwo = { ...contest, id: 'migration-added-october-two', title: 'New October Story Two' };
+    const afterDeployment = loadSave(storage);
+    const registry = [...SCENARIOS, addedOne, addedTwo];
+
+    expect(afterDeployment.character?.id).toBe(state.character?.id);
+    expect(afterDeployment.character?.adventuresCompleted).toBe(1);
+    expect(afterDeployment.character?.scenarioPlayCounts?.[contest.id]).toBe(1);
+    expect(afterDeployment.recentScenarioIds?.[0]).toBe(contest.id);
+    expect(eligibleScenarios(registry, afterDeployment.recentScenarioIds, 10).some(({ id }) => id === contest.id)).toBe(false);
+    const pressure = { scenarioPlayCounts: afterDeployment.character!.scenarioPlayCounts, categoryHistory: afterDeployment.character!.scenarioCategoryHistory, selectionMonth: 10 };
+    const playedWeight = scenarioSelectionWeights(registry, pressure).find(({ scenario }) => scenario.id === contest.id)!;
+    const freshWeight = scenarioSelectionWeights(registry, { categoryHistory: pressure.categoryHistory, selectionMonth: 10 }).find(({ scenario }) => scenario.id === contest.id)!;
+    expect(playedWeight.replayWeight).toBe(0.15);
+    expect(playedWeight.weight).toBeLessThan(freshWeight.weight);
+    expect(scenarioSelectionWeights(registry, pressure).find(({ scenario }) => scenario.id === addedOne.id)?.completedPlays).toBe(0);
+    expect(scenarioSelectionWeights(registry, pressure).find(({ scenario }) => scenario.id === addedTwo.id)?.completedPlays).toBe(0);
+
+    const seeded = (initial: number) => () => { let seed = initial; return () => ((seed = (seed * 48271) % 2147483647) - 1) / 2147483646; };
+    const withHistory = simulateScenarioSelection(registry, [], { ...pressure, adventuresCompleted: 1 }, 1000, seeded(4109)());
+    const withoutHistory = simulateScenarioSelection(registry, [], { categoryHistory: pressure.categoryHistory, selectionMonth: 10, adventuresCompleted: 1 }, 1000, seeded(4109)());
+    expect(withHistory.draws).toBe(1000);
+    expect(withHistory.scenarioCounts[contest.id] ?? 0).toBeLessThan(withoutHistory.scenarioCounts[contest.id] ?? 0);
+    expect(withHistory.scenarioCounts[contest.id] ?? 0).toBeGreaterThan(0);
+  }, 15_000);
 
   it('makes the dare’s risk visible and allows both success and a costly fall', () => {
     const dare = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-halloween-dare')!;

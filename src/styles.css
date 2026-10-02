@@ -66,6 +66,8 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .home-tools small { color:#777166; }
 .global-completions { margin:.9rem 0 0; padding:.55rem .7rem; color:#958c7d; font-size:.72rem; line-height:1.45; text-align:center; letter-spacing:.025em; }
 .utility-links { display:flex; justify-content:center; align-items:center; gap:.8rem; width:fit-content; margin:1rem auto .2rem; }
+.home-screen > .utility-links { flex:none; margin:auto auto .35rem; padding-top:.55rem; }
+.home-screen > footer { margin-top:0; padding-top:1rem; }
 .utility-links .utility-icon { display:grid; place-items:center; flex:0 0 2.9rem; width:2.9rem; height:2.9rem; min-height:44px; padding:0; border:1px solid #665438; border-radius:50%; background:#111315df; color:#d0ae6b; cursor:pointer; box-shadow:0 .2rem .8rem #0006; transition:background-color .16s ease,border-color .16s ease,color .16s ease,transform .16s ease; }
 .utility-icon svg { width:1.12rem; height:1.12rem; }
 .utility-question { font:1.25rem/1 'IM Fell English',Georgia,serif; }
