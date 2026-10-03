@@ -125,7 +125,7 @@ describe('deep exploration anthology', () => {
     expect(awardScenarios).toEqual({
       briarHouseSkeletonKey: ['last-door-briar-house'], redDoorToken: ['door-beneath-the-road'],
       ironOrchardRodFragment: ['iron-orchard'], numberedLanternWick: ['lantern-vault'],
-      blackMillingStone: ['black-stair-wrens-mill'], collapsibleSoundingRod: ['forgotten-platform'],
+      blackMillingStone: ['black-stair-wrens-mill'], collapsibleSoundingRod: ['ferry-beneath-the-ferry', 'forgotten-platform'],
     });
   });
 
@@ -199,5 +199,66 @@ describe('deep exploration anthology', () => {
     expect(toolState.character?.money).toBe(0);
     expect(toolState.run?.inventory).toContain('foremanMultiTool');
     expect(toolState.character?.historyFlags).toContain('accepted a mine tool instead of the Harker rescue wage');
+  });
+
+  it('recognizes the Red Door Token only at Harker’s matching old seal', () => {
+    const harker = getScenario('deep-room-at-harker-mine')!;
+    const character = newCharacter('Token Bearer');
+    character.carriedItem = 'redDoorToken';
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, harker, () => 0) };
+    state.run!.sceneId = 'harkerDeep';
+    const compare = harker.scenes.harkerDeep.choices.find(({ id }) => id === 'compareToken')!;
+    expect(meets(compare.requirements, state)).toBe(true);
+    const result = choose(state, harker, compare, () => 0);
+    expect(result.character?.knowledge).toContain('The Harker seal repeats the Red Door Token’s three-cut pattern in reverse; the matching convention links the marks, but does not identify a maker or creature.');
+    expect(result.run?.inventory).toContain('redDoorToken');
+  });
+
+  it('lets Briar House’s own Skeleton Key bypass only its matching bookcase lock on a later visit', () => {
+    const house = getScenario('last-door-briar-house')!;
+    const plainCharacter = newCharacter('No House Key');
+    const plain: SaveData = { ...structuredClone(EMPTY_SAVE), character: plainCharacter, run: startRun(plainCharacter, house, () => 0) };
+    plain.run!.sceneId = 'libraryFirst';
+    const keyChoice = house.scenes.libraryFirst.choices.find(({ id }) => id === 'briarSkeletonKey')!;
+    expect(meets(keyChoice.requirements, plain)).toBe(false);
+
+    const keyCharacter = newCharacter('Returning House Guest');
+    keyCharacter.carriedItem = 'briarHouseSkeletonKey';
+    const returning: SaveData = { ...structuredClone(EMPTY_SAVE), character: keyCharacter, run: startRun(keyCharacter, house, () => 0) };
+    returning.run!.sceneId = 'libraryFirst';
+    expect(meets(keyChoice.requirements, returning)).toBe(true);
+    const opened = choose(returning, house, keyChoice, () => 0);
+    expect(opened.run?.sceneId).toBe('libraryShift');
+    expect(sceneText(house.scenes.libraryShift, opened)).toMatch(/not for locks elsewhere/i);
+  });
+
+  it('lets a traveler trade ferry inspection pay for an existing field tool', () => {
+    const ferry = getScenario('ferry-beneath-the-ferry')!;
+    const character = newCharacter('Ferry Inspector');
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, ferry, () => 0) };
+    state.run!.sceneId = 'timberFreed';
+    const tool = ferry.scenes.timberFreed.choices.find(({ id }) => id === 'takeFerryRod')!;
+    const cash = ferry.scenes.timberFreed.choices.find(({ id }) => id === 'tellFerryman')!;
+    expect(meets(tool.requirements, state)).toBe(true);
+    expect(choose(state, ferry, tool, () => 0).run?.inventory).toContain('collapsibleSoundingRod');
+    expect(choose(state, ferry, cash, () => 0).character?.money).toBe(3);
+    const duplicateCharacter = newCharacter('Already Has the Tool');
+    duplicateCharacter.carriedItem = 'collapsibleSoundingRod';
+    const duplicate: SaveData = { ...structuredClone(EMPTY_SAVE), character: duplicateCharacter, run: startRun(duplicateCharacter, ferry, () => 0) };
+    duplicate.run!.sceneId = 'timberFreed';
+    expect(meets(tool.requirements, duplicate)).toBe(false);
+  });
+
+  it('uses Ritual Chalk to mark one route through the White Chamber and consumes it', () => {
+    const cave = getScenario('white-chamber')!;
+    const character = newCharacter('Chalk Mapper');
+    character.supplies = { ritualChalk: 1 };
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cave, () => 0) };
+    const mark = cave.scenes.whiteCaveMouth.choices.find(({ id }) => id === 'chalkCave')!;
+    expect(meets(mark.requirements, state)).toBe(true);
+    const result = choose(state, cave, mark, () => 0);
+    expect(result.character?.supplies?.ritualChalk).toBeUndefined();
+    expect(result.run?.flags).toContain('whiteChalkSet');
+    expect(result.character?.knowledge).toContain('In the White Chamber, each chalk mark holds a known turn while the pale geometry repeats; it marks a route but does not reveal what lies beyond the sealed door.');
   });
 });

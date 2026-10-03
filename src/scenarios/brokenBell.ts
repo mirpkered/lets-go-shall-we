@@ -195,8 +195,17 @@ export const BROKEN_BELL: Scenario = {
       choices: [
         { id: 'returnToChestAfterPriest', label: 'Use the chest before facing the keeper', requirements: { notItems: ['ironHandbell'] }, next: 'chestAfterPriest' },
         { id: 'goKeeperAfterPriest', label: 'Continue through the bronze door', requirements: { items: ['ironHandbell'] }, next: 'burialApproach' },
-        { id: 'takeThresholdSalt', label: 'Take one packet of the priest’s threshold salt', hint: 'A measured pinch from his chapel kit; it is not a weapon against the keeper.', requirements: { canAddSupplies: { consecratedSalt: 1 } }, effects: { gainSupplies: { consecratedSalt: 1 } }, next: 'burialApproach' },
+        { id: 'inspectThresholdKit', label: 'Ask what remains in the chapel’s threshold kit', next: 'priestSupplies' },
         { id: 'leaveWithPriest', label: 'Help him out and leave the chapel', effects: { setFlags: ['escortedPriest'] }, next: 'retreatEnding' },
+      ],
+    },
+    priestSupplies: {
+      id: 'priestSupplies', title: 'A Practical Threshold Kit',
+      text: 'The priest has one sealed packet of salt and two cold-iron nails kept for the chapel’s loose coffin sill. Neither is a weapon against the keeper; each was prepared for a particular threshold task. You may take one kind of supply, or leave the kit intact.',
+      choices: [
+        { id: 'takeThresholdSalt', label: 'Take one packet of the priest’s threshold salt', requirements: { canAddSupplies: { consecratedSalt: 1 } }, effects: { gainSupplies: { consecratedSalt: 1 } }, next: 'burialApproach' },
+        { id: 'takeThresholdNails', label: 'Take two of the chapel’s cold-iron nails', requirements: { canAddSupplies: { coldIronNails: 2 } }, effects: { gainSupplies: { coldIronNails: 2 } }, next: 'burialApproach' },
+        { id: 'leaveKit', label: 'Leave both supplies for chapel repairs', next: 'burialApproach' },
       ],
     },
     chestAfterPriest: {
@@ -280,7 +289,7 @@ export const BROKEN_BELL: Scenario = {
       choices: [
         { id: 'observeGesture', label: 'Watch for another sign', next: 'keeperSign' },
         { id: 'rememberWarning', label: 'Keep the bell silent and show the warning', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.chapelInscription.id] }, effects: { setFlags: ['keptBellSilent'] }, next: 'keeperSign' },
-        { id: 'attackAtParley', label: 'Attack while it waits', hint: 'It still may be defending the burial.', effects: { combat: { enemy: 'masked keeper', winChance: 0.42, damageOnWin: 3, damageOnLoss: 7, winNext: 'keeperDefeated', lossNext: 'keeperAfterFight' } } },
+        { id: 'testSaltBoundary', label: 'Test the chamber threshold with the priest’s salt', hint: 'It may show how the room draws sound; it will not drive the keeper away.', requirements: { supplies: { consecratedSalt: 1 } }, effects: { consumeSupplies: { consecratedSalt: 1 }, knowledge: ['At the old burial, consecrated salt trembled toward the clapper when the chamber drew sound inward; it did not stop the keeper or explain its nature.'], historyFlags: ['tested the old burial threshold with consecrated salt'] }, next: 'keeperSign' },
         { id: 'leaveParley', label: 'Back away from the chamber', next: 'retreatEnding' },
       ],
     },

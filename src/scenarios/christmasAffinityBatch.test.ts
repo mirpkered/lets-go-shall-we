@@ -23,6 +23,21 @@ function pick(state: SaveData, scenario: Scenario, choiceId: string, random = ()
 }
 
 describe('Christmas and winter-affinity adventures', () => {
+  it('recognizes the Black Milling Stone as a comparison clue at an old mill bearing', () => {
+    const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'frozen-millwheel')!;
+    const character = newCharacter('Millwright Explorer');
+    character.carriedItem = 'blackMillingStone';
+    const state = fresh(scenario);
+    state.character = character;
+    state.run!.inventory.push('blackMillingStone');
+    state.run!.sceneId = 'bearingClear';
+    const compare = scenario.scenes.bearingClear.choices.find(({ id }) => id === 'compareOldWafer')!;
+    expect(compare.requirements?.relics).toEqual(['blackMillingStone']);
+    const result = pick(state, scenario, 'compareOldWafer');
+    expect(result.character?.knowledge).toContain('A wafer from Wren’s buried millwheel bears a groove like the old stone bearing at this mill; it suggests a shared milling practice, not a common site or maker.');
+    expect(result.run?.inventory).toContain('blackMillingStone');
+  });
+
   it('registers 28 distinct stories and locks only holiday-dependent premises to December', () => {
     expect(CHRISTMAS_ADVENTURES).toHaveLength(28);
     expect(SCENARIOS).toHaveLength(445);

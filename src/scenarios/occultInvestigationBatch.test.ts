@@ -183,18 +183,31 @@ describe('occult investigation adventures', () => {
     expect(meets(scenario.scenes.cellarLanding.choices.find((c) => c.id === 'nailArch')!.requirements, full)).toBe(true);
   });
 
-  it('offers one optional Consecrated Salt from the injured priest without making it a universal answer', () => {
+  it('offers contextual chapel Supplies and consumes Salt only as a boundary-reading aid', () => {
     let state = fresh(BROKEN_BELL);
     state.run!.sceneId = 'priestFarewell';
-    const offer = BROKEN_BELL.scenes.priestFarewell.choices.find(({ id }) => id === 'takeThresholdSalt')!;
-    expect(meets(offer.requirements, state)).toBe(true);
+    state = act(state, BROKEN_BELL, 'inspectThresholdKit');
+    const kit = BROKEN_BELL.scenes.priestSupplies;
+    const salt = kit.choices.find(({ id }) => id === 'takeThresholdSalt')!;
+    const nails = kit.choices.find(({ id }) => id === 'takeThresholdNails')!;
+    expect(meets(salt.requirements, state)).toBe(true);
     state = act(state, BROKEN_BELL, 'takeThresholdSalt');
     expect(state.character?.supplies?.consecratedSalt).toBe(1);
     expect(state.run?.sceneId).toBe('burialApproach');
-    expect(BROKEN_BELL.scenes.priestFarewell.text).toMatch(/keeper is not mine to command/i);
+    expect(kit.text).toMatch(/weapon against the keeper/i);
     const full = fresh(BROKEN_BELL, undefined, { consecratedSalt: 3 });
-    full.run!.sceneId = 'priestFarewell';
-    expect(meets(offer.requirements, full)).toBe(false);
+    full.run!.sceneId = 'priestSupplies';
+    expect(meets(salt.requirements, full)).toBe(false);
+    const nailState = fresh(BROKEN_BELL);
+    nailState.run!.sceneId = 'priestSupplies';
+    expect(meets(nails.requirements, nailState)).toBe(true);
+    expect(act(nailState, BROKEN_BELL, 'takeThresholdNails').character?.supplies?.coldIronNails).toBe(2);
+
+    state.run!.sceneId = 'maskedParley';
+    state = act(state, BROKEN_BELL, 'testSaltBoundary');
+    expect(state.character?.supplies?.consecratedSalt).toBeUndefined();
+    expect(state.character?.knowledge).toContain('At the old burial, consecrated salt trembled toward the clapper when the chamber drew sound inward; it did not stop the keeper or explain its nature.');
+    expect(state.run?.sceneId).toBe('keeperSign');
   });
 
   it('uses the existing Grave Token and Yew Charm for narrow discoveries, not universal protection', () => {
