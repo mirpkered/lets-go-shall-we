@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BANK_CAPACITY } from './bank';
-import { carryCapacity, choose, finishRewardResolution, getCarriedItems, newCharacter, newRewardItems, openRewardResolution, placeReward, startRun } from './engine';
+import { carryCapacity, choose, failCharacter, finishRewardResolution, getCarriedItems, newCharacter, newRewardItems, openRewardResolution, placeReward, retireCharacter, startRun } from './engine';
 import { ITEMS } from './items';
 import { loadSave, saveGame } from './storage';
 import type { SaveData } from './types';
@@ -121,6 +121,38 @@ describe('authored ending reward placement', () => {
     expect(restored.run?.rewardPendingItems).toEqual([]);
     expect(finishRewardResolution(restored).bank).toEqual([reward]);
     expect(finishRewardResolution(restored).character?.carriedItems).toEqual([]);
+  });
+
+  it('removes stale pending duplicates already carried and prevents replayed Relics already owned or banked', () => {
+    const carried = successfulRewardState(0, [], [reward]);
+    carried.run!.rewardPendingItems = [reward];
+    expect(openRewardResolution(carried).run?.rewardPendingItems).toEqual([]);
+
+    const alreadyCarriedRelic = successfulRewardState(0, [], ['graveCoin']);
+    alreadyCarriedRelic.run!.inventory.push('graveCoin');
+    alreadyCarriedRelic.run!.acquiredThisRun.push('graveCoin');
+    expect(openRewardResolution(alreadyCarriedRelic).run?.rewardPendingItems).not.toContain('graveCoin');
+    expect(placeReward(openRewardResolution(alreadyCarriedRelic), 'graveCoin', 'bank').bank).toEqual([]);
+
+    const alreadyBankedRelic = successfulRewardState(0, ['graveCoin']);
+    alreadyBankedRelic.run!.inventory.push('graveCoin');
+    alreadyBankedRelic.run!.acquiredThisRun.push('graveCoin');
+    expect(openRewardResolution(alreadyBankedRelic).run?.rewardPendingItems).not.toContain('graveCoin');
+    expect(placeReward(openRewardResolution(alreadyBankedRelic), 'graveCoin', 'carry').character?.carriedItems).toEqual([]);
+  });
+
+  it('drops unclaimed run rewards on death or retirement while preserving Bank contents', () => {
+    const onDeath = openRewardResolution(successfulRewardState(0, ['graveCoin']));
+    const dead = failCharacter(onDeath);
+    expect(dead.character).toBeNull();
+    expect(dead.run).toBeNull();
+    expect(dead.bank).toEqual(['graveCoin']);
+
+    const onRetirement = openRewardResolution(successfulRewardState(0, ['graveCoin']));
+    const retired = retireCharacter(onRetirement);
+    expect(retired.character).toBeNull();
+    expect(retired.run).toBeNull();
+    expect(retired.bank).toEqual(['graveCoin']);
   });
 
   it('migrates an older successful reward screen safely and rejects non-carryable rewards', () => {
