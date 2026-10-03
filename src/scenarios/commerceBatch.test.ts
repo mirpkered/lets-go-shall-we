@@ -136,6 +136,21 @@ describe('commerce, bargains, and property adventure batch', () => {
     expect(seller.character?.historyFlags).toContain('sold_silver_pocket_watch_at_market');
   });
 
+  it('offers a sound, existing travel rope as an optional market purchase', () => {
+    const poor = act(start(MARKET_DAY), MARKET_DAY, 'marketSquare', 'comparePrices');
+    expect(poor.run?.sceneId).toBe('toolStall');
+    expect(MARKET_DAY.scenes.toolStall.choices.filter(({ requirements }) => meets(requirements, poor)).map(({ id }) => id)).not.toContain('buyTravelRope');
+
+    const buyer = act(start(MARKET_DAY, {}, undefined, 3), MARKET_DAY, 'marketSquare', 'comparePrices');
+    const bought = act(buyer, MARKET_DAY, 'toolStall', 'buyTravelRope');
+    expect(bought.character?.money).toBe(0);
+    expect(bought.run?.inventory).toContain('travelRope');
+    expect(bought.character?.historyFlags).toContain('bought_travel_rope_at_market');
+
+    const owner = act(start(MARKET_DAY, {}, 'travelRope', 4), MARKET_DAY, 'marketSquare', 'comparePrices');
+    expect(MARKET_DAY.scenes.toolStall.choices.filter(({ requirements }) => meets(requirements, owner)).map(({ id }) => id)).not.toContain('buyTravelRope');
+  });
+
   it('makes the horse opinion limited to visible condition and tack', () => {
     let stiff = act(start(THE_HORSE_TRADE, { horseCondition: 'stiff' }), THE_HORSE_TRADE, 'yard', 'walkHorse');
     expect(THE_HORSE_TRADE.scenes.walkObserved.textVariants?.find(({ requirements }) => meets(requirements, stiff))?.text).toContain('not proof of an injury');

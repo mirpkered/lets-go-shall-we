@@ -109,6 +109,29 @@ describe('persistent equipment condition and upgrades', () => {
     expect(state.itemStates?.freightmansStrap.provenance).toContain('Mended by the harness maker');
   });
 
+  it('offers rope repair only when needed and keeps the sound-rope splice as a separate service', () => {
+    let worn = fresh(['travelRope']);
+    worn = damageItem(damageItem(worn, 'travelRope'), 'travelRope');
+    worn.run!.sceneId = 'harnessRepaired';
+    worn = chooseAt(worn, 'harnessRepaired', 'askAboutRope');
+    const repair = THE_BROKEN_HARNESS.scenes.ropeService.choices.find(({ id }) => id === 'repairTravelRope')!;
+    const splice = THE_BROKEN_HARNESS.scenes.ropeService.choices.find(({ id }) => id === 'spliceRopeHookEye')!;
+    expect(meets(repair.requirements, worn)).toBe(true);
+    expect(meets(splice.requirements, worn)).toBe(false);
+    worn = chooseAt(worn, 'ropeService', 'repairTravelRope');
+    expect(worn.run?.status).toBe('success');
+    expect(itemCondition(worn, 'travelRope')).toBe('NORMAL');
+    expect(worn.itemStates?.travelRope.provenance).toContain('Mended by the roadside harness maker');
+
+    const sound = fresh(['travelRope']);
+    sound.run!.sceneId = 'harnessRepaired';
+    const service = chooseAt(sound, 'harnessRepaired', 'askAboutRope');
+    expect(meets(repair.requirements, service)).toBe(false);
+    expect(meets(splice.requirements, service)).toBe(true);
+    const upgraded = chooseAt(service, 'ropeService', 'spliceRopeHookEye');
+    expect(upgraded.itemStates?.travelRope.upgrades).toEqual([{ id: 'splicedEyes', provenance: 'Leather-whipped by the harness maker' }]);
+  });
+
   it('damages rope only after the risky bridge-handline check fails and lets upgrades improve a separate use', () => {
     const character = newCharacter('Rope Tester');
     setCarriedItems(character, ['travelRope']);
