@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { validateScenarioMetadata } from '../scenarioDiversity';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { inventoryClass } from '../items';
 import { eligibleScenarios } from '../scenarioSelection';
@@ -260,5 +260,29 @@ describe('deep exploration anthology', () => {
     expect(result.character?.supplies?.ritualChalk).toBeUndefined();
     expect(result.run?.flags).toContain('whiteChalkSet');
     expect(result.character?.knowledge).toContain('In the White Chamber, each chalk mark holds a known turn while the pale geometry repeats; it marks a route but does not reveal what lies beyond the sealed door.');
+  });
+
+  it('lets a fresh traveler receive, save, and optionally spend the prospector’s spare chalk before the first route choice', () => {
+    const cave = getScenario('white-chamber')!;
+    const character = newCharacter('Fresh Cave Traveler');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cave, () => 0) };
+    const request = cave.scenes.whiteCaveMouth.choices.find(({ id }) => id === 'askForChalk')!;
+    expect(meets(request.requirements, initial)).toBe(true);
+    const offered = choose(initial, cave, request, () => 0);
+    expect(offered.character?.supplies?.ritualChalk).toBe(1);
+    expect(offered.run?.sceneId).toBe('whiteChalkReady');
+    let saved = '';
+    saveGame(offered, { setItem: (_key, value) => { saved = value; } });
+    const resumed = loadSave({ getItem: () => saved });
+    expect(resumed.run?.sceneId).toBe('whiteChalkReady');
+    expect(resumed.character?.supplies?.ritualChalk).toBe(1);
+    const use = cave.scenes.whiteChalkReady.choices.find(({ id }) => id === 'markBendWithNewChalk')!;
+    const spent = choose(resumed, cave, use, () => 0);
+    expect(spent.character?.supplies?.ritualChalk).toBeUndefined();
+    expect(spent.run?.flags).toContain('whiteChalkSet');
+    const fullCharacter = newCharacter('Full Chalk Pouch');
+    fullCharacter.supplies = { ritualChalk: 4 };
+    const full: SaveData = { ...structuredClone(EMPTY_SAVE), character: fullCharacter, run: startRun(fullCharacter, cave, () => 0) };
+    expect(meets(request.requirements, full)).toBe(false);
   });
 });
