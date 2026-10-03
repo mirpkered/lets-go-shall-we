@@ -236,20 +236,24 @@ export const THE_THING_THAT_MIMICS_THE_WHISTLE: Scenario = {
       { id: 'testWithWhistle', label: 'Test the distance with your Conductor’s Whistle', requirements: { items: ['conductorWhistle'] }, next: 'whistleTest', effects: { knowledge: ['A forest entity copied the Conductor’s Whistle and changed one note to draw listeners toward a ravine.'] } },
       { id: 'callAgain', label: 'Call again from the road', next: 'whistleTest' },
     ], 'warning'),
-    whistleTest: scene('whistleTest', 'The Changed Note', 'The answer comes from the ravine, then from the trees behind it without crossing the open road. A branch moves against the wind. A person’s whistle would need to travel between those places; this answer comes too quickly.', [
+    whistleTest: scene('whistleTest', 'The Changed Note', 'The answer comes from the ravine, then from the trees behind it without crossing the open road. A branch moves against the wind. At the road edge, fresh soil has slumped away beneath a cracked, undercut bank; loose stones keep ticking down. The fence and road are firm, but the closer ground is not.', [
       { id: 'stopSignals', label: 'Stop signaling and stay on the road', next: 'whistleSafe' },
       { id: 'useWhistleOnce', label: 'Give one short call and listen', requirements: { items: ['conductorWhistle'] }, next: 'whistlePattern' },
-      { id: 'enterRavine', label: 'Enter the ravine to find the caller', hint: 'The sound has shifted behind you without crossing the road.', chance: { probability: 0.3, successNext: 'whistlePattern', failureNext: 'whistleFatal', successMessage: 'You reach the ravine edge without leaving the road in sight.', failureMessage: 'The ground gives way below the trees.', failureEffects: { health: -10 } } },
+      { id: 'enterRavine', label: 'Step onto the visibly undercut bank', hint: 'The soil is slumping; even a short approach could give way.', chance: { probability: 0.3, successNext: 'whistlePattern', failureNext: 'whistleScramble', successMessage: 'You reach the edge while keeping the firm road within reach.', failureMessage: 'The lip shears under your first step; you catch a root short of the drop.', failureEffects: { health: -2 } } },
     ]),
-    whistlePattern: scene('whistlePattern', 'A Call That Has No Breath', 'The answer comes before your echo, then stops when the whistle is lowered. The branch movement stays on the far side of the ravine. There is a fence line back toward the house and a clear road away from it.', [
+    whistleScramble: scene('whistleScramble', 'The Bank Gives Way', 'A strip of the undercut lip slides into the ravine. You catch a root before the drop, bruised and shaken; the firm fence line still leads back to the road. Across the gap, the whistle answers once.', [
+      { id: 'retreatFromBank', label: 'Return to the road by the fence', next: 'whistleAfter' },
+      { id: 'studyFromFence', label: 'Study the far bank without approaching', next: 'whistlePattern', effects: { knowledge: ['The whistle came from beyond a visibly unstable ravine bank; the road-side fence offers a safe retreat.'] } },
+    ], 'warning'),
+    whistlePattern: scene('whistlePattern', 'A Call That Has No Breath', 'The answer comes before your echo, then stops when the whistle is lowered. The branch movement stays on the far side of the ravine. From the firm fence line you can see the road back to the house; between you and the sound, the bank is cracked and undercut.', [
       { id: 'leaveFenceLine', label: 'Follow the fence back to the house', next: 'whistleAfter', effects: { historyFlags: ['warned a household about a signal-mimicking presence in the woods'] } },
-      { id: 'crossRavine', label: 'Cross the ravine toward the sound', hint: 'The caller’s position keeps changing without a visible crossing.', chance: { probability: 0.27, successNext: 'whistleQuiet', failureNext: 'whistleFatal', successMessage: 'The shape withdraws beyond the ravine.', failureMessage: 'It calls from behind you as the bank collapses.', failureEffects: { health: -10 } } },
+      { id: 'crossRavine', label: 'Cross the visibly undercut ravine bank', hint: 'The cracked lip is already shedding stones; a fall could be fatal.', chance: { probability: 0.27, successNext: 'whistleQuiet', failureNext: 'whistleFatal', successMessage: 'The shape withdraws beyond the ravine.', failureMessage: 'The undercut bank shears away beneath you.', failureEffects: { health: -10 } } },
       { id: 'breakWhistle', label: 'Throw the whistle into the ravine', requirements: { items: ['conductorWhistle'] }, next: 'whistleQuiet', effects: { loseItems: ['conductorWhistle'] } },
     ], 'danger'),
     whistleQuiet: end('whistleQuiet', 'No More Answers', 'The calls stop when the signal is removed. You reach the house by the fence and explain the changed note; the presence remains beyond the ravine, but it no longer draws travelers from the road.'),
     whistleAfter: end('whistleAfter', 'A Road Kept Straight', 'The household marks the ravine path closed and keeps to the road. The answer does not come again before dawn. You do not learn what made it.'),
     whistleSafe: end('whistleSafe', 'A Call Left Unanswered', 'You continue along the open road and do not follow the altered signal. The sound fades behind you; the house remains within sight.'),
-    whistleFatal: end('whistleFatal', 'Beyond the Ravine', 'The ground collapses before you can return to the road. The last whistle answers from both sides of the ravine.', 'death'),
+    whistleFatal: end('whistleFatal', 'Beyond the Ravine', 'You leave the firm road and step onto the cracked, undercut bank despite the stones falling from its edge. It shears away beneath you before you can regain the fence. The last whistle answers from both sides of the ravine.', 'death'),
   },
 };
 

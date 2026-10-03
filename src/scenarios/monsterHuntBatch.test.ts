@@ -5,7 +5,7 @@ import { scenarioRiskTier } from '../riskClassification';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { eligibleScenarioResult, simulateScenarioSelection } from '../scenarioSelection';
 import { validateScenarioMetadata } from '../scenarioDiversity';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
 import { MONSTER_HUNT_FIRST } from './monsterHuntFirst';
@@ -19,6 +19,13 @@ function fresh(scenario: Scenario, item?: string): SaveData {
   if (item) character.carriedItems = [item];
   const run = startRun(character, scenario, () => 0);
   return { ...structuredClone(EMPTY_SAVE), character, run };
+}
+
+function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): SaveData {
+  const scene = scenario.scenes[state.run!.sceneId];
+  const choice = scene.choices.find(({ id }) => id === choiceId);
+  expect(choice, `${scene.id}.${choiceId} exists`).toBeTruthy();
+  return choose(state, scenario, choice!, () => roll);
 }
 
 function explore(scenario: Scenario, item?: string): void {
@@ -94,6 +101,36 @@ describe('Monster Hunt / Creature Threat batch', () => {
     explore(MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'the-river-devil')!, 'travelRope');
     explore(MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'the-lantern-eater')!, 'lantern');
     explore(MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!, 'conductorWhistle');
+  });
+
+  it('makes ordinary curiosity at the ravine survivable, while keeping a warned crossing lethal', () => {
+    const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
+    const curious = take(fresh(scenario), scenario, 'callAgain');
+    const stumbled = take(curious, scenario, 'enterRavine', 0.999999);
+    expect(stumbled.run?.sceneId).toBe('whistleScramble');
+    expect(stumbled.run?.status).toBe('active');
+    expect(stumbled.run!.health).toBeGreaterThan(0);
+    const encoded = JSON.stringify(stumbled);
+    const resumed = loadSave({ getItem: () => encoded });
+    expect(resumed.run?.sceneId).toBe('whistleScramble');
+    expect(resumed.run?.health).toBe(stumbled.run?.health);
+    const retreated = take(resumed, scenario, 'retreatFromBank');
+    expect(retreated.run?.sceneId).toBe('whistleAfter');
+    expect(retreated.run?.status).toBe('success');
+
+    const committed = take(curious, scenario, 'enterRavine', 0);
+    expect(committed.run?.sceneId).toBe('whistlePattern');
+    const crossed = take(committed, scenario, 'crossRavine', 0.999999);
+    expect(crossed.run?.sceneId).toBe('whistleFatal');
+    expect(crossed.run?.status).toBe('death');
+  });
+
+  it('keeps road-side observation available without entering the unstable ravine', () => {
+    const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
+    const observed = take(take(fresh(scenario), scenario, 'callAgain'), scenario, 'stopSignals');
+    expect(observed.run?.sceneId).toBe('whistleSafe');
+    expect(observed.run?.status).toBe('success');
+    expect(observed.run!.health).toBeGreaterThan(0);
   });
 
   it('varies creature truth, risk, and combat rather than making every hunt a kill', () => {
