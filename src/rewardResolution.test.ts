@@ -107,6 +107,22 @@ describe('authored ending reward placement', () => {
     expect(finished.bank).toEqual([reward]);
   });
 
+  it('does not offer or carry a reward already stored in the Bank, including on a legacy pending screen', () => {
+    let state = openRewardResolution(successfulRewardState(0, [reward]));
+    expect(newRewardItems(state)).toEqual([]);
+    expect(state.run?.rewardPendingItems).toEqual([]);
+    state = placeReward(state, reward, 'carry');
+    expect(getCarriedItems(state.character)).toEqual([]);
+    expect(state.bank).toEqual([reward]);
+
+    const legacy = successfulRewardState(0, [reward]);
+    legacy.run!.rewardPendingItems = [reward];
+    const restored = openRewardResolution(legacy);
+    expect(restored.run?.rewardPendingItems).toEqual([]);
+    expect(finishRewardResolution(restored).bank).toEqual([reward]);
+    expect(finishRewardResolution(restored).character?.carriedItems).toEqual([]);
+  });
+
   it('migrates an older successful reward screen safely and rejects non-carryable rewards', () => {
     const legacy = successfulRewardState();
     legacy.run!.rewardSelectionOpen = true;

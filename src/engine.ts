@@ -685,7 +685,8 @@ export function newRewardItems(state: SaveData): string[] {
   const run = state.run;
   if (!run || run.status !== 'success') return [];
   const alreadyCarried = new Set(getCarriedItems(state.character));
-  return [...new Set(run.acquiredThisRun)].filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id) && !alreadyCarried.has(id));
+  const alreadyBanked = new Set(state.bank);
+  return [...new Set(run.acquiredThisRun)].filter((id) => ITEMS[id]?.carryable && run.inventory.includes(id) && !alreadyCarried.has(id) && !alreadyBanked.has(id));
 }
 
 /** Opens or safely migrates an older successful run into the persisted per-item reward flow. */
@@ -693,7 +694,10 @@ export function openRewardResolution(state: SaveData): SaveData {
   const next = structuredClone(state);
   if (!next.run || next.run.status !== 'success') return next;
   next.run.rewardSelectionOpen = true;
-  next.run.rewardPendingItems ??= newRewardItems(next);
+  const pending = next.run.rewardPendingItems ?? newRewardItems(next);
+  const alreadyPersisted = new Set([...getCarriedItems(next.character), ...next.bank]);
+  next.run.rewardPendingItems = [...new Set(pending)].filter((id) =>
+    ITEMS[id]?.carryable && next.run!.inventory.includes(id) && !alreadyPersisted.has(id));
   return next;
 }
 
@@ -703,7 +707,7 @@ export function placeReward(state: SaveData, itemId: string, destination: Reward
   const run = next.run;
   if (!run || run.status !== 'success') return next;
   run.rewardPendingItems ??= newRewardItems(next);
-  if (!run.rewardPendingItems.includes(itemId) || !run.inventory.includes(itemId) || !ITEMS[itemId]?.carryable) return next;
+  if (!run.rewardPendingItems.includes(itemId) || !run.inventory.includes(itemId) || !ITEMS[itemId]?.carryable || next.bank.includes(itemId)) return next;
 
   if (destination === 'carry') {
     if (!next.character) return next;
