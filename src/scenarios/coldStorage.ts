@@ -10,6 +10,7 @@ const INSULATING_GEAR = ['waxedCanvasSheet', 'weatherproofCloak'];
 const rewardChoices = (ending: string): Choice[] => [
   { id: 'takeBlockAndTackle', label: 'Accept the co-op’s compact block-and-tackle', requirements: { notItems: ['compactBlockAndTackle'] }, effects: { gainItems: ['compactBlockAndTackle'], gainContacts: [IVEN_CONTACT] }, next: ending },
   { id: 'takeIcehouseTongs', label: 'Accept a pair of icehouse tongs', requirements: { notItems: ['icehouseTongs'] }, effects: { gainItems: ['icehouseTongs'], gainContacts: [IVEN_CONTACT] }, next: ending },
+  { id: 'repairPocketToolkit', label: 'Have the co-op repair your Pocket Toolkit', requirements: { items: ['pocketToolkit'], itemConditions: { pocketToolkit: ['DAMAGED', 'BROKEN'] } }, effects: { repairItems: ['pocketToolkit'], repairItemProvenance: { pocketToolkit: 'Repaired at the cooperative cold-store workshop' }, gainContacts: [IVEN_CONTACT] }, next: ending },
   { id: 'declineColdStorageReward', label: 'Thank the crew and leave without a tool', effects: { gainContacts: [IVEN_CONTACT] }, next: ending },
 ];
 

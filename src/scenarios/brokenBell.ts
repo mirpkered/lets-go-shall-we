@@ -195,6 +195,7 @@ export const BROKEN_BELL: Scenario = {
       choices: [
         { id: 'returnToChestAfterPriest', label: 'Use the chest before facing the keeper', requirements: { notItems: ['ironHandbell'] }, next: 'chestAfterPriest' },
         { id: 'goKeeperAfterPriest', label: 'Continue through the bronze door', requirements: { items: ['ironHandbell'] }, next: 'burialApproach' },
+        { id: 'takeThresholdSalt', label: 'Take one packet of the priest’s threshold salt', hint: 'A measured pinch from his chapel kit; it is not a weapon against the keeper.', requirements: { canAddSupplies: { consecratedSalt: 1 } }, effects: { gainSupplies: { consecratedSalt: 1 } }, next: 'burialApproach' },
         { id: 'leaveWithPriest', label: 'Help him out and leave the chapel', effects: { setFlags: ['escortedPriest'] }, next: 'retreatEnding' },
       ],
     },

@@ -133,6 +133,20 @@ describe('Cold Storage', () => {
     expect(withReward.run?.acquiredThisRun).toContain('compactBlockAndTackle');
   });
 
+  it('repairs only damaged or broken carried Pocket Toolkits and records the repair source', () => {
+    const state = fresh('pocketToolkit');
+    state.run!.sceneId = 'rescueDebrief';
+    state.itemStates = { pocketToolkit: { condition: 'BROKEN', upgrades: [], provenance: ['Earlier rail repair'] } };
+    const repair = COLD_STORAGE.scenes.rescueDebrief.choices.find(({ id }) => id === 'repairPocketToolkit')!;
+    expect(meets(repair.requirements, state)).toBe(true);
+    const repaired = choose(state, COLD_STORAGE, repair);
+    expect(repaired.itemStates?.pocketToolkit?.condition).toBe('NORMAL');
+    expect(repaired.itemStates?.pocketToolkit?.provenance).toContain('Repaired at the cooperative cold-store workshop');
+    const sound = fresh('pocketToolkit');
+    sound.run!.sceneId = 'rescueDebrief';
+    expect(meets(repair.requirements, sound)).toBe(false);
+  });
+
   it('uses an insulating carried item to preserve goods without revealing the stock early', () => {
     const start = fresh('waxedCanvasSheet');
     expect(COLD_STORAGE.scenes.loadingBay.text).not.toContain('medicine');

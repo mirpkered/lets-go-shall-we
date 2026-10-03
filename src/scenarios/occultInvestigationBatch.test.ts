@@ -6,6 +6,7 @@ import { classifyScenario } from '../scenarioDiversity';
 import type { SaveData, Scenario } from '../types';
 import { OCCULT_INVESTIGATION_ADVENTURES as adventures } from './occultInvestigationBatch';
 import { SCENARIOS } from './index';
+import { BROKEN_BELL } from './brokenBell';
 
 function fresh(scenario: Scenario, item?: string, supplies: Record<string, number> = {}): SaveData {
   const character = newCharacter('Occult Tester');
@@ -180,6 +181,20 @@ describe('occult investigation adventures', () => {
     full = act(full, scenario, 'descendTwoCellars');
     expect(full.run?.sceneId).toBe('cellarLanding');
     expect(meets(scenario.scenes.cellarLanding.choices.find((c) => c.id === 'nailArch')!.requirements, full)).toBe(true);
+  });
+
+  it('offers one optional Consecrated Salt from the injured priest without making it a universal answer', () => {
+    let state = fresh(BROKEN_BELL);
+    state.run!.sceneId = 'priestFarewell';
+    const offer = BROKEN_BELL.scenes.priestFarewell.choices.find(({ id }) => id === 'takeThresholdSalt')!;
+    expect(meets(offer.requirements, state)).toBe(true);
+    state = act(state, BROKEN_BELL, 'takeThresholdSalt');
+    expect(state.character?.supplies?.consecratedSalt).toBe(1);
+    expect(state.run?.sceneId).toBe('burialApproach');
+    expect(BROKEN_BELL.scenes.priestFarewell.text).toMatch(/keeper is not mine to command/i);
+    const full = fresh(BROKEN_BELL, undefined, { consecratedSalt: 3 });
+    full.run!.sceneId = 'priestFarewell';
+    expect(meets(offer.requirements, full)).toBe(false);
   });
 
   it('uses the existing Grave Token and Yew Charm for narrow discoveries, not universal protection', () => {

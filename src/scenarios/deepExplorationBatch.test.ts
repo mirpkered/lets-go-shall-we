@@ -155,4 +155,49 @@ describe('deep exploration anthology', () => {
     expect(mileMarker.scenes.clockShift.text).toMatch(/has not moved the doors/i);
     expect(mileMarker.scenes.serviceRooms.text).toMatch(/connect.*same way each time/i);
   });
+
+  it('creates optional Supply and Relic continuity without consuming either artifact', () => {
+    const orra = getScenario('beneath-saint-orras')!;
+    const character = newCharacter('Continuity Explorer');
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, orra, () => 0) };
+    const marks = choose(state, orra, orra.scenes.orraYard.choices.find(({ id }) => id === 'inspectMarks')!, () => 0);
+    const chalk = orra.scenes.orraNiches.choices.find(({ id }) => id === 'takeCaretakerChalk')!;
+    expect(meets(chalk.requirements, marks)).toBe(true);
+    const prepared = choose(marks, orra, chalk, () => 0);
+    expect(prepared.character?.supplies?.ritualChalk).toBe(1);
+    expect(prepared.run?.sceneId).toBe('orraLanding');
+
+    const harker = getScenario('deep-room-at-harker-mine')!;
+    const plainCharacter = newCharacter('Without the fragment');
+    const plain: SaveData = { ...structuredClone(EMPTY_SAVE), character: plainCharacter, run: startRun(plainCharacter, harker, () => 0) };
+    plain.run!.sceneId = 'harkerDoor';
+    const compare = harker.scenes.harkerDoor.choices.find(({ id }) => id === 'compareRodFragment')!;
+    expect(meets(compare.requirements, plain)).toBe(false);
+    const carriesFragment = newCharacter('With the fragment');
+    carriesFragment.carriedItem = 'ironOrchardRodFragment';
+    const equipped: SaveData = { ...structuredClone(EMPTY_SAVE), character: carriesFragment, run: startRun(carriesFragment, harker, () => 0) };
+    equipped.run!.sceneId = 'harkerDoor';
+    expect(meets(compare.requirements, equipped)).toBe(true);
+    const recognized = choose(equipped, harker, compare, () => 0);
+    expect(recognized.character?.knowledge).toContain('An Iron Orchard rod fragment answers the same low vibration as Harker’s old cage fittings; the resemblance does not identify what moved below either mine.');
+    expect(recognized.run?.inventory).toContain('ironOrchardRodFragment');
+  });
+
+  it('makes the Harker rescue wage and practical tool a real mutually exclusive settlement choice', () => {
+    const harker = getScenario('deep-room-at-harker-mine')!;
+    const character = newCharacter('Rescue Worker');
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, harker, () => 0) };
+    state.run!.sceneId = 'minerOutside';
+    const wage = harker.scenes.minerOutside.choices.find(({ id }) => id === 'leaveHarker')!;
+    const tool = harker.scenes.minerOutside.choices.find(({ id }) => id === 'takeMultiToolInstead')!;
+    expect(meets(wage.requirements, state)).toBe(true);
+    expect(meets(tool.requirements, state)).toBe(true);
+    const cashState = choose(state, harker, wage, () => 0);
+    expect(cashState.character?.money).toBe(5);
+    expect(cashState.character?.carriedItems).not.toContain('foremanMultiTool');
+    const toolState = choose(state, harker, tool, () => 0);
+    expect(toolState.character?.money).toBe(0);
+    expect(toolState.run?.inventory).toContain('foremanMultiTool');
+    expect(toolState.character?.historyFlags).toContain('accepted a mine tool instead of the Harker rescue wage');
+  });
 });

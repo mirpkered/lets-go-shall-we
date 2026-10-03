@@ -79,7 +79,7 @@ function emptyState(): SaveData {
   return { ...structuredClone(EMPTY_SAVE), character: newCharacter('Audit Traveler') };
 }
 
-function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
+function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
   const state = initial;
   const scenario = selectScenario(SCENARIOS, state.recentScenarioIds, random, {
     adventuresCompleted: state.character!.adventuresCompleted,
@@ -88,10 +88,14 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     scenarioPlayCounts: state.character!.scenarioPlayCounts,
     selectionMonth: month,
   });
-  if (!scenario) return { state, completed: false, died: false, banked: false, usedFavor: false, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
+  if (!scenario) return { state, completed: false, died: false, banked: false, usedFavor: false, gearUseIds: [], relicUseIds: [], knowledgeCallbacks: 0, contactCallbacks: 0, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
   const knowledgeBefore = state.character!.knowledgeKeys?.length ?? state.character!.knowledge.length;
   let current = startAdventure(state, scenario, random);
   let usedFavor = false;
+  const gearUseIds = new Set<string>();
+  const relicUseIds = new Set<string>();
+  let knowledgeCallbacks = 0;
+  let contactCallbacks = 0;
   let supplyGain = 0;
   let supplyUse = 0;
   const supplyGainById: Record<string, number> = {};
@@ -118,6 +122,18 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     const choice = weightedChoice(scene.choices, current, policy, random);
     if (!choice) break;
     if (choice.effects?.consumeFavors?.length) usedFavor = true;
+    const requirements = choice.requirements;
+    const requiredItemIds = [...new Set([
+      ...(requirements?.items ?? []), ...(requirements?.usableItems ?? []), ...(requirements?.anyItems ?? []),
+      ...(requirements?.anyUsableItems ?? []), ...(requirements?.gear ?? []), ...(requirements?.usableGear ?? []),
+      ...(requirements?.relics ?? []), ...Object.keys(requirements?.itemUpgrades ?? {}), ...Object.keys(requirements?.gearUpgrades ?? {}),
+    ])];
+    for (const id of requiredItemIds) if (current.run?.inventory.includes(id)) {
+      if (inventoryClass(id) === 'GEAR') gearUseIds.add(id);
+      if (inventoryClass(id) === 'RELIC') relicUseIds.add(id);
+    }
+    if (requirements?.knowledge?.some((fact) => current.character?.knowledge.includes(fact)) || requirements?.knowledgeKeys?.some((key) => current.character?.knowledgeKeys?.includes(key))) knowledgeCallbacks++;
+    if (requirements?.contacts?.some((id) => current.character?.contacts?.some((contact) => contact.id === id))) contactCallbacks++;
     const supplyBefore = structuredClone(current.character?.supplies ?? {});
     current = choose(current, scenario, choice, random);
     const supplyAfter = current.character?.supplies ?? {};
@@ -131,12 +147,12 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   }
   if (current.run?.status === 'death') {
     const dead = failCharacter(current);
-    return { state: dead, completed: false, died: true, banked: false, usedFavor, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
+    return { state: dead, completed: false, died: true, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
   }
   if (current.run?.status !== 'success') {
     // Stalled routes are modeled as an abandoned run; no reward is claimed.
     current.run = null;
-    return { state: current, completed: false, died: false, banked: false, usedFavor, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
+    return { state: current, completed: false, died: false, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
   }
   const routeDamage = current.run!.health < current.character!.maxHealth;
   current = openRewardResolution(current);
@@ -154,7 +170,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   }
   current = finishRewardResolution(current);
   current = depositRedundantItems(current);
-  return { state: current, completed: true, died: false, banked, usedFavor, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
+  return { state: current, completed: true, died: false, banked, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
 }
 
 interface Snapshot {
@@ -164,17 +180,21 @@ interface Snapshot {
   supplyUsers: number; suppliesTotal: number[]; knowledge: number[]; lore: number[]; contacts: number[]; favorsAvailable: number[]; favorsUsed: number; supplyGained: number; suppliesConsumed: number; supplyOpportunityCount: number; missedSupplyOpportunityCount: number;
   supplyGainedById: Record<string, number>; supplyUsedById: Record<string, number>; supplyOwnedById: Record<string, number>;
   supplyFirstOptionSeenById: Record<string, number>; supplyFirstOptionHadQtyById: Record<string, number>; supplyAcquirerTravellersById: Record<string, number>; supplyUserTravellersById: Record<string, number>; supplyUnusedAcquirerTravellersById: Record<string, number>;
-  money: number[]; injuries: number; assets: number; deaths: number; stalled: number; completions: number; rewardClaims: number; rewardDeclines: number; bankedRewards: number; capacityBlockedRewards: number; favorUses: number;
+  money: number[]; injuries: number; assets: number; deaths: number; stalled: number; completions: number; rewardClaims: number; rewardDeclines: number; bankedRewards: number; capacityBlockedRewards: number; favorUses: number; gearUseEvents: number; relicUseEvents: number; knowledgeCallbacks: number; contactCallbacks: number;
 }
 
 function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE): Snapshot[] {
-  const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0 }));
+  const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0 }));
   for (let traveler = 0; traveler < travelers; traveler++) {
     const random = rng((month * 1000003 + traveler * 7919 + POLICIES.indexOf(policy) * 104729) >>> 0);
     let state = emptyState();
     let completed = 0;
     let deathCount = 0;
     let favorUsed = 0;
+    let gearUseEvents = 0;
+    let relicUseEvents = 0;
+    let knowledgeCallbacks = 0;
+    let contactCallbacks = 0;
     let bankUsed = 0;
     let withdrawals = 0;
     let interactions = 0;
@@ -197,6 +217,10 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE): Snaps
       const result = completeOneAdventure(state, policy, month, random);
       state = result.state;
       favorUsed += Number(result.usedFavor);
+      gearUseEvents += result.gearUseIds.length;
+      relicUseEvents += result.relicUseIds.length;
+      knowledgeCallbacks += result.knowledgeCallbacks;
+      contactCallbacks += result.contactCallbacks;
       bankUsed += Number(result.banked);
       interactions += Number(result.banked);
       supplyGained += result.supplyGain;
@@ -249,6 +273,10 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE): Snaps
           row.favorsAvailable.push(char.favors?.filter((f) => f.status === 'available').length ?? 0);
           row.favorsUsed += favorUsed;
           row.favorUses += favorUsed;
+          row.gearUseEvents += gearUseEvents;
+          row.relicUseEvents += relicUseEvents;
+          row.knowledgeCallbacks += knowledgeCallbacks;
+          row.contactCallbacks += contactCallbacks;
           row.assets += char.ownedAssets?.length ?? 0;
           row.injuries += routeDamageEvents;
           row.bankWithdrawals += withdrawals;
@@ -340,7 +368,9 @@ describe('route-aware reward realization audit', () => {
       relicUsers: percent(row.relicUsers, row.reached), supplyUsers: percent(row.supplyUsers, row.reached), supplyGainUse: [row.supplyGained, row.suppliesConsumed], missedSupplyPct: percent(row.missedSupplyOpportunityCount, row.supplyOpportunityCount),
       moneyQ: [quantile(row.money, 0), quantile(row.money, .25), quantile(row.money, .5), quantile(row.money, .75), quantile(row.money, 1)],
       moneyZeroPct: percent(row.money.filter((amount) => amount === 0).length, row.reached), moneyOverFivePct: percent(row.money.filter((amount) => amount > 5).length, row.reached),
-      knowledgeMedian: quantile(row.knowledge, .5), loreMedian: quantile(row.lore, .5), contacts: percent(row.contacts.filter((n) => n > 0).length, row.reached), favors: percent(row.favorsAvailable.filter((n) => n > 0).length, row.reached), favorUseEvents: row.favorUses,
+      knowledgeMedian: quantile(row.knowledge, .5), loreMedian: quantile(row.lore, .5), contacts: percent(row.contacts.filter((n) => n > 0).length, row.reached), favors: percent(row.favorsAvailable.filter((n) => n > 0).length, row.reached),
+      selectedGearUsesPerTraveler: +(row.gearUseEvents / Math.max(1, row.reached)).toFixed(2), selectedRelicUsesPerTraveler: +(row.relicUseEvents / Math.max(1, row.reached)).toFixed(2),
+      knowledgeCallbacksPerTraveler: +(row.knowledgeCallbacks / Math.max(1, row.reached)).toFixed(2), contactCallbacksPerTraveler: +(row.contactCallbacks / Math.max(1, row.reached)).toFixed(2), favorUseEvents: row.favorUses,
     }));
     console.log('ROUTE_AWARE_REWARD_REALIZATION', JSON.stringify(summary));
     const at50 = reports.filter((row) => row.milestone === 50);
