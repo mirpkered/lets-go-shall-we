@@ -104,6 +104,26 @@ describe('occult investigation adventures', () => {
     expect(meets(scenario.scenes.chalkPattern.choices.find((c) => c.id === 'liftFloor')!.requirements, state)).toBe(true);
   });
 
+  it('offers the unused marked chalk only after Orin is recovered and the room is secured', () => {
+    const scenario = adventures.find((s) => s.id === 'red-chalk-circle')!;
+    let state = fresh(scenario);
+    state = act(state, scenario, 'studyChalk');
+    state = act(state, scenario, 'liftFloor');
+    state = act(state, scenario, 'pullOrinOut');
+    expect(state.run?.sceneId).toBe('chalkAfter');
+    const take = scenario.scenes.chalkAfter.choices.find((c) => c.id === 'takeRoomChalk')!;
+    expect(meets(take.requirements, state)).toBe(true);
+    state = roundTrip(act(state, scenario, 'takeRoomChalk'));
+    expect(state.character?.supplies?.ritualChalk).toBe(1);
+    expect(state.run?.status).toBe('success');
+    expect(state.character?.historyFlags).toContain('accepted_unused_chalk_from_boarded_room');
+
+    const full = fresh(scenario, undefined, { ritualChalk: 4 });
+    full.run!.sceneId = 'chalkAfter';
+    expect(meets(take.requirements, full)).toBe(false);
+    expect(act(full, scenario, 'leaveRoomChalk').run?.status).toBe('success');
+  });
+
   it('consumes one Ritual Chalk and preserves its changed quantity through a save snapshot', () => {
     const scenario = adventures.find((s) => s.id === 'red-chalk-circle')!;
     let state = fresh(scenario, undefined, { ritualChalk: 2 });
@@ -133,6 +153,42 @@ describe('occult investigation adventures', () => {
     full = act(full, scenario, 'declineChapelChalk');
     expect(full.run?.status).toBe('success');
     expect(full.character?.supplies?.ritualChalk).toBe(4);
+  });
+
+  it('offers one optional chapel-prepared Salt packet and respects its stack cap', () => {
+    const scenario = adventures.find((s) => s.id === 'the-red-chapel')!;
+    let state = fresh(scenario);
+    state.run!.sceneId = 'redChapelAfter';
+    const salt = scenario.scenes.redChapelAfter.choices.find((c) => c.id === 'acceptChapelSalt')!;
+    expect(meets(salt.requirements, state)).toBe(true);
+    state = act(state, scenario, 'acceptChapelSalt');
+    expect(state.character?.supplies?.consecratedSalt).toBe(1);
+    expect(state.run?.status).toBe('success');
+
+    const full = fresh(scenario, undefined, { consecratedSalt: 3 });
+    full.run!.sceneId = 'redChapelAfter';
+    expect(meets(salt.requirements, full)).toBe(false);
+    expect(act(full, scenario, 'declineChapelChalk').run?.status).toBe('success');
+  });
+
+  it('lets a fresh traveler take and then spend the housekeeper’s specific spare nail', () => {
+    const scenario = adventures.find((s) => s.id === 'thing-under-floorboards')!;
+    let state = fresh(scenario);
+    state = act(state, scenario, 'listenBoard');
+    expect(state.run?.sceneId).toBe('floorListening');
+    const acquire = scenario.scenes.floorListening.choices.find((c) => c.id === 'takeSpareNail')!;
+    expect(meets(acquire.requirements, state)).toBe(true);
+    state = act(state, scenario, 'takeSpareNail');
+    expect(state.character?.supplies?.coldIronNails).toBe(1);
+    state = roundTrip(state);
+    expect(state.run?.sceneId).toBe('floorUnder');
+    state = act(state, scenario, 'pinGapWithNail');
+    expect(state.character?.supplies?.coldIronNails).toBeUndefined();
+    expect(state.run?.supplyNotice).toContain('1 → 0');
+
+    const full = fresh(scenario, undefined, { coldIronNails: 6 });
+    full.run!.sceneId = 'floorListening';
+    expect(meets(acquire.requirements, full)).toBe(false);
   });
 
   it('offers scarce Salt on a year-round fresh-traveler route and consumes it only for the matching thread threat', () => {

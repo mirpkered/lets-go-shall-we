@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { SCENARIOS } from './index';
 import { COMMERCE_ADVENTURES, HALF_NOW, LAST_ROOM_HIGHER_PRICE, MARKET_DAY, PAYMENT_IN_KIND, SHORT_ON_THE_WAGES, SOMEBODY_ELSES_LAND, THE_BROKEN_CRATE, THE_HORSE_TRADE, THE_PAWNED_TOOL, WHO_OWNS_THE_MULE } from './commerceBatch';
@@ -149,6 +149,34 @@ describe('commerce, bargains, and property adventure batch', () => {
 
     const owner = act(start(MARKET_DAY, {}, 'travelRope', 4), MARKET_DAY, 'marketSquare', 'comparePrices');
     expect(MARKET_DAY.scenes.toolStall.choices.filter(({ requirements }) => meets(requirements, owner)).map(({ id }) => id)).not.toContain('buyTravelRope');
+  });
+
+  it('makes two useful existing trail tools available through a separate, optional market stall', () => {
+    const freshTraveler = act(start(MARKET_DAY, {}, undefined, 4), MARKET_DAY, 'marketSquare', 'comparePrices');
+    const tools = act(freshTraveler, MARKET_DAY, 'toolStall', 'browseTrailGoods');
+    expect(tools.run?.sceneId).toBe('trailOutfitter');
+
+    const markerBuyer = act(start(MARKET_DAY, {}, undefined, 2), MARKET_DAY, 'marketSquare', 'comparePrices');
+    const markerStall = act(markerBuyer, MARKET_DAY, 'toolStall', 'browseTrailGoods');
+    const marker = act(markerStall, MARKET_DAY, 'trailOutfitter', 'buyTrailMarker');
+    expect(marker.character?.money).toBe(0);
+    expect(marker.run?.inventory).toContain('foldingTrailMarker');
+    expect(marker.character?.historyFlags).toContain('bought_trail_marker_at_market');
+
+    const mirrorBuyer = act(start(MARKET_DAY, {}, undefined, 4), MARKET_DAY, 'marketSquare', 'comparePrices');
+    const mirrorStall = act(mirrorBuyer, MARKET_DAY, 'toolStall', 'browseTrailGoods');
+    const mirror = act(mirrorStall, MARKET_DAY, 'trailOutfitter', 'buySignalMirror');
+    expect(mirror.character?.money).toBe(0);
+    expect(mirror.run?.inventory).toContain('roadsideSignalMirror');
+    const raw = { value: '' };
+    saveGame(mirror, { setItem: (_key, value) => { raw.value = value; } });
+    const resumed = loadSave({ getItem: () => raw.value });
+    expect(resumed.run?.inventory).toContain('roadsideSignalMirror');
+    expect(resumed.character?.money).toBe(0);
+
+    const alreadyOwns = start(MARKET_DAY, {}, 'foldingTrailMarker', 4);
+    alreadyOwns.run!.sceneId = 'trailOutfitter';
+    expect(meets(MARKET_DAY.scenes.trailOutfitter.choices.find(({ id }) => id === 'buyTrailMarker')!.requirements, alreadyOwns)).toBe(false);
   });
 
   it('makes the horse opinion limited to visible condition and tack', () => {

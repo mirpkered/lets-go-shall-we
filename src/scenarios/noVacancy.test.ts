@@ -92,20 +92,43 @@ describe('No Vacancy', () => {
     expect(sceneText(NO_VACANCY.scenes.costlySuccessEnding, state)).toContain('Only after the storm do you learn he was a volunteer, not a marshal');
   });
 
-  it('lets money buy one of two explicitly named carryable rewards, but never blocks a broke route', () => {
+  it('lets money buy optional carryable rewards, but never blocks a broke route', () => {
     let state = pick(fresh(), 'earnSupplyMoney');
     expect(state.run?.sceneId).toBe('supplyPayment');
     expect(state.character?.money).toBe(3);
+    state = pick(state, 'browseGoods');
     state = pick(state, 'buyCanvas');
     expect(state.character?.money).toBe(1);
     expect(state.run?.inventory).toContain('waxedCanvasSheet');
     expect(state.run?.acquiredThisRun).toContain('waxedCanvasSheet');
     expect(ITEMS.waxedCanvasSheet.carryable).toBe(true);
     expect(ITEMS.compactStoveTool.carryable).toBe(true);
-    const choices = NO_VACANCY.scenes.supplyPayment.choices;
+    const choices = NO_VACANCY.scenes.innGoods.choices;
     expect(choices.find((choice) => choice.id === 'buyCanvas')?.effects?.gainItems).toEqual(['waxedCanvasSheet']);
     expect(choices.find((choice) => choice.id === 'buyStoveTool')?.effects?.gainItems).toEqual(['compactStoveTool']);
+    expect(choices.find((choice) => choice.id === 'buyMatchCase')?.effects?.gainItems).toEqual(['windproofMatchCase']);
     expect(meets(choices.find((choice) => choice.id === 'buyStoveTool')?.requirements, fresh())).toBe(false);
+    expect(meets(NO_VACANCY.scenes.supplyPayment.choices.find((choice) => choice.id === 'browseGoods')?.requirements, fresh())).toBe(true);
+  });
+
+  it('offers the existing Windproof Match Case as a modest, optional purchase after work', () => {
+    let state = pick(fresh(), 'earnSupplyMoney');
+    state = pick(state, 'browseGoods');
+    expect(state.run?.sceneId).toBe('innGoods');
+    const purchase = NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyMatchCase')!;
+    expect(meets(purchase.requirements, state)).toBe(true);
+    state = pick(state, 'buyMatchCase');
+    expect(state.character?.money).toBe(1);
+    expect(state.run?.inventory).toContain('windproofMatchCase');
+    expect(state.character?.historyFlags).toContain('bought_windproof_match_case_at_lantern_house');
+    expect(state.run?.sceneId).toBe('shelterAllocation');
+
+    let broke = fresh();
+    broke.run!.sceneId = 'innGoods';
+    expect(meets(purchase.requirements, broke)).toBe(false);
+    const owner = fresh('windproofMatchCase', 3);
+    owner.run!.sceneId = 'innGoods';
+    expect(meets(purchase.requirements, owner)).toBe(false);
   });
 
   it('uses carried tools to make the structural repair faster and more reliable', () => {
@@ -175,8 +198,8 @@ describe('No Vacancy', () => {
     const claimTextBeforeDiscovery = NO_VACANCY.scenes.innArrival.text + NO_VACANCY.scenes.guestAccounts.text + NO_VACANCY.scenes.keeperAccount.text;
     expect(claimTextBeforeDiscovery).not.toContain('schoolteacher');
     expect(claimTextBeforeDiscovery).not.toContain('not a county marshal');
-    expect(NO_VACANCY.scenes.supplyPayment.choices.find((choice) => choice.id === 'buyCanvas')?.label).toContain('Buy a waxed canvas sheet');
-    expect(NO_VACANCY.scenes.supplyPayment.choices.find((choice) => choice.id === 'buyCanvas')?.requirements?.notItems).toContain('waxedCanvasSheet');
+    expect(NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyCanvas')?.label).toContain('Buy a waxed canvas sheet');
+    expect(NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyCanvas')?.requirements?.notItems).toContain('waxedCanvasSheet');
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.effects?.gainItems).toEqual(['reserveBlanket']);
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.requirements?.notItems).toContain('reserveBlanket');
     expect(NO_VACANCY.scenes.shelterAllocation.choices.find((choice) => choice.id === 'roomForVale')?.label).not.toContain('volunteer');

@@ -127,6 +127,24 @@ describe('grounded consequence scenario batch', () => {
     expect(state.run?.flags).toContain('ate_suspect_food');
   });
 
+  it('offers the replaced drainage hook only after the debris-specific cleanup route', () => {
+    let state = start(POISON_THE_WELL, { source: 'wellDebris', setting: 'farm', host: 'Gilda' });
+    state = act(state, POISON_THE_WELL, 'arrival', 'inspectWell');
+    state = act(state, POISON_THE_WELL, 'wellInspection', 'askTimelineFromWell');
+    state = act(state, POISON_THE_WELL, 'reportsCollected', 'reportDebrisCause');
+    expect(state.run?.sceneId).toBe('debrisAftercare');
+    const offer = POISON_THE_WELL.scenes.debrisAftercare.choices.find(({ id }) => id === 'acceptOldDrainageHook')!;
+    expect(meets(offer.requirements, state)).toBe(true);
+    state = act(state, POISON_THE_WELL, 'debrisAftercare', 'acceptOldDrainageHook');
+    expect(state.run?.inventory).toContain('drainageHook');
+    expect(state.character?.historyFlags).toContain('received_old_drainage_hook_after_well_cleanup');
+    expect(state.run?.status).toBe('success');
+
+    const owner = start(POISON_THE_WELL, { source: 'wellDebris' }, 'drainageHook');
+    owner.run!.sceneId = 'debrisAftercare';
+    expect(POISON_THE_WELL.scenes.debrisAftercare.choices.filter(({ id }) => id === 'acceptOldDrainageHook').some(({ requirements }) => meets(requirements, owner))).toBe(false);
+  });
+
   it('uses accessible carryable tools for inspection without requiring equipment', () => {
     const withRope = start(POISON_THE_WELL, { source: 'wellDebris' }, 'travelRope');
     const wellActions = POISON_THE_WELL.scenes.wellInspection.choices.filter((choice) => meets(choice.requirements, withRope));

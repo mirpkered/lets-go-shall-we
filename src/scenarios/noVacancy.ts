@@ -77,12 +77,21 @@ export const NO_VACANCY: Scenario = {
     },
     supplyPayment: {
       id: 'supplyPayment', title: 'Three Coins for a Hand',
-      text: 'You help stack the last dry crates above the flood line. Ada counts three coins into your palm for the work. She also offers two practical items from the supply chest, each for the cost of the materials. Whatever you choose, time and space are still short.',
+      text: 'You help stack the last dry crates above the flood line. Ada counts three coins into your palm for the work. She can show you a few practical travel goods from the supply chest, but time and space are still short.',
+      choices: [
+        { id: 'browseGoods', label: 'See the practical goods she can spare', next: 'innGoods' },
+        { id: 'keepCoins', label: 'Keep the coins for whatever comes next', next: 'shelterAllocation' },
+        { id: 'leaveWithPay', label: 'Take your pay and leave', effects: { historyFlags: ['abandoned_overcrowded_inn'] }, next: 'walkAwayEnding' },
+      ],
+    },
+    innGoods: {
+      id: 'innGoods', title: 'A Few Dry Goods', tone: 'safe',
+      text: 'Ada shows a waxed cover sheet, a compact stove tool, and a brass windproof match case from the travel chest. She asks only the material cost; the inn is not a general store, and you may leave all three behind.',
       choices: [
         { id: 'buyCanvas', label: 'Buy a waxed canvas sheet — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['waxedCanvasSheet'] }, effects: { money: -2, gainItems: ['waxedCanvasSheet'] }, next: 'shelterAllocation' },
         { id: 'buyStoveTool', label: 'Buy a compact stove tool — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['compactStoveTool'] }, effects: { money: -3, gainItems: ['compactStoveTool'] }, next: 'shelterAllocation' },
-        { id: 'keepCoins', label: 'Keep the coins for whatever comes next', next: 'shelterAllocation' },
-        { id: 'leaveWithPay', label: 'Take your pay and leave', effects: { historyFlags: ['abandoned_overcrowded_inn'] }, next: 'walkAwayEnding' },
+        { id: 'buyMatchCase', label: 'Buy a windproof match case — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['windproofMatchCase'] }, effects: { money: -2, gainItems: ['windproofMatchCase'], historyFlags: ['bought_windproof_match_case_at_lantern_house'] }, next: 'shelterAllocation' },
+        { id: 'leaveGoods', label: 'Leave the goods and keep your coins', next: 'shelterAllocation' },
       ],
     },
     shelterAllocation: {
