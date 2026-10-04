@@ -34,6 +34,23 @@ function funnelRow(ledger: FunnelLedger, policy: Policy, month: number, itemId: 
   return ledger[key] ??= { scenarioSelected: 0, offerVisible: 0, qualified: 0, chosen: 0, resolverGranted: 0, carried: 0, banked: 0, retained: 0, declined: 0, alreadyOwned: 0, lostBeforeEnding: 0, diedBeforeClaim: 0 };
 }
 
+function actuallyUsedPersistentItems(choice: Choice, state: SaveData): string[] {
+  const requirements = choice.requirements;
+  if (!requirements) return [];
+  const inventory = state.run?.inventory ?? [];
+  const mandatory = [
+    ...(requirements.items ?? []), ...(requirements.usableItems ?? []), ...(requirements.gear ?? []), ...(requirements.usableGear ?? []),
+    ...(requirements.relics ?? []), ...Object.keys(requirements.itemUpgrades ?? {}), ...Object.keys(requirements.gearUpgrades ?? {}),
+  ];
+  const alternatives = [
+    ...(requirements.anyItems ?? []), ...(requirements.anyUsableItems ?? []),
+  ];
+  const used = new Set(mandatory.filter((id) => inventory.includes(id)));
+  const actualAlternative = alternatives.find((id) => inventory.includes(id));
+  if (actualAlternative) used.add(actualAlternative);
+  return [...used].filter((id) => ['GEAR', 'RELIC'].includes(inventoryClass(id)) && ITEMS[id]?.carryable);
+}
+
 function rng(seed: number): () => number {
   let value = seed >>> 0;
   return () => { value += 0x6D2B79F5; let n = value; n = Math.imul(n ^ (n >>> 15), n | 1); n ^= n + Math.imul(n ^ (n >>> 7), n | 61); return ((n ^ (n >>> 14)) >>> 0) / 4294967296; };
@@ -111,7 +128,7 @@ function emptyState(): SaveData {
   return { ...structuredClone(EMPTY_SAVE), character: newCharacter('Audit Traveler') };
 }
 
-function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; acquiredGearIds: string[]; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
+function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; supplyOpportunitiesById: Record<string, number>; acquiredGearIds: string[]; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
   const state = initial;
   const scenario = selectScenario(SCENARIOS, state.recentScenarioIds, random, {
     adventuresCompleted: state.character!.adventuresCompleted,
@@ -120,7 +137,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     scenarioPlayCounts: state.character!.scenarioPlayCounts,
     selectionMonth: month,
   });
-  if (!scenario) return { state, completed: false, died: false, banked: false, usedFavor: false, gearUseIds: [], relicUseIds: [], knowledgeCallbacks: 0, contactCallbacks: 0, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, acquiredGearIds: [], firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
+  if (!scenario) return { state, completed: false, died: false, banked: false, usedFavor: false, gearUseIds: [], relicUseIds: [], knowledgeCallbacks: 0, contactCallbacks: 0, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, supplyOpportunitiesById: {}, acquiredGearIds: [], firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
   const scenarioRewardIds = new Set(Object.values(scenario.scenes).flatMap((scene) => scene.choices.flatMap(choiceRewardIds)).flatMap((id) => id));
   for (const id of scenarioRewardIds) funnelRow(funnel, policy, month, id).scenarioSelected++;
   const knowledgeBefore = state.character!.knowledgeKeys?.length ?? state.character!.knowledge.length;
@@ -135,6 +152,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   const acquiredGearIds = new Set<string>();
   const supplyGainById: Record<string, number> = {};
   const supplyUseById: Record<string, number> = {};
+  const supplyOpportunitiesById: Record<string, number> = {};
   const firstSupplyOption: Record<string, boolean> = {};
   let supplyOpportunities = 0;
   let missedSupplyOpportunities = 0;
@@ -155,7 +173,10 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
       if (meets(withoutSupply, current)) {
         supplyOpportunities++;
         const supplyEntries = Object.entries(choice.requirements.supplies);
-        for (const [id, quantity] of supplyEntries) if (!(id in firstSupplyOption)) firstSupplyOption[id] = (current.character?.supplies?.[id] ?? 0) >= quantity;
+        for (const [id, quantity] of supplyEntries) {
+          supplyOpportunitiesById[id] = (supplyOpportunitiesById[id] ?? 0) + 1;
+          if (!(id in firstSupplyOption)) firstSupplyOption[id] = (current.character?.supplies?.[id] ?? 0) >= quantity;
+        }
         if (!meets(choice.requirements, current)) missedSupplyOpportunities++;
       }
     }
@@ -165,12 +186,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     for (const id of selectedRewardIds) funnelRow(funnel, policy, month, id).chosen++;
     if (choice.effects?.consumeFavors?.length) usedFavor = true;
     const requirements = choice.requirements;
-    const requiredItemIds = [...new Set([
-      ...(requirements?.items ?? []), ...(requirements?.usableItems ?? []), ...(requirements?.anyItems ?? []),
-      ...(requirements?.anyUsableItems ?? []), ...(requirements?.gear ?? []), ...(requirements?.usableGear ?? []),
-      ...(requirements?.relics ?? []), ...Object.keys(requirements?.itemUpgrades ?? {}), ...Object.keys(requirements?.gearUpgrades ?? {}),
-    ])];
-    for (const id of requiredItemIds) if (current.run?.inventory.includes(id)) {
+    for (const id of actuallyUsedPersistentItems(choice, current)) {
       if (inventoryClass(id) === 'GEAR') gearUseIds.add(id);
       if (inventoryClass(id) === 'RELIC') relicUseIds.add(id);
     }
@@ -201,12 +217,12 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   if (current.run?.status === 'death') {
     for (const id of acquiredGearIds) funnelRow(funnel, policy, month, id).diedBeforeClaim++;
     const dead = failCharacter(current);
-    return { state: dead, completed: false, died: true, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
+    return { state: dead, completed: false, died: true, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
   }
   if (current.run?.status !== 'success') {
     // Stalled routes are modeled as an abandoned run; no reward is claimed.
     current.run = null;
-    return { state: current, completed: false, died: false, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
+    return { state: current, completed: false, died: false, banked: false, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
   }
   const routeDamage = current.run!.health < current.character!.maxHealth;
   const alreadyPersisted = new Set([...getCarriedItems(current.character), ...current.bank]);
@@ -238,7 +254,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   }
   current = finishRewardResolution(current);
   current = depositRedundantItems(current);
-  return { state: current, completed: true, died: false, banked, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
+  return { state: current, completed: true, died: false, banked, usedFavor, gearUseIds: [...gearUseIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
 }
 
 interface Snapshot {
@@ -250,6 +266,8 @@ interface Snapshot {
   supplyFirstOptionSeenById: Record<string, number>; supplyFirstOptionHadQtyById: Record<string, number>; supplyAcquirerTravellersById: Record<string, number>; supplyUserTravellersById: Record<string, number>; supplyUnusedAcquirerTravellersById: Record<string, number>;
   money: number[]; injuries: number; assets: number; deaths: number; stalled: number; completions: number; rewardClaims: number; rewardDeclines: number; bankedRewards: number; capacityBlockedRewards: number; favorUses: number; gearUseEvents: number; relicUseEvents: number; knowledgeCallbacks: number; contactCallbacks: number;
   everGrantedGearTravelers: number; everOwnedGearTravelers: number; distinctGearEverGranted: number[]; distinctGearEverOwned: number[]; gearGrantEvents: number; gearOwnedEvents: number; firstGearGrantAdventure: number[]; firstGearOwnedAdventure: number[];
+  gearHolderTravelersById: Record<string, number>; gearLaterUseTravelersById: Record<string, number>; gearSameAdventureUseTravelersById: Record<string, number>; gearLaterUseDelayById: Record<string, number[]>;
+  supplyOpportunityAfterAcquisitionTravelersById: Record<string, number>; supplyLaterUseTravelersById: Record<string, number>; supplySameAdventureUseTravelersById: Record<string, number>; supplyLaterUseDelayById: Record<string, number[]>;
   everSupplyTravelersById: Record<string, number>; firstSupplyAdventureById: Record<string, number[]>; deathsAfterGearGrant: number; deathsAfterGearOwnership: number; carriedGearLostToDeath: number; unclaimedGearLostToDeath: number; bankedGearPreservedAtDeath: number; suppliesLostToDeath: number;
 }
 
@@ -258,7 +276,7 @@ function persistentGearIds(state: SaveData): Set<string> {
 }
 
 function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}): Snapshot[] {
-  const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
+  const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], gearHolderTravelersById: {}, gearLaterUseTravelersById: {}, gearSameAdventureUseTravelersById: {}, gearLaterUseDelayById: {}, supplyOpportunityAfterAcquisitionTravelersById: {}, supplyLaterUseTravelersById: {}, supplySameAdventureUseTravelersById: {}, supplyLaterUseDelayById: {}, everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
   for (let traveler = 0; traveler < travelers; traveler++) {
     const random = rng((month * 1000003 + traveler * 7919 + POLICIES.indexOf(policy) * 104729) >>> 0);
     let state = emptyState();
@@ -283,6 +301,15 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
     const everOwnedGearIds = new Set<string>();
     const everSupplyIds = new Set<string>();
     const firstSupplyAdventureById: Record<string, number> = {};
+    const firstGearOwnedAdventureById: Record<string, number> = {};
+    const firstSupplyOwnedAdventureById: Record<string, number> = {};
+    const gearLaterUseIds = new Set<string>();
+    const gearSameAdventureUseIds = new Set<string>();
+    const supplyOpportunityAfterAcquisitionIds = new Set<string>();
+    const supplyLaterUseIds = new Set<string>();
+    const supplySameAdventureUseIds = new Set<string>();
+    const gearLaterUseDelayById: Record<string, number> = {};
+    const supplyLaterUseDelayById: Record<string, number> = {};
     let firstGearGrantAt: number | undefined;
     let firstGearOwnedAt: number | undefined;
     let gearGrantEvents = 0;
@@ -305,9 +332,24 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
       const ownedBeforeRun = persistentGearIds(state);
       const carriedBeforeRun = new Set(getCarriedItems(state.character).filter((id) => inventoryClass(id) === 'GEAR' && ITEMS[id]?.carryable));
       const suppliesBeforeRun = structuredClone(state.character?.supplies ?? {});
+      const gearOwnedBeforeRun = new Set(everOwnedGearIds);
+      const suppliesHeldBeforeRun = new Set(Object.entries(suppliesBeforeRun).filter(([, quantity]) => quantity > 0).map(([id]) => id));
       const result = completeOneAdventure(state, policy, month, random, funnel);
       state = result.state;
       const adventureNumber = completed + 1;
+      for (const id of result.gearUseIds) {
+        if (gearOwnedBeforeRun.has(id)) {
+          gearLaterUseIds.add(id);
+          gearLaterUseDelayById[id] ??= adventureNumber - (firstGearOwnedAdventureById[id] ?? adventureNumber);
+        } else gearSameAdventureUseIds.add(id);
+      }
+      for (const id of suppliesHeldBeforeRun) if ((result.supplyOpportunitiesById[id] ?? 0) > 0) supplyOpportunityAfterAcquisitionIds.add(id);
+      for (const [id, quantity] of Object.entries(result.supplyUseById)) if (quantity > 0) {
+        if (suppliesHeldBeforeRun.has(id)) {
+          supplyLaterUseIds.add(id);
+          supplyLaterUseDelayById[id] ??= adventureNumber - (firstSupplyOwnedAdventureById[id] ?? adventureNumber);
+        } else supplySameAdventureUseIds.add(id);
+      }
       for (const id of result.acquiredGearIds) {
         everGrantedGearIds.add(id);
         gearGrantEvents++;
@@ -316,6 +358,7 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
       for (const [id, quantity] of Object.entries(result.supplyGainById)) if (quantity > 0) {
         everSupplyIds.add(id);
         firstSupplyAdventureById[id] ??= adventureNumber;
+        firstSupplyOwnedAdventureById[id] ??= adventureNumber;
       }
       if (result.died) {
         deathsAfterGearGrant += Number(everGrantedGearIds.size > 0);
@@ -328,7 +371,7 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
         const ownedAfterRun = persistentGearIds(state);
         const newOwned = [...ownedAfterRun].filter((id) => !ownedBeforeRun.has(id));
         gearOwnedEvents += newOwned.length;
-        for (const id of newOwned) everOwnedGearIds.add(id);
+        for (const id of newOwned) { everOwnedGearIds.add(id); firstGearOwnedAdventureById[id] ??= adventureNumber; }
         if (newOwned.length) firstGearOwnedAt ??= state.character?.adventuresCompleted ?? adventureNumber;
       }
       favorUsed += Number(result.usedFavor);
@@ -377,6 +420,18 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
           if (firstGearOwnedAt !== undefined) row.firstGearOwnedAdventure.push(firstGearOwnedAt);
           for (const id of everSupplyIds) row.everSupplyTravelersById[id] = (row.everSupplyTravelersById[id] ?? 0) + 1;
           for (const [id, at] of Object.entries(firstSupplyAdventureById)) (row.firstSupplyAdventureById[id] ??= []).push(at);
+          for (const id of FUNNEL_GEAR_IDS) {
+            if (everOwnedGearIds.has(id)) row.gearHolderTravelersById[id] = (row.gearHolderTravelersById[id] ?? 0) + 1;
+            if (gearLaterUseIds.has(id)) row.gearLaterUseTravelersById[id] = (row.gearLaterUseTravelersById[id] ?? 0) + 1;
+            if (gearSameAdventureUseIds.has(id)) row.gearSameAdventureUseTravelersById[id] = (row.gearSameAdventureUseTravelersById[id] ?? 0) + 1;
+            if (gearLaterUseDelayById[id] !== undefined) (row.gearLaterUseDelayById[id] ??= []).push(gearLaterUseDelayById[id]);
+          }
+          for (const id of FUNNEL_SUPPLY_IDS) {
+            if (everSupplyIds.has(id) && supplyOpportunityAfterAcquisitionIds.has(id)) row.supplyOpportunityAfterAcquisitionTravelersById[id] = (row.supplyOpportunityAfterAcquisitionTravelersById[id] ?? 0) + 1;
+            if (supplyLaterUseIds.has(id)) row.supplyLaterUseTravelersById[id] = (row.supplyLaterUseTravelersById[id] ?? 0) + 1;
+            if (supplySameAdventureUseIds.has(id)) row.supplySameAdventureUseTravelersById[id] = (row.supplySameAdventureUseTravelersById[id] ?? 0) + 1;
+            if (supplyLaterUseDelayById[id] !== undefined) (row.supplyLaterUseDelayById[id] ??= []).push(supplyLaterUseDelayById[id]);
+          }
           row.gear0 += Number(gearOwned === 0);
           row.gear1plus += Number(gearOwned >= 1);
           row.gear2plus += Number(gearOwned >= 2);
@@ -546,6 +601,23 @@ describe('route-aware reward realization audit', () => {
     console.log('ACQUISITION_FUNNEL_PRIORITY_ITEMS', JSON.stringify(['travelRope','pocketToolkit','heavyLeatherGloves','foremanMultiTool','brassCandlestick','foldingTrailMarker','roadsideSignalMirror','collapsibleSoundingRod','windproofMatchCase','fieldBandageRoll','ritualChalk','consecratedSalt','coldIronNails'].map((id) => ({ id, continuityJuly: funnelRow(funnel, 'continuity-seeking', 7, id), continuityOctober: funnelRow(funnel, 'continuity-seeking', 10, id) }))));
     const at50 = reports.filter((row) => row.milestone === 50);
     const at50Reached = at50.reduce((sum, row) => sum + row.reached, 0);
+    console.log('HOLDER_UTILITY_AT_50', JSON.stringify({
+      gear: ['travelRope','pocketToolkit','heavyLeatherGloves','foremanMultiTool','brassCandlestick','roadsideSignalMirror','foldingTrailMarker','collapsibleSoundingRod','windproofMatchCase','fieldBandageRoll'].map((id) => {
+        const holders = at50.reduce((sum, row) => sum + (row.gearHolderTravelersById[id] ?? 0), 0);
+        const laterUsers = at50.reduce((sum, row) => sum + (row.gearLaterUseTravelersById[id] ?? 0), 0);
+        const sameAdventureUsers = at50.reduce((sum, row) => sum + (row.gearSameAdventureUseTravelersById[id] ?? 0), 0);
+        const delays = at50.flatMap((row) => row.gearLaterUseDelayById[id] ?? []);
+        return { id, holders, laterUsers, laterUsePct: percent(laterUsers, holders), sameAdventureUsers, medianAdventuresToLaterUse: quantile(delays, .5) };
+      }),
+      supplies: FUNNEL_SUPPLY_IDS.map((id) => {
+        const holders = at50.reduce((sum, row) => sum + (row.supplyAcquirerTravellersById[id] ?? 0), 0);
+        const laterOpportunities = at50.reduce((sum, row) => sum + (row.supplyOpportunityAfterAcquisitionTravelersById[id] ?? 0), 0);
+        const laterUsers = at50.reduce((sum, row) => sum + (row.supplyLaterUseTravelersById[id] ?? 0), 0);
+        const sameAdventureUsers = at50.reduce((sum, row) => sum + (row.supplySameAdventureUseTravelersById[id] ?? 0), 0);
+        const delays = at50.flatMap((row) => row.supplyLaterUseDelayById[id] ?? []);
+        return { id, holders, laterOpportunities, opportunityAfterAcquisitionPct: percent(laterOpportunities, holders), laterUsers, laterUsePct: percent(laterUsers, holders), sameAdventureUsers, medianAdventuresToLaterUse: quantile(delays, .5) };
+      }),
+    }));
     console.log('SUPPLY_LIFECYCLE_AT_50', JSON.stringify(Object.keys(ITEMS).filter((id) => inventoryClass(id) === 'SUPPLY').map((id) => {
       const sum = (field: keyof Pick<Snapshot, 'supplyGainedById' | 'supplyUsedById' | 'supplyOwnedById' | 'supplyFirstOptionSeenById' | 'supplyFirstOptionHadQtyById' | 'supplyAcquirerTravellersById' | 'supplyUserTravellersById' | 'supplyUnusedAcquirerTravellersById'>) => at50.reduce((n, row) => n + (row[field][id] ?? 0), 0);
       return { id, reached: at50Reached, acquiredPct: percent(sum('supplyAcquirerTravellersById'), at50Reached), usedPct: percent(sum('supplyUserTravellersById'), at50Reached), acquiredButUnusedPct: percent(sum('supplyUnusedAcquirerTravellersById'), sum('supplyAcquirerTravellersById')), quantityAcquiredPerTraveler: +(sum('supplyGainedById') / Math.max(1, at50Reached)).toFixed(3), quantityConsumedPerTraveler: +(sum('supplyUsedById') / Math.max(1, at50Reached)).toFixed(3), retainedPerTraveler: +(sum('supplyOwnedById') / Math.max(1, at50Reached)).toFixed(3), firstOptionAvailabilityPct: percent(sum('supplyFirstOptionHadQtyById'), sum('supplyFirstOptionSeenById')), firstOptionSeenTravelers: sum('supplyFirstOptionSeenById') };

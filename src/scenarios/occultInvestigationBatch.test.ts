@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, itemState, meets, newCharacter, startRun } from '../engine';
+import { choose, itemState, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { classifyScenario } from '../scenarioDiversity';
@@ -153,6 +153,38 @@ describe('occult investigation adventures', () => {
     full = act(full, scenario, 'declineChapelChalk');
     expect(full.run?.status).toBe('success');
     expect(full.character?.supplies?.ritualChalk).toBe(4);
+  });
+
+  it.each([
+    ['ritualChalk', 'breakCircleInsideWithChalk', 'chalkBrokeChapelLine', 'chalk'],
+    ['consecratedSalt', 'interruptInsideWithSalt', 'saltBrokeChapelLine', 'Salt'],
+  ])('makes %s usable after a direct chapel entry without watching from the ridge', (supply, choiceId, flag, resultText) => {
+    const scenario = adventures.find((s) => s.id === 'the-red-chapel')!;
+    let state = fresh(scenario, undefined, { [supply]: 1 });
+    state = act(state, scenario, 'enterChapel');
+    expect(state.run?.sceneId).toBe('redChapelInside');
+    const choice = scenario.scenes.redChapelInside.choices.find(({ id }) => id === choiceId)!;
+    expect(choice.label).toMatch(/Ritual Chalk|Consecrated Salt/);
+    expect(meets(choice.requirements, state)).toBe(true);
+    state = act(state, scenario, choiceId);
+    expect(state.run?.sceneId).toBe('redChapelAfter');
+    expect(state.run?.flags).toContain(flag);
+    expect(state.character?.supplies?.[supply]).toBeUndefined();
+    expect(sceneText(scenario.scenes.redChapelAfter, state)).toContain(resultText);
+  });
+
+  it('lets a traveler test the impossible passage with Chalk from either approach', () => {
+    const scenario = adventures.find((s) => s.id === 'doorway-with-no-room')!;
+    const without = fresh(scenario);
+    expect(meets(scenario.scenes.doorInside.choices.find(({ id }) => id === 'markFarDoor')!.requirements, without)).toBe(false);
+    let state = fresh(scenario, undefined, { ritualChalk: 1 });
+    state = act(state, scenario, 'enterPassage');
+    expect(state.run?.sceneId).toBe('doorInside');
+    state = act(state, scenario, 'markFarDoor');
+    expect(state.run?.status).toBe('success');
+    expect(state.character?.supplies?.ritualChalk).toBeUndefined();
+    expect(state.character?.knowledge).toContain('In the passage behind the plaster, the same chalk stroke appeared at both ends of a corridor longer than the house. The repeated mark confirms the space cannot be measured as an ordinary room.');
+    expect(sceneText(scenario.scenes.doorAfter, state)).toContain('The chalk stroke you made at the far door appeared beside the first mark too');
   });
 
   it('offers one optional chapel-prepared Salt packet and respects its stack cap', () => {
