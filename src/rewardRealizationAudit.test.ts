@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { EMPTY_SAVE } from './storage';
-import { newCharacter, startAdventure, choose, meets, openRewardResolution, newRewardItems, placeReward, finishRewardResolution, failCharacter, depositCarried, withdrawBanked, getCarriedItems, getCarriedGearItems } from './engine';
+import { newCharacter, startAdventure, choose, meets, openRewardResolution, newRewardItems, placeReward, finishRewardResolution, failCharacter, depositCarried, withdrawBanked, getCarriedItems, getCarriedGearItems, itemCondition } from './engine';
 import { inventoryClass, ITEMS } from './items';
 import { SCENARIOS } from './scenarios';
 import { primaryScenarioCategory, selectScenario } from './scenarioSelection';
@@ -86,7 +86,7 @@ function choiceScore(choice: Choice, state: SaveData, policy: Policy): number {
       + (effects?.gainItems ?? []).filter((id) => inventoryClass(id) === 'SUPPLY').length;
     const valuedReward = effects?.repairItems?.length || effects?.addItemUpgrades?.length ? 1 : 0;
     const price = Math.max(0, -(effects?.money ?? 0));
-    const relevantGearUse = [...(choice.requirements?.items ?? []), ...(choice.requirements?.usableItems ?? []), ...(choice.requirements?.gear ?? []), ...(choice.requirements?.usableGear ?? [])].some((id) => inventoryClass(id) === 'GEAR');
+    const relevantGearUse = [...(choice.requirements?.items ?? []), ...(choice.requirements?.usableItems ?? []), ...(choice.requirements?.gear ?? []), ...(choice.requirements?.usableGear ?? []), ...(choice.chance?.bonusItems ?? [])].some((id) => inventoryClass(id) === 'GEAR' && state.run?.inventory.includes(id) && itemCondition(state, id) !== 'BROKEN');
     const supplyUse = Object.keys(effects?.consumeSupplies ?? {}).length > 0;
     return Math.exp(1.7 * Math.min(2, persistentItems) + 1.5 * Math.min(2, supplies) + 0.9 * valuedReward + 0.85 * Number(relevantGearUse) + 0.8 * Number(supplyUse) + 0.15 * helpful - 0.45 * risky - 0.2 * cost - Math.min(1.2, price * 0.12));
   }
@@ -178,6 +178,13 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     for (const offer of scene.choices) for (const id of eligiblePersistentItemOptions(offer, current)) {
       if (inventoryClass(id) === 'GEAR') gearOpportunityIds.add(id);
     }
+    // A bonusItem is a real, optional use route in the engine even when it is not a hard requirement.
+    // Count it as an opportunity only when the actual carried item is usable in this scene.
+    for (const offer of scene.choices) if (meets(offer.requirements, current)) {
+      for (const id of offer.chance?.bonusItems ?? []) {
+        if (inventoryClass(id) === 'GEAR' && current.run?.inventory.includes(id) && itemCondition(current, id) !== 'BROKEN') gearOpportunityIds.add(id);
+      }
+    }
     for (const offer of scene.choices) for (const id of choiceRewardIds(offer)) {
       const row = funnelRow(funnel, policy, month, id);
       row.offerVisible++;
@@ -205,6 +212,9 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     for (const id of actuallyUsedPersistentItems(choice, current)) {
       if (inventoryClass(id) === 'GEAR') gearUseIds.add(id);
       if (inventoryClass(id) === 'RELIC') relicUseIds.add(id);
+    }
+    for (const id of choice.chance?.bonusItems ?? []) {
+      if (inventoryClass(id) === 'GEAR' && current.run?.inventory.includes(id) && itemCondition(current, id) !== 'BROKEN') gearUseIds.add(id);
     }
     if (requirements?.knowledge?.some((fact) => current.character?.knowledge.includes(fact)) || requirements?.knowledgeKeys?.some((key) => current.character?.knowledgeKeys?.includes(key))) knowledgeCallbacks++;
     if (requirements?.contacts?.some((id) => current.character?.contacts?.some((contact) => contact.id === id))) contactCallbacks++;

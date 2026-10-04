@@ -124,6 +124,10 @@ describe('animals and working stock adventure batch', () => {
     expect(THE_INJURED_DOG.scenes.dogResting.text).toContain('growls when you step nearer');
     expect(THE_INJURED_DOG.scenes.dogBandageOffered.text).toContain('would not make the paw heal at once');
     expect(THE_INJURED_DOG.scenes.dogResting.choices.find(({ id }) => id === 'useCleanBandage')?.requirements?.items).toContain('fieldBandageRoll');
+    const bandageGiven = act(act(start(THE_INJURED_DOG, {}, 'fieldBandageRoll'), THE_INJURED_DOG, 'dogResting', 'useCleanBandage'), THE_INJURED_DOG, 'dogBandageOffered', 'leaveBandageHandler');
+    expect(getCarriedItems(bandageGiven.character)).not.toContain('fieldBandageRoll');
+    const bandageKept = act(act(start(THE_INJURED_DOG, {}, 'fieldBandageRoll'), THE_INJURED_DOG, 'dogResting', 'useCleanBandage'), THE_INJURED_DOG, 'dogBandageOffered', 'stepAwayBandage');
+    expect(getCarriedItems(bandageKept.character)).toContain('fieldBandageRoll');
   });
 
   it('uses work gear as a temporary support, never as a substitute for proper harness repair', () => {
@@ -131,7 +135,17 @@ describe('animals and working stock adventure batch', () => {
     expect(THE_BROKEN_HARNESS.scenes.strapBraced.text).toContain('not a replacement for the split harness');
     const state = start(THE_BROKEN_HARNESS, {}, 'freightmansStrap');
     expect(THE_BROKEN_HARNESS.scenes.cartLane.choices.filter(({ requirements }) => meets(requirements, state)).map(({ id }) => id)).toContain('offerStrap');
-    expect(THE_CALF_IN_THE_MUD.scenes.ropeReady.choices.find(({ id }) => id === 'ropeWithHandler')?.chance?.bonusItems).toContain('heavyLeatherGloves');
+    expect(THE_CALF_IN_THE_MUD.scenes.ropeReady.choices.find(({ id }) => id === 'ropeWithGloves')?.requirements?.usableItems).toContain('heavyLeatherGloves');
+    expect(THE_CALF_IN_THE_MUD.scenes.ropeReady.choices.find(({ id }) => id === 'ropeWithGloves')?.label).toContain('Heavy Leather Gloves');
+    const equippedCharacter = newCharacter('Gloved Calf Tester');
+    equippedCharacter.carriedItems = ['travelRope', 'heavyLeatherGloves'];
+    const equipped: SaveData = { ...structuredClone(EMPTY_SAVE), character: equippedCharacter, run: startRun(equippedCharacter, THE_CALF_IN_THE_MUD, () => 0) };
+    const prepared = act(act(equipped, THE_CALF_IN_THE_MUD, 'muddyGate', 'prepareRopePull'), THE_CALF_IN_THE_MUD, 'ropeReady', 'ropeWithGloves');
+    expect(prepared.run?.sceneId).toBe('calfFree');
+    expect(getCarriedItems(prepared.character)).toEqual(['travelRope', 'heavyLeatherGloves']);
+    const ungloved = start(THE_CALF_IN_THE_MUD, {}, 'travelRope');
+    const unglovedReady = act(ungloved, THE_CALF_IN_THE_MUD, 'muddyGate', 'prepareRopePull');
+    expect(THE_CALF_IN_THE_MUD.scenes.ropeReady.choices.filter(({ requirements }) => meets(requirements, unglovedReady)).map(({ id }) => id)).toContain('ropeWithHandler');
   });
 
   it('avoids forced ownership judgments and frames the old horse around suitable work', () => {

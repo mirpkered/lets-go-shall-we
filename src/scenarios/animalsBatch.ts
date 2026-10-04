@@ -55,7 +55,8 @@ export const THE_CALF_IN_THE_MUD: Scenario = {
       { id: 'fetchMoreHelp', label: 'Fetch one more person and a stronger plank', timeCost: 8, next: 'boardsReady' },
     ] },
     ropeReady: { id: 'ropeReady', title: 'A Low, Broad Pull', tone: 'warning', text: 'Your rope is arranged around the calf’s chest, clear of its neck. The farmhand reaches the gate and can help guide the line. Pulling hard could hurt the calf; a slow lift may work, but boards would spread its weight better.', choices: [
-      { id: 'ropeWithHandler', label: 'Pull gently while the farmhand guides it', timeCost: 4, chance: { probability: 0.78, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.1, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'The calf finds the boards and climbs free with the rope supporting its chest.', failureMessage: 'The rope slips on the muddy coat. You stop before it tightens and the farmhand repositions it.' } },
+      { id: 'ropeWithGloves', label: 'Use your Heavy Leather Gloves on the wet line', hint: 'They protect your hands from the rough pull; the calf still has to climb under its own strength.', requirements: { items: ['travelRope'], usableItems: ['travelRope', 'heavyLeatherGloves'] }, timeCost: 4, chance: { probability: 0.88, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'Your gloves keep the muddy line from burning your palms as the calf climbs onto the bank.', failureMessage: 'The calf remains stuck. Your gloves protect your hands while the farmhand repositions the line.' } },
+      { id: 'ropeWithHandler', label: 'Pull gently while the farmhand guides it', timeCost: 4, requirements: { notUsableItems: ['heavyLeatherGloves'] }, chance: { probability: 0.78, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'The calf finds the boards and climbs free with the rope supporting its chest.', failureMessage: 'The rope slips on the muddy coat. You stop before it tightens and the farmhand repositions it.' } },
       { id: 'boardsAfterRope', label: 'Use boards before trying the rope', timeCost: 6, next: 'boardsReady' },
       { id: 'waitForMoreHands', label: 'Wait for another helper to arrive', timeCost: 5, next: 'helpArrives' },
     ] },
@@ -250,7 +251,7 @@ export const THE_INJURED_DOG: Scenario = {
       { id: 'leaveDogFed', label: 'Leave it food and move on', next: 'dogWaterLeft' },
     ] },
     dogBandageOffered: { id: 'dogBandageOffered', title: 'A Choice for the Handler', tone: 'warning', text: 'The dog keeps its paw tucked close and growls when the bandage comes near. You can leave it for the handler, who knows the dog, or back away and let it rest. Trying to restrain it could earn a bite and would not make the paw heal at once.', choices: [
-      { id: 'leaveBandageHandler', label: 'Leave the bandage with the resident', next: 'dogHandlerArrives' },
+      { id: 'leaveBandageHandler', label: 'Leave your bandage with the resident', next: 'dogHandlerArrives', effects: { loseItems: ['fieldBandageRoll'] } },
       { id: 'stepAwayBandage', label: 'Put the bandage away and give it space', next: 'dogWaterLeft' },
     ] },
     dogHandlerArrives: { id: 'dogHandlerArrives', title: 'Known Hands', tone: 'safe', text: 'The handler arrives with a lead and a familiar voice. The dog lowers its head but keeps the paw raised. The handler asks what you noticed before they guide it away; they will decide how to inspect and treat their own dog.', choices: [
