@@ -5,8 +5,8 @@ Internal snapshot for the library-wide retrofit pass. The QA Content Quality pan
 ## Registry snapshot
 
 - 445 registered adventures; 1,629 ending route variants reviewed by the content-quality heuristics.
-- Intended depth classification: 7 Encounter, 424 Adventure, 14 Deep Exploration.
-- The 14 recently authored deep-lane scenarios explicitly declare `DEEP_EXPLORATION`. Legacy scenarios with explicitly authored `VIGNETTE` metadata classify as Encounter; legacy metadata built through the standard authoring helpers defaults to Adventure. Length is not a quality grade and does not override an explicit intended lane.
+- Current intended depth classification: 49 Encounter, 380 Adventure, 16 Deep Exploration (445 total).
+- The 16 Deep Exploration entries are explicit in current metadata. Compact Encounter classification reflects authorial intent and story scale, not a raw scene-count threshold. Legacy scenarios with explicitly authored `VIGNETTE` metadata classify as Encounter; legacy metadata built through the standard authoring helpers defaults to Adventure. Length is not a quality grade and does not override an explicit intended lane.
 - The graph audit found no invalid targets, cycles, or unaccounted unreachable scenes. Seventeen retained unreachable IDs are deliberately preserved in six existing adventures for stable-scene/save compatibility, including migration entry scenes and older authored endings. Engine-routed `__death` nodes are accounted for separately. Do not remove a retained scene without checking its active-save history.
 
 ## Review warnings
@@ -42,3 +42,11 @@ A 10,000-selection all-year simulation selected at least one of the 60 item-bear
 ## Remaining audit boundary
 
 Lexical review cannot reliably identify false branching, knowledge leaks, unclear roles, passive self-resolution, or whether a quiet beat is emotionally satisfying. Those require route reading and playtests; warnings remain advisory. Known unhealthy code paths fixed here are covered by scenario tests, while existing completion, reward resolution, selection weighting, saves, and traveler progression remain on their canonical systems.
+
+## Release-candidate gap review
+
+The follow-up review of the nine named live-play cases confirmed their repairs are present in the registered routes and covered by `src/scenarios/playtestRewardCorrections.test.ts`: **The Form Was Waiting for a Name**, **The Last Train Message**, **Held Before the Junction**, **Unload Before Dark**, **One Letter Held for Its Owner**, **The Claim with No Name**, **What Did You See?** (the tipped-cart route), **One Horse, Two Riders**, and **The Three-Ring Toss** (the disputed fair prize). The related laundry staging correction is also covered there. No duplicate scenario IDs or new scenario graphs were needed for this pass.
+
+The experience audit found the proposed niches already represented by distinct registered stories: grounded deduction and physical evidence (**The Missing Crate**, **The Three-Toed Track**, **What Did You See?**); reasonable competing obligations (**Winter Stores**, **One Boat, Too Many People**); witness and information choices (**The Last Train Message**, **The Telegram**); games and contests (**A Coin for the Table**, **The Children’s Court**, **The Jack-o’-Lantern Contest**); animal behavior beyond simple rescue/attack (**The Mule Is Mine**, **The White Stag**); non-employer social situations and generosity tradeoffs (**The Burnt Barn Fund**, **The Meeting Hall**); incomplete-information mistakes (**The Wrong Letter**, **The Locket**); and meaningful refusals/walk-aways across work, travel, and exploration. These examples are evidence of coverage, not a claim that every route has been manually playtested. No additional scenario was justified by this review.
+
+For release-candidate stability, major scenario creation is frozen after this review until promotional release. Continue to address bugs, broken routes, clear playtest defects, and release blockers; do not add scenarios to balance category counts or because time remains.
