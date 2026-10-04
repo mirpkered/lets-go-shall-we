@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, sceneText, startAdventure, startRun, timeStatus } from '../engine';
+import { choose, damageItem, meets, newCharacter, sceneText, startAdventure, startRun, timeStatus } from '../engine';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { renderQaPanel } from '../qaPanel';
@@ -129,6 +129,7 @@ describe('Smoke on the Hill', () => {
     let state = act(act(fresh(0, 'pocketToolkit'), 'approachQuickly'), 'inspectYardPump');
     const toolChoice = options(state).find((choice) => choice.id === 'repairPumpWithTool')!;
     expect(toolChoice.timeCost).toBe(3);
+    expect(toolChoice.label).toMatch(/Toolkit.*Multi-tool.*pry tool.*opener/);
     state = act(state, 'repairPumpWithTool');
     expect(state.run?.sceneId).toBe('pumpReady');
 
@@ -142,6 +143,11 @@ describe('Smoke on the Hill', () => {
     else noTool = act(noTool, 'douseGrassWithPump');
     noTool = act(noTool, 'leaveWaterLine');
     expect(noTool.run?.status).toBe('success');
+
+    let brokenTool = damageItem(damageItem(fresh(0, 'pocketToolkit'), 'pocketToolkit'), 'pocketToolkit');
+    brokenTool = act(act(brokenTool, 'approachQuickly'), 'inspectYardPump');
+    expect(options(brokenTool).some(({ id }) => id === 'repairPumpWithTool')).toBe(false);
+    expect(options(brokenTool).some(({ id }) => id === 'workPumpByHand')).toBe(true);
   });
 
   it('uses rope and smoke protection to make a smoky rescue faster and more reliable', () => {

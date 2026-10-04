@@ -155,6 +155,23 @@ describe('occult investigation adventures', () => {
     expect(full.character?.supplies?.ritualChalk).toBe(4);
   });
 
+  it('uses one Consecrated Salt to test the specific broken chalk-circle gap', () => {
+    const scenario = adventures.find((s) => s.id === 'red-chalk-circle')!;
+    const choice = scenario.scenes.chalkPattern.choices.find(({ id }) => id === 'testGapWithSalt')!;
+    const without = fresh(scenario);
+    without.run!.sceneId = 'chalkPattern';
+    expect(meets(choice.requirements, without)).toBe(false);
+    let state = fresh(scenario, undefined, { consecratedSalt: 2 });
+    state.run!.sceneId = 'chalkPattern';
+    expect(choice.label).toContain('Consecrated Salt');
+    state = roundTrip(act(state, scenario, 'testGapWithSalt'));
+    expect(state.character?.supplies?.consecratedSalt).toBe(1);
+    expect(state.run?.flags).toContain('saltTestedChalkRoomGap');
+    expect(sceneText(scenario.scenes.chalkCrawl, state)).toContain('drew toward the gap');
+    expect(sceneText(scenario.scenes.chalkCrawl, state)).not.toContain('protection against the empty coat');
+    expect(act(without, scenario, 'leavePattern').run?.status).toBe('success');
+  });
+
   it.each([
     ['ritualChalk', 'breakCircleInsideWithChalk', 'chalkBrokeChapelLine', 'chalk'],
     ['consecratedSalt', 'interruptInsideWithSalt', 'saltBrokeChapelLine', 'Salt'],
@@ -221,6 +238,41 @@ describe('occult investigation adventures', () => {
     const full = fresh(scenario, undefined, { coldIronNails: 6 });
     full.run!.sceneId = 'floorListening';
     expect(meets(acquire.requirements, full)).toBe(false);
+  });
+
+  it('lets a previous Nail holder pin the lifting board before opening the floor', () => {
+    const scenario = adventures.find((s) => s.id === 'thing-under-floorboards')!;
+    const use = scenario.scenes.floorTrap.choices.find(({ id }) => id === 'pinBulgeWithNail')!;
+    let absent = fresh(scenario);
+    absent = act(absent, scenario, 'setTrap');
+    expect(meets(use.requirements, absent)).toBe(false);
+    let state = fresh(scenario, undefined, { coldIronNails: 3 });
+    state = act(state, scenario, 'setTrap');
+    state = roundTrip(state);
+    expect(state.run?.sceneId).toBe('floorTrap');
+    state = act(state, scenario, 'pinBulgeWithNail');
+    expect(state.character?.supplies?.coldIronNails).toBe(2);
+    expect(state.run?.flags).toContain('pinnedLiftingBoardWithColdIron');
+    expect(sceneText(scenario.scenes.floorAfter, state)).toContain('holds the lifting board down');
+    expect(state.run?.status).toBe('success');
+    expect(act(absent, scenario, 'openFloor').run?.sceneId).toBe('floorUnder');
+  });
+
+  it('lets a Nail holder secure a gas-marked passage cover without treating the Nail as a ward', () => {
+    const scenario = adventures.find((s) => s.id === 'candle-that-will-not-go-out')!;
+    const use = scenario.scenes.candleSeam.choices.find(({ id }) => id === 'securePassageWithNail')!;
+    let absent = fresh(scenario);
+    absent = act(absent, scenario, 'inspectWax');
+    absent = act(absent, scenario, 'openShopSeam');
+    expect(meets(use.requirements, absent)).toBe(false);
+    let state = fresh(scenario, undefined, { coldIronNails: 2 });
+    state = act(state, scenario, 'inspectWax');
+    state = act(state, scenario, 'openShopSeam');
+    state = roundTrip(act(state, scenario, 'securePassageWithNail'));
+    expect(state.character?.supplies?.coldIronNails).toBe(1);
+    expect(state.run?.flags).toContain('shopPassageBoardPinned');
+    expect(sceneText(scenario.scenes.candleAfter, state)).toContain('keeps the loose board shut');
+    expect(sceneText(scenario.scenes.candleAfter, state)).toContain('no one enters while stale gas may remain');
   });
 
   it('offers scarce Salt on a year-round fresh-traveler route and consumes it only for the matching thread threat', () => {

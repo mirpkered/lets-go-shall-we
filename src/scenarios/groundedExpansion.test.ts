@@ -142,6 +142,15 @@ describe('grounded adventure expansion batch', () => {
     expect(state.run?.sceneId).toBe('wellFall');
     expect(act(state, THE_SOUND_IN_THE_WELL, 'wellFall', 'grabWorkerInFall', () => 0.99).run?.status).toBe('death');
 
+    let ropeState = start(THE_SOUND_IN_THE_WELL, 'travelRope');
+    ropeState = act(ropeState, THE_SOUND_IN_THE_WELL, 'farmyardWell', 'callDown');
+    const ownRope = THE_SOUND_IN_THE_WELL.scenes.voiceBelow.choices.find(({ id }) => id === 'descendWithTravelRope')!;
+    expect(ownRope.label).toContain('Travel Rope');
+    expect(meets(ownRope.requirements, ropeState)).toBe(true);
+    expect(meets(ownRope.requirements, start(THE_SOUND_IN_THE_WELL))).toBe(false);
+    expect(act(ropeState, THE_SOUND_IN_THE_WELL, 'voiceBelow', 'descendWithTravelRope').run?.sceneId).toBe('belowWell');
+    expect(act(ropeState, THE_SOUND_IN_THE_WELL, 'voiceBelow', 'descendWithTravelRope', () => 0.99).run?.sceneId).toBe('ropeSlips');
+
     expect(act(start(THE_LAST_FERRY), THE_LAST_FERRY, 'ferryLanding', 'walkToUpperCrossing').run?.sceneId).toBe('fordArrival');
     const atDamage = act(start(THE_LAST_FERRY), THE_LAST_FERRY, 'ferryLanding', 'inspectFerryLine');
     expect(act(atDamage, THE_LAST_FERRY, 'lineDamage', 'askFerrymanToWait').run?.sceneId).toBe('ferryReset');
