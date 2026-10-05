@@ -105,5 +105,21 @@ export function frontierAdventure(card: FrontierCard): Scenario {
   ], 'warning');
   if ((card.shape === 'salvage' && card.boldRisk !== false) || (card.shape === 'hazard' && card.boldRisk !== false && !card.fatalFailure)) scenes[mishap] = largeEnd(mishap, 'A Warning from the Ground', `You retreat from ${card.title.toLowerCase()} hurt but alive. ${card.closure}`);
   if (card.fatalFailure) scenes[fatalEnd] = largeEnd(fatalEnd, 'The Structure Gives Way', card.fatalText ?? `The warned hazard becomes fatal before you can reach the return path at ${card.title.toLowerCase()}.`, 'death');
+  if (id === 'the-forgotten-supply-cache') {
+    const itemChoice = `${id}ChooseItem`;
+    const blanketEnd = `${id}BlanketTaken`;
+    scenes[decision] = largeScene(decision, 'A Cache Left for Someone', `${card.turn} The bundle holds a travel rope, food, and a folded wool blanket; the fresh prints still make ownership uncertain.`, [
+      { id: 'markCacheForOwner', label: 'Mark the cache for its owner', next: cautiousEnd, effects: { knowledge: [card.insight], historyFlags: ['marked a stored trail cache for its possible owner'] } },
+      { id: 'takeOneFromCache', label: 'Take one useful item, knowing it may be missed', next: itemChoice, effects: { historyFlags: ['chose to take one item from a stored trail cache'] } },
+      { id: 'leaveCacheUntouched', label: 'Leave the bundle untouched', next: evidenceLeftEnd, effects: { knowledge: [card.insight] } },
+    ], 'warning');
+    scenes[itemChoice] = largeScene(itemChoice, 'Choose One Item', 'The rope and blanket are useful, but either may be the reason someone hid the bundle. You can take only one; the food stays with the cache.', [
+      { id: 'takeTravelRope', label: 'Take the Travel Rope', requirements: { notOwnedItems: ['travelRope'] }, next: boldEnd, effects: { gainItems: ['travelRope'], historyFlags: ['took a travel rope from a stored trail cache'] } },
+      { id: 'takeWoolBlanket', label: 'Take the Wool Travel Blanket', requirements: { notOwnedItems: ['woolTravelBlanket'] }, next: blanketEnd, effects: { gainItems: ['woolTravelBlanket'], historyFlags: ['took a wool travel blanket from a stored trail cache'] } },
+      { id: 'returnItemToCache', label: 'Put everything back and mark the cache', next: cautiousEnd, effects: { historyFlags: ['returned a considered cache item and marked the cache for its possible owner'] } },
+    ], 'warning');
+    scenes[boldEnd] = largeEnd(boldEnd, 'The Find Has a Cost', 'You take the Travel Rope and leave the food and blanket in place. The bundle was deliberately stored, and its owner may return to find one useful thing missing. You mark the cache so the choice is not mistaken for a harmless find.');
+    scenes[blanketEnd] = largeEnd(blanketEnd, 'The Find Has a Cost', 'You take the Wool Travel Blanket and leave the food and rope in place. The bundle was deliberately stored, and its owner may return to find one useful thing missing. You mark the cache so the choice is not mistaken for a harmless find.');
+  }
   return largeAdventure(id, card.title, card.subtitle, diversity, start, scenes);
 }

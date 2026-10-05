@@ -115,7 +115,7 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(resumed.run?.sceneId).toBe('whistleScramble');
     expect(resumed.run?.health).toBe(stumbled.run?.health);
     const retreated = take(resumed, scenario, 'retreatFromBank');
-    expect(retreated.run?.sceneId).toBe('whistleAfter');
+    expect(retreated.run?.sceneId).toBe('whistleRoadRetreat');
     expect(retreated.run?.status).toBe('success');
 
     const committed = take(curious, scenario, 'enterRavine', 0);
@@ -156,6 +156,20 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(observed.run?.sceneId).toBe('whistleSafe');
     expect(observed.run?.status).toBe('success');
     expect(observed.run!.health).toBeGreaterThan(0);
+  });
+
+  it('makes the house route in A Road Kept Straight an investigation before its stopping choice', () => {
+    const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
+    let state = take(fresh(scenario, 'conductorWhistle'), scenario, 'callAgain');
+    state = take(state, scenario, 'useWhistleOnce');
+    state = take(state, scenario, 'leaveFenceLine');
+    expect(state.run?.sceneId).toBe('whistleHousehold');
+    expect(scenario.scenes.whistleHousehold.text).toMatch(/household confirms hearing the same changed note/i);
+    expect(scenario.scenes.whistleHousehold.choices.map(({ label }) => label)).toEqual([
+      'Help close the path until morning', 'Keep watch from the house-side fence',
+    ]);
+    expect(take(state, scenario, 'keepWatchFromHouse').run?.sceneId).toBe('whistleHouseWatch');
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
   });
 
   it('varies creature truth, risk, and combat rather than making every hunt a kill', () => {

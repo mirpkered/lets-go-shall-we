@@ -86,4 +86,20 @@ describe('comedy and absurdity additions', () => {
     expect(report.scenarioCount).toBe(25);
     expect(report.warnings.filter(({ severity }) => severity === 'HIGH')).toEqual([]);
   });
+
+  it('gives the sorted-note route a witnessed delivery payoff without exposing either message', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-pigeon-postscript')!;
+    const character = newCharacter('Message Route QA');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    for (const choiceId of ['readAddresses', 'deliverKnown']) {
+      const current = scenario.scenes[state.run!.sceneId];
+      state = choose(state, scenario, current.choices.find(({ id }) => id === choiceId)!);
+    }
+    const ending = scenario.scenes[state.run!.sceneId];
+    expect(ending.title).toBe('Messages Find Their Way');
+    expect(ending.text).toMatch(/miller’s mark in the delivery book/i);
+    expect(ending.text).toMatch(/keeps the other message sealed/i);
+    expect(ending.text).toMatch(/sender’s privacy are safe/i);
+    expect(ending.text).not.toMatch(/the note says|message reads/i);
+  });
 });

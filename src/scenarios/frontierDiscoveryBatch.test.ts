@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { analyzeScenarioLibrary, validateScenarioMetadata } from '../scenarioDiversity';
 import { auditContentQuality } from '../contentQuality';
 import { simulateScenarioSelection } from '../scenarioSelection';
 import { scenarioRiskTier } from '../riskClassification';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
 import { SCENARIOS } from './index';
 import { FRONTIER_DISCOVERY_ADVENTURES } from './frontierDiscoveryBatch';
@@ -108,6 +108,78 @@ describe('remote discovery and frontier claims batch', () => {
     const taken = choose(decision, cabin, cabin.scenes[decision.run!.sceneId].choices.find(({ id }) => id === 'takeRisk')!);
     expect(taken.character?.money).toBe(2);
     expect(taken.character?.historyFlags).toContain('took two coins from an identified cache beneath a cabin stove');
+  });
+
+  it('honors the Forgotten Supply Cache take choice with a named, persistent item and state-aware outcomes', () => {
+    const cache = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-forgotten-supply-cache')!;
+    const fresh = (items: string[] = []) => {
+      const character = newCharacter('Cache Route Tester');
+      character.carriedItems = items;
+      character.carriedItem = items[0] ?? null;
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cache, () => 0) };
+    };
+    const act = (state: SaveData, choiceId: string) => {
+      const current = cache.scenes[state.run!.sceneId];
+      const choice = current.choices.find(({ id }) => id === choiceId);
+      expect(choice, `${current.id}.${choiceId}`).toBeTruthy();
+      expect(meets(choice!.requirements, state)).toBe(true);
+      return choose(state, cache, choice!);
+    };
+    const enterDecision = (state: SaveData) => act(act(state, 'approach'), 'readEvidence');
+
+    const left = enterDecision(fresh());
+    const leftEnding = act(left, 'leaveCacheUntouched');
+    expect(leftEnding.run?.sceneId).toBe('the-forgotten-supply-cacheEvidenceLeft');
+    expect(cache.scenes[leftEnding.run!.sceneId].text).toMatch(/turn back/i);
+    const marked = enterDecision(fresh());
+    const markedEnding = act(marked, 'markCacheForOwner');
+    expect(markedEnding.run?.sceneId).toBe('the-forgotten-supply-cacheCautious');
+    expect(cache.scenes[markedEnding.run!.sceneId].text).toMatch(/cache’s placement and fresh prints are recorded/i);
+
+    let take = enterDecision(fresh());
+    take = act(take, 'takeOneFromCache');
+    expect(take.run?.sceneId).toBe('the-forgotten-supply-cacheChooseItem');
+    const saved = new Map<string, string>();
+    const storage = { getItem: (key: string) => saved.get(key) ?? null, setItem: (key: string, value: string) => { saved.set(key, value); } };
+    saveGame(take, storage);
+    take = loadSave(storage);
+    take = act(take, 'takeTravelRope');
+    expect(take.run?.acquiredThisRun).toContain('travelRope');
+    expect(cache.scenes[take.run!.sceneId].text).toMatch(/take the Travel Rope/i);
+    expect(cache.scenes[take.run!.sceneId].text).toMatch(/owner may return/i);
+
+    let rewards = openRewardResolution(take);
+    expect(rewards.run?.rewardPendingItems).toContain('travelRope');
+    rewards = placeReward(rewards, 'travelRope', 'carry');
+    expect(rewards.character?.carriedItems).toContain('travelRope');
+    expect(placeReward(rewards, 'travelRope', 'carry').character?.carriedItems).toEqual(rewards.character?.carriedItems);
+
+    const alreadyOwnsRope = fresh(['travelRope']);
+    let chooseItem = act(enterDecision(alreadyOwnsRope), 'takeOneFromCache');
+    const itemScene = cache.scenes[chooseItem.run!.sceneId];
+    expect(meets(itemScene.choices.find(({ id }) => id === 'takeTravelRope')!.requirements, chooseItem)).toBe(false);
+    expect(meets(itemScene.choices.find(({ id }) => id === 'takeWoolBlanket')!.requirements, chooseItem)).toBe(true);
+    chooseItem = act(chooseItem, 'takeWoolBlanket');
+    expect(chooseItem.run?.acquiredThisRun).toContain('woolTravelBlanket');
+    expect(cache.scenes[chooseItem.run!.sceneId].text).toMatch(/take the Wool Travel Blanket/i);
+    let bothOwned: SaveData = fresh(['travelRope', 'woolTravelBlanket']);
+    bothOwned = act(enterDecision(bothOwned), 'takeOneFromCache');
+    expect(cache.scenes[bothOwned.run!.sceneId].choices.filter((choice) => meets(choice.requirements, bothOwned)).map(({ id }) => id)).toEqual(['returnItemToCache']);
+
+    const bankedCharacter = newCharacter('Banked Rope QA');
+    const bankedRope: SaveData = { ...structuredClone(EMPTY_SAVE), character: bankedCharacter, run: startRun(bankedCharacter, cache, () => 0), bank: ['travelRope'] };
+    const bankedChoice = act(enterDecision(bankedRope), 'takeOneFromCache');
+    expect(meets(cache.scenes[bankedChoice.run!.sceneId].choices.find(({ id }) => id === 'takeTravelRope')!.requirements, bankedChoice)).toBe(false);
+
+    const fullPack = fresh(['pocketToolkit']);
+    let fullReward = act(enterDecision(fullPack), 'takeOneFromCache');
+    fullReward = act(fullReward, 'takeTravelRope');
+    let fullPending = openRewardResolution(fullReward);
+    expect(fullPending.run?.rewardPendingItems).toContain('travelRope');
+    fullPending = placeReward(fullPending, 'travelRope', 'carry');
+    expect(fullPending.run?.rewardPendingItems).toContain('travelRope');
+    fullPending = placeReward(fullPending, 'travelRope', 'bank');
+    expect(fullPending.bank).toContain('travelRope');
   });
 
   it('has no direct-action high-severity ending warnings and records library similarity for human review', () => {

@@ -157,7 +157,7 @@ export const THE_PARCEL_WITH_NO_ADDRESS = story('the-parcel-with-no-address', 'T
 export const THE_CLOCK_THAT_KEPT_LOCAL_TIME = story('the-clock-that-kept-local-time', 'The Clock That Kept Local Time', 'A station clock is fifteen minutes behind, but the stationmaster says it is right.', T('A small station keeps local time while the rail timetable uses a standard clock; the traveler must prevent an avoidable missed connection without calling either clock broken.', ['puzzle/problem-solving', 'travel/exploration', 'social interaction'], 'witness', 'mysterious/eerie', 'railway station', ['contradictory information', 'practical coordination', 'two-clock resolution'], 'accidental encounter'), 'platform', {
   platform: scene('platform', 'Two Times on One Platform', 'The station clock says 2:15; the printed railway timetable says the train arrives at 2:30. The stationmaster says the clock is set to local noon, not the rail line’s standard time.', [
     { id: 'askForTimetableNote', label: 'Ask whether the timetable explains the difference', next: 'timetable' },
-    { id: 'askWaitingPassengers', label: 'Ask what time they were told', next: 'passengers' },
+    { id: 'askWaitingPassengers', label: 'Ask the waiting passengers what time they were told', next: 'passengers' },
     { id: 'followStationClock', label: 'Trust the station clock and wait', next: 'wait' },
   ]),
   timetable: scene('timetable', 'A Line in Small Print', 'A note says times are given by the rail line’s standard clock. The stationmaster did not notice it, and two passengers have been using the platform clock.', [

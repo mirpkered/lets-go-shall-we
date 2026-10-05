@@ -104,6 +104,27 @@ describe('occult investigation adventures', () => {
     expect(meets(scenario.scenes.chalkPattern.choices.find((c) => c.id === 'liftFloor')!.requirements, state)).toBe(true);
   });
 
+  it('shows the person pulled from the ditch before the Light Behind You ending', () => {
+    const scenario = adventures.find(({ id }) => id === 'lantern-at-the-crossing')!;
+    const start = fresh(scenario);
+    const follow = act(start, scenario, 'followLight');
+    const helped = act(follow, scenario, 'pullStrangerFree');
+    expect(helped.run?.sceneId).toBe('crossingTraveler');
+    expect(scenario.scenes.crossingTraveler.text).toMatch(/help an exhausted traveler climb out/i);
+    expect(scenario.scenes.crossingTraveler.text).toMatch(/cannot explain the missing hours/i);
+    const ending = act(helped, scenario, 'escortTraveler');
+    expect(ending.run?.sceneId).toBe('crossingAfter');
+    expect(scenario.scenes.crossingAfter.text).toMatch(/guide the exhausted traveler to the open road/i);
+    expect(scenario.scenes.crossingAfter.text).toMatch(/whether anyone carried it/i);
+
+    const steppedDown = act(follow, scenario, 'stepIntoDitch', 0);
+    expect(steppedDown.run?.sceneId).toBe('crossingTraveler');
+    const observedOnly = act(act(fresh(scenario), scenario, 'watchCrossing'), scenario, 'leaveMark');
+    expect(observedOnly.run?.sceneId).toBe('crossingWithdrawEnd');
+    expect(scenario.scenes.crossingWithdrawEnd.text).not.toMatch(/you guide the exhausted traveler/i);
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
+  });
+
   it('offers the unused marked chalk only after Orin is recovered and the room is secured', () => {
     const scenario = adventures.find((s) => s.id === 'red-chalk-circle')!;
     let state = fresh(scenario);

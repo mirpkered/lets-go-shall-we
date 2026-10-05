@@ -29,6 +29,7 @@ describe('registered scenario graph audit', () => {
       'broken-bell': ['clapperAtAltar', 'deathBell', 'legacyChest', 'legacyChestJam', 'legacyKeeper', 'legacyResume', 'legacyReunion', 'legacyWarning', 'partialReturn'],
       'hush-now': ['legacyAfterRescue', 'legacyRescue', 'legacyResume'],
       'smoke-over-main-street': ['fireDeath'],
+      'the-forgotten-supply-cache': ['the-forgotten-supply-cacheMishap'],
       'the-last-room': ['guestAccused', 'wrongAccusationEnding'],
       'the-last-train-message': ['deliver-private', 'deliver-wait', 'porter-deliverNow', 'verify-carry'],
       'the-last-shot': ['lastShotDeath'],

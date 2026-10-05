@@ -225,9 +225,9 @@ export const THE_PIGEON_POSTSCRIPT = story('the-pigeon-postscript', 'The Pigeon 
   ]),
   owner: scene('owner', 'A Familiar Flight', 'The station master sends a message to the farm. Before a reply comes, the pigeon hops to the sill and looks out; the notes can travel separately from the bird.', [
     { id: 'openWindow', label: 'Let the pigeon fly home', next: 'identified' },
-    { id: 'holdBriefly', label: 'Keep it in the quiet office', next: 'sorted' },
+    { id: 'holdBriefly', label: 'Keep the pigeon safe while the farm replies', next: 'identified' },
   ]),
-  sorted: end('sorted', 'Messages Find Their Way', 'The clerk sends the miller’s note by the next rider and keeps the other sealed for its owner. The pigeon flies from the open sill without carrying a second message by mistake.'),
+  sorted: end('sorted', 'Messages Find Their Way', 'The next rider returns from the east crossing with the miller’s mark in the delivery book: the note reached him unopened. The clerk keeps the other message sealed for its owner, and the pigeon leaves the open sill without carrying a second note by mistake. You have not learned what either message says, but both the bird and the sender’s privacy are safe.'),
   identified: end('identified', 'Home Is Not an Address', 'The farm replies that the second note belongs to a neighboring child. The clerk routes both messages correctly, and the pigeon returns to its own loft.'),
 });
 
