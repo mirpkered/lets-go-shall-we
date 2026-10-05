@@ -158,6 +158,16 @@ describe('surprise anthology and library gap-fill', () => {
     const hurt = act(start(table), table, 'market', 'holdLeg', 0.999999);
     expect(hurt.run?.health).toBe(9);
     expect(hurt.run?.sceneId).toBe('cut');
+    const asked = act(act(act(start(table), table, 'market', 'warnSeller'), table, 'warning', 'fetchCrate'), table, 'crate', 'askForPayment');
+    expect(asked.run?.sceneId).toBe('safe');
+    const paid = act(asked, table, 'safe', 'takeMarketCoin');
+    const offered = act(act(act(start(table), table, 'market', 'warnSeller'), table, 'warning', 'fetchCrate'), table, 'crate', 'finishMarket');
+    const accepted = act(offered, table, 'safe', 'takeMarketCoin');
+    const unpaid = act(offered, table, 'safe', 'declineMarketCoin');
+    expect(paid.character?.money).toBe(3);
+    expect(accepted.character?.money).toBe(3);
+    expect(unpaid.character?.money).toBe(2);
+    expect(unpaid.run?.sceneId).toBe('safeEnd');
     expect(scenarioRiskTier(table)).toBe('MODERATE');
   });
 

@@ -289,12 +289,16 @@ export const THE_TRESTLE_TABLE = story('the-trestle-table', 'The Trestle Table',
   ]),
   crate: scene('crate', 'The Crate Holds', 'The spare crate supports the short leg, and the jars are moved toward the center. The table now stands level enough for the market, though the old joint still needs repair.', [
     { id: 'finishMarket', label: 'Stay while the seller resumes', next: 'safe' },
-    { id: 'askForPayment', label: 'Ask whether the seller can pay for help', next: 'paid' },
+    { id: 'askForPayment', label: 'Ask whether the seller can pay for help', next: 'safe' },
   ]),
   closed: end('closed', 'A Stall Closed for Safety', 'The seller closes the stall until the joint can be repaired. No jars break, but a morning of sales is lost; the seller thanks you for avoiding a worse loss.'),
   cut: end('cut', 'A Small Cut, a Closed Stall', 'The jar cuts your hand. The seller closes the stall and wraps the cut with clean cloth; the display is not worth another injury.'),
-  safe: end('safe', 'The Jars Stay Whole', 'The seller resumes with the jars away from the weak edge. They offer you a small portion of the day’s takings for the help, or you may leave without it.'),
+  safe: scene('safe', 'The Jars Stay Whole', 'The seller resumes with the jars away from the weak edge. They offer one coin from the day’s takings for your help; the choice is yours, and the table still needs a proper repair.', [
+    { id: 'takeMarketCoin', label: 'Accept one coin for your help', next: 'paid', effects: { money: 1 } },
+    { id: 'declineMarketCoin', label: 'Thank the seller and leave without payment', next: 'safeEnd' },
+  ]),
   paid: end('paid', 'A Coin for Careful Work', 'The seller pays you a coin for keeping the display upright. The table still needs a proper repair; the crate is only a safe stopgap.'),
+  safeEnd: end('safeEnd', 'The Jars Stay Whole', 'The seller resumes with the jars away from the weak edge. You decline the offered coin and leave the table supported only as a temporary measure; it still needs a proper repair.'),
 });
 
 export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 'The Favor Returned in Flour', 'A baker remembers a small kindness and asks the traveler to choose how it should be returned.', T('A baker offers a loaf after the traveler previously helped carry flour; accepting means sharing it at the counter, while a neighbor may need the remaining flour for supper.', ['social interaction', 'negotiation/trade'], 'guest', 'warm/hopeful', 'village bakery', ['conditional favor callback', 'resource choice', 'relationship consequence'], 'invited/known contact', ['lodging/food', 'relationship/referral']), 'bakery', {
