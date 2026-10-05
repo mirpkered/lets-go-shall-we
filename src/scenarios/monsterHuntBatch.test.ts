@@ -125,6 +125,31 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(crossed.run?.status).toBe('death');
   });
 
+  it('keeps the Miller’s Gap location uncertain until the cat is directly seen', () => {
+    const scenario = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-man-eater-of-millers-gap')!;
+    const tracks = take(fresh(scenario), scenario, 'askDrover');
+    const bend = scenario.scenes.catTracks;
+    const enter = bend.choices.find(({ id }) => id === 'enterBend')!;
+    expect(enter.hint).toMatch(/tracks lead above the trail/i);
+    expect(enter.hint).not.toMatch(/the cat is above/i);
+    expect(enter.hint).toMatch(/drop leaves little room to escape/i);
+
+    const marked = take(tracks, scenario, 'markLedge');
+    expect(marked.character?.knowledge.join(' ')).toMatch(/tracks and dragged wool .* point toward a ledge/i);
+    expect(marked.character?.knowledge.join(' ')).toMatch(/do not show whether the predator is still there/i);
+
+    const sheepMoved = take(fresh(scenario), scenario, 'moveSheep');
+    expect(scenario.scenes.sheepMoved.text).toMatch(/nothing shows whether the cat stayed there/i);
+    const slipped = take(sheepMoved, scenario, 'followCatLedge', 0.999999);
+    expect(slipped.run?.sceneId).toBe('catFall');
+    expect(scenario.scenes.catFall.text).toMatch(/cat’s location remains unknown/i);
+    expect(scenario.scenes.gapAfter.text).toMatch(/cat has not been located/i);
+
+    const directSighting = take(sheepMoved, scenario, 'watchFromRock');
+    expect(directSighting.run?.sceneId).toBe('catSeen');
+    expect(scenario.scenes.catSeen.text).toMatch(/mountain lion watches from the ledge/i);
+  });
+
   it('keeps road-side observation available without entering the unstable ravine', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const observed = take(take(fresh(scenario), scenario, 'callAgain'), scenario, 'stopSignals');

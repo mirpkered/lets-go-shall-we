@@ -41,11 +41,11 @@ export const THE_MAN_EATER_OF_MILLERS_GAP: Scenario = {
       { id: 'declineCatHunt', label: 'Close the pass and leave the hunt', next: 'gapClosed', effects: { historyFlags: ['closed a pass rather than hunt a large predator without a party'] } },
     ], 'danger'),
     catTracks: scene('catTracks', 'The Blind Bend', 'The cat’s prints cross the sheep trail and vanish above the rock wall. A dragged wool tuft points toward a ledge, not down the drop. The return path is clear; the drover offers a lantern and a warning bell but will not enter the gap.', [
-      { id: 'markLedge', label: 'Mark the ledge and withdraw', next: 'gapClosed', effects: { knowledge: ['The Miller’s Gap predator watched the flock trail from a ledge above the blind bend.'] } },
+      { id: 'markLedge', label: 'Mark the ledge and withdraw', next: 'gapClosed', effects: { knowledge: ['Tracks and dragged wool at Miller’s Gap point toward a ledge above the blind bend, but do not show whether the predator is still there.'] } },
       { id: 'setWarningBell', label: 'Set the bell at the upper pen', next: 'sheepMoved' },
-      { id: 'enterBend', label: 'Enter the blind bend alone', hint: 'The cat is above the trail and the drop leaves little room to escape.', chance: { probability: 0.28, successNext: 'catSeen', failureNext: 'catFatal', successMessage: 'You spot the cat before it drops from the ledge.', failureMessage: 'The cat lands behind you at the narrowest point.', failureEffects: { health: -10 } } },
+      { id: 'enterBend', label: 'Enter the blind bend alone', hint: 'The tracks lead above the trail, and the drop leaves little room to escape.', chance: { probability: 0.28, successNext: 'catSeen', failureNext: 'catFatal', successMessage: 'You spot the cat before it drops from the ledge.', failureMessage: 'The cat lands behind you at the narrowest point.', failureEffects: { health: -10 } } },
     ], 'warning'),
-    sheepMoved: scene('sheepMoved', 'A Pen above the Pass', 'The sheep are behind a stone pen above the gap. The bell is tied to the gate. No animal has approached since the flock moved, but the cat remains somewhere on the ledge.', [
+    sheepMoved: scene('sheepMoved', 'A Pen above the Pass', 'The sheep are behind a stone pen above the gap. The bell is tied to the gate. No animal has approached since the flock moved. The tracks still point toward the ledge, but nothing shows whether the cat stayed there.', [
       { id: 'leavePassClosed', label: 'Keep the pass closed until daylight', next: 'gapClosed' },
       { id: 'watchFromRock', label: 'Watch from the broad upper rock', next: 'catSeen' },
       { id: 'followCatLedge', label: 'Follow the cat’s tracks along the ledge', hint: 'Loose gravel lies above a steep drop.', chance: { probability: 0.42, successNext: 'catSeen', failureNext: 'catFall', successMessage: 'You reach a broad ledge with a clear route back.', failureMessage: 'Gravel slides beneath your boot toward the drop.', failureEffects: { health: -5 } } },
@@ -56,9 +56,9 @@ export const THE_MAN_EATER_OF_MILLERS_GAP: Scenario = {
       { id: 'confrontLion', label: 'Confront the cat at the ledge', hint: 'It has attacked livestock and a drover; failure is likely fatal.', effects: { combat: { enemy: 'mountain lion', winChance: 0.2, damageOnWin: 4, damageOnLoss: 10, winNext: 'lionDriven', lossNext: 'catFatal' } } },
     ], 'danger'),
     lionDriven: end('lionDriven', 'The Pass Opens in Daylight', 'The bell carries through the gap and the cat withdraws uphill. The drover keeps the flock penned until daylight and calls an experienced hunter; the pass is not declared safe just because the animal has moved.'),
-    gapAfter: end('gapAfter', 'A Pass Left Closed', 'The remaining sheep stay behind the upper wall. The drover marks the gap closed and sends for an experienced hunter. The cat remains active, but the pass is no longer an easy path to the flock.'),
+    gapAfter: end('gapAfter', 'A Pass Left Closed', 'The remaining sheep stay behind the upper wall. The drover marks the gap closed and sends for an experienced hunter. The cat has not been located, and the pass is no longer an easy path to the flock.'),
     gapClosed: end('gapClosed', 'The Hunt Can Wait', 'The drover closes Miller’s Gap and moves the flock uphill. No one enters the blind bend alone. The predator remains unlocated, but travelers are warned before they reach the narrow pass.'),
-    catFall: end('catFall', 'Loose Gravel', 'You slide against the rock face and bruise your hip before the drover pulls you back. The flock stays penned; the cat remains above the pass.'),
+    catFall: end('catFall', 'Loose Gravel', 'You slide against the rock face and bruise your hip before the drover pulls you back. The flock stays penned. Tracks still lead above the pass, but the cat’s location remains unknown.'),
     catFatal: end('catFatal', 'The Narrow Bend', 'The predator strikes where the pass leaves no room to turn. The drover closes the route and does not send anyone after you.', 'death'),
   },
 };
