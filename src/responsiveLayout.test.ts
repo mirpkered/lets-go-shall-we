@@ -130,6 +130,24 @@ describe('global no-scroll layout contract', () => {
     expect(styles).toContain('.contact-form-actions { position:sticky; bottom:0; display:grid; grid-template-columns:1fr 1fr;');
   });
 
+  it('keeps mobile text-entry controls above the iOS auto-zoom threshold without restricting page zoom', () => {
+    const documentHtml = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+    expect(documentHtml).toContain('name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"');
+    expect(styles).toContain('@media (max-width: 600px)');
+    expect(styles).toContain('.app-shell :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([tabindex="-1"]), textarea, select) { font-size:16px; }');
+    expect(documentHtml).not.toMatch(/user-scalable\s*=\s*no|max(?:imum)?-scale\s*=\s*1/i);
+    expect(styles).not.toMatch(/(?:^|[;\s])zoom\s*:/m);
+    expect(styles).not.toContain('transform:scale(');
+  });
+
+  it('releases focused feedback controls before utility dialog dismissal', () => {
+    expect(mainSource).toContain("dialog.addEventListener('cancel', releaseFocusedControl)");
+    expect(mainSource).toContain("dialog.addEventListener('close', releaseFocusedControl)");
+    expect(mainSource).toContain('blurUtilityDialogControl(dialog, active instanceof HTMLElement ? active : null)');
+    expect(mainSource).toContain('dialog.close();');
+    expect(mainSource).not.toContain('location.reload');
+  });
+
   it('balances the lone Bank action when no traveler exists and keeps Bank/Retire as paired cards otherwise', () => {
     expect(mainSource).toContain('class="home-tools${hasCharacter ? \'\' : \' single-tool\'}"');
     expect(styles).toContain('.home-tools.single-tool { grid-template-columns:1fr; }');

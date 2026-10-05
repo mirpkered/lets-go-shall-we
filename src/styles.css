@@ -311,6 +311,11 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
   .ending-screen .ending > p { font-size:.95rem; line-height:1.38; }
 }
 
+/* iOS Safari zooms the visual viewport when a focused text control is smaller than 16px. */
+@media (max-width: 600px) {
+  .app-shell :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([tabindex="-1"]), textarea, select) { font-size:16px; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .story-card { animation:arrive .22s ease-out; }
   @keyframes arrive { from { opacity:.45; transform:translateY(.3rem); } }

@@ -16,6 +16,7 @@ import { EASTER_EGGS } from './easterEggs';
 import { analyzeScenarioLibrary } from './scenarioDiversity';
 import { auditContentQuality } from './contentQuality';
 import { travelerMemoryPreview } from './travelerMemoryPresentation';
+import { blurUtilityDialogControl } from './utilityDialogFocus';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -254,8 +255,21 @@ function shell(content: string, extra = '', style = ''): void {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
   }));
+  document.querySelectorAll<HTMLDialogElement>('.utility-dialog').forEach((dialog) => {
+    const releaseFocusedControl = () => {
+      const active = document.activeElement;
+      blurUtilityDialogControl(dialog, active instanceof HTMLElement ? active : null);
+    };
+    // Escape/cancel and native close paths should not leave a text control focused in a closed modal.
+    dialog.addEventListener('cancel', releaseFocusedControl);
+    dialog.addEventListener('close', releaseFocusedControl);
+  });
   document.querySelectorAll<HTMLButtonElement>('[data-close-help]').forEach((button) => button.addEventListener('click', () => {
-    button.closest('dialog')?.close();
+    const dialog = button.closest<HTMLDialogElement>('dialog');
+    if (!dialog) return;
+    const active = document.activeElement;
+    blurUtilityDialogControl(dialog, active instanceof HTMLElement ? active : null);
+    dialog.close();
   }));
   document.querySelector<HTMLFormElement>('[data-feedback-form]')?.addEventListener('submit', (event) => {
     event.preventDefault();
