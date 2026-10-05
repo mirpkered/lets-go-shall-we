@@ -190,7 +190,7 @@ export const THE_ROAD_CREW: Scenario = {
       { id: 'useMultiTool', label: 'Use your Foreman’s Multi-tool to trim a brace', requirements: { items: ['foremanMultiTool'] }, timeCost: 25, next: 'paidRoadMended', effects: { money: 4, historyFlags: ['used_tool_on_road_crew'] } },
       { id: 'useFoldingRule', label: 'Use your Folding Rule to match the brace spacing', requirements: { items: ['joinersFoldingRule'] }, timeCost: 20, next: 'paidRoadMended', effects: { money: 4, historyFlags: ['used_folding_rule_on_road_crew'] } },
       { id: 'liftWithCrew', label: 'Set stones with the crew', timeCost: 45, next: 'paidRoadMended', effects: { money: 4, historyFlags: ['helped_set_stones_on_road_crew'] } },
-      { id: 'stopForDay', label: 'Stop after the first safe section', next: 'partialRoad' },
+      { id: 'stopForDay', label: 'Stop after the first safe section', hint: 'The crew pays one coin for the work completed so far; the rest of the half-day remains unfinished.', next: 'partialPaidRoad', effects: { money: 1, historyFlags: ['earned_partial_road_repair_wage'] } },
     ] },
     volunteerWorksite: { id: 'volunteerWorksite', title: 'A Short Share of Work', tone: 'safe', text: 'You help the residents fill the rut from the solid ground inward. They need only an hour of your time before you use the road; no wage was offered for this shorter share.', choices: [
       { id: 'volunteerWithTool', label: 'Use your Multi-tool to trim the brace', requirements: { items: ['foremanMultiTool'] }, timeCost: 25, next: 'volunteerRoadMended', effects: { historyFlags: ['used_tool_on_road_crew'] } },
@@ -202,6 +202,7 @@ export const THE_ROAD_CREW: Scenario = {
       { id: 'releaseRope', label: 'Set the rope aside and finish with stones', next: 'partialRoad' },
     ] },
     paidRoadMended: done('paidRoadMended', 'A Passable Road', 'The rut is packed and the timber brace holds. The next wagon can cross the culvert without riding its crumbling edge. The crew pays the four coins agreed for the half-day.'),
+    partialPaidRoad: done('partialPaidRoad', 'A Safe First Section', 'You finish the first section from firm ground, then stop before taking on the remaining half-day. The residents pay one coin for the work completed; the culvert still needs the rest of the crew’s repair.'),
     volunteerRoadMended: done('volunteerRoadMended', 'A Passable Road', 'The rut is packed and the timber brace holds. The residents thank you and let you pass; the next loaded wagon can cross without riding the crumbling edge.'),
     ropeMended: done('ropeMended', 'A Passable Road', 'The rope steadies the timber as the crew seats it. They thank you for lending your gear and wave you through the road before the next wagon arrives.'),
     partialRoad: done('partialRoad', 'Enough for Careful Passage', 'The crew leaves a clear, marked line across the firm side of the road. Heavy wagons must wait for more work, but travelers on foot can pass safely.'),

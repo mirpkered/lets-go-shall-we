@@ -178,6 +178,15 @@ describe('community and civic life adventure batch', () => {
     expect(rope.run?.sceneId).toBe('ropeWork');
   });
 
+  it('pays a clear partial wage when the traveler stops after completing the first road section', () => {
+    let state = act(start(THE_ROAD_CREW, {}, undefined, 0), THE_ROAD_CREW, 'roadsideWork', 'takePaidWork');
+    state = act(state, THE_ROAD_CREW, 'paidWorksite', 'stopForDay');
+    expect(state.character?.money).toBe(1);
+    expect(state.character?.historyFlags).toContain('earned_partial_road_repair_wage');
+    expect(state.run?.sceneId).toBe('partialPaidRoad');
+    expect(THE_ROAD_CREW.scenes.partialPaidRoad.text).toContain('pay one coin for the work completed');
+  });
+
   it('keeps burial practical and respectful, with belongings handled only from the described table', () => {
     expect(A_PLACE_TO_BURY_HIM.scenes.chapelYard.text).toContain('belongings—a coat, a folded letter, and a purse—are laid on a table');
     const state = act(start(A_PLACE_TO_BURY_HIM), A_PLACE_TO_BURY_HIM, 'chapelYard', 'checkBelongings');

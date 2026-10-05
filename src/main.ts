@@ -17,6 +17,7 @@ import { analyzeScenarioLibrary } from './scenarioDiversity';
 import { auditContentQuality } from './contentQuality';
 import { travelerMemoryPreview } from './travelerMemoryPresentation';
 import { blurUtilityDialogControl } from './utilityDialogFocus';
+import { endedTravelerMilestoneCopy, gearCapacityMilestoneCopy } from './progressionCopy';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
@@ -504,8 +505,8 @@ function renderDeath(): void {
   const runScene = activeRunHomeScene();
   const scene = run && run.sceneId !== '__death' ? scenario?.scenes[run.sceneId] : null;
   const milestone = run?.completionMilestoneReached === 10
-    ? '<p class="milestone-note">Ten adventures behind this traveler. Their journey ends here, but they learned to travel better prepared.</p>'
-    : run?.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. This traveler knew what deserved a place in the pack.</p>' : '';
+    ? `<p class="milestone-note">${endedTravelerMilestoneCopy(10)}</p>`
+    : run?.completionMilestoneReached === 20 ? `<p class="milestone-note">${endedTravelerMilestoneCopy(20)}</p>` : '';
   shell(`<section class="ending death-ending"><div class="ending-mark">†</div><div class="eyebrow">The adventure ends</div><h1>${scene?.title ?? 'The Journey Ends'}</h1><p>${scene ? sceneText(scene, state) : 'Your wounds overcome you before the danger passes. Another traveler will have to take up the road.'}</p>${state.character ? `<p class="traveler-ending-count">This traveler completed ${state.character.adventuresCompleted} adventure${state.character.adventuresCompleted === 1 ? '' : 's'}.</p>` : ''}${milestone}<div class="loss-list"><span>Character lost</span><span>Unbanked Gear, Relics, Supplies, assets, money, lore, and history lost</span><strong>${state.bank.length} banked item${state.bank.length === 1 ? '' : 's'} safe</strong></div><button class="primary" id="acceptDeath">Begin Again</button></section>`, 'centered ending-screen run-background', homeSceneStyle(runScene));
   document.querySelector('#acceptDeath')!.addEventListener('click', () => { state = failCharacter(state); persist(); rotateHomeScene(); screen = 'home'; render(); void flushPendingGlobalCompletions(); });
 }
@@ -525,8 +526,8 @@ function renderSuccess(): void {
   const runScene = activeRunHomeScene();
   const capacity = carryCapacity(state.character?.adventuresCompleted ?? 0);
   const milestone = run.completionMilestoneReached === 10
-    ? '<p class="milestone-note">Ten adventures behind you. You’ve learned to travel better prepared. Gear capacity increased to 2 slots.</p>'
-    : run.completionMilestoneReached === 20 ? '<p class="milestone-note">Twenty adventures survived. You know what deserves a place in your pack. Gear capacity increased to 3 slots.</p>' : '';
+    ? `<p class="milestone-note">${gearCapacityMilestoneCopy(10)}</p>`
+    : run.completionMilestoneReached === 20 ? `<p class="milestone-note">${gearCapacityMilestoneCopy(20)}</p>` : '';
   if (!successRewardsOpen) {
     shell(`<section class="ending success-ending"><div class="ending-mark">✦</div><div class="eyebrow">Adventure complete</div><h1>${scene.title}</h1><p>${sceneText(scene, state)}</p>${milestone}<p class="traveler-ending-count">${state.character?.adventuresCompleted ?? 0} adventures completed · Gear capacity: ${capacity}</p><button class="primary" id="openRewards">Prepare for the road</button></section>`, 'centered ending-screen run-background', homeSceneStyle(runScene));
     document.querySelector('#openRewards')!.addEventListener('click', () => {
