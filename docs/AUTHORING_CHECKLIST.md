@@ -11,6 +11,8 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 5. Add focused scenario tests for important branches, required state, payoff, and save-sensitive behavior. The global registry release test checks graph targets, stable-reference catalogs, metadata, and IDs; use `validateScenarioRegistry` for focused fixtures when useful.
 6. Launch it in QA and inspect substantive endings, reward resolution, and the longest mobile scenes. Completion is handled by canonical terminal qualification, not bespoke scenario code.
 
+For a new scenario batch, count scenarios with a meaningful opportunity for coins, reusable Knowledge, Lore, or Gear. The canonical minimum is 70%, with 75–80% preferred; this is a batch-level review, never a requirement to reward every story. If below minimum, record why the batch’s story mix justifies it. See the **Scenario-Batch Reward Density Rule** in [Canonical Design Rules](DESIGN_RULES.md).
+
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
 ## Choosing a depth class
