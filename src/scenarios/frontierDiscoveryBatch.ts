@@ -1,5 +1,7 @@
 import type { FrontierCard } from './frontierDiscoveryTools';
 import { frontierAdventure } from './frontierDiscoveryTools';
+import { largeScene } from './largeContentTools';
+import type { Scenario } from '../types';
 
 const cards: FrontierCard[] = [
   { id: 'roof-through-the-trees', title: 'The Roof Through the Trees', subtitle: 'A repaired cabin may not be as empty as it looks.', shape: 'occupant', risk: 'LOW', setting: 'remote forest cabin', hook: 'A newer window repair and undisturbed dust make an apparently abandoned cabin uncertain.', opening: 'From the old timber road you see a roof deep between the pines. The cabin looks neglected, but one window has a fresh board and the track to its door is hard to read.', clue: 'Inside, most surfaces wear a grey film. One chair is clean, a cup has a dry ring beneath it, and the newer window board is nailed from outside. Nothing proves who last used the cabin.', turn: 'You can watch the cabin from the tree line or enter no farther than the common room.', cautious: 'Watch from the tree line for a while', bold: 'Look through the repaired window', leave: 'Return to the timber road', insight: 'A cabin in disrepair had a recently repaired window and signs of limited use.' },
@@ -96,10 +98,67 @@ const fatalHazards: Record<string, Pick<FrontierCard, 'fatalFailure' | 'failureM
   'the-collapsed-storehouse': { fatalFailure: true, failureMessage: 'The cracked post splits as you reach beneath the tilted beam.', fatalText: 'The beam falls into the back corner as you reach under it. The sound doorway and near shelf were safe; the warned corner was not.' },
 };
 const moderateRisk = new Set(['the-old-hoist', 'the-rusted-safe', 'the-shaft-behind-the-trees']);
-export const FRONTIER_DISCOVERY_ADVENTURES = cards.map((card) => frontierAdventure({
+const frontierAdventures = cards.map((card) => frontierAdventure({
   ...card,
   closure: closures[card.id],
   ...(moderateRisk.has(card.id) ? { risk: 'MODERATE' as const } : {}),
   ...(card.id === 'the-forgotten-powder-shed' ? { risk: 'LOW' as const, boldRisk: false } : {}),
   ...(fatalHazards[card.id] ?? {}),
 }));
+
+/** The assayer story needs observed results for each promised action, not the generic short-form endings. */
+function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
+  const { scenes } = scenario;
+  scenes['the-missing-assayerEvidence'] = {
+    ...scenes['the-missing-assayerEvidence'],
+    choices: [
+      { id: 'callFromDoor', label: 'Call from the doorway and wait for an answer', next: 'the-missing-assayerWait', effects: { knowledge: ['The missing assayer left with a coat and walking stick; no clear evidence of a struggle remained.'] } },
+      { id: 'followRidgeTrail', label: 'Follow the ridge trail to the blind shoulder', next: 'the-missing-assayerDecision', effects: { historyFlags: ['followed the ridge trail from the missing assayer’s station'] } },
+      { id: 'leaveWord', label: 'Take the description to the nearest settlement', next: 'the-missing-assayerReport', effects: { historyFlags: ['reported the missing assayer at the nearest settlement'] } },
+    ],
+  };
+  scenes['the-missing-assayerDecision'] = largeScene(
+    'the-missing-assayerDecision',
+    'Where the Ridge Trail Goes',
+    'You follow the trail to the blind shoulder. The path narrows across loose shale; boot marks cross one another and fade where bare stone begins. Beyond the shoulder, a lower track bends toward the old assay road, but neither the prints nor the route establish that the assayer came this way. You find no sign of an injured person.',
+    [
+      { id: 'traceToSaddle', label: 'Follow the lower track as far as the ridge saddle', next: 'the-missing-assayerBold', effects: { knowledge: ['The ridge trail from the assay station reaches a lower track toward the old assay road, but the prints cannot identify who used it.'] } },
+      { id: 'callAndReturn', label: 'Call once, then return to leave a note at the station', next: 'the-missing-assayerCautious', effects: { historyFlags: ['recorded the ridge trail and unanswered call at the assay station'] } },
+    ],
+    'warning',
+  );
+  scenes['the-missing-assayerWait'] = largeScene(
+    'the-missing-assayerWait',
+    'No Answer at the Station',
+    'You call from the doorway, step outside, and wait. No one answers from the stream path or the ridge. The book remains open to its dated entry, and nothing in the quiet around the station tells you whether the assayer meant to be away only briefly.',
+    [
+      { id: 'leaveStationNote', label: 'Leave a note with the time and return to the road', next: 'the-missing-assayerCautious', effects: { historyFlags: ['left a time-stamped note after no answer at the assay station'] } },
+      { id: 'reportAfterWaiting', label: 'Report the absence at the nearest settlement', next: 'the-missing-assayerReport', effects: { historyFlags: ['reported the missing assayer at the nearest settlement'] } },
+    ],
+    'safe',
+  );
+  scenes['the-missing-assayerReport'] = largeScene(
+    'the-missing-assayerReport',
+    'A Description Left Behind',
+    'At the nearest settlement, you give the clerk the assayer’s description, the dated open book, and the two routes from the station. No one there has news of the worker. The clerk records the details and agrees to ask people returning along the assay road; there is still no evidence to say whether the assayer left by choice or needs help.',
+    [{ id: 'leaveReport', label: 'Leave the report recorded and continue your journey', next: 'the-missing-assayerEvidenceLeft' }],
+    'safe',
+  );
+  scenes['the-missing-assayerCautious'] = {
+    ...scenes['the-missing-assayerCautious'],
+    text: 'You leave a note at the station with the route you checked and the time of your unanswered call. The ridge trail remains passable, and the dated assay entry is undisturbed. You have made it easier for the next visitor to compare accounts, but the assayer’s whereabouts remain unknown.',
+  };
+  scenes['the-missing-assayerBold'] = {
+    ...scenes['the-missing-assayerBold'],
+    text: 'At the ridge saddle, the lower track continues toward the old assay road, then disappears over bare stone. You find no one and no sign of a fall. The route is now clearer, but the prints cannot be dated or identified; the assayer may have taken it, or someone else may have.',
+  };
+  scenes['the-missing-assayerEvidenceLeft'] = {
+    ...scenes['the-missing-assayerEvidenceLeft'],
+    text: 'You leave the description and last-known details with the settlement clerk. No one has seen the assayer, but the report is recorded for people returning along the assay road. The coat and walking stick suggest a departure; they do not settle whether it was voluntary or an emergency.',
+  };
+  return scenario;
+}
+
+export const FRONTIER_DISCOVERY_ADVENTURES = frontierAdventures.map((scenario) =>
+  scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario,
+);
