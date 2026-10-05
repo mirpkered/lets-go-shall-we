@@ -695,6 +695,79 @@ describe('route-aware reward realization audit', () => {
     for (const item of utility) { const key = `${item.class}:${item.classification}`; utilityCounts[key] = (utilityCounts[key] ?? 0) + 1; }
     console.log('ITEM_UTILITY_COUNTS', JSON.stringify(utilityCounts));
     console.log('ITEM_STRANDED_CANDIDATES', JSON.stringify(utility.filter(({ classification }) => classification === 'stranded-candidate' || classification === 'unreachable-or-not-granted')));
+    const allEffects = authoredEffectRows();
+    const persistentProducts = Object.values(ITEMS).filter((item) => item.carryable && inventoryClass(item.id) === 'GEAR');
+    const sourceRoutes = new Map<string, Set<string>>();
+    const repairRoutes = new Map<string, Set<string>>();
+    const upgradeRoutes = new Map<string, Set<string>>();
+    const utilityById = new Map(utility.map((row) => [row.id, row]));
+    const merchantIds = new Set(FIXED_STOCK_MERCHANTS.map(({ id }) => id));
+    for (const { effect, scenario } of allEffects) {
+      const granted = [...(effect.gainItems ?? []), ...(effect.replaceItems ?? []).map(({ newItemId }) => newItemId)];
+      for (const id of granted) if (ITEMS[id]?.carryable && inventoryClass(id) === 'GEAR') {
+        const routes = sourceRoutes.get(id) ?? new Set<string>(); routes.add(scenario.id); sourceRoutes.set(id, routes);
+      }
+      for (const id of effect.repairItems ?? []) { const routes = repairRoutes.get(id) ?? new Set<string>(); routes.add(scenario.id); repairRoutes.set(id, routes); }
+      for (const { itemId } of effect.addItemUpgrades ?? []) { const routes = upgradeRoutes.get(itemId) ?? new Set<string>(); routes.add(scenario.id); upgradeRoutes.set(itemId, routes); }
+    }
+    const useKeys = ['items', 'usableItems', 'anyUsableItems', 'gear', 'usableGear', 'anyItems', 'relics'] as const;
+    const useScenarioCounts = new Map<string, Set<string>>();
+    for (const scenario of SCENARIOS) for (const scene of Object.values(scenario.scenes)) for (const choice of scene.choices) {
+      for (const key of useKeys) for (const id of (choice.requirements?.[key] ?? [])) if (ITEMS[id]?.carryable && inventoryClass(id) === 'GEAR') {
+        const routes = useScenarioCounts.get(id) ?? new Set<string>(); routes.add(scenario.id); useScenarioCounts.set(id, routes);
+      }
+    }
+    const allGearMatrix = persistentProducts.map((item) => {
+      const sources = [...(sourceRoutes.get(item.id) ?? [])];
+      const uses = [...(useScenarioCounts.get(item.id) ?? [])];
+      const use = utilityById.get(item.id);
+      const routeTotals = [7, 10].flatMap((month) => POLICIES.map((policy) => funnelRow(funnel, policy, month, item.id)))
+        .reduce((sum, row) => ({ selected: sum.selected + row.scenarioSelected, visible: sum.visible + row.offerVisible, qualified: sum.qualified + row.qualified, chosen: sum.chosen + row.chosen, granted: sum.granted + row.resolverGranted }), { selected: 0, visible: 0, qualified: 0, chosen: 0, granted: 0 });
+      const holderRows = at50;
+      const holders = holderRows.reduce((sum, row) => sum + (row.gearHolderTravelersById[item.id] ?? 0), 0);
+      const opportunities = holderRows.reduce((sum, row) => sum + (row.gearLaterOpportunityTravelersById[item.id] ?? 0), 0);
+      const laterUses = holderRows.reduce((sum, row) => sum + (row.gearLaterUseTravelersById[item.id] ?? 0), 0);
+      return {
+        id: item.id, name: item.name, sourceScenarios: sources, sourceCount: sources.length,
+        routeSourceSelected: routeTotals.selected, offerVisible: routeTotals.visible, qualified: routeTotals.qualified, chosen: routeTotals.chosen, granted: routeTotals.granted,
+        merchantSourceCount: sources.filter((id) => merchantIds.has(id)).length,
+        useScenarios: uses, crossAdventureUseRouteCount: uses.length,
+        holder50: holders, laterOpportunityPct: percent(opportunities, holders), laterUsePct: percent(laterUses, holders),
+        repairSupport: [...(repairRoutes.get(item.id) ?? [])], upgradeSupport: [...(upgradeRoutes.get(item.id) ?? [])],
+        utilityClass: use?.classification ?? 'no-registered-callback',
+      };
+    });
+    console.log('GEAR_ACQUISITION_UTILITY_MATRIX', JSON.stringify(allGearMatrix));
+    const supplyProducts = Object.values(ITEMS).filter((item) => inventoryClass(item.id) === 'SUPPLY');
+    const supplySourceRoutes = new Map<string, Set<string>>();
+    const supplyUseRoutes = new Map<string, Set<string>>();
+    for (const { effect, scenario } of allEffects) for (const id of Object.keys(effect.gainSupplies ?? {})) {
+      const routes = supplySourceRoutes.get(id) ?? new Set<string>(); routes.add(scenario.id); supplySourceRoutes.set(id, routes);
+    }
+    for (const scenario of SCENARIOS) for (const scene of Object.values(scenario.scenes)) for (const choice of scene.choices) {
+      for (const id of [...Object.keys(choice.requirements?.supplies ?? {}), ...Object.keys(choice.effects?.consumeSupplies ?? {}), ...Object.keys(choice.chance?.successEffects?.consumeSupplies ?? {})]) {
+        const routes = supplyUseRoutes.get(id) ?? new Set<string>(); routes.add(scenario.id); supplyUseRoutes.set(id, routes);
+      }
+    }
+    const allSupplyMatrix = supplyProducts.map((item) => {
+      const id = item.id;
+      const routes = [...(supplySourceRoutes.get(id) ?? [])];
+      const uses = [...(supplyUseRoutes.get(id) ?? [])];
+      const rows = [7, 10].flatMap((month) => POLICIES.map((policy) => funnelRow(funnel, policy, month, id)));
+      const sum = (select: (row: FunnelLedger[string]) => number) => rows.reduce((total, row) => total + select(row), 0);
+      const holders = at50.reduce((total, row) => total + (row.supplyAcquirerTravellersById[id] ?? 0), 0);
+      const opportunities = at50.reduce((total, row) => total + (row.supplyOpportunityAfterAcquisitionTravelersById[id] ?? 0), 0);
+      const laterUses = at50.reduce((total, row) => total + (row.supplyLaterUseTravelersById[id] ?? 0), 0);
+      return {
+        id, name: item.name, sourceScenarios: routes, sourceCount: routes.length,
+        routeSourceSelected: sum((row) => row.scenarioSelected), offerVisible: sum((row) => row.offerVisible), qualified: sum((row) => row.qualified), chosen: sum((row) => row.chosen), granted: sum((row) => row.resolverGranted),
+        merchantSourceCount: routes.filter((sourceId) => merchantIds.has(sourceId)).length,
+        useScenarios: uses, crossAdventureUseRouteCount: uses.length,
+        holder50: holders, laterOpportunityPct: percent(opportunities, holders), laterUsePct: percent(laterUses, holders),
+        stackLimit: item.stackLimit ?? 1,
+      };
+    });
+    console.log('SUPPLY_ACQUISITION_UTILITY_MATRIX', JSON.stringify(allSupplyMatrix));
     console.log('MONEY_EFFECT_AUDIT', JSON.stringify(moneyAudit()));
     expect(reports).toHaveLength(40);
     expect(reports.every((row) => row.reached > 0)).toBe(true);
