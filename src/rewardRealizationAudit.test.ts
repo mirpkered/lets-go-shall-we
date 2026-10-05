@@ -16,7 +16,7 @@ const FUNNEL_ITEM_IDS = Object.values(ITEMS).filter((item) => item.carryable && 
   .concat(Object.values(ITEMS).filter((item) => inventoryClass(item.id) === 'SUPPLY').map((item) => item.id));
 const FUNNEL_GEAR_IDS = FUNNEL_ITEM_IDS.filter((id) => inventoryClass(id) === 'GEAR');
 const FUNNEL_SUPPLY_IDS = FUNNEL_ITEM_IDS.filter((id) => inventoryClass(id) === 'SUPPLY');
-type FunnelStage = 'scenarioSelected' | 'offerVisible' | 'qualified' | 'chosen' | 'resolverGranted' | 'carried' | 'banked' | 'retained' | 'declined' | 'alreadyOwned' | 'lostBeforeEnding' | 'diedBeforeClaim';
+type FunnelStage = 'scenarioSelected' | 'offerReached' | 'offerVisible' | 'qualified' | 'chosen' | 'resolverGranted' | 'carried' | 'banked' | 'retained' | 'declined' | 'alreadyOwned' | 'lostBeforeEnding' | 'diedBeforeClaim';
 type FunnelLedger = Record<string, Record<FunnelStage, number>>;
 
 function effectRewardIds(effects?: Choice['effects']): string[] {
@@ -32,7 +32,7 @@ function choiceRewardIds(choice: Choice): string[] {
 
 function funnelRow(ledger: FunnelLedger, policy: Policy, month: number, itemId: string) {
   const key = `${policy}:${month}:${itemId}`;
-  return ledger[key] ??= { scenarioSelected: 0, offerVisible: 0, qualified: 0, chosen: 0, resolverGranted: 0, carried: 0, banked: 0, retained: 0, declined: 0, alreadyOwned: 0, lostBeforeEnding: 0, diedBeforeClaim: 0 };
+  return ledger[key] ??= { scenarioSelected: 0, offerReached: 0, offerVisible: 0, qualified: 0, chosen: 0, resolverGranted: 0, carried: 0, banked: 0, retained: 0, declined: 0, alreadyOwned: 0, lostBeforeEnding: 0, diedBeforeClaim: 0 };
 }
 
 function actuallyUsedPersistentItems(choice: Choice, state: SaveData): string[] {
@@ -191,10 +191,13 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
       }
     }
     for (const offer of scene.choices) for (const id of choiceRewardIds(offer)) {
-      if (inventoryClass(id) === 'GEAR') gearAcquisitionOfferSeen = true;
       const row = funnelRow(funnel, policy, month, id);
-      row.offerVisible++;
-      if (meets(offer.requirements, current)) row.qualified++;
+      row.offerReached++;
+      if (meets(offer.requirements, current)) {
+        row.offerVisible++;
+        row.qualified++;
+        if (inventoryClass(id) === 'GEAR') gearAcquisitionOfferSeen = true;
+      }
     }
     for (const choice of scene.choices) if (choice.requirements?.supplies && Object.keys(choice.requirements.supplies).length) {
       const withoutSupply = { ...choice.requirements };
@@ -732,7 +735,9 @@ describe('route-aware reward realization audit', () => {
         medianFirstCoinSpend: quantile(firstSpend, .5) || null,
         medianFirstMaterial: quantile(first('firstMaterialAdventure'), .5) || null,
         firstGearQuartiles: [quantile(first('firstGearGrantAdventure'), .25) || null, quantile(first('firstGearGrantAdventure'), .5) || null, quantile(first('firstGearGrantAdventure'), .75) || null],
+        firstSupplyQuartiles: [quantile(first('firstAnySupplyAdventure'), .25) || null, quantile(first('firstAnySupplyAdventure'), .5) || null, quantile(first('firstAnySupplyAdventure'), .75) || null],
         firstCoinQuartiles: [quantile(first('firstCoinAdventure'), .25) || null, quantile(first('firstCoinAdventure'), .5) || null, quantile(first('firstCoinAdventure'), .75) || null],
+        firstMaterialQuartiles: [quantile(first('firstMaterialAdventure'), .25) || null, quantile(first('firstMaterialAdventure'), .5) || null, quantile(first('firstMaterialAdventure'), .75) || null],
         medianEarnedCoins: quantile(cohort.flatMap((row) => row.coinsEarnedTotal), .5),
         medianSpentCoins: quantile(cohort.flatMap((row) => row.coinsSpentTotal), .5),
       };
