@@ -61,7 +61,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, item?: 
 describe('commerce, bargains, and property adventure batch', () => {
   it('registers ten distinct stories with forward-only graphs and concise mobile copy', () => {
     expect(COMMERCE_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(445);
+    expect(SCENARIOS).toHaveLength(455);
     expect(COMMERCE_ADVENTURES.map(({ title }) => title)).toEqual([
       'Payment in Kind', 'Short on the Wages', 'Market Day', 'The Horse Trade', 'The Broken Crate',
       'Half Now', 'Somebody Else’s Land', 'The Pawned Tool', 'Last Room, Higher Price', 'Who Owns the Mule?',
@@ -149,6 +149,11 @@ describe('commerce, bargains, and property adventure batch', () => {
 
     const owner = act(start(MARKET_DAY, {}, 'travelRope', 4), MARKET_DAY, 'marketSquare', 'comparePrices');
     expect(MARKET_DAY.scenes.toolStall.choices.filter(({ requirements }) => meets(requirements, owner)).map(({ id }) => id)).not.toContain('buyTravelRope');
+
+    const bankedRope = start(MARKET_DAY, {}, undefined, 4);
+    bankedRope.bank.push('travelRope');
+    bankedRope.run!.sceneId = 'toolStall';
+    expect(meets(MARKET_DAY.scenes.toolStall.choices.find(({ id }) => id === 'buyTravelRope')!.requirements, bankedRope)).toBe(false);
   });
 
   it('makes two useful existing trail tools available through a separate, optional market stall', () => {

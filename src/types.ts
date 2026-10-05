@@ -200,6 +200,8 @@ export interface Requirement {
   temporaryEquipment?: string[];
   notItemUpgrades?: Record<string, string[]>;
   notItems?: string[];
+  /** Requires that an item is absent from carried/run inventory and the Bank. */
+  notOwnedItems?: string[];
   anyItems?: string[];
   flags?: string[];
   notFlags?: string[];

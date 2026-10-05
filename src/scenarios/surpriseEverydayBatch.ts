@@ -225,7 +225,12 @@ export const THE_LAMP_LEFT_IN_THE_WINDOW = story('the-lamp-left-in-the-window', 
   street: scene('street', 'A Light after Closing', 'One upstairs window glows in a closed house. A neighbor says it means the owner has returned; another says the owner is away until market day. No one has seen anyone enter.', [
     { id: 'askForPracticalCause', label: 'Ask who last checked the house', next: 'neighbor' },
     { id: 'lookFromStreet', label: 'Look for a safe sign from the street', next: 'window' },
+    { id: 'explainOldLampMarks', label: 'Explain how an old numbered lamp system worked', requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.numberedRefugeLampSystem.id] }, next: 'lampCode' },
     { id: 'leaveRumorAlone', label: 'Leave the neighbors to their talk', next: 'left' },
+  ]),
+  lampCode: scene('lampCode', 'A Number Is Not a Signal', 'You explain that the old refuge lamps carried brass tags linking each wick to a registered room; a light in one window was not enough to identify a message. The neighbors look again: this lamp has no tag, no sequence, and no reason to treat a private home as a public signal.', [
+    { id: 'shareCarefully', label: 'Settle the rumor without entering the house', next: 'corrected', effects: { historyFlags: ['used_lantern_vault_lore_to_correct_window_lamp_rumor'] } },
+    { id: 'askKeyholderAnyway', label: 'Let the keyholder check the ordinary lamp', next: 'checked' },
   ]),
   neighbor: scene('neighbor', 'A Lamp for the Window Plants', 'A second neighbor remembers the owner asking her to leave the lamp near the window plants during a cold night. The owner is away, but the lamp may have been left burning by mistake.', [
     { id: 'askNeighborToCheck', label: 'Ask the neighbor to use her key', next: 'checked' },

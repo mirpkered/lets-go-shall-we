@@ -15,6 +15,7 @@ export const KNOWLEDGE_FACTS = {
   markedAces: { id: 'mercer-marked-aces-method', text: 'Mercer marked the backs of three aces with tiny half-moon nicks and reads them by touch.' },
   freightWagonAxle: { id: 'freight-wagon-rut-axle-evidence', text: 'The freight wagon broke at a deep rut; the axle is cracked, not cleanly cut.' },
   riverBendSupper: { id: 'ferryman-river-bends-seasonal-report', text: 'A ferryman said river bends are shallow this season, but can change after rain.' },
+  numberedRefugeLampSystem: { id: 'lantern-vault-numbered-refuge-lamps', text: 'The Lantern Vault’s brass-tagged wick belonged to a numbered refuge-lamp system; its marks identified a registered room, not a door.' },
 } satisfies Record<string, KnowledgeFact>;
 
 export const KNOWLEDGE_FACTS_BY_ID = Object.fromEntries(Object.values(KNOWLEDGE_FACTS).map((fact) => [fact.id, fact])) as Record<string, KnowledgeFact>;

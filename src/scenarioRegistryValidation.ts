@@ -54,7 +54,7 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
     }
   }
 
-  const itemLists: (keyof Requirement)[] = ['items', 'usableItems', 'notUsableItems', 'anyUsableItems', 'gear', 'usableGear', 'relics', 'temporaryEquipment', 'notItems'];
+  const itemLists: (keyof Requirement)[] = ['items', 'usableItems', 'notUsableItems', 'anyUsableItems', 'gear', 'usableGear', 'relics', 'temporaryEquipment', 'notItems', 'notOwnedItems'];
   const itemMaps: (keyof Requirement)[] = ['itemConditions', 'itemUpgrades', 'gearUpgrades', 'notItemUpgrades'];
   const inspectRequirement = (requirement: Requirement | undefined, where: string) => {
     if (!requirement) return;

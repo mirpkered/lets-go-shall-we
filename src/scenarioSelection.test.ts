@@ -122,13 +122,13 @@ describe('player scenario selection and QA mode', () => {
   });
 
   it('assigns every registered scenario a valid consequence-based risk tier', () => {
-    expect(SCENARIOS).toHaveLength(445);
+    expect(SCENARIOS).toHaveLength(455);
     for (const scenario of SCENARIOS) expect(RISK_TIERS).toContain(scenarioRiskTier(scenario));
     for (const scenario of SCENARIOS.filter((entry) => Object.values(entry.scenes).some((scene) => scene.ending === 'death'))) {
       expect(['HIGH', 'SEVERE']).toContain(scenarioRiskTier(scenario));
     }
     const distribution = Object.fromEntries(RISK_TIERS.map((tier) => [tier, SCENARIOS.filter((scenario) => scenarioRiskTier(scenario) === tier).length]));
-    expect(distribution).toEqual({ LOW: 197, MODERATE: 115, HIGH: 94, SEVERE: 39 });
+    expect(distribution).toEqual({ LOW: 207, MODERATE: 115, HIGH: 94, SEVERE: 39 });
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'gone-fishing')!)).toBe('LOW');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'under-the-ice')!)).toBe('SEVERE');
     expect(scenarioRiskTier(SCENARIOS.find(({ id }) => id === 'high-water')!)).toBe('SEVERE');
@@ -165,7 +165,7 @@ describe('player scenario selection and QA mode', () => {
 
   it('uses authored risk metadata as the sole authority whenever present', () => {
     const declared = SCENARIOS.filter(({ diversity }) => diversity?.riskTier);
-    expect(declared).toHaveLength(302);
+    expect(declared).toHaveLength(312);
     for (const scenario of declared) expect(scenarioRiskTier(scenario), scenario.title).toBe(scenario.diversity!.riskTier);
 
     const optionalLethal: Scenario = {

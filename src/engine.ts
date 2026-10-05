@@ -301,6 +301,7 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.temporaryEquipment || requirement.temporaryEquipment.every((id) => hasTemporaryEquipment(state, id)))
     && (!requirement.notItemUpgrades || Object.entries(requirement.notItemUpgrades).every(([id, upgrades]) => upgrades.every((upgradeId) => !hasUpgrade(state, id, upgradeId))))
     && (!requirement.notItems || requirement.notItems.every((id) => !run.inventory.includes(id)))
+    && (!requirement.notOwnedItems || requirement.notOwnedItems.every((id) => !hasItem(state, id)))
     && (!requirement.anyItems || requirement.anyItems.some((id) => run.inventory.includes(id)))
     && (!requirement.flags || requirement.flags.every((id) => run.flags.includes(id)))
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))

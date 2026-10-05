@@ -43,9 +43,9 @@ export const LAST_STOP: Scenario = {
       id: 'stationKiosk', title: 'Last-Minute Provisions',
       text: 'The kiosk keeper has practical odds and ends among the sweets: a compact toolkit, a hooked travel rope, and a folded railway map. None looks especially heroic.',
       choices: [
-        { id: 'buyTools', label: 'Toolkit — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
-        { id: 'buyRope', label: 'Travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
-        { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding] }, next: 'kioskPurchase' },
+        { id: 'buyTools', label: 'Toolkit — 4 coins', timeCost: 2, requirements: { minMoney: 4, notOwnedItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
+        { id: 'buyRope', label: 'Travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notOwnedItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
+        { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notOwnedItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding] }, next: 'kioskPurchase' },
         { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
       ],
     },

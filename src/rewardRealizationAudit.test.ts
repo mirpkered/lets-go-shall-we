@@ -4,6 +4,7 @@ import { newCharacter, startAdventure, choose, meets, openRewardResolution, newR
 import { inventoryClass, ITEMS } from './items';
 import { SCENARIOS } from './scenarios';
 import { primaryScenarioCategory, selectScenario } from './scenarioSelection';
+import { FIXED_STOCK_MERCHANTS } from './scenarios/merchantEcologyBatch';
 import type { Choice, SaveData } from './types';
 
 type Policy = 'random' | 'cautious' | 'engaged' | 'risk-tolerant' | 'continuity-seeking';
@@ -140,9 +141,9 @@ function emptyState(): SaveData {
   return { ...structuredClone(EMPTY_SAVE), character: newCharacter('Audit Traveler') };
 }
 
-function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; gearOpportunityIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; supplyOpportunitiesById: Record<string, number>; acquiredGearIds: string[]; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
+function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger, scenarios: typeof SCENARIOS = SCENARIOS): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; gearOpportunityIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; supplyOpportunitiesById: Record<string, number>; acquiredGearIds: string[]; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
   const state = initial;
-  const scenario = selectScenario(SCENARIOS, state.recentScenarioIds, random, {
+  const scenario = selectScenario(scenarios, state.recentScenarioIds, random, {
     adventuresCompleted: state.character!.adventuresCompleted,
     recentRiskHistory: state.recentRiskHistory,
     categoryHistory: state.character!.scenarioCategoryHistory,
@@ -301,7 +302,7 @@ function persistentGearIds(state: SaveData): Set<string> {
   return new Set([...getCarriedItems(state.character), ...state.bank].filter((id) => inventoryClass(id) === 'GEAR' && ITEMS[id]?.carryable));
 }
 
-function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}): Snapshot[] {
+function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}, scenarios: typeof SCENARIOS = SCENARIOS): Snapshot[] {
   const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], gearHolderTravelersById: {}, gearLaterOpportunityTravelersById: {}, gearLaterOpportunityDelayById: {}, gearLaterUseTravelersById: {}, gearSameAdventureUseTravelersById: {}, gearLaterUseDelayById: {}, supplyOpportunityAfterAcquisitionTravelersById: {}, supplyLaterUseTravelersById: {}, supplySameAdventureUseTravelersById: {}, supplyLaterUseDelayById: {}, everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
   for (let traveler = 0; traveler < travelers; traveler++) {
     const random = rng((month * 1000003 + traveler * 7919 + POLICIES.indexOf(policy) * 104729) >>> 0);
@@ -361,7 +362,7 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
       const carriedBeforeRun = new Set(getCarriedItems(state.character).filter((id) => inventoryClass(id) === 'GEAR' && ITEMS[id]?.carryable));
       const suppliesBeforeRun = structuredClone(state.character?.supplies ?? {});
       const suppliesHeldBeforeRun = new Set(Object.entries(suppliesBeforeRun).filter(([, quantity]) => quantity > 0).map(([id]) => id));
-      const result = completeOneAdventure(state, policy, month, random, funnel);
+      const result = completeOneAdventure(state, policy, month, random, funnel, scenarios);
       state = result.state;
       const adventureNumber = completed + 1;
       for (const id of result.gearOpportunityIds) if (carriedBeforeRun.has(id)) {
@@ -582,6 +583,14 @@ describe('route-aware reward realization audit', () => {
   it('simulates canonical scenario routes through real selector and engine effects', () => {
     const funnel: FunnelLedger = {};
     const reports = [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, funnel)));
+    const compareMerchantExpansion = process.env.MERCHANT_AUDIT_COMPARE === '1';
+    const baselineReports = compareMerchantExpansion
+      ? (() => {
+        const baselineScenarios = SCENARIOS.filter((scenario) => !FIXED_STOCK_MERCHANTS.some(({ id }) => id === scenario.id));
+        const baselineFunnel: FunnelLedger = {};
+        return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
+      })()
+      : [];
     const summary = reports.map((row) => ({
       policy: row.policy, month: row.month, n: SAMPLE_SIZE, reached: row.reached, deathsBefore: row.deaths,
       noGear: percent(row.gear0, row.reached), gear1: percent(row.gear1plus, row.reached), gear2: percent(row.gear2plus, row.reached), gear3: percent(row.gear3plus, row.reached),
@@ -595,6 +604,30 @@ describe('route-aware reward realization audit', () => {
       knowledgeCallbacksPerTraveler: +(row.knowledgeCallbacks / Math.max(1, row.reached)).toFixed(2), contactCallbacksPerTraveler: +(row.contactCallbacks / Math.max(1, row.reached)).toFixed(2), favorUseEvents: row.favorUses,
     }));
     console.log('ROUTE_AWARE_REWARD_REALIZATION', JSON.stringify(summary.map(({ policy, month, reached, deathsBefore, noGear, gear1, gear2, gear3, bankUsers, bankInteractionsPerTraveler, supplyUsers, supplyGainUse, selectedGearUsesPerTraveler }) => ({ policy, month, reached, deathsBefore, noGear, gear1, gear2, gear3, bankUsers, bankInteractionsPerTraveler, supplyUsers, supplyGainUse, selectedGearUsesPerTraveler }))));
+    const compactMilestoneMetrics = (rows: Snapshot[], month: number, milestone: number) => {
+      const cohort = rows.filter((row) => row.month === month && row.milestone === milestone);
+      const sum = (pick: (row: Snapshot) => number) => cohort.reduce((total, row) => total + pick(row), 0);
+      const reached = sum((row) => row.reached);
+      return {
+        month, milestone, reached,
+        everAcquiredGearPct: percent(sum((row) => row.everGrantedGearTravelers), reached),
+        currentGearPct: percent(sum((row) => row.gear1plus), reached),
+        twoPlusGearPct: percent(sum((row) => row.gear2plus), reached),
+        bankUsersPct: percent(sum((row) => row.bankUsers), reached),
+        supplyHoldersPct: percent(sum((row) => row.supplyUsers), reached),
+        gearUseEventsPerTraveler: +(sum((row) => row.gearUseEvents) / Math.max(1, reached)).toFixed(2),
+        supplyAcquisitions: sum((row) => row.supplyGained),
+        supplyUses: sum((row) => row.suppliesConsumed),
+        medianFirstGearAdventure: quantile(cohort.flatMap((row) => row.firstGearGrantAdventure), .5),
+      };
+    };
+    if (compareMerchantExpansion) {
+      const merchantComparison = [7, 10].flatMap((month) => [10, 20, 50].map((milestone) => ({
+        before: compactMilestoneMetrics(baselineReports, month, milestone),
+        after: compactMilestoneMetrics(reports, month, milestone),
+      })));
+      console.log('MERCHANT_EXPANSION_BEFORE_AFTER', JSON.stringify(merchantComparison));
+    }
     console.log('EVER_ACQUIRED_AND_RETENTION', JSON.stringify(reports.map((row) => ({
       policy: row.policy, month: row.month, milestone: row.milestone, reached: row.reached,
       anyGearEverGrantedPct: percent(row.everGrantedGearTravelers, row.reached), anyGearEverOwnedPct: percent(row.everOwnedGearTravelers, row.reached),
