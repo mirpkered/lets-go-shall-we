@@ -5,6 +5,7 @@ import { inventoryClass, ITEMS } from './items';
 import { SCENARIOS } from './scenarios';
 import { primaryScenarioCategory, selectScenario } from './scenarioSelection';
 import { FIXED_STOCK_MERCHANTS } from './scenarios/merchantEcologyBatch';
+import { GEAR_CORRECTIVE_ADVENTURES } from './scenarios/gearCorrectiveBatch';
 import type { Choice, SaveData } from './types';
 
 type Policy = 'random' | 'cautious' | 'engaged' | 'risk-tolerant' | 'continuity-seeking';
@@ -149,7 +150,7 @@ function emptyState(): SaveData {
   return { ...structuredClone(EMPTY_SAVE), character: newCharacter('Audit Traveler') };
 }
 
-function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger, scenarios: typeof SCENARIOS = SCENARIOS): { state: SaveData; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; gearOpportunityIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; supplyOpportunitiesById: Record<string, number>; acquiredGearIds: string[]; acquiredRelicIds: string[]; coinsEarned: number; coinsSpent: number; gearAcquisitionOfferSeen: boolean; continuityRewardOfferSeen: boolean; knowledgeGain: number; loreGain: number; merchantEncounter: boolean; affordableMerchantPurchaseSeen: boolean; merchantPurchaseCount: number; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
+function completeOneAdventure(initial: SaveData, policy: Policy, month: number, random: () => number, funnel: FunnelLedger, scenarios: typeof SCENARIOS = SCENARIOS): { state: SaveData; scenarioId: string | null; completed: boolean; died: boolean; banked: boolean; usedFavor: boolean; gearUseIds: string[]; gearOpportunityIds: string[]; relicUseIds: string[]; knowledgeCallbacks: number; contactCallbacks: number; supplyGain: number; supplyUse: number; supplyGainById: Record<string, number>; supplyUseById: Record<string, number>; supplyOpportunitiesById: Record<string, number>; acquiredGearIds: string[]; acquiredRelicIds: string[]; coinsEarned: number; coinsSpent: number; gearAcquisitionOfferSeen: boolean; continuityRewardOfferSeen: boolean; knowledgeGain: number; loreGain: number; merchantEncounter: boolean; affordableMerchantPurchaseSeen: boolean; merchantPurchaseCount: number; firstSupplyOption: Record<string, boolean>; supplyOpportunities: number; missedSupplyOpportunities: number; claims: number; declines: number; bankedRewards: number; capacityBlocked: number; routeDamage: boolean; knowledgeBefore: number; knowledgeAfter: number } {
   const state = initial;
   const scenario = selectScenario(scenarios, state.recentScenarioIds, random, {
     adventuresCompleted: state.character!.adventuresCompleted,
@@ -158,7 +159,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
     scenarioPlayCounts: state.character!.scenarioPlayCounts,
     selectionMonth: month,
   });
-  if (!scenario) return { state, completed: false, died: false, banked: false, usedFavor: false, gearUseIds: [], gearOpportunityIds: [], relicUseIds: [], knowledgeCallbacks: 0, contactCallbacks: 0, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, supplyOpportunitiesById: {}, acquiredGearIds: [], acquiredRelicIds: [], coinsEarned: 0, coinsSpent: 0, gearAcquisitionOfferSeen: false, continuityRewardOfferSeen: false, knowledgeGain: 0, loreGain: 0, merchantEncounter: false, affordableMerchantPurchaseSeen: false, merchantPurchaseCount: 0, firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
+  if (!scenario) return { state, scenarioId: null, completed: false, died: false, banked: false, usedFavor: false, gearUseIds: [], gearOpportunityIds: [], relicUseIds: [], knowledgeCallbacks: 0, contactCallbacks: 0, supplyGain: 0, supplyUse: 0, supplyGainById: {}, supplyUseById: {}, supplyOpportunitiesById: {}, acquiredGearIds: [], acquiredRelicIds: [], coinsEarned: 0, coinsSpent: 0, gearAcquisitionOfferSeen: false, continuityRewardOfferSeen: false, knowledgeGain: 0, loreGain: 0, merchantEncounter: false, affordableMerchantPurchaseSeen: false, merchantPurchaseCount: 0, firstSupplyOption: {}, supplyOpportunities: 0, missedSupplyOpportunities: 0, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: false, knowledgeBefore: 0, knowledgeAfter: 0 };
   const scenarioRewardIds = new Set(Object.values(scenario.scenes).flatMap((scene) => scene.choices.flatMap(choiceRewardIds)).flatMap((id) => id));
   for (const id of scenarioRewardIds) funnelRow(funnel, policy, month, id).scenarioSelected++;
   const knowledgeBefore = state.character!.knowledgeKeys?.length ?? state.character!.knowledge.length;
@@ -283,12 +284,12 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   if (current.run?.status === 'death') {
     for (const id of acquiredGearIds) funnelRow(funnel, policy, month, id).diedBeforeClaim++;
     const dead = failCharacter(current);
-    return { state: dead, completed: false, died: true, banked: false, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
+    return { state: dead, scenarioId: scenario.id, completed: false, died: true, banked: false, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims: 0, declines: 0, bankedRewards: 0, capacityBlocked: 0, routeDamage: true, knowledgeBefore, knowledgeAfter: 0 };
   }
   if (current.run?.status !== 'success') {
     // Stalled routes are modeled as an abandoned run; no reward is claimed.
     current.run = null;
-    return { state: current, completed: false, died: false, banked: false, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
+    return { state: current, scenarioId: scenario.id, completed: false, died: false, banked: false, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage: false, knowledgeBefore, knowledgeAfter: current.character?.knowledge.length ?? 0 };
   }
   const routeDamage = current.run!.health < current.character!.maxHealth;
   const alreadyPersisted = new Set([...getCarriedItems(current.character), ...current.bank]);
@@ -320,7 +321,7 @@ function completeOneAdventure(initial: SaveData, policy: Policy, month: number, 
   }
   current = finishRewardResolution(current);
   current = depositRedundantItems(current);
-  return { state: current, completed: true, died: false, banked, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
+  return { state: current, scenarioId: scenario.id, completed: true, died: false, banked, usedFavor, gearUseIds: [...gearUseIds], gearOpportunityIds: [...gearOpportunityIds], relicUseIds: [...relicUseIds], knowledgeCallbacks, contactCallbacks, supplyGain, supplyUse, supplyGainById, supplyUseById, supplyOpportunitiesById, acquiredGearIds: [...acquiredGearIds], acquiredRelicIds: [...acquiredRelicIds], coinsEarned, coinsSpent, gearAcquisitionOfferSeen, continuityRewardOfferSeen, knowledgeGain, loreGain, merchantEncounter, affordableMerchantPurchaseSeen, merchantPurchaseCount, firstSupplyOption, supplyOpportunities, missedSupplyOpportunities, claims, declines, bankedRewards, capacityBlocked, routeDamage, knowledgeBefore, knowledgeAfter: current.character!.knowledge.length };
 }
 
 interface Snapshot {
@@ -338,13 +339,17 @@ interface Snapshot {
   everSupplyTravelersById: Record<string, number>; firstSupplyAdventureById: Record<string, number[]>; deathsAfterGearGrant: number; deathsAfterGearOwnership: number; carriedGearLostToDeath: number; unclaimedGearLostToDeath: number; bankedGearPreservedAtDeath: number; suppliesLostToDeath: number;
   zeroKnowledgeEver?: number; zeroLoreEver?: number; continuityExposureTravelers?: number; continuityAcquiredTravelers?: number; firstKnowledgeAdventure?: number[]; firstLoreAdventure?: number[]; firstContinuityAdventure?: number[];
   merchantEncounterTravelers?: number; merchantAffordableTravelers?: number; merchantBuyerTravelers?: number; merchantPurchaseEvents?: number; firstMerchantAdventure?: number[]; firstAffordableMerchantAdventure?: number[]; firstMerchantPurchaseAdventure?: number[]; firstBankUseAdventure?: number[]; firstGearOfferAdventure?: number[];
+  correctiveBatchSeen?: number; correctiveBatchGearOfferSeen?: number; correctiveBatchGearAcquired?: number; correctiveBatchAdventureCount?: number; firstCorrectiveBatchAdventure?: number[]; firstCorrectiveBatchGearOfferAdventure?: number[]; firstCorrectiveBatchGearAdventure?: number[];
 }
 
 function persistentGearIds(state: SaveData): Set<string> {
   return new Set([...getCarriedItems(state.character), ...state.bank].filter((id) => inventoryClass(id) === 'GEAR' && ITEMS[id]?.carryable));
 }
 
-function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}, scenarios: typeof SCENARIOS = SCENARIOS): Snapshot[] {
+type BatchExposureLedger = Record<string, { selected: number; gearOffer: number; gearGranted: number }>;
+const correctiveGearIds = new Set(GEAR_CORRECTIVE_ADVENTURES.map(({ id }) => id));
+
+function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}, scenarios: typeof SCENARIOS = SCENARIOS, batchLedger?: BatchExposureLedger): Snapshot[] {
   const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], coinsEarnedTotal: [], coinsSpentTotal: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], zeroGearEver: 0, zeroSupplyEver: 0, zeroRelicEver: 0, zeroEarnedCoins: 0, zeroSpentCoins: 0, zeroMaterialEver: 0, zeroMaterialAndCoins: 0, gearOrCoins: 0, earnedSpentAndGear: 0, everBankedGearTravelers: 0, gearOfferTravelers: 0, carriedGearZero: 0, carriedGearOne: 0, carriedGearTwoPlus: 0, firstAnySupplyAdventure: [], firstCoinAdventure: [], firstCoinSpendAdventure: [], firstMaterialAdventure: [], gearHolderTravelersById: {}, gearLaterOpportunityTravelersById: {}, gearLaterOpportunityDelayById: {}, gearLaterUseTravelersById: {}, gearSameAdventureUseTravelersById: {}, gearLaterUseDelayById: {}, supplyOpportunityAfterAcquisitionTravelersById: {}, supplyLaterUseTravelersById: {}, supplySameAdventureUseTravelersById: {}, supplyLaterUseDelayById: {}, everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
   for (let traveler = 0; traveler < travelers; traveler++) {
     const random = rng((month * 1000003 + traveler * 7919 + POLICIES.indexOf(policy) * 104729) >>> 0);
@@ -412,6 +417,13 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
     let unclaimedGearLostToDeath = 0;
     let bankedGearPreservedAtDeath = 0;
     let suppliesLostToDeath = 0;
+    let correctiveBatchAdventureCount = 0;
+    let correctiveBatchSeen = false;
+    let correctiveBatchGearOfferSeen = false;
+    let correctiveBatchGearAcquired = false;
+    let firstCorrectiveBatchAt: number | undefined;
+    let firstCorrectiveBatchGearOfferAt: number | undefined;
+    let firstCorrectiveBatchGearAt: number | undefined;
     const supplyAcquiredSet = new Set<string>();
     const supplyUsedSet = new Set<string>();
     let rewardClaims = 0;
@@ -428,6 +440,28 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
       const result = completeOneAdventure(state, policy, month, random, funnel, scenarios);
       state = result.state;
       const adventureNumber = completed + 1;
+      if (result.scenarioId && correctiveGearIds.has(result.scenarioId)) {
+        correctiveBatchSeen = true;
+        firstCorrectiveBatchAt ??= adventureNumber;
+        if (result.gearAcquisitionOfferSeen) {
+          correctiveBatchGearOfferSeen = true;
+          firstCorrectiveBatchGearOfferAt ??= adventureNumber;
+        }
+        const placedFromBatch = result.acquiredGearIds.some((id) => persistentGearIds(state).has(id));
+        if (placedFromBatch) {
+          correctiveBatchGearAcquired = true;
+          firstCorrectiveBatchGearAt ??= adventureNumber;
+        }
+        if (result.completed) {
+          correctiveBatchAdventureCount++;
+          if (batchLedger) {
+            const entry = batchLedger[result.scenarioId] ??= { selected: 0, gearOffer: 0, gearGranted: 0 };
+            entry.selected++;
+            entry.gearOffer += Number(result.gearAcquisitionOfferSeen);
+            entry.gearGranted += Number(placedFromBatch);
+          }
+        }
+      }
       if (result.merchantEncounter) firstMerchantAt ??= adventureNumber;
       if (result.affordableMerchantPurchaseSeen) firstAffordableMerchantAt ??= adventureNumber;
       if (result.merchantPurchaseCount > 0) firstMerchantPurchaseAt ??= adventureNumber;
@@ -541,6 +575,13 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
           if (firstGearOfferAt !== undefined) (row.firstGearOfferAdventure ??= []).push(firstGearOfferAt);
           if (firstGearOwnedAt !== undefined) row.firstGearOwnedAdventure.push(firstGearOwnedAt);
           row.zeroGearEver += Number(everGrantedGearIds.size === 0);
+          row.correctiveBatchSeen = (row.correctiveBatchSeen ?? 0) + Number(correctiveBatchSeen);
+          row.correctiveBatchGearOfferSeen = (row.correctiveBatchGearOfferSeen ?? 0) + Number(correctiveBatchGearOfferSeen);
+          row.correctiveBatchGearAcquired = (row.correctiveBatchGearAcquired ?? 0) + Number(correctiveBatchGearAcquired);
+          row.correctiveBatchAdventureCount = (row.correctiveBatchAdventureCount ?? 0) + correctiveBatchAdventureCount;
+          if (firstCorrectiveBatchAt !== undefined) (row.firstCorrectiveBatchAdventure ??= []).push(firstCorrectiveBatchAt);
+          if (firstCorrectiveBatchGearOfferAt !== undefined) (row.firstCorrectiveBatchGearOfferAdventure ??= []).push(firstCorrectiveBatchGearOfferAt);
+          if (firstCorrectiveBatchGearAt !== undefined) (row.firstCorrectiveBatchGearAdventure ??= []).push(firstCorrectiveBatchGearAt);
           row.zeroKnowledgeEver = (row.zeroKnowledgeEver ?? 0) + Number(char.knowledge.length === 0);
           row.zeroLoreEver = (row.zeroLoreEver ?? 0) + Number(char.lore.length === 0);
           row.continuityExposureTravelers = (row.continuityExposureTravelers ?? 0) + Number(continuityRewardExposed);
@@ -719,7 +760,15 @@ function moneyAudit() {
 describe('route-aware reward realization audit', () => {
   it('simulates canonical scenario routes through real selector and engine effects', () => {
     const funnel: FunnelLedger = {};
-    const reports = [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, funnel)));
+    const batchExposure: BatchExposureLedger = {};
+    const reports = [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, funnel, SCENARIOS, batchExposure)));
+    const correctiveBatchBaseline = process.env.GEAR_BATCH_AUDIT_COMPARE === '1'
+      ? (() => {
+        const baselineScenarios = SCENARIOS.filter((scenario) => !correctiveGearIds.has(scenario.id));
+        const baselineFunnel: FunnelLedger = {};
+        return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
+      })()
+      : [];
     const compareMerchantExpansion = process.env.MERCHANT_AUDIT_COMPARE === '1';
     const baselineReports = compareMerchantExpansion
       ? (() => {
@@ -831,6 +880,13 @@ describe('route-aware reward realization audit', () => {
         zeroSpentCoinsPct: percent(sum('zeroSpentCoins'), reached),
         gearOrCoinsPct: percent(sum('gearOrCoins'), reached), earnedSpentAndGearPct: percent(sum('earnedSpentAndGear'), reached),
         everBankedGearPct: percent(sum('everBankedGearTravelers'), reached), gearOfferSeenPct: percent(sum('gearOfferTravelers'), reached),
+        correctiveBatchSeenPct: percent(cohort.reduce((total, row) => total + (row.correctiveBatchSeen ?? 0), 0), reached),
+        correctiveBatchGearOfferSeenPct: percent(cohort.reduce((total, row) => total + (row.correctiveBatchGearOfferSeen ?? 0), 0), reached),
+        correctiveBatchGearAcquiredPct: percent(cohort.reduce((total, row) => total + (row.correctiveBatchGearAcquired ?? 0), 0), reached),
+        correctiveBatchAdventuresPerTraveler: +(cohort.reduce((total, row) => total + (row.correctiveBatchAdventureCount ?? 0), 0) / Math.max(1, reached)).toFixed(2),
+        medianFirstCorrectiveBatch: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchAdventure ?? []), .5) || null,
+        medianFirstBatchGearOffer: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchGearOfferAdventure ?? []), .5) || null,
+        medianFirstBatchGearAcquisition: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchGearAdventure ?? []), .5) || null,
         carriedGearZeroPct: percent(sum('carriedGearZero'), reached), carriedGearOnePct: percent(sum('carriedGearOne'), reached), carriedGearTwoPlusPct: percent(sum('carriedGearTwoPlus'), reached),
         zeroPersistentMaterialPct: percent(sum('zeroMaterialEver'), reached), zeroMaterialAndCoinsPct: percent(sum('zeroMaterialAndCoins'), reached),
         medianFirstGear: quantile(first('firstGearGrantAdventure'), .5) || null,
@@ -857,6 +913,29 @@ describe('route-aware reward realization audit', () => {
       };
     }));
     console.log('REWARD_DROUGHT_POOLED', JSON.stringify(pooledDrought));
+    console.log('CORRECTIVE_GEAR_BATCH_EXPOSURE', JSON.stringify({ milestones: pooledDrought.map(({ month, milestone, reached, correctiveBatchSeenPct, correctiveBatchGearOfferSeenPct, correctiveBatchGearAcquiredPct, correctiveBatchAdventuresPerTraveler, medianFirstCorrectiveBatch, medianFirstBatchGearOffer, medianFirstBatchGearAcquisition }) => ({ month, milestone, reached, correctiveBatchSeenPct, correctiveBatchGearOfferSeenPct, correctiveBatchGearAcquiredPct, correctiveBatchAdventuresPerTraveler, medianFirstCorrectiveBatch, medianFirstBatchGearOffer, medianFirstBatchGearAcquisition })), scenarioContributions: batchExposure }));
+    if (correctiveBatchBaseline.length) {
+      const baselineMetrics = [7, 10].flatMap((month) => MILESTONES.map((milestone) => {
+        const cohort = correctiveBatchBaseline.filter((row) => row.month === month && row.milestone === milestone);
+        const reached = cohort.reduce((sum, row) => sum + row.reached, 0);
+        const sum = (field: keyof Snapshot) => cohort.reduce((total, row) => total + (row[field] as number), 0);
+        const first = (field: 'firstGearGrantAdventure' | 'firstAnySupplyAdventure' | 'firstCoinAdventure' | 'firstMaterialAdventure') => cohort.flatMap((row) => row[field]);
+        return {
+          month, milestone, reached,
+          zeroGearEverPct: percent(sum('zeroGearEver'), reached), zeroSupplyPct: percent(sum('zeroSupplyEver'), reached),
+          zeroRelicPct: percent(sum('zeroRelicEver'), reached), zeroEarnedCoinsPct: percent(sum('zeroEarnedCoins'), reached),
+          zeroPersistentMaterialPct: percent(sum('zeroMaterialEver'), reached), zeroMaterialAndCoinsPct: percent(sum('zeroMaterialAndCoins'), reached),
+          gearOfferSeenPct: percent(sum('gearOfferTravelers'), reached), everBankedGearPct: percent(sum('everBankedGearTravelers'), reached),
+          medianFirstGear: quantile(first('firstGearGrantAdventure'), .5) || null,
+          medianFirstSupply: quantile(first('firstAnySupplyAdventure'), .5) || null,
+          medianFirstCoins: quantile(first('firstCoinAdventure'), .5) || null,
+          medianFirstMaterial: quantile(first('firstMaterialAdventure'), .5) || null,
+          medianKnowledge: quantile(cohort.flatMap((row) => row.knowledge), .5), medianLore: quantile(cohort.flatMap((row) => row.lore), .5),
+          medianMoney: quantile(cohort.flatMap((row) => row.money), .5),
+        };
+      }));
+      console.log('CORRECTIVE_GEAR_BATCH_PAIRED_BASELINE', JSON.stringify(baselineMetrics));
+    }
     if (compareMerchantExpansion) {
       const merchantComparison = [7, 10].flatMap((month) => [10, 20, 50].map((milestone) => ({
         before: compactMilestoneMetrics(baselineReports, month, milestone),

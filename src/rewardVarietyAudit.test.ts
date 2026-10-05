@@ -43,7 +43,7 @@ describe('authored reward variety audit', () => {
         report.itemByPrimaryCategory[category] = (report.itemByPrimaryCategory[category] ?? 0) + 1;
       }
     }
-    expect(report.registered).toBe(455);
+    expect(report.registered).toBe(463);
     expect(report.gear).toBeGreaterThan(0);
     expect(report.relic).toBeGreaterThan(0);
     expect(report.supplies).toBeGreaterThan(0);

@@ -15,6 +15,8 @@ For a new scenario batch, count scenarios with a meaningful opportunity for coin
 
 Also review the early-accessible portion of the library separately: global batch density does not guarantee that ordinary Travelers encounter continuity-bearing choices early, or that the choices are reachable and understandable.
 
+**Temporary corrective Gear phase:** while route-aware measures show abnormally low Gear exposure, a small, explicitly targeted Gear-centric batch may exceed the normal reward-density band, including offering Gear opportunities throughout. This is a temporary ecology correction, not a new default: once exposure is healthier, return future mixed batches to the 70% minimum and 75–80% preferred reward-opportunity standard.
+
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
 ## Choosing a depth class
