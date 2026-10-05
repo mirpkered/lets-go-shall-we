@@ -126,7 +126,12 @@ export const THE_TRAIN_THAT_DIDNT_STOP = A('the-train-that-didnt-stop', 'The Tra
     { id: 'riderReturn', label: 'Return with the signalman’s report', next: 'trainAftermath', effects: { historyFlags: ['warned a signal post before a train collision'] } },
   ]),
   trainAftermath: scene('trainAftermath', 'Passengers on the Ballast', 'The passenger train is stopped or held only after the next signal crew acts. A brakeman has a burned hand and the passengers are shaken; the north goods train is safe if the warning reached it. The stationmaster writes down exactly what signals you sent.', [
-    { id: 'trainReport', label: 'Give the stationmaster your account', next: 'trainEnd', effects: { knowledge: ['The north signal box can hold a train when the wire is working; the hand lamp is the fallback.'], historyFlags: ['helped avert a rail collision at a country station'] } },
+    { id: 'trainReport', label: 'Give the stationmaster your account', next: 'trainSettlement', effects: { knowledge: ['The north signal box can hold a train when the wire is working; the hand lamp is the fallback.'], historyFlags: ['helped avert a rail collision at a country station'] } },
+  ]),
+  trainSettlement: scene('trainSettlement', 'A Country Station’s Thanks', 'Your account is in the signal log. The stationmaster offers two coins for your time or a compact Pocket Toolkit retired from the station’s maintenance set; it has been checked and is no longer assigned to the crew.', [
+    { id: 'takeTrainCoins', label: 'Accept two coins for your help', next: 'trainEnd', effects: { money: 2 } },
+    { id: 'takeStationToolkit', label: 'Take the Pocket Toolkit instead of the coins', requirements: { notOwnedItems: ['pocketToolkit'] }, next: 'trainEnd', effects: { gainItems: ['pocketToolkit'] } },
+    { id: 'leaveTrainPayment', label: 'Thank the stationmaster and take no payment', next: 'trainEnd' },
   ]),
   trainEnd: end('trainEnd', 'Held Before the Junction', 'No collision follows. The passenger train must be inspected before it travels again, and one damaged step will cost the railway time. A passenger grips your hand and thanks you for keeping them off the line; the stationmaster says your clear account gave the crews time to act and keeps it with the signal log.'),
   trainDeath: end('trainDeath', 'The Live Points', 'The train reaches the switch before you can get clear of its moving iron.', 'death'),
@@ -249,10 +254,12 @@ export const THE_BOILER_ROOM = A('the-boiler-room', 'The Boiler Room', 'A mill b
     { id: 'boilerAidBurn', label: 'Help the injured worker to the pump', next: 'boilerAftermath', effects: { health: -2, setFlags: ['boilerWorkerHurt'] } },
     { id: 'boilerClear', label: 'Clear the doorway for the engineer', next: 'boilerAftermath' },
   ], 'danger'),
-  boilerAftermath: scene('boilerAftermath', 'The Mill Falls Quiet', 'The engineer marks the damaged joint for replacement. No one restarts the boiler today; workers are counted outside, and the miller will pay for repairs before another shift.', [
-    { id: 'boilerLeave', label: 'Take the road after the count', next: 'boilerEnd', effects: { money: 2 } },
+  boilerAftermath: scene('boilerAftermath', 'The Mill Falls Quiet', 'The engineer marks the damaged joint for replacement. No one restarts the boiler today; workers are counted outside, and the miller offers two coins for your help. The mill also has a worn Foreman’s Multi-tool left from a recent repair-chest replacement.', [
+    { id: 'boilerLeave', label: 'Accept the two-coin payment', next: 'boilerEnd', effects: { money: 2 } },
+    { id: 'boilerTakeTool', label: 'Take the Foreman’s Multi-tool instead of 2 coins', requirements: { notOwnedItems: ['foremanMultiTool'] }, next: 'boilerEnd', effects: { gainItems: ['foremanMultiTool'] } },
+    { id: 'boilerRepairTool', label: 'Repair your damaged Pocket Toolkit instead of taking cash', requirements: { items: ['pocketToolkit'], itemConditions: { pocketToolkit: ['DAMAGED', 'BROKEN'] } }, next: 'boilerEnd', effects: { repairItems: ['pocketToolkit'], repairItemProvenance: { pocketToolkit: 'Repaired at the mill after the boiler shutdown' } } },
   ]),
-  boilerEnd: end('boilerEnd', 'Work Stopped in Time', 'The foreman pays you two coins for the warning and clear account. The mill loses a shift, not its boiler house; the injured worker’s condition is known only if you saw the pipe burst.'),
+  boilerEnd: end('boilerEnd', 'Work Stopped in Time', 'The mill loses a shift, not its boiler house. Workers are counted outside, and the engineer marks the damaged joint for replacement.'),
   boilerDeath: end('boilerDeath', 'The Boiler Door', 'The pressurized pipe bursts before you reach the shutoff.', 'death'),
 }, 'yard');
 
