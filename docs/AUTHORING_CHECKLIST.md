@@ -13,6 +13,8 @@ Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. 
 
 For a new scenario batch, count scenarios with a meaningful opportunity for coins, reusable Knowledge, Lore, or Gear. The canonical minimum is 70%, with 75–80% preferred; this is a batch-level review, never a requirement to reward every story. If below minimum, record why the batch’s story mix justifies it. See the **Scenario-Batch Reward Density Rule** in [Canonical Design Rules](DESIGN_RULES.md).
 
+Also review the early-accessible portion of the library separately: global batch density does not guarantee that ordinary Travelers encounter continuity-bearing choices early, or that the choices are reachable and understandable.
+
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
 ## Choosing a depth class
