@@ -157,6 +157,17 @@ describe('class-aware inventory model', () => {
     expect(meets({ temporaryEquipment: ['borrowedShovel'] }, { ...state, run: { ...state.run!, inventorySources: { borrowedShovel: 'found' } } })).toBe(false);
   });
 
+  it('blocks notOwnedItems choices when the item is carried or banked', () => {
+    const carried = saveWithLoadout(['travelRope']);
+    const banked = saveWithLoadout([]);
+    banked.bank = ['travelRope'];
+    const absent = saveWithLoadout([]);
+
+    expect(meets({ notOwnedItems: ['travelRope'] }, carried)).toBe(false);
+    expect(meets({ notOwnedItems: ['travelRope'] }, banked)).toBe(false);
+    expect(meets({ notOwnedItems: ['travelRope'] }, absent)).toBe(true);
+  });
+
   it('loses traveler-held supplies and Relics on death while preserving banked property', () => {
     let state = saveWithLoadout(['bronzeMaskFragment']);
     state.character!.supplies = { ritualChalk: 2, consecratedSalt: 1, coldIronNails: 2 };
