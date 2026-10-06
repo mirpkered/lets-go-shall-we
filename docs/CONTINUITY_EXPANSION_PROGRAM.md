@@ -2,6 +2,8 @@
 
 The first fourteen approved genre batches were a corrective Gear Expansion Program: they improved practical Gear exposure, provenance, and nonmerchant acquisition. That work remains part of the program’s history. Beginning with Genre Batch 15, content deliberately advances three co-equal continuity lanes:
 
+The registry also contains an earlier, unnumbered corrective Gear-content set (`GEAR_CORRECTIVE_ADVENTURES` in `src/scenarios/index.ts`). The numbered program runs from Genre Batch 1 through Genre Batch 16; references to “17 batches” mean that unnumbered set plus the sixteen numbered batches. There is no numbered Genre Batch 17 in this release candidate.
+
 - Gear: practical equipment that creates options, subject to capacity and limitations.
 - Knowledge: reusable, stable facts about methods or signs, with state-aware callbacks.
 - Lore: remembered history, place, tradition, and institutional memory, recognized later without being treated as technical expertise.
@@ -48,7 +50,7 @@ Sealed messages remain sealed unless the explicit open choice is taken. Opening 
 
 Reusable communication rules: a sender’s copy does not prove receipt; a paid telegram does not prove authority; physical signs can indicate altered seals or copied text without identifying who changed it; delay can leave a message useful; recipients retain agency; confidentiality, urgency, and accuracy can conflict without a single automatic moral answer. Use visible urgency rather than hidden timers, and state exactly which text was delivered or withheld.
 
-Post-Batch 16 local registry: 859 Adventures. The eight Knowledge-primary stories grant distinct handling/relay facts; selected Gear- and Lore-primary stories offer secondary Knowledge or Lore. Most stories touch at least two continuity lanes. All changes remain local and uncommitted; Gear capacity, selector weights, and replay behavior are unchanged.
+Post-Batch 16 local registry: 859 Adventures. The eight Knowledge-primary stories grant distinct handling/relay facts; selected Gear- and Lore-primary stories offer secondary Knowledge or Lore. Most stories touch at least two continuity lanes. At the time Batch 16 was completed, its changes were local and uncommitted; they are now included in the local release-candidate consolidation commit. Gear capacity, selector weights, and replay behavior are unchanged.
 
 Route-aware paired measurement used the real selector/engine, five policies, 60 Travelers per policy/month, and July plus October (600 starts per library, before vs after). Batch 16 was selected 1,245 times across 30,000 simulated adventure selections (4.2%); those routes completed without death. It exposed a Gear offer on 35.8% of selected batch routes, placed an existing Gear item on 12.9%, granted Knowledge on 21.5%, Lore on 9.6%, and paid 559 total coins (about 0.45 per completed batch route). No new Gear was added. These are policy/sample estimates, not selector guarantees.
 
