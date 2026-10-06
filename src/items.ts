@@ -82,6 +82,7 @@ export const ITEMS: Record<string, Item> = {
   blackMillingStone: { id: 'blackMillingStone', name: 'Black Milling Stone', description: 'A small black stone wafer from the older wheel beneath Wren’s Mill. Its marks predate the mill and have no known practical use.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
   carpenterSquare: { id: 'carpenterSquare', name: 'Carpenter’s Square', description: 'A steel-bladed right-angle square for checking frames and corners; it measures alignment, not long distances.', category: 'tool', carryable: true, inventoryClass: 'GEAR' },
   leatherRepairRoll: { id: 'leatherRepairRoll', name: 'Leather Repair Roll', description: 'A compact roll of waxed thread, stout needles, and a small punch for mending straps and seams; it is not a full saddler’s bench.', category: 'tool', carryable: true, inventoryClass: 'GEAR' },
+  foldingFieldSpade: { id: 'foldingFieldSpade', name: 'Folding Field Spade', description: 'A short steel spade with a hinged ash handle, useful for shallow drainage cuts, clearing loose soil, and setting small camp stakes; it is not a digging bar or a tool for deep excavation.', category: 'tool', carryable: true, inventoryClass: 'GEAR' },
 };
 
 const relicIds = new Set(['bronzeMaskFragment', 'graveCoin', 'signalLens', 'yewCharm']);

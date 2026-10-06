@@ -18,7 +18,11 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 613 adventures, including ten fixed-stock merchant encounters and six Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 613 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 637 adventures, including ten fixed-stock merchant encounters and seven Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+
+### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
+
+Added 24 Adventures about reading terrain, field observation, crossings, weather, animal behavior, navigation, campcraft, and remote rescue. Eighteen contain a legitimate persistent-Gear acquisition route, all 24 contain a coin or Knowledge continuity opportunity, and only one new carryable Gear ID was added: `foldingFieldSpade`. Two stories have possible combat; most dangers are environmental and can be answered without fighting. Three stories are season-locked (two spring, one winter); July and October therefore share the same 21 eligible Batch 7 entries. Selector categories, risk weights, replay penalties, and seasonal rules are unchanged.
 
 The surprise anthology contributes 36 all-year stories across social participation, games and performances, caregiving, ordinary work, practical information, and small human oddities. It was authored as separate scenario graphs rather than generated from a repeated scene template. These stories use existing systems only; descriptive History/Knowledge callbacks remain distinct from a structured Contacts/Favors roster, which is still not implemented.
 

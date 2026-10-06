@@ -19,7 +19,7 @@ function destinations(scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], 
 describe('Escort / Protection genre batch', () => {
   it('registers thirty unique all-year Adventures with valid forward destinations', () => {
     expect(ESCORT_PROTECTION_GENRE_BATCH).toHaveLength(30);
-    expect(SCENARIOS).toHaveLength(613);
+    expect(SCENARIOS).toHaveLength(637);
     expect(new Set(ESCORT_PROTECTION_GENRE_BATCH.map(({ id }) => id)).size).toBe(30);
     expect(ESCORT_PROTECTION_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(ESCORT_PROTECTION_GENRE_BATCH).errors).toEqual([]);
