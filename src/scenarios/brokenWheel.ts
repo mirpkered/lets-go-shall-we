@@ -23,6 +23,7 @@ export const THE_BROKEN_WHEEL: Scenario = {
       { id: 'carryCargoFromWagon', label: 'Carry the produce to the farm store', next: 'cargoSaved', effects: { historyFlags: ['saved_wagon_cargo_after_breakdown'] } },
       { id: 'waitForSmith', label: 'Wait with {{driver}} for the smith', timeCost: 10, next: 'smithReturns', effects: { setFlags: ['smithSummoned'] } },
       { id: 'leaveBrokenWagon', label: 'Leave the wagon secured by the road', next: 'wagonAbandoned', effects: { historyFlags: ['left_wagon_after_breakdown'] } },
+      { id: 'liftForUnloading', label: 'Use the Folding Carriage Jack to lift the wheel for unloading', requirements: { items: ['foldingCarriageJack'] }, next: 'cargoSaved', effects: { historyFlags: ['used_carriage_jack_to_unload_broken_wagon'] } },
     ] },
     smithReturns: { id: 'smithReturns', title: 'The Smith Arrives', tone: 'safe', text: 'The village smith arrives with a sound spare hub and a handcart. {{driver}} keeps the horse on firm ground while the smith checks the axle. The market window has passed, but the wagon can be repaired without rushing it.', choices: [
       { id: 'helpSmith', label: 'Help move the load onto the handcart', next: 'cargoSaved' },

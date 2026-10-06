@@ -14,4 +14,14 @@ describe('period-grounded carryable items', () => {
     expect(ITEMS.joinersFoldingRule.description).toContain('measuring rule');
     expect(ITEMS.joinersFoldingRule.carryable).toBe(true);
   });
+
+  it('keeps the road-batch practical tools distinct, mundane, and carryable', () => {
+    expect(ITEMS.foldingCarriageJack.description).toContain('firm, level ground');
+    expect(ITEMS.lockableMapCase.description).toContain('not theft-proof');
+    expect(ITEMS.lanternGuard.description).toContain('does not improve the flame');
+    for (const id of ['foldingCarriageJack', 'lockableMapCase', 'lanternGuard']) {
+      expect(ITEMS[id].carryable).toBe(true);
+      expect(ITEMS[id].inventoryClass).toBe('GEAR');
+    }
+  });
 });

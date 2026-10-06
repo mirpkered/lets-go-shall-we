@@ -42,7 +42,7 @@ function assertEveryAvailableBranch(scenario: Scenario, carriedItem?: string): v
 describe('disaster, western, and lost-place expansion', () => {
   it('registers all 36 new adventures with stable unique IDs and complete metadata', () => {
     expect(BATCH).toHaveLength(36);
-    expect(SCENARIOS).toHaveLength(487);
+    expect(SCENARIOS).toHaveLength(511);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     expect(validateScenarioMetadata(BATCH)).toEqual([]);
   });

@@ -27,7 +27,7 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
   },
   {
     id: 'the-wrong-letter', title: 'The Wrong Letter', subtitle: 'A sealed envelope has reached the wrong hands.', openingContext: 'inn',
-    opening: 'At breakfast, the innkeeper hands you a sealed letter found beneath your door. It bears another traveler’s name and a nearby town. The seal is intact; the innkeeper asks only whether you can help return it before the morning coach leaves.',
+    opening: 'At breakfast, the innkeeper hands you a sealed letter found beneath your door. It bears another traveler’s name and a nearby town. The seal is intact, and rain has begun tapping the coach window; the innkeeper asks whether you can help return it before departure.',
     routes: [
       { id: 'post', label: 'Return it to the post office', title: 'Back to the Post', text: 'The post office is open, and the clerk recognizes the town name. They cannot promise a quick delivery, but the letter can continue through proper hands.', outcomes: [
         { id: 'entrust', label: 'Leave it sealed with the clerk', title: 'A Sealed Return', text: 'The clerk records the mistake and places the envelope with the outgoing mail. You do not learn its contents or whether the recipient will be found.' },
@@ -40,6 +40,10 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
       { id: 'curiosity', label: 'Consider opening it, then leave it sealed', title: 'A Private Matter', text: 'Curiosity tugs at you, but the intact seal makes the boundary plain. The letter needs a route, not an audience.', outcomes: [
         { id: 'postAgain', label: 'Ask the clerk to trace the address', title: 'A Better Address', text: 'The clerk reads the outside carefully and finds a more complete street name. They accept it for delivery.' },
         { id: 'leave', label: 'Leave it at the inn desk', title: 'No Further Guessing', text: 'You hand it back to the innkeeper, who keeps it safely for the named traveler. Its contents remain their own.' },
+      ] },
+      { id: 'protectLetter', label: 'Carry it sealed in your Lockable Map Case to the post office', title: 'A Dry, Sealed Envelope', text: 'The case keeps the envelope dry and discourages a casual hand from opening it. The post clerk records the intact seal before accepting it.', requirements: { items: ['lockableMapCase'] }, outcomes: [
+        { id: 'confirmSeal', label: 'Ask the clerk to note the seal and destination', title: 'Custody Recorded', text: 'The clerk records the envelope’s condition and takes responsibility for forwarding it unopened.' },
+        { id: 'takeReceipt', label: 'Ask for a receipt before leaving', title: 'A Proper Handover', text: 'The clerk gives you a receipt for the sealed letter; its private contents remain unread.' },
       ] },
     ],
   },

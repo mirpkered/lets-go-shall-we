@@ -75,6 +75,7 @@ export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The 
   notebook: s('notebook', 'A Note in the Margin', 'Crowe’s first entry says “old edge”; the later page says “after wagon strike.” The numbers are consistent once the dates are read in order. He wants the new map to distinguish the original road from the worn bypass.', [
     { id: 'drawBothLines', label: 'Draw the original road and the bypass separately', next: 'settlement', effects: { setFlags: ['survey_both_lines'] } },
     { id: 'verifyOnFoot', label: 'Walk the bend and verify the bypass', next: 'verified' },
+    { id: 'protectSurveyNotes', label: 'Keep the revised field sheet in your Lockable Map Case on the walk back', requirements: { items: ['lockableMapCase'] }, next: 'settlement', effects: { setFlags: ['protected_survey_notes_in_case'] } },
   ]),
   verified: s('verified', 'The Bypass Is Plain', 'On foot, you see the wheel ruts leave the old curve and rejoin the road beyond the culvert. The map can show the bypass without claiming the older measurement was wrong.', [
     { id: 'finishVerifiedMap', label: 'Finish the map with both road lines shown', next: 'settlement', effects: { setFlags: ['survey_both_lines'] } },
