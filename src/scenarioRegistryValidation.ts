@@ -82,6 +82,8 @@ export function validateScenarioRegistry(scenarios: Scenario[]): ScenarioRegistr
   const inspectEffects = (effects: Effects | undefined, where: string) => {
     if (!effects) return;
     for (const field of ['gainItems', 'loseItems', 'damageItems', 'breakItems', 'repairItems'] as const) for (const id of effects[field] ?? []) itemId(id, `${where}.${field}`);
+    for (const id of Object.keys(effects.gainItemProvenance ?? {})) itemId(id, `${where}.gainItemProvenance`);
+    for (const id of Object.keys(effects.gainItemConditions ?? {})) itemId(id, `${where}.gainItemConditions`);
     for (const fact of effects.knowledgeEntries ?? []) {
       if (!fact.id.trim() || !fact.text.trim()) errors.push(`${where}: Knowledge entries need a stable ID and readable text`);
       if (!KNOWLEDGE_FACTS_BY_ID[fact.id]) errors.push(`${where}: unknown canonical Knowledge key ${fact.id}`);

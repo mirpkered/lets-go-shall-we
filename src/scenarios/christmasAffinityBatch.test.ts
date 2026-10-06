@@ -40,7 +40,7 @@ describe('Christmas and winter-affinity adventures', () => {
 
   it('registers 28 distinct stories and locks only holiday-dependent premises to December', () => {
     expect(CHRISTMAS_ADVENTURES).toHaveLength(28);
-    expect(SCENARIOS).toHaveLength(565);
+    expect(SCENARIOS).toHaveLength(589);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     const locked = CHRISTMAS_ADVENTURES.filter(({ diversity }) => diversity?.availability?.season === 'DECEMBER');
     expect(locked.map(({ title }) => title)).toEqual([

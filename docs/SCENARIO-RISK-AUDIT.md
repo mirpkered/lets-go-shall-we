@@ -2,7 +2,7 @@
 
 ## Current registry update (2026-10-05)
 
-The current registry after Trades / Apprenticeships Genre Batch 4 contains 565 scenarios. Effective risk counts are LOW 234, MODERATE 164, HIGH 127, and SEVERE 40. Selector formulas are unchanged.
+The current registry after Salvage / Recovery Genre Batch 5 contains 589 scenarios. Effective risk counts are LOW 241, MODERATE 174, HIGH 134, and SEVERE 40. Selector formulas are unchanged.
 
 Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. In the current 445-adventure registry, explicit `diversity.riskTier` is now authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries use the compatibility classifier until they are individually migrated. Current effective counts are LOW 197, MODERATE 115, HIGH 94, SEVERE 39 (see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
 

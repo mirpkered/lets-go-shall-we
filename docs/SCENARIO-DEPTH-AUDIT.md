@@ -6,7 +6,7 @@ Internal snapshot for the library-wide retrofit pass. The QA Content Quality pan
 
 ### Merchant ecology registry update (2026-10-05)
 
-After Genre Batch 4, the current registry contains 565 adventures. The intended depth distribution is 59 ENCOUNTER, 490 ADVENTURE, and 16 DEEP_EXPLORATION. Effective risk totals are LOW 234, MODERATE 164, HIGH 127, and SEVERE 40. Selector formulas and weights are unchanged.
+After Genre Batch 5, the current registry contains 589 adventures. The depth distribution is 59 ENCOUNTER, 514 ADVENTURE, and 16 DEEP_EXPLORATION. Effective risk totals are LOW 241, MODERATE 174, HIGH 134, and SEVERE 40. Selector formulas and weights are unchanged. The 24 salvage / recovery entries add seven LOW, ten MODERATE, and seven HIGH Adventures.
 
 - 445 registered adventures; 1,629 ending route variants reviewed by the content-quality heuristics.
 - Current intended depth classification: 49 Encounter, 380 Adventure, 16 Deep Exploration (445 total).

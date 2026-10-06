@@ -63,7 +63,7 @@ function explore(scenario: Scenario): number {
 describe('surprise anthology and library gap-fill', () => {
   it('adds 36 distinct all-year adventures without changing existing stable IDs', () => {
     expect(ANTHOLOGY).toHaveLength(36);
-    expect(SCENARIOS).toHaveLength(565);
+    expect(SCENARIOS).toHaveLength(589);
     expect(new Set(ANTHOLOGY.map(({ id }) => id)).size).toBe(36);
     expect(ANTHOLOGY.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(ANTHOLOGY.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
@@ -182,7 +182,7 @@ describe('surprise anthology and library gap-fill', () => {
     const random = () => { seed = (seed * 48271) % 2147483647; return seed / 2147483647; };
     const result = simulateScenarioSelection(SCENARIOS, [], { selectionMonth: 6 }, 1000, random);
     expect(Object.values(result.scenarioCounts).reduce((total, count) => total + count, 0)).toBe(1000);
-    expect(result.scenarioCounts['the-stage-rigging']).toBeLessThan(30);
+    expect(result.scenarioCounts['the-stage-rigging'] ?? 0).toBeLessThan(30);
     expect(result.seasonalCount).toBeLessThan(1000);
   });
 

@@ -63,7 +63,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, item?: 
 describe('wilderness, navigation, and camp life adventure batch', () => {
   it('registers ten forward-only stories with concise phone-sized copy', () => {
     expect(WILDERNESS_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(565);
+    expect(SCENARIOS).toHaveLength(589);
     expect(WILDERNESS_ADVENTURES.map(({ title }) => title)).toEqual([
       'The Faint Trail', 'Camp Before Dark', 'The Shortcut', 'Creek on the Return',
       'The Fog Comes Down', 'Dry Camp', 'The Ridge or the Valley', 'Marks on the Trail',

@@ -234,6 +234,10 @@ export interface Effects {
   loseCarriedItem?: boolean;
   loseCarriedItems?: boolean;
   gainItems?: string[];
+  /** Provenance recorded when an explicitly transferred Gear reward is granted. */
+  gainItemProvenance?: Record<string, string>;
+  /** Existing condition carried by recovered Gear; normal grants omit this field. */
+  gainItemConditions?: Record<string, ItemCondition>;
   gainSupplies?: Record<string, number>;
   consumeSupplies?: Record<string, number>;
   damageItems?: string[];

@@ -32,7 +32,7 @@ function act(state: SaveData, scenario: Scenario, sceneId: string, choiceId: str
 
 describe('content depth and payoff audit fixes', () => {
   it('records the current library size and limits edits to clearly thin examples', () => {
-    expect(SCENARIOS).toHaveLength(565);
+    expect(SCENARIOS).toHaveLength(589);
     expect(LEGAL_PROCESS_ADVENTURES.find(({ id }) => id === 'property-of')?.scenes.witnessRequested.text).toContain('specific question to answer');
     expect(HONEST_WORK_ADVENTURES).toHaveLength(10);
     expect(LOOSE_IN_THE_MARKET.scenes.marketAftercare.text).toContain('offering a coin for your time');

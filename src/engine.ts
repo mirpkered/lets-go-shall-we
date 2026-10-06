@@ -403,6 +403,14 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
     run.inventory = addUnique(run.inventory, physical);
     run.acquiredThisRun = addUnique(run.acquiredThisRun, physical);
     for (const id of physical) (run.inventorySources ??= {})[id] = effects.inventorySources?.[id] ?? (ITEMS[id]?.carryable ? 'found' : 'temporary');
+    for (const [id, provenance] of Object.entries(effects.gainItemProvenance ?? {})) {
+      if (!physical.includes(id) || !provenance.trim()) continue;
+      mutateItemState(state, id, (record) => { record.provenance = addUnique(record.provenance, [provenance]); });
+    }
+    for (const [id, condition] of Object.entries(effects.gainItemConditions ?? {})) {
+      if (!physical.includes(id) || !['NORMAL', 'DAMAGED', 'BROKEN'].includes(condition)) continue;
+      mutateItemState(state, id, (record) => { record.condition = condition; });
+    }
     for (const id of effects.gainItems.filter((itemId) => inventoryClass(itemId) === 'SUPPLY')) {
       const projected = addSupply(state, id, 1);
       if (projected.character?.supplies?.[id] !== character.supplies?.[id]) {
