@@ -430,7 +430,7 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
       {id:'markHinge',label:'Mark the hinge post and measure around it',next:'measure'}, {id:'followPlan',label:'Follow the drawing and let the owner trim later',next:'fit'}
     ]),
     measure:s('measure','The Opening Is Not Square','The diagonals differ by an inch. The frame can be made square and shimmed, or cut to follow the settled opening.',[
-      {id:'squareAndShim',label:'Build square and leave room for a shim',next:'result'}, {id:'fitOldOpening',label:'Fit the settled opening and mark the uneven edge',next:'result'}, {id:'askWilla',label:'Ask Willa to choose the finish standard',next:'decision'}
+      {id:'squareAndShim',label:'Build square and leave room for a shim',next:'result'}, {id:'fitOldOpening',label:'Fit the settled opening and mark the uneven edge',next:'result'}, {id:'askWilla',label:'Ask Willa to choose the finish standard',next:'decision'}, {id:'measureStock',label:'Use Field Calipers to compare the stock thickness before sizing the shim',requirements:{items:['fieldCalipers']},next:'result',effects:{historyFlags:['used_field_calipers_to_size_barn_window_shim']}}
     ]),
     fit:s('fit','The Plan Meets the Wall','The seven-inch note centers the frame, but the hinge post intrudes into the opening.',[
       {id:'revisePlan',label:'Revise the frame around the hinge post',next:'measure'}, {id:'forceFit',label:'Force the planned frame into place',next:'badFit'}

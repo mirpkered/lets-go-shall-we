@@ -37,7 +37,7 @@ function acquire(scenario: Scenario, route: string[], itemId: string): SaveData 
 describe('corrective Gear Adventure batch', () => {
   it('registers eight unique all-year Adventures with seven legitimate persistent Gear paths', () => {
     expect(GEAR_CORRECTIVE_ADVENTURES).toHaveLength(8);
-    expect(SCENARIOS).toHaveLength(661);
+    expect(SCENARIOS).toHaveLength(685);
     expect(new Set(GEAR_CORRECTIVE_ADVENTURES.map(({ id }) => id)).size).toBe(8);
     expect(GEAR_CORRECTIVE_ADVENTURES.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(GEAR_CORRECTIVE_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);

@@ -2,7 +2,7 @@
 
 ## Current registry update (2026-10-05)
 
-The current registry after Expedition Logistics / Supply / Staging / Field Operations Genre Batch 8 contains 661 scenarios. Effective risk counts are LOW 254, MODERATE 215, HIGH 152, and SEVERE 40. Selector formulas and risk weights are unchanged.
+The current registry after Equipment Testing / Inventors / Field Trials Genre Batch 9 contains 685 scenarios. Effective risk counts are LOW 260, MODERATE 229, HIGH 156, and SEVERE 40. Selector formulas and risk weights are unchanged.
 
 Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. In the current 445-adventure registry, explicit `diversity.riskTier` is now authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries use the compatibility classifier until they are individually migrated. Current effective counts are LOW 197, MODERATE 115, HIGH 94, SEVERE 39 (see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
 

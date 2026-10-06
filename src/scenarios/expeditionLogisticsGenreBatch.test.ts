@@ -24,7 +24,7 @@ const take = (state: SaveData, scenario: Scenario, sceneId: string, choiceId: st
 describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Staging', () => {
   it('registers 24 unique Adventures with valid, reachable, acyclic story graphs', () => {
     expect(EXPEDITION_LOGISTICS_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(661);
+    expect(SCENARIOS).toHaveLength(685);
     expect(new Set(EXPEDITION_LOGISTICS_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(EXPEDITION_LOGISTICS_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(validateScenarioRegistry(EXPEDITION_LOGISTICS_GENRE_BATCH)).toEqual({ errors: [], warnings: [] });

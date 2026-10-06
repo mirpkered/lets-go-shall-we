@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 661 adventures, including ten fixed-stock merchant encounters and eight Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 685 adventures, including ten fixed-stock merchant encounters and nine Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 
@@ -27,6 +27,10 @@ Added 24 Adventures about reading terrain, field observation, crossings, weather
 ### Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Staging / Field Operations
 
 Added 24 Adventures centered on load plans, manifests, caches, staging, resupply, custody, and return logistics. Choices move bulk expedition equipment only through temporary run state; they never add those loads to persistent inventory. Twenty-one stories offer a legitimate persistent Gear route, all 24 offer Gear, coins, or reusable Knowledge, and the only new Gear ID is the Cargo Balance Scale. Shared tools have recorded handoffs, uncertain ownership is checked before opening or keeping supplies, and partial deliveries are recognized rather than treated as full completion. All 24 are year-round; selector categories, risk weights, and replay penalties remain unchanged.
+
+### Gear Expansion Genre Batch 9 — Equipment Testing / Inventors / Field Trials
+
+Added 24 year-round Adventures about testing practical equipment under load, wear, rain, wind, animal fit, measurement, and mechanical failure. Seven carryable Gear IDs cover small-part measurement, line-strain comparison, bench holding, vertical alignment, telegraph continuity checks, pack fit, and rainfall comparison. Prototype failures are warned and bounded; a reading never certifies an anchor, structure, or repaired line by itself. Two existing items can receive persistent upgrades without duplicate inventory entries, and new tools have optional callbacks in established trade, competition, and fieldcraft stories. Selector categories, risk weights, and replay penalties remain unchanged.
 
 The surprise anthology contributes 36 all-year stories across social participation, games and performances, caregiving, ordinary work, practical information, and small human oddities. It was authored as separate scenario graphs rather than generated from a repeated scene template. These stories use existing systems only; descriptive History/Knowledge callbacks remain distinct from a structured Contacts/Favors roster, which is still not implemented.
 

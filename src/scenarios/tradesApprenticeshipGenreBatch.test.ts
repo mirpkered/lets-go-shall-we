@@ -12,7 +12,7 @@ import { TRADES_APPRENTICESHIP_GENRE_BATCH as BATCH } from './tradesApprenticesh
 describe('Trades / Apprenticeships / Practical Work batch', () => {
   it('registers 24 unique all-year Adventures with valid destinations and catalog-backed rewards', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(661);
+    expect(SCENARIOS).toHaveLength(685);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(BATCH.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);

@@ -39,7 +39,7 @@ function assertBranchesAdvance(scenario: Scenario): void {
 describe('deep exploration anthology', () => {
   it('registers fourteen stable, all-year deep adventures using the canonical schema', () => {
     expect(DEEP_EXPLORATION_ADVENTURES).toHaveLength(14);
-    expect(SCENARIOS).toHaveLength(661);
+    expect(SCENARIOS).toHaveLength(685);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     expect(validateScenarioMetadata(DEEP_EXPLORATION_ADVENTURES)).toEqual([]);
     for (const scenario of DEEP_EXPLORATION_ADVENTURES) {
