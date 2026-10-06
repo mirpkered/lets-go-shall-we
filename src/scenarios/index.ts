@@ -86,6 +86,7 @@ import { ROAD_DANGER_GENRE_BATCH } from './roadDangerGenreBatch';
 import { ESCORT_PROTECTION_GENRE_BATCH } from './escortProtectionGenreBatch';
 import { TRADES_APPRENTICESHIP_GENRE_BATCH } from './tradesApprenticeshipGenreBatch';
 import { SALVAGE_RECOVERY_GENRE_BATCH } from './salvageRecoveryGenreBatch';
+import { COMPETITION_GEAR_GENRE_BATCH } from './competitionGearGenreBatch';
 
 export const SCENARIOS: Scenario[] = [
   BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME,
@@ -119,6 +120,7 @@ export const SCENARIOS: Scenario[] = [
   ...ADVENTURER_SUPPORT_GENRE_BATCH,
   ...ROAD_DANGER_GENRE_BATCH,
   ...ESCORT_PROTECTION_GENRE_BATCH, ...TRADES_APPRENTICESHIP_GENRE_BATCH, ...SALVAGE_RECOVERY_GENRE_BATCH,
+  ...COMPETITION_GEAR_GENRE_BATCH,
 ];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));

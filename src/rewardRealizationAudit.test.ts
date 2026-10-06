@@ -10,6 +10,7 @@ import { ADVENTURER_SUPPORT_GENRE_BATCH } from './scenarios/adventurerSupportGen
 import { ROAD_DANGER_GENRE_BATCH } from './scenarios/roadDangerGenreBatch';
 import { TRADES_APPRENTICESHIP_GENRE_BATCH } from './scenarios/tradesApprenticeshipGenreBatch';
 import { SALVAGE_RECOVERY_GENRE_BATCH } from './scenarios/salvageRecoveryGenreBatch';
+import { COMPETITION_GEAR_GENRE_BATCH } from './scenarios/competitionGearGenreBatch';
 import type { Choice, SaveData } from './types';
 
 type Policy = 'random' | 'cautious' | 'engaged' | 'risk-tolerant' | 'continuity-seeking';
@@ -348,6 +349,7 @@ interface Snapshot {
   roadDangerBatchSeen?: number; roadDangerBatchGearOfferSeen?: number; roadDangerBatchGearAcquired?: number; firstRoadDangerAdventure?: number[]; firstRoadDangerGearOfferAdventure?: number[]; firstRoadDangerGearAdventure?: number[];
   tradesBatchSeen?: number; tradesBatchGearOfferSeen?: number; tradesBatchGearAcquired?: number; firstTradesBatchAdventure?: number[]; firstTradesBatchGearOfferAdventure?: number[]; firstTradesBatchGearAdventure?: number[];
   salvageBatchSeen?: number; salvageBatchGearOfferSeen?: number; salvageBatchGearAcquired?: number; firstSalvageBatchAdventure?: number[]; firstSalvageBatchGearOfferAdventure?: number[]; firstSalvageBatchGearAdventure?: number[];
+  competitionBatchSeen?: number; competitionBatchGearOfferSeen?: number; competitionBatchGearAcquired?: number; firstCompetitionBatchAdventure?: number[]; firstCompetitionBatchGearOfferAdventure?: number[]; firstCompetitionBatchGearAdventure?: number[];
 }
 
 function persistentGearIds(state: SaveData): Set<string> {
@@ -360,6 +362,7 @@ const adventurerSupportIds = new Set(ADVENTURER_SUPPORT_GENRE_BATCH.map(({ id })
 const roadDangerIds = new Set(ROAD_DANGER_GENRE_BATCH.map(({ id }) => id));
 const tradesBatchIds = new Set(TRADES_APPRENTICESHIP_GENRE_BATCH.map(({ id }) => id));
 const salvageBatchIds = new Set(SALVAGE_RECOVERY_GENRE_BATCH.map(({ id }) => id));
+const competitionBatchIds = new Set(COMPETITION_GEAR_GENRE_BATCH.map(({ id }) => id));
 
 function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}, scenarios: typeof SCENARIOS = SCENARIOS, batchLedger?: BatchExposureLedger): Snapshot[] {
   const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], coinsEarnedTotal: [], coinsSpentTotal: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], zeroGearEver: 0, zeroSupplyEver: 0, zeroRelicEver: 0, zeroEarnedCoins: 0, zeroSpentCoins: 0, zeroMaterialEver: 0, zeroMaterialAndCoins: 0, gearOrCoins: 0, earnedSpentAndGear: 0, everBankedGearTravelers: 0, gearOfferTravelers: 0, carriedGearZero: 0, carriedGearOne: 0, carriedGearTwoPlus: 0, firstAnySupplyAdventure: [], firstCoinAdventure: [], firstCoinSpendAdventure: [], firstMaterialAdventure: [], gearHolderTravelersById: {}, gearLaterOpportunityTravelersById: {}, gearLaterOpportunityDelayById: {}, gearLaterUseTravelersById: {}, gearSameAdventureUseTravelersById: {}, gearLaterUseDelayById: {}, supplyOpportunityAfterAcquisitionTravelersById: {}, supplyLaterUseTravelersById: {}, supplySameAdventureUseTravelersById: {}, supplyLaterUseDelayById: {}, everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
@@ -460,6 +463,12 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
     let firstSalvageBatchAt: number | undefined;
     let firstSalvageBatchGearOfferAt: number | undefined;
     let firstSalvageBatchGearAt: number | undefined;
+    let competitionBatchSeen = false;
+    let competitionBatchGearOfferSeen = false;
+    let competitionBatchGearAcquired = false;
+    let firstCompetitionBatchAt: number | undefined;
+    let firstCompetitionBatchGearOfferAt: number | undefined;
+    let firstCompetitionBatchGearAt: number | undefined;
     const supplyAcquiredSet = new Set<string>();
     const supplyUsedSet = new Set<string>();
     let rewardClaims = 0;
@@ -545,6 +554,18 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
         firstSalvageBatchAt ??= adventureNumber;
         if (result.gearAcquisitionOfferSeen) { salvageBatchGearOfferSeen = true; firstSalvageBatchGearOfferAt ??= adventureNumber; }
         if (result.acquiredGearIds.some((id) => persistentGearIds(state).has(id))) { salvageBatchGearAcquired = true; firstSalvageBatchGearAt ??= adventureNumber; }
+        if (result.completed && batchLedger) {
+          const entry = batchLedger[result.scenarioId] ??= { selected: 0, gearOffer: 0, gearGranted: 0 };
+          entry.selected++;
+          entry.gearOffer += Number(result.gearAcquisitionOfferSeen);
+          entry.gearGranted += Number(result.acquiredGearIds.some((id) => persistentGearIds(state).has(id)));
+        }
+      }
+      if (result.scenarioId && competitionBatchIds.has(result.scenarioId)) {
+        competitionBatchSeen = true;
+        firstCompetitionBatchAt ??= adventureNumber;
+        if (result.gearAcquisitionOfferSeen) { competitionBatchGearOfferSeen = true; firstCompetitionBatchGearOfferAt ??= adventureNumber; }
+        if (result.acquiredGearIds.some((id) => persistentGearIds(state).has(id))) { competitionBatchGearAcquired = true; firstCompetitionBatchGearAt ??= adventureNumber; }
         if (result.completed && batchLedger) {
           const entry = batchLedger[result.scenarioId] ??= { selected: 0, gearOffer: 0, gearGranted: 0 };
           entry.selected++;
@@ -693,6 +714,12 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
           if (firstSalvageBatchAt !== undefined) (row.firstSalvageBatchAdventure ??= []).push(firstSalvageBatchAt);
           if (firstSalvageBatchGearOfferAt !== undefined) (row.firstSalvageBatchGearOfferAdventure ??= []).push(firstSalvageBatchGearOfferAt);
           if (firstSalvageBatchGearAt !== undefined) (row.firstSalvageBatchGearAdventure ??= []).push(firstSalvageBatchGearAt);
+          row.competitionBatchSeen = (row.competitionBatchSeen ?? 0) + Number(competitionBatchSeen);
+          row.competitionBatchGearOfferSeen = (row.competitionBatchGearOfferSeen ?? 0) + Number(competitionBatchGearOfferSeen);
+          row.competitionBatchGearAcquired = (row.competitionBatchGearAcquired ?? 0) + Number(competitionBatchGearAcquired);
+          if (firstCompetitionBatchAt !== undefined) (row.firstCompetitionBatchAdventure ??= []).push(firstCompetitionBatchAt);
+          if (firstCompetitionBatchGearOfferAt !== undefined) (row.firstCompetitionBatchGearOfferAdventure ??= []).push(firstCompetitionBatchGearOfferAt);
+          if (firstCompetitionBatchGearAt !== undefined) (row.firstCompetitionBatchGearAdventure ??= []).push(firstCompetitionBatchGearAt);
           if (firstCorrectiveBatchAt !== undefined) (row.firstCorrectiveBatchAdventure ??= []).push(firstCorrectiveBatchAt);
           if (firstCorrectiveBatchGearOfferAt !== undefined) (row.firstCorrectiveBatchGearOfferAdventure ??= []).push(firstCorrectiveBatchGearOfferAt);
           if (firstCorrectiveBatchGearAt !== undefined) (row.firstCorrectiveBatchGearAdventure ??= []).push(firstCorrectiveBatchGearAt);
@@ -915,6 +942,14 @@ describe('route-aware reward realization audit', () => {
         return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
       })()
       : [];
+    const competitionBatchBaseline = process.env.COMPETITION_BATCH_AUDIT_COMPARE === '1'
+      ? (() => {
+        // Same month, policy, route engine and RNG seed; remove only the immediate new batch.
+        const baselineScenarios = SCENARIOS.filter((scenario) => !competitionBatchIds.has(scenario.id));
+        const baselineFunnel: FunnelLedger = {};
+        return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
+      })()
+      : [];
     const compareMerchantExpansion = process.env.MERCHANT_AUDIT_COMPARE === '1';
     const baselineReports = compareMerchantExpansion
       ? (() => {
@@ -1118,6 +1153,27 @@ describe('route-aware reward realization audit', () => {
       console.log('SALVAGE_BATCH_PAIRED_BEFORE_AFTER', JSON.stringify(compactPaired));
       console.log('SALVAGE_BATCH_EXPOSURE', JSON.stringify(exposure));
       console.log('SALVAGE_BATCH_SCENARIO_CONTRIBUTIONS', JSON.stringify(Object.fromEntries(Object.entries(batchExposure).filter(([id]) => salvageBatchIds.has(id)))));
+    }
+    if (competitionBatchBaseline.length) {
+      const paired = [7, 10].flatMap((month) => MILESTONES.map((milestone) => ({
+        month, milestone,
+        before: compactMilestoneMetrics(competitionBatchBaseline.filter((row) => row.month === month), month, milestone),
+        after: compactMilestoneMetrics(reports.filter((row) => row.month === month), month, milestone),
+      })));
+      const exposure = [7, 10].flatMap((month) => MILESTONES.map((milestone) => {
+        const cohort = reports.filter((row) => row.month === month && row.milestone === milestone);
+        const sum = (field: keyof Snapshot) => cohort.reduce((total, row) => total + ((row[field] as number | undefined) ?? 0), 0);
+        const reached = sum('reached');
+        return { month, milestone, reached, batchSeenPct: percent(sum('competitionBatchSeen'), reached), gearOfferPct: percent(sum('competitionBatchGearOfferSeen'), reached), gearAcquiredPct: percent(sum('competitionBatchGearAcquired'), reached), medianFirstBatch: quantile(cohort.flatMap((row) => row.firstCompetitionBatchAdventure ?? []), .5) || null, medianFirstGearOffer: quantile(cohort.flatMap((row) => row.firstCompetitionBatchGearOfferAdventure ?? []), .5) || null, medianFirstGearAcquisition: quantile(cohort.flatMap((row) => row.firstCompetitionBatchGearAdventure ?? []), .5) || null };
+      }));
+      const compactPaired = paired.map(({ month, milestone, before, after }) => ({
+        month, milestone,
+        before: { reached:before.reached, zeroGear:before.zeroGearEverPct, gearOffer:before.gearOfferSeenPct, currentGear:before.currentGearPct, bank:before.everBankedGearPct, zeroCoins:before.zeroEarnedCoinsPct, zeroMaterial:before.zeroPersistentMaterialPct, noMaterialOrCoins:before.zeroMaterialAndCoinsPct, medianFirstGear:before.medianFirstGearAdventure, medianFirstCoins:before.medianFirstCoinAdventure, medianMoney:before.medianCoinBalance },
+        after: { reached:after.reached, zeroGear:after.zeroGearEverPct, gearOffer:after.gearOfferSeenPct, currentGear:after.currentGearPct, bank:after.everBankedGearPct, zeroCoins:after.zeroEarnedCoinsPct, zeroMaterial:after.zeroPersistentMaterialPct, noMaterialOrCoins:after.zeroMaterialAndCoinsPct, medianFirstGear:after.medianFirstGearAdventure, medianFirstCoins:after.medianFirstCoinAdventure, medianMoney:after.medianCoinBalance },
+      }));
+      console.log('COMPETITION_BATCH_PAIRED_BEFORE_AFTER', JSON.stringify(compactPaired));
+      console.log('COMPETITION_BATCH_EXPOSURE', JSON.stringify(exposure));
+      console.log('COMPETITION_BATCH_SCENARIO_CONTRIBUTIONS', JSON.stringify(Object.fromEntries(Object.entries(batchExposure).filter(([id]) => competitionBatchIds.has(id)))));
     }
     if (roadDangerBaseline.length) {
       const paired = [7, 10].flatMap((month) => MILESTONES.map((milestone) => ({
