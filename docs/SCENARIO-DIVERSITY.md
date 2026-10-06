@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 709 adventures, including ten fixed-stock merchant encounters and ten Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current local registry has 859 adventures, including ten fixed-stock merchant encounters and sixteen continuity-expansion genre batches. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 
@@ -39,6 +39,24 @@ The 40-adventure remote-discovery/frontier-claims batch is all-year and grounded
 ### Gear Expansion Genre Batch 10 — River / Ferry / Water Work
 
 Added 24 year-round Adventures in which current, depth, load, wet lines, ferry alignment, dock access, rising water, or water damage materially changes the available choices. The set spans ferry operation, dock and barge work, ford and depth inspection, night signaling, flood planning, cargo recovery, equipment repair, ownership disputes, and records protection; it is not a rescue-only set. Three persistent Gear IDs were added: `boatHook`, `foldingBailer`, and `waterproofLedgerTube`. Existing rope, sounding, signal, waterproofing, repair, carrying, and hand-tool Gear receive meaningful optional uses. All 24 include a continuity opportunity; each has at least one legitimate Gear path, with explicit release/provenance and coin alternatives where written. No new scenario has combat; the danger comes from water and equipment, with grounded retreat or wait options. All entries are year-round, so July/October eligibility is identical. Selector weights and replay rules are unchanged.
+
+### Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work
+
+Added 30 Adventures (26 year-round, two AUTUMN, two WINTER) about the working rural system: boundary work, feed safety, tack and wagon problems, harvest pressure, animal handling, equipment hazards, shared water, theft evidence, and tool ownership. One new persistent tool, `fencingPliers`, cuts and twists wire around sound posts but cannot pull posts or make rotten wood safe. It is explicitly paid/released in authored outcomes and has callbacks in both this batch and the older *Fence Line* job. Existing Gear—Farm Whistle, Field Glasses, Travel Rope, Gate Hook, Leather Repair Roll, Wheel Wrench, folding field tools, and more—changes specific approaches without automatic animal control or repair. All stories offer continuity; most have Gear compensation alternatives, with modest coin, Knowledge, and partial-work paths. Four stories are season-gated; selector weights and replay rules are unchanged.
+
+### Gear Expansion Genre Batch 12 — Investigation / Evidence / Specialist Tools
+
+Added 24 year-round Adventures about comparing physical traces, checking records, testing mechanical claims, and deciding what evidence can actually support. Every story includes an explicit Gear compensation path as well as modest wages and a reusable Knowledge option; Gear is offered only when the Traveler does not already own that item. Two new carryable tools, `waxImpressionKit` and `charcoalRubbingKit`, preserve seal/tool-mark impressions and raised surface marks without identifying a maker or authenticating a document. Accusation routes acknowledge uncertainty or relationship cost; hostile returns are possible in two stories and have watch/withdrawal alternatives. Existing magnification, measuring, probing, mirror, document, and repair Gear receives practical uses. No modern forensic methods, selector bias, or progression changes were introduced.
+
+### Gear Expansion Genre Batch 13 — Industrial / Mill / Rail Work
+
+Twenty-four year-round Adventures focus on machinery within active workplaces: mill drives, rail switches and freight equipment, pumps, hoists, and repair sheds. Each gives the Traveler a practical inspection, a choice between repair/testing/shutdown, a consequence for an untested full-load restart, and a closeout with wages, reusable Knowledge, or explicitly released Gear. The catalog gains one Machinist’s File Set for removing small burrs; it cannot correct alignment, cracks, or unsafe machinery. No selector or Gear-progression rules changed.
+
+### Gear Expansion Genre Batch 14 — Medical / Rescue Support / Evacuation
+
+Added 24 year-round Adventures about visible injuries, safe waiting, patient movement, caregiver support, exposure, access, and evacuation. Twenty-two offer an explicitly released Gear item as one compensation choice; the rest offer wages or reusable Knowledge. The Traveler observes and supports but does not diagnose; trained caregivers own medical assessment. Existing Field Bandage Roll, Folding Field Stretcher, rope, blankets, whistles, lighting, and work Gear receive callbacks. One new carryable item, the Canvas Rescue Sling, supports a seated person or awkward load through a narrow passage with helpers; it does not replace a litter or make an unsafe route safe. No selector, seasonal, or progression rules changed.
+
+Twenty-four year-round Adventures focus on machinery within active workplaces: mill drives, rail switches and freight equipment, pumps, hoists, and repair sheds. Each gives the Traveler a practical inspection, a choice between repair/testing/shutdown, a consequence for an untested full-load restart, and a closeout with wages, reusable Knowledge, or explicitly released Gear. The catalog gains one Machinist’s File Set for removing small burrs; it cannot correct alignment, cracks, or unsafe machinery. No selector or Gear-progression rules changed.
 
 ## Seasonal availability
 

@@ -201,8 +201,9 @@ const hillOutfitter = merchant({
   sales: [
     { id: 'trailCompass', label: 'Trail Compass', price: 2, history: 'sold_trail_compass_at_hill_post' },
     { id: 'roadsideSignalMirror', label: 'Roadside Signal Mirror', price: 2, history: 'sold_signal_mirror_at_hill_post' },
+    { id: 'climbingPitons', label: 'Climbing Pitons', price: 2, history: 'sold_climbing_pitons_at_hill_post' },
   ],
-  sellerText: 'The keeper accepts one compass or signal mirror in sound condition for the next rescue post. A folded marker is too site-specific for the keeper’s store.',
+  sellerText: 'The keeper accepts one compass or signal mirror for the rescue post, or a set of pitons for the ridge crew. A folded marker is too site-specific for the store.',
   departure: 'You continue along the marked public road. The keeper returns the signboard to its post before the light fades.',
   itemHistoryPrefix: 'bought_at_hill_outfitter',
 });

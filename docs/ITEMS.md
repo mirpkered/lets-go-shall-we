@@ -1,6 +1,6 @@
 # Persistent Item Roster
 
-`src/items.ts` is the source of truth for item IDs, names, descriptions, resolved inventory class, stack limits, and carryability. This page inventories its **50 persistent Gear/Relic items** to support authoring and reduce duplication. The 1/2/3 progression is Gear Capacity only. Starting Small Knife and Lantern are Gear supplied at every run but do not use capacity. Local keys, clues, and temporary objects remain run-only.
+`src/items.ts` is the source of truth for item IDs, names, descriptions, resolved inventory class, stack limits, and carryability. This page inventories the current **83 Gear/Relic catalog entries** to support authoring and reduce duplication: 74 Gear IDs (72 carryable) and nine Relics. The 1/2/3 progression is Gear Capacity only. Starting Small Knife and Lantern are Gear supplied at every run but do not use capacity. Local keys, clues, and temporary objects remain run-only.
 
 Persistent condition and upgrade behavior is documented in the [Equipment Evolution Audit](EQUIPMENT-EVOLUTION-AUDIT.md). Item IDs remain stable; upgrades do not create duplicate items or consume extra Gear slots.
 
@@ -10,7 +10,7 @@ The starting Lantern may receive one `spiritGlass` upgrade from a glazier who ex
 
 ## Classes and capacities
 
-- **Gear:** 41 reusable carryable items, plus the starting Small Knife and Lantern supplied at each run. Only persistent carried Gear uses the traveler’s 1/2/3 Gear Capacity. Gear can be damaged, broken, repaired, upgraded, and Banked.
+- **Gear:** 72 carryable catalog items, including the starting Small Knife and Lantern supplied at each run. Only persistent carried Gear uses the traveler’s 1/2/3 Gear Capacity. Gear can be damaged, broken, repaired, upgraded, and Banked.
 - **Relics:** Bronze Mask Fragment, Grave Coin, Yew Charm, Crimson Signal Lens, Briar House Skeleton Key, Red Door Token, Iron Orchard Rod Fragment, Numbered Lantern Wick, and Black Milling Stone. These have separate inventory display and do not consume Gear slots. There is no hard Relic cap in v0.1; three is a soft “unusually many” UI cue. They are normally Bankable and character-bound while carried.
 - **Supplies:** Ritual Chalk ×4, Consecrated Salt ×3, and Cold-Iron Nails ×6 are the pilot definitions. A traveler has four distinct Supply stacks; quantities do not use Gear slots and Supplies cannot be Banked. They are character-bound and lost on death, abandonment, or retirement. Ordinary provisions remain abstract.
 - **Assets:** Character-owned property such as the Older Chestnut Horse remains in `ownedAssets`, outside the item catalog and all capacities. Assets are not Bankable and end with the character.
@@ -70,6 +70,7 @@ Items retain stable IDs through classification changes. The former `carriedItem`
 | `roadsideSignalMirror` | Roadside Signal Mirror | Aim a reflected signal across open country | Rescue, distant communication | Reusable; needs sun/line of sight and does not guarantee response. |
 | `foundPocketWatch` | Silver Pocket Watch | Working watch with former owner’s name | Timekeeping, provenance callbacks | Reusable; recognizable ownership may matter; no generic time bonus. |
 | `joinersFoldingRule` | Joiner’s Folding Rule | Measure and lay out simple work | Carpentry, repairs, property disputes | Reusable; supports careful measurement, not surveying-grade precision. |
+| `canvasRescueSling` | Canvas Rescue Sling | Support a seated person or awkward load through a narrow passage with paired helpers | Evacuation, confined access, awkward field loads | Reusable; needs helpers and a safe route, and is not a rigid stretcher or a medical treatment. |
 
 Before adding another carryable, check for a narrow capability already represented above. Prefer money, knowledge, history, or a narrative reward when another tool would overlap without adding a distinct future use.
 

@@ -1,8 +1,8 @@
 # Scenario Risk Audit
 
-## Current registry update (2026-10-05)
+## Current registry update (2026-10-06)
 
-The current registry after River / Ferry / Water Work Genre Batch 10 contains 709 scenarios. Effective risk counts are LOW 265, MODERATE 241, HIGH 163, and SEVERE 40. Selector formulas and risk weights are unchanged. Batch 10 contributes 5 LOW, 12 MODERATE, and 7 HIGH Adventures; none has a combat route, and the high-risk ratings describe dangerous water or equipment conditions rather than violence.
+After Courier / Mail / Telegraph Genre Batch 16, the local registry contains 859 scenarios. Effective risk counts are LOW 304, MODERATE 313, HIGH 202, and SEVERE 40. Selector formulas and risk weights are unchanged. Batch 16 adds eight LOW, twelve MODERATE, and four HIGH stories. Its high-risk options warn about floodwater, an active rail line, a due quarry shift, or loose ravine stone; none creates authored death. The construction batch notes remain a dated snapshot in the continuity program document.
 
 Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. In the current 445-adventure registry, explicit `diversity.riskTier` is now authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries use the compatibility classifier until they are individually migrated. Current effective counts are LOW 197, MODERATE 115, HIGH 94, SEVERE 39 (see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
 

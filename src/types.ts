@@ -210,6 +210,9 @@ export interface Requirement {
   knowledgeKeys?: string[];
   notKnowledgeKeys?: string[];
   notKnowledge?: string[];
+  /** Exact remembered Lore entries; unlike Knowledge these are narrative memory, not skill facts. */
+  lore?: string[];
+  notLore?: string[];
   historyFlags?: string[];
   minHealth?: number;
   minMoney?: number;

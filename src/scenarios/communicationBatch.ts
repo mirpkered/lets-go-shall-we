@@ -123,6 +123,7 @@ for (const outcomeId of ['deliver-private', 'deliver-wait', 'verify-carry', 'por
 lastTrainMessage.scenes.passengerDecision = {
   id: 'passengerDecision', title: 'A Choice before the Whistle',
   text: 'The passenger folds the note, hands the conductor their ticket, and steps back from the last train. They will stay for the next one. They ask you to tell the sender only that the message was received; its words remain private.',
+  textVariants: [{ requirements: { historyFlags: ['opened_private_courier_letter'] }, text: 'The passenger folds the note, hands the conductor their ticket, and steps back from the last train. The clerk remembers that you once opened private correspondence, so they ask you to carry only the receipt: the note was received, and its words remain private.' }],
   choices: [
     { id: 'carryReceipt', label: 'Offer to carry that brief reply', next: 'receiptCarried', effects: { historyFlags: ['carried a private receipt after a passenger chose to miss the last train'] } },
     { id: 'leaveReplyPrivate', label: 'Respect their privacy and leave it there', next: 'privacyKept', effects: { historyFlags: ['respected a passenger’s privacy after a delayed departure'] } },

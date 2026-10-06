@@ -11,6 +11,7 @@ interface WorkSpec {
   taskHint: string;
   item?: { id: string; name: string; label: string; hint: string; consumeOnSuccess?: boolean };
   additionalItem?: { id: string; name: string; label: string; hint: string };
+  additionalItems?: { id: string; name: string; label: string; hint: string }[];
   askForHelp: string;
   time: number;
   timePhases: TimePhase[];
@@ -77,6 +78,7 @@ function workAdventure(spec: WorkSpec): Scenario {
           { id: 'workCarefully', label: 'Take the careful approach', hint: 'It should work, though the awkward task can still go wrong.', timeCost: 15, chance: { probability: 0.82, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: 'The work holds together, and the job is finished.', failureMessage: 'The fix does not hold. You stop before anyone is hurt, but some pay is lost.', successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_handled_problem`], knowledge: [spec.knowledge] }, failureEffects: { money: 1, historyFlags: [`${spec.history}_had_setback`], knowledge: [spec.knowledge], ...(spec.failureHealth ? { health: -spec.failureHealth } : {}) } } },
           ...(spec.item ? [{ id: 'useCarriedTool', label: spec.item.label, hint: spec.item.hint, requirements: { items: [spec.item.id] }, timeCost: 10, chance: { probability: 0.94, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: `Your ${spec.item.name} makes the awkward part of the work manageable.`, failureMessage: `The ${spec.item.name} helps, but the underlying problem takes more time than the shift allows.`, successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_gear`], knowledge: [spec.knowledge], ...(spec.item.consumeOnSuccess ? { loseItems: [spec.item.id] } : {}) }, failureEffects: { money: spec.reducedPay, historyFlags: [`${spec.history}_had_setback`], knowledge: [spec.knowledge] } } }] : []),
           ...(spec.additionalItem ? [{ id: 'useSecondTool', label: spec.additionalItem.label, hint: spec.additionalItem.hint, requirements: { items: [spec.additionalItem.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_joiners_rule`], knowledge: [spec.knowledge] } }] : []),
+          ...(spec.additionalItems ?? []).map((item) => ({ id: `use_${item.id}`, label: item.label, hint: item.hint, requirements: { items: [item.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_${item.id}`], knowledge: [spec.knowledge] } })),
           { id: 'askForHelp', label: spec.askForHelp, hint: 'The work will take longer and the agreed pay will be smaller.', timeCost: 20, next: helpedFinish.id, effects: { money: spec.reducedPay, historyFlags: [spec.history, `${spec.history}_shared_work`], knowledge: [spec.knowledge] } },
         ],
       },
@@ -116,6 +118,7 @@ export const FENCE_LINE = workAdventure({
   taskLabel: 'Set the replacement post at the boundary stake', taskHint: 'The stake marks the agreed line; a straight, well-set post should keep the fence taut.',
   item: { id: 'bridgewrightHammer', name: 'Bridgewright’s Hammer', label: 'Set the post with your Bridgewright’s Hammer', hint: 'Its balanced head is suited to driving a small fence peg without splitting it.' },
   additionalItem: { id: 'joinersFoldingRule', name: 'Joiner’s Folding Rule', label: 'Match the spacing with your folding rule', hint: 'Compare the new post’s distance from the sound post with the spacing along the existing fence.' },
+  additionalItems: [{ id: 'fencingPliers', name: 'Fencing Pliers', label: 'Twist a wire tie with your Fencing Pliers', hint: 'The pliers can cut and twist fence wire around a sound post; they cannot replace a rotten post.' }],
   askForHelp: 'Ask both owners to confirm the boundary together', time: 120,
   timePhases: [{ id: 'morning', label: 'Morning', atMinutes: 0 }, { id: 'midday', label: 'Midday', atMinutes: 60 }, { id: 'afternoon', label: 'Afternoon', atMinutes: 120 }],
   normalEnding: 'The repaired fence holds along the marked line. The owner pays you, and the neighbor gives the finished posts a brief inspection before returning to his field.',

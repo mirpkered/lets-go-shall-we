@@ -26,7 +26,7 @@ const chooseAt = (state: SaveData, scenario: Scenario, sceneId: string, choiceId
 describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
   it('registers 24 stable all-year Adventures with valid, reachable, acyclic graphs', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(BATCH)).toEqual({ errors: [], warnings: [] });
@@ -51,8 +51,8 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
   });
 
   it('adds three ordinary, useful, capability-limited Gear items', () => {
-    expect(itemsOfClass('GEAR')).toHaveLength(69);
-    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(67);
+    expect(itemsOfClass('GEAR')).toHaveLength(74);
+    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(72);
     expect(ITEMS.boatHook).toMatchObject({ carryable: true, inventoryClass: 'GEAR' });
     expect(ITEMS.boatHook.description).toContain('cannot anchor a vessel');
     expect(ITEMS.foldingBailer.description).toContain('cannot keep up with a leak');

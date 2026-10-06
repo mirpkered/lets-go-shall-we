@@ -5,6 +5,7 @@ import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { eligibleScenarios } from '../scenarioSelection';
+import { loadSave, saveGame } from '../storage';
 import { SCENARIOS } from './index';
 import { FIXED_STOCK_MERCHANTS, RETIRED_LAMPWRIGHT } from './merchantEcologyBatch';
 import { THE_LAMP_LEFT_IN_THE_WINDOW } from './surpriseEverydayBatch';
@@ -30,7 +31,7 @@ function act(state: SaveData, scenario: Scenario, sceneId: string, choiceId: str
 describe('fixed-stock merchant ecology', () => {
   it('registers ten distinct all-year low-risk encounters with clean, concise, reachable graphs', () => {
     expect(FIXED_STOCK_MERCHANTS).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     for (const merchant of FIXED_STOCK_MERCHANTS) {
       expect(findScenarioGraphProblems(merchant), merchant.title).toEqual([]);
@@ -106,6 +107,49 @@ describe('fixed-stock merchant ecology', () => {
       if (!itemId) continue;
       for (const resale of resalePrices.get(itemId) ?? []) expect(resale).toBeLessThanOrEqual(Math.abs(choice.effects?.money ?? 0));
     }
+  });
+
+  it('buys back carried climbing pitons for a modest price and preserves the choice across revisits and saves', () => {
+    const outfitter = FIXED_STOCK_MERCHANTS.find(({ id }) => id === 'the-hill-outfitter')!;
+    const sale = outfitter.scenes.buyer.choices.find(({ id }) => id === 'sell_climbingPitons')!;
+    const keep = outfitter.scenes.buyer.choices.find(({ id }) => id === 'keepYourGear')!;
+    expect(sale.label).toBe('Sell your Climbing Pitons for 2 coins');
+    expect(sale.effects).toMatchObject({ money: 2, loseItems: ['climbingPitons'], historyFlags: ['sold_climbing_pitons_at_hill_post'] });
+
+    for (const state of [start(outfitter), start(outfitter, 0, [], ['climbingPitons'])]) {
+      const buyer = act(state, outfitter, 'entry', 'offerCarriedGear');
+      expect(meets(sale.requirements, buyer)).toBe(false);
+      expect(buyer.run?.inventory).not.toContain('climbingPitons');
+    }
+
+    const kept = act(act(start(outfitter, 3, ['climbingPitons', 'travelRope']), outfitter, 'entry', 'offerCarriedGear'), outfitter, 'buyer', keep.id);
+    expect(kept.character?.money).toBe(3);
+    expect(kept.run?.inventory).toContain('climbingPitons');
+
+    const beforeSale = start(outfitter, 3, ['climbingPitons', 'travelRope'], ['fieldBandageRoll']);
+    const buyer = act(beforeSale, outfitter, 'entry', 'offerCarriedGear');
+    expect(meets(sale.requirements, buyer)).toBe(true);
+    const sold = act(buyer, outfitter, 'buyer', sale.id);
+    expect(sold.run?.sceneId).toBe('departure');
+    expect(sold.character?.money).toBe(5);
+    expect(sold.character?.carriedItems).toEqual(['travelRope']);
+    expect(sold.character?.carriedItem).toBe('travelRope');
+    expect(sold.run?.inventory).not.toContain('climbingPitons');
+    expect(sold.run?.inventory).toContain('travelRope');
+    expect(sold.bank).toEqual(['fieldBandageRoll']);
+    expect(sold.character?.historyFlags).toContain('sold_climbing_pitons_at_hill_post');
+
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(sold, storage as never);
+    const resumed = loadSave(storage as never);
+    expect(resumed.character?.money).toBe(5);
+    expect(resumed.character?.carriedItems).toEqual(['travelRope']);
+    expect(resumed.run?.inventory).not.toContain('climbingPitons');
+    expect(resumed.bank).toEqual(['fieldBandageRoll']);
+
+    const returnVisit = { ...resumed, run: startRun(resumed.character!, outfitter) };
+    const returnBuyer = act(returnVisit, outfitter, 'entry', 'offerCarriedGear');
+    expect(meets(sale.requirements, returnBuyer)).toBe(false);
   });
 
   it('applies exact Supply quantities and respects stack caps at the restoration shelf', () => {

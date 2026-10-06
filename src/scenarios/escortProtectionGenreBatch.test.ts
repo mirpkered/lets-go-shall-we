@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ITEMS } from '../items';
-import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
-import { EMPTY_SAVE } from '../storage';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
 import { SCENARIOS } from './index';
@@ -19,7 +19,7 @@ function destinations(scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], 
 describe('Escort / Protection genre batch', () => {
   it('registers thirty unique all-year Adventures with valid forward destinations', () => {
     expect(ESCORT_PROTECTION_GENRE_BATCH).toHaveLength(30);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(ESCORT_PROTECTION_GENRE_BATCH.map(({ id }) => id)).size).toBe(30);
     expect(ESCORT_PROTECTION_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(ESCORT_PROTECTION_GENRE_BATCH).errors).toEqual([]);
@@ -56,6 +56,27 @@ describe('Escort / Protection genre batch', () => {
     const callbackCount = SCENARIOS.filter(({ id }) => !batchIds.has(id)).flatMap(({ scenes }) => Object.values(scenes)
       .flatMap((scene) => scene.choices.filter(({ requirements }) => requirements?.items?.includes('foldingFieldStretcher')))).length;
     expect(callbackCount).toBeGreaterThanOrEqual(2);
+  });
+
+  it('lets a carried Telegraph Line Tester confirm continuity from firm ground, but not pole safety', () => {
+    const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-telegraph-repair-car')!;
+    const makeState = (carried: boolean, bank: string[] = []) => {
+      const character = newCharacter('Telegraph Tester');
+      if (carried) { character.carriedItem = 'telegraphLineTester'; character.carriedItems = ['telegraphLineTester']; }
+      return { ...structuredClone(EMPTY_SAVE), bank, character, run: startRun(character, scenario, () => 0) };
+    };
+    const choice = scenario.scenes.inspect.choices.find(({ id }) => id === 'tester')!;
+    expect(meets(choice.requirements, makeState(false))).toBe(false);
+    expect(meets(choice.requirements, makeState(false, ['telegraphLineTester']))).toBe(false);
+    const carried = makeState(true);
+    expect(meets(choice.requirements, carried)).toBe(true);
+    const after = choose(carried, scenario, choice, () => 0);
+    expect(after.run?.sceneId).toBe('partial');
+    expect(sceneText(scenario.scenes.partial, after)).toMatch(/confirms continuity.*does not make the leaning pole safe/i);
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(after, storage as never);
+    const resumed = loadSave(storage as never);
+    expect(sceneText(scenario.scenes.partial, resumed)).toMatch(/confirms continuity.*does not make the leaning pole safe/i);
   });
 
   it('transfers the crew stretcher only after the traveler accepts it as a retired spare', () => {

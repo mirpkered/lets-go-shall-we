@@ -2,6 +2,8 @@
 
 Use with the [Canonical Design Rules](DESIGN_RULES.md), not as a scoring quota. Mark an item not applicable when the story does not need it.
 
+For continuity batches after Batch 14, also use the [Continuity Expansion Program](CONTINUITY_EXPANSION_PROGRAM.md): deliberately balance primary Gear, Knowledge, and Lore across the batch; give each persistent fact/history a meaningful downstream callback; and keep Gear, Knowledge, and Lore distinct in both capability and narration.
+
 ## How to add one adventure correctly
 
 1. Create a readable typed `Scenario` data module under `src/scenarios/`. Keep stable scenario and scene IDs; author the scene graph directly unless an existing helper exactly matches the story’s structure.
@@ -32,6 +34,10 @@ Also review the early-accessible portion of the library separately: global batch
 **Gear Expansion Program — Genre Batch 9: Equipment Testing / Inventors / Field Trials.** Give every prototype a concrete capability, operating limit, and plausible failure mode. Test within a legible safety envelope; show warning signs before risk and let the Traveler stop. A successful reading supports only the conditions tested—it does not certify an anchor, structure, animal load, or repaired mechanism. Transfer prototypes explicitly, and apply improvements to the existing item record rather than adding duplicate Gear or rarity tiers. Keep technology consistent with hand tools, simple optics, steam, lanterns, and telegraph. Corrective batches may temporarily exceed normal reward density; ordinary mixed batches retain the 70% minimum and 75–80% preferred guideline.
 
 **Gear Expansion Program — Genre Batch 10: River / Ferry / Water Work.** Make water change the mechanics: state near/far bank, current direction, depth or uncertainty, footing, load, boat/ferry position, and safe shore access before choices depend on them. A rope, pole, hook, or bailer has a bounded use; it cannot erase current, weight, unknown depth, or a leak. Vary water work among transport, dock labor, repair, inspection, flood decisions, cargo, records, and ownership—not repeated person-in-water rescues. Keep temporary vessel and employer equipment out of persistent inventory unless explicitly released; return disputed property and show provenance for every kept item. All-year water conditions must not be mislabeled as seasonal hazards; seasonal eligibility should follow the actual premise. Corrective batches may temporarily exceed normal reward density; ordinary mixed batches retain the 70% minimum and 75–80% preferred guideline.
+
+**Gear Expansion Program — Genre Batch 11: Agriculture / Ranch / Animal Work.** Make the rural work system—not merely an animal encounter—the source of the problem: fences, feed, water, tack, harvest timing, shared boundaries, and tool allocation should shape the story. Employer-issued tools stay temporary unless explicitly released. Animal Gear changes handling options without creating obedience; prioritize human and animal safety over property. Let evidence support theft or boundary decisions before confrontation, and pay wages or Gear only when the work agreement establishes them. Partial outcomes should name what was protected, delayed, damaged, or left for another worker. Seasonal restrictions should match harvest/weather, not rural scenery alone.
+
+**Gear Expansion Program — Genre Batch 14: Medical / Rescue Support / Evacuation.** Keep the Traveler inside a layperson’s knowledge boundary: narrate visible conditions, preserve uncertainty, and let trained caregivers establish diagnoses or treatment plans. Gear can cover, support, shelter, signal, or carry; it cannot heal or make an unsafe route safe. Make the patient’s location, helpers, hazards, and exit route legible before movement choices. A safe wait, explicit handoff, or slower route is a real outcome, not a failure state. Caregiver and employer equipment stays temporary until its owner explicitly releases it, and rescue compensation should not make spontaneous compassion feel like a wage contract.
 
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
@@ -142,6 +148,9 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Consider fictional payment, item, history, relationship, lore, knowledge, cost, or a satisfying narrative payoff. Do not impose reward quotas or forget agreed wages.
 - [ ] Ensure item rewards have believable ownership/provenance, distinct capability, no unintended duplicate, and a safe carry/Bank/decline flow.
 - [ ] Compare the completed scenario with existing metadata and structural warnings. Similarity is a prompt for human review, never an automatic rejection.
+- [ ] For evidence-led stories, state what each physical trace supports and what it cannot establish; make accusations produce proportionate social consequences rather than unsupported certainty.
+- [ ] For industrial work, establish the machine’s stopped/isolated state and the crew’s position before inviting contact; explain the physical fault, then distinguish a hand check, unloaded test, and loaded return to work.
+- [ ] Treat employer tools as temporary unless a named owner releases a separate item; never imply that a completed repair alone authorizes restart or makes a damaged machine safe.
 
 ## Release checks
 

@@ -17,7 +17,7 @@ const memoryStorage = () => ({ value: '', setItem(_key: string, value: string) {
 describe('Equipment Testing / Inventors / Field Trials batch', () => {
   it('registers 24 unique, all-year Adventures with a valid reachable graph', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(BATCH).errors).toEqual([]);
@@ -29,8 +29,8 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
       expect(ITEMS[id], id).toMatchObject({ carryable: true, inventoryClass: 'GEAR' });
       expect(ITEMS[id].description.length).toBeGreaterThan(60);
     }
-    expect(itemsOfClass('GEAR')).toHaveLength(69);
-    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(67);
+    expect(itemsOfClass('GEAR')).toHaveLength(74);
+    expect(itemsOfClass('GEAR').filter(({ carryable }) => carryable)).toHaveLength(72);
     expect(ITEMS.fieldCalipers.description).toContain('small parts');
     expect(ITEMS.lineTensionGauge.description).toContain('cannot certify an anchor');
     expect(ITEMS.foldingBenchClamp.description).toContain('not a lifting clamp');

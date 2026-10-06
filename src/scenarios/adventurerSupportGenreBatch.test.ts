@@ -41,7 +41,7 @@ function claimGear(scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], co
 describe('Adventurer Support / Squire / Henchman genre batch', () => {
   it('registers 24 distinct all-year Adventures with valid forward graphs and continuity outcomes', () => {
     expect(ADVENTURER_SUPPORT_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(ADVENTURER_SUPPORT_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(ADVENTURER_SUPPORT_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(ADVENTURER_SUPPORT_GENRE_BATCH).errors).toEqual([]);
@@ -60,6 +60,22 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(state.run?.sceneId).toBe('followup');
     state = act(state, scenario, scenario.scenes.followup.choices[1].id);
     expect(state.run?.sceneId).toBe('settlement');
+  });
+
+  it('offers the Padded Pack Saddle only when carried and keeps animal weight limits in view', () => {
+    const scenario = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-mule-load')!;
+    const choice = scenario.scenes.preparation.choices.find(({ id }) => id === 'kit_pad')!;
+    expect(meets(choice.requirements, start(scenario))).toBe(false);
+    expect(meets(choice.requirements, start(scenario, undefined, ['paddedPackSaddle']))).toBe(false);
+    const carried = start(scenario, 'paddedPackSaddle');
+    expect(meets(choice.requirements, carried)).toBe(true);
+    const after = act(carried, scenario, 'kit_pad');
+    const consequence = scenario.scenes.complication.textVariants?.find(({ requirements }) => meets(requirements, after))?.text;
+    expect(consequence).toMatch(/spreads.*pressure.*cannot correct a shifting load/i);
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(after, storage as never);
+    const resumed = loadSave(storage as never);
+    expect(scenario.scenes.complication.textVariants?.find(({ requirements }) => meets(requirements, resumed))?.text).toBe(consequence);
   });
 
   it('offers canonical, explicit ownership transfer for all 24 Gear routes', () => {

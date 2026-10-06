@@ -91,6 +91,12 @@ import { WILDERNESS_FIELDCRAFT_GENRE_BATCH } from './wildernessFieldcraftGenreBa
 import { EXPEDITION_LOGISTICS_GENRE_BATCH } from './expeditionLogisticsGenreBatch';
 import { EQUIPMENT_TESTING_GENRE_BATCH } from './equipmentTestingGenreBatch';
 import { RIVER_WATER_WORK_GENRE_BATCH } from './riverWaterWorkGenreBatch';
+import { AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH } from './agricultureRanchAnimalWorkGenreBatch';
+import { INVESTIGATION_EVIDENCE_GENRE_BATCH } from './investigationEvidenceGenreBatch';
+import { INDUSTRIAL_MILL_RAIL_GEAR_BATCH } from './industrialMillRailWorkGenreBatch';
+import { MEDICAL_RESCUE_SUPPORT_GEAR_BATCH } from './medicalRescueSupportGenreBatch';
+import { CONSTRUCTION_BUILDING_STRUCTURAL_WORK_BATCH } from './constructionBuildingStructuralWorkGenreBatch';
+import { COURIER_MAIL_TELEGRAPH_GENRE_BATCH } from './courierMailTelegraphGenreBatch';
 
 export const SCENARIOS: Scenario[] = [
   BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME,
@@ -129,6 +135,12 @@ export const SCENARIOS: Scenario[] = [
   ...EXPEDITION_LOGISTICS_GENRE_BATCH,
   ...EQUIPMENT_TESTING_GENRE_BATCH,
   ...RIVER_WATER_WORK_GENRE_BATCH,
+  ...AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH,
+  ...INVESTIGATION_EVIDENCE_GENRE_BATCH,
+  ...INDUSTRIAL_MILL_RAIL_GEAR_BATCH,
+  ...MEDICAL_RESCUE_SUPPORT_GEAR_BATCH,
+  ...CONSTRUCTION_BUILDING_STRUCTURAL_WORK_BATCH,
+  ...COURIER_MAIL_TELEGRAPH_GENRE_BATCH,
 ];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));

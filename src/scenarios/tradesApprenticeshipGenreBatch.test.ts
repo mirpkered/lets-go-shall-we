@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, itemCondition, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, itemCondition, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { ITEMS } from '../items';
@@ -12,7 +12,7 @@ import { TRADES_APPRENTICESHIP_GENRE_BATCH as BATCH } from './tradesApprenticesh
 describe('Trades / Apprenticeships / Practical Work batch', () => {
   it('registers 24 unique all-year Adventures with valid destinations and catalog-backed rewards', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(BATCH.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
@@ -94,5 +94,24 @@ describe('Trades / Apprenticeships / Practical Work batch', () => {
     const repairRollChoice = THE_BROKEN_HARNESS.scenes.harnessRepaired.choices.find(({ id }) => id === 'assistWithLeatherRepairRoll');
     expect(repairRollChoice?.requirements?.items).toContain('leatherRepairRoll');
     expect(THE_BROKEN_HARNESS.scenes.harnessServiceDone.textVariants?.some(({ requirements }) => requirements.flags?.includes('used_leather_repair_roll_at_harness_maker'))).toBe(true);
+  });
+
+  it('uses a carried Brass Plumb Bob to reveal alignment without treating it as a structural verdict', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-second-brace')!;
+    const makeState = (carried: boolean, bank: string[] = []): SaveData => {
+      const character = newCharacter('Plumb Bob Tester');
+      if (carried) { character.carriedItem = 'brassPlumbBob'; character.carriedItems = ['brassPlumbBob']; }
+      return { ...structuredClone(EMPTY_SAVE), bank, character, run: startRun(character, scenario, () => 0) };
+    };
+    const choice = scenario.scenes.frame.choices.find(({ id }) => id === 'plumb')!;
+    expect(meets(choice.requirements, makeState(false))).toBe(false);
+    expect(meets(choice.requirements, makeState(false, ['brassPlumbBob']))).toBe(false);
+    const carried = makeState(true);
+    expect(meets(choice.requirements, carried)).toBe(true);
+    const after = choose(carried, scenario, choice, () => 0);
+    expect(sceneText(scenario.scenes.hiddenRot, after)).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell/i);
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(after, storage as never);
+    expect(sceneText(scenario.scenes.hiddenRot, loadSave(storage as never))).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell/i);
   });
 });

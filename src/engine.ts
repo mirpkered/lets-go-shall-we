@@ -309,6 +309,8 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.knowledgeKeys || requirement.knowledgeKeys.every((id) => (character.knowledgeKeys ?? []).includes(id)))
     && (!requirement.notKnowledgeKeys || requirement.notKnowledgeKeys.every((id) => !(character.knowledgeKeys ?? []).includes(id)))
     && (!requirement.notKnowledge || requirement.notKnowledge.every((id) => !character.knowledge.includes(id)))
+    && (!requirement.lore || requirement.lore.every((entry) => character.lore.includes(entry)))
+    && (!requirement.notLore || requirement.notLore.every((entry) => !character.lore.includes(entry)))
     && (!requirement.historyFlags || requirement.historyFlags.every((id) => (character.historyFlags ?? []).includes(id)))
     && (!requirement.minHealth || run.health >= requirement.minHealth)
     && (requirement.minMoney === undefined || character.money >= requirement.minMoney)

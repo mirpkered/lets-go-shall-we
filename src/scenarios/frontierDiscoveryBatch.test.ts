@@ -40,7 +40,7 @@ function explore(scenarioIndex: number): void {
 describe('remote discovery and frontier claims batch', () => {
   it('registers 40 distinct all-year adventures with valid diversity metadata', () => {
     expect(FRONTIER_DISCOVERY_ADVENTURES).toHaveLength(40);
-    expect(SCENARIOS).toHaveLength(709);
+    expect(SCENARIOS).toHaveLength(859);
     expect(new Set(FRONTIER_DISCOVERY_ADVENTURES.map(({ id }) => id)).size).toBe(40);
     expect(FRONTIER_DISCOVERY_ADVENTURES.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(validateScenarioMetadata(FRONTIER_DISCOVERY_ADVENTURES)).toEqual([]);
@@ -195,7 +195,7 @@ describe('remote discovery and frontier claims batch', () => {
     const random = () => { seed = (seed * 48271) % 2147483647; return seed / 2147483647; };
     const simulation = simulateScenarioSelection(SCENARIOS, [], { selectionMonth: 6 }, 1000, random);
     expect(Math.max(...Object.values(simulation.categoryCounts))).toBeLessThan(1000 * 0.45);
-    expect(simulation.scenarioCounts['the-cache-under-the-stove']).toBeLessThan(30);
+    expect(simulation.scenarioCounts['the-cache-under-the-stove'] ?? 0).toBeLessThan(30);
     expect(simulation.seasonalCount).toBeLessThan(1000);
   });
 });
