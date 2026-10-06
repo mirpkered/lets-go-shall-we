@@ -65,7 +65,7 @@ function explore(scenario: Scenario, selections: Record<string, string>, money =
 describe('deception, disputes, and self-interest adventure batch', () => {
   it('registers ten distinct, concise, forward-only adventures', () => {
     expect(DISPUTE_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(637);
+    expect(SCENARIOS).toHaveLength(661);
     expect(DISPUTE_ADVENTURES.map(({ title }) => title)).toEqual([
       'The Injured Traveler', 'That’s My Horse', 'The Empty Purse', 'A Very Good Deal', 'The Broken Promise',
       'The Landlord’s Story', 'The Missing Sack', 'A Borrowed Coat', 'The False Guide', 'The Debt at Supper',

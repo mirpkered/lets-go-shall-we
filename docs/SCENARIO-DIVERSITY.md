@@ -18,11 +18,15 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 637 adventures, including ten fixed-stock merchant encounters and seven Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 661 adventures, including ten fixed-stock merchant encounters and eight Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 
 Added 24 Adventures about reading terrain, field observation, crossings, weather, animal behavior, navigation, campcraft, and remote rescue. Eighteen contain a legitimate persistent-Gear acquisition route, all 24 contain a coin or Knowledge continuity opportunity, and only one new carryable Gear ID was added: `foldingFieldSpade`. Two stories have possible combat; most dangers are environmental and can be answered without fighting. Three stories are season-locked (two spring, one winter); July and October therefore share the same 21 eligible Batch 7 entries. Selector categories, risk weights, replay penalties, and seasonal rules are unchanged.
+
+### Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Staging / Field Operations
+
+Added 24 Adventures centered on load plans, manifests, caches, staging, resupply, custody, and return logistics. Choices move bulk expedition equipment only through temporary run state; they never add those loads to persistent inventory. Twenty-one stories offer a legitimate persistent Gear route, all 24 offer Gear, coins, or reusable Knowledge, and the only new Gear ID is the Cargo Balance Scale. Shared tools have recorded handoffs, uncertain ownership is checked before opening or keeping supplies, and partial deliveries are recognized rather than treated as full completion. All 24 are year-round; selector categories, risk weights, and replay penalties remain unchanged.
 
 The surprise anthology contributes 36 all-year stories across social participation, games and performances, caregiving, ordinary work, practical information, and small human oddities. It was authored as separate scenario graphs rather than generated from a repeated scene template. These stories use existing systems only; descriptive History/Knowledge callbacks remain distinct from a structured Contacts/Favors roster, which is still not implemented.
 

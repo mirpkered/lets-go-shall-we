@@ -60,7 +60,7 @@ function combinations(scenario: Scenario): Record<string, string>[] {
 
 describe('witness and intervention scenario batch', () => {
   it('registers all three adventures and exposes QA launch controls', () => {
-    expect(SCENARIOS).toHaveLength(637);
+    expect(SCENARIOS).toHaveLength(661);
     expect(BATCH.map(({ title }) => title)).toEqual(['Silent Night?', 'Bear with Me', 'Give Me Whatcha Got']);
     const names = BATCH.flatMap((scenario) => (scenario.runRandomSelections ?? [])
       .filter(({ id }) => /^(guest|innkeeper|camper|robber|patron)$/i.test(id))
