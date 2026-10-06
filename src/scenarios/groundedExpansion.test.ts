@@ -162,6 +162,10 @@ describe('grounded adventure expansion batch', () => {
     expect(act(start(THE_FALLEN_TREE), THE_FALLEN_TREE, 'roadBlocked', 'turnBack').run?.sceneId).toBe('detourEnding');
 
     expect(act(start(THE_MISSING_BOAT), THE_MISSING_BOAT, 'emptyLanding', 'callBoatOwner').run?.sceneId).toBe('downstreamBank');
+    const flagState = start(THE_MISSING_BOAT, 'signalFlagSet');
+    flagState.run!.sceneId = 'barWithMyrna';
+    expect(meets(THE_MISSING_BOAT.scenes.barWithMyrna.choices.find(({ id }) => id === 'signalFromBar')?.requirements, flagState)).toBe(true);
+    expect(act(flagState, THE_MISSING_BOAT, 'barWithMyrna', 'signalFromBar').run?.sceneId).toBe('ferryHelp');
     const signal = act(start(THE_MISSING_BOAT), THE_MISSING_BOAT, 'emptyLanding', 'enterCurrent', () => 0.99);
     expect(signal.run?.sceneId).toBe('riverRescue');
     const overShelf = start(THE_MISSING_BOAT);

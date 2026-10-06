@@ -48,6 +48,7 @@ export const THE_MAN_EATER_OF_MILLERS_GAP: Scenario = {
     sheepMoved: scene('sheepMoved', 'A Pen above the Pass', 'The sheep are behind a stone pen above the gap. The bell is tied to the gate. No animal has approached since the flock moved. The tracks still point toward the ledge, but nothing shows whether the cat stayed there.', [
       { id: 'leavePassClosed', label: 'Keep the pass closed until daylight', next: 'gapClosed' },
       { id: 'watchFromRock', label: 'Watch from the broad upper rock', next: 'catSeen' },
+      { id: 'watchWithFieldGlasses', label: 'Watch the ledge from farther back with Field Glasses', requirements: { items: ['fieldGlasses'] }, next: 'catSeenAtDistance' },
       { id: 'followCatLedge', label: 'Follow the cat’s tracks along the ledge', hint: 'Loose gravel lies above a steep drop.', chance: { probability: 0.42, successNext: 'catSeen', failureNext: 'catFall', successMessage: 'You reach a broad ledge with a clear route back.', failureMessage: 'Gravel slides beneath your boot toward the drop.', failureEffects: { health: -5 } } },
     ]),
     catSeen: scene('catSeen', 'A Cat above the Trail', 'A mountain lion watches from the ledge, muscles low and still. It is a real predator and has taken livestock, but it has not attacked while you stay in the open. The marked retreat route remains behind the upper rock.', [
@@ -55,6 +56,10 @@ export const THE_MAN_EATER_OF_MILLERS_GAP: Scenario = {
       { id: 'ringBellLion', label: 'Ring the warning bell from cover', next: 'lionDriven' },
       { id: 'confrontLion', label: 'Confront the cat at the ledge', hint: 'It has attacked livestock and a drover; failure is likely fatal.', effects: { combat: { enemy: 'mountain lion', winChance: 0.2, damageOnWin: 4, damageOnLoss: 10, winNext: 'lionDriven', lossNext: 'catFatal' } } },
     ], 'danger'),
+    catSeenAtDistance: scene('catSeenAtDistance', 'Seen from Safe Ground', 'Through your Field Glasses, you make out a mountain lion watching the flock from the ledge. It has not noticed you on the broad upper rock. The drover can keep the pen closed while you leave the pass or ring the warning bell from cover.', [
+      { id: 'retreatObservedLion', label: 'Withdraw without drawing the cat closer', next: 'gapAfter', effects: { historyFlags: ['observed a mountain lion at Miller’s Gap from safe ground'] } },
+      { id: 'ringBellObservedLion', label: 'Ring the warning bell from the upper rock', next: 'lionDriven' },
+    ], 'warning'),
     lionDriven: end('lionDriven', 'The Pass Opens in Daylight', 'The bell carries through the gap and the cat withdraws uphill. The drover keeps the flock penned until daylight and calls an experienced hunter; the pass is not declared safe just because the animal has moved.'),
     gapAfter: end('gapAfter', 'A Pass Left Closed', 'The remaining sheep stay behind the upper wall. The drover marks the gap closed and sends for an experienced hunter. The cat has not been located, and the pass is no longer an easy path to the flock.'),
     gapClosed: end('gapClosed', 'The Hunt Can Wait', 'The drover closes Miller’s Gap and moves the flock uphill. No one enters the blind bend alone. The predator remains unlocated, but travelers are warned before they reach the narrow pass.'),

@@ -290,7 +290,14 @@ export const THE_TRESTLE_TABLE = story('the-trestle-table', 'The Trestle Table',
   crate: scene('crate', 'The Crate Holds', 'The spare crate supports the short leg, and the jars are moved toward the center. The table now stands level enough for the market, though the old joint still needs repair.', [
     { id: 'finishMarket', label: 'Stay while the seller resumes', next: 'safe' },
     { id: 'askForPayment', label: 'Ask whether the seller can pay for help', next: 'safe' },
+    { id: 'borePilotHoleWithAuger', label: 'Use your Hand Auger to fit a peg in the loose joint', requirements: { items: ['handAuger'] }, hint: 'The seller supplies a hardwood peg; the auger makes a narrow pilot hole without splitting the brace.', next: 'jointRepaired' },
   ]),
+  jointRepaired: scene('jointRepaired', 'A Proper Repair', 'With the stall closed for a few minutes, you bore a pilot hole through the sound edge and fit the seller’s hardwood peg. The joint holds when the crate is removed; the table can take its ordinary load again.', [
+    { id: 'acceptRepairCoin', label: 'Accept one coin for the repair', next: 'jointPaid', effects: { money: 1 } },
+    { id: 'declineRepairCoin', label: 'Decline payment and let the seller reopen', next: 'jointDeclined' },
+  ]),
+  jointPaid: end('jointPaid', 'A Peg in the Right Place', 'The seller pays one coin for the repair. The table holds without the crate, and the jars return to a level display.'),
+  jointDeclined: end('jointDeclined', 'A Table Set Right', 'You decline payment. The seller reopens with a sound joint and the jars safely centered.'),
   closed: end('closed', 'A Stall Closed for Safety', 'The seller closes the stall until the joint can be repaired. No jars break, but a morning of sales is lost; the seller thanks you for avoiding a worse loss.'),
   cut: end('cut', 'A Small Cut, a Closed Stall', 'The jar cuts your hand. The seller closes the stall and wraps the cut with clean cloth; the display is not worth another injury.'),
   safe: scene('safe', 'The Jars Stay Whole', 'The seller resumes with the jars away from the weak edge. They offer one coin from the day’s takings for your help; the choice is yours, and the table still needs a proper repair.', [

@@ -38,6 +38,7 @@ export const TAKING_ON_WATER: Scenario = {
       textVariants: [{ requirements: { minElapsedMinutes: 9 }, text: 'The wash returns with every small roll. A narrow line of water creeps along one floor rib while the shore remains a long paddle away.' }],
       choices: [
         { id: 'inspectSeamEarly', label: 'Trace the water along the hull', hint: 'You may find where the steady trickle begins.', timeCost: 4, next: 'seamFound' },
+        { id: 'bailWithCollapsiblePail', label: 'Use your Collapsible Water Pail to bail once', hint: 'It can move water faster than a cooking tin, but it will not stop the leak.', requirements: { items: ['collapsibleWaterPail'] }, timeCost: 2, effects: { setFlags: ['bailedOnce', 'leakSeen', 'usedCollapsiblePail'] }, next: 'bailFollowup' },
         { id: 'bailFirst', label: 'Bail the water once', hint: 'This will steady the canoe for a while, not stop the source.', timeCost: 4, effects: { setFlags: ['bailedOnce', 'leakSeen'] }, next: 'bailFollowup' },
         { id: 'keepPaddlingFromWash', label: 'Paddle toward shore', timeCost: 12, next: 'directPaddle' },
       ],

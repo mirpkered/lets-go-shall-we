@@ -6,6 +6,7 @@ import { SCENARIOS } from './scenarios';
 import { primaryScenarioCategory, selectScenario } from './scenarioSelection';
 import { FIXED_STOCK_MERCHANTS } from './scenarios/merchantEcologyBatch';
 import { GEAR_CORRECTIVE_ADVENTURES } from './scenarios/gearCorrectiveBatch';
+import { ADVENTURER_SUPPORT_GENRE_BATCH } from './scenarios/adventurerSupportGenreBatch';
 import type { Choice, SaveData } from './types';
 
 type Policy = 'random' | 'cautious' | 'engaged' | 'risk-tolerant' | 'continuity-seeking';
@@ -340,6 +341,7 @@ interface Snapshot {
   zeroKnowledgeEver?: number; zeroLoreEver?: number; continuityExposureTravelers?: number; continuityAcquiredTravelers?: number; firstKnowledgeAdventure?: number[]; firstLoreAdventure?: number[]; firstContinuityAdventure?: number[];
   merchantEncounterTravelers?: number; merchantAffordableTravelers?: number; merchantBuyerTravelers?: number; merchantPurchaseEvents?: number; firstMerchantAdventure?: number[]; firstAffordableMerchantAdventure?: number[]; firstMerchantPurchaseAdventure?: number[]; firstBankUseAdventure?: number[]; firstGearOfferAdventure?: number[];
   correctiveBatchSeen?: number; correctiveBatchGearOfferSeen?: number; correctiveBatchGearAcquired?: number; correctiveBatchAdventureCount?: number; firstCorrectiveBatchAdventure?: number[]; firstCorrectiveBatchGearOfferAdventure?: number[]; firstCorrectiveBatchGearAdventure?: number[];
+  supportBatchSeen?: number; supportBatchGearOfferSeen?: number; supportBatchGearAcquired?: number; firstSupportBatchAdventure?: number[]; firstSupportBatchGearOfferAdventure?: number[]; firstSupportBatchGearAdventure?: number[];
 }
 
 function persistentGearIds(state: SaveData): Set<string> {
@@ -348,6 +350,7 @@ function persistentGearIds(state: SaveData): Set<string> {
 
 type BatchExposureLedger = Record<string, { selected: number; gearOffer: number; gearGranted: number }>;
 const correctiveGearIds = new Set(GEAR_CORRECTIVE_ADVENTURES.map(({ id }) => id));
+const adventurerSupportIds = new Set(ADVENTURER_SUPPORT_GENRE_BATCH.map(({ id }) => id));
 
 function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel: FunnelLedger = {}, scenarios: typeof SCENARIOS = SCENARIOS, batchLedger?: BatchExposureLedger): Snapshot[] {
   const outcomes: Snapshot[] = MILESTONES.map((milestone) => ({ policy, month, milestone, survivors: 0, reached: 0, gear0: 0, gear1plus: 0, gear2plus: 0, gear3plus: 0, carriedGear: [], totalItems: [], fullCapacity: 0, bankUsers: 0, bankWithdrawals: 0, bankInteractions: 0, bankAtCap: 0, relicUsers: 0, relicCounts: [], supplyUsers: 0, suppliesTotal: [], knowledge: [], lore: [], contacts: [], favorsAvailable: [], favorsUsed: 0, supplyGained: 0, suppliesConsumed: 0, supplyOpportunityCount: 0, missedSupplyOpportunityCount: 0, supplyGainedById: {}, supplyUsedById: {}, supplyOwnedById: {}, supplyFirstOptionSeenById: {}, supplyFirstOptionHadQtyById: {}, supplyAcquirerTravellersById: {}, supplyUserTravellersById: {}, supplyUnusedAcquirerTravellersById: {}, money: [], coinsEarnedTotal: [], coinsSpentTotal: [], injuries: 0, assets: 0, deaths: 0, stalled: 0, completions: 0, rewardClaims: 0, rewardDeclines: 0, bankedRewards: 0, capacityBlockedRewards: 0, favorUses: 0, gearUseEvents: 0, relicUseEvents: 0, knowledgeCallbacks: 0, contactCallbacks: 0, everGrantedGearTravelers: 0, everOwnedGearTravelers: 0, distinctGearEverGranted: [], distinctGearEverOwned: [], gearGrantEvents: 0, gearOwnedEvents: 0, firstGearGrantAdventure: [], firstGearOwnedAdventure: [], zeroGearEver: 0, zeroSupplyEver: 0, zeroRelicEver: 0, zeroEarnedCoins: 0, zeroSpentCoins: 0, zeroMaterialEver: 0, zeroMaterialAndCoins: 0, gearOrCoins: 0, earnedSpentAndGear: 0, everBankedGearTravelers: 0, gearOfferTravelers: 0, carriedGearZero: 0, carriedGearOne: 0, carriedGearTwoPlus: 0, firstAnySupplyAdventure: [], firstCoinAdventure: [], firstCoinSpendAdventure: [], firstMaterialAdventure: [], gearHolderTravelersById: {}, gearLaterOpportunityTravelersById: {}, gearLaterOpportunityDelayById: {}, gearLaterUseTravelersById: {}, gearSameAdventureUseTravelersById: {}, gearLaterUseDelayById: {}, supplyOpportunityAfterAcquisitionTravelersById: {}, supplyLaterUseTravelersById: {}, supplySameAdventureUseTravelersById: {}, supplyLaterUseDelayById: {}, everSupplyTravelersById: {}, firstSupplyAdventureById: {}, deathsAfterGearGrant: 0, deathsAfterGearOwnership: 0, carriedGearLostToDeath: 0, unclaimedGearLostToDeath: 0, bankedGearPreservedAtDeath: 0, suppliesLostToDeath: 0 }));
@@ -424,6 +427,12 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
     let firstCorrectiveBatchAt: number | undefined;
     let firstCorrectiveBatchGearOfferAt: number | undefined;
     let firstCorrectiveBatchGearAt: number | undefined;
+    let supportBatchSeen = false;
+    let supportBatchGearOfferSeen = false;
+    let supportBatchGearAcquired = false;
+    let firstSupportBatchAt: number | undefined;
+    let firstSupportBatchGearOfferAt: number | undefined;
+    let firstSupportBatchGearAt: number | undefined;
     const supplyAcquiredSet = new Set<string>();
     const supplyUsedSet = new Set<string>();
     let rewardClaims = 0;
@@ -440,6 +449,24 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
       const result = completeOneAdventure(state, policy, month, random, funnel, scenarios);
       state = result.state;
       const adventureNumber = completed + 1;
+      if (result.scenarioId && adventurerSupportIds.has(result.scenarioId)) {
+        supportBatchSeen = true;
+        firstSupportBatchAt ??= adventureNumber;
+        if (result.gearAcquisitionOfferSeen) {
+          supportBatchGearOfferSeen = true;
+          firstSupportBatchGearOfferAt ??= adventureNumber;
+        }
+        if (result.acquiredGearIds.some((id) => persistentGearIds(state).has(id))) {
+          supportBatchGearAcquired = true;
+          firstSupportBatchGearAt ??= adventureNumber;
+        }
+        if (result.completed && batchLedger) {
+          const entry = batchLedger[result.scenarioId] ??= { selected: 0, gearOffer: 0, gearGranted: 0 };
+          entry.selected++;
+          entry.gearOffer += Number(result.gearAcquisitionOfferSeen);
+          entry.gearGranted += Number(result.acquiredGearIds.some((id) => persistentGearIds(state).has(id)));
+        }
+      }
       if (result.scenarioId && correctiveGearIds.has(result.scenarioId)) {
         correctiveBatchSeen = true;
         firstCorrectiveBatchAt ??= adventureNumber;
@@ -579,6 +606,12 @@ function simulate(policy: Policy, month: number, travelers = SAMPLE_SIZE, funnel
           row.correctiveBatchGearOfferSeen = (row.correctiveBatchGearOfferSeen ?? 0) + Number(correctiveBatchGearOfferSeen);
           row.correctiveBatchGearAcquired = (row.correctiveBatchGearAcquired ?? 0) + Number(correctiveBatchGearAcquired);
           row.correctiveBatchAdventureCount = (row.correctiveBatchAdventureCount ?? 0) + correctiveBatchAdventureCount;
+          row.supportBatchSeen = (row.supportBatchSeen ?? 0) + Number(supportBatchSeen);
+          row.supportBatchGearOfferSeen = (row.supportBatchGearOfferSeen ?? 0) + Number(supportBatchGearOfferSeen);
+          row.supportBatchGearAcquired = (row.supportBatchGearAcquired ?? 0) + Number(supportBatchGearAcquired);
+          if (firstSupportBatchAt) (row.firstSupportBatchAdventure ??= []).push(firstSupportBatchAt);
+          if (firstSupportBatchGearOfferAt) (row.firstSupportBatchGearOfferAdventure ??= []).push(firstSupportBatchGearOfferAt);
+          if (firstSupportBatchGearAt) (row.firstSupportBatchGearAdventure ??= []).push(firstSupportBatchGearAt);
           if (firstCorrectiveBatchAt !== undefined) (row.firstCorrectiveBatchAdventure ??= []).push(firstCorrectiveBatchAt);
           if (firstCorrectiveBatchGearOfferAt !== undefined) (row.firstCorrectiveBatchGearOfferAdventure ??= []).push(firstCorrectiveBatchGearOfferAt);
           if (firstCorrectiveBatchGearAt !== undefined) (row.firstCorrectiveBatchGearAdventure ??= []).push(firstCorrectiveBatchGearAt);
@@ -764,7 +797,15 @@ describe('route-aware reward realization audit', () => {
     const reports = [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, funnel, SCENARIOS, batchExposure)));
     const correctiveBatchBaseline = process.env.GEAR_BATCH_AUDIT_COMPARE === '1'
       ? (() => {
-        const baselineScenarios = SCENARIOS.filter((scenario) => !correctiveGearIds.has(scenario.id));
+        const baselineScenarios = SCENARIOS.filter((scenario) => !correctiveGearIds.has(scenario.id) && !adventurerSupportIds.has(scenario.id));
+        const baselineFunnel: FunnelLedger = {};
+        return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
+      })()
+      : [];
+    const supportBatchBaseline = process.env.ADVENTURER_SUPPORT_AUDIT_COMPARE === '1'
+      ? (() => {
+        // Compare with the actual starting library (including the prior eight corrective Adventures); remove only this genre batch.
+        const baselineScenarios = SCENARIOS.filter((scenario) => !adventurerSupportIds.has(scenario.id));
         const baselineFunnel: FunnelLedger = {};
         return [7, 10].flatMap((month) => POLICIES.flatMap((policy) => simulate(policy, month, SAMPLE_SIZE, baselineFunnel, baselineScenarios)));
       })()
@@ -887,6 +928,12 @@ describe('route-aware reward realization audit', () => {
         medianFirstCorrectiveBatch: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchAdventure ?? []), .5) || null,
         medianFirstBatchGearOffer: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchGearOfferAdventure ?? []), .5) || null,
         medianFirstBatchGearAcquisition: quantile(cohort.flatMap((row) => row.firstCorrectiveBatchGearAdventure ?? []), .5) || null,
+        adventurerSupportSeenPct: percent(cohort.reduce((total, row) => total + (row.supportBatchSeen ?? 0), 0), reached),
+        adventurerSupportGearOfferPct: percent(cohort.reduce((total, row) => total + (row.supportBatchGearOfferSeen ?? 0), 0), reached),
+        adventurerSupportGearAcquiredPct: percent(cohort.reduce((total, row) => total + (row.supportBatchGearAcquired ?? 0), 0), reached),
+        medianFirstSupportAdventure: quantile(cohort.flatMap((row) => row.firstSupportBatchAdventure ?? []), .5) || null,
+        medianFirstSupportGearOffer: quantile(cohort.flatMap((row) => row.firstSupportBatchGearOfferAdventure ?? []), .5) || null,
+        medianFirstSupportGearAcquisition: quantile(cohort.flatMap((row) => row.firstSupportBatchGearAdventure ?? []), .5) || null,
         carriedGearZeroPct: percent(sum('carriedGearZero'), reached), carriedGearOnePct: percent(sum('carriedGearOne'), reached), carriedGearTwoPlusPct: percent(sum('carriedGearTwoPlus'), reached),
         zeroPersistentMaterialPct: percent(sum('zeroMaterialEver'), reached), zeroMaterialAndCoinsPct: percent(sum('zeroMaterialAndCoins'), reached),
         medianFirstGear: quantile(first('firstGearGrantAdventure'), .5) || null,
@@ -913,7 +960,19 @@ describe('route-aware reward realization audit', () => {
       };
     }));
     console.log('REWARD_DROUGHT_POOLED', JSON.stringify(pooledDrought));
+    console.log('GEAR_EXPANSION_DECISION_METRICS', JSON.stringify(pooledDrought.map(({ month, milestone, reached, zeroGearEverPct, zeroSupplyPct, zeroRelicPct, zeroEarnedCoinsPct, zeroPersistentMaterialPct, zeroMaterialAndCoinsPct, gearOfferSeenPct, everBankedGearPct, carriedGearZeroPct, carriedGearOnePct, carriedGearTwoPlusPct, medianFirstGear, medianFirstCoins, medianCoinBalance, adventurerSupportSeenPct, adventurerSupportGearOfferPct, adventurerSupportGearAcquiredPct }) => ({ month, milestone, reached, zeroGearEverPct, zeroSupplyPct, zeroRelicPct, zeroEarnedCoinsPct, zeroPersistentMaterialPct, zeroMaterialAndCoinsPct, gearOfferSeenPct, everBankedGearPct, carriedGearZeroPct, carriedGearOnePct, carriedGearTwoPlusPct, medianFirstGear, medianFirstCoins, medianCoinBalance, adventurerSupportSeenPct, adventurerSupportGearOfferPct, adventurerSupportGearAcquiredPct }))));
     console.log('CORRECTIVE_GEAR_BATCH_EXPOSURE', JSON.stringify({ milestones: pooledDrought.map(({ month, milestone, reached, correctiveBatchSeenPct, correctiveBatchGearOfferSeenPct, correctiveBatchGearAcquiredPct, correctiveBatchAdventuresPerTraveler, medianFirstCorrectiveBatch, medianFirstBatchGearOffer, medianFirstBatchGearAcquisition }) => ({ month, milestone, reached, correctiveBatchSeenPct, correctiveBatchGearOfferSeenPct, correctiveBatchGearAcquiredPct, correctiveBatchAdventuresPerTraveler, medianFirstCorrectiveBatch, medianFirstBatchGearOffer, medianFirstBatchGearAcquisition })), scenarioContributions: batchExposure }));
+    console.log('ADVENTURER_SUPPORT_BATCH_EXPOSURE', JSON.stringify({ milestones: pooledDrought.map(({ month, milestone, reached, adventurerSupportSeenPct, adventurerSupportGearOfferPct, adventurerSupportGearAcquiredPct, medianFirstSupportAdventure, medianFirstSupportGearOffer, medianFirstSupportGearAcquisition }) => ({ month, milestone, reached, adventurerSupportSeenPct, adventurerSupportGearOfferPct, adventurerSupportGearAcquiredPct, medianFirstSupportAdventure, medianFirstSupportGearOffer, medianFirstSupportGearAcquisition })), scenarioContributions: Object.fromEntries(Object.entries(batchExposure).filter(([id]) => adventurerSupportIds.has(id))) }));
+    if (supportBatchBaseline.length) {
+      const baselineMetrics = [7, 10].flatMap((month) => MILESTONES.map((milestone) => {
+        const cohort = supportBatchBaseline.filter((row) => row.month === month && row.milestone === milestone);
+        const reached = cohort.reduce((sum, row) => sum + row.reached, 0);
+        const sum = (field: keyof Snapshot) => cohort.reduce((total, row) => total + (row[field] as number), 0);
+        const first = (field: 'firstGearGrantAdventure' | 'firstAnySupplyAdventure' | 'firstCoinAdventure' | 'firstMaterialAdventure') => cohort.flatMap((row) => row[field]);
+        return { month, milestone, reached, zeroGearEverPct: percent(sum('zeroGearEver'), reached), zeroSupplyPct: percent(sum('zeroSupplyEver'), reached), zeroRelicPct: percent(sum('zeroRelicEver'), reached), zeroEarnedCoinsPct: percent(sum('zeroEarnedCoins'), reached), zeroPersistentMaterialPct: percent(sum('zeroMaterialEver'), reached), zeroMaterialAndCoinsPct: percent(sum('zeroMaterialAndCoins'), reached), gearOfferSeenPct: percent(sum('gearOfferTravelers'), reached), everBankedGearPct: percent(sum('everBankedGearTravelers'), reached), medianFirstGear: quantile(first('firstGearGrantAdventure'), .5) || null, medianFirstCoins: quantile(first('firstCoinAdventure'), .5) || null };
+      }));
+      console.log('ADVENTURER_SUPPORT_PAIRED_BASELINE', JSON.stringify(baselineMetrics));
+    }
     if (correctiveBatchBaseline.length) {
       const baselineMetrics = [7, 10].flatMap((month) => MILESTONES.map((milestone) => {
         const cohort = correctiveBatchBaseline.filter((row) => row.month === month && row.milestone === milestone);

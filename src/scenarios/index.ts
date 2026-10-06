@@ -81,6 +81,7 @@ import { THE_COMEDY_ABSURDITY_ADVENTURES } from './comedyAbsurdityBatch';
 import { DEEP_EXPLORATION_ADVENTURES } from './deepExplorationBatch';
 import { FIXED_STOCK_MERCHANTS } from './merchantEcologyBatch';
 import { GEAR_CORRECTIVE_ADVENTURES } from './gearCorrectiveBatch';
+import { ADVENTURER_SUPPORT_GENRE_BATCH } from './adventurerSupportGenreBatch';
 
 export const SCENARIOS: Scenario[] = [
   BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME,
@@ -111,6 +112,7 @@ export const SCENARIOS: Scenario[] = [
   ...DEEP_EXPLORATION_ADVENTURES,
   ...FIXED_STOCK_MERCHANTS,
   ...GEAR_CORRECTIVE_ADVENTURES,
+  ...ADVENTURER_SUPPORT_GENRE_BATCH,
 ];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));

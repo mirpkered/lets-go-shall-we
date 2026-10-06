@@ -60,7 +60,7 @@ function explore(scenario: Scenario, item?: string): void {
 describe('Monster Hunt / Creature Threat batch', () => {
   it('registers 29 distinct adventures with valid metadata, graph targets, and concise mobile actions', () => {
     expect(MONSTER_HUNT_ADVENTURES).toHaveLength(29);
-    expect(SCENARIOS).toHaveLength(463);
+    expect(SCENARIOS).toHaveLength(487);
     expect(new Set(MONSTER_HUNT_ADVENTURES.map(({ id }) => id)).size).toBe(29);
     expect(MONSTER_HUNT_ADVENTURES.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(validateScenarioMetadata(MONSTER_HUNT_ADVENTURES)).toEqual([]);
@@ -148,6 +148,12 @@ describe('Monster Hunt / Creature Threat batch', () => {
     const directSighting = take(sheepMoved, scenario, 'watchFromRock');
     expect(directSighting.run?.sceneId).toBe('catSeen');
     expect(scenario.scenes.catSeen.text).toMatch(/mountain lion watches from the ledge/i);
+    const glassesRoute = take(fresh(scenario, 'fieldGlasses'), scenario, 'moveSheep');
+    const glassChoice = scenario.scenes.sheepMoved.choices.find(({ id }) => id === 'watchWithFieldGlasses')!;
+    expect(meets(glassChoice.requirements, glassesRoute)).toBe(true);
+    expect(take(glassesRoute, scenario, glassChoice.id).run?.sceneId).toBe('catSeenAtDistance');
+    expect(meets(glassChoice.requirements, sheepMoved)).toBe(false);
+    expect(scenario.scenes.catSeenAtDistance.text).toMatch(/has not noticed you on the broad upper rock/i);
   });
 
   it('keeps road-side observation available without entering the unstable ravine', () => {

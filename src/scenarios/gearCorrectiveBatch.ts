@@ -55,6 +55,7 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
 
 export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The Last Survey', 'A retiring mapmaker needs one final set of measurements before he gives up the road.', tags('A retiring surveyor asks the traveler to test a disputed route measurement, then decides what useful tool should pass to the next hand.', 'worker', 'investigation/mystery', 'mountain road and county survey shed', 'LOW', 'hired/posted work'), 'milepost', {
   milepost: s('milepost', 'A Mile That Will Not Agree', 'Elias Crowe has measured the same bend twice and gets two different distances. The road crew wants the map before tomorrow. He offers you his old Joiner’s Folding Rule to compare the culvert stones, or asks you to pace the stretch without touching his instrument.', [
+    { id: 'measureWithSurveyChain', label: 'Use your Survey Chain to compare the longer ground line', requirements: { items: ['surveyChain'] }, next: 'chainMeasure', effects: { setFlags: ['survey_used_chain'] } },
     { id: 'measureStones', label: 'Use Crowe’s folding rule on the culvert stones', next: 'stoneMeasure', effects: { setFlags: ['survey_used_rule'] } },
     { id: 'paceRoad', label: 'Pace the road from the fixed milepost', next: 'paced' },
     { id: 'inspectNotebook', label: 'Compare the field notes before measuring again', next: 'notebook' },
@@ -62,6 +63,10 @@ export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The 
   stoneMeasure: s('stoneMeasure', 'The Stones Were Reset', 'The rule is accurate, but one culvert stone was reset after a wagon struck it. Crowe’s old measurement used the earlier edge. The map can be corrected without calling either survey careless.', [
     { id: 'recordNewEdge', label: 'Record the new stone edge and explain the change', next: 'settlement', effects: { setFlags: ['survey_new_edge'] } },
     { id: 'measureRoadInstead', label: 'Check the road from the milepost as well', next: 'paced', effects: { setFlags: ['survey_cross_check'] } },
+  ]),
+  chainMeasure: s('chainMeasure', 'A Longer Line Holds', 'Your Survey Chain confirms the road’s straight ground distance, while Crowe’s rule shows the culvert stone was moved. The two measurements answer different questions; neither cancels the other.', [
+    { id: 'recordBothMeasures', label: 'Record the chain distance and the changed stone separately', next: 'settlement', effects: { setFlags: ['survey_both_lines', 'survey_used_chain'] } },
+    { id: 'verifyOldMap', label: 'Check the field notes before revising the map', next: 'notebook', effects: { setFlags: ['survey_used_chain'] } },
   ]),
   paced: s('paced', 'A Long Hundred Paces', 'Your pace count differs from both entries. A team has worn a shallow bypass around the bend, so the traveled path is no longer the line Crowe first measured.', [
     { id: 'showBypass', label: 'Show Crowe where the wagon bypass begins', next: 'settlement', effects: { setFlags: ['survey_bypass_found'] } },

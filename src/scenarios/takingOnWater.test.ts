@@ -34,6 +34,18 @@ function available(state: SaveData): Choice[] {
 }
 
 describe('Taking on Water', () => {
+  it('lets a carried Collapsible Water Pail bail faster without pretending to repair the leak', () => {
+    const state = act(fresh('collapsibleWaterPail'), 'lookAtWater');
+    const pail = TAKING_ON_WATER.scenes.waterMoved.choices.find(({ id }) => id === 'bailWithCollapsiblePail')!;
+    expect(meets(pail.requirements, state)).toBe(true);
+    const bailed = act(state, pail.id);
+    expect(bailed.run?.sceneId).toBe('bailFollowup');
+    expect(bailed.run?.flags).toContain('usedCollapsiblePail');
+    expect(sceneText(TAKING_ON_WATER.scenes.bailFollowup, bailed)).toContain('did not close the leak');
+    const ordinary = act(fresh(), 'lookAtWater');
+    expect(meets(pail.requirements, ordinary)).toBe(false);
+  });
+
   it('registers for random starts, repeat avoidance, and direct QA launch', () => {
     expect(SCENARIOS).toContain(TAKING_ON_WATER);
     expect(TAKING_ON_WATER.title).toBe('Taking on Water');

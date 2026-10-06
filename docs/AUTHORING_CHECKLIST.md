@@ -134,3 +134,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Test longest prose/hints, endings, reward views, and four-choice screens at 320×720 and 390×844; verify no page scrolling or horizontal overflow.
 - [ ] Confirm exact-state resume, fictional-time persistence, QA isolation, Bank capacity, and safe reward resolution where relevant.
 - [ ] Update the library status and continuity registry only for facts actually established by the scenario.
+
+## Temporary Gear-expansion phase
+
+The normal mixed-content batch guideline remains a minimum of 70% meaningful reward opportunity, with 75–80% preferred; qualifying outcomes include coins, reusable Knowledge, Lore, and Gear. A corrective Gear-focused genre batch may temporarily exceed that density while route-aware evidence shows Gear exposure remains abnormally low. This exception is temporary, does not require Gear grants on every route, and does not replace the normal mixed-batch guideline. Reassess after each bounded genre batch and return to the normal composition rule once ordinary Gear exposure is healthier.

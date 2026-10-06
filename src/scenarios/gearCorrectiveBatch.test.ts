@@ -4,6 +4,7 @@ import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { SCENARIOS } from './index';
 import { GEAR_CORRECTIVE_ADVENTURES, THE_APPRENTICES_LIGHT, THE_BRIDGE_CREWS_WEDGE, THE_CLAIMED_SALVAGE, THE_LAST_SURVEY, THE_QUARTERMASTERS_TALLY, THE_SOUNDING_LINE, THE_SQUIRES_PACK, THE_WHEEL_BEFORE_DAWN } from './gearCorrectiveBatch';
+import { THE_TRESTLE_TABLE } from './surpriseEverydayBatch';
 import type { SaveData, Scenario } from '../types';
 
 function start(scenario: Scenario, item?: string, bank: string[] = []): SaveData {
@@ -36,7 +37,7 @@ function acquire(scenario: Scenario, route: string[], itemId: string): SaveData 
 describe('corrective Gear Adventure batch', () => {
   it('registers eight unique all-year Adventures with seven legitimate persistent Gear paths', () => {
     expect(GEAR_CORRECTIVE_ADVENTURES).toHaveLength(8);
-    expect(SCENARIOS).toHaveLength(463);
+    expect(SCENARIOS).toHaveLength(487);
     expect(new Set(GEAR_CORRECTIVE_ADVENTURES.map(({ id }) => id)).size).toBe(8);
     expect(GEAR_CORRECTIVE_ADVENTURES.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(GEAR_CORRECTIVE_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
@@ -79,6 +80,29 @@ describe('corrective Gear Adventure batch', () => {
     const banked = start(THE_LAST_SURVEY, undefined, ['joinersFoldingRule']);
     expect(meets(THE_LAST_SURVEY.scenes.settlement.choices.find(({ id }) => id === 'acceptRule')?.requirements, carried)).toBe(false);
     expect(meets(THE_LAST_SURVEY.scenes.settlement.choices.find(({ id }) => id === 'acceptRule')?.requirements, banked)).toBe(false);
+  });
+
+  it('recognizes a carried Survey Chain as a distinct long-distance measurement tool', () => {
+    const carried = start(THE_LAST_SURVEY, 'surveyChain');
+    expect(meets(THE_LAST_SURVEY.scenes.milepost.choices.find(({ id }) => id === 'measureWithSurveyChain')?.requirements, carried)).toBe(true);
+    expect(meets(THE_LAST_SURVEY.scenes.milepost.choices.find(({ id }) => id === 'measureWithSurveyChain')?.requirements, start(THE_LAST_SURVEY))).toBe(false);
+    const measured = act(carried, THE_LAST_SURVEY, 'measureWithSurveyChain');
+    expect(measured.run?.sceneId).toBe('chainMeasure');
+    expect(act(measured, THE_LAST_SURVEY, 'recordBothMeasures').run?.sceneId).toBe('settlement');
+  });
+
+  it('uses a carried Hand Auger for a safe market-table repair without requiring it', () => {
+    const carried = start(THE_TRESTLE_TABLE, 'handAuger');
+    let state = act(carried, THE_TRESTLE_TABLE, 'warnSeller');
+    state = act(state, THE_TRESTLE_TABLE, 'fetchCrate');
+    expect(meets(THE_TRESTLE_TABLE.scenes.crate.choices.find(({ id }) => id === 'borePilotHoleWithAuger')?.requirements, state)).toBe(true);
+    state = act(state, THE_TRESTLE_TABLE, 'borePilotHoleWithAuger');
+    expect(state.run?.sceneId).toBe('jointRepaired');
+    expect(act(state, THE_TRESTLE_TABLE, 'acceptRepairCoin').character?.money).toBe(1);
+    let freshState = start(THE_TRESTLE_TABLE);
+    freshState = act(freshState, THE_TRESTLE_TABLE, 'warnSeller');
+    freshState = act(freshState, THE_TRESTLE_TABLE, 'fetchCrate');
+    expect(meets(THE_TRESTLE_TABLE.scenes.crate.choices.find(({ id }) => id === 'borePilotHoleWithAuger')?.requirements, freshState)).toBe(false);
   });
 
   it('preserves the resolved Gear reward through save and reload before placement', () => {

@@ -74,7 +74,7 @@ describe('community and civic life adventure batch', () => {
 
   it('registers ten forward-only stories with concise, mobile-sized scenes', () => {
     expect(COMMUNITY_ADVENTURES).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(463);
+    expect(SCENARIOS).toHaveLength(487);
     expect(COMMUNITY_ADVENTURES.map(({ title }) => title)).toEqual([
       'The Town Pump', 'One Boat, Too Many People', 'The Meeting Hall', 'What Did You See?',
       'The Burnt Barn Fund', 'Winter Stores', 'The Road Crew', 'A Place to Bury Him',
