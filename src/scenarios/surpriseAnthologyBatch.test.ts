@@ -63,7 +63,7 @@ function explore(scenario: Scenario): number {
 describe('surprise anthology and library gap-fill', () => {
   it('adds 36 distinct all-year adventures without changing existing stable IDs', () => {
     expect(ANTHOLOGY).toHaveLength(36);
-    expect(SCENARIOS).toHaveLength(511);
+    expect(SCENARIOS).toHaveLength(541);
     expect(new Set(ANTHOLOGY.map(({ id }) => id)).size).toBe(36);
     expect(ANTHOLOGY.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(ANTHOLOGY.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);

@@ -24,4 +24,11 @@ describe('period-grounded carryable items', () => {
       expect(ITEMS[id].inventoryClass).toBe('GEAR');
     }
   });
+
+  it('defines the Folding Field Stretcher as practical carryable Gear', () => {
+    expect(ITEMS.foldingFieldStretcher.description).toContain('carrying an injured person');
+    expect(ITEMS.foldingFieldStretcher.description).toContain('does not make an unsafe route safe');
+    expect(ITEMS.foldingFieldStretcher.carryable).toBe(true);
+    expect(ITEMS.foldingFieldStretcher.inventoryClass).toBe('GEAR');
+  });
 });

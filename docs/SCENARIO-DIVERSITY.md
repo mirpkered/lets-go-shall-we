@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 511 adventures, including ten fixed-stock merchant encounters and two Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 511 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 541 adventures, including ten fixed-stock merchant encounters and three Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently 541 NONE. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
 
 The surprise anthology contributes 36 all-year stories across social participation, games and performances, caregiving, ordinary work, practical information, and small human oddities. It was authored as separate scenario graphs rather than generated from a repeated scene template. These stories use existing systems only; descriptive History/Knowledge callbacks remain distinct from a structured Contacts/Favors roster, which is still not implemented.
 
