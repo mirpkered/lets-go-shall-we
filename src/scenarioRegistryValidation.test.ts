@@ -8,7 +8,7 @@ describe('scenario registry release validation', () => {
     const report = validateScenarioRegistry(SCENARIOS);
     expect(report.errors, report.errors.join('\n')).toEqual([]);
     expect(report.warnings, report.warnings.join('\n')).toEqual([]);
-    expect(SCENARIOS).toHaveLength(541);
+    expect(SCENARIOS).toHaveLength(565);
   });
 
   it('catches broken targets, duplicate choice IDs, and unknown item references', () => {

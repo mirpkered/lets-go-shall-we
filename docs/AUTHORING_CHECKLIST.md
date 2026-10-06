@@ -19,6 +19,8 @@ Also review the early-accessible portion of the library separately: global batch
 
 **Gear Expansion Program — Genre Batch 2: Road Danger / Highwaymen / Bandits / Robbers.** Road-threat stories should show hostile equipment in use before it becomes available, preserve a credible noncombat response where the fiction permits, and resolve ownership through surrender, witnessed abandonment, restitution, or an explicit owner transfer. A fight alone is never an automatic loot grant. Keep hostile intent and violence fairly foreshadowed; temporary separation from player-owned Gear must not become silent permanent loss. This is another temporary corrective batch, not a permanent change to mixed-batch reward density.
 
+**Gear Expansion Program — Genre Batch 4: Trades / Apprenticeships / Practical Work.** Work stories should show diagnosis, a tool’s actual capability, a complication, and a quality check; avoid reducing skilled labor to a one-choice wage. Temporary shop equipment remains temporary unless ownership is explicitly released. Gear repair and improvement use canonical item-condition and upgrade effects, preserving provenance without consuming a new carry slot. Wages-in-kind should compete honestly with coins or useful learning. Corrective Gear batches may exceed normal reward density only while measured Gear access remains abnormally low; future mixed batches retain the 70% minimum and 75–80% preferred standard.
+
 Batch-specific builders (for example `authorAdventure`, frontier discovery tools, `largeTags`, and `huntMetadata`) remain conveniences for their established families, not the universal path. Use them only when their defaults fit; do not accept a generated graph shape in place of story-specific structure.
 
 ## Choosing a depth class

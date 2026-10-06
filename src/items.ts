@@ -80,6 +80,8 @@ export const ITEMS: Record<string, Item> = {
   ironOrchardRodFragment: { id: 'ironOrchardRodFragment', name: 'Iron Orchard Rod Fragment', description: 'A short piece of an iron rod found already driven into the Orchard’s worked stone. It vibrates faintly near no known mechanism.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
   numberedLanternWick: { id: 'numberedLanternWick', name: 'Numbered Lantern Wick', description: 'A brass-tagged wick from the Lantern Vault’s former travel office. It is a record of the room, not a key to every numbered door.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
   blackMillingStone: { id: 'blackMillingStone', name: 'Black Milling Stone', description: 'A small black stone wafer from the older wheel beneath Wren’s Mill. Its marks predate the mill and have no known practical use.', category: 'artifact', carryable: true, inventoryClass: 'RELIC' },
+  carpenterSquare: { id: 'carpenterSquare', name: 'Carpenter’s Square', description: 'A steel-bladed right-angle square for checking frames and corners; it measures alignment, not long distances.', category: 'tool', carryable: true, inventoryClass: 'GEAR' },
+  leatherRepairRoll: { id: 'leatherRepairRoll', name: 'Leather Repair Roll', description: 'A compact roll of waxed thread, stout needles, and a small punch for mending straps and seams; it is not a full saddler’s bench.', category: 'tool', carryable: true, inventoryClass: 'GEAR' },
 };
 
 const relicIds = new Set(['bronzeMaskFragment', 'graveCoin', 'signalLens', 'yewCharm']);
