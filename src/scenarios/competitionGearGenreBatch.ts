@@ -438,7 +438,15 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
     decision:s('decision','A Choice of Standard','Willa says the frame should be square for its own strength, while the owner needs it to meet the old opening.',[
       {id:'squareStandard',label:'Keep the frame square and shim the wall side',next:'good'}, {id:'followOpening',label:'Fit the old opening and mark the frame’s deviation',next:'good'}
     ]),
-    result:e('result','A Frame Made for Its Place','The frame is square or fitted as agreed, and the owner can open the barn window. Willa awards the square for explaining the measurement choice.'), good:e('good','The Measure Is Explained','Willa and the owner agree what the measurement means before the frame is fixed.'), badFit:e('badFit','A Frame That Will Not Seat','The frame catches on the hinge post. Willa removes it before the joints split and asks you to remeasure.'),
+    result:s('result','A Frame Made for Its Place','The frame is square or fitted as agreed, and the owner can open the barn window. Willa offers the announced Carpenter’s Square or two coins for explaining the measurement choice.',[
+      {id:'acceptSquarePrize',label:'Accept the Carpenter’s Square prize',next:'squarePrize',requirements:{notOwnedItems:['carpenterSquare']},effects:item('carpenterSquare','Awarded by carpenter Willa after the Traveler explained how the frame’s measurement should serve the settled barn opening.','won_carpenter_square_seven_inch_trial')},
+      {id:'takeSquareCoins',label:'Take two coins instead',next:'squareCoins',effects:{money:2}},
+      {id:'declineSquarePrize',label:'Decline both and leave the frame in place',next:'squareDeclined'},
+    ]), good:s('good','The Measure Is Explained','Willa and the owner agree what the measurement means before the frame is fixed. She offers the same announced square or two coins for your judgment.',[
+      {id:'acceptGoodSquare',label:'Accept the Carpenter’s Square prize',next:'squarePrize',requirements:{notOwnedItems:['carpenterSquare']},effects:item('carpenterSquare','Awarded by carpenter Willa after the Traveler explained how the frame’s measurement should serve the settled barn opening.','won_carpenter_square_seven_inch_trial')},
+      {id:'takeGoodCoins',label:'Take two coins instead',next:'squareCoins',effects:{money:2}},
+      {id:'declineGoodSquare',label:'Decline both and leave the frame in place',next:'squareDeclined'},
+    ]), badFit:s('badFit','A Frame That Will Not Seat','The frame catches on the hinge post. Willa removes it before the joints split; the result is void, and you can remeasure or withdraw.',[{id:'remeasureFrame',label:'Remeasure around the hinge post',next:'measure'},{id:'withdrawFrame',label:'Withdraw from the trial',next:'squareWithdrawn'}]), squarePrize:e('squarePrize','A Square for Your Kit','Willa transfers the announced Carpenter’s Square from her prize stock.'), squareCoins:e('squareCoins','Coins for a Practical Judgment','You take two coins; Willa keeps the square for the next trial.'), squareDeclined:e('squareDeclined','A Frame Left in Use','You decline compensation, and the owner uses the fitted frame.'), squareWithdrawn:e('squareWithdrawn','No Prize Claimed','You withdraw after the poor fit; the frame remains with Willa for another measured attempt.'),
   }),
 ];
 

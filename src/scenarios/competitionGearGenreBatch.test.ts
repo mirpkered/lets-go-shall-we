@@ -100,6 +100,19 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(state.itemStates?.travelRope?.provenance).toContain('Awarded by guide Sen Harlow for correctly identifying the narrow trail from linked evidence in The Blind Trail Marker.');
   });
 
+  it('grants the announced square only after the measured-frame result and prize choice', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-seven-inch-square')!;
+    let state = begin(scenario);
+    state = act(state, scenario, 'measureOpening');
+    state = act(state, scenario, 'squareAndShim');
+    expect(state.run?.sceneId).toBe('result');
+    expect(state.run?.inventory).not.toContain('carpenterSquare');
+    state = act(state, scenario, 'acceptSquarePrize');
+    expect(state.run?.status).toBe('success');
+    expect(state.run?.inventory).toContain('carpenterSquare');
+    expect(JSON.stringify(state.itemStates?.carpenterSquare?.provenance)).toContain('Awarded by carpenter Willa');
+  });
+
   it('routes every authored Gear prize through the canonical run inventory grant', () => {
     for (const scenario of COMPETITION_GEAR_GENRE_BATCH) for (const [sceneId, scene] of Object.entries(scenario.scenes)) {
       for (const choice of scene.choices.filter(({ effects }) => effects?.gainItems?.some((id) => ITEMS[id]?.inventoryClass === 'GEAR'))) {
