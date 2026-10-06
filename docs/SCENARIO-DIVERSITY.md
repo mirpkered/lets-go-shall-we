@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current registry has 685 adventures, including ten fixed-stock merchant encounters and nine Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
+The current registry has 709 adventures, including ten fixed-stock merchant encounters and ten Gear-expansion genre batches. Risk, seasonal availability, and historical-presence counts are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in the dated batch sections below describe those release snapshots and should not be read as the latest registry totals.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 
@@ -35,6 +35,10 @@ Added 24 year-round Adventures about testing practical equipment under load, wea
 The surprise anthology contributes 36 all-year stories across social participation, games and performances, caregiving, ordinary work, practical information, and small human oddities. It was authored as separate scenario graphs rather than generated from a repeated scene template. These stories use existing systems only; descriptive History/Knowledge callbacks remain distinct from a structured Contacts/Favors roster, which is still not implemented.
 
 The 40-adventure remote-discovery/frontier-claims batch is all-year and grounded (fantasy density NONE). Its openings mostly use voluntary curiosity; claim evidence, salvage provenance, remote occupation, and structural hazards are represented in the authored hooks and scene graphs. Existing selection category weighting and recent-scenario exclusion apply normally. The batch does not add Contacts/Favors, items, or a parallel persistence model.
+
+### Gear Expansion Genre Batch 10 — River / Ferry / Water Work
+
+Added 24 year-round Adventures in which current, depth, load, wet lines, ferry alignment, dock access, rising water, or water damage materially changes the available choices. The set spans ferry operation, dock and barge work, ford and depth inspection, night signaling, flood planning, cargo recovery, equipment repair, ownership disputes, and records protection; it is not a rescue-only set. Three persistent Gear IDs were added: `boatHook`, `foldingBailer`, and `waterproofLedgerTube`. Existing rope, sounding, signal, waterproofing, repair, carrying, and hand-tool Gear receive meaningful optional uses. All 24 include a continuity opportunity; each has at least one legitimate Gear path, with explicit release/provenance and coin alternatives where written. No new scenario has combat; the danger comes from water and equipment, with grounded retreat or wait options. All entries are year-round, so July/October eligibility is identical. Selector weights and replay rules are unchanged.
 
 ## Seasonal availability
 

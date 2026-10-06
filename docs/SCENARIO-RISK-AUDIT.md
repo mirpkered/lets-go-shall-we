@@ -2,7 +2,7 @@
 
 ## Current registry update (2026-10-05)
 
-The current registry after Equipment Testing / Inventors / Field Trials Genre Batch 9 contains 685 scenarios. Effective risk counts are LOW 260, MODERATE 229, HIGH 156, and SEVERE 40. Selector formulas and risk weights are unchanged.
+The current registry after River / Ferry / Water Work Genre Batch 10 contains 709 scenarios. Effective risk counts are LOW 265, MODERATE 241, HIGH 163, and SEVERE 40. Selector formulas and risk weights are unchanged. Batch 10 contributes 5 LOW, 12 MODERATE, and 7 HIGH Adventures; none has a combat route, and the high-risk ratings describe dangerous water or equipment conditions rather than violence.
 
 Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. In the current 445-adventure registry, explicit `diversity.riskTier` is now authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries use the compatibility classifier until they are individually migrated. Current effective counts are LOW 197, MODERATE 115, HIGH 94, SEVERE 39 (see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
 

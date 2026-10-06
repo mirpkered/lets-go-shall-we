@@ -24,7 +24,7 @@ function act(state: ReturnType<typeof begin>, scenario: Scenario, id: string, ra
 describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', () => {
   it('registers 24 unique, all-year Adventures with clean complete graphs and no new Gear IDs', () => {
     expect(COMPETITION_GEAR_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(685);
+    expect(SCENARIOS).toHaveLength(709);
     expect(new Set(COMPETITION_GEAR_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(COMPETITION_GEAR_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(COMPETITION_GEAR_GENRE_BATCH)).toEqual({ errors: [], warnings: [] });
