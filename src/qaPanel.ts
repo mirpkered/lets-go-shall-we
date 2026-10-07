@@ -18,7 +18,7 @@ export interface CounterDiagnostics {
   lastRequestResult: string;
 }
 
-export const QA_BUILD_ID = 'expansion-rc-2026-10-06';
+export const QA_BUILD_ID = 'payoff-qa-2026-10-07';
 
 function safeText(text: string): string {
   return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]!));
