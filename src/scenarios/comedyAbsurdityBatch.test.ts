@@ -102,4 +102,15 @@ describe('comedy and absurdity additions', () => {
     expect(ending.text).toMatch(/sender’s privacy are safe/i);
     expect(ending.text).not.toMatch(/the note says|message reads/i);
   });
+
+  it('makes the wardrobe chip an honest, consequential choice rather than a hidden identical ending', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-doorway-delivery')!;
+    expect(findScenarioGraphProblems(scenario)).toEqual([]);
+    const chipChoices = scenario.scenes.panel.choices;
+    expect(chipChoices.find(({ id }) => id === 'reassemble')?.next).toBe('upstairs');
+    expect(chipChoices.find(({ id }) => id === 'leaveMenders')?.next).toBe('menders');
+    expect(scenario.scenes.upstairs.text).toMatch(/show the owner/i);
+    expect(scenario.scenes.menders.text).toMatch(/misses the supper deadline/i);
+    expect(scenario.scenes.menders.text).toMatch(/no one mistakes it for a finished repair/i);
+  });
 });

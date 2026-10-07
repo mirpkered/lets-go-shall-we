@@ -145,4 +145,18 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     expect(result.run?.sceneId).toBe('safe');
     expect(result.run?.status).not.toBe('death');
   });
+
+  it('turns the ridge echo into a safe, consequential follow-up instead of an immediate ending', () => {
+    const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-ridge-listener')!;
+    let state = act(begin(scenario), scenario, 'enterGully');
+    expect(state.run?.sceneId).toBe('gully');
+    expect(scenario.scenes.gully.ending).toBeUndefined();
+    expect(scenario.scenes.gully.choices.map(({ id }) => id)).toEqual(['answerFromRidge', 'markLastBearing']);
+    state = act(state, scenario, 'answerFromRidge');
+    expect(state.run?.sceneId).toBe('answer');
+    state = act(state, scenario, 'keepSpacing');
+    expect(state.run?.sceneId).toBe('person');
+    state = act(state, scenario, 'walkSlow');
+    expect(state.run?.sceneId).toBe('rescue');
+  });
 });

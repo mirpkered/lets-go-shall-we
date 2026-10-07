@@ -423,4 +423,23 @@ describe('occult investigation adventures', () => {
     expect(danger.run?.status).toBe('death');
     expect(danger.run?.sceneId).toBe('redChapelDeath');
   });
+
+  it('keeps Earth over the Door state-aware and gives the player a decision after engaging', () => {
+    const barrow = adventures.find((s) => s.id === 'the-barrow-door')!;
+    let closedEarly = act(fresh(barrow), barrow, 'resealMound');
+    expect(closedEarly.run?.sceneId).toBe('barrowAfter');
+    expect(sceneText(barrow.scenes.barrowAfter, closedEarly)).toMatch(/no one has entered/i);
+    expect(barrow.scenes.barrowAfter.choices).toHaveLength(2);
+    closedEarly = act(closedEarly, barrow, 'coverAndRecord');
+    expect(barrow.scenes[closedEarly.run!.sceneId].text).not.toMatch(/son returns the pin/i);
+
+    let rescue = act(fresh(barrow), barrow, 'askFarmer');
+    rescue = act(rescue, barrow, 'enterForSon');
+    rescue = act(rescue, barrow, 'returnPin');
+    expect(sceneText(barrow.scenes.barrowAfter, rescue)).toMatch(/pin has been returned/i);
+    const resumed = roundTrip(rescue);
+    expect(sceneText(barrow.scenes.barrowAfter, resumed)).toMatch(/pin has been returned/i);
+    rescue = act(rescue, barrow, 'markAndSeekHelp');
+    expect(barrow.scenes[rescue.run!.sceneId].text).toMatch(/local keeper/i);
+  });
 });

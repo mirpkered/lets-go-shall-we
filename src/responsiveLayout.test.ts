@@ -18,6 +18,7 @@ function candidateCopy(): { scenario: string; scene: string; kind: string; text:
     ]));
     const state = { run: { randomSelections: longestNames } } as SaveData;
     for (const scene of Object.values(scenario.scenes)) {
+      expect(scene.text, `${scenario.id}.${scene.id} must have scene copy`).toBeTypeOf('string');
       candidates.push({ scenario: scenario.title, scene: scene.id, kind: 'scene text', text: runText(scene.text, state) });
       for (const [index, variant] of (scene.textVariants ?? []).entries()) {
         candidates.push({ scenario: scenario.title, scene: scene.id, kind: `text variant ${index + 1}`, text: runText(variant.text, state) });

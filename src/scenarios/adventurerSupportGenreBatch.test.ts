@@ -13,12 +13,12 @@ function start(scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], carrie
   return { ...structuredClone(EMPTY_SAVE), bank, character, run: startRun(character, scenario, () => 0) };
 }
 
-function act(state: SaveData, scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], choiceId: string): SaveData {
+function act(state: SaveData, scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], choiceId: string, roll = 0): SaveData {
   const current = scenario.scenes[state.run!.sceneId];
   const choice = current.choices.find((entry) => entry.id === choiceId);
   expect(choice, `${scenario.id}.${current.id}.${choiceId}`).toBeTruthy();
   expect(meets(choice!.requirements, state), `${scenario.id}.${current.id}.${choiceId} requirements`).toBe(true);
-  return choose(state, scenario, choice!, () => 0);
+  return choose(state, scenario, choice!, () => roll);
 }
 
 function claimGear(scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], combat = false): SaveData {
@@ -91,6 +91,36 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     const combatScenarios = ADVENTURER_SUPPORT_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE');
     for (const scenario of combatScenarios) claimGear(scenario, true);
     expect(combatScenarios).toHaveLength(6);
+  });
+
+  it('lets the traveler make a second decision after losing the Second Gunhand exchange', () => {
+    const scenario = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-second-gunhand')!;
+    let state = act(start(scenario), scenario, 'kit_whistle');
+    state = act(state, scenario, 'standGround', 0.99);
+    expect(state.run?.sceneId).toBe('retreat');
+    expect(state.run?.health).toBeLessThan(newCharacter('Support Batch Tester').maxHealth);
+    expect(scenario.scenes.retreat.choices).toHaveLength(2);
+
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(state, storage as never);
+    state = loadSave(storage as never);
+    state = act(state, scenario, 'retreat_withdraw');
+    expect(state.run?.sceneId).toBe('retreatWithdraw');
+    expect(scenario.scenes.retreatWithdraw.text).toMatch(/payroll/);
+    expect(scenario.scenes.retreatWithdraw.text).toMatch(/robbers escape/);
+  });
+
+  it('gives each authored support-work combat loss a scene-specific follow-up decision', () => {
+    const combatScenarios = ADVENTURER_SUPPORT_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE');
+    for (const scenario of combatScenarios) {
+      let state = act(start(scenario), scenario, scenario.scenes.preparation.choices[0].id);
+      state = act(state, scenario, 'standGround', 0.99);
+      expect(state.run?.sceneId, scenario.id).toBe('retreat');
+      expect(scenario.scenes.retreat.choices, scenario.id).toHaveLength(2);
+      state = act(state, scenario, 'retreat_hold');
+      expect(scenario.scenes[state.run!.sceneId].ending, scenario.id).toBe('success');
+      expect(scenario.scenes[state.run!.sceneId].title, scenario.id).toBe('A Hard Withdrawal');
+    }
   });
 
   it('registers the eight new practical tools as ordinary, carryable Gear', () => {

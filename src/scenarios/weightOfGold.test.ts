@@ -235,4 +235,15 @@ describe('The Weight of Gold', () => {
       }
     }
   });
+
+  it('lets the player respond after a failed stand against the scavengers', () => {
+    const state = fresh();
+    state.run!.sceneId = 'opportunists';
+    let result = act(state, 'standAgainstOpportunists', 0.99);
+    expect(result.run?.sceneId).toBe('cargoLostEnding');
+    expect(THE_WEIGHT_OF_GOLD.scenes.cargoLostEnding.ending).toBeUndefined();
+    result = act(result, 'stayWithAdaAfterLoss');
+    expect(THE_WEIGHT_OF_GOLD.scenes[result.run!.sceneId].title).toBe('Ada Is Not Left Behind');
+    expect(THE_WEIGHT_OF_GOLD.scenes[result.run!.sceneId].text).toMatch(/scavengers keep the crate/i);
+  });
 });

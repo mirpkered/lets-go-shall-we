@@ -19,13 +19,14 @@ export const THE_DOORWAY_DELIVERY = story('the-doorway-delivery', 'The Doorway D
     { id: 'panelWithPermission', label: 'Ask permission to remove the top', next: 'panel' },
     { id: 'takeOtherRoute', label: 'Check the wider back entrance', next: 'back' },
   ]),
-  panel: scene('panel', 'One Screw Too Tight', 'The panel comes free after a careful turn. A small chip breaks from an old corner, but the wardrobe clears the landing and the owner accepts the repair rather than blaming the movers.', [
+  panel: scene('panel', 'One Screw Too Tight', 'The panel comes free after a careful turn. A small chip breaks from an old corner. The wardrobe clears the landing, but the owner has not yet seen the damage; the guest arrives at supper, and the movers ask whether to refit the panel now or leave it for a cabinetmaker.', [
     { id: 'reassemble', label: 'Help fit the panel upstairs', next: 'upstairs' },
-    { id: 'leaveMenders', label: 'Leave the repair to its owner', next: 'upstairs' },
+    { id: 'leaveMenders', label: 'Leave the panel safely aside for a cabinetmaker', next: 'menders' },
   ]),
   side: end('side', 'A Narrow Victory', 'The wardrobe turns on its side and clears the stair, though the movers need a rest before carrying it into the room. The owner thanks you for finding the angle; the next guest will have to wait a few minutes.'),
   back: end('back', 'Around the House', 'The rear entrance is wider, but reaching it means carrying the wardrobe down again. The movers take the longer route, and the owner loses the supper deadline rather than risk the old panel.'),
-  upstairs: end('upstairs', 'The Room Is Ready', 'The wardrobe stands upstairs with its panel fitted. The owner pays the movers as agreed; the small chip is visible only when the door is open.'),
+  upstairs: end('upstairs', 'The Room Is Ready', 'You refit the panel and show the owner the chipped corner before the wardrobe goes into the room. They accept the honest account, note that a cabinetmaker should mend it later, and pay the movers as agreed. The guest can use the room tonight; the repair is not passed off as flawless.'),
+  menders: end('menders', 'A Repair Left in Plain Sight', 'The panel stays intact and is set aside for the cabinetmaker. The wardrobe remains in the hall, so the owner misses the supper deadline, but the damage is visible and no one mistakes it for a finished repair.'),
   leave: end('leave', 'A Problem Left at the Landing', 'You leave the movers to their work. They lower the wardrobe safely to the hall and decide to return with a smaller handcart.'),
 });
 

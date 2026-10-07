@@ -255,8 +255,21 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
       choices: [],
     },
     cargoLostEnding: {
-      id: 'cargoLostEnding', title: 'The Cargo Is Gone', tone: 'warning', ending: 'success',
-      text: 'The scavengers leave with what they can lift. Ada is alive, and help is on the road, but the shipment is scattered beyond quick recovery. You leave with no reward and no tidy answer about the empty cradle.',
+      id: 'cargoLostEnding', title: 'The Cargo Is Gone', tone: 'warning',
+      text: 'The scavengers have gone around the bend with a crate. The remaining shipment is scattered beyond a quick recovery. Ada is hurt but conscious beside the wagon, and a carrier is still on the road. You can stay with her, or use the last clear light to mark where the cart went; you cannot do both before help arrives.',
+      choices: [
+        { id: 'stayWithAdaAfterLoss', label: 'Stay with Ada until the carrier reaches the wagon', next: 'cargoLostWithAda', effects: { historyFlags: ['stayed_with_ada_after_cargo_loss'] } },
+        { id: 'markCartRoute', label: 'Follow only as far as the bend and mark the cart’s direction', hint: 'Ada will wait alone beside the wagon until the carrier arrives.', next: 'cargoLostMarked', effects: { historyFlags: ['marked_scavenger_route_after_cargo_loss'] } },
+      ],
+    },
+    cargoLostWithAda: {
+      id: 'cargoLostWithAda', title: 'Ada Is Not Left Behind', tone: 'safe', ending: 'success',
+      text: 'You stay beside Ada until the carrier arrives and help her onto the firm road. The scavengers keep the crate and the rest of the shipment is still uncounted; the route is lost, but Ada is not left to manage the injury alone.',
+      choices: [],
+    },
+    cargoLostMarked: {
+      id: 'cargoLostMarked', title: 'A Direction, Not a Recovery', tone: 'warning', ending: 'success',
+      text: 'At the bend, you find the cart ruts turning toward the quarry road and mark them for the patrol. You do not catch the scavengers. The carrier reaches Ada while you return, but the delay leaves her waiting beside the wagon and the shipment remains lost.',
       choices: [],
     },
     shipmentReturned: {
