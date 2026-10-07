@@ -307,6 +307,7 @@ export function meets(requirement: Requirement | undefined, state: SaveData): bo
     && (!requirement.notFlags || requirement.notFlags.every((id) => !run.flags.includes(id)))
     && (!requirement.knowledge || requirement.knowledge.every((id) => character.knowledge.includes(id)))
     && (!requirement.knowledgeKeys || requirement.knowledgeKeys.every((id) => (character.knowledgeKeys ?? []).includes(id)))
+    && (!requirement.knowledgeSources || Object.entries(requirement.knowledgeSources).every(([id, sources]) => (character.knowledgeSources?.[id] ?? []).some((source) => sources.includes(source))))
     && (!requirement.notKnowledgeKeys || requirement.notKnowledgeKeys.every((id) => !(character.knowledgeKeys ?? []).includes(id)))
     && (!requirement.notKnowledge || requirement.notKnowledge.every((id) => !character.knowledge.includes(id)))
     && (!requirement.lore || requirement.lore.every((entry) => character.lore.includes(entry)))
@@ -358,7 +359,7 @@ export function runText(text: string, state: SaveData): string {
 const addUnique = (target: string[], values: string[] = []) => [...new Set([...target, ...values])];
 const without = (target: string[], values: string[] = []) => target.filter((value) => !values.includes(value));
 
-function applyEffects(state: SaveData, effects: Effects = {}): void {
+function applyEffects(state: SaveData, effects: Effects = {}, sourceScenarioId?: string): void {
   const run = state.run;
   const character = state.character;
   if (!run || !character) return;
@@ -471,6 +472,10 @@ function applyEffects(state: SaveData, effects: Effects = {}): void {
   if (effects.knowledgeEntries) {
     character.knowledge = addUnique(character.knowledge, effects.knowledgeEntries.map(({ text }) => runText(text, state)));
     character.knowledgeKeys = addUnique(character.knowledgeKeys ?? [], effects.knowledgeEntries.map(({ id }) => id));
+    if (sourceScenarioId) {
+      character.knowledgeSources ??= {};
+      for (const { id } of effects.knowledgeEntries) character.knowledgeSources[id] = addUnique(character.knowledgeSources[id] ?? [], [sourceScenarioId]);
+    }
   }
   if (effects.lore) character.lore = addUnique(character.lore, effects.lore.map((entry) => runText(entry, state)));
   if (effects.historyFlags) character.historyFlags = addUnique(character.historyFlags ?? [], effects.historyFlags.map((entry) => runText(entry, state)));
@@ -504,13 +509,13 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
   next.run.elapsedMinutes = (next.run.elapsedMinutes ?? 0) + actionMinutes;
   next.run.message = null;
   next.run.supplyNotice = undefined;
-  applyEffects(next, choice.effects);
+  applyEffects(next, choice.effects, scenario.id);
 
   let destination = choice.next;
   if (choice.effects?.combat) {
     const combat = choice.effects.combat;
     const won = random() < combat.winChance;
-    applyEffects(next, { health: won ? -(combat.damageOnWin ?? 0) : -combat.damageOnLoss });
+    applyEffects(next, { health: won ? -(combat.damageOnWin ?? 0) : -combat.damageOnLoss }, scenario.id);
     destination = won ? combat.winNext : combat.lossNext;
     next.run.message = runText(won ? `You survive the fight with the ${combat.enemy}.` : `The ${combat.enemy} wounds you. You lose ${combat.damageOnLoss} health.`, next);
   } else if (choice.chance) {
@@ -528,7 +533,7 @@ export function choose(state: SaveData, scenario: Scenario, choice: Choice, rand
     const won = random() < probability;
     destination = won ? choice.chance.successNext : choice.chance.failureNext;
     next.run.message = runText(won ? choice.chance.successMessage : choice.chance.failureMessage, next);
-    applyEffects(next, won ? choice.chance.successEffects : choice.chance.failureEffects);
+    applyEffects(next, won ? choice.chance.successEffects : choice.chance.failureEffects, scenario.id);
   }
 
   const destinationScene = destination ? scenario.scenes[destination] : undefined;

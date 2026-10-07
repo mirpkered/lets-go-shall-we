@@ -70,17 +70,43 @@ describe('Construction / Building / Structural Work batch',()=>{
     }
   });
 
-  it('registers each new Knowledge fact once and gives every fact a later narration callback',()=>{
+  it('registers each new Knowledge fact once and limits prior-learning recall to three explicit fits',()=>{
     const facts=Object.values(KNOWLEDGE_FACTS).filter(({id})=>BATCH.some(({scenes})=>scenes.settle.choices.some(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===id))));
     expect(facts).toHaveLength(8);
     for(const fact of facts){
       const grant=BATCH.flatMap(({scenes})=>scenes.settle.choices).filter(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===fact.id));
       expect(grant).toHaveLength(1);
-      const callback=BATCH.flatMap(({scenes})=>Object.values(scenes)).flatMap((scene)=>scene.textVariants??[]).find(({requirements})=>requirements.knowledgeKeys?.includes(fact.id));
-      expect(callback,`${fact.id} callback`).toBeTruthy();
-      const state=initial(BATCH[0]);
-      state.character!.knowledgeKeys=[fact.id];
-      expect(meets(callback!.requirements,state)).toBe(true);
+    }
+    const targets=[
+      ['the-joint-that-opened-in-winter','the-roof-that-held-its-breath',KNOWLEDGE_FACTS.winterJointMovement.id],
+      ['the-stone-that-kept-the-water','the-riverward-retaining-wall',KNOWLEDGE_FACTS.waterPathBeforeWall.id],
+      ['the-ladder-in-the-west-yard','three-knots-on-the-platform',KNOWLEDGE_FACTS.scaffoldFootAndLashing.id],
+    ] as const;
+    const knowledgeCallbacks=BATCH.flatMap(({scenes})=>Object.values(scenes)).flatMap((scene)=>scene.textVariants??[]).filter(({requirements})=>requirements.knowledgeKeys);
+    expect(knowledgeCallbacks).toHaveLength(6);
+    for(const [sourceId,targetId,factId] of targets){
+      const target=BATCH.find(({id})=>id===targetId)!;
+      const variants=target.scenes.start.textVariants??[];
+      expect(variants).toHaveLength(2);
+      expect(variants[0].requirements).toMatchObject({knowledgeKeys:[factId],knowledgeSources:{[factId]:[sourceId]}});
+      expect(variants[1].requirements).toMatchObject({knowledgeKeys:[factId]});
+      const fresh=initial(target);
+      const freshChoices=target.scenes.start.choices.map(({id})=>id);
+      expect(sceneText(target.scenes.start,fresh)).toBe(target.scenes.start.text);
+      const recalled=initial(target);
+      recalled.character!.knowledgeKeys=[factId];
+      expect(meets(variants[0].requirements,recalled)).toBe(false);
+      expect(sceneText(target.scenes.start,recalled)).toContain('earlier structural inspection');
+      recalled.character!.knowledgeSources={[factId]:['some-other-adventure']};
+      expect(meets(variants[0].requirements,recalled)).toBe(false);
+      expect(sceneText(target.scenes.start,recalled)).toContain('earlier structural inspection');
+      recalled.character!.knowledgeSources={[factId]:[sourceId]};
+      expect(meets(variants[0].requirements,recalled)).toBe(true);
+      expect(sceneText(target.scenes.start,recalled)).toBe(variants[0].text);
+      expect(target.scenes.start.choices.map(({id})=>id)).toEqual(freshChoices);
+      const inspect=target.scenes.start.choices.find(({id})=>id==='inspect')!;
+      expect(choose(fresh,target,inspect).run?.sceneId).toBe('work');
+      expect(choose(recalled,target,inspect).run?.sceneId).toBe('work');
     }
   });
 
@@ -97,17 +123,11 @@ describe('Construction / Building / Structural Work batch',()=>{
     }
   });
 
-  it('changes available follow-up choices when prior Knowledge or Lore is present',()=>{
+  it('keeps Knowledge recall in narration while retaining the separate Lore recognition choice',()=>{
     for(const scenario of BATCH){
       const reveal=Object.values(scenario.scenes).find((scene)=>scene.id==='reveal')!;
-      const knowledgeCallback=reveal.choices.find(({id})=>id==='applyKnownMethod');
       const loreCallback=reveal.choices.find(({id})=>id==='connectLocalHistory');
-      if(knowledgeCallback?.requirements?.knowledgeKeys?.[0]){
-        const state=initial(scenario);
-        state.character!.knowledgeKeys=[knowledgeCallback.requirements.knowledgeKeys[0]];
-        expect(meets(knowledgeCallback.requirements,state)).toBe(true);
-        expect(sceneText(reveal,state)).not.toBe(reveal.text);
-      }
+      expect(reveal.choices.some(({id})=>id==='applyKnownMethod')).toBe(false);
       if(loreCallback?.requirements?.lore?.[0]){
         const state=initial(scenario);
         state.character!.lore=[loreCallback.requirements.lore[0]];
@@ -121,9 +141,11 @@ describe('Construction / Building / Structural Work batch',()=>{
     const knowledgeStory=BATCH.find(({id})=>id==='the-joint-that-opened-in-winter')!;
     let knowledgeState=reachSettlement(knowledgeStory);
     knowledgeState=act(knowledgeState,knowledgeStory,'learn');
+    expect(knowledgeState.character?.knowledgeSources?.[KNOWLEDGE_FACTS.winterJointMovement.id]).toEqual([knowledgeStory.id]);
     const knowledgeStorage={value:'',setItem(_key:string,value:string){this.value=value;},getItem(_key:string){return this.value;}};
     saveGame(knowledgeState,knowledgeStorage as never);
     expect(loadSave(knowledgeStorage as never).character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.winterJointMovement.id);
+    expect(loadSave(knowledgeStorage as never).character?.knowledgeSources?.[KNOWLEDGE_FACTS.winterJointMovement.id]).toEqual([knowledgeStory.id]);
 
     const loreStory=BATCH.find(({id})=>id==='the-tower-without-its-shadow')!;
     let loreState=reachSettlement(loreStory);

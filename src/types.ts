@@ -83,6 +83,8 @@ export interface Character {
   knowledge: string[];
   /** Stable IDs for reusable Knowledge facts; prose remains in knowledge for player display. */
   knowledgeKeys?: string[];
+  /** Adventure IDs that taught each stable fact; missing provenance never invalidates Knowledge. */
+  knowledgeSources?: Record<string, string[]>;
   adventuresCompleted: number;
   /** Hidden traveler-bound quick exits; three unique endings earn one full completion. */
   quickExitCreditRemainder?: 0 | 1 | 2;
@@ -208,6 +210,8 @@ export interface Requirement {
   knowledge?: string[];
   /** Stable reusable Knowledge IDs. Legacy saves are upgraded from known matching prose. */
   knowledgeKeys?: string[];
+  /** Requires at least one recorded source Adventure for each Knowledge ID. */
+  knowledgeSources?: Record<string, string[]>;
   notKnowledgeKeys?: string[];
   notKnowledge?: string[];
   /** Exact remembered Lore entries; unlike Knowledge these are narrative memory, not skill facts. */

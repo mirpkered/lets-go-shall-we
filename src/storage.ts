@@ -42,6 +42,18 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       const migratedKnowledgeKeys = [...knowledgeKeys];
       if (JSON.stringify(migratedKnowledgeKeys) !== JSON.stringify(parsed.character.knowledgeKeys)) migrated = true;
       parsed.character.knowledgeKeys = migratedKnowledgeKeys;
+      const knownKnowledgeIds = new Set(KNOWLEDGE_KEY_MIGRATIONS.map(({ id }) => id));
+      const rawKnowledgeSources = parsed.character.knowledgeSources;
+      const knowledgeSources: Record<string, string[]> = {};
+      if (rawKnowledgeSources && typeof rawKnowledgeSources === 'object' && !Array.isArray(rawKnowledgeSources)) {
+        for (const [id, sources] of Object.entries(rawKnowledgeSources)) {
+          if (!knownKnowledgeIds.has(id) || !Array.isArray(sources)) continue;
+          const normalized = [...new Set(sources.filter((source): source is string => typeof source === 'string' && !!source.trim()))];
+          if (normalized.length) knowledgeSources[id] = normalized;
+        }
+      }
+      if (rawKnowledgeSources !== undefined && JSON.stringify(knowledgeSources) !== JSON.stringify(rawKnowledgeSources)) migrated = true;
+      if (rawKnowledgeSources !== undefined || Object.keys(knowledgeSources).length) parsed.character.knowledgeSources = knowledgeSources;
       if (!Array.isArray(parsed.character.contacts)) { parsed.character.contacts = []; migrated = true; }
       else {
         const contacts = parsed.character.contacts.filter((entry): entry is TravelerContact => !!entry && typeof entry.id === 'string' && !!entry.id && typeof entry.name === 'string' && typeof entry.role === 'string' && typeof entry.sourceScenarioId === 'string')

@@ -37,6 +37,13 @@ Apply this appendix to newly authored adventures unless a scenario-specific inst
 - Keep supernatural items narrow and atmospheric. Review established artifacts before adding another; an item may react, reveal, warn, or alter one specific interaction, but is not a universal detector, key, or combat upgrade.
 - Character knowledge can unlock recognition of a particular symbol, route, custom, or artifact only when that character actually learned it. Do not grant facts because the human player has seen another adventure.
 
+### Prior Learning Recall
+
+- Record the Adventure that first taught each stable Knowledge fact, adding later teaching sources without duplicates. Missing provenance in a legacy save is valid and must not invalidate the fact.
+- Recall should be an optional, concise recognition of how an earlier lesson applies to present evidence. When the source is known, name it naturally; when it is absent or not one of the relevant sources, use source-neutral wording.
+- Keep the ordinary scene and choices fully available to a fresh Traveler. Recall may guide attention or interpretation, but must not reveal unsupported truth, guarantee safety, add a hidden prerequisite, or choose an action for the player.
+- Do not create a callback solely to use a fact. A strong fit is more valuable than broad coverage; preserve uncertainty and let present evidence receive its own inspection.
+
 ## Rare Easter eggs
 
 - Easter eggs are occasional flavor, never gameplay: they cannot be required to understand or finish an adventure, change odds or endings, grant items or money, alter history/knowledge, or affect carry or traveler progression.

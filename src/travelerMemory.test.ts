@@ -26,6 +26,7 @@ describe('Knowledge, Lore, and History continuity', () => {
     state = choose(state, memoryStory, memoryStory.scenes.start.choices[0]);
     expect(state.character?.knowledge).toEqual([KNOWLEDGE_FACTS.barnDrainToCreek.text]);
     expect(state.character?.knowledgeKeys).toEqual([KNOWLEDGE_FACTS.barnDrainToCreek.id]);
+    expect(state.character?.knowledgeSources).toEqual({ [KNOWLEDGE_FACTS.barnDrainToCreek.id]: ['memory-test-story'] });
     expect(state.character?.lore).toEqual(['The old keeper says the stair sings in frost.']);
     expect(state.character?.historyFlags).toEqual(['inspected_north_stair']);
     expect(sceneText(memoryStory.scenes.check, state)).toBe('You remember the dry stair.');
@@ -33,6 +34,7 @@ describe('Knowledge, Lore, and History continuity', () => {
     expect(state.character?.knowledge).toHaveLength(1);
     expect(state.character?.lore).toHaveLength(1);
     expect(state.character?.historyFlags).toHaveLength(1);
+    expect(state.character?.knowledgeSources?.[KNOWLEDGE_FACTS.barnDrainToCreek.id]).toEqual(['memory-test-story']);
   });
 
   it('round-trips all three memory categories and leaves Bank state separate', () => {
@@ -43,6 +45,7 @@ describe('Knowledge, Lore, and History continuity', () => {
     const restored = loadSave({ getItem: () => saved });
     expect(restored.character?.knowledge).toEqual([KNOWLEDGE_FACTS.barnDrainToCreek.text]);
     expect(restored.character?.knowledgeKeys).toEqual([KNOWLEDGE_FACTS.barnDrainToCreek.id]);
+    expect(restored.character?.knowledgeSources).toEqual({ [KNOWLEDGE_FACTS.barnDrainToCreek.id]: ['memory-test-story'] });
     expect(restored.character?.lore).toEqual(['The old keeper says the stair sings in frost.']);
     expect(restored.character?.historyFlags).toEqual(['inspected_north_stair']);
     expect(restored.bank).toEqual(['graveCoin']);
@@ -55,7 +58,21 @@ describe('Knowledge, Lore, and History continuity', () => {
     const loaded = loadSave({ getItem: () => JSON.stringify(legacy) });
     expect(loaded.character?.knowledge).toEqual([KNOWLEDGE_FACTS.barnDrainToCreek.text, 'An unrelated old memory.']);
     expect(loaded.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.barnDrainToCreek.id);
+    expect(loaded.character?.knowledgeSources).toBeUndefined();
     expect(loaded.bank).toEqual(['graveCoin']);
+  });
+
+  it('records distinct teaching Adventures once and normalizes malformed provenance without invalidating the fact', () => {
+    const secondSource = { ...memoryStory, id: 'memory-test-story-two' };
+    let state = freshState();
+    state = choose(state, memoryStory, memoryStory.scenes.start.choices[0]);
+    state = { ...state, run: startRun(state.character!, secondSource) };
+    state = choose(state, secondSource, secondSource.scenes.start.choices[0]);
+    expect(state.character?.knowledgeSources?.[KNOWLEDGE_FACTS.barnDrainToCreek.id]).toEqual(['memory-test-story', 'memory-test-story-two']);
+    const saved = JSON.stringify({ ...state, character: { ...state.character, knowledgeSources: { [KNOWLEDGE_FACTS.barnDrainToCreek.id]: ['memory-test-story', 'memory-test-story-two', 'memory-test-story-two', '', 4], obsolete: ['old-source'] } } });
+    const restored = loadSave({ getItem: () => saved });
+    expect(restored.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.barnDrainToCreek.id);
+    expect(restored.character?.knowledgeSources).toEqual({ [KNOWLEDGE_FACTS.barnDrainToCreek.id]: ['memory-test-story', 'memory-test-story-two'] });
   });
 
   it('clears traveler memory at death/abandonment and retirement without clearing Bank contents', () => {

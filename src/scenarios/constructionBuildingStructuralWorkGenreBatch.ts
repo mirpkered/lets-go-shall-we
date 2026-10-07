@@ -8,7 +8,7 @@ type BuildStory = {
   job:string; sign:string; method:string; methodResult:string; turn:string; decision:string;
   safe:string; alternate:string; tool?:string; toolName?:string; toolSource?:string;
   knowledge?:keyof typeof KNOWLEDGE_FACTS; lesson?:string; lore?:string; loreCallback?:string;
-  callbackKnowledge?:keyof typeof KNOWLEDGE_FACTS; coins:number;
+  coins:number;
 };
 
 const stories:BuildStory[] = [
@@ -50,20 +50,27 @@ const itemSources:Record<string,string> = {
 };
 
 const make = (w:BuildStory,index:number):Scenario => {
-  const nextKnowledge = stories[(index+7)%stories.length].knowledge;
   const nextLore = stories[(index+9)%stories.length].lore;
   const inspectVariants:NonNullable<Scene['textVariants']> = [];
-  if (w.callbackKnowledge) inspectVariants.push({requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[w.callbackKnowledge].id]},text:`You have seen this kind of sign before: ${KNOWLEDGE_FACTS[w.callbackKnowledge].text} It guides what you inspect, but the builder still checks the structure itself.`});
+  const recall:Record<string,{fact:keyof typeof KNOWLEDGE_FACTS;source:string;text:string}> = {
+    'the-roof-that-held-its-breath': {fact:'winterJointMovement',source:'the-joint-that-opened-in-winter',text:'The fresh split recalls the inn landing you inspected in winter, where a mark that kept separating mattered more than the old shape of the joint.'},
+    'the-riverward-retaining-wall': {fact:'waterPathBeforeWall',source:'the-stone-that-kept-the-water',text:'The seepage recalls the cellar wall you inspected with the mason, where water emerged at one joint but followed an older drain from elsewhere.'},
+    'three-knots-on-the-platform': {fact:'scaffoldFootAndLashing',source:'the-ladder-in-the-west-yard',text:'The loose lashing and soft ground recall the warehouse ladder job with Cale, where securing one point did not make the whole support sound.'},
+  };
+  const priorLesson=recall[w.id];
+  if(priorLesson){
+    const factId=KNOWLEDGE_FACTS[priorLesson.fact].id;
+    inspectVariants.push({requirements:{knowledgeKeys:[factId],knowledgeSources:{[factId]:[priorLesson.source]}},text:priorLesson.text});
+    inspectVariants.push({requirements:{knowledgeKeys:[factId]},text:`You remember an earlier structural inspection where ${KNOWLEDGE_FACTS[priorLesson.fact].text.toLowerCase()} The present signs still need their own assessment.`});
+  }
   if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`A remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
   const revealVariants:NonNullable<Scene['textVariants']> = [];
-  if (nextKnowledge) revealVariants.push({requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[nextKnowledge].id]},text:`Your earlier lesson about ${KNOWLEDGE_FACTS[nextKnowledge].text.toLowerCase()} helps you frame the next question; it does not replace this builder’s inspection.`});
   if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
   const revealChoices:Scene['choices'] = [
     {id:'resolve',label:w.decision,next:'settle',effects:{setFlags:['choseCautiousSequence']}},
     {id:'alternate',label:w.alternate,next:'settle',effects:{setFlags:['choseAlternateSequence']}},
     {id:'leave',label:'Stop the alteration and leave the builder a clear account of what you observed',next:'partial',effects:{setFlags:['leftStructuralReport']}},
   ];
-  if(nextKnowledge) revealChoices.push({id:'applyKnownMethod',label:'Use a building lesson you already know to request one more comparison',requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[nextKnowledge].id]},next:'settle',effects:{setFlags:['usedRememberedConstructionKnowledge']}});
   if(nextLore) revealChoices.push({id:'connectLocalHistory',label:'Tell the clerk how this mark connects to a place you have visited',requirements:{lore:[nextLore]},next:'settle',effects:{setFlags:['connectedRememberedConstructionLore']}});
   const actions:Scene['choices'] = [
     {id:'measure',label:w.method,next:'reveal',effects:{setFlags:['constructionMeasured']}},
