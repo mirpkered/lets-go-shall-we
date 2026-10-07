@@ -58,6 +58,24 @@ describe('Escort / Protection genre batch', () => {
     expect(callbackCount).toBeGreaterThanOrEqual(2);
   });
 
+  it('shows the Weatherproof Cloak option only when usable Gear is carried and keeps a fresh route', () => {
+    const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-smallpox-letter')!;
+    const makeState = (item?: string): SaveData => {
+      const character = newCharacter('Smallpox Letter Tester');
+      if (item) { character.carriedItem = item; character.carriedItems = [item]; }
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const cloak = scenario.scenes.post.choices.find(({ id }) => id === 'cloak')!;
+    const freshState = makeState();
+    expect(meets(cloak.requirements, freshState)).toBe(false);
+    expect(scenario.scenes.post.choices.some(({ id }) => id === 'ask')).toBe(true);
+    expect(scenario.scenes.post.choices.some(({ id }) => id === 'case')).toBe(true);
+    const usableCloak = makeState('weatherproofCloak');
+    expect(meets(cloak.requirements, usableCloak)).toBe(true);
+    usableCloak.itemStates = { weatherproofCloak: { condition: 'BROKEN', upgrades: [], provenance: [] } };
+    expect(meets(cloak.requirements, usableCloak)).toBe(false);
+  });
+
   it('lets a carried Telegraph Line Tester confirm continuity from firm ground, but not pole safety', () => {
     const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-telegraph-repair-car')!;
     const makeState = (carried: boolean, bank: string[] = []) => {

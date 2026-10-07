@@ -93,7 +93,7 @@ function make(w:Story,index:number):Scenario{
   ...(w.threatRisk?{threatened:s('threatened','A Witness Made',`The watcher leaves before the clerk can identify them. You withdraw rather than turn a delivery into a fight; the office records that the message may have been intercepted.`,[{id:'settleThreatened',label:'Report the watcher and close the record',next:'settle'}])}:{}),
   settle:s('settle','The Dispatch Account',`The office records the outcome: ${w.consequence}. Payment and continuity remain your choice.`,rewardChoices),
   ...(w.lane==='GEAR'&&w.gear?{gearEnding:e('gearEnding','Equipment Released to You',`${itemSources[w.gear]} The message and office property remain behind.`)}:{}),
-  ...(w.knowledge||w.secondaryKnowledge?{knowledgeEnding:e('knowledgeEnding','A Convention Worth Keeping',w.secondaryKnowledge?`You preserve an additional reusable practice: ${KNOWLEDGE_FACTS[w.secondaryKnowledge].text}`:`You preserve a reusable practice: ${KNOWLEDGE_FACTS[w.knowledge!].text}`)}:{}),
+  ...(w.knowledge||w.secondaryKnowledge?{knowledgeEnding:e('knowledgeEnding','A Convention Worth Keeping',w.secondaryKnowledge?'You add the additional handling convention to your notes; the office keeps its separate dispatch record.':'The office files its convention beside the dispatch record; the lesson stays with you.')}:{}),
   ...(w.lore||w.secondaryLore?{loreEnding:e('loreEnding','A Route Remembered',`You preserve the history attached to this message: ${w.lore??w.secondaryLore}`)}:{}),
   paid:e('paid','A Recorded Delivery Fee',`You take ${w.coins} coins; the clerk records whether the message was timely, delayed, or returned.`),unpaid:e('unpaid','No Fee Taken','You leave without payment; the office retains the recipient, seal, and delivery status.'),
  };

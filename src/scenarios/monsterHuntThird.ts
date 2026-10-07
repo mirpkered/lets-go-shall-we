@@ -23,11 +23,12 @@ export const THE_BROKEN_ANTLER: Scenario = {
     elkCorridor: scene('elkCorridor', 'The Hill Path Open', 'The gate opens onto a broad slope away from houses. The elk steps toward it but the wire still catches the broken antler. You can clear the fence line from cover or let a handler approach from the hill side.', [
       { id: 'clearLoopFromCover', label: 'Pull the loop loose from behind the fence', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, next: 'elkFreed', effects: { damageItems: ['travelRope'] } },
       { id: 'waitWithSpace', label: 'Keep people back until help arrives', next: 'elkWaited' },
-      { id: 'forceElkForward', label: 'Drive the elk through the gate', hint: 'It is frightened and could charge into the lane.', chance: { probability: 0.53, successNext: 'elkFreed', failureNext: 'elkKick', successMessage: 'The elk backs through the gate onto the open hill.', failureMessage: 'It wheels toward the fence and strikes out.', successEffects: { health: -1 }, failureEffects: { health: -4 } } },
+      { id: 'forceElkForward', label: 'Drive the elk through the gate', hint: 'It is frightened and could charge into the lane.', chance: { probability: 0.53, successNext: 'elkMoved', failureNext: 'elkKick', successMessage: 'The elk backs through the gate onto the open hill, but the wire still catches its antler.', failureMessage: 'It wheels toward the fence and strikes out.', successEffects: { health: -1 }, failureEffects: { health: -4 } } },
     ]),
-    elkFreed: end('elkFreed', 'The Hill Takes the Elk', 'The wire comes free and the elk walks uphill, favoring its injured antler. The settlement keeps the gate closed and calls a handler to assess the injury; no one tries to treat a wild animal by hand.'),
+    elkFreed: end('elkFreed', 'The Hill Takes the Elk', 'The loop comes free and the elk walks uphill with its broken antler clear of the wire. Once it is beyond the lane, the settlement closes the gate and calls a handler to check the antler from a safe distance.'),
+    elkMoved: end('elkMoved', 'The Hill Is Not Clear Yet', 'The elk reaches the open hillside, but the loop still catches its broken antler. The settlement keeps the gate open toward the empty slope and holds people back until a handler can separate the wire safely.'),
     elkWaited: end('elkWaited', 'A Handler Takes Over', 'People remain behind the fence until a trained handler arrives. The elk is not pursued; the broken antler and wire are left for someone equipped to separate them safely.'),
-    elkKick: end('elkKick', 'A Hard Warning', 'The elk strikes your shoulder before moving through the open gate. The settlement keeps clear while a handler checks both the animal and your injury.'),
+    elkKick: end('elkKick', 'A Hard Warning', 'The elk strikes your shoulder as it jerks away from the fence. The settlement keeps people back and calls a handler before anyone approaches again.'),
   },
 };
 

@@ -61,6 +61,25 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     }
   });
 
+  it('records the Bell before the Wire convention once without repeating the lesson in the ending',()=>{
+    const scenario=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({id})=>id==='bell-before-the-wire')!;
+    const fact=KNOWLEDGE_FACTS.telegraphOfficeBellConvention;
+    let state=fresh(scenario);
+    state=act(state,scenario,'acceptDelivery');
+    state=act(state,scenario,'carryNow');
+    expect(state.character?.knowledgeKeys?.filter((id)=>id===fact.id)).toHaveLength(1);
+    expect(state.character?.knowledge?.filter((entry)=>entry===fact.text)).toHaveLength(1);
+    expect(state.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id]);
+    state=act(state,scenario,'deliverAsKnown');
+    state=act(state,scenario,'settleDelivered');
+    expect(scenario.scenes.settle.choices.some(({next})=>next==='knowledgeEnding')).toBe(false);
+    state=act(state,scenario,'takeFee');
+    expect(state.run?.sceneId).toBe('paid');
+    expect(sceneText(scenario.scenes.paid,state)).not.toContain(fact.text);
+    expect(sceneText(scenario.scenes.knowledgeEnding,state)).not.toContain(fact.text);
+    expect(state.character?.knowledgeKeys?.filter((id)=>id===fact.id)).toHaveLength(1);
+  });
+
   it('preserves explicit delivery, delay, refusal, and uncertainty choices as persistent History', () => {
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
       let state = fresh(scenario);

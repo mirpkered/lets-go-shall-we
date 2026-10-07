@@ -88,6 +88,29 @@ describe('Monster Hunt / Creature Threat batch', () => {
     }
   });
 
+  it('keeps Broken Antler endings consistent with whether the loop was actually freed', () => {
+    const scenario = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-broken-antler')!;
+    let freed = fresh(scenario);
+    freed = take(freed, scenario, 'inspectLoop');
+    freed = take(freed, scenario, 'cutWire');
+    expect(freed.run?.sceneId).toBe('elkFreed');
+    expect(scenario.scenes.elkFreed.text).toContain('broken antler clear of the wire');
+    expect(scenario.scenes.elkFreed.text).not.toMatch(/favoring its injured antler/i);
+
+    let moved = fresh(scenario);
+    moved = take(moved, scenario, 'clearPeople');
+    moved = take(moved, scenario, 'openHillGate');
+    moved = take(moved, scenario, 'forceElkForward', 0);
+    expect(moved.run?.sceneId).toBe('elkMoved');
+    expect(scenario.scenes.elkMoved.text).toContain('the loop still catches its broken antler');
+
+    let struck = fresh(scenario);
+    struck = take(struck, scenario, 'clearPeople');
+    struck = take(struck, scenario, 'approachWire', 0.999999);
+    expect(struck.run?.sceneId).toBe('elkKick');
+    expect(scenario.scenes.elkKick.text).not.toContain('moving through the open gate');
+  });
+
   it('explores fresh-character routes through both outcomes of every risky choice without dead ends or revisits', () => {
     for (const scenario of MONSTER_HUNT_ADVENTURES) explore(scenario);
   });

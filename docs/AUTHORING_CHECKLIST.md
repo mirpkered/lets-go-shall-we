@@ -109,6 +109,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] For lethal branches, show a plausible hazard and warning/escalation; account for mitigation, retreat, and any price retreat carries. Do not add fatality as an arbitrary difficulty bump.
 - [ ] Keep a fresh, broke traveler viable. Carried tools should offer specific optional methods, not hidden prerequisites.
 - [ ] Check tool capability and accessibility; identify what each item acts on and where.
+- [ ] If an action names persistent Gear, require that exact usable item; ensure fresh Travelers retain a sensible non-Gear route unless equipment is fictionally supplied.
 - [ ] For persistent gear changes, author the explicit damage/break/repair/upgrade/replacement event and its visible narration. Broken gear remains owned but unusable; repairs and named upgrades preserve provenance and must be checked across inventory, Bank, death, save/reload, and replacement.
 - [ ] For Supplies, set a stack limit and separate stack-slot need; test add/merge/full pouch/consume/empty/save/reload, and narrate quantity spent. Routine provisions remain abstract.
 - [ ] Keep Gear requirements optional for baseline success. Bank only Gear/Relics; character-bound Supplies and Assets are lost with death, abandonment, or retirement.
@@ -125,6 +126,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Is a visible consequence present?
 - [ ] Is there a reaction or payoff?
 - [ ] Does the ending reflect actual route state, performance, costs, and current-run knowledge?
+- [ ] Do all ending claims about movement, injury, damage, tools, rescue, and loss follow from the specific route taken?
 - [ ] Would this feel complete without the words “Adventure Complete”?
 - [ ] Is the structure too similar to another adventure? Treat audit warnings as human-review prompts, not automatic rejection.
 - [ ] For a dispute, wager/game, job, testimony, or ordinary task, has the story earned its result and shown what it changes? Do not mistake length, coin changes, or task completion alone for substance.
