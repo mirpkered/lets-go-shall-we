@@ -2,6 +2,76 @@
 
 This is an actionable project roadmap, not a transcript of every proposed idea. Status is based on the checked-in source and tests; see [Current Systems](CURRENT_SYSTEMS.md) for implementation detail. No dates or delivery promises are implied.
 
+## Automatic Scenario Creation
+
+**Canonical operational ruleset for automatic / scheduled scenario batches.** Any recurring scenario-generation task must read this section and its linked canonical references before choosing a genre, planning, or authoring content. This guide centralizes the operating process; it does not replace or weaken the broader authoring, continuity, safety, testing, or release rules in those references.
+
+The scheduled batch exists to expand the library gradually, fill demonstrated gaps, maintain variety, reinforce persistent continuity, preserve quality, and make the world feel broader over time. It is not a scenario factory. Use this sequence:
+
+**AUDIT LIBRARY → IDENTIFY GAPS → PLAN BATCH → AUTHOR → AUDIT AGAIN → VALIDATE → RELEASE ONLY IF SAFE.**
+
+### Batch size and reward / non-reward mix
+
+The current weekly target is **20–25 new scenarios**, not a quota. Quality takes priority; do not add filler to reach the target.
+
+The old “70/30” shorthand is **not a rigid 70% / 30% requirement**. The flexible batch-level operating range is approximately **70–80% reward / continuity-opportunity scenarios and 20–30% non-reward scenarios**. For example, 14/6 is acceptable in a 20-scenario batch; 18/7 or 19/6 is acceptable in a 25-scenario batch. Do not contort a story to hit an exact percentage. The purpose is regular continuity opportunity without making every Adventure a reward-delivery mechanism. This current flexible range supersedes older “70% minimum” wording in dated batch notes and audit snapshots.
+
+A qualifying continuity opportunity must be meaningful and fictionally justified. It may involve existing or new Gear acquisition/use, coins, reusable Knowledge, Lore, Contacts, Favors, History, a meaningful persistent consequence, appropriate Relics or Supplies, merchant access, repair, upgrade, sale, or another currently supported persistent system. Decorative acknowledgment alone does not qualify. An opportunity is not a guaranteed reward: route, player choice, capacity, affordability, and state may affect whether it is realized.
+
+### Audit the library before choosing a genre
+
+Use current registry/source and available QA or simulation diagnostics; do not choose a genre first and retrofit a justification. Review under- and over-representation across:
+
+- scenario type, genre/subtype, setting, occupation/work, seasonal eligibility, and length/decision depth;
+- risk, combat/noncombat, mystery/practical problem-solving, quiet/high-tension, grounded/supernatural, and ending structures;
+- rescue, escort, investigation, negotiation/social, wilderness/travel, industrial/mechanical, agricultural/animal, and civic/town work;
+- reward and economic opportunities, existing Gear acquisition and meaningful use, Knowledge acquisition and downstream use, Lore, Contacts/Favors, merchant access, and persistent consequences.
+
+Use the findings to address a real gap. Similar subject matter is not by itself duplication: compare the player’s role, central problem, decisions, complication, tool use, stakes, consequences, and payoff. Reject scenario-factory repetition where only names or scenery change; keep a strong concept when it creates a distinct player experience.
+
+### Continuity choices
+
+Choose continuity lanes according to the **current library’s demonstrated needs**. Do not automatically create new Gear, enforce equal Gear/Knowledge/Lore thirds, or make continuity primary in every batch. A new scenario may instead create a strong use or acquisition route for existing Gear, useful Knowledge application, meaningful Lore context, merchant opportunity, or another persistent outcome.
+
+- **Gear:** first audit the catalog and acquisition/use census. Prefer strong-fit acquisition routes or later callbacks for existing items where appropriate. Add a new item only when the catalog does not serve the role well and the item has distinct capability, credible provenance, and broader plausible utility. Ownership, capacity, duplicate suppression, and reward placement must use canonical systems.
+- **Knowledge:** persist a specific, reusable lesson only when it can matter elsewhere. Before creating it, identify a plausible existing or planned callback; Knowledge should inform a decision, interpretation, warning, or understanding, not merely record that an event occurred.
+- **Lore:** preserve its distinct role in history, place, people, culture, institution, or mystery. It need not act as a mechanical key, but it should enrich world context rather than become collectible trivia.
+- **Merchants and economy:** merchant scenarios are valid balancing tools when access, acquisition, buyback, repair, exchange, or spending is a demonstrated gap. Give named merchants understandable roles and learnable stock; avoid interchangeable shops or random-loot behavior. Preserve canonical prices, purchase, duplicate, and inventory rules.
+- **Other continuity:** use Contacts, Favors, History, consequence, Relics, Supplies, upgrades, or repairs only where the fiction and implemented persistence support them. Do not invent parallel state systems or use shallow flags to inflate continuity counts.
+
+### Story, consequence, and originality
+
+For engaged routes, task completion is not automatically story completion. Meaningful engagement should normally lead to another decision, complication, discovery, tradeoff, consequence, uncertainty, or opportunity before substantive completion. A consciously chosen refusal, walk-away, or other clean opt-out may remain brief. Short can be good; do not pad, but avoid an engaged two-screen “problem → solution → complete” when the premise promises an Adventure. Apply **Engagement Creates Another Question**, **Task Completion Is Not Story Completion**, **Scene Value**, and **Resolution Needs Payoff**.
+
+Apply **Consequence Must Carry Weight** and **Consequence Is Not Punishment**. Choices may alter possessions, money, injury, relationships, information, threats, opportunities, History, Contacts, or Favors when supported. Consequences must be legible, causally connected, proportionate, and foreshadowed or inherent in an informed risk. Do not manufacture punishment, hidden timers, arbitrary death, or silent Gear loss.
+
+### Canonical references and rules
+
+All project authoring rules remain active. In particular, follow [Canonical Design Rules](DESIGN_RULES.md), [Authoring Checklist](AUTHORING_CHECKLIST.md), [Scenario Diversity](SCENARIO-DIVERSITY.md), [Scenario Depth Audit](SCENARIO-DEPTH-AUDIT.md), [Scenario Risk Audit](SCENARIO-RISK-AUDIT.md), [Continuity Expansion Program](CONTINUITY_EXPANSION_PROGRAM.md), [Merchant Ecology](merchant-ecology.md), [Library Ending / Reward Audit](LIBRARY-ENDING-REWARD-AUDIT.md), [Reward Acquisition Gap Matrix](reward-acquisition-gap-matrix.md), [Adventure Library](ADVENTURE_LIBRARY.md), [Current Systems](CURRENT_SYSTEMS.md), [Items](ITEMS.md), and [World Continuity](WORLD-CONTINUITY.md). Read the references relevant to the planned content and current systems; do not rely on old conversations or dated audit snapshots as current rules.
+
+Preserve, at minimum: Fair Consequence; Risk Is Not Certainty; Consequential Risk; Continuity Must Have Teeth; No Invisible Important Rewards; No Preferred-Answer Framing; Scene Value; Knowledge-Aware Narration; Known Problem Rule; NPC Name Variety; Spatial Clarity / Physical Setup; NPC Information, Player Decision; Employer-Supplied Tools; Mystery Motivation; Equipment Accessibility; Conditional / Non-Inevitable Incident; Distant Intervention; No-Win Situation; Grounded Supernatural; Tool Capability; Intentional Disposal; Rescue Diversity; Important Context ≠ Opaque Shorthand; Physical Evidence; State-Aware Ending; Resolution Needs Payoff; Quiet Payoff; Known Fate Acknowledgment; Content Substance; Workday Substance; Witness / Information Payoff; Procedural Ending; Performance Feedback; Quiet Does Not Mean Empty; Short ≠ Nonqualifying; Long ≠ Automatically Qualifying; No Scenario Factory; Library Uniqueness; Lethal Consequence; Long-Run Pressure; No Repetitive Structure; Wager / Game Substance; Obvious Action Audit; Task Completion Is Not Story Completion; Dispute Substance; Agreement Is Not Automatically Payoff; No Checklist Ending; Engagement Must Produce a Story; Engagement Creates Another Question; Causal Continuity; Choice Intent Must Be Preserved; Consequence Must Carry Weight; and Consequence Is Not Punishment. Newer canonical rules in the linked documents also apply.
+
+### Pre-author checklist
+
+- [ ] Read this section and relevant canonical references; inspect the current working tree and intended branch/HEAD.
+- [ ] Audit the active library, recent batches, underrepresented and saturated areas, and relevant QA/simulation evidence before selecting a genre.
+- [ ] Review acquisition and later-use routes for existing Gear; Knowledge utility; Lore quality; merchant/economic access; and relevant consequence systems.
+- [ ] Plan a distinct batch and a flexible 70–80% / 20–30% continuity-opportunity mix without forcing rewards or a fixed lane balance.
+- [ ] Ensure the premise, player role, decisions, complication, risk, consequence, and payoff are distinct from existing Adventures.
+- [ ] Avoid trivial engaged resolutions; preserve concise, intentional opt-outs.
+- [ ] Add new Gear or Knowledge only with a justified need and plausible future use; keep Lore meaningful and distinct.
+
+### Post-author checklist
+
+- [ ] Re-audit for near-duplicates, repeated structures, weak engaged routes, unsupported certainty, unfair consequences, and reward inflation.
+- [ ] Confirm meaningful continuity opportunities, correct state-aware reward and ownership behavior, and that the intended mix remains reasonable; do not add a reward only to satisfy a ratio.
+- [ ] Validate registry IDs, destinations, reachability, seasonality, death routing, saves/migration, selector neutrality, rewards, continuity callbacks, responsive/mobile behavior, types, build, and tests required by the project.
+- [ ] Do not release if validation fails; report scope, results, and any limitations accurately.
+
+### Living rules
+
+This ruleset is living documentation. When authoring standards change, update this section or point to the newer canonical rule, then reconcile obsolete wording in related operational docs. Weekly tasks must reread the current repository guidance; do not treat a prior batch prompt, audit snapshot, or conversation as more current than checked-in canonical documentation. This section governs automatic scenario planning and authoring, not authorization to deploy, alter selector weighting, change capacity, or make unrelated gameplay changes.
+
 ## Now — trust and validate the expanded library
 
 - Continue hands-on playtesting across the 445-adventure library; fix confirmed continuity, state, fairness, save, payoff, and reward defects surgically.
