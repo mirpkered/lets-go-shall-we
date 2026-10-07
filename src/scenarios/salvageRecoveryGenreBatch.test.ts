@@ -65,20 +65,24 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     }
   });
 
-  it('keeps fee, Knowledge, refusal, and deferred ownership outcomes mutually exclusive', () => {
+  it('keeps material compensation exclusive while experience-earned Knowledge survives every resolved route', () => {
     for (const scenario of SALVAGE_RECOVERY_GENRE_BATCH) {
       const start = decision(scenario);
       const fee = act(start, scenario, 'takeFee');
       expect(fee.character?.money).toBe(start.character!.money + scenario.scenes.decision.choices.find(({ id }) => id === 'takeFee')!.effects!.money!);
+      expect(fee.character?.knowledge).toContain(scenario.scenes.decision.choices.find(({id})=>id==='takeFee')!.effects!.knowledge![0]);
       expect(fee.run?.inventory).not.toContain(scenario.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')?.effects?.gainItems?.[0]);
       const lesson = act(start, scenario, 'keepLesson');
       expect(lesson.character?.knowledge.length).toBeGreaterThan(start.character!.knowledge.length);
-      const refused = act(start, scenario, 'refuseAll');
+      expect(lesson.character?.money).toBe(start.character?.money);
+      expect(lesson.run?.acquiredThisRun).toEqual([]);
+      const refused = lesson;
       expect(refused.character?.money).toBe(start.character?.money);
       expect(refused.run?.acquiredThisRun).toEqual([]);
       let deferred = act(initial(scenario), scenario, scenario.scenes.arrival.choices[0].id);
       deferred = act(deferred, scenario, 'deferRecovery');
       expect(deferred.run?.sceneId).toBe('deferred');
+      expect(deferred.character?.knowledge.length).toBeGreaterThan(0);
       expect(deferred.run?.inventory).not.toContain(scenario.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')?.effects?.gainItems?.[0]);
     }
   });

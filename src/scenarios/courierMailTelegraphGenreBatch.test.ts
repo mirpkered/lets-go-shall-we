@@ -26,14 +26,14 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(SCENARIOS).toHaveLength(859);
     expect(new Set(COURIER_MAIL_TELEGRAPH_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(COURIER_BATCH_PRIMARY_LANES).toEqual({ GEAR: 8, KNOWLEDGE: 8, LORE: 8 });
-    expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(31);
+    expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
     const authoredLore = new Set(SCENARIOS.flatMap(({ scenes }) => Object.values(scenes).flatMap(({ choices }) => choices.flatMap(({ effects }) => effects?.lore ?? []))));
     expect(authoredLore).toHaveLength(46);
     expect(validateScenarioRegistry(COURIER_MAIL_TELEGRAPH_GENRE_BATCH)).toMatchObject({ errors: [], warnings: [] });
     expect(COURIER_CONSEQUENCE_MATRIX).toHaveLength(24);
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
       expect(scenario.diversity?.availability?.season).toBe('ALL_YEAR');
-      expect(scenario.scenes.settle.choices.some(({ effects }) => effects?.knowledgeEntries?.length || effects?.lore?.length || effects?.gainItems?.length)).toBe(true);
+      expect(Object.values(scenario.scenes).some(({choices})=>choices.some(({effects})=>effects?.knowledgeEntries?.length)) || scenario.scenes.settle.choices.some(({ effects }) => effects?.lore?.length || effects?.gainItems?.length)).toBe(true);
     }
   });
 
@@ -43,6 +43,22 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     const variants = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.flatMap(({ scenes }) => Object.values(scenes).flatMap(({ textVariants }) => textVariants ?? []));
     for (const id of facts) expect(variants.some(({ requirements }) => requirements?.knowledgeKeys?.includes(id)), `Knowledge callback for ${id}`).toBe(true);
     for (const entry of lore) expect(variants.some(({ requirements }) => requirements?.lore?.includes(entry)), `Lore callback for ${entry}`).toBe(true);
+  });
+
+  it('grants the eight message conventions demonstrated in handling before any compensation choice',()=>{
+    const primaryKnowledgeIds=new Set(['station-mark-in-margin','seal-that-cooled-wrong','copy-that-came-back','flooded-relay-book','initials-on-the-wire','town-name-that-moved','bell-before-the-wire','horse-change-ledger']);
+    const knowledgeStories=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({id})=>primaryKnowledgeIds.has(id));
+    expect(knowledgeStories).toHaveLength(8);
+    for(const scenario of knowledgeStories){
+      const handlingFact=scenario.scenes.handling.choices.flatMap(({effects})=>effects?.knowledgeEntries??[]);
+      expect(handlingFact.length).toBeGreaterThan(0);
+      expect(scenario.scenes.settle.choices.some(({id})=>id==='keepKnowledge')).toBe(false);
+      let state=fresh(scenario);
+      state=act(state,scenario,'acceptDelivery');
+      state=act(state,scenario,scenario.scenes.handling.choices[0].id);
+      expect(state.character?.knowledgeKeys?.length).toBeGreaterThan(0);
+      expect(state.character?.knowledgeSources?.[state.character!.knowledgeKeys![0]]).toEqual([scenario.id]);
+    }
   });
 
   it('preserves explicit delivery, delay, refusal, and uncertainty choices as persistent History', () => {
@@ -139,7 +155,6 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     state = act(state, scenario, 'verifyOutside');
     state = act(state, scenario, 'warnAndQualify');
     state = act(state, scenario, 'settleWarned');
-    state = act(state, scenario, 'keepKnowledge');
     const factId = KNOWLEDGE_FACTS.telegraphRepeatConvention.id;
     expect(state.character?.knowledgeKeys).toContain(factId);
     const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };

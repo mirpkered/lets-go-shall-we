@@ -66,12 +66,13 @@ const make = (w:BuildStory,index:number):Scenario => {
   if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`A remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
   const revealVariants:NonNullable<Scene['textVariants']> = [];
   if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
+  const learnedKnowledge = w.knowledge ? {knowledgeEntries:[KNOWLEDGE_FACTS[w.knowledge]],historyFlags:[`construction_knowledge_${w.id}`]} : {};
   const revealChoices:Scene['choices'] = [
-    {id:'resolve',label:w.decision,next:'settle',effects:{setFlags:['choseCautiousSequence']}},
-    {id:'alternate',label:w.alternate,next:'settle',effects:{setFlags:['choseAlternateSequence']}},
-    {id:'leave',label:'Stop the alteration and leave the builder a clear account of what you observed',next:'partial',effects:{setFlags:['leftStructuralReport']}},
+    {id:'resolve',label:w.decision,next:'settle',effects:{...learnedKnowledge,setFlags:['choseCautiousSequence']}},
+    {id:'alternate',label:w.alternate,next:'settle',effects:{...learnedKnowledge,setFlags:['choseAlternateSequence']}},
+    {id:'leave',label:'Stop the alteration and leave the builder a clear account of what you observed',next:'partial',effects:{...learnedKnowledge,setFlags:['leftStructuralReport']}},
   ];
-  if(nextLore) revealChoices.push({id:'connectLocalHistory',label:'Tell the clerk how this mark connects to a place you have visited',requirements:{lore:[nextLore]},next:'settle',effects:{setFlags:['connectedRememberedConstructionLore']}});
+  if(nextLore) revealChoices.push({id:'connectLocalHistory',label:'Tell the clerk how this mark connects to a place you have visited',requirements:{lore:[nextLore]},next:'settle',effects:{...learnedKnowledge,setFlags:['connectedRememberedConstructionLore']}});
   const actions:Scene['choices'] = [
     {id:'measure',label:w.method,next:'reveal',effects:{setFlags:['constructionMeasured']}},
     {id:'shore',label:'Hold the work and ask the named builder to expose the support from a safe side',next:'reveal',effects:{setFlags:['constructionShored']}},
@@ -91,7 +92,6 @@ const make = (w:BuildStory,index:number):Scenario => {
     reveal:s('reveal','The New Question',`${w.turn} The physical sign supports a concern, but does not by itself establish the whole history or certify the structure.`,revealChoices,revealVariants),
     settle:s('settle','Work Accounted For',`The structure is left in a known state: ${w.safe} The owner and builder agree that the next work follows the observed condition, not an assumption.`,[
       ...(w.lane==='GEAR'&&w.tool?[{id:'keepGear',label:`Accept the released ${w.toolName} as part of your pay`,requirements:{notOwnedItems:[w.tool]},next:'gearEnding',effects:{gainItems:[w.tool],gainItemProvenance:{[w.tool]:w.toolSource??itemSources[w.tool]},historyFlags:[`construction_gear_${w.id}`]}}]:[]),
-      ...(w.knowledge?[{id:'learn',label:'Keep the practical building lesson for future work',next:'knowledgeEnding',effects:{knowledgeEntries:[{id:KNOWLEDGE_FACTS[w.knowledge].id,text:KNOWLEDGE_FACTS[w.knowledge].text}],historyFlags:[`construction_knowledge_${w.id}`]}}]:[]),
       ...(w.lore?[{id:'recordLore',label:'Record the place’s history and the mark that connects it',next:'loreEnding',effects:{lore:[w.lore],historyFlags:[`construction_lore_${w.id}`]}}]:[]),
       {id:'wage',label:`Take the ${w.coins}-coin work fee`,next:'paid',effects:{money:w.coins}},
       {id:'leave',label:'Decline further work and leave the area closed for the builder',next:'partial',effects:{setFlags:['declinedFurtherWork']}},

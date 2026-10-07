@@ -70,12 +70,12 @@ describe('Construction / Building / Structural Work batch',()=>{
     }
   });
 
-  it('registers each new Knowledge fact once and limits prior-learning recall to three explicit fits',()=>{
-    const facts=Object.values(KNOWLEDGE_FACTS).filter(({id})=>BATCH.some(({scenes})=>scenes.settle.choices.some(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===id))));
+  it('grants experience-learned Knowledge before compensation and limits prior-learning recall to three explicit fits',()=>{
+    const facts=Object.values(KNOWLEDGE_FACTS).filter(({id})=>BATCH.some(({scenes})=>scenes.reveal.choices.some(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===id))));
     expect(facts).toHaveLength(8);
     for(const fact of facts){
-      const grant=BATCH.flatMap(({scenes})=>scenes.settle.choices).filter(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===fact.id));
-      expect(grant).toHaveLength(1);
+      const grant=BATCH.flatMap(({scenes})=>scenes.reveal.choices).filter(({effects})=>effects?.knowledgeEntries?.some((entry)=>entry.id===fact.id));
+      expect(grant.length).toBeGreaterThanOrEqual(3);
     }
     const targets=[
       ['the-joint-that-opened-in-winter','the-roof-that-held-its-breath',KNOWLEDGE_FACTS.winterJointMovement.id],
@@ -140,7 +140,6 @@ describe('Construction / Building / Structural Work batch',()=>{
   it('persists acquired construction Knowledge and Lore through save/resume',()=>{
     const knowledgeStory=BATCH.find(({id})=>id==='the-joint-that-opened-in-winter')!;
     let knowledgeState=reachSettlement(knowledgeStory);
-    knowledgeState=act(knowledgeState,knowledgeStory,'learn');
     expect(knowledgeState.character?.knowledgeSources?.[KNOWLEDGE_FACTS.winterJointMovement.id]).toEqual([knowledgeStory.id]);
     const knowledgeStorage={value:'',setItem(_key:string,value:string){this.value=value;},getItem(_key:string){return this.value;}};
     saveGame(knowledgeState,knowledgeStorage as never);

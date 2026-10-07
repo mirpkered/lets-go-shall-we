@@ -64,12 +64,10 @@ function build(c: Card): Scenario {
     settlement: scene('settlement', 'What the Work Was Worth', c.settlement, [
       { id: 'acceptGear', label: `Accept ${c.gearName} as the agreed hand-off`, requirements: { notOwnedItems: [c.gear] }, next: 'gear', effects: { gainItems: [c.gear], historyFlags: [`earned_${c.id}_gear`] } },
       { id: 'takeCoins', label: `Take ${c.coins} coins instead`, next: 'paid', effects: { money: c.coins } },
-      { id: 'keepKnowledge', label: 'Decline payment and keep the practical lesson', next: 'lesson', effects: { knowledge: [c.knowledge] } },
       { id: 'declineAll', label: 'Thank them and leave without payment', next: 'unpaid' },
-    ], 'safe', settlementVariants),
+    ].map((choice) => ({ ...choice, effects: { knowledge: [c.knowledge], ...choice.effects } })), 'safe', settlementVariants),
     gear: end('gear', 'A Tool with a New Owner', c.gearSource),
     paid: end('paid', 'Paid for the Work', `You accept ${c.coins} coins, not the ${c.gearName}. The equipment remains with its owner, and the work is finished without any second payment.`),
-    lesson: end('lesson', 'A Lesson Kept', `You leave without coins or ${c.gearName}. ${c.knowledge}`),
     unpaid: end('unpaid', 'The Road Opens Again', 'You refuse compensation. The specialist records what the work taught them, but no equipment changes hands.'),
   };
   if (c.combat) {

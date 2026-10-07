@@ -97,6 +97,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 ### Teaching Audit / Application Audit / Prior Learning Recall
 
 - **Teaching Audit:** Before adding a stable Knowledge fact, search the existing catalog. Reuse an exact reusable fact; add a new one only when the lesson is distinct, understandable in the source story, and plausibly useful again. Persistence is not a batch quota, and a lesson need not receive an immediate callback.
+- **Knowledge Is Not Compensation:** Run this audit alongside the Teaching Audit: if the Traveler has already learned a fact through the work or its consequences, grant it before the pay/reward choice or on every valid compensation route. Keep it optional only when the player must choose to learn it (for example, ask an expert, inspect, read, or study). See [Canonical Design Rules](DESIGN_RULES.md#traveler-era-and-continuity).
 - **Application Audit:** In a later Adventure, recall only where the present evidence genuinely fits the lesson. Keep the callback concise and bounded: what the Traveler learned can guide attention, but it does not reveal hidden truth, guarantee safety, or choose the response.
 - **Prior Learning Recall:** Where several Adventures teach the same stable fact, optional narration may identify the remembered source when provenance exists. Legacy or otherwise source-neutral Knowledge must still receive a neutral recall variant. Prior learning may change recognition, never remove the fresh-Traveler route or silently select it.
 

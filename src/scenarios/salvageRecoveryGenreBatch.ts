@@ -57,20 +57,19 @@ function build(story: SalvageStory): Scenario {
     evidence: largeScene('evidence', 'What the Recovery Shows', `${story.complication}${story.combat ? ` ${story.combat.warning}` : ''}`, [
       { id:'traceOwnership', label:'Trace the marks, records, and witnesses before claiming anything', next:'decision', effects:{ setFlags:[`${story.id}_checked_owner`] } },
       { id:'secureRecovery', label:'Secure only the clearly authorized item and leave the rest in place', next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
-      { id:'deferRecovery', label:'Stop and ask the responsible owner or crew to settle the claim', next:'deferred' },
+      { id:'deferRecovery', label:'Stop and ask the responsible owner or crew to settle the claim', next:'deferred', effects:{knowledge:[story.knowledge]} },
       ...(story.combat ? [{ id:'standGround', label:`Stand your ground and fight off the ${story.combat.enemy}`, hint:'The aggressor has made a clear physical threat; you can still withdraw or defer the recovery.', effects:{ combat:{ enemy:story.combat.enemy, winChance:story.combat.winChance, damageOnWin:1, damageOnLoss:3, winNext:'fightWon', lossNext:'fightLost' } } }] : []),
     ], story.risk === 'HIGH' ? 'warning' : 'safe', [
       { requirements:{ flags:[`${story.id}_access_one`] }, text:story.consequence[0] },
       { requirements:{ flags:[`${story.id}_access_two`] }, text:story.consequence[1] },
       { requirements:{ flags:[`${story.id}_access_three`] }, text:story.consequence[2] },
     ]),
-    decision: largeScene('decision', 'The Property Is Accounted For', `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also keep the practical lesson or refuse compensation.`, [
+    decision: largeScene('decision', 'The Property Is Accounted For', `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`, [
       ...(story.gear ? [{ id:'acceptReleasedGear', label:story.gearCost ? `Buy the released ${gearName} for ${story.gearCost} coin${story.gearCost === 1 ? '' : 's'}` : `Accept the released ${gearName}`, requirements:{ notOwnedItems:[story.gear], ...(story.gearCost ? { minMoney:story.gearCost } : {}) }, next:'gear', effects:{ gainItems:[story.gear], ...(story.gearCost ? { money:-story.gearCost } : {}), gainItemProvenance:{ [story.gear]:story.gearSource ?? `Recovered with clear ownership release in ${story.title}` }, ...(story.repair ? { gainItemConditions:{ [story.gear]:'DAMAGED' as const } } : {}), historyFlags:[`salvage_${story.id}_${story.gear}`] } }] : []),
       ...(story.repairItem ? [{ id:'repairOwnedGear', label:`Have the recovery crew repair your damaged ${ITEMS[story.repairItem]?.name ?? story.repairItem} instead`, requirements:{ items:[story.repairItem], itemConditions:{ [story.repairItem]:['DAMAGED','BROKEN'] as ('DAMAGED'|'BROKEN')[] } }, next:'repaired', effects:{ repairItems:[story.repairItem], repairItemProvenance:{ [story.repairItem]:`Repaired during ${story.title}` }, historyFlags:[`salvage_${story.id}_repair`] } }] : []),
       { id:'takeFee', label:`Take the ${story.coins}-coin recovery fee instead`, next:'paid', effects:{ money:story.coins, setFlags:[`${story.id}_took_fee`] } },
-      { id:'keepLesson', label:'Decline material compensation and keep the practical lesson', next:'lesson', effects:{ knowledge:[story.knowledge] } },
-      { id:'refuseAll', label:'Leave without compensation', next:'unpaid', effects:{ setFlags:[`${story.id}_refused`] } },
-    ], 'safe', [
+      { id:'keepLesson', label:'Decline all material compensation', next:'lesson', effects:{ setFlags:[`${story.id}_refused`] } },
+    ].map((choice)=>({...choice,effects:{knowledge:[story.knowledge],...choice.effects}})), 'safe', [
       { requirements:{ flags:[`${story.id}_checked_owner`] }, text:'Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.' },
       { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:'Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.' },
     ]),
@@ -82,7 +81,7 @@ function build(story: SalvageStory): Scenario {
     ...(story.gear ? { gear:largeEnd('gear', 'Released Into Your Keeping', `${story.gearSource} You accept ${gearName}; it is placed through the normal carried-item reward flow, or held for placement if your capacity is full.${story.repair ? ` It still needs repair; that condition is recorded with its provenance.` : ''}`) } : {}),
     ...(story.repairItem ? { repaired:largeEnd('repaired', 'A Tool Restored', `The recovery crew repairs your ${ITEMS[story.repairItem]?.name ?? story.repairItem}; its condition is restored and the work is recorded in its provenance. You take no fee or new salvage Gear.`) } : {}),
     paid:largeEnd('paid', 'The Recovery Is Paid', `You take ${story.coins} coins rather than ${gearName ?? 'an item'}. The offered property remains with its released owner; no second compensation is added. ${story.owner}`),
-    lesson:largeEnd('lesson', 'What the Marks Could Prove', `You leave without the offered property or fee. ${story.knowledge}${story.lore ? ` The older account is also recorded: ${story.lore}` : ''}`),
+    lesson:largeEnd('lesson', 'What the Marks Could Prove', `You leave without material compensation. ${story.knowledge}${story.lore ? ` The older account is also recorded: ${story.lore}` : ''}`),
     unpaid:largeEnd('unpaid', 'Nothing Claimed', 'You refuse compensation and leave the recovered property with the people whose ownership was established.'),
   };
   return largeAdventure(story.id, story.title, story.subtitle, tags, 'arrival', scenes);

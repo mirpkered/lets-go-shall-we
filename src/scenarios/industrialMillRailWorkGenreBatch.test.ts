@@ -3,6 +3,7 @@ import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, o
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
 import { ITEMS, itemsOfClass } from '../items';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { SCENARIOS } from './index';
 import { INDUSTRIAL_MILL_RAIL_GEAR_BATCH } from './industrialMillRailWorkGenreBatch';
@@ -41,7 +42,7 @@ describe('Industrial / Mill / Rail Work genre batch',()=>{
     expect(brake.scenes.diagnose.choices.some(({requirements})=>requirements?.items?.includes('machinistFileSet'))).toBe(true);
   });
 
-  it('offers coin, Knowledge, or explicitly released Gear and preserves the chosen outcome',()=>{
+  it('grants learned Knowledge before settlement and keeps compensation choices exclusive',()=>{
     for (const scenario of INDUSTRIAL_MILL_RAIL_GEAR_BATCH) {
       let state=initial(scenario);
       state=act(state,scenario,'observe');
@@ -50,12 +51,35 @@ describe('Industrial / Mill / Rail Work genre batch',()=>{
       expect(state.run?.sceneId,'settlement reached').toBe('settle');
       const settlement=scenario.scenes.settle;
       expect(settlement.choices.some(({effects})=>effects?.money)).toBe(true);
-      expect(settlement.choices.some(({effects})=>effects?.knowledge?.length)).toBe(true);
+      expect(settlement.choices.some(({id})=>id==='declineFee')).toBe(true);
+      expect(settlement.choices.some(({id})=>id==='knowledge')).toBe(false);
       expect(settlement.choices.some(({effects})=>effects?.gainItems?.length)).toBe(true);
+      if(scenario.id==='the-sorting-table-jam') expect(state.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.sortingTableFeedJam.id);
       const startingMoney=state.character!.money;
       const wage=act(state,scenario,'wage');
       expect(wage.character!.money).toBe(startingMoney+scenario.scenes.settle.choices[0].effects!.money!);
+      if(scenario.id==='the-sorting-table-jam') expect(wage.character?.knowledgeSources?.[KNOWLEDGE_FACTS.sortingTableFeedJam.id]).toEqual([scenario.id]);
     }
+  });
+
+  it('keeps the Sorting Table lesson across coin, no-fee, and clamp compensation without stacking rewards',()=>{
+    const scenario=INDUSTRIAL_MILL_RAIL_GEAR_BATCH.find(({id})=>id==='the-sorting-table-jam')!;
+    const settle=()=>{let state=initial(scenario);state=act(state,scenario,'observe');state=act(state,scenario,'repair');return act(state,scenario,'slow');};
+    const fact=KNOWLEDGE_FACTS.sortingTableFeedJam;
+    for(const [choiceId,coin,clamp] of [['wage',1,false],['declineFee',0,false],['gear',0,true]] as const){
+      let result=act(settle(),scenario,choiceId);
+      if(clamp) result=openRewardResolution(result);
+      expect(result.character?.knowledgeKeys?.filter((id)=>id===fact.id)).toHaveLength(1);
+      expect(result.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id]);
+      expect(result.character?.money).toBe(coin);
+      expect(result.run?.rewardPendingItems?.includes('foldingBenchClamp')??false).toBe(clamp);
+    }
+  });
+
+  it('migrates the exact legacy Sorting Table lesson sentence to the stable Knowledge ID',()=>{
+    const fact=KNOWLEDGE_FACTS.sortingTableFeedJam;
+    const storage={value:JSON.stringify({version:1,bank:[],character:{...newCharacter('Legacy Industrial Tester'),knowledge:[fact.text],knowledgeKeys:undefined},run:null}),setItem(_key:string,value:string){this.value=value;},getItem(_key:string){return this.value;}};
+    expect(loadSave(storage as never).character?.knowledgeKeys).toContain(fact.id);
   });
 
   it('makes rushed full-load restarts consequential but nonlethal, with a clear safe alternative',()=>{

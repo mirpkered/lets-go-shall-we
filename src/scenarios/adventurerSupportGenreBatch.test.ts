@@ -87,6 +87,13 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     }
   });
 
+  it('keeps experience-learned Knowledge independent from wages, Gear, or refusal',()=>{
+    for(const scenario of ADVENTURER_SUPPORT_GENRE_BATCH){
+      expect(scenario.scenes.settlement.choices.some(({id})=>id==='keepKnowledge'),scenario.id).toBe(false);
+      for(const choice of scenario.scenes.settlement.choices) expect(choice.effects?.knowledge,`${scenario.id}.${choice.id}`).toHaveLength(1);
+    }
+  });
+
   it('resolves all six authored combat routes without requiring combat for story completion', () => {
     const combatScenarios = ADVENTURER_SUPPORT_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE');
     for (const scenario of combatScenarios) claimGear(scenario, true);

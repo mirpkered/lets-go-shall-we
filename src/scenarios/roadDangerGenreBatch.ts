@@ -89,12 +89,10 @@ function build(c: RoadStory): Scenario {
     settlement: s('settlement', 'The Road Opens', c.rewardText, [
       ...(ownedRewardChoice ? [ownedRewardChoice] : []),
       { id: 'takeCoins', label: `Take ${c.coins} coins instead`, next: 'coins', effects: { money: c.coins } },
-      { id: 'keepLesson', label: 'Decline payment and keep the practical lesson', next: 'lesson', effects: { knowledge: [c.lesson] } },
       { id: 'decline', label: 'Decline all compensation and leave', next: 'unpaid' },
-    ], 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${choice.result} ${c.rewardText}` }))),
+    ].map((choice) => ({ ...choice, effects: { knowledge: [c.lesson], ...choice.effects } })), 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${choice.result} ${c.rewardText}` }))),
     ...(c.gear && c.gearName ? { gear: e('gear', rewardClass === 'SUPPLY' ? 'A New Owner for the Supply' : 'A New Owner for the Gear', c.provenance ?? '') } : {}),
     coins: e('coins', 'The Agreed Payment', `You take ${c.coins} coins${c.gearName ? ` instead of the ${c.gearName}` : ''}. ${c.rewardText}`),
-    lesson: e('lesson', 'A Lesson from the Road', `You leave without money${c.gearName ? ` or the ${c.gearName}` : ''}. ${c.lesson}`),
     unpaid: e('unpaid', 'The Road behind You', 'You decline compensation. The road is open or safely avoided, and nothing changes ownership.'),
   };
   if (c.combat) {

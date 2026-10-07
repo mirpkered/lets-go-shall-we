@@ -69,9 +69,12 @@ describe('Road Danger / Highwaymen genre batch', () => {
   it('offers exact coin payment, reusable Knowledge, and explicit refusal without silently granting Gear', () => {
     for (const scenario of ROAD_DANGER_GENRE_BATCH) {
       const state = reachSettlement(scenario);
+      expect(scenario.scenes.settlement.choices.some(({id})=>id==='keepLesson'),scenario.id).toBe(false);
+      for(const choice of scenario.scenes.settlement.choices) expect(choice.effects?.knowledge,`${scenario.id}.${choice.id}`).toHaveLength(1);
       const coins = scenario.scenes.settlement.choices.find(({ id }) => id === 'takeCoins')!;
       const paid = act(state, scenario, coins.id);
       expect(paid.character?.money).toBe(state.character!.money + (coins.effects?.money ?? 0));
+      expect(paid.character?.knowledge).toContain(coins.effects?.knowledge?.[0]);
       const declined = act(state, scenario, 'decline');
       expect(declined.run?.status).toBe('success');
       expect(declined.run?.rewardPendingItems ?? []).toEqual([]);

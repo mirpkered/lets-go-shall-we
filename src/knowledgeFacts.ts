@@ -28,6 +28,7 @@ export const KNOWLEDGE_FACTS = {
   reheatedSealSigns: { id: 'reheated-seal-signs', text: 'A doubled wax ridge can suggest a seal was reheated, but it cannot identify who handled the letter or what changed inside.' },
   senderReceiverCopyDifference: { id: 'sender-receiver-copy-difference', text: 'When sender and receiver copies differ, preserve both and ask for a read-back before acting on the disputed instruction.' },
   relayDelayMarks: { id: 'relay-delay-marks', text: 'A relay acknowledgment mark records receipt at the next office; a sending time alone does not establish delivery.' },
+  sortingTableFeedJam: { id: 'sorting-table-feed-jam', text: 'A cool bearing and visible wrapped material point to a feed jam; isolate the roller before removing it.' },
   telegraphPayerNotAuthority: { id: 'telegraph-payer-not-authority', text: 'A telegraph receipt identifies who paid for a message, not whether that person had authority over the property named in it.' },
   undeliverableForwardingMarks: { id: 'undeliverable-forwarding-marks', text: 'Forwarding marks can trace an address change, but a familiar town name is not enough to identify a present recipient.' },
   telegraphOfficeBellConvention: { id: 'telegraph-office-bell-convention', text: 'Office bells distinguish line status from waiting traffic only when sender and receiver share the posted convention.' },
