@@ -144,7 +144,8 @@ describe('The Last Room on the Left', () => {
   it('treats walking away as a valid ending without moral judgment or reward', () => {
     const state = pick(fresh(), 'leaveInn');
     expect(state.run?.status).toBe('success');
-    expect(state.run?.sceneId).toBe('walkAwayEnding');
+    expect(state.run?.sceneId).toBe('walkAwayAtArrival');
+    expect(state.run?.completionQualification).toBe('nonSubstantive');
     expect(state.run?.acquiredThisRun).toEqual([]);
     expect(state.character?.historyFlags).toContain('walked_away_from_inn_problem');
     expect(THE_LAST_ROOM.scenes.walkAwayEnding.text).not.toMatch(/coward|selfish|shame/i);

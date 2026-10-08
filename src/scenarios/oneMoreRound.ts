@@ -82,7 +82,7 @@ export const ONE_MORE_ROUND: Scenario = {
         { id: 'listenFromBar', label: 'Listen from the bar', timeCost: 2, next: 'heardArgument', effects: { setFlags: ['heardInitialDispute'] } },
         { id: 'askRafeAboutDebt', label: 'Ask Rafe for his side', timeCost: 3, next: 'rafeAccount' },
         { id: 'orderFirstRound', label: 'Buy one more round — 1 coin', hint: 'It may keep everyone seated for a moment.', requirements: { minMoney: 1 }, timeCost: 2, effects: { money: -1, setFlags: ['orderedOneMoreRound'], historyFlags: ['used_alcohol_to_delay_conflict'] }, next: 'roundPause' },
-        { id: 'leaveAtArrival', label: 'Leave without getting involved', timeCost: 1, effects: { historyFlags: ['walked_away_from_tavern_dispute'] }, next: 'walkAwayEnding' },
+        { id: 'leaveAtArrival', label: 'Leave without getting involved', timeCost: 1, effects: { historyFlags: ['walked_away_from_tavern_dispute'] }, next: 'walkAwayAtArrival' },
       ],
     },
     heardArgument: {
@@ -475,6 +475,11 @@ export const ONE_MORE_ROUND: Scenario = {
     },
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Door Closes Behind You', ending: 'success',
+      text: 'You leave the warm room to its own argument. You do not know whether the purse is found or whether Sella and Rafe settle their debt. Walking away was a choice to stay out, not a verdict.',
+      choices: [],
+    },
+    walkAwayAtArrival: {
+      id: 'walkAwayAtArrival', title: 'The Door Closes Behind You', ending: 'success', completionQualification: 'nonSubstantive',
       text: 'You leave the warm room to its own argument. You do not know whether the purse is found or whether Sella and Rafe settle their debt. Walking away was a choice to stay out, not a verdict.',
       choices: [],
     },

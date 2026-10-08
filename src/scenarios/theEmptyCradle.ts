@@ -254,6 +254,7 @@ export const THE_EMPTY_CRADLE: Scenario = {
     refusalEnding: {
       id: 'refusalEnding', title: 'The Road Goes On', tone: 'safe', ending: 'success',
       text: 'You continue down the road. The family and neighbors remain together at Alderbrook, deciding where to search next. You do not know what happened to Nessa, and the story does not judge your choice to keep going.' ,
+      completionQualification: 'nonSubstantive',
       choices: [],
     },
   },

@@ -25,7 +25,7 @@ export const DEAD_MANS_HAND: Scenario = {
         { id: 'takeOpenSeat', label: 'Take the open seat', hint: 'You can play for a small stake or sit in without betting.', timeCost: 1, next: 'seatInvitation' },
         { id: 'watchFromRail', label: 'Watch one hand from the rail', timeCost: 2, next: 'watchedFirstHand' },
         { id: 'speakToMabel', label: 'Ask the bartender what she has seen', timeCost: 4, next: 'bartenderOpening' },
-        { id: 'leaveAtArrival', label: 'Leave the saloon', hint: 'You have no obligation to get involved.', timeCost: 1, effects: { historyFlags: ['walked_away_from_saloon_dispute'] }, next: 'walkAwayEnding' },
+        { id: 'leaveAtArrival', label: 'Leave the saloon', hint: 'You have no obligation to get involved.', timeCost: 1, effects: { historyFlags: ['walked_away_from_saloon_dispute'] }, next: 'walkAwayAtArrival' },
       ],
     },
     seatInvitation: {
@@ -168,6 +168,10 @@ export const DEAD_MANS_HAND: Scenario = {
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Outside',
       text: 'You leave the Dusty Spur. Behind you, the voices continue for a while; the door closes before you can know how the argument ends. You have kept yourself out of a dispute that was not yours to settle.', choices: [], ending: 'success',
+    },
+    walkAwayAtArrival: {
+      id: 'walkAwayAtArrival', title: 'The Road Outside',
+      text: 'You leave the Dusty Spur. Behind you, the voices continue for a while; the door closes before you can know how the argument ends. You have kept yourself out of a dispute that was not yours to settle.', choices: [], ending: 'success', completionQualification: 'nonSubstantive',
     },
     gunDrawn: {
       id: 'gunDrawn', title: 'A Pistol in Boone’s Hand', tone: 'danger',

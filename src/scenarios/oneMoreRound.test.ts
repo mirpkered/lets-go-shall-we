@@ -74,7 +74,8 @@ describe('One More Round', () => {
 
   it('permits walking away without a reward', () => {
     const state = act(fresh(), 'leaveAtArrival');
-    expect(state.run?.sceneId).toBe('walkAwayEnding');
+    expect(state.run?.sceneId).toBe('walkAwayAtArrival');
+    expect(state.run?.completionQualification).toBe('nonSubstantive');
     expect(state.run?.status).toBe('success');
     expect(state.run?.acquiredThisRun).toEqual([]);
   });

@@ -137,7 +137,8 @@ describe('Dead Man’s Hand', () => {
 
   it('treats walking away as a valid ending and records it without judgment', () => {
     const state = act(fresh(), 'leaveAtArrival');
-    expect(state.run?.sceneId).toBe('walkAwayEnding');
+    expect(state.run?.sceneId).toBe('walkAwayAtArrival');
+    expect(state.run?.completionQualification).toBe('nonSubstantive');
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('walked_away_from_saloon_dispute');
     expect(DEAD_MANS_HAND.scenes.walkAwayEnding.text).toContain('not yours to settle');

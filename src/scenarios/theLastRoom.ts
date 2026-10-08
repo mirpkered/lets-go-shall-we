@@ -25,7 +25,7 @@ export const THE_LAST_ROOM: Scenario = {
         { id: 'askInnkeeper', label: 'Ask the innkeeper about the missing guest', timeCost: 3, next: 'hostAccount', effects: { setFlags: ['identifiedSilas'], knowledge: ['The innkeeper identifies the missing guest as Silas Vale and says he left before the storm.'] } },
         { id: 'askGuests', label: 'Listen to the other guests', timeCost: 5, next: 'commonRoom' },
         { id: 'inspectRoom', label: 'Go upstairs and inspect the blocked door', timeCost: 3, next: 'corridor' },
-        { id: 'leaveInn', label: 'Leave while the road is still passable', timeCost: 1, effects: { historyFlags: ['walked_away_from_inn_problem'] }, next: 'walkAwayEnding' },
+        { id: 'leaveInn', label: 'Leave while the road is still passable', timeCost: 1, effects: { historyFlags: ['walked_away_from_inn_problem'] }, next: 'walkAwayAtArrival' },
       ],
     },
     hostAccount: {
@@ -297,6 +297,10 @@ export const THE_LAST_ROOM: Scenario = {
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Beyond the Inn',
       text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not learn what became of the traveler or whether the innkeeper’s account was true, and no one asks you to stay.', choices: [], ending: 'success',
+    },
+    walkAwayAtArrival: {
+      id: 'walkAwayAtArrival', title: 'The Road Beyond the Inn',
+      text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not learn what became of the traveler or whether the innkeeper’s account was true, and no one asks you to stay.', choices: [], ending: 'success', completionQualification: 'nonSubstantive',
     },
     wrongAccusationEnding: {
       id: 'wrongAccusationEnding', title: 'The Door Left Shut',
