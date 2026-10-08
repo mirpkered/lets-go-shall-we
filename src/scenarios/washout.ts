@@ -32,7 +32,7 @@ export const THE_WASHOUT: Scenario = {
       { id: 'waitRopeTeam', label: 'Stay on firm ground and wait for help', timeCost: 16, next: 'rescueAfterRain' },
     ] },
     edgeCollapse: { id: 'edgeCollapse', title: 'The Bank Gives Way', tone: 'danger', text: 'The wet edge collapses. You catch a root below the road; the ravine floor is still several feet beneath you. {{courier}} remains on the far shelf, out of reach. Your rope or a low branch may help you climb back.', choices: [
-      { id: 'climbRoot', label: 'Climb back to the marked road', timeCost: 2, chance: { probability: 0.69, lateProbability: 0.49, lateAfterMinutes: 12, successNext: 'safeRetreat', failureNext: 'playerLost', successMessage: 'You pull yourself onto firm ground, scraped but alive.', failureMessage: 'The root tears free and the slope carries you into the ravine.', failureEffects: { health: -3 } } },
+      { id: 'climbRoot', label: 'Climb back to the marked road', hint: 'The root may tear free under your weight; a fall from this height into the ravine could be fatal.', timeCost: 2, chance: { probability: 0.69, lateProbability: 0.49, lateAfterMinutes: 12, successNext: 'safeRetreat', failureNext: 'playerLost', successMessage: 'You pull yourself onto firm ground, scraped but alive.', failureMessage: 'The root tears free and the slope carries you into the ravine.', failureEffects: { health: -3 } } },
       { id: 'useRopeClimb', label: 'Climb your anchored rope', requirements: { items: ['travelRope'] }, next: 'safeRetreat' },
       { id: 'callForHelp', label: 'Call for the team and hold on', timeCost: 8, next: 'rescuedEdge' },
     ] },
