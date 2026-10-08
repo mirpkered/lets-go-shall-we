@@ -184,7 +184,7 @@ export const DEAD_MANS_HAND: Scenario = {
       text: 'The shot hits the floor, and the saloon empties toward the back exit. Your leg is bleeding, but you can still move. Boone is looking at the pistol, not at you. Staying in reach risks another shot.',
       choices: [
         { id: 'crawlToBackExit', label: 'Crawl out through the back door', effects: { historyFlags: ['walked_away_from_saloon_dispute'] }, next: 'walkAwayEnding' },
-        { id: 'secureDroppedPistol', label: 'Use your travel rope to secure the dropped pistol', requirements: { items: ['travelRope'] }, effects: { historyFlags: ['intervened_in_saloon_dispute', 'prevented_saloon_violence'] }, next: 'violentSurvivalEnding' },
+        { id: 'secureDroppedPistol', label: 'Use your travel rope to secure the dropped pistol', requirements: { items: ['travelRope'] , usableItems: ['travelRope']}, effects: { historyFlags: ['intervened_in_saloon_dispute', 'prevented_saloon_violence'] }, next: 'violentSurvivalEnding' },
         { id: 'getEveryoneClear', label: 'Keep low and help the others escape', effects: { health: -1, historyFlags: ['prevented_saloon_violence'] }, next: 'partialEnding' },
       ],
     },

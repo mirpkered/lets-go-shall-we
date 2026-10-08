@@ -3,6 +3,8 @@ import { addUpgrade, choose, damageItem, depositCarried, failCharacter, finishSu
 import { THE_BROKEN_HARNESS } from './scenarios/animalsBatch';
 import { BRIDGE_OUT } from './scenarios/bridgeOut';
 import { THE_LOOSE_TEAM } from './scenarios/looseTeam';
+import { ITEMS } from './items';
+import { SCENARIOS } from './scenarios';
 import type { SaveData, Scenario } from './types';
 
 function fresh(items: string[] = ['travelRope']): SaveData {
@@ -19,6 +21,21 @@ function chooseAt(state: SaveData, sceneId: string, choiceId: string, random = (
 }
 
 describe('persistent equipment condition and upgrades', () => {
+  it('guards player-facing actions that explicitly use the Traveler’s named Gear', () => {
+    const failures: string[] = [];
+    for (const scenario of SCENARIOS) for (const scene of Object.values(scenario.scenes)) for (const choice of scene.choices) {
+      for (const item of Object.values(ITEMS).filter(({ carryable, inventoryClass }) => carryable && inventoryClass === 'GEAR')) {
+        const label = choice.label.toLowerCase();
+        if (!label.includes(`your ${item.name.toLowerCase()}`)) continue;
+        if (/(repair|mend|restore|sell|trade|return)/i.test(choice.label)) continue;
+        const req = choice.requirements;
+        const explicitlyUsable = req?.usableItems?.includes(item.id) || req?.usableGear?.includes(item.id) || req?.anyUsableItems?.includes(item.id) || req?.itemConditions?.[item.id]?.every((condition) => condition !== 'BROKEN');
+        if (!explicitlyUsable) failures.push(`${scenario.id}.${scene.id}.${choice.id} (${item.id})`);
+      }
+    }
+    expect(failures).toEqual([]);
+  });
+
   it('defaults legacy gear to normal and snapshots the active traveler’s starting state', () => {
     const state = fresh();
     expect(itemCondition(state, 'travelRope')).toBe('NORMAL');

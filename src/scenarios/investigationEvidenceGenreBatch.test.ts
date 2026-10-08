@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun } from '../engine';
 import { ITEMS, itemsOfClass } from '../items';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
@@ -21,12 +21,22 @@ const act = (state: SaveData, scenario: (typeof INVESTIGATION_EVIDENCE_GENRE_BAT
 };
 const reachSettlement = (scenario: (typeof INVESTIGATION_EVIDENCE_GENRE_BATCH)[number], action = 'careful'): SaveData => {
   let state = initial(scenario);
-  state = act(state,scenario,scenario.scenes.observe.choices[0].id);
+  const firstAvailable = scenario.scenes.observe.choices.find((choice) => meets(choice.requirements,state));
+  expect(firstAvailable,`${scenario.id} fresh-observation fallback`).toBeTruthy();
+  state = act(state,scenario,firstAvailable!.id);
   state = act(state,scenario,scenario.diversity?.combat === 'POSSIBLE' ? 'callWitness' : action);
   return state;
 };
 
 describe('Investigation / Evidence / Specialist Tools genre batch', () => {
+  it('hides explicitly personal inspection-tool actions unless the matching tool is usable', () => {
+    const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-stone-under-the-floorboard')!;
+    const mirror = scenario.scenes.observe.choices.find(({ id }) => id === 'compare')!;
+    expect(meets(mirror.requirements, initial(scenario))).toBe(false);
+    expect(meets(mirror.requirements, initial(scenario, 'foldingCardMirror'))).toBe(true);
+    expect(meets(mirror.requirements, setItemCondition(initial(scenario, 'foldingCardMirror'), 'foldingCardMirror', 'BROKEN'))).toBe(false);
+    expect(scenario.scenes.observe.choices.some((choice) => meets(choice.requirements, initial(scenario)))).toBe(true);
+  });
   it('registers 24 unique reachable Adventures with evidence interpretation and continuity', () => {
     expect(INVESTIGATION_EVIDENCE_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(859);

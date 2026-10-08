@@ -86,16 +86,16 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     const skiff = BATCH.find(({ id }) => id === 'the-skiff-that-took-water')!;
     expect(skiff.scenes.stop.text).toContain('pushing off would place the loaded boat in the current');
     const flood = BATCH.find(({ id }) => id === 'the-case-on-the-flood-step')!;
-    expect(flood.scenes.records.choices.find(({ id }) => id === 'tube')?.requirements).toEqual({ items: ['waterproofLedgerTube'] });
+    expect(flood.scenes.records.choices.find(({ id }) => id === 'tube')?.requirements).toEqual({ items: ['waterproofLedgerTube'], usableItems: ['waterproofLedgerTube'] });
     expect(flood.scenes.tubeUsed.text).toContain('not trusted underwater');
   });
 
   it('adds capability-specific callbacks to earlier boat and water stories', () => {
     const hook = THE_MISSING_BOAT.scenes.ferryHelp.choices.find(({ id }) => id === 'catchPuntLineWithHook')!;
-    expect(hook.requirements).toEqual({ items: ['boatHook'] });
+    expect(hook.requirements).toEqual({ items: ['boatHook'], usableItems: ['boatHook'] });
     expect(hook.hint).toContain('cannot span the channel');
     const bailer = TAKING_ON_WATER.scenes.waterMoved.choices.find(({ id }) => id === 'bailWithFoldingBailer')!;
-    expect(bailer.requirements).toEqual({ items: ['foldingBailer'] });
+    expect(bailer.requirements).toEqual({ items: ['foldingBailer'], usableItems: ['foldingBailer'] });
     const state = fresh(TAKING_ON_WATER);
     expect(meets(bailer.requirements, state)).toBe(false);
     state.run!.inventory.push('foldingBailer');

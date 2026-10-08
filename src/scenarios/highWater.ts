@@ -84,7 +84,7 @@ function taskScene(kind: 'resident' | 'livestock' | 'medicine' | 'store', window
   } else if (kind === 'livestock') {
     choices.push({
       id: `tetherAnimals${suffix}`, label: 'Tether the animals to your travel rope', hint: 'The line keeps the panicked animals together on the flooded yard.',
-      requirements: { items: ['travelRope'] }, timeCost: window === 'first' ? 8 : 10,
+      requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, timeCost: window === 'first' ? 8 : 10,
       effects: { setFlags: [attempt] },
       chance: { probability: window === 'last' ? 0.71 : 0.88, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.1, successNext: outcome, failureNext: outcome, successMessage: 'The animals follow the taut line to the ridge.', failureMessage: 'A frightened animal pulls hard; the line keeps you upright, but the gate jams.', successEffects: { setFlags: [success, ...successFlags], historyFlags: [successHistory[kind]] }, failureEffects: { health: -1, setFlags: [`${kind}AttemptFailed`] } },
     });

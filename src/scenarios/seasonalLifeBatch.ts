@@ -13,7 +13,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
         { id: 'meal', label: 'Accept a bowl of stew', title: 'Supper Earned', text: 'The keeper offers a bowl of stew in thanks. You spend the evening warm and fed without treating the first snow as a crisis.' },
         { id: 'continue', label: 'Set out while the road is still clear', title: 'A Short Walk before Dark', text: 'You thank the keeper and continue on the visible road before evening. The snow dusts your shoulders but does not slow you much.' },
       ] },
-      { id: 'blanket', label: 'Wrap in your Wool Travel Blanket', title: 'A Warm Layer', text: 'Your compact blanket keeps warmth around your shoulders while you choose where to stop. It is useful comfort, not shelter from a storm.', requirements: { items: ['woolTravelBlanket'] }, outcomes: [
+      { id: 'blanket', label: 'Wrap in your Wool Travel Blanket', title: 'A Warm Layer', text: 'Your compact blanket keeps warmth around your shoulders while you choose where to stop. It is useful comfort, not shelter from a storm.', requirements: { items: ['woolTravelBlanket'] , usableItems: ['woolTravelBlanket']}, outcomes: [
         { id: 'stay', label: 'Stay until morning', title: 'A Restful Stop', text: 'You settle in before the snow thickens. By morning, the road crew has cleared the main track.' },
         { id: 'walk', label: 'Continue to the next milepost', title: 'A Few More Miles', text: 'The blanket stays over your shoulders as you walk the clear main road to a nearer farm. The farm offers a dry place to sleep.' },
       ] },
@@ -30,7 +30,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
         { id: 'lift', label: 'Carry it to the dry side', title: 'Room along the Road', text: 'You carry the rail to firm ground and lean it against a post. The lane is clear, and the farmer plans to repair the fence after the thaw.' },
         { id: 'leave', label: 'Leave it where the farmer can reach it', title: 'No Extra Mud Tracked', text: 'The farmer retrieves the rail once the cart is unloaded. You avoid dragging it through the wet shoulder.' },
       ] },
-      { id: 'cloak', label: 'Use your Weatherproof Cloak on the walk', title: 'A Dry Walk', text: 'Your cloak sheds the damp while you follow the higher road around the creek. It keeps you dry but does not change the ground beneath the cart.', requirements: { items: ['weatherproofCloak'] }, outcomes: [
+      { id: 'cloak', label: 'Use your Weatherproof Cloak on the walk', title: 'A Dry Walk', text: 'Your cloak sheds the damp while you follow the higher road around the creek. It keeps you dry but does not change the ground beneath the cart.', requirements: { items: ['weatherproofCloak'] , usableItems: ['weatherproofCloak']}, outcomes: [
         { id: 'detour', label: 'Take the higher road to town', title: 'Firm Ground', text: 'The detour adds a little distance but avoids the soft lane. You reach town without asking the cart to cross the wet ground.' },
         { id: 'return', label: 'Return to the inn for the night', title: 'Wait for Firmer Ground', text: 'You go back to the inn and leave the crossing to the farmers who know the creek. By morning the water has begun to ease.' },
       ] },

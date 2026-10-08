@@ -150,7 +150,7 @@ export const THE_BROKEN_HARNESS: Scenario = {
     ] },
     harnessRepaired: { id: 'harnessRepaired', title: 'At the Harness Maker', tone: 'safe', text: 'The split harness strap is replaced with sound leather. The driver checks the buckle and gives the mule a little rest before loading again. The harness maker can mend or strengthen carried load gear if you want to take a moment.', choices: [
       { id: 'repairFreightmansStrap', label: 'Have the maker mend your strap', requirements: { items: ['freightmansStrap'], itemConditions: { freightmansStrap: ['DAMAGED', 'BROKEN'] } }, timeCost: 5, next: 'harnessServiceDone', effects: { repairItems: ['freightmansStrap'], repairItemProvenance: { freightmansStrap: 'Mended by the harness maker' }, setFlags: ['harnessMakerMendedStrap'] } },
-      { id: 'assistWithLeatherRepairRoll', label: 'Use your Leather Repair Roll to help stitch the replacement trace', requirements: { items: ['leatherRepairRoll'] }, timeCost: 4, next: 'harnessServiceDone', effects: { setFlags: ['used_leather_repair_roll_at_harness_maker'] } },
+      { id: 'assistWithLeatherRepairRoll', label: 'Use your Leather Repair Roll to help stitch the replacement trace', requirements: { items: ['leatherRepairRoll'] , usableItems: ['leatherRepairRoll']}, timeCost: 4, next: 'harnessServiceDone', effects: { setFlags: ['used_leather_repair_roll_at_harness_maker'] } },
       { id: 'reinforceFreightmansStrap', label: 'Ask for stronger buckle stitching', requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'], notItemUpgrades: { freightmansStrap: ['stitchedBuckle'] } }, timeCost: 6, next: 'harnessServiceDone', effects: { addItemUpgrades: [{ itemId: 'freightmansStrap', upgradeId: 'stitchedBuckle', provenance: 'Reinforced by the harness maker' }] } },
       { id: 'askAboutRope', label: 'Ask the maker to inspect your rope', requirements: { items: ['travelRope'] }, timeCost: 2, next: 'ropeService' },
       { id: 'leaveHarnessMaker', label: 'Thank the maker and continue', next: 'harnessServiceDone' },
@@ -175,7 +175,7 @@ export const LOOSE_IN_THE_MARKET: Scenario = {
   id: 'loose-in-the-market', title: 'Loose in the Market', subtitle: 'A young goat slips into a crowded market lane.', startScene: 'marketLane',
   scenes: {
     marketLane: { id: 'marketLane', title: 'The Open Gate', tone: 'warning', text: 'A young goat has slipped through an open pen gate and is walking between market stalls. It is not charging, but people carrying baskets are starting to crowd the lane. The owner is closing the far gate while a child holds the lead rope from a safe distance.', choices: [
-      { id: 'closeMarketGate', label: 'Use the Gate Hook to close the far gate', requirements: { items: ['gateHook'] }, timeCost: 3, next: 'laneContained' },
+      { id: 'closeMarketGate', label: 'Use the Gate Hook to close the far gate', requirements: { items: ['gateHook'] , usableItems: ['gateHook']}, timeCost: 3, next: 'laneContained' },
       { id: 'clearMarketLane', label: 'Ask people to open a clear lane', timeCost: 3, next: 'laneCleared' },
       { id: 'guideMarketGoat', label: 'Guide the goat slowly toward its owner', timeCost: 4, chance: { probability: 0.66, bonusItems: ['farmWhistle'], bonusProbability: 0.15, successNext: 'goatReturned', failureNext: 'goatPauses', successMessage: 'The goat follows the open lane toward the familiar voice of its owner.', failureMessage: 'The goat stops beside a stall, unsettled by the crowd but not hurt.' } },
       { id: 'standClearMarket', label: 'Stay clear and let the owner manage it', next: 'ownerHandlesGoat' },
@@ -288,7 +288,7 @@ export const THE_FRIGHTENED_TEAM: Scenario = {
       { requirements: { selections: { teamCause: 'scent' } }, text: 'A strong musky scent drifts from brush beyond the road. You see no animal, only tracks leading away from the verge.' },
     ], choices: [
       { id: 'clearCauseTeam', label: 'Make the road look or feel safer', timeCost: 5, next: 'teamSettles' },
-      { id: 'useWhistleTeam', label: 'Call the driver with your Farm Whistle', requirements: { items: ['farmWhistle'] }, timeCost: 2, next: 'teamSettles' },
+      { id: 'useWhistleTeam', label: 'Call the driver with your Farm Whistle', requirements: { items: ['farmWhistle'], usableItems: ['farmWhistle'] }, timeCost: 2, next: 'teamSettles' },
       { id: 'chooseTeamDetour', label: 'Take the wider route around the bend', timeCost: 8, next: 'teamDetour' },
       { id: 'letTeamWait', label: 'Let the horses rest before moving', timeCost: 8, next: 'teamSettles' },
     ] },

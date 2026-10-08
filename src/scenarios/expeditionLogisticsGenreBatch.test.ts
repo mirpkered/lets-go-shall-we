@@ -81,9 +81,9 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
 
   it('makes the new scale useful without letting it replace evidence or route judgment', () => {
     const weighed = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'weighed-before-dawn')!;
-    expect(weighed.scenes.yard.choices.find(({ id }) => id === 'weighLoads')?.requirements).toEqual({ items: ['cargoBalanceScale'] });
+    expect(weighed.scenes.yard.choices.find(({ id }) => id === 'weighLoads')?.requirements).toEqual({ items: ['cargoBalanceScale'], usableItems: ['cargoBalanceScale'] });
     const crates = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'two-crates-short')!;
-    expect(crates.scenes.manifest.choices.find(({ id }) => id === 'weighSealed')?.requirements).toEqual({ items: ['cargoBalanceScale'] });
+    expect(crates.scenes.manifest.choices.find(({ id }) => id === 'weighSealed')?.requirements).toEqual({ items: ['cargoBalanceScale'], usableItems: ['cargoBalanceScale'] });
     expect(crates.scenes.siding.text).toMatch(/not stolen/i);
   });
 });

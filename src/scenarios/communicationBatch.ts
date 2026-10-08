@@ -41,7 +41,7 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
         { id: 'postAgain', label: 'Ask the clerk to trace the address', title: 'A Better Address', text: 'The clerk reads the outside carefully and finds a more complete street name. They accept it for delivery.' },
         { id: 'leave', label: 'Leave it at the inn desk', title: 'No Further Guessing', text: 'You hand it back to the innkeeper, who keeps it safely for the named traveler. Its contents remain their own.' },
       ] },
-      { id: 'protectLetter', label: 'Carry it sealed in your Lockable Map Case to the post office', title: 'A Dry, Sealed Envelope', text: 'The case keeps the envelope dry and discourages a casual hand from opening it. The post clerk records the intact seal before accepting it.', requirements: { items: ['lockableMapCase'] }, outcomes: [
+      { id: 'protectLetter', label: 'Carry it sealed in your Lockable Map Case to the post office', title: 'A Dry, Sealed Envelope', text: 'The case keeps the envelope dry and discourages a casual hand from opening it. The post clerk records the intact seal before accepting it.', requirements: { items: ['lockableMapCase'] , usableItems: ['lockableMapCase']}, outcomes: [
         { id: 'confirmSeal', label: 'Ask the clerk to note the seal and destination', title: 'Custody Recorded', text: 'The clerk records the envelope’s condition and takes responsibility for forwarding it unopened.' },
         { id: 'takeReceipt', label: 'Ask for a receipt before leaving', title: 'A Proper Handover', text: 'The clerk gives you a receipt for the sealed letter; its private contents remain unread.' },
       ] },

@@ -77,9 +77,9 @@ function build(c: RoadStory): Scenario {
     next: 'gear',
     effects: rewardClass === 'SUPPLY' ? { gainSupplies: { [c.gear]: 1 }, historyFlags: [`earned_${c.id}_gear`] } : { gainItems: [c.gear], historyFlags: [`earned_${c.id}_gear`] },
   } : undefined;
-  const approachChoices: Scene['choices'] = c.approaches.map((choice) => ({ id: `approach_${choice.id}`, label: choice.label, ...(choice.requiresItem ? { requirements: { items: [choice.requiresItem] } } : {}), next: 'threat', effects: { setFlags: [`road_approach_${choice.id}`] } }));
+  const approachChoices: Scene['choices'] = c.approaches.map((choice) => ({ id: `approach_${choice.id}`, label: choice.label, ...(choice.requiresItem ? { requirements: { items: [choice.requiresItem], usableItems: [choice.requiresItem] } } : {}), next: 'threat', effects: { setFlags: [`road_approach_${choice.id}`] } }));
   const responseChoices: Scene['choices'] = [
-    ...c.responses.map((choice) => ({ id: `respond_${choice.id}`, label: choice.label, ...(choice.requiresItem ? { requirements: { items: [choice.requiresItem] } } : {}), next: 'aftermath', effects: { setFlags: [`road_response_${choice.id}`] } })),
+    ...c.responses.map((choice) => ({ id: `respond_${choice.id}`, label: choice.label, ...(choice.requiresItem ? { requirements: { items: [choice.requiresItem], usableItems: [choice.requiresItem] } } : {}), next: 'aftermath', effects: { setFlags: [`road_response_${choice.id}`] } })),
     ...(c.combat ? [{ id: 'fight', label: `Fight ${c.combat.enemy}`, hint: 'They have shown a weapon or made a direct threat; the open route remains available if you withdraw.', effects: { combat: { enemy: c.combat.enemy, winChance: c.combat.winChance, damageOnWin: 1, damageOnLoss: c.combat.damage, winNext: 'fightWon', lossNext: 'fightLost' } } }] : []),
   ];
   const scenes: Record<string, Scene> = {

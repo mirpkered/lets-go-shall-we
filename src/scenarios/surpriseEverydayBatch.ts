@@ -290,8 +290,8 @@ export const THE_TRESTLE_TABLE = story('the-trestle-table', 'The Trestle Table',
   crate: scene('crate', 'The Crate Holds', 'The spare crate supports the short leg, and the jars are moved toward the center. The table now stands level enough for the market, though the old joint still needs repair.', [
     { id: 'finishMarket', label: 'Stay while the seller resumes', next: 'safe' },
     { id: 'askForPayment', label: 'Ask whether the seller can pay for help', next: 'safe' },
-    { id: 'borePilotHoleWithAuger', label: 'Use your Hand Auger to fit a peg in the loose joint', requirements: { items: ['handAuger'] }, hint: 'The seller supplies a hardwood peg; the auger makes a narrow pilot hole without splitting the brace.', next: 'jointRepaired' },
-    { id: 'checkFrameWithSquare', label: 'Use your Carpenter’s Square to check whether the frame is racked', requirements: { items: ['carpenterSquare'] }, hint: 'The square can distinguish a twisted frame from a loose joint; it will not repair the wood.', next: 'squareMeasured' },
+    { id: 'borePilotHoleWithAuger', label: 'Use your Hand Auger to fit a peg in the loose joint', requirements: { items: ['handAuger'] , usableItems: ['handAuger']}, hint: 'The seller supplies a hardwood peg; the auger makes a narrow pilot hole without splitting the brace.', next: 'jointRepaired' },
+    { id: 'checkFrameWithSquare', label: 'Use your Carpenter’s Square to check whether the frame is racked', requirements: { items: ['carpenterSquare'] , usableItems: ['carpenterSquare']}, hint: 'The square can distinguish a twisted frame from a loose joint; it will not repair the wood.', next: 'squareMeasured' },
   ]),
   squareMeasured: scene('squareMeasured', 'The Frame Holds Its Angle', 'The Carpenter’s Square shows the frame is still true; the trouble is the loosened joint, not a twist through the whole trestle. The seller closes the stall briefly so the joint can be pegged without jars above it.', [
     { id: 'pegAfterSquareCheck', label: 'Help fit a hardwood peg through the loose joint', next: 'jointRepaired' },
@@ -351,7 +351,7 @@ export const THE_STAGE_RIGGING = story('the-stage-rigging', 'The Stage Rigging',
 
 export const THE_BACK_ROOM_LANTERN = story('the-back-room-lantern', 'The Back-Room Lantern', 'A printer has misplaced the type for a memorial notice in a dark storage room.', { ...T('A printer needs help finding a misplaced line of type before the memorial notice is sent; a carried lantern helps, but a daylight search remains possible.', ['labor/repair', 'communication/witness'], 'helper/rescuer', 'melancholy/tragic', 'print shop back room', ['item-supported search', 'time-sensitive work', 'quality consequence'], 'hired/posted work', ['money/item/knowledge/history possible', 'narrative-only payoff']), depthClass: 'ENCOUNTER' }, 'shop', {
   shop: scene('shop', 'Type in the Back Room', 'A printer has lost a line of type for a memorial notice. The storage room is dim, and the press must be cleared before the evening post. Your lantern can light the shelves, but the work can also wait until daylight.', [
-    { id: 'useLantern', label: 'Use your lantern to search the shelves', requirements: { items: ['lantern'] }, next: 'shelves', effects: { historyFlags: ['used_the_starting_lantern_for_print_shop_work'] } },
+    { id: 'useLantern', label: 'Use your lantern to search the shelves', requirements: { items: ['lantern'] , usableItems: ['lantern']}, next: 'shelves', effects: { historyFlags: ['used_the_starting_lantern_for_print_shop_work'] } },
     { id: 'searchByTouch', label: 'Search slowly without a lantern', next: 'slow' },
     { id: 'askPrinterToWait', label: 'Ask the printer to wait until daylight', next: 'daylight' },
   ]),

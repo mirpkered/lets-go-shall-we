@@ -80,7 +80,7 @@ export const THE_BROKEN_AXLE: Scenario = {
       { id: 'braceAfterLook', label: 'Brace it and travel slowly', chance: { probability: 0.63, successNext: 'axleBraced', failureNext: 'axleUnstable', successMessage: 'A slow test leaves the wheel straight.', failureMessage: 'The brace shifts before the load is moved.' } },
       { id: 'lightAfterLook', label: 'Unload crates before moving', next: 'axleLightened' },
       { id: 'helpAfterLook', label: 'Fetch the cartwright', next: 'axleHelp' },
-      { id: 'jackForUnloading', label: 'Use your Folding Carriage Jack to raise the wheel while the load is reduced', requirements: { items: ['foldingCarriageJack'] }, next: 'axleLightened', effects: { historyFlags: ['used_carriage_jack_on_broken_axle'] } },
+      { id: 'jackForUnloading', label: 'Use your Folding Carriage Jack to raise the wheel while the load is reduced', requirements: { items: ['foldingCarriageJack'] , usableItems: ['foldingCarriageJack']}, next: 'axleLightened', effects: { historyFlags: ['used_carriage_jack_on_broken_axle'] } },
     ] },
     axleUnstable: { id: 'axleUnstable', title: 'The Brace Slips', tone: 'danger', text: 'The wagon leans farther, though the crates remain on the shelf. The driver asks you not to force it. The safe choice now is to leave the cargo and walk to the cartwright, or unload until the wheel can turn freely.', choices: [
       { id: 'walkAxleHelp', label: 'Walk back for the cartwright', next: 'axleHelp' },

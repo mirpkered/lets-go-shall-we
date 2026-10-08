@@ -22,7 +22,7 @@ export const THE_LANTERN_IN_THE_MARSH: Scenario = {
       { id: 'leaveAfterReply', label: 'Leave the marsh untroubled', next: 'marshPassed' },
     ] },
     marshObserved: { id: 'marshObserved', title: 'A Pattern, or No Pattern', tone: 'safe', text: 'The light makes one slow pass across the reeds. From here, you cannot safely tell what carries it or whether anything is trying to get your attention.', choices: [
-      { id: 'lensOnMarsh', label: 'Look through the Crimson Signal Lens', requirements: { items: ['signalLens'] }, timeCost: 3, next: 'marshLensSeen', effects: { knowledge: ['Through the Crimson Signal Lens, a faint red blink appeared once beyond the marsh reeds.'] } },
+      { id: 'lensOnMarsh', label: 'Look through the Crimson Signal Lens', requirements: { items: ['signalLens'] , usableItems: ['signalLens']}, timeCost: 3, next: 'marshLensSeen', effects: { knowledge: ['Through the Crimson Signal Lens, a faint red blink appeared once beyond the marsh reeds.'] } },
       { id: 'watchOneMorePass', label: 'Step to the ditch and watch', timeCost: 3, next: 'marshNearLight' },
       { id: 'turnFromMarsh', label: 'Turn back to the marked road', next: 'marshPassed' },
     ] },
@@ -377,7 +377,7 @@ export const THE_BELL_BENEATH_THE_WATER: Scenario = {
     lakeLegend: { id: 'lakeLegend', title: 'A Sound Under Still Water', tone: 'safe', text: 'At a lakeside inn, locals say a bell can sometimes be heard beneath the water on still evenings. The lake is calm now. From the shore, a low note seems to rise somewhere beyond the reeds; no boat is tied nearby.', choices: [
       { id: 'listenWaterBell', label: 'Listen from the dry shore', timeCost: 4, next: 'shoreListening', effects: { historyFlags: ['heard_bell_beneath_water'] } },
       { id: 'askLocalWaterBell', label: 'Ask the innkeeper what locals believe', timeCost: 3, next: 'waterBellAccount', effects: { historyFlags: ['heard_bell_beneath_water'] } },
-      { id: 'holdGraveCoinByLake', label: 'Listen with the Grave Coin in hand', requirements: { items: ['graveCoin'] }, timeCost: 3, next: 'waterCoinResponse', effects: { historyFlags: ['heard_bell_beneath_water'] } },
+      { id: 'holdGraveCoinByLake', label: 'Listen with the Grave Coin in hand', requirements: { items: ['graveCoin'] , usableItems: ['graveCoin']}, timeCost: 3, next: 'waterCoinResponse', effects: { historyFlags: ['heard_bell_beneath_water'] } },
       { id: 'leaveWaterBell', label: 'Leave the lake and its story alone', next: 'waterBellUnresolved', effects: { historyFlags: ['heard_bell_beneath_water'] } },
     ] },
     shoreListening: { id: 'shoreListening', title: 'The Note Returns', tone: 'safe', text: 'The note sounds again from beyond the reeds. It is low and rounded, like a handbell heard through a wall. You remain on the bank; the water is too deep to investigate on foot.', textVariants: [

@@ -217,7 +217,7 @@ export const THE_RED_EYED_BOAR: Scenario = {
       { id: 'stopHunt', label: 'Leave the boar to trained hunters', next: 'boarRefused' },
     ]),
     boarApproach: scene('boarApproach', 'The Sound of Rooting', 'The boar roots beside the feed bin, eyes streaming from dust and infection. It has not noticed you behind the wall. The grazing gate stands open to one side; rushing it would leave no safe retreat.', [
-      { id: 'driveWithLight', label: 'Use the lantern to guide it toward the gate', requirements: { items: ['lantern'] }, next: 'boarDrive', effects: { knowledge: ['The boar avoided the open lantern and turned toward the clear grazing gate.'] } },
+      { id: 'driveWithLight', label: 'Use the lantern to guide it toward the gate', requirements: { items: ['lantern'] , usableItems: ['lantern']}, next: 'boarDrive', effects: { knowledge: ['The boar avoided the open lantern and turned toward the clear grazing gate.'] } },
       { id: 'quietlyOpenGate', label: 'Open the gate from behind the wall', next: 'boarDrive' },
       { id: 'chargeBoar', label: 'Rush it with your knife', hint: 'It is larger than you and already injured; a charge may be fatal.', chance: { probability: 0.24, successNext: 'boarDriven', failureNext: 'boarFatal', successMessage: 'The boar turns away and crashes through the outer hedge.', failureMessage: 'The boar charges before you can get behind the wall.', successEffects: { health: -3 }, failureEffects: { health: -10 } } },
     ], 'danger'),
@@ -286,7 +286,7 @@ export const THE_LANTERN_EATER: Scenario = {
     ], 'warning'),
     lightPattern: scene('lightPattern', 'A Glow Moves toward Glow', 'The pale point shifts toward every uncovered flame and stops when all lamps are hooded. The travelers’ fire still burns. Beyond the trees, a low branch bends under a weight that makes no sound.', [
       { id: 'hoodOtherLamps', label: 'Ask everyone to hood their lamps', next: 'campDark' },
-      { id: 'raiseLantern', label: 'Raise the lantern to draw it closer', requirements: { items: ['lantern'] }, hint: 'The glow has followed every exposed flame so far.', next: 'lightApproach', effects: { damageItems: ['lantern'] } },
+      { id: 'raiseLantern', label: 'Raise the lantern to draw it closer', requirements: { items: ['lantern'] , usableItems: ['lantern']}, hint: 'The glow has followed every exposed flame so far.', next: 'lightApproach', effects: { damageItems: ['lantern'] } },
       { id: 'takeRoadLight', label: 'Move together toward the open road', next: 'campLeft' },
     ]),
     campCircle: scene('campCircle', 'The Fire Holds', 'The travelers gather around the fire and cover their lamps. The pale glow stops at the tree line. No one is hurt, but the horses will not approach the woods and the road remains clear behind camp.', [

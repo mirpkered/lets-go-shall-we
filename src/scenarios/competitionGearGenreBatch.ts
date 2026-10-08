@@ -110,7 +110,7 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
   }),
   a('the-lookout-at-dusk', 'The Lookout at Dusk', 'A field-glass trial finds a real problem outside the contest ground.', 'A spotting challenge becomes a decision about whether to interrupt a public event.', 'rail camp', 'MODERATE', 'watch', {
     watch:s('watch','Three Signals on the Ridge','A rail survey camp tests lookout skill. The announced prize is a pair of Field Glasses. From the platform, competitors must identify which of three cloth signals is newly changed.',[
-      {id:'useOwnGlass',label:'Use your Field Glasses, if you carry them',requirements:{items:['fieldGlasses']},next:'seen'}, {id:'nakedEye',label:'Compare the signal colors with the posted chart',next:'chart'}, {id:'askSpotter',label:'Ask the lookout to describe the wind before calling',next:'wind'},
+      {id:'useOwnGlass',label:'Use your Field Glasses, if you carry them',requirements:{items:['fieldGlasses'], usableItems: ['fieldGlasses']},next:'seen'}, {id:'nakedEye',label:'Compare the signal colors with the posted chart',next:'chart'}, {id:'askSpotter',label:'Ask the lookout to describe the wind before calling',next:'wind'},
     ]),
     chart:s('chart','A Fourth Movement','The signal chart shows three known positions. A fourth cloth moves below the ridge, beyond the contest marks; it may be a worker’s coat caught on brush.',[
       {id:'checkRidge',label:'Pause scoring and ask the foreman to check the ridge',next:'worker'}, {id:'stayContest',label:'Finish the marked signal round first',next:'scoring'},
@@ -430,7 +430,7 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
       {id:'markHinge',label:'Mark the hinge post and measure around it',next:'measure'}, {id:'followPlan',label:'Follow the drawing and let the owner trim later',next:'fit'}
     ]),
     measure:s('measure','The Opening Is Not Square','The diagonals differ by an inch. The frame can be made square and shimmed, or cut to follow the settled opening.',[
-      {id:'squareAndShim',label:'Build square and leave room for a shim',next:'result'}, {id:'fitOldOpening',label:'Fit the settled opening and mark the uneven edge',next:'result'}, {id:'askWilla',label:'Ask Willa to choose the finish standard',next:'decision'}, {id:'measureStock',label:'Use Field Calipers to compare the stock thickness before sizing the shim',requirements:{items:['fieldCalipers']},next:'result',effects:{historyFlags:['used_field_calipers_to_size_barn_window_shim']}}
+      {id:'squareAndShim',label:'Build square and leave room for a shim',next:'result'}, {id:'fitOldOpening',label:'Fit the settled opening and mark the uneven edge',next:'result'}, {id:'askWilla',label:'Ask Willa to choose the finish standard',next:'decision'}, {id:'measureStock',label:'Use Field Calipers to compare the stock thickness before sizing the shim',requirements:{items:['fieldCalipers'], usableItems: ['fieldCalipers']},next:'result',effects:{historyFlags:['used_field_calipers_to_size_barn_window_shim']}}
     ]),
     fit:s('fit','The Plan Meets the Wall','The seven-inch note centers the frame, but the hinge post intrudes into the opening.',[
       {id:'revisePlan',label:'Revise the frame around the hinge post',next:'measure'}, {id:'forceFit',label:'Force the planned frame into place',next:'badFit'}

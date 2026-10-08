@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ITEMS } from '../items';
-import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, startRun, meets } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun, meets } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
@@ -39,6 +39,17 @@ function claimGear(scenario: (typeof ADVENTURER_SUPPORT_GENRE_BATCH)[number], co
 }
 
 describe('Adventurer Support / Squire / Henchman genre batch', () => {
+  it('gates the Traveler-owned Trail Compass callback while preserving Rook’s supplied survey kit', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'glass-road')!;
+    const compass = story.scenes.preparation.choices.find(({ id }) => id === 'kit_compass')!;
+    expect(meets(compass.requirements, start(story))).toBe(false);
+    expect(meets(compass.requirements, start(story, 'trailCompass'))).toBe(true);
+    expect(meets(compass.requirements, setItemCondition(start(story, 'trailCompass'), 'trailCompass', 'BROKEN'))).toBe(false);
+    expect(story.scenes.preparation.choices.some((choice) => meets(choice.requirements, start(story)))).toBe(true);
+    const suppliedGlasses = story.scenes.preparation.choices.find(({ id }) => id === 'kit_glasses')!;
+    expect(suppliedGlasses.requirements).toBeUndefined();
+    expect(meets(suppliedGlasses.requirements, start(story))).toBe(true);
+  });
   it('registers 24 distinct all-year Adventures with valid forward graphs and continuity outcomes', () => {
     expect(ADVENTURER_SUPPORT_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(859);

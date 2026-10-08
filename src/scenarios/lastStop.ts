@@ -220,7 +220,7 @@ export const LAST_STOP: Scenario = {
       choices: [
         { id: 'toolWindow', label: 'Unfasten the window', timeCost: 3, requirements: { items: ['pocketToolkit'] }, next: 'locomotive' },
         { id: 'smashWindow', label: 'Smash it with brass', timeCost: 2, requirements: { items: ['brassCandlestick'] }, next: 'locomotive' },
-        { id: 'ropeCross', label: 'Clip on the travel rope', timeCost: 4, requirements: { items: ['travelRope'] }, next: 'locomotive' },
+        { id: 'ropeCross', label: 'Clip on the travel rope', timeCost: 4, requirements: { items: ['travelRope'] , usableItems: ['travelRope']}, next: 'locomotive' },
         { id: 'crossRoof', label: 'Cross the roof', timeCost: 8, hint: 'The speed and slick iron make this extremely dangerous.', chance: { probability: 0.55, successNext: 'locomotive', failureNext: 'roofSlip', successMessage: 'You crawl into the locomotive cab.', failureMessage: 'Your boot slips. You catch a rain gutter with one hand.', failureEffects: { health: -3 } } },
       ],
     },

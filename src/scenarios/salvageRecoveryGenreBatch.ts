@@ -39,6 +39,13 @@ const stories: SalvageStory[] = [
 ];
 
 function build(story: SalvageStory): Scenario {
+  const firstChoiceGear = story.firstChoices.map((label, index) => {
+    if (story.id === 'the-quarry-winch' && index === 0) return undefined; // The opening explicitly stages the block on the stable upper beam.
+    const normalized = label.toLowerCase();
+    const item = Object.values(ITEMS).find(({ carryable, inventoryClass, name }) => carryable && inventoryClass === 'GEAR' && normalized.includes(name.toLowerCase()))
+      ?? (normalized.includes('sounding rod') ? ITEMS.collapsibleSoundingRod : undefined);
+    return item?.id;
+  });
   const gearName = story.gear ? ITEMS[story.gear]?.name ?? story.gear : undefined;
   const tags = largeTags({
     hook: `${story.title}: recovery reveals a question of ownership before useful property can change hands.`,
@@ -50,9 +57,9 @@ function build(story: SalvageStory): Scenario {
   });
   const scenes: Record<string, Scene> = {
     arrival: largeScene('arrival', story.title, story.opening, [
-      { id:'carefulAccess', label:story.firstChoices[0], next:'evidence', effects:{ setFlags:[`${story.id}_access_one`] } },
-      { id:'verifyFirst', label:story.firstChoices[1], next:'evidence', effects:{ setFlags:[`${story.id}_access_two`] } },
-      { id:'holdAndAsk', label:story.firstChoices[2], next:'evidence', effects:{ setFlags:[`${story.id}_access_three`] } },
+      { id:'carefulAccess', label:story.firstChoices[0], ...(firstChoiceGear[0] ? {requirements:{items:[firstChoiceGear[0]],usableItems:[firstChoiceGear[0]]}} : {}), next:'evidence', effects:{ setFlags:[`${story.id}_access_one`] } },
+      { id:'verifyFirst', label:story.firstChoices[1], ...(firstChoiceGear[1] ? {requirements:{items:[firstChoiceGear[1]],usableItems:[firstChoiceGear[1]]}} : {}), next:'evidence', effects:{ setFlags:[`${story.id}_access_two`] } },
+      { id:'holdAndAsk', label:story.firstChoices[2], ...(firstChoiceGear[2] ? {requirements:{items:[firstChoiceGear[2]],usableItems:[firstChoiceGear[2]]}} : {}), next:'evidence', effects:{ setFlags:[`${story.id}_access_three`] } },
     ], story.risk === 'HIGH' ? 'warning' : 'safe'),
     evidence: largeScene('evidence', 'What the Recovery Shows', `${story.complication}${story.combat ? ` ${story.combat.warning}` : ''}`, [
       { id:'traceOwnership', label:'Trace the marks, records, and witnesses before claiming anything', next:'decision', effects:{ setFlags:[`${story.id}_checked_owner`] } },

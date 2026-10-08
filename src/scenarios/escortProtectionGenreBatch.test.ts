@@ -68,12 +68,13 @@ describe('Escort / Protection genre batch', () => {
     const cloak = scenario.scenes.post.choices.find(({ id }) => id === 'cloak')!;
     const freshState = makeState();
     expect(meets(cloak.requirements, freshState)).toBe(false);
-    expect(scenario.scenes.post.choices.some(({ id }) => id === 'ask')).toBe(true);
-    expect(scenario.scenes.post.choices.some(({ id }) => id === 'case')).toBe(true);
+    expect(scenario.scenes.post.choices.filter((choice) => meets(choice.requirements, freshState)).map(({ id }) => id)).toEqual(['ask']);
     const usableCloak = makeState('weatherproofCloak');
     expect(meets(cloak.requirements, usableCloak)).toBe(true);
+    expect(scenario.scenes.post.choices.filter((choice) => meets(choice.requirements, usableCloak)).map(({ id }) => id)).toEqual(['cloak', 'ask']);
     usableCloak.itemStates = { weatherproofCloak: { condition: 'BROKEN', upgrades: [], provenance: [] } };
     expect(meets(cloak.requirements, usableCloak)).toBe(false);
+    expect(scenario.scenes.post.choices.filter((choice) => meets(choice.requirements, usableCloak)).map(({ id }) => id)).toEqual(['ask']);
   });
 
   it('lets a carried Telegraph Line Tester confirm continuity from firm ground, but not pole safety', () => {

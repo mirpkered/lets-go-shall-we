@@ -36,19 +36,19 @@ const pay = (item:string,source:string,flag:string) => ({gainItems:[item],gainIt
 const learnedLesson = (w:Work) => w.knowledgeFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[w.knowledgeFact]]} : {knowledge:[w.lesson]};
 const make = (w:Work):Scenario => {
   const inspection:Scene['choices'] = [
-    {id:'inspect',label:w.toolAction ?? 'Inspect the moving parts from outside the marked work zone',next:'diagnose',...(w.tool?{requirements:{items:[w.tool]}}:{}),effects:{setFlags:['usedIndustrialGear']}},
+    {id:'inspect',label:w.toolAction ?? 'Inspect the moving parts from outside the marked work zone',next:'diagnose',...(w.tool?{requirements:{items:[w.tool],usableItems:[w.tool]}}:{}),effects:{setFlags:['usedIndustrialGear']}},
     {id:'observe',label:'Watch one stopped cycle and compare the wear marks',next:'diagnose'},
     {id:'warn',label:'Keep the machine isolated and clear the nearby crew',next:'shutdown',effects:{setFlags:['choseShutdown']}},
   ];
   // A tool callback is optional; keep a no-Gear inspection route available.
-  if (w.tool) inspection[0] = {id:'inspect',label:w.toolAction!,next:'diagnose',requirements:{items:[w.tool]},effects:{setFlags:['usedIndustrialGear']}};
+  if (w.tool) inspection[0] = {id:'inspect',label:w.toolAction!,next:'diagnose',requirements:{items:[w.tool],usableItems:[w.tool]},effects:{setFlags:['usedIndustrialGear']}};
   const scenes:Record<string,Scene> = {
     inspect:s('inspect','Stopped Before the Fault',`${w.problem} ${w.clue} The equipment is stopped or isolated before you approach; the foreman asks for practical help, not a guess about the machine.`,inspection),
     diagnose:s('diagnose','A Cause, Not Yet a Repair',`${w.diagnosis} ${w.complication}`,[
       {id:'repair',label:w.repair,next:'test',effects:{setFlags:['choseRepair']}},
       {id:'hold',label:'Leave the machine stopped and ask the responsible fitter to take over',next:'shutdown',effects:{...learnedLesson(w),setFlags:['choseShutdown']}},
       {id:'rush',label:'Tell the foreman to resume the full job without a test',next:'unsafe',effects:{setFlags:['choseRush']}},
-      ...(w.extraTool?[{id:'useSpecialistFile',label:w.extraTool.label,next:'test',requirements:{items:[w.extraTool.id]},effects:{setFlags:['usedSpecialistFile']}}]:[]),
+      ...(w.extraTool?[{id:'useSpecialistFile',label:w.extraTool.label,next:'test',requirements:{items:[w.extraTool.id],usableItems:[w.extraTool.id]},effects:{setFlags:['usedSpecialistFile']}}]:[]),
     ]),
     test:s('test','A Test Is Another Decision',`${w.restart} ${w.complication} A safe short test can reveal a remaining fault; it cannot certify every part of the machine.`,[
       {id:'slow',label:'Run the controlled test described by the operator',next:'settle',effects:{...learnedLesson(w),setFlags:['testedCarefully']}},

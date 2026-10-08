@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun } from '../engine';
 import { ITEMS, itemsOfClass } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
@@ -49,6 +49,23 @@ describe('Medical / Rescue Support / Evacuation genre batch',()=>{
         }
       }
     }
+  });
+
+  it('shows named owned-Gear actions only when that Gear is usable, while supplied equipment and fresh routes remain available',()=>{
+    const story=MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.find(({id})=>id==='lanterns-at-milepost-nine')!;
+    const freshState=fresh(story);
+    expect(story.scenes.assess.choices.some(({id})=>id==='useGear' && meets(story.scenes.assess.choices.find((choice)=>choice.id==='useGear')!.requirements,freshState))).toBe(false);
+    expect(story.scenes.assess.choices.filter((choice)=>meets(choice.requirements,freshState)).length).toBeGreaterThanOrEqual(2);
+
+    const owned=fresh(story,'trailWhistle');
+    const gearChoice=story.scenes.assess.choices.find(({id})=>id==='useGear')!;
+    expect(meets(gearChoice.requirements,owned)).toBe(true);
+    expect(meets(gearChoice.requirements,setItemCondition(owned,'trailWhistle','BROKEN'))).toBe(false);
+
+    const suppliedStory=MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.find(({id})=>id==='the-frozen-post-road')!;
+    const suppliedChoice=suppliedStory.scenes.assess.choices.find(({id})=>id==='protect')!;
+    expect(suppliedChoice.label).toContain('waystation’s spare wool blanket');
+    expect(meets(suppliedChoice.requirements,fresh(suppliedStory))).toBe(true);
   });
 
   it('does not combine coin, Knowledge, and Gear compensation, and consumes a used bandage',()=>{

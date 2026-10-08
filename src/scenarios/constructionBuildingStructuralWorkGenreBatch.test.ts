@@ -21,7 +21,7 @@ const act=(state:SaveData,scenario:(typeof BATCH)[number],id:string):SaveData=>{
 const reachSettlement=(scenario:(typeof BATCH)[number])=>{
   let state=initial(scenario);
   state=act(state,scenario,'inspect');
-  state=act(state,scenario,'measure');
+  state=act(state,scenario,'close');
   state=act(state,scenario,'resolve');
   expect(state.run?.sceneId).toBe('settle');
   return state;
@@ -37,6 +37,24 @@ describe('Construction / Building / Structural Work batch',()=>{
     expect(validateScenarioRegistry(BATCH).warnings).toEqual([]);
     expect(BATCH.every(({diversity})=>diversity?.availability?.season==='ALL_YEAR')).toBe(true);
     expect(BATCH.every(({scenes})=>scenes.start&&scenes.work&&scenes.reveal&&scenes.settle)).toBe(true);
+  });
+
+  it('shows owned construction tools only when usable and preserves non-Gear work routes',()=>{
+    const roof=BATCH.find(({id})=>id==='the-roof-that-held-its-breath')!;
+    const measure=roof.scenes.work.choices.find(({id})=>id==='measure')!;
+    const fresh=initial(roof);
+    expect(meets(measure.requirements,fresh)).toBe(false);
+    expect(roof.scenes.work.choices.some(({id})=>id==='shore')).toBe(true);
+    const equipped=initial(roof);
+    equipped.character!.carriedItem='travelRope';
+    equipped.character!.carriedItems=['travelRope'];
+    equipped.run!.inventory.push('travelRope');
+    expect(meets(measure.requirements,equipped)).toBe(true);
+    equipped.itemStates={travelRope:{condition:'BROKEN',upgrades:[],provenance:[]}};
+    expect(meets(measure.requirements,equipped)).toBe(false);
+
+    const clamp=BATCH.find(({id})=>id==='three-knots-on-the-platform')!;
+    expect(clamp.scenes.work.choices.find(({id})=>id==='measure')?.requirements?.usableItems).toContain('foldingBenchClamp');
   });
 
   it('provides clear structural alternatives and consequential rush/force routes without arbitrary death',()=>{

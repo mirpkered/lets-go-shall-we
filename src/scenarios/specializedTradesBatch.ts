@@ -17,7 +17,7 @@ export const SPECIALIZED_TRADE_ADVENTURES = authorBatch([
         { id: 'paid', label: 'Stay through the agreed shift', title: 'Shop Work Finished', text: 'The smith pays the full three coins for the shift. You handled customers and stock, not the craft itself.', effects: { money: 3 } },
         { id: 'short', label: 'Leave after the morning rush', title: 'Half a Shift', text: 'The smith pays one coin for the time you worked. He has enough help for the quieter afternoon.' , effects: { money: 1 } },
       ] },
-      { id: 'gloves', label: 'Use your Heavy Leather Gloves for cool stock', title: 'Rough Stock Sorted', text: 'Your gloves keep iron scale and rough edges off your hands while you stack cool stock. They do not make glowing iron safe to handle.', requirements: { items: ['heavyLeatherGloves'] }, outcomes: [
+      { id: 'gloves', label: 'Use your Heavy Leather Gloves for cool stock', title: 'Rough Stock Sorted', text: 'Your gloves keep iron scale and rough edges off your hands while you stack cool stock. They do not make glowing iron safe to handle.', requirements: { items: ['heavyLeatherGloves'] , usableItems: ['heavyLeatherGloves']}, outcomes: [
         { id: 'finish', label: 'Complete the shift', title: 'A Careful Extra Hand', text: 'The smith appreciates the steady sorting and pays the agreed three coins. He still handles the forge work himself.', effects: { money: 3 } },
         { id: 'stop', label: 'Stop once the stock is stacked', title: 'A Limited Job', text: 'You finish the safe task and leave the hot work alone. The smith pays one coin for the help.' , effects: { money: 1 } },
       ] },
@@ -89,7 +89,7 @@ export const SPECIALIZED_TRADE_ADVENTURES = authorBatch([
         { id: 'compromise', label: 'Suggest a small loan watch', title: 'A Temporary Timepiece', text: 'The watchmaker lends a simple clockwork watch for the journey. The repaired family watch stays safe on the bench.' },
         { id: 'apology', label: 'Let them agree on a new collection time', title: 'A Clearer Promise', text: 'They settle on a time tomorrow and write it on a fresh ticket. Neither has to pretend the earlier words were clearer than they were.' },
       ] },
-      { id: 'loupe', label: 'Use your Assayer’s Loupe to read the maker’s mark', title: 'Letters under Glass', text: 'Your loupe makes a tiny maker’s stamp easier to read. The mark identifies the workshop that made the watch, not who owns it or how quickly it can be repaired.', requirements: { items: ['assayersLoupe'] }, outcomes: [
+      { id: 'loupe', label: 'Use your Assayer’s Loupe to read the maker’s mark', title: 'Letters under Glass', text: 'Your loupe makes a tiny maker’s stamp easier to read. The mark identifies the workshop that made the watch, not who owns it or how quickly it can be repaired.', requirements: { items: ['assayersLoupe'] , usableItems: ['assayersLoupe']}, outcomes: [
         { id: 'share', label: 'Read the mark aloud', title: 'A Detail Remembered', text: 'The customer recognizes the maker’s town from a family story. It brings comfort, though the watch still needs its replacement spring.' },
         { id: 'leave', label: 'Put the loupe away', title: 'No Claim Made', text: 'You return the loupe and let the customer decide how much the mark matters. The watchmaker keeps working at a careful pace.' },
       ] },

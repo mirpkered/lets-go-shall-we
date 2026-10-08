@@ -11,9 +11,9 @@ const e = (id: string, title: string, text: string) => largeEnd(id, title, text)
 
 export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'The Squire’s Pack', 'A veteran explorer asks you to prepare for a short descent—and trust your judgment.', tags('A traveler assisting an experienced explorer chooses how to distribute a limited kit, then adapts when the route changes.', 'helper/rescuer', 'travel/exploration', 'foothill survey trail', 'MODERATE', 'hired/posted work'), 'pack', {
   pack: s('pack', 'Three Useful Things', 'Mara Venn, a veteran route-finder, is taking a written survey to a ridge station. She has a rope, a Pocket Toolkit, and a Folding Trail Marker. You are helping carry and prepare the kit, not merely watching. A washout has narrowed the next stretch; Mara asks which piece she should keep immediately at hand while you carry the other two.', [
-    { id: 'giveRope', label: 'Put the Travel Rope in Mara’s hand', next: 'ridge', effects: { setFlags: ['squire_rope_ready'] } },
-    { id: 'giveToolkit', label: 'Put the Pocket Toolkit in Mara’s hand', next: 'ridge', effects: { setFlags: ['squire_toolkit_ready'] } },
-    { id: 'giveMarker', label: 'Put the Folding Trail Marker in Mara’s hand', next: 'ridge', effects: { setFlags: ['squire_marker_ready'] } },
+    { id: 'giveRope', label: 'Put Mara’s rope in her hand', next: 'ridge', effects: { setFlags: ['squire_rope_ready'] } },
+    { id: 'giveToolkit', label: 'Put Mara’s Pocket Toolkit in her hand', next: 'ridge', effects: { setFlags: ['squire_toolkit_ready'] } },
+    { id: 'giveMarker', label: 'Put Mara’s Folding Trail Marker in her hand', next: 'ridge', effects: { setFlags: ['squire_marker_ready'] } },
   ]),
   ridge: s('ridge', 'The Cut in the Trail', 'A section of trail has slumped toward a shallow ravine. The far side is reachable by a longer path along the ridge. Mara’s survey tube is safe, but a tin of numbered stakes has rolled onto a shelf below. The equipment you put in Mara’s hand changes how you can deal with the shelf.', [
     { id: 'useRopeOnShelf', label: 'Ask Mara to lower the Travel Rope as a handline', requirements: { flags: ['squire_rope_ready'] }, next: 'ropeShelf', effects: { setFlags: ['squire_retrieved_stakes', 'squire_rope_used'] } },
@@ -23,9 +23,9 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
     { id: 'takeLongRoute', label: 'Use the longer ridge path', next: 'arrival' },
     { id: 'markAndLeave', label: 'Mark the washout and leave the stakes', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ], 'warning', [
-    { requirements: { flags: ['squire_rope_ready'] }, text: 'You gave Mara the Travel Rope. She can lower it from the firm ridge while you reach for the tin; the shelf is still loose, but you will not have to climb back empty-handed.' },
-    { requirements: { flags: ['squire_toolkit_ready'] }, text: 'You gave Mara the Pocket Toolkit. A trail marker above the washout has a loose clamp; securing it will keep the warning visible, but it will not retrieve the tin.' },
-    { requirements: { flags: ['squire_marker_ready'] }, text: 'You gave Mara the Folding Trail Marker. It can mark the firm return path before anyone approaches the shelf, trading a little time for clearer footing.' },
+    { requirements: { flags: ['squire_rope_ready'] }, text: 'Mara keeps her rope ready on the firm ridge. She can lower it while you reach for the tin; the shelf is still loose, but you will not have to climb back empty-handed.' },
+    { requirements: { flags: ['squire_toolkit_ready'] }, text: 'Mara has her Pocket Toolkit ready. A trail marker above the washout has a loose clamp; securing it will keep the warning visible, but it will not retrieve the tin.' },
+    { requirements: { flags: ['squire_marker_ready'] }, text: 'Mara sets her Folding Trail Marker on the firm return path before anyone approaches the shelf, trading a little time for clearer footing.' },
   ]),
   ropeShelf: s('ropeShelf', 'The Tin Comes Up Slowly', 'Mara anchors the handline around a sound tree and lowers it from firm ground. You retrieve the closed tin and climb back with the rope taking some of your weight; the line is scuffed but remains usable.', [
     { id: 'continueAfterRope', label: 'Carry the stakes to the ridge station', next: 'arrival' },
@@ -55,7 +55,7 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
 
 export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The Last Survey', 'A retiring mapmaker needs one final set of measurements before he gives up the road.', tags('A retiring surveyor asks the traveler to test a disputed route measurement, then decides what useful tool should pass to the next hand.', 'worker', 'investigation/mystery', 'mountain road and county survey shed', 'LOW', 'hired/posted work'), 'milepost', {
   milepost: s('milepost', 'A Mile That Will Not Agree', 'Elias Crowe has measured the same bend twice and gets two different distances. The road crew wants the map before tomorrow. He offers you his old Joiner’s Folding Rule to compare the culvert stones, or asks you to pace the stretch without touching his instrument.', [
-    { id: 'measureWithSurveyChain', label: 'Use your Survey Chain to compare the longer ground line', requirements: { items: ['surveyChain'] }, next: 'chainMeasure', effects: { setFlags: ['survey_used_chain'] } },
+    { id: 'measureWithSurveyChain', label: 'Use your Survey Chain to compare the longer ground line', requirements: { items: ['surveyChain'] , usableItems: ['surveyChain']}, next: 'chainMeasure', effects: { setFlags: ['survey_used_chain'] } },
     { id: 'measureStones', label: 'Use Crowe’s folding rule on the culvert stones', next: 'stoneMeasure', effects: { setFlags: ['survey_used_rule'] } },
     { id: 'paceRoad', label: 'Pace the road from the fixed milepost', next: 'paced' },
     { id: 'inspectNotebook', label: 'Compare the field notes before measuring again', next: 'notebook' },
@@ -75,7 +75,7 @@ export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The 
   notebook: s('notebook', 'A Note in the Margin', 'Crowe’s first entry says “old edge”; the later page says “after wagon strike.” The numbers are consistent once the dates are read in order. He wants the new map to distinguish the original road from the worn bypass.', [
     { id: 'drawBothLines', label: 'Draw the original road and the bypass separately', next: 'settlement', effects: { setFlags: ['survey_both_lines'] } },
     { id: 'verifyOnFoot', label: 'Walk the bend and verify the bypass', next: 'verified' },
-    { id: 'protectSurveyNotes', label: 'Keep the revised field sheet in your Lockable Map Case on the walk back', requirements: { items: ['lockableMapCase'] }, next: 'settlement', effects: { setFlags: ['protected_survey_notes_in_case'] } },
+    { id: 'protectSurveyNotes', label: 'Keep the revised field sheet in your Lockable Map Case on the walk back', requirements: { items: ['lockableMapCase'] , usableItems: ['lockableMapCase']}, next: 'settlement', effects: { setFlags: ['protected_survey_notes_in_case'] } },
   ]),
   verified: s('verified', 'The Bypass Is Plain', 'On foot, you see the wheel ruts leave the old curve and rejoin the road beyond the culvert. The map can show the bypass without claiming the older measurement was wrong.', [
     { id: 'finishVerifiedMap', label: 'Finish the map with both road lines shown', next: 'settlement', effects: { setFlags: ['survey_both_lines'] } },

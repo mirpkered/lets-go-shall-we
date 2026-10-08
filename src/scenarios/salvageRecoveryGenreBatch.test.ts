@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
@@ -22,12 +22,34 @@ function act(state: SaveData, scenario: (typeof SALVAGE_RECOVERY_GENRE_BATCH)[nu
 }
 function decision(scenario: (typeof SALVAGE_RECOVERY_GENRE_BATCH)[number]): SaveData {
   let state = initial(scenario);
-  state = act(state, scenario, scenario.scenes.arrival.choices[0].id);
+  const firstAvailable = scenario.scenes.arrival.choices.find((choice) => meets(choice.requirements, state));
+  expect(firstAvailable, `${scenario.id} fresh-arrival fallback`).toBeTruthy();
+  state = act(state, scenario, firstAvailable!.id);
   state = act(state, scenario, 'traceOwnership');
   return state;
 }
+function beginFresh(scenario: (typeof SALVAGE_RECOVERY_GENRE_BATCH)[number], state = initial(scenario)): SaveData {
+  const firstAvailable = scenario.scenes.arrival.choices.find((choice) => meets(choice.requirements, state));
+  expect(firstAvailable, `${scenario.id} fresh-arrival fallback`).toBeTruthy();
+  return act(state, scenario, firstAvailable!.id);
+}
 
 describe('Salvage / Recovery / Reclamation genre batch', () => {
+  it('gates named personal tools, rejects broken tools, and preserves explicit site-supplied equipment', () => {
+    const toolbox = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-silted-toolbox')!;
+    const ropeChoice = toolbox.scenes.arrival.choices.find(({ id }) => id === 'carefulAccess')!;
+    const rodChoice = toolbox.scenes.arrival.choices.find(({ id }) => id === 'verifyFirst')!;
+    expect(meets(ropeChoice.requirements, initial(toolbox))).toBe(false);
+    expect(meets(rodChoice.requirements, initial(toolbox))).toBe(false);
+    expect(meets(ropeChoice.requirements, initial(toolbox, 'travelRope'))).toBe(true);
+    expect(meets(ropeChoice.requirements, setItemCondition(initial(toolbox, 'travelRope'), 'travelRope', 'BROKEN'))).toBe(false);
+    expect(toolbox.scenes.arrival.choices.some((choice) => meets(choice.requirements, initial(toolbox)))).toBe(true);
+
+    const quarry = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-quarry-winch')!;
+    const stagedBlock = quarry.scenes.arrival.choices[0];
+    expect(stagedBlock.requirements).toBeUndefined();
+    expect(meets(stagedBlock.requirements, initial(quarry))).toBe(true);
+  });
   it('registers 24 distinct all-year Adventures with valid destinations and no duplicate IDs', () => {
     expect(SALVAGE_RECOVERY_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(859);
@@ -79,7 +101,7 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       const refused = lesson;
       expect(refused.character?.money).toBe(start.character?.money);
       expect(refused.run?.acquiredThisRun).toEqual([]);
-      let deferred = act(initial(scenario), scenario, scenario.scenes.arrival.choices[0].id);
+      let deferred = beginFresh(scenario);
       deferred = act(deferred, scenario, 'deferRecovery');
       expect(deferred.run?.sceneId).toBe('deferred');
       expect(deferred.character?.knowledge.length).toBeGreaterThan(0);
@@ -109,7 +131,7 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       const scenario = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === scenarioId)!;
       let state = initial(scenario, item);
       state.itemStates = { [item]:{ condition:'DAMAGED', upgrades:[], provenance:['Older trip'] } };
-      state = act(state, scenario, scenario.scenes.arrival.choices[0].id);
+      state = beginFresh(scenario, state);
       state = act(state, scenario, 'traceOwnership');
       const repair = scenario.scenes.decision.choices.find(({ id }) => id === 'repairOwnedGear')!;
       expect(meets(repair.requirements, state)).toBe(true);
@@ -126,7 +148,7 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
   it('keeps four hostile recovery confrontations optional, consequential, and non-looting', () => {
     for (const scenario of SALVAGE_RECOVERY_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE')) {
       const start = initial(scenario);
-      let state = act(start, scenario, scenario.scenes.arrival.choices[0].id);
+      let state = beginFresh(scenario, start);
       expect(scenario.scenes.evidence.choices.some(({ id }) => id === 'deferRecovery' && meets(scenario.scenes.evidence.choices.find((choice) => choice.id === id)!.requirements, state))).toBe(true);
       const won = act(state, scenario, 'standGround', () => 0);
       expect(won.run?.sceneId).toBe('fightWon');

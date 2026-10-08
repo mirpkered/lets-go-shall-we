@@ -1,5 +1,6 @@
 import type { Scenario, Scene } from '../types';
 import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
+import { ITEMS } from '../items';
 import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
 
 type Lane = 'GEAR' | 'KNOWLEDGE' | 'LORE';
@@ -73,12 +74,13 @@ const make = (w:BuildStory,index:number):Scenario => {
     {id:'leave',label:'Stop the alteration and leave the builder a clear account of what you observed',next:'partial',effects:{...learnedKnowledge,setFlags:['leftStructuralReport']}},
   ];
   if(nextLore) revealChoices.push({id:'connectLocalHistory',label:'Tell the clerk how this mark connects to a place you have visited',requirements:{lore:[nextLore]},next:'settle',effects:{...learnedKnowledge,setFlags:['connectedRememberedConstructionLore']}});
+  const methodGear = Object.values(ITEMS).find(({ carryable, name }) => carryable && w.method.toLowerCase().includes(name.toLowerCase()))?.id;
   const actions:Scene['choices'] = [
-    {id:'measure',label:w.method,next:'reveal',effects:{setFlags:['constructionMeasured']}},
+    {id:'measure',label:w.method,...(methodGear ? {requirements:{items:[methodGear],usableItems:[methodGear]}} : {}),next:'reveal',effects:{setFlags:['constructionMeasured']}},
     {id:'shore',label:'Hold the work and ask the named builder to expose the support from a safe side',next:'reveal',effects:{setFlags:['constructionShored']}},
     {id:'close',label:'Close the affected area and record the visible signs before work continues',next:'reveal',effects:{setFlags:['constructionClosed']}},
   ];
-  if (w.tool) actions.push({id:'gear',label:`Use your ${w.toolName} to check the structure`,requirements:{items:[w.tool]},next:'reveal',effects:{setFlags:['constructionUsedGear']}});
+  if (w.tool) actions.push({id:'gear',label:`Use your ${w.toolName} to check the structure`,requirements:{items:[w.tool],usableItems:[w.tool]},next:'reveal',effects:{setFlags:['constructionUsedGear']}});
   const scenes:Scenario['scenes'] = {
     start:s('start','A Structure Under Question',`${w.job}\n\n${w.sign} The builder tells you what has already been checked and what remains uncertain.`,[
       {id:'inspect',label:'Ask the builder to show the load path and inspect the visible sign',next:'work',effects:{setFlags:['askedBuilder']}},

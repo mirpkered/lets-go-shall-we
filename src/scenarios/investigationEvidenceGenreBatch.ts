@@ -81,8 +81,18 @@ function build(c: EvidenceStory): Scenario {
   };
   const inspectIds = ['measure', 'compare', 'ask'] as const;
   const toolUse = specialistUse[c.id];
-  const inspectChoices: Scene['choices'] = c.inspect.map((label, i) => ({ id: inspectIds[i], label, next: 'test', effects: { setFlags: [`${c.id}_${inspectIds[i]}`] } }));
-  if (toolUse) inspectChoices.push({ id:'specialistTool', label:toolUse.label, next:'test', requirements:{items:[toolUse.item]}, effects:{setFlags:[`${c.id}_specialistTool`]} });
+  const inspectionGear: Record<string, string> = {
+    'the-scrape-beneath-the-lock':'pocketToolkit',
+    'the-switch-that-faced-east':'pocketToolkit',
+    'the-stone-under-the-floorboard':'foldingCardMirror',
+    'the-glass-in-the-lantern-room':'foldingCardMirror',
+    'the-red-thread-at-the-bridge':'foldingCardMirror',
+  };
+  const inspectChoices: Scene['choices'] = c.inspect.map((label, i) => {
+    const item = inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror/i.test(label)) ? inspectionGear[c.id] : undefined;
+    return { id: inspectIds[i], label, ...(item ? {requirements:{items:[item],usableItems:[item]}} : {}), next: 'test', effects: { setFlags: [`${c.id}_${inspectIds[i]}`] } };
+  });
+  if (toolUse) inspectChoices.push({ id:'specialistTool', label:toolUse.label, next:'test', requirements:{items:[toolUse.item],usableItems:[toolUse.item]}, effects:{setFlags:[`${c.id}_specialistTool`]} });
   const actionChoices = [
     { id:'careful', label:c.actions[0], next:'settlement', effects:{ setFlags:[`${c.id}_careful`] } },
     { id:'verify', label:c.actions[1], next:'settlement', effects:{ setFlags:[`${c.id}_verified`] } },

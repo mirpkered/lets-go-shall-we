@@ -141,7 +141,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'The chest is iron-banded and locked. From inside comes a dull shape of metal against wood. The warning above, the cut rope, and the marks on the lid begin to point toward something taken from below.',
       choices: [
         { id: 'forceChest', label: 'Force the old lock', timeCost: 8, hint: 'The knife may slip; failure will hurt.', requirements: { notItems: ['ironHandbell'] }, chance: { probability: 0.48, successNext: 'bellDiscovery', failureNext: 'chestJammed', successMessage: 'The lock tears free. You lift out the iron handbell and a silver grave coin.', failureMessage: 'The knife slips; the lid jams and cuts your hand.', successEffects: takeBellEffects, failureEffects: { health: -2, setFlags: ['chestJammed'] } } },
-        { id: 'wedgeChest', label: 'Pry the band with the brass candlestick', hint: 'It will bend the candlestick, but the heavy base fits.', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], ...takeBellEffects }, next: 'chestForcedOpen' },
+        { id: 'wedgeChest', label: 'Pry the band with the brass candlestick', hint: 'It will bend the candlestick, but the heavy base fits.', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] , usableItems: ['brassCandlestick']}, effects: { loseItems: ['brassCandlestick'], ...takeBellEffects }, next: 'chestForcedOpen' },
         { id: 'callPriestAtChest', label: 'Follow the breath beyond the door', requirements: { notFlags: ['foundPriest'] }, effects: { setFlags: ['foundPriest'] }, next: 'priestAfterHound' },
         { id: 'leaveChestForNow', label: 'Leave the chest and continue deeper', next: 'burialApproach' },
       ],
@@ -222,7 +222,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'chestJammedAfterPriest', title: 'A Keyhole, Not a Promise', tone: 'warning',
       text: 'The chest still resists. The bone key may turn it, and the bent iron band can be pried with brass. Beyond the door, the keeper waits without approaching.',
       choices: [
-        { id: 'keyAfterFailure', label: 'Use the bone key now', requirements: { items: ['boneKey'], notItems: ['ironHandbell'] }, effects: takeBellEffects, next: 'bellFoundAfterPriest' },
+        { id: 'keyAfterFailure', label: 'Use the bone key now', requirements: { items: ['boneKey'], notItems: ['ironHandbell'] , usableItems: ['boneKey']}, effects: takeBellEffects, next: 'bellFoundAfterPriest' },
         { id: 'brassAfterFailure', label: 'Pry it with the candlestick', requirements: { items: ['brassCandlestick'], notItems: ['ironHandbell'] }, effects: { loseItems: ['brassCandlestick'], ...takeBellEffects }, next: 'bellFoundAfterPriest' },
         { id: 'leaveAfterChestFailure', label: 'Leave without the handbell', next: 'burialApproach' },
       ],

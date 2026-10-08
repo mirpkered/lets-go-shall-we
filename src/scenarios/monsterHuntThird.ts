@@ -239,7 +239,7 @@ export const THE_THING_THAT_MIMICS_THE_WHISTLE: Scenario = {
   scenes: {
     whistleAnswer: scene('whistleAnswer', 'A Reply from the Trees', 'On a forest road, a sharp whistle answers your call from the woods in the same rhythm. It repeats once, then adds a note you did not make. The road runs straight behind you to a house; the sound comes from a ravine to the left.', [
       { id: 'markSoundDirection', label: 'Mark the direction and continue on the road', next: 'whistleSafe' },
-      { id: 'testWithWhistle', label: 'Test the distance with your Conductor’s Whistle', requirements: { items: ['conductorWhistle'] }, next: 'whistleTest', effects: { knowledge: ['A forest entity copied the Conductor’s Whistle and changed one note to draw listeners toward a ravine.'] } },
+      { id: 'testWithWhistle', label: 'Test the distance with your Conductor’s Whistle', requirements: { items: ['conductorWhistle'] , usableItems: ['conductorWhistle']}, next: 'whistleTest', effects: { knowledge: ['A forest entity copied the Conductor’s Whistle and changed one note to draw listeners toward a ravine.'] } },
       { id: 'callAgain', label: 'Call again from the road', next: 'whistleTest' },
     ], 'warning'),
     whistleTest: scene('whistleTest', 'The Changed Note', 'The answer comes from the ravine, then from the trees behind it without crossing the open road. A branch moves against the wind. At the road edge, fresh soil has slumped away beneath a cracked, undercut bank; loose stones keep ticking down. The fence and road are firm, but the closer ground is not.', [
