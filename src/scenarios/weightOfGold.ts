@@ -33,7 +33,7 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
     guardTreated: {
       id: 'guardTreated', title: 'Ada, the Guard', tone: 'warning',
       text: 'The guard gives her name as Ada. The cut is deep but clean; a strip of her sleeve makes a serviceable bandage. She says the wagon hit a rut and tipped hard. Pell, the second guard, went after the horses—or so she thought. She keeps glancing at the damaged cargo chest. “That shipment belongs to the assay office. If it goes, the miners lose their month’s pay.”',
-      textVariants: [{ requirements: { historyFlags: ['returned_valuable_shipment'] }, text: 'Ada sees your careful work and gives her name without hesitation. The cut is deep but clean. She says the wagon hit a rut, and Pell went after the horses. “That shipment belongs to the assay office. If it goes, the miners lose their month’s pay.”' }],
+      textVariants: [{ requirements: { historyFlags: ['returned_valuable_shipment'] }, text: 'A previous freight recovery comes to mind as you help Ada. The cut is deep but clean. She says the wagon hit a rut, and Pell went after the horses. “That shipment belongs to the assay office. If it goes, the miners lose their month’s pay.”' }],
       choices: [
         { id: 'askAdaAboutPell', label: 'Ask where Pell went', timeCost: 2, next: 'tracksEvidence', effects: { knowledge: ['Pell was last seen heading down the old quarry track.'] } },
         { id: 'askAdaAboutLoad', label: 'Ask what the shipment contains', timeCost: 2, next: 'cargoEvidence', effects: { knowledge: ['The marked crates carry refined gold bars and payroll coin for the assay office.'] } },
@@ -111,7 +111,10 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
     guardAccount: {
       id: 'guardAccount', title: 'Ada’s Account', tone: 'warning',
       text: 'Ada remembers Pell insisting they use this road, though the route was not on the manifest. She also remembers him checking the cargo latch before the crash. She cannot say whether that was routine or preparation. “If he is hurt, find him. If he took a bar, bring him back alive if you can.”',
-      textVariants: [{ requirements: { historyFlags: ['stole_from_freight_wagon'] }, text: 'Ada notices that you have been among the cargo. She does not accuse you; her attention stays on the empty bar cradle. Pell chose the unlisted route and checked the latch before the crash. “If he is hurt, find him. If he took a bar, bring him back alive if you can.”' }],
+      textVariants: [
+        { requirements: { flags: ['tookLooseCoin'] }, text: 'Ada notices the loose coins missing from the open cargo. She does not accuse you; her attention stays on the empty bar cradle. Pell chose the unlisted route and checked the latch before the crash. “If he is hurt, find him. If he took a bar, bring him back alive if you can.”' },
+        { requirements: { flags: ['tookGoldBar'] }, text: 'Ada sees the bar you lifted from the cargo. She does not accuse you; her attention stays on the empty cradle. Pell chose the unlisted route and checked the latch before the crash. “If he is hurt, find him. If he took a bar, bring him back alive if you can.”' },
+      ],
       choices: [
         { id: 'searchForPell', label: 'Search the quarry track for Pell', timeCost: 8, next: 'tracksEvidence', effects: { historyFlags: ['searched_for_missing_guard'] } },
         { id: 'secureWagonForAda', label: 'Brace the wagon before leaving', timeCost: 6, chance: { probability: 0.62, bonusItems: FIELD_TOOLS, bonusProbability: 0.22, successNext: 'securedWagon', failureNext: 'wagonSlips', successMessage: 'You secure the frame with a lever and a length of strap.', failureMessage: 'The load shifts while you work. You are scraped by a sliding crate.', failureEffects: { health: -1, setFlags: ['lostOneCrate'] } } },

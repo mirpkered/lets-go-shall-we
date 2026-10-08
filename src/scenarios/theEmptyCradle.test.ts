@@ -181,9 +181,9 @@ describe('The Empty Cradle', () => {
   it('uses a prior rescue as a light trust callback while leaving fresh characters fully playable', () => {
     const returning = fresh();
     returning.character!.historyFlags = ['found_missing_child'];
-    expect(sceneText(THE_EMPTY_CRADLE.scenes.searchAlarm, returning)).toMatch(/recognizes you as someone/i);
+    expect(sceneText(THE_EMPTY_CRADLE.scenes.searchAlarm, returning)).toContain('You remember helping find a missing child before');
     const freshText = sceneText(THE_EMPTY_CRADLE.scenes.searchAlarm, fresh());
-    expect(freshText).not.toMatch(/recognizes you as someone/i);
+    expect(freshText).not.toMatch(/recognizes you as someone|helping find a missing child before/i);
     expect(options(fresh()).length).toBeGreaterThan(0);
   });
 

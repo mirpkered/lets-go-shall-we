@@ -346,7 +346,7 @@ describe('Down to the Last Match', () => {
 
   it('records the history callback while allowing an entirely fresh character', () => {
     const knownRescuer = fresh(null, 0, ['rescued_cold_storage_worker']);
-    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.cabinArrival, knownRescuer)).toContain('Marta has heard you');
+    expect(sceneText(DOWN_TO_THE_LAST_MATCH.scenes.cabinArrival, knownRescuer)).toContain('A memory of carrying someone out of danger');
     const firstTimers = fresh();
     expect(options(firstTimers).length).toBe(4);
     expect(options(firstTimers).some((choice) => choice.id === 'watchWeather')).toBe(true);

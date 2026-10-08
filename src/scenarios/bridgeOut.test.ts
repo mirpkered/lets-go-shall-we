@@ -177,9 +177,10 @@ describe('Bridge Out', () => {
     const knownFord = act(fresh(), 'scoutDownstream');
     expect(sceneText(BRIDGE_OUT.scenes.fordAssessment, knownFord)).toContain('lower stones');
     const returning = fresh(0, null, ['rescued_missing_person']);
-    expect(sceneText(BRIDGE_OUT.scenes.arrival, returning)).toContain('knows of your earlier rescue');
+    expect(sceneText(BRIDGE_OUT.scenes.arrival, returning)).toContain('An earlier rescue comes to mind');
+    expect(sceneText(BRIDGE_OUT.scenes.arrival, returning)).not.toContain('knows of your earlier rescue');
     const declinedBefore = fresh(0, null, ['refused_mine_rescue']);
-    expect(sceneText(BRIDGE_OUT.scenes.travelerAssessment, declinedBefore)).toContain('once declined a rescue');
+    expect(sceneText(BRIDGE_OUT.scenes.travelerAssessment, declinedBefore)).toContain('You remember turning back');
     expect(BRIDGE_OUT.scenes.arrival.choices.every((choice) => !choice.requirements?.historyFlags)).toBe(true);
   });
 

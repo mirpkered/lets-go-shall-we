@@ -48,7 +48,7 @@ export const THE_EMPTY_CRADLE: Scenario = {
     searchAlarm: {
       id: 'searchAlarm', title: 'A Child Missing', tone: 'warning',
       text: 'At the small settlement of Alderbrook, seven-year-old Nessa has been missing for about twenty minutes. Her mother last saw her near the south yard gate. A cold rain has just begun, the creek beyond the lower field is rising, and the light will fail before evening. Her older brother and two neighbors are already searching, but no one agrees which way she went.',
-      textVariants: [{ requirements: { historyFlags: ['found_missing_child'] }, text: 'The Alderbrook family recognizes you as someone who has helped find a missing child before. Seven-year-old Nessa has been gone about twenty minutes. Her mother last saw her at the south yard gate; cold rain is starting, and the creek beyond the field is rising.' }],
+      textVariants: [{ requirements: { historyFlags: ['found_missing_child'] }, text: 'You remember helping find a missing child before. Seven-year-old Nessa has been gone about twenty minutes. Her mother last saw her at the south yard gate; cold rain is starting, and the creek beyond the field is rising.' }],
       choices: [
         { id: 'questionFamilyFirst', label: 'Ask the family what they know', hint: 'A few minutes of testimony may narrow the search.', timeCost: 3, next: 'familyAccounts', effects: { historyFlags: ['joined_missing_child_search'] } },
         { id: 'inspectYardFirst', label: 'Read the ground around the yard gate', timeCost: 4, next: 'yardClues', effects: { historyFlags: ['joined_missing_child_search', 'prioritized_tracking_over_questioning'] } },

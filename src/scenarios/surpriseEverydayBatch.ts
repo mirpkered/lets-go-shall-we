@@ -79,13 +79,13 @@ export const A_NOTICE_PRINTED_BACKWARD = story('a-notice-printed-backward', 'A N
   late: end('late', 'A Meeting Delayed', 'The notice is corrected, but some neighbors arrive late. The printer pays the agreed coin; the committee reschedules its first item rather than pretending nothing was lost.'),
 });
 
-export const SUPPER_AT_THE_INN = story('supper-at-the-inn', 'Supper at the Inn', 'A familiar cook needs help serving a meal after the kitchen runs short of clean cloths.', T('A cook from a prior kitchen job recognizes a traveler and asks for practical help; a previous record of courtesy opens a small, concrete kindness, not a power bonus.', ['labor/repair', 'social interaction'], 'helper/rescuer', 'warm/hopeful', 'inn kitchen', ['conditional relationship callback', 'work sequence', 'performance payoff'], 'invited/known contact', ['money/item/knowledge/history possible', 'relationship/referral']), 'kitchen', {
-  kitchen: scene('kitchen', 'The Cook Remembers the Apron', 'The inn cook recognizes you from the evening the spare apron ran out. Tonight, the serving cloths are still drying and the supper bell is near. She can use an extra pair of hands.', [
+export const SUPPER_AT_THE_INN = story('supper-at-the-inn', 'Supper at the Inn', 'A cook needs help serving a meal after the kitchen runs short of clean cloths; an established Contact may recognize the Traveler.', T('A cook needs help serving a meal after the kitchen runs short of clean cloths; an established Contact may recognize the Traveler.', ['labor/repair', 'social interaction'], 'helper/rescuer', 'warm/hopeful', 'inn kitchen', ['conditional relationship callback', 'work sequence', 'performance payoff'], 'accidental encounter', ['money/item/knowledge/history possible', 'relationship/referral']), 'kitchen', {
+  kitchen: scene('kitchen', 'The Supper Bell Nears', 'Nessa, the inn cook, needs help. Tonight, the serving cloths are still drying and the supper bell is near. She can use an extra pair of hands.', [
     { id: 'takeServingWork', label: 'Help carry the first dishes', next: 'service' },
     { id: 'askWhatIsNeeded', label: 'Ask which task matters most', next: 'needs' },
     { id: 'declineKitchen', label: 'Wish her a steady evening', next: 'leave' },
-  { id: 'callOnOldCourtesy', label: 'Use Nessa’s offer of a simple meal', requirements: { contacts: [NESSA_CONTACT.id], favors: [NESSA_MEAL_FAVOR.id] }, effects: { consumeFavors: [NESSA_MEAL_FAVOR.id] }, next: 'meal' },
-  ]),
+    { id: 'callOnOldCourtesy', label: 'Use Nessa’s offer of a simple meal', requirements: { contacts: [NESSA_CONTACT.id], favors: [NESSA_MEAL_FAVOR.id] }, effects: { consumeFavors: [NESSA_MEAL_FAVOR.id] }, next: 'meal' },
+  ], 'safe', [{ requirements: { contacts: [NESSA_CONTACT.id] }, text: 'Nessa recognizes you from the evening the spare apron ran out. Tonight, the serving cloths are still drying and the supper bell is near. She can use an extra pair of hands.' }]),
   needs: scene('needs', 'One Meal Behind', 'The cook has enough hands for the stove but not for serving. The clean cloths will be ready in a few minutes; carrying hot plates now would be unsafe.', [
     { id: 'waitForCloths', label: 'Wait for the cloths, then serve', next: 'service' },
     { id: 'setColdTable', label: 'Set the table for the cold dishes', next: 'table' },
@@ -292,8 +292,8 @@ export const THE_TRESTLE_TABLE = story('the-trestle-table', 'The Trestle Table',
   paid: end('paid', 'A Coin for Careful Work', 'The seller pays you a coin for keeping the display upright. The table still needs a proper repair; the crate is only a safe stopgap.'),
 });
 
-export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 'The Favor Returned in Flour', 'A baker remembers a small kindness and asks the traveler to choose how it should be returned.', T('A baker offers a loaf after the traveler previously helped carry flour; accepting means sharing it at the counter, while a neighbor may need the remaining flour for supper.', ['social interaction', 'negotiation/trade'], 'guest', 'warm/hopeful', 'village bakery', ['conditional favor callback', 'resource choice', 'relationship consequence'], 'invited/known contact', ['lodging/food', 'relationship/referral']), 'bakery', {
-  bakery: scene('bakery', 'A Loaf Set Aside', 'The baker recognizes you from an earlier day carrying flour to the mill. She sets aside one warm loaf in thanks. A neighbor has just asked whether any flour remains for a family supper.', [
+export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 'A Loaf Set Aside', 'A baker has one warm loaf and a neighbor needs flour for supper; the traveler helps decide what can be spared.', T('A baker has a warm loaf ready while a neighbor needs flour for supper; the traveler helps decide what can be spared.', ['social interaction', 'negotiation/trade'], 'guest', 'warm/hopeful', 'village bakery', ['resource choice', 'relationship consequence'], 'accidental encounter', ['lodging/food', 'relationship/referral']), 'bakery', {
+  bakery: scene('bakery', 'A Loaf Set Aside', 'The baker has one warm loaf ready for the counter. A neighbor has just asked whether any flour remains for a family supper, and the baker asks what seems fair.', [
     { id: 'acceptSack', label: 'Share the loaf at the counter', next: 'accepted' },
     { id: 'askAboutNeighbor', label: 'Ask whether the neighbor can have it', next: 'neighbor' },
     { id: 'declineGift', label: 'Decline and thank the baker', next: 'declined' },
@@ -302,14 +302,14 @@ export const THE_FAVOR_RETURNED_IN_FLOUR = story('the-favor-returned-in-flour', 
     { id: 'letBakerDecide', label: 'Let the baker choose what is fair', next: 'decision' },
     { id: 'offerToPayForNeighbor', label: 'Offer one coin toward the flour', requirements: { minMoney: 1 }, next: 'paidFor', effects: { money: -1 } },
   ]),
-  decision: scene('decision', 'A Debt without a Ledger', 'The baker says the flour is hers to give. She does not want your old help turned into a claim on her stock, and the neighbor does not want charity announced.', [
+  decision: scene('decision', 'A Choice without a Ledger', 'The baker says the flour is hers to give. The neighbor does not want charity announced, and the baker does not want a small kindness turned into a public claim.', [
     { id: 'giftNeighborQuietly', label: 'Suggest a quiet measure for the neighbor', next: 'shared' },
     { id: 'keepSackForBaker', label: 'Let the baker keep her flour', next: 'accepted' },
   ]),
-  accepted: end('accepted', 'A Gift Freely Given', 'You share the warm loaf at the counter, and the baker keeps her flour for the shop. The earlier favor is repaid in a form she chose; neither of you owes more.'),
-  shared: end('shared', 'A Loaf without a Debt', 'The baker measures flour for the neighbor without naming it a gift. She keeps the rest for her ovens, and your earlier help is remembered without becoming a balance due.'),
+  accepted: end('accepted', 'A Gift Freely Given', 'You share the warm loaf at the counter, and the baker keeps her flour for the shop. The neighbor still needs a supper plan, but no one is made to owe more.'),
+  shared: end('shared', 'A Loaf without a Debt', 'The baker measures flour for the neighbor without naming it a gift. She keeps the rest for her ovens, and the small act stays between the people who chose it.'),
   paidFor: end('paidFor', 'A Loaf Bought Quietly', 'The baker accepts your coin toward the neighbor’s flour. The neighbor takes the measure without a public explanation, and the baker keeps enough for tomorrow’s baking.'),
-  declined: end('declined', 'No Ledger Kept', 'The baker accepts your thanks and keeps the loaf. The favor is not a debt, and neither of you has to settle it further.'),
+  declined: end('declined', 'The Loaf Stays Here', 'The baker keeps the warm loaf for the counter. The neighbor still needs flour, and the baker must decide what she can spare from tomorrow’s baking.'),
 });
 
 export const THE_STAGE_RIGGING = story('the-stage-rigging', 'The Stage Rigging', 'A rope above a crowded rehearsal room is visibly fraying while a heavy painted flat is raised.', { ...T('A fraying stage rope supports a heavy painted flat over workers; the player must stop the lift or choose a narrow, warned chance to secure it.', ['labor/repair', 'survival', 'moral prioritization'], 'helper/rescuer', 'tense/dangerous', 'town theater stage', ['visible escalating hazard', 'time-pressure sequence', 'rescue/retreat choice'], 'witnesses incident', ['narrative-only payoff'], 'HIGH'), depthClass: 'ENCOUNTER' }, 'stage', {

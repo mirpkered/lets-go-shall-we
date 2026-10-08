@@ -197,8 +197,8 @@ export const HIGH_WATER: Scenario = {
       id: 'floodArrival', title: 'The River Road', tone: 'warning',
       text: 'Rain has soaked the valley for two days. The river is already over its banks, but the road into the settlement is still passable. From the rise you can see a cottage beside the water, a stable at the edge of a field, and a storekeeper moving crates. The bridge road climbs toward a hill, though the rain is getting heavier. No one here can do everything before the river rises again.',
       textVariants: [
-        { requirements: { historyFlags: ['organized_flood_evacuation'] }, text: 'Rain has soaked the valley for two days. A few residents recognize you from the evacuation you organized before; one waves you toward the hill and asks where your help is needed. The river is over its banks, but the road remains passable for now. A cottage, a stable, and a store all sit close to the water.' },
-        { requirements: { historyFlags: ['prioritized_property_in_flood'] }, text: 'Rain has soaked the valley for two days. A storekeeper recognizes you from another hard choice about what to protect and asks plainly what you intend to save this time. The river is already over its banks, but the road and bridge still appear passable.' },
+        { requirements: { historyFlags: ['organized_flood_evacuation'] }, text: 'Rain has soaked the valley for two days. You remember organizing a flood evacuation before. A resident waves others toward the hill and asks where help is needed. The river is over its banks, but the road remains passable for now. A cottage, a stable, and a store all sit close to the water.' },
+        { requirements: { historyFlags: ['prioritized_property_in_flood'] }, text: 'Rain has soaked the valley for two days. A past flood choice comes to mind as the storekeeper asks plainly what you intend to protect this time. The river is already over its banks, but the road and bridge still appear passable.' },
       ],
       choices: [
         { id: 'reachCottageFirst', label: 'Go to the riverside cottage', timeCost: 2, effects: { setFlags: [WINDOW.first] }, next: 'residentFirst' },

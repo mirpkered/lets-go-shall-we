@@ -273,8 +273,8 @@ describe('The Long Way Home', () => {
     const known = fresh(null, ['rescued_missing_person']);
     const wary = fresh(null, ['refused_mine_rescue']);
     expect(sceneText(THE_LONG_WAY_HOME.scenes.encounter, freshState)).not.toContain('has heard you helped');
-    expect(sceneText(THE_LONG_WAY_HOME.scenes.encounter, known)).toContain('has heard you helped');
-    expect(sceneText(THE_LONG_WAY_HOME.scenes.encounter, wary)).toContain('notices your hesitation');
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.encounter, known)).toContain('A previous search for a missing person comes to mind');
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.encounter, wary)).toContain('You remember turning away from a rescue before');
     expect(THE_LONG_WAY_HOME.scenes.encounter.choices.every((choice) => !choice.requirements?.historyFlags)).toBe(true);
   });
 

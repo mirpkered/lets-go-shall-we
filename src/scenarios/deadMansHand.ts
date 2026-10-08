@@ -59,7 +59,7 @@ export const DEAD_MANS_HAND: Scenario = {
     watchedFirstHand: {
       id: 'watchedFirstHand', title: 'A Round from the Rail',
       text: 'You stay beside the bar. Mercer wins another modest pot. Ada passes a red card to him before the deal; Boone sees it too and stiffens. The card game continues, but the room feels smaller.',
-      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'Mabel recognizes you from the mine rescue and trusts you enough to speak quietly. Mercer wins another modest pot. Ada passes a red card to him before the deal; Boone sees it too and stiffens. Mabel says she remembers you making time for someone in trouble. The room feels smaller.' }],
+      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'An earlier rescue comes to mind as you watch from the rail. Mercer wins another modest pot. Ada passes a red card to him before the deal; Boone sees it too and stiffens. The room feels smaller.' }],
       choices: [
         { id: 'watchMercerFromRail', label: 'Follow Mercer’s hands', timeCost: 3, effects: { setFlags: ['watchedMercer'], knowledge: ['Mercer rubs the corners of his cards with his right thumb whenever the deck is passed.'] }, next: 'risingTension' },
         { id: 'watchAdaFromRail', label: 'Follow Ada’s dealing hand', timeCost: 3, effects: { setFlags: ['watchedAda'], knowledge: ['Ada hesitated when Mercer asked to cut the deck, then let him do it.'] }, next: 'risingTension' },
@@ -69,7 +69,7 @@ export const DEAD_MANS_HAND: Scenario = {
     bartenderOpening: {
       id: 'bartenderOpening', title: 'Mabel Keeps Pouring',
       text: 'Mabel dries the same glass twice. “Boone’s been losing. Mercer’s been winning. Ada’s been dealing. I can tell you what I saw, not what it means.” She does not lower her voice until the pianist starts another tune.',
-      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'Mabel recognizes you from the mine rescue and speaks with a little more trust. “Boone’s been losing. Mercer’s been winning. Ada’s been dealing. I can tell you what I saw, not what it means.” She says Boone is short three dollars on his marker, then asks what you would like to know.' }],
+      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'An earlier rescue comes to mind as Mabel speaks. “Boone’s been losing. Mercer’s been winning. Ada’s been dealing. I can tell you what I saw, not what it means.” She says Boone is short three dollars on his marker, then asks what you would like to know.' }],
       choices: [
         { id: 'askMabelAboutBoone', label: 'Ask what Boone stands to lose', timeCost: 3, effects: { knowledge: [DEBT_KNOWLEDGE], setFlags: ['heardBooneDebt'] }, next: 'risingTension' },
         { id: 'askMabelAboutAda', label: 'Ask why Ada seems nervous', timeCost: 3, effects: { knowledge: ['Ada asked Mercer to cut the deck twice; the red card he passed back was the house cut card.'], setFlags: ['heardAboutCutCard'] }, next: 'risingTension' },
@@ -107,7 +107,7 @@ export const DEAD_MANS_HAND: Scenario = {
     boonePrivate: {
       id: 'boonePrivate', title: 'Boone’s Three Dollars',
       text: 'Boone admits he is three dollars short on his marker. “That does not make me wrong,” he says. He saw Ada pass Mercer the red card and took it for a signal. You know Mabel said the card was used to cut the deck, but Boone has not heard that.',
-      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'Boone starts to bark, then hears from Mabel that you helped bring a missing miner home. He lowers his voice. He admits he is three dollars short on his marker and saw Ada pass Mercer the red card. “That does not make me wrong,” he says. The debt and the card are both real; neither proves collusion.' }],
+      textVariants: [{ requirements: { historyFlags: ['rescued_missing_person'] }, text: 'Your earlier rescue comes to mind, and you keep your voice level. Boone lowers his. He admits he is three dollars short on his marker and saw Ada pass Mercer the red card. “That does not make me wrong,” he says. The debt and the card are both real; neither proves collusion.' }],
       choices: [
         { id: 'askBooneToShowMarker', label: 'Ask him to show you the marker', timeCost: 2, effects: { knowledge: [DEBT_KNOWLEDGE, 'Boone mistook Ada’s red cut card for a signal, but admits he did not see what Mercer did with his hand.'], setFlags: ['heardBooneDebt', 'heardBooneTheory'] }, next: 'readyConfrontation' },
         { id: 'payBoonesMarker', label: 'Pay Boone’s three-dollar marker', requirements: { minMoney: 3 }, timeCost: 1, effects: { money: -3, historyFlags: ['paid_anothers_saloon_debt', 'intervened_in_saloon_dispute'], setFlags: ['booneDebtPaid'] }, next: 'debtSettled' },
