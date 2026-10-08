@@ -2,6 +2,12 @@
 
 This is an actionable project roadmap, not a transcript of every proposed idea. Status is based on the checked-in source and tests; see [Current Systems](CURRENT_SYSTEMS.md) for implementation detail. No dates or delivery promises are implied.
 
+## Production and playtest workflow
+
+Development may happen on isolated Codex or review branches. In-progress or uncertain work can remain unmerged. Once work is validated and approved, the normal path is to merge it to `main`, push, deploy to the standard public site, and verify the live normal-play build. The user primarily discovers and playtests through ordinary public gameplay. Use `?qa=1` for targeted debugging and controlled reproduction—scenario selection, state inspection, reset tools, and regression checks—not as a parking area for finished approved work. A task that should not merge or deploy publicly must say so explicitly.
+
+When local-only commits contain functional application changes, do not discard them merely to normalize a branch. Reconcile their intent against the current authoritative branch first. Preserve obsolete divergent refs with a backup branch before any cleanup that moves or replaces their branch pointer.
+
 ## Automatic Scenario Creation
 
 **Canonical operational ruleset for automatic / scheduled scenario batches.** Any recurring scenario-generation task must read this section and its linked canonical references before choosing a genre, planning, or authoring content. This guide centralizes the operating process; it does not replace or weaken the broader authoring, continuity, safety, testing, or release rules in those references.
