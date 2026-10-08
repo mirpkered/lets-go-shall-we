@@ -101,31 +101,35 @@ describe('Construction / Building / Structural Work batch',()=>{
       ['the-ladder-in-the-west-yard','three-knots-on-the-platform',KNOWLEDGE_FACTS.scaffoldFootAndLashing.id],
     ] as const;
     const knowledgeCallbacks=BATCH.flatMap(({scenes})=>Object.values(scenes)).flatMap((scene)=>scene.textVariants??[]).filter(({requirements})=>requirements.knowledgeKeys);
-    expect(knowledgeCallbacks).toHaveLength(6);
+    expect(knowledgeCallbacks).toHaveLength(8);
     for(const [sourceId,targetId,factId] of targets){
       const target=BATCH.find(({id})=>id===targetId)!;
       const variants=target.scenes.start.textVariants??[];
-      expect(variants).toHaveLength(2);
-      expect(variants[0].requirements).toMatchObject({knowledgeKeys:[factId],knowledgeSources:{[factId]:[sourceId]}});
-      expect(variants[1].requirements).toMatchObject({knowledgeKeys:[factId]});
+      const sourcedVariants=variants.filter(({requirements})=>requirements?.knowledgeSources?.[factId]);
+      const fallback=variants.find(({requirements})=>requirements?.knowledgeKeys?.includes(factId)&&!requirements.knowledgeSources);
+      expect(sourcedVariants.some(({requirements})=>requirements?.knowledgeSources?.[factId]?.includes(sourceId))).toBe(true);
+      expect(fallback).toBeTruthy();
       const fresh=initial(target);
       const freshChoices=target.scenes.start.choices.map(({id})=>id);
       expect(sceneText(target.scenes.start,fresh)).toBe(target.scenes.start.text);
       const recalled=initial(target);
       recalled.character!.knowledgeKeys=[factId];
-      expect(meets(variants[0].requirements,recalled)).toBe(false);
-      expect(sceneText(target.scenes.start,recalled)).toContain('earlier structural inspection');
+      expect(meets(sourcedVariants[0].requirements,recalled)).toBe(false);
+      expect(sceneText(target.scenes.start,recalled)).toBe(fallback!.text);
       recalled.character!.knowledgeSources={[factId]:['some-other-adventure']};
-      expect(meets(variants[0].requirements,recalled)).toBe(false);
-      expect(sceneText(target.scenes.start,recalled)).toContain('earlier structural inspection');
+      expect(meets(sourcedVariants[0].requirements,recalled)).toBe(false);
+      expect(sceneText(target.scenes.start,recalled)).toBe(fallback!.text);
       recalled.character!.knowledgeSources={[factId]:[sourceId]};
-      expect(meets(variants[0].requirements,recalled)).toBe(true);
-      expect(sceneText(target.scenes.start,recalled)).toBe(variants[0].text);
+      const sourced=sourcedVariants.find(({requirements})=>requirements?.knowledgeSources?.[factId]?.includes(sourceId))!;
+      expect(meets(sourced.requirements,recalled)).toBe(true);
+      expect(sceneText(target.scenes.start,recalled)).toBe(sourced.text);
       expect(target.scenes.start.choices.map(({id})=>id)).toEqual(freshChoices);
       const inspect=target.scenes.start.choices.find(({id})=>id==='inspect')!;
       expect(choose(fresh,target,inspect).run?.sceneId).toBe('work');
       expect(choose(recalled,target,inspect).run?.sceneId).toBe('work');
     }
+    expect(BATCH.find(({id})=>id==='the-riverward-retaining-wall')!.scenes.start.textVariants?.some(({requirements})=>requirements?.knowledgeSources?.[KNOWLEDGE_FACTS.waterPathBeforeWall.id]?.includes('the-camp-below-the-cut'))).toBe(true);
+    expect(BATCH.find(({id})=>id==='three-knots-on-the-platform')!.scenes.start.textVariants?.some(({requirements})=>requirements?.knowledgeSources?.[KNOWLEDGE_FACTS.scaffoldFootAndLashing.id]?.includes('three-knots-on-the-platform'))).toBe(true);
   });
 
   it('records Three Knots as a second source of scaffold Knowledge before the compensation choice',()=>{

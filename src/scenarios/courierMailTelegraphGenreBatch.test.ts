@@ -45,6 +45,26 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     for (const entry of lore) expect(variants.some(({ requirements }) => requirements?.lore?.includes(entry)), `Lore callback for ${entry}`).toBe(true);
   });
 
+  it('recalls prior message lessons in narration without changing the available choices',()=>{
+    for(const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH){
+      const knowledgeVariants=(scenario.scenes.start.textVariants??[]).filter(({requirements})=>requirements?.knowledgeKeys?.length);
+      if(!knowledgeVariants.length) continue;
+      const freshState=fresh(scenario);
+      const freshChoices=scenario.scenes.start.choices.map(({id})=>id);
+      for(const variant of knowledgeVariants){
+        const known=fresh(scenario);
+        const factId=variant.requirements!.knowledgeKeys![0];
+        known.character!.knowledgeKeys=[factId];
+        known.character!.knowledgeSources={[factId]:['a-prior-message-adventure']};
+        expect(sceneText(scenario.scenes.start,known),`${scenario.id} recall`).toBe(variant.text);
+        expect(scenario.scenes.start.choices.map(({id})=>id),`${scenario.id} remembered choices`).toEqual(freshChoices);
+        expect(variant.text).not.toMatch(/recognize a useful convention|your knowledge tells|KNOWLEDGE_FACTS/i);
+        expect(variant.text).not.toContain(Object.values(KNOWLEDGE_FACTS).find(({id})=>id===factId)!.text);
+      }
+      expect(sceneText(scenario.scenes.start,freshState)).toBe(scenario.scenes.start.text);
+    }
+  });
+
   it('grants the eight message conventions demonstrated in handling before any compensation choice',()=>{
     const primaryKnowledgeIds=new Set(['station-mark-in-margin','seal-that-cooled-wrong','copy-that-came-back','flooded-relay-book','initials-on-the-wire','town-name-that-moved','bell-before-the-wire','horse-change-ledger']);
     const knowledgeStories=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({id})=>primaryKnowledgeIds.has(id));

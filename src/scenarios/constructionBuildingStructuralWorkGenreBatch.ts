@@ -53,16 +53,16 @@ const itemSources:Record<string,string> = {
 const make = (w:BuildStory,index:number):Scenario => {
   const nextLore = stories[(index+9)%stories.length].lore;
   const inspectVariants:NonNullable<Scene['textVariants']> = [];
-  const recall:Record<string,{fact:keyof typeof KNOWLEDGE_FACTS;source:string;text:string}> = {
-    'the-roof-that-held-its-breath': {fact:'winterJointMovement',source:'the-joint-that-opened-in-winter',text:'The fresh split recalls the inn landing you inspected in winter, where a mark that kept separating mattered more than the old shape of the joint.'},
-    'the-riverward-retaining-wall': {fact:'waterPathBeforeWall',source:'the-stone-that-kept-the-water',text:'The seepage recalls the cellar wall you inspected with the mason, where water emerged at one joint but followed an older drain from elsewhere.'},
-    'three-knots-on-the-platform': {fact:'scaffoldFootAndLashing',source:'the-ladder-in-the-west-yard',text:'The loose lashing and soft ground recall the warehouse ladder job with Cale, where securing one point did not make the whole support sound.'},
+  const recall:Record<string,{fact:keyof typeof KNOWLEDGE_FACTS;memories:Record<string,string>;fallback:string}> = {
+    'the-roof-that-held-its-breath': {fact:'winterJointMovement',memories:{'the-joint-that-opened-in-winter':'The inn landing’s pencil mark kept separating even while the door still swung freely; that earlier inspection returns as Ellery checks the fresh split.'},fallback:'The earlier joint inspection comes back to mind: a familiar shape can hide movement that is still active.'},
+    'the-riverward-retaining-wall': {fact:'waterPathBeforeWall',memories:{'the-stone-that-kept-the-water':'You remember the mason tracing the cellar seepage away from its wet joint.','the-camp-below-the-cut':'At the logging camp, the runoff bent toward two work areas before you traced it to the gravel outlet.'},fallback:'A prior water problem taught you to look beyond the point where flow appears and follow its route.'},
+    'three-knots-on-the-platform': {fact:'scaffoldFootAndLashing',memories:{'the-ladder-in-the-west-yard':'Cale steadied the warehouse ladder’s base, then found a worn knot over a split rail.','three-knots-on-the-platform':'You remember the fair stand’s soft footing and loose lashing; neither check could stand in for the other.'},fallback:'The earlier scaffold check stays with you: a sound footing and intact lashings answer separate questions.'},
   };
   const priorLesson=recall[w.id];
   if(priorLesson){
     const factId=KNOWLEDGE_FACTS[priorLesson.fact].id;
-    inspectVariants.push({requirements:{knowledgeKeys:[factId],knowledgeSources:{[factId]:[priorLesson.source]}},text:priorLesson.text});
-    inspectVariants.push({requirements:{knowledgeKeys:[factId]},text:`You remember an earlier structural inspection where ${KNOWLEDGE_FACTS[priorLesson.fact].text.toLowerCase()} The present signs still need their own assessment.`});
+    for(const [source,text] of Object.entries(priorLesson.memories)) inspectVariants.push({requirements:{knowledgeKeys:[factId],knowledgeSources:{[factId]:[source]}},text});
+    inspectVariants.push({requirements:{knowledgeKeys:[factId]},text:priorLesson.fallback});
   }
   if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`A remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
   const revealVariants:NonNullable<Scene['textVariants']> = [];

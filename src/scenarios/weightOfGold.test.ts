@@ -52,6 +52,22 @@ function explore(initial: SaveData): SaveData[] {
 }
 
 describe('The Weight of Gold', () => {
+  it('recalls the axle inspection without declaring Pell truthful or changing the player’s choices',()=>{
+    const factId='freight-wagon-rut-axle-evidence';
+    const freshState=fresh();
+    freshState.run!.sceneId='pellFound';
+    const remembered=structuredClone(freshState);
+    remembered.character!.knowledgeKeys=[factId];
+    const scene=THE_WEIGHT_OF_GOLD.scenes.pellFound;
+    const freshText=sceneText(scene,freshState);
+    const rememberedText=sceneText(scene,remembered);
+    expect(rememberedText).toContain('cracked axle you examined at the deep rut');
+    expect(rememberedText).toContain('says nothing about why Pell took the bar');
+    expect(rememberedText).not.toMatch(/your knowledge .*confirms/i);
+    expect(scene.choices.filter(({requirements})=>meets(requirements,freshState)).map(({id})=>id)).toEqual(scene.choices.filter(({requirements})=>meets(requirements,remembered)).map(({id})=>id));
+    expect(rememberedText).not.toBe(freshText);
+  });
+
   it('is registered for random selection and direct QA launch only', () => {
     expect(SCENARIOS).toContain(THE_WEIGHT_OF_GOLD);
     expect(SCENARIOS).toContain(selectScenario(SCENARIOS, null, () => 0.999));

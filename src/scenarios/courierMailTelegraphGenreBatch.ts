@@ -47,6 +47,21 @@ const knowledgeCallbackTargets:Partial<Record<keyof typeof KNOWLEDGE_FACTS,strin
  courierRouteEndMark:['last-station-keepers-route','postal-road-after-the-flood'],
  signsOfRecopiedMessage:['blue-room-dispatch','mailbag-at-milepost-nine','seal-that-cooled-wrong'],
 };
+const knowledgeRecall:Partial<Record<keyof typeof KNOWLEDGE_FACTS,string>>={
+ telegraphRepeatConvention:'You remember an operator waiting for a word to come back across the line before treating the exchange as settled.',
+ reheatedSealSigns:'The doubled ridge under the clerk’s lamp suggested handling, but it never named a hand or proved the contents changed.',
+ senderReceiverCopyDifference:'You recall the depot clerk laying sender and receiver copies side by side before moving disputed freight.',
+ relayDelayMarks:'The relay book kept its receipt mark apart from the sending time; the two entries answered different questions.',
+ sortingTableFeedJam:'You remember the cool bearing and wrapped feed at the sorting table; the roller was isolated before the material came free.',
+ telegraphPayerNotAuthority:'The store receipt showed who paid for the wire, while the owner’s record named who could release the crate.',
+ undeliverableForwardingMarks:'You recall the route book separating an old address from the household now using a familiar town name.',
+ telegraphOfficeBellConvention:'At the storm-cut office, the red peg and the posted bell pattern carried different information.',
+ courierHorseChangeNotation:'The stable ledger changed after a horse left service, while the older route map still named the former relay.',
+ lateMessageMayRetainOtherValue:'A message delivered after its first purpose passed still carried terms its recipient needed to see.',
+ senderCopyDoesNotProveReceipt:'The sender’s book ended at dispatch; the receiving office still had to acknowledge what arrived.',
+ courierRouteEndMark:'The old route log stopped at the upper post; its last line did not say what happened after.',
+ signsOfRecopiedMessage:'You remember comparing paper fibers and an altered address; the trace showed a copy changed, not who changed it.',
+};
 const loreCallbackTargets:Record<string,string[]>={
  'Bellweather’s post road moved uphill after a bridge washout; faded blue marks still point along the abandoned lane.':['postal-road-after-the-flood'],
  'County road notices were copied by hand during the 1864 flood when the telegraph line failed for three days.':['morning-the-warning-arrived','flooded-relay-book'],
@@ -67,7 +82,7 @@ const e=(id:string,title:string,text:string)=>largeEnd(id,title,text);
 
 function make(w:Story,index:number):Scenario{
  const routeVariants:NonNullable<Scene['textVariants']>=[{requirements:{historyFlags:['opened_private_courier_letter']},text:'The clerk remembers that you once opened private correspondence; they keep the duplicate behind the counter until the recipient arrives.'},{requirements:{historyFlags:['courier_seen_by_message_interceptor']},text:'The operator checks the street before handing over the route slip; someone who watched an earlier exchange may recognize you.'}];
- for(const [key,targets] of Object.entries(knowledgeCallbackTargets)) if(targets?.includes(w.id)) routeVariants.push({requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[key as keyof typeof KNOWLEDGE_FACTS].id]},text:`You recognize a useful convention: ${KNOWLEDGE_FACTS[key as keyof typeof KNOWLEDGE_FACTS].text} It informs your question but does not prove this message was received.`});
+ for(const [key,targets] of Object.entries(knowledgeCallbackTargets)) if(targets?.includes(w.id)) routeVariants.push({requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[key as keyof typeof KNOWLEDGE_FACTS].id]},text:knowledgeRecall[key as keyof typeof KNOWLEDGE_FACTS]!});
  for(const [lore,targets] of Object.entries(loreCallbackTargets)) if(targets.includes(w.id)) routeVariants.push({requirements:{lore:[lore]},text:`You remember the history attached to this route: ${lore} The old account adds context, not proof about this dispatch.`});
  const choices:Scene['choices']=[
   {id:'deliverAsKnown',label:w.deliver,next:'delivered',effects:{historyFlags:[w.positive]}},
