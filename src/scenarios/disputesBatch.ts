@@ -110,7 +110,7 @@ export const A_VERY_GOOD_DEAL: Scenario = {
     cheapLoupe: { id: 'cheapLoupe', title: 'Three Coins for a Loupe', tone: 'safe', text: 'A roadside seller offers a brass-rimmed assayer’s loupe for three coins. It looks useful and is priced below the usual market rate, but the seller has not explained why. You can ask, inspect it, decline, or buy it as offered.', choices: [
       { id: 'askLoupePrice', label: 'Ask why the loupe is priced so low', timeCost: 3, next: 'saleExplained' },
       { id: 'inspectLoupe', label: 'Inspect the glass and hinge', timeCost: 4, next: 'saleInspected' },
-      { id: 'buyLoupe', label: 'Buy the loupe for three coins', requirements: { minMoney: 3, notItems: ['assayersLoupe'] }, timeCost: 2, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
+      { id: 'buyLoupe', label: 'Buy the loupe for three coins', requirements: { minMoney: 3, notOwnedItems: ['assayersLoupe'] }, timeCost: 2, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
       { id: 'declineLoupe', label: 'Decline and leave the offer alone', next: 'saleDeclined' },
     ] },
     saleExplained: { id: 'saleExplained', title: 'An Ordinary Explanation', tone: 'safe', text: 'The seller offers an explanation. It may be enough for you, or you may still want to look closely before deciding.', textVariants: [
@@ -120,11 +120,11 @@ export const A_VERY_GOOD_DEAL: Scenario = {
       { requirements: { selections: { saleReason: 'bargain' } }, text: 'The seller says they bought several at an estate sale and are happy to move one quickly. It may simply be a fair bargain.' },
     ], choices: [
       { id: 'inspectAfterExplanation', label: 'Look at the loupe before deciding', timeCost: 3, next: 'saleInspected' },
-      { id: 'buyAfterExplanation', label: 'Buy it for three coins', requirements: { minMoney: 3, notItems: ['assayersLoupe'] }, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
+      { id: 'buyAfterExplanation', label: 'Buy it for three coins', requirements: { minMoney: 3, notOwnedItems: ['assayersLoupe'] }, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
       { id: 'leaveAfterExplanation', label: 'Thank the seller and leave', next: 'saleDeclined' },
     ] },
     saleInspected: { id: 'saleInspected', title: 'Clear Glass, Worn Hinge', tone: 'safe', text: 'The glass is clear enough to read fine marks. The hinge is worn but still opens and closes. Inspection tells you its condition, not whether the seller has a right to sell it.', choices: [
-      { id: 'buyInspectedLoupe', label: 'Buy the loupe for three coins', requirements: { minMoney: 3, notItems: ['assayersLoupe'] }, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
+      { id: 'buyInspectedLoupe', label: 'Buy the loupe for three coins', requirements: { minMoney: 3, notOwnedItems: ['assayersLoupe'] }, effects: { money: -3, gainItems: ['assayersLoupe'], historyFlags: ['bought_assayers_loupe_from_roadside_seller'] }, next: 'saleBought' },
       { id: 'askSellerProof', label: 'Ask the seller to contact their cousin', requirements: { selections: { saleReason: 'borrowed' } }, timeCost: 8, next: 'sellerContacted' },
       { id: 'walkFromLoupe', label: 'Leave without buying', next: 'saleDeclined' },
     ] },

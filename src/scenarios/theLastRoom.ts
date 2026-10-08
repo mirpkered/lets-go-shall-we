@@ -36,7 +36,7 @@ export const THE_LAST_ROOM: Scenario = {
         { id: 'askAboutRoom', label: 'Ask why the door is blocked', next: 'corridor' },
         { id: 'askServicePassage', label: 'Ask about the rear service passage', next: 'serviceHall' },
         { id: 'inspectRegister', label: 'Check the guest register', next: 'guestRegister', effects: { setFlags: ['identifiedSilas'] } },
-        { id: 'buyRope', label: 'Buy a coil of travel rope — 2 coins', requirements: { minMoney: 2, notItems: ['travelRope'] }, effects: { money: -2, gainItems: ['travelRope'] }, next: 'corridor' },
+        { id: 'buyRope', label: 'Buy a coil of travel rope — 2 coins', requirements: { minMoney: 2, notOwnedItems: ['travelRope'] }, effects: { money: -2, gainItems: ['travelRope'] }, next: 'corridor' },
       ],
     },
     commonRoom: {

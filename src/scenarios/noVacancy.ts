@@ -88,9 +88,9 @@ export const NO_VACANCY: Scenario = {
       id: 'innGoods', title: 'A Few Dry Goods', tone: 'safe',
       text: 'Ada shows a waxed cover sheet, a compact stove tool, and a brass windproof match case from the travel chest. She asks only the material cost; the inn is not a general store, and you may leave all three behind.',
       choices: [
-        { id: 'buyCanvas', label: 'Buy a waxed canvas sheet — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['waxedCanvasSheet'] }, effects: { money: -2, gainItems: ['waxedCanvasSheet'] }, next: 'shelterAllocation' },
-        { id: 'buyStoveTool', label: 'Buy a compact stove tool — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['compactStoveTool'] }, effects: { money: -3, gainItems: ['compactStoveTool'] }, next: 'shelterAllocation' },
-        { id: 'buyMatchCase', label: 'Buy a windproof match case — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['windproofMatchCase'] }, effects: { money: -2, gainItems: ['windproofMatchCase'], historyFlags: ['bought_windproof_match_case_at_lantern_house'] }, next: 'shelterAllocation' },
+        { id: 'buyCanvas', label: 'Buy a waxed canvas sheet — 2 coins', timeCost: 2, requirements: { minMoney: 2, notOwnedItems: ['waxedCanvasSheet'] }, effects: { money: -2, gainItems: ['waxedCanvasSheet'] }, next: 'shelterAllocation' },
+        { id: 'buyStoveTool', label: 'Buy a compact stove tool — 3 coins', timeCost: 2, requirements: { minMoney: 3, notOwnedItems: ['compactStoveTool'] }, effects: { money: -3, gainItems: ['compactStoveTool'] }, next: 'shelterAllocation' },
+        { id: 'buyMatchCase', label: 'Buy a windproof match case — 2 coins', timeCost: 2, requirements: { minMoney: 2, notOwnedItems: ['windproofMatchCase'] }, effects: { money: -2, gainItems: ['windproofMatchCase'], historyFlags: ['bought_windproof_match_case_at_lantern_house'] }, next: 'shelterAllocation' },
         { id: 'leaveGoods', label: 'Leave the goods and keep your coins', next: 'shelterAllocation' },
       ],
     },

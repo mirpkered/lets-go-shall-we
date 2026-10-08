@@ -77,8 +77,8 @@ export const WHATS_MINE: Scenario = {
       text: 'The retired foreman lives nearby and still checks the sealed property. He has only a few pieces of his old work kit left: an upper-level survey map, a coil of travel rope, and a miner’s headlamp. If you have coins to spare, he will part with one to help pay for keeping the gate road clear. You can also go in with what you brought. None of it makes the old supports safe.',
       choices: [
         { id: 'buyMap', label: 'Take the old survey map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notItems: ['mineSurveyMap'] }, effects: { money: -2, gainItems: ['mineSurveyMap'], knowledgeEntries: [KNOWLEDGE_FACTS.mineSideDrift] }, next: 'mineMouth' },
-        { id: 'buyRope', label: 'Take the travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'mineMouth' },
-        { id: 'buyHeadlamp', label: 'Take the miner’s headlamp — 4 coins', timeCost: 2, requirements: { minMoney: 4, notItems: ['minerHeadlamp'] }, effects: { money: -4, gainItems: ['minerHeadlamp'] }, next: 'mineMouth' },
+        { id: 'buyRope', label: 'Take the travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notOwnedItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'mineMouth' },
+        { id: 'buyHeadlamp', label: 'Take the miner’s headlamp — 4 coins', timeCost: 2, requirements: { minMoney: 4, notOwnedItems: ['minerHeadlamp'] }, effects: { money: -4, gainItems: ['minerHeadlamp'] }, next: 'mineMouth' },
         { id: 'enterWithoutPurchase', label: 'Enter with what you have', timeCost: 1, next: 'mineMouth' },
       ],
     },

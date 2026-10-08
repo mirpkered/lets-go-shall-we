@@ -199,7 +199,7 @@ describe('No Vacancy', () => {
     expect(claimTextBeforeDiscovery).not.toContain('schoolteacher');
     expect(claimTextBeforeDiscovery).not.toContain('not a county marshal');
     expect(NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyCanvas')?.label).toContain('Buy a waxed canvas sheet');
-    expect(NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyCanvas')?.requirements?.notItems).toContain('waxedCanvasSheet');
+    expect(NO_VACANCY.scenes.innGoods.choices.find((choice) => choice.id === 'buyCanvas')?.requirements?.notOwnedItems).toContain('waxedCanvasSheet');
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.effects?.gainItems).toEqual(['reserveBlanket']);
     expect(NO_VACANCY.scenes.keeperAccount.choices.find((choice) => choice.id === 'offerBlanket')?.requirements?.notItems).toContain('reserveBlanket');
     expect(NO_VACANCY.scenes.shelterAllocation.choices.find((choice) => choice.id === 'roomForVale')?.label).not.toContain('volunteer');
