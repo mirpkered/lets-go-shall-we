@@ -127,6 +127,28 @@ describe('honest work adventure batch', () => {
     expect(equipped.character?.historyFlags).toContain('completed_paid_roof_repair_used_gear');
   });
 
+  it('keeps ordinary hired work accessible without personal specialist Gear while offering carried tools as alternatives', () => {
+    for (const scenario of HONEST_WORK_ADVENTURES) {
+      const itemChoices = scenario.scenes.complication.choices.filter(({ requirements }) => (requirements?.items?.length ?? 0) > 0);
+      if (itemChoices.length === 0) continue;
+
+      let fresh = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
+      fresh = act(fresh, scenario, 'work', 'addressIssue');
+      const freshChoices = scenario.scenes.complication.choices.filter(({ requirements }) => meets(requirements, fresh));
+      expect(freshChoices.map(({ id }) => id), `${scenario.title} fresh-worker options`).toContain('workCarefully');
+      expect(freshChoices.map(({ id }) => id), `${scenario.title} fresh-worker options`).toContain('askForHelp');
+      for (const itemChoice of itemChoices) {
+        expect(freshChoices.map(({ id }) => id), `${scenario.title} does not require ${itemChoice.id}`).not.toContain(itemChoice.id);
+        const itemId = itemChoice.requirements!.items![0];
+        let equipped = act(start(scenario, 'complication', itemId), scenario, 'hiring', 'beginWork');
+        equipped = act(equipped, scenario, 'work', 'addressIssue');
+        const equippedChoices = scenario.scenes.complication.choices.filter(({ requirements }) => meets(requirements, equipped));
+        expect(equippedChoices.map(({ id }) => id), `${scenario.title} with ${itemId}`).toContain(itemChoice.id);
+        expect(equippedChoices.map(({ id }) => id), `${scenario.title} with ${itemId}`).toContain('workCarefully');
+      }
+    }
+  });
+
   it('keeps a night watch quiet on most runs and does not manufacture a crime', () => {
     const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'night-watch')!;
     expect(scenario.runRandomSelections?.[0].values.find(({ value }) => value === 'quiet')?.weight).toBe(4);
