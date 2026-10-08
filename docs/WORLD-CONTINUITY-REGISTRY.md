@@ -14,6 +14,8 @@ A concise authoring reference for high-value established connections. This is no
 
 - **Lotte (baker)** recurs from The Pie with No Recipe in Notes After the Ribbon only when the Traveler awarded Hester’s pie and received Lotte as a Contact. The follow-up is about recording competing memories, not claiming the contest established recipe ownership.
 - **Mara Bell** and **Ansel Reed (printer)** recur from The Last Verse Contest in A Line for the Broadside only after the Traveler accepted Mara’s family verse or favored the printed version. Contest choices establish what the Traveler did, not which account is historically true.
+- Notes After the Ribbon records Hester and Lotte’s separately attributed memories of Mrs. Orrow’s pie method or a present-day composite clearly labeled as such. Vale’s pear-filling idea is her own, not part of their recipe disagreement. Neither preserved account verifies an original recipe.
+- A Line for the Broadside may preserve Mara’s family-transmitted verse as an attributed oral variant, alone or beside the printed text. Its age and origin remain unverified; the prior contest outcome is not historical proof.
 - Other cross-adventure NPC identities are not designated here as canonical recurring people. Scenario files contain both fixed names and run-randomized name pools; inspect them before assigning a name.
 - Ada is the named Lantern House innkeeper in No Vacancy. The Bridge Out randomized `travelerOne` pool also contains Ada; treat that as a different person unless a future edit explicitly establishes otherwise. Avoid extending this collision to new NPCs.
 - Within an adventure, do not infer a recurring identity from repeated names unless the narrative makes the connection clear.

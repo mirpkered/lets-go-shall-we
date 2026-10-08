@@ -90,6 +90,39 @@ describe('outcome-dependent continuity spin-offs', () => {
     expect(deferred.character?.lore).toEqual(source.character?.lore);
   });
 
+  it('reorients the player and keeps Vale outside the Mrs. Orrow recipe disagreement', () => {
+    const source = pieOutcome('tasteBeforeNames', 'judgeTasteOnly', 'awardPlum');
+    const state = startAdventure(source, NOTES_AFTER_THE_RIBBON);
+    const opening = sceneText(NOTES_AFTER_THE_RIBBON.scenes.notes, state);
+
+    expect(opening).toContain('At the last fair, Hester’s plum-and-pepper pie won the ribbon');
+    expect(opening).toContain('Hester recalls Mrs. Orrow’s measures and folded crust; Lotte remembers');
+    expect(opening).toContain('Lotte asked to compare notes afterward');
+    expect(opening).toContain('a supper needs a display card');
+    expect(opening).toContain('Vale’s pear filling was her own');
+    expect(opening).toContain('she made no claim to Orrow’s method');
+    expect(NOTES_AFTER_THE_RIBBON.scenes.notes.choices.find(({ id }) => id === 'askValeClaim')?.label).toBe('Ask Vale how her pear filling should be credited');
+  });
+
+  it('gives each supper-card decision its own persistent, truthful result', () => {
+    const source = pieOutcome('tasteBeforeNames', 'judgeTasteOnly', 'awardPlum');
+    const routes = [
+      { choices: ['readHesterCard', 'compareHesterNotes', 'keepAccountsSeparate'], flag: 'preserved_separate_mrs_orrow_recipe_memories', lore: true },
+      { choices: ['readLotteCard', 'compareLotteNotes', 'labelWorkingComposite'], flag: 'labeled_fair_bakers_working_recipe_composite', lore: true },
+      { choices: ['readHesterCard', 'compareHesterNotes', 'printOnlyTastingNotes'], flag: 'kept_recipe_claim_out_of_fair_supper_notes', lore: false },
+      { choices: ['readLotteCard', 'compareLotteNotes', 'deferTheCard'], flag: 'deferred_mrs_orrow_recipe_record_for_more_accounts', lore: false },
+    ];
+
+    for (const route of routes) {
+      const result = play(NOTES_AFTER_THE_RIBBON, startAdventure(source, NOTES_AFTER_THE_RIBBON), route.choices);
+      expect(result.character?.historyFlags).toContain(route.flag);
+      expect(result.character?.lore.length).toBe(source.character!.lore.length + (route.lore ? 1 : 0));
+      expect(result.character?.knowledge).toEqual(source.character?.knowledge);
+      expect(result.character?.favors).toEqual(source.character?.favors);
+      expect(result.character?.contacts?.map(({ id }) => id)).toContain(LOTTE_PIE_CONTACT.id);
+    }
+  });
+
   it('records family and printed Last Verse Contest outcomes separately while retaining legacy Knowledge', () => {
     const family = verseOutcome('askForSource', 'compareVersions', 'judgeByMemory');
     expect(family.character?.historyFlags).toContain(OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse);
@@ -116,9 +149,13 @@ describe('outcome-dependent continuity spin-offs', () => {
 
     const familyRun = startAdventure(family, A_LINE_FOR_THE_BROADSIDE);
     const printedRun = startAdventure(printed, A_LINE_FOR_THE_BROADSIDE);
-    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, familyRun)).toContain('You accepted Mara’s family-transmitted ending');
-    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, printedRun)).toContain('You favored the printed version');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, familyRun)).toContain('you accepted Mara Bell’s family-transmitted ending');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, printedRun)).toContain('you favored the ending in the printed broadside');
     expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, printedRun)).not.toContain('proof of where it began');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, familyRun)).toContain('absent from the printed broadside');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, familyRun)).toContain('printer Ansel Reed has left space on a new broadside');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, printedRun)).toContain('how it should handle that unverified version');
+    expect(sceneText(A_LINE_FOR_THE_BROADSIDE.scenes.proof, familyRun)).toContain('asks whether to print it, attribute it, note it, or leave the old text unchanged');
   });
 
   it('stores Lore only when a family verse is actually preserved and creates Ansel as a Contact', () => {
@@ -137,5 +174,14 @@ describe('outcome-dependent continuity spin-offs', () => {
     const printed = verseOutcome('hearAllReciters', 'judgeByPrint');
     const both = play(A_LINE_FOR_THE_BROADSIDE, startAdventure(printed, A_LINE_FOR_THE_BROADSIDE), ['askAnselSpace', 'chooseTwoColumns', 'printBothVersions']);
     expect(both.character?.lore).toContain('Ansel Reed’s broadside preserves Mara Bell’s family-transmitted missing verse beside the printed version as an oral variant; its age and origin remain unverified.');
+
+    const sourceNote = play(A_LINE_FOR_THE_BROADSIDE, startAdventure(family, A_LINE_FOR_THE_BROADSIDE), ['askMara', 'takeVersionToProof', 'printSourceNoteOnly']);
+    expect(sourceNote.character?.historyFlags).toContain('noted_unverified_family_verse_without_printing_it');
+    expect(sourceNote.character?.lore).toEqual(family.character?.lore);
+    expect(sourceNote.character?.contacts?.map(({ id }) => id)).toContain('ansel-reed-printer');
+
+    const unchanged = play(A_LINE_FOR_THE_BROADSIDE, startAdventure(family, A_LINE_FOR_THE_BROADSIDE), ['inspectOldBroadside', 'markTheBlank', 'keepOldText']);
+    expect(unchanged.character?.historyFlags).toContain('kept_broadside_unchanged_over_unverified_verse');
+    expect(unchanged.character?.lore).toEqual(family.character?.lore);
   });
 });

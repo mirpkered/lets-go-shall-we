@@ -174,6 +174,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Test longest prose/hints, endings, reward views, and four-choice screens at 320×720 and 390×844; verify no page scrolling or horizontal overflow.
 - [ ] Confirm exact-state resume, fictional-time persistence, QA isolation, Bank capacity, and safe reward resolution where relevant.
 - [ ] Update the library status and continuity registry only for facts actually established by the scenario.
+- [ ] For an outcome-gated follow-up, reorient a player with imperfect memory, state a new present-day objective, and leave a meaningful persistent consequence when supported; preserve uncertainty rather than upgrading oral tradition into verified Knowledge.
 
 ## Temporary Gear-expansion phase
 

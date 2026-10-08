@@ -63,10 +63,10 @@ const MRS_ORROW_COMPOSITE_LORE = 'The fair bakers made a working plum-and-pepper
 
 export const NOTES_AFTER_THE_RIBBON = {
   ...story('notes-after-the-ribbon', 'Notes After the Ribbon', 'Lotte follows through on comparing the bakers’ memories, but a community table wants one honest account from several incomplete notes.', T('A named baker asks the traveler to preserve competing oral memories without declaring one an authentic recipe.', 'mediator', 'warm/hopeful', 'county-fair kitchen', ['oral-account comparison', 'attribution decision', 'stateful cultural record'], 'invited/known contact', ['money/item/knowledge/history possible']), 'notes', {
-    notes: scene('notes', 'Three Cards, No Master Recipe', 'After Hester’s plum pie took the ribbon, Lotte kept her promise to compare notes. At the fair kitchen, Hester recalls exact measures and a twice-folded crust; Lotte remembers “pepper until the filling wakes up”; Vale says the pear idea was hers. No one has a complete recipe. A community supper wants a display card, and Lotte asks what these notes can honestly support.', [
+    notes: scene('notes', 'Three Cards, No Master Recipe', 'At the last fair, Hester’s plum-and-pepper pie won the ribbon. Hester recalls Mrs. Orrow’s measures and folded crust; Lotte remembers “pepper until the filling wakes up.” Lotte asked to compare notes afterward. Now a supper needs a display card, but no complete recipe survives. Vale’s pear filling was her own; she made no claim to Orrow’s method. What can the card honestly say?', [
       { id: 'readHesterCard', label: 'Ask Hester which details she remembers directly', next: 'hester' },
       { id: 'readLotteCard', label: 'Ask Lotte what her phrase meant in practice', next: 'lotte' },
-      { id: 'askValeClaim', label: 'Ask Vale to separate her pear idea from the shared method', next: 'vale' },
+      { id: 'askValeClaim', label: 'Ask Vale how her pear filling should be credited', next: 'vale' },
     ]),
     hester: scene('hester', 'Measures Without a Source', 'Hester can stand behind the measures she used for her own plum pie and remembers Mrs. Orrow folding the crust twice. She cannot say those exact quantities came from Mrs. Orrow; they may be her own working measures.', [
       { id: 'compareHesterNotes', label: 'Put Hester’s account beside Lotte’s card', next: 'record' },
@@ -104,8 +104,8 @@ export const A_LINE_FOR_THE_BROADSIDE = {
       { id: 'inspectOldBroadside', label: 'Compare the proof with the old printed ending', next: 'oldSheet' },
       { id: 'askAnselSpace', label: 'Ask what the press can fit without cutting a line', next: 'pressLimit' },
     ], 'safe', [
-      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] }, text: 'You accepted Mara’s family-transmitted ending at the contest. Ansel recalls that the room heard a version worth carrying—not proof of where it began. Now his new broadside has room for a careful attribution, if you decide the account belongs on the page.' },
-      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] }, text: 'You favored the printed version at the contest, while Mara asked whether the missing verse could be added. That kept the contest rule clear; it did not disprove her family account. Ansel now asks how a new broadside should represent it.' },
+      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] }, text: 'At the earlier recitation contest, you accepted Mara Bell’s family-transmitted ending, which was absent from the printed broadside. That made it a recognized contest version, not proof of its age or origin. Now printer Ansel Reed has left space on a new broadside and asks whether to print it, attribute it, note it, or leave the old text unchanged.' },
+      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] }, text: 'At the earlier recitation contest, you favored the ending in the printed broadside while Mara Bell said her family remembered an extra verse. Your ruling set the contest standard; it did not establish her account as false. Now printer Ansel Reed is preparing a new broadside and asks how it should handle that unverified version.' },
     ]),
     mara: scene('mara', 'A Version Mara Can Name', 'Mara recites the family version and names her grandparent as its source. One line differs between two household tellings. She asks that the broadside identify it as her family’s account, not as the proven original.', [
       { id: 'takeVersionToProof', label: 'Return to the proof with Mara’s attribution', next: 'layout' },
