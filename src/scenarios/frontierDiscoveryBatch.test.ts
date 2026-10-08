@@ -97,6 +97,44 @@ describe('remote discovery and frontier claims batch', () => {
     expect(quiet.diversity?.fantasyDensity).toBe('NONE');
   });
 
+  it('does not resolve and then repeat the same closure across the frontier-discovery trace endings', () => {
+    const traceScenarios = FRONTIER_DISCOVERY_ADVENTURES.filter(({ scenes }) =>
+      Object.values(scenes).some(({ title }) => title === 'What the Place Means'),
+    );
+    expect(traceScenarios).toHaveLength(22);
+
+    for (const scenario of traceScenarios) {
+      const decision = Object.values(scenario.scenes).find(({ title }) => title === 'What the Place Means')!;
+      expect(decision.choices.map(({ label }) => label)).toHaveLength(3);
+      expect(decision.text).not.toMatch(/offers no final explanation|turns an empty room into a remembered life/i);
+      for (const choice of decision.choices) {
+        expect(choice.next, `${scenario.title}.${choice.id}`).toBeTruthy();
+        const ending = scenario.scenes[choice.next!];
+        expect(ending.ending, `${scenario.title}.${choice.id}`).toBe('success');
+        expect(ending.text).not.toContain(decision.text);
+      }
+    }
+
+    const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-claim-cabin')!;
+    const decision = cabin.scenes['the-old-claim-cabinDecision'];
+    expect(decision.text).toBe('The room suggests someone kept working and expected a smaller visitor. No letter explains who they were.');
+    expect(decision.choices.map(({ id }) => id)).toEqual(['closeCarefully', 'continueSearch', 'departNow']);
+    expect(cabin.scenes['the-old-claim-cabinCautious'].text).toMatch(/worn tools and small boot repair turn an empty room into a remembered life/i);
+    expect(cabin.scenes['the-old-claim-cabinBold'].text).toMatch(/worn tools and small boot repair turn an empty room into a remembered life/i);
+
+    const character = newCharacter('Claim Cabin Ending QA');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cabin, () => 0) };
+    state = choose(state, cabin, cabin.scenes[cabin.startScene].choices.find(({ id }) => id === 'approach')!);
+    state = choose(state, cabin, cabin.scenes[state.run!.sceneId].choices.find(({ id }) => id === 'readEvidence')!);
+    expect(state.run?.sceneId).toBe('the-old-claim-cabinDecision');
+    for (const choice of decision.choices) {
+      const result = choose(state, cabin, choice);
+      const ending = cabin.scenes[result.run!.sceneId];
+      expect(ending.ending).toBe('success');
+      expect(ending.text).not.toContain('The room suggests someone kept working and expected a smaller visitor. No letter explains who they were.');
+    }
+  });
+
   it('does not leak undiscovered facts on an early exit and pays out the explicitly taken cache coins once', () => {
     const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-cache-under-the-stove')!;
     const character = newCharacter('Cache Test');
