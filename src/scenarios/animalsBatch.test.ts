@@ -109,6 +109,16 @@ describe('animals and working stock adventure batch', () => {
     expect(tracked.character?.knowledge.at(-1)).toContain('hoofprints');
   });
 
+  it('shows the result of asking the orchard worker to check nearby farms', () => {
+    const tracks = act(start(THE_STRAY_HORSE), THE_STRAY_HORSE, 'horseRoad', 'lookHorseTracks');
+    const atOrchard = act(tracks, THE_STRAY_HORSE, 'horseTracks', 'followHoofprints');
+    const asked = act(atOrchard, THE_STRAY_HORSE, 'orchardOwner', 'askOrchardWorker');
+    const waited = act(tracks, THE_STRAY_HORSE, 'horseTracks', 'waitForRider');
+    expect(asked.character?.historyFlags).toContain('helped_reunite_loose_horse');
+    expect(sceneText(THE_STRAY_HORSE.scenes.horseOwnerFound, asked)).toContain('The orchard worker checks the nearby farms as you asked');
+    expect(sceneText(THE_STRAY_HORSE.scenes.horseOwnerFound, waited)).not.toContain('checks the nearby farms');
+  });
+
   it('makes the calf rescue practical, collaborative, and recoverable after a failed pull', () => {
     expect(THE_CALF_IN_THE_MUD.scenes.muddyGate.text).toContain('The bank is firm beneath your feet');
     expect(THE_CALF_IN_THE_MUD.scenes.muddyGate.text).toContain('there is time to work carefully');

@@ -34,7 +34,9 @@ export const THE_STRAY_HORSE: Scenario = {
       { id: 'askOrchardWorker', label: 'Ask the worker to check with nearby farms', timeCost: 5, next: 'horseOwnerFound', effects: { historyFlags: ['helped_reunite_loose_horse'] } },
       { id: 'leaveOrchardHorse', label: 'Leave the horse in the worker’s care', next: 'horseLeftAtOrchard', effects: { historyFlags: ['left_loose_horse_with_local_care'] } },
     ] },
-    horseOwnerFound: ending('horseOwnerFound', 'A Familiar Rein', 'A rider arrives from the orchard lane and recognizes the horse at once. The animal is led home at an easy walk. No larger trouble was hidden in the loose reins.'),
+    horseOwnerFound: { ...ending('horseOwnerFound', 'A Familiar Rein', 'A rider arrives from the orchard lane and recognizes the horse at once. The animal is led home at an easy walk. No larger trouble was hidden in the loose reins.'), textVariants: [
+      { requirements: { historyFlags: ['helped_reunite_loose_horse'] }, text: 'The orchard worker checks the nearby farms as you asked, then returns with a rider who recognizes the horse at once. The animal is led home at an easy walk. No larger trouble was hidden in the loose reins.' },
+    ] },
     horseLeftAtOrchard: ending('horseLeftAtOrchard', 'A Safe Gate', 'The orchard worker closes the gate and will ask the neighboring farms about the horse. You have left it somewhere safer without claiming to know its owner.'),
     leftHorse: ending('leftHorse', 'The Road Continues', 'You leave the horse space beside the hedge and continue. It remains visible from the road for a while; someone from the nearby farms may notice it.'),
   },
