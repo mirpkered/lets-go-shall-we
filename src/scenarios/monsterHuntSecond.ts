@@ -116,19 +116,26 @@ export const THE_GOAT_THAT_WOULDNT_STAY_DEAD: Scenario = {
     goatMarks: scene('goatMarks', 'Three Gray Coats', 'One goat has a square notch; another has a split ear. The living goat has neither. The farmer remembers burying a goat with a split ear, but cannot recall which pen it came from.', [
       { id: 'checkLedger', label: 'Check the feed marks in the stable book', next: 'goatLedger' },
       { id: 'askGravedigger', label: 'Ask who dug the shallow grave', next: 'goatBurial' },
-      { id: 'stopInquiry', label: 'Let the farmer keep the mystery', next: 'goatAfter' },
+      { id: 'stopInquiry', label: 'Let the farmer keep the mystery', next: 'goatAfter', effects: { historyFlags: ['left_goat_identity_unresolved'] } },
     ]),
     goatLedger: scene('goatLedger', 'A Feed Tally', 'The stablehand marked one gray goat as missing after a gate blew open. The farmer buried another goat with a split ear two days later. No one checked the ear before the burial; the gate was repaired after the first goat wandered back.', [
       { id: 'openBurial', label: 'Check the shallow grave in daylight', next: 'goatBurial' },
-      { id: 'showTally', label: 'Show the farmer the feed tally', next: 'goatAfter' },
-      { id: 'askNeighbor', label: 'Ask the neighbor about the loose goat', next: 'goatAfter' },
+      { id: 'showTally', label: 'Show the farmer the feed tally', next: 'goatAfter', effects: { historyFlags: ['resolved_goat_identity_with_feed_tally'] } },
+      { id: 'askNeighbor', label: 'Ask the neighbor about the loose goat', next: 'goatAfter', effects: { historyFlags: ['resolved_goat_identity_with_neighbor_account'] } },
     ]),
     goatBurial: scene('goatBurial', 'An Empty Shallow Grave', 'The grave is empty. The farmer admits the lid was never weighted; a scavenger may have dragged the carcass away, or someone moved it. The living goat’s ears match neither the buried animal nor the missing one.', [
-      { id: 'closeGrave', label: 'Close the grave and mend the gate', next: 'goatAfter', effects: { historyFlags: ['helped a farmer resolve a repeated-goat death through ear marks and a feed tally'] } },
-      { id: 'leaveGrave', label: 'Leave the grave for the farmer to close', next: 'goatAfter' },
-      { id: 'claimMiracle', label: 'Tell the farmer the goat returned', next: 'goatAfter' },
+      { id: 'closeGrave', label: 'Close the grave and mend the gate', next: 'goatAfter', effects: { historyFlags: ['helped a farmer resolve a repeated-goat death through ear marks and a feed tally', 'closed_goat_grave_and_checked_gate'] } },
+      { id: 'leaveGrave', label: 'Leave the grave for the farmer to close', next: 'goatAfter', effects: { historyFlags: ['left_goat_grave_for_farmer_to_close'] } },
+      { id: 'claimMiracle', label: 'Tell the farmer the goat returned', next: 'goatAfter', effects: { historyFlags: ['called_living_goat_a_miracle'] } },
     ]),
-    goatAfter: end('goatAfter', 'Three Goats, One Story', 'The farmer counts three different goats: one wandered, one was buried, and the one before you was never missing. The empty grave remains unexplained, but the gate is fixed and the living animals are counted.'),
+    goatAfter: { ...end('goatAfter', 'Three Goats, One Story', 'The farmer counts three different goats: one wandered, one was buried, and the one before you was never missing. The empty grave remains unexplained, but the gate is fixed and the living animals are counted.'), textVariants: [
+      { requirements: { historyFlags: ['left_goat_identity_unresolved'] }, text: 'You leave the farmer with the tally and the marked goats but do not settle which animal was buried. The gate remains repaired from the earlier escape; the empty grave and the repeated-death story remain unresolved.' },
+      { requirements: { historyFlags: ['resolved_goat_identity_with_feed_tally'] }, text: 'You show the stable book beside the ear marks. The farmer can separate the goat that wandered from the one buried and the living animal that was never missing; the empty grave still has no certain explanation.' },
+      { requirements: { historyFlags: ['resolved_goat_identity_with_neighbor_account'] }, text: 'The neighbor recalls the loose gray goat coming back after the gate blew open. The farmer compares that account with the ear marks and feed tally: three animals, not one returning from the dead. The empty grave remains unexplained.' },
+      { requirements: { historyFlags: ['closed_goat_grave_and_checked_gate'] }, text: 'You close the shallow grave and check the repaired gate with the farmer. The ear marks and feed tally separate the three goats; no one claims to know what happened to the body.' },
+      { requirements: { historyFlags: ['left_goat_grave_for_farmer_to_close'] }, text: 'You leave the grave for the farmer to close. The earlier gate repair still holds, and the ear marks and tally distinguish the three goats; what happened to the body remains uncertain.' },
+      { requirements: { historyFlags: ['called_living_goat_a_miracle'] }, text: 'You tell the farmer the goat returned. The ear marks and feed tally still point to three different animals, though the empty grave keeps part of the story unsettled.' },
+    ] },
     goatLeave: end('goatLeave', 'A Tale Left at the Farm', 'You leave the farmer with the living goat and the story of its two deaths. The gate is still mended, and no animal is in immediate danger.'),
   },
 };

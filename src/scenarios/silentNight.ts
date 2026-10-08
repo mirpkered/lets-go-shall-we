@@ -64,8 +64,8 @@ export const SILENT_NIGHT: Scenario = {
     innkeeperArrives: { id: 'innkeeperArrives', title: 'The Innkeeper Takes the Hall', tone: 'warning',
       text: '{{innkeeper}} comes down in a dressing gown and stands at the foot of the stairs, speaking firmly to both guests. The argument may be ordinary or serious; the innkeeper knows these people better than you do.',
       choices: [
-        { id: 'letInnkeeperHandle', label: 'Give the innkeeper room to handle it', effects: { historyFlags: ['sought_help_in_inn_dispute'] }, next: 'hostSettlesIt' },
-        { id: 'stayAsWitness', label: 'Stay in the lit doorway as a witness', effects: { historyFlags: ['sought_help_in_inn_dispute'] }, next: 'hostSettlesIt' },
+        { id: 'letInnkeeperHandle', label: 'Give the innkeeper room to handle it', effects: { historyFlags: ['sought_help_in_inn_dispute', 'left_innkeeper_to_handle_dispute'] }, next: 'hostSettlesIt' },
+        { id: 'stayAsWitness', label: 'Stay in the lit doorway as a witness', effects: { historyFlags: ['sought_help_in_inn_dispute', 'witnessed_innkeeper_separate_guests'] }, next: 'hostSettlesIt' },
       ] },
     argumentCools: { id: 'argumentCools', title: 'The Voices Fade', tone: 'safe', text: 'The guests lower their voices. {{guest}} leaves the common room with the satchel—or without it—and no one asks you to decide whose account was right. You return to bed without knowing whether your words made the difference.', ending: 'success', choices: [] },
     guestsSeparated: { id: 'guestsSeparated', title: 'Space Between Them', tone: 'warning', text: 'The guests move apart. The knife is laid on the floor and stays there while the innkeeper is called. You have prevented an immediate blow, but the dispute itself is not yours to settle.', ending: 'success', choices: [] },
@@ -78,7 +78,10 @@ export const SILENT_NIGHT: Scenario = {
     morningAfterInjury: { id: 'morningAfterInjury', title: 'A Difficult Morning', tone: 'warning', text: 'The innkeeper brings clean cloth and sends for a doctor. You are alive, though the wound will take time to heal. The guests have been sent to separate rooms, and no one asks you to settle their dispute.', ending: 'success', choices: [] },
     hostSettlesIt: { id: 'hostSettlesIt', title: 'Morning at the Inn', tone: 'safe',
       text: 'The innkeeper sends the guests to separate rooms. At breakfast, the quarrel is already a private matter again. A chair is broken, but no one asks you to take sides.',
-      textVariants: [{ requirements: { selections: { argument: 'drunken' } }, text: 'By morning the guests are embarrassed about the song and spilled drink. Nothing worse came of it. Whether the innkeeper’s arrival or the cooling night did the work is hard to say.' }],
+      textVariants: [
+        { requirements: { historyFlags: ['witnessed_innkeeper_separate_guests'] }, text: 'You stay in the lit doorway until the innkeeper sends the guests to separate rooms. At breakfast, if their accounts differ, you can say what you saw; the quarrel itself remains theirs to settle.' },
+        { requirements: { selections: { argument: 'drunken' } }, text: 'By morning the guests are embarrassed about the song and spilled drink. Nothing worse came of it. Whether the innkeeper’s arrival or the cooling night did the work is hard to say.' },
+      ],
       ending: 'success', choices: [] },
     morningAfterSleep: { id: 'morningAfterSleep', title: 'Morning Comes', tone: 'safe',
       text: 'You sleep through the rest of the night. At breakfast the common room is much as you left it; the argument appears to have ended without needing you.', ending: 'success', choices: [] },

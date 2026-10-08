@@ -428,8 +428,8 @@ export const ONE_MORE_ROUND: Scenario = {
       textVariants: [{ requirements: { minElapsedMinutes: 24 }, text: 'The constable arrives after the shouting and broken glass. Pell is seated, Rafe is outside, and Sella is shaken. The room is safe now, but the cost of waiting is visible in the overturned table.' }],
       choices: [
         { id: 'constableSearchesPurse', label: 'Show the recovered purse and explain', requirements: { flags: ['purseRecovered'] }, effects: { setFlags: ['truthResolved'], historyFlags: ['exposed_tavern_truth'] }, next: 'truthRewards' },
-        { id: 'acceptConstableSeparation', label: 'Ask the constable to separate them for the night', effects: { historyFlags: ['called_help_at_tavern'] }, next: 'authorityEnding' },
-        { id: 'makeStatementWithoutEvidence', label: 'Give your account and leave the judgment to them', effects: { historyFlags: ['called_help_at_tavern'] }, next: 'authorityEnding' },
+        { id: 'acceptConstableSeparation', label: 'Ask the constable to separate them for the night', effects: { historyFlags: ['called_help_at_tavern', 'asked_constable_to_separate_guests'] }, next: 'authorityEnding' },
+        { id: 'makeStatementWithoutEvidence', label: 'Give your account and leave the judgment to them', effects: { historyFlags: ['called_help_at_tavern', 'gave_account_without_requesting_separation'] }, next: 'authorityEnding' },
       ],
     },
     paidDebtEnding: {
@@ -457,6 +457,10 @@ export const ONE_MORE_ROUND: Scenario = {
     authorityEnding: {
       id: 'authorityEnding', title: 'Statements in the Morning', ending: 'success',
       text: 'The constable keeps the room separated until it is safe to close. The old debt and missing purse will be sorted in daylight. There is no arrest tonight: no one has produced proof of theft.',
+      textVariants: [
+        { requirements: { historyFlags: ['asked_constable_to_separate_guests'] }, text: 'You ask the constable to keep Sella and Rafe apart for the night. They agree, and the room closes without another confrontation. The old debt and missing purse wait for daylight; no one has proved theft.' },
+        { requirements: { historyFlags: ['gave_account_without_requesting_separation'] }, text: 'You give the constable your account and leave the judgment to them. They record what you saw, but make no arrest on an incomplete account. The old debt and missing purse wait for daylight.' },
+      ],
       choices: [],
     },
     falseAccusationEnding: {

@@ -285,8 +285,8 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
       choices: [
         { id: 'askFarmhandsToBringHal', label: 'Have the farmhands bring Hal here separately', requirements: { notFlags: ['survivorEscorted'] }, timeCost: 10, next: 'reunion', effects: { historyFlags: ['returned_for_help'] } },
         { id: 'returnAloneForHal', label: 'Go back for Hal while Mara rests', requirements: { notFlags: ['survivorEscorted'] }, timeCost: 9, next: 'reunion', effects: { historyFlags: ['escorted_injured_traveler'] } },
-        { id: 'giveThemSpaceAtFarm', label: 'Let both rest here without forcing a conversation', requirements: { flags: ['survivorEscorted'] }, next: 'safeApartEnding' },
-        { id: 'leaveMaraSafeForMorning', label: 'Let Mara rest and leave the rest to the farm', next: 'safeApartEnding' },
+        { id: 'giveThemSpaceAtFarm', label: 'Stay while both rest, without forcing a conversation', requirements: { flags: ['survivorEscorted'] }, next: 'safeApartEnding', effects: { historyFlags: ['stayed_while_travelers_settled_at_farm'] } },
+        { id: 'leaveMaraSafeForMorning', label: 'Leave Mara with the farm family and trust them with the rest', next: 'safeApartEnding', effects: { historyFlags: ['left_travelers_in_farm_care'] } },
       ],
     },
     reunion: {
@@ -302,7 +302,12 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
     safeApartEnding: {
       id: 'safeApartEnding', title: 'A Little Distance', tone: 'safe', ending: 'success',
       text: 'Mara rests safely with the farm family. Hal is brought in separately, and the two travelers can decide when to speak. You did not force a reunion to make the rescue complete.' ,
-      textVariants: [{ requirements: { flags: ['survivorEscorted'] }, text: 'Both travelers are already safe at the farmhouse. Mara rests in a separate room while Hal is tended by the farm family; no one pressures them to speak before they are ready.' }],
+      textVariants: [
+        { requirements: { flags: ['survivorEscorted'], historyFlags: ['stayed_while_travelers_settled_at_farm'] }, text: 'Both travelers are safe at the farmhouse. You stay until the family has them settled in separate rooms, then leave them to speak when they are ready.' },
+        { requirements: { flags: ['survivorEscorted'], historyFlags: ['left_travelers_in_farm_care'] }, text: 'Both travelers are safe at the farmhouse. You leave them in the family’s care before they speak; Mara rests in a separate room, and no one presses for an account tonight.' },
+        { requirements: { notFlags: ['survivorEscorted'], historyFlags: ['left_travelers_in_farm_care'] }, text: 'Mara is safe with the farm family, but Hal is still at the crossing. You leave the family your account and trust them to send help for his injured leg; you do not see that handoff yourself.' },
+        { requirements: { flags: ['survivorEscorted'] }, text: 'Both travelers are already safe at the farmhouse. Mara rests in a separate room while Hal is tended by the farm family; no one pressures them to speak before they are ready.' },
+      ],
       choices: [],
     },
     partialSearchEnding: {

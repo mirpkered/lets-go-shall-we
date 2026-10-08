@@ -140,3 +140,87 @@ export const OCCULT_INVESTIGATION_ADVENTURES: Scenario[] = [
     scenes:{lastCandleHouse:{id:'lastCandleHouse',title:'One Flame Left',text:'Every candle in the farmhouse goes out at once. One remains lit in a locked spare room. The owner keeps the key in hand; no one has entered since the last tenant died.',choices:[{id:'checkChimney',label:'Check the chimney and window first',next:'candleDraft'},{id:'unlockRoom',label:'Unlock the spare room together',next:'lastCandleRoom'},{id:'leaveHouseCandle',label:'Wait outside until daylight',next:'lastCandleAfter'}]},candleDraft:{id:'candleDraft',title:'No Wind in the Room',text:'The chimney is capped and the window sealed. The other wicks are cold. A narrow light shows beneath the locked door, steady as a lamp in still air.',choices:[{id:'askOwnerKey',label:'Ask the owner to open the room',next:'lastCandleRoom'},{id:'stayOutsideCandle',label:'Keep the door closed until morning',next:'lastCandleAfter'}]},lastCandleRoom:{id:'lastCandleRoom',title:'A Flame over the Floorboards',tone:'warning',text:'The candle stands over a loose board. Its flame bends down despite no draft. The old tenant’s walking stick lies beneath it, though the family says it was buried with him.',choices:[{id:'liftBoardCandle',label:'Lift the loose board with the owner present',next:'lastCandleAfter'},{id:'snuffLastCandle',label:'Snuff the flame and close the door',next:'lastCandleAfter'}]},lastCandleAfter:done('lastCandleAfter','The House in Daylight','Under the board is a shallow space and a dry walking stick. The family remembers burying the tenant with another stick. They leave the room open in daylight; nobody claims to know why one candle stayed lit.')}
   },
 ];
+
+// Preserve the distinct disposition decisions at these endings without
+// changing the shared authored scene graph or inventing broader reputation state.
+const boneBoxScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-bone-box')!;
+const boneBoxOpen = boneBoxScenario.scenes.boneBoxOpen;
+boneBoxOpen.choices = boneBoxOpen.choices.map((choice) => {
+  if (choice.id === 'burnBoxLining') return { ...choice, label: 'Burn the lining with the folded map still inside', hint: 'The paper map is pressed against the lining; the stove will consume both.', effects: { historyFlags: ['burned_bone_box_lining_and_map'] } };
+  if (choice.id === 'returnBoxBroker') return { ...choice, effects: { historyFlags: ['left_bone_box_closed_with_broker'] } };
+  if (choice.id === 'takeMapOnly') return { ...choice, effects: { ...choice.effects, historyFlags: ['kept_map_from_bone_box'] } };
+  return choice;
+});
+boneBoxScenario.scenes.boneBoxAfter.textVariants = [
+  { requirements: { historyFlags: ['burned_bone_box_lining_and_map'] }, text: 'The lining and folded map burn together in the shop stove. The broker locks the empty box in an iron drawer; the sliver of bone is gone, and the mark cannot be examined again.' },
+  { requirements: { historyFlags: ['kept_map_from_bone_box'] }, text: 'You keep the folded quarry map and leave the box with the broker. He locks the box in an iron drawer; the sliver still taps against its lining, while your copy gives you a route to consider.' },
+];
+
+const quietRoomScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-quiet-room')!;
+const quietRoomNight = quietRoomScenario.scenes.quietRoomNight;
+quietRoomNight.choices = quietRoomNight.choices.map((choice) => choice.id === 'sealHatch'
+  ? { ...choice, effects: { historyFlags: ['asked_innkeeper_to_seal_quiet_room_hatch'] } }
+  : { ...choice, next: 'quietRoomLeft', effects: { historyFlags: ['left_quiet_room_without_sealing_hatch'] } });
+quietRoomScenario.scenes.quietRoomAfter.text = 'At your request, the innkeeper boards the hatch and refunds your room charge. You leave the room before dawn; neither of you hears the voice again.';
+quietRoomScenario.scenes.quietRoomLeft = done('quietRoomLeft', 'Out Before Dawn', 'You leave the room before dawn without asking the innkeeper to board the hatch. The room remains closed behind you; whether the voice returns is not something you stay to learn.');
+
+const lastCandleScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'last-candle-in-the-house')!;
+lastCandleScenario.scenes.lastCandleHouse.choices = lastCandleScenario.scenes.lastCandleHouse.choices.map((choice) => choice.id === 'leaveHouseCandle'
+  ? { ...choice, effects: { historyFlags: ['waited_outside_candle_room_until_daylight'] } }
+  : choice);
+lastCandleScenario.scenes.candleDraft.choices = lastCandleScenario.scenes.candleDraft.choices.map((choice) => choice.id === 'stayOutsideCandle'
+  ? { ...choice, effects: { historyFlags: ['waited_outside_candle_room_until_daylight'] } }
+  : choice);
+lastCandleScenario.scenes.lastCandleRoom.choices = lastCandleScenario.scenes.lastCandleRoom.choices.map((choice) => choice.id === 'liftBoardCandle'
+  ? { ...choice, effects: { historyFlags: ['inspected_space_under_candle_board'] } }
+  : { ...choice, effects: { historyFlags: ['snuffed_candle_without_inspecting_board'] } });
+lastCandleScenario.scenes.lastCandleAfter.textVariants = [
+  { requirements: { historyFlags: ['inspected_space_under_candle_board'] }, text: 'With the owner beside you, you lift the board and find a shallow space with a dry walking stick. The family remembers burying the tenant with another stick. They leave the room open in daylight; nobody claims to know why one candle stayed lit.' },
+  { requirements: { historyFlags: ['snuffed_candle_without_inspecting_board'] }, text: 'You snuff the candle and close the door without lifting the loose board. The family leaves the room shut for the mason; the stick and the reason the flame persisted remain unexamined.' },
+  { requirements: { historyFlags: ['waited_outside_candle_room_until_daylight'] }, text: 'You wait outside until daylight without entering the room. The family finds no new sign from the hall, and nobody claims to know why one candle stayed lit.' },
+];
+
+const candlePassageScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'candle-that-will-not-go-out')!;
+candlePassageScenario.scenes.relightingCandle.choices = candlePassageScenario.scenes.relightingCandle.choices.map((choice) => choice.id === 'leaveCandle'
+  ? { ...choice, effects: { historyFlags: ['left_candle_before_examination'] } }
+  : choice);
+candlePassageScenario.scenes.candleWax.choices = candlePassageScenario.scenes.candleWax.choices.map((choice) => choice.id === 'douseBothWicks'
+  ? { ...choice, effects: { historyFlags: ['doused_candle_without_inspecting_board'] } }
+  : choice);
+candlePassageScenario.scenes.candleRelit.choices = candlePassageScenario.scenes.candleRelit.choices.map((choice) => choice.id === 'leaveShopCandle'
+  ? { ...choice, effects: { historyFlags: ['left_candle_on_back_room_floor'] } }
+  : choice);
+candlePassageScenario.scenes.candleSeam.choices = candlePassageScenario.scenes.candleSeam.choices.map((choice) => {
+  if (choice.id === 'sealCandlePassage') return { ...choice, effects: { historyFlags: ['closed_candle_passage_for_mason'] } };
+  if (choice.id === 'followCandlePassage') return { ...choice, effects: { historyFlags: ['followed_candle_passage_with_shopkeeper'] } };
+  return choice;
+});
+candlePassageScenario.scenes.candleAfter.textVariants = [
+  ...(candlePassageScenario.scenes.candleAfter.textVariants ?? []),
+  { requirements: { historyFlags: ['closed_candle_passage_for_mason'] }, text: 'You close the board and call a mason without entering the gas-marked passage. The shopkeeper jars the candle; the passage stays sealed until it can be inspected.' },
+  { requirements: { historyFlags: ['followed_candle_passage_with_shopkeeper'] }, text: 'You and the shopkeeper follow the passage only as far as the soot-dark turn; the stale smell grows stronger, so you retreat and leave it sealed for a mason. The candle remains in its jar.' },
+  { requirements: { historyFlags: ['left_candle_before_examination'] }, text: 'You leave before the candle relights in another room. The shopkeeper stays with the saucer and water pail; you do not learn what happens after you go.' },
+  { requirements: { historyFlags: ['doused_candle_without_inspecting_board'] }, text: 'You douse both wicks without opening the floor. The shopkeeper leaves the board undisturbed; neither of you learns what lies below it.' },
+  { requirements: { historyFlags: ['left_candle_on_back_room_floor'] }, text: 'You leave the relit candle where it is and go with the shopkeeper. The loose board remains unopened; no one claims to know why the flame moved rooms.' },
+];
+
+const charmsScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'hanging-charms')!;
+charmsScenario.scenes.charmsEmptyDoor.choices = charmsScenario.scenes.charmsEmptyDoor.choices.map((choice) => choice.id === 'enterCottage'
+  ? { ...choice, effects: { historyFlags: ['entered_empty_coopers_cottage_with_carpenter'] } }
+  : { ...choice, effects: { historyFlags: ['left_coopers_cottage_closed_for_inspection'] } });
+charmsScenario.scenes.charmsAfter.textVariants = [
+  { requirements: { historyFlags: ['entered_empty_coopers_cottage_with_carpenter'] }, text: 'With the carpenter beside you, you enter the empty cottage. The inside scratches are old and no one is there; the settlement repairs the weathered bundles but leaves the cottage closed afterward. The custom recalls the fever, not proof that charms stopped it.' },
+  { requirements: { historyFlags: ['left_coopers_cottage_closed_for_inspection'] }, text: 'You leave the cottage shut for the keeper to inspect. The settlement repairs the weathered bundles together, but the scratches remain unexplained; the custom remembers the fever, not proof the charms kept it away.' },
+];
+
+const doorwayScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'doorway-with-no-room')!;
+doorwayScenario.scenes.doorInside.choices = doorwayScenario.scenes.doorInside.choices.map((choice) => {
+  if (choice.id === 'openSecondDoor') return { ...choice, effects: { historyFlags: ['opened_far_door_in_impossible_passage'] } };
+  if (choice.id === 'turnBackDoor') return { ...choice, effects: { historyFlags: ['left_impossible_passage_by_chalk_marks'] } };
+  return choice;
+});
+doorwayScenario.scenes.doorAfter.textVariants = [
+  ...(doorwayScenario.scenes.doorAfter.textVariants ?? []),
+  { requirements: { historyFlags: ['opened_far_door_in_impossible_passage'] }, text: 'You open the far door into the bedroom you left. No one stands there, and the knocking stops without explaining itself. The owner bricks in both openings; the chalk line remains on the old floorboard.' },
+  { requirements: { historyFlags: ['left_impossible_passage_by_chalk_marks'] }, text: 'You follow the chalk marks back instead of opening the far door. The owner bricks in both openings; the builder confirms the corridor cannot fit, but you leave the knocking unanswered.' },
+];

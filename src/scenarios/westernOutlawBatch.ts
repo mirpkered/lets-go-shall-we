@@ -210,10 +210,13 @@ export const THREE_MEN_AT_THE_WATER_TROUGH = W('three-men-at-the-water-trough', 
     { id: 'handsRun', label: 'Run for the wagon’s moving cover', hint: 'Three armed men have a clear line to the road.', chance: { probability: 0.31, successNext: 'retreat', failureNext: 'troughDeath', successMessage: 'You reach the far wheel as the wagon passes.', failureMessage: 'A shot catches you in the open.', failureEffects: { health: -5 } } },
   ], 'danger'),
   retreat: scene('retreat', 'The Open Road', 'You reach the road without crossing between the riders and their horses. They remain at the trough. The freight wagon can pass if you warned it; otherwise the driver is still approaching them.', [
-    { id: 'retreatTellWagon', label: 'Warn the wagoner to keep distance', next: 'parting' },
-    { id: 'retreatGo', label: 'Continue down the road alone', next: 'parting' },
+    { id: 'retreatTellWagon', label: 'Warn the wagoner to keep distance', next: 'parting', effects: { historyFlags: ['warned_wagoner_away_from_trough'] } },
+    { id: 'retreatGo', label: 'Continue down the road alone', next: 'parting', effects: { historyFlags: ['left_wagoner_unwarned_at_trough'] } },
   ]),
-  parting: end('parting', 'Not Your Meeting', 'The strangers remain a danger to someone else, but you are no longer between them and the road. You were not Cal, and the confusion did not prove that anyone there was a criminal.'),
+  parting: { ...end('parting', 'Not Your Meeting', 'The strangers remain a danger to someone else, but you are no longer between them and the road. You were not Cal, and the confusion did not prove that anyone there was a criminal.'), textVariants: [
+    { requirements: { historyFlags: ['warned_wagoner_away_from_trough'] }, text: 'You warn the approaching wagoner to keep distance from the trough. The driver slows and takes the wider track while the riders remain there; you leave without deciding what their meeting meant.' },
+    { requirements: { historyFlags: ['left_wagoner_unwarned_at_trough'] }, text: 'You continue alone without warning the approaching wagoner. The riders remain at the trough, and you do not learn what happened when the freight wagon reached them.' },
+  ] },
   troughDeath: end('troughDeath', 'At the Trough', 'A rider fires before you reach cover.', 'death'),
 }, 'trough', 'traveler/passenger', 'AVOIDABLE');
 
@@ -340,11 +343,11 @@ export const THE_FALSE_DEPUTY = W('the-false-deputy', 'The False Deputy', 'A bad
     { id: 'threatResist', label: 'Push past him toward the toll house', hint: 'He may draw when you close the distance.', chance: { probability: 0.4, successNext: 'verified', failureNext: 'deputyDeath', successMessage: 'The smith steps between you and the road while you reach the keeper.', failureMessage: 'The badge-holder draws before you pass.', failureEffects: { health: -5 } } },
   ], 'danger'),
   verified: scene('verified', 'The Keeper Knows the Badge', 'The toll keeper says this man is not assigned to the road. A county deputy is due in the next village; the badge may be stolen or used outside its authority. The keeper will record your account but cannot detain an armed man alone.', [
-    { id: 'verifyRecord', label: 'Leave a description for the real deputy', next: 'report' },
-    { id: 'verifyFollow', label: 'Ask the smith to escort you past the road', next: 'report' },
+    { id: 'verifyRecord', label: 'Leave a description for the real deputy', next: 'report', effects: { historyFlags: ['gave_description_of_false_deputy'] } },
+    { id: 'verifyFollow', label: 'Ask the smith to escort you past the road', next: 'report', effects: { historyFlags: ['took_smith_escort_past_false_deputy'] } },
   ]),
   paid: scene('paid', 'Two Coins for Passage', 'The man takes two coins and steps aside. At the toll house, the keeper says no fee was due; the badge-holder was not assigned there. The money is gone, but the keeper can send word to the county deputy.', [{ id: 'paidReport', label: 'Give the keeper the man’s description', next: 'report', effects: { historyFlags: ['paid a false road fine and reported the badge-holder'] } }]),
-  report: end('report', 'A Badge Questioned', 'The real deputy receives a witness account and a description. The armed man has left before they arrive; whether he stole the badge or misused it remains unproven. You have not turned a suspicion into a verdict.'),
+  report: { ...end('report', 'A Badge Questioned', 'The real deputy receives a witness account and a description. The armed man has left before they arrive; whether he stole the badge or misused it remains unproven. You have not turned a suspicion into a verdict.'), textVariants: [{ requirements: { historyFlags: ['took_smith_escort_past_false_deputy'] }, text: 'The smith walks with you past the toll road. The keeper will send the badge discrepancy to the county deputy, but you leave without giving your own description; whether the man stole the badge or misused it remains unproven.' }] },
   departed: end('departed', 'The Field Track', 'You leave without paying or confronting him. The road fine remains uncertain to anyone who did not check the toll house; the man’s badge and weapon remain his own risk.'),
   deputyDeath: end('deputyDeath', 'The False Fine', 'The armed man fires when you try to pass him at close range.', 'death'),
 }, 'road', 'traveler/passenger', 'AVOIDABLE');
