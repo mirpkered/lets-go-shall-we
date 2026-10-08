@@ -5,7 +5,7 @@ import { BANK_CAPACITY, bankCapacityLabel, bankCapacityMessage, emptyBankConfirm
 import { showLaunchSplash } from './launchSplash';
 import { feedbackContext, renderUtilityFeatures } from './helpPanels';
 import { normalizeFeedbackEndpoint, submitFeedback } from './feedback';
-import { renderQaPanel } from './qaPanel';
+import { filterQaScenarios, renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioSelection';
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
@@ -73,6 +73,29 @@ function startScenario(scenarioId: string): void {
 }
 
 function bindQaPanel(): void {
+  const search = document.querySelector<HTMLInputElement>('[data-qa-scenario-search]');
+  if (search) {
+    const entries = [...document.querySelectorAll<HTMLElement>('[data-qa-picker-entry]')];
+    const count = document.querySelector<HTMLElement>('[data-qa-scenario-count]');
+    const empty = document.querySelector<HTMLElement>('[data-qa-search-empty]');
+    const updateScenarioSearch = () => {
+      const matches = new Set(filterQaScenarios(SCENARIOS, search.value).map((scenario) => scenario.id));
+      let visible = 0;
+      entries.forEach((entry) => {
+        const button = entry.querySelector<HTMLButtonElement>('[data-qa-start]');
+        entry.hidden = !button || !matches.has(button.dataset.qaStart ?? '');
+        if (!entry.hidden) visible += 1;
+      });
+      if (count) count.textContent = `${visible} of ${entries.length}`;
+      if (empty) empty.hidden = visible !== 0;
+    };
+    search.addEventListener('input', updateScenarioSearch);
+    document.querySelector<HTMLButtonElement>('[data-qa-clear-search]')?.addEventListener('click', () => {
+      search.value = '';
+      updateScenarioSearch();
+      search.focus();
+    });
+  }
   if (!qaEnabled) return;
   document.querySelectorAll<HTMLButtonElement>('[data-qa-simulate-selection]').forEach((button) => button.addEventListener('click', () => {
     const draws = Number(button.dataset.qaSimulateSelection) === 1000 ? 1000 : 100;

@@ -237,6 +237,13 @@ h1,h2 { font-family:'IM Fell English', Georgia, serif; font-weight:400; }
 .qa-actions .danger-ghost { color:#d6a29b; background:#251918; border:1px solid #73453f; }
 .qa-body pre { max-width:100%; max-height:18rem; margin:.6rem 0 0; padding:.75rem; overflow:auto; border:1px solid #302b23; background:#090908; color:#c7bda9; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.68rem; line-height:1.45; }
 .qa-note { color:#9a8d78; font-size:.78rem; line-height:1.4; }
+.qa-scenario-picker { display:grid; gap:.4rem; min-width:0; }
+.qa-scenario-picker > label { color:#d7b46d; font-weight:700; }
+.qa-search-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:.5rem; }
+.qa-search-row input { min-width:0; min-height:3rem; padding:.55rem .7rem; border:1px solid #6d5632; background:#171511; color:#eee8da; font-size:16px; }
+.qa-search-row button { min-width:4rem; min-height:3rem; padding:.55rem .7rem; border:1px solid #51442f; background:#201c15; color:#e4d8c1; cursor:pointer; }
+.qa-scenario-count { margin:0; color:#aaa08e; font-variant-numeric:tabular-nums; }
+.qa-empty-search { margin:.25rem 0; color:#d9cfbd; }
 
 @media (min-width: 560px) {
   .app-shell { padding-inline:1.5rem; }

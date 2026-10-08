@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { newCharacter, startRun } from './engine';
-import { QA_BUILD_ID, renderQaPanel } from './qaPanel';
+import { filterQaScenarios, QA_BUILD_ID, renderQaPanel } from './qaPanel';
 import { COLD_STORAGE } from './scenarios/coldStorage';
 
 describe('QA progression inspection', () => {
@@ -50,5 +50,34 @@ describe('QA progression inspection', () => {
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');
     expect(renderQaPanel(false, state, [COLD_STORAGE], items)).not.toContain('content quality report');
     expect(JSON.stringify(state)).toBe(before);
+  });
+});
+
+describe('QA direct scenario search', () => {
+  it('matches partial titles and stable IDs without case sensitivity and resets on an empty query', () => {
+    const scenarios = [
+      { ...COLD_STORAGE, id: 'coldStorage', title: 'Cold Storage' },
+      { ...COLD_STORAGE, id: 'clockLocalTime', title: 'The Clock That Kept Local Time' },
+    ];
+
+    expect(filterQaScenarios(scenarios, 'CLOCK')).toEqual([scenarios[1]]);
+    expect(filterQaScenarios(scenarios, 'localti')).toEqual([scenarios[1]]);
+    expect(filterQaScenarios(scenarios, 'coldS')).toEqual([scenarios[0]]);
+    expect(filterQaScenarios(scenarios, 'missing')).toEqual([]);
+    expect(filterQaScenarios(scenarios, '  ')).toEqual(scenarios);
+  });
+
+  it('renders an accessible, QA-only search with live count and an empty state', () => {
+    const character = newCharacter();
+    const state = { version: 1 as const, bank: [], character, run: null };
+    const scenarios = [{ ...COLD_STORAGE, id: 'coldStorage', title: 'Cold Storage' }];
+    const markup = renderQaPanel(true, state, scenarios, {});
+
+    expect(markup).toContain('aria-label="Direct scenario picker"');
+    expect(markup).toContain('for="qa-scenario-search"');
+    expect(markup).toContain('data-qa-scenario-count aria-live="polite">1 of 1');
+    expect(markup).toContain('data-qa-search-empty hidden>No scenarios match that search.');
+    expect(markup).toContain('data-qa-picker-entry');
+    expect(renderQaPanel(false, state, scenarios, {})).not.toContain('qa-scenario-search');
   });
 });

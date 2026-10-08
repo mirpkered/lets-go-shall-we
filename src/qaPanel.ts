@@ -20,6 +20,12 @@ export interface CounterDiagnostics {
 
 export const QA_BUILD_ID = 'payoff-qa-2026-10-07';
 
+export function filterQaScenarios(scenarios: Scenario[], query: string): Scenario[] {
+  const term = query.trim().toLocaleLowerCase();
+  if (!term) return scenarios;
+  return scenarios.filter((scenario) => scenario.title.toLocaleLowerCase().includes(term) || scenario.id.toLocaleLowerCase().includes(term));
+}
+
 function safeText(text: string): string {
   return text.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]!));
 }
@@ -68,7 +74,7 @@ export function renderQaPanel(enabled: boolean, state: SaveData, scenarios: Scen
   };
   const highRisk = scenarios.find((entry) => scenarioRiskTier(entry) === 'HIGH');
   const severeRisk = scenarios.find((entry) => scenarioRiskTier(entry) === 'SEVERE');
-  const directLaunch = active ? '<p class="qa-note">Clear the active run before launching another scenario.</p>' : `<section class="qa-risk-launches"><strong>Risk checks</strong><div class="qa-launches">${highRisk ? `<button type="button" data-qa-start="${highRisk.id}" data-risk-tier="HIGH">Start HIGH · ${highRisk.title}</button>` : ''}${severeRisk ? `<button type="button" data-qa-start="${severeRisk.id}" data-risk-tier="SEVERE">Start SEVERE · ${severeRisk.title}</button>` : ''}</div></section><div class="qa-launches">${scenarios.map((entry) => `<button type="button" data-qa-start="${entry.id}" data-risk-tier="${scenarioRiskTier(entry)}">Start ${entry.title} · ${scenarioRiskTier(entry)}</button>`).join('')}</div>`;
+  const directLaunch = active ? '<p class="qa-note">Clear the active run before launching another scenario.</p>' : `<section class="qa-risk-launches"><strong>Risk checks</strong><div class="qa-launches">${highRisk ? `<button type="button" data-qa-start="${highRisk.id}" data-risk-tier="HIGH">Start HIGH · ${highRisk.title}</button>` : ''}${severeRisk ? `<button type="button" data-qa-start="${severeRisk.id}" data-risk-tier="SEVERE">Start SEVERE · ${severeRisk.title}</button>` : ''}</div></section><section class="qa-scenario-picker" aria-label="Direct scenario picker"><label for="qa-scenario-search">Search scenarios by title or ID</label><div class="qa-search-row"><input id="qa-scenario-search" type="search" data-qa-scenario-search autocomplete="off" placeholder="Title or scenario ID"><button type="button" data-qa-clear-search aria-label="Clear scenario search">Clear</button></div><p class="qa-scenario-count" data-qa-scenario-count aria-live="polite">${scenarios.length} of ${scenarios.length}</p><p class="qa-empty-search" data-qa-search-empty hidden>No scenarios match that search.</p><div class="qa-launches" data-qa-scenario-results>${scenarios.map((entry) => `<div data-qa-picker-entry><button type="button" data-qa-start="${entry.id}" data-risk-tier="${scenarioRiskTier(entry)}">Start ${safeText(entry.title)} · ${scenarioRiskTier(entry)}</button></div>`).join('')}</div></section>`;
   const carryableItems = Object.values(items).filter((item) => item.carryable);
   const supplyItems = Object.values(items).filter((item) => inventoryClass(item.id) === 'SUPPLY');
   const itemOptions = carryableItems.map((item) => `<option value="${item.id}">${safeText(item.name)}</option>`).join('');
