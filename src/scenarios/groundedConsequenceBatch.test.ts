@@ -291,4 +291,18 @@ describe('grounded consequence scenario batch', () => {
     saveGame(well, storage as unknown as Storage);
     expect(loadSave(storage as unknown as Storage).run?.randomSelections?.source).toBe('wellRunoff');
   });
+
+  it('warns that floating for the shore line can be fatal and retains both authored outcomes', () => {
+    const choice = THE_BLUE_HOLE.scenes.waterStruggle.choices.find(({ id }) => id === 'floatForHelp')!;
+    expect(choice.hint).toMatch(/exhausted.*line may fall short.*drown/i);
+    expect(choice.chance?.probability).toBe(0.48);
+    expect(choice.chance?.failureNext).toBe('playerLost');
+    const state = start(THE_BLUE_HOLE, { visitOutcome: 'drowningEmergency', victimState: 'panicking' });
+    state.run!.sceneId = 'waterStruggle';
+    const helpArrives = act(state, THE_BLUE_HOLE, 'waterStruggle', 'floatForHelp', () => 0);
+    const lineFallsShort = act(state, THE_BLUE_HOLE, 'waterStruggle', 'floatForHelp', () => 0.999999);
+    expect(helpArrives.run?.sceneId).toBe('victimLost');
+    expect(helpArrives.run?.status).toBe('success');
+    expect(lineFallsShort.run?.status).toBe('death');
+  });
 });

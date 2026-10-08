@@ -110,6 +110,23 @@ describe('survival and expedition adventure batch', () => {
     expect(Object.values(WHITEOUT.scenes).some(({ ending }) => ending === 'death')).toBe(true);
   });
 
+  it('foreshadows the flooded-cave ledge fall and makes the fatal wait an explicit commitment', () => {
+    const climb = THE_CAVE_BEFORE_THE_STORM.scenes.caveDryChamber.choices.find(({ id }) => id === 'climbCaveLedge')!;
+    const wait = THE_CAVE_BEFORE_THE_STORM.scenes.caveDryChamber.choices.find(({ id }) => id === 'waitCaveLedge')!;
+    expect(climb.hint).toMatch(/slip.*rising water/i);
+    expect(climb.chance?.probability).toBeGreaterThan(0);
+    expect(climb.chance?.probability).toBeLessThan(1);
+    expect(climb.chance?.failureNext).toBe('caveDeath');
+    expect(wait.label).toMatch(/rising water overtakes/i);
+    expect(wait.hint).toMatch(/no way back/i);
+
+    const ledge = start(THE_CAVE_BEFORE_THE_STORM);
+    ledge.run!.sceneId = 'caveDryChamber';
+    expect(act(ledge, THE_CAVE_BEFORE_THE_STORM, 'caveDryChamber', 'climbCaveLedge', 0).run?.sceneId).toBe('caveOverhang');
+    expect(act(ledge, THE_CAVE_BEFORE_THE_STORM, 'caveDryChamber', 'climbCaveLedge', 0.999999).run?.status).toBe('death');
+    expect(act(ledge, THE_CAVE_BEFORE_THE_STORM, 'caveDryChamber', 'waitCaveLedge').run?.status).toBe('death');
+  });
+
   it('uses equipment capability and records explicit strain, loss, and injury', () => {
     const dry = start(THE_LAST_ROPE);
     expect(THE_LAST_ROPE.scenes.ravineLedge.choices.filter(({ requirements }) => meets(requirements, dry)).map(({ id }) => id)).not.toContain('lowerRavineRope');

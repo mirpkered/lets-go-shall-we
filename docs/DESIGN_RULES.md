@@ -19,7 +19,7 @@ These rules govern new adventures and focused revisions. They are consolidated f
 
 ## Fair choices and consequences
 
-- **Fair Consequence Rule:** Foreshadow serious risks through the environment, visible danger, prior knowledge, or testimony. A bad choice may carry consequences, but should not become an arbitrary trap.
+- **Fair Consequence Rule:** Foreshadow serious risks through the environment, visible danger, prior knowledge, testimony, or a concise choice hint. The player must be able to connect the chosen action to the possible consequence before committing; warning severity must match the actual failure severity. Do not hide lethal certainty behind a mild warning or attach fatal language to a minor setback. A bad choice may carry consequences, but should not become an arbitrary trap.
 - **State-Aware Ending Rule:** An ending may describe only movement, injury, damage, tool use, rescue, loss, or other consequential facts established by that route. When routes leave different states, use accurate state-specific endings or neutral wording.
 - **Ending Title Accuracy Rule:** An ending title must be supported by what actually happened on that route. Do not imply sacrifice, cost, rescue, victory, loss, certainty, repair, blame, or another consequential result unless the route establishes it; choose a truthful neutral title when outcomes vary.
 - **Risk Is Not Certainty:** A risky action should usually retain a plausible chance of success. Do not treat risk as guaranteed failure unless the action is physically impossible and that impossibility is clear.
