@@ -43,11 +43,20 @@ describe('Bridge Out', () => {
     expect(state.character?.knowledge).toContain('The upstream support is split below the waterline; a quick plank repair alone will not hold.');
     state = act(state, 'braceByHand', 0);
     expect(state.run?.sceneId).toBe('repairSuccess');
+    expect(state.character?.historyFlags).toContain('stabilized_dangerous_crossing');
+    expect(state.character?.historyFlags).not.toContain('repaired_dangerous_crossing');
     state = act(state, 'acceptBridgeHammer');
     expect(state.run?.inventory).toContain('bridgewrightHammer');
     expect(state.run?.acquiredThisRun).toContain('bridgewrightHammer');
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('saved_people_over_cargo');
+  });
+
+  it('keeps a legacy repair-history entry on an existing character without granting it for stabilization', () => {
+    let state = act(fresh(0, null, ['repaired_dangerous_crossing']), 'inspectSupports');
+    state = act(state, 'braceByHand', 0);
+    expect(state.character?.historyFlags).toContain('repaired_dangerous_crossing');
+    expect(state.character?.historyFlags).toContain('stabilized_dangerous_crossing');
   });
 
   it('supports a rope-led rescue and explicitly awards the iron clamp', () => {
