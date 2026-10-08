@@ -41,6 +41,11 @@ const combatLossFollowups: Record<string, Followup> = {
    keeps IDs and reward handling consistent; it does not supply story outcomes. */
 function build(c: Card): Scenario {
   const followup = followups[c.id];
+  const settlementText = c.id === 'the-second-gunhand'
+    ? 'The employer offers the agreed three-coin guard fee or the separately purchased spare rope; Vane keeps the escort’s working line.'
+    : c.id === 'the-blind-cut'
+      ? 'Dane’s employer offers the agreed three-coin scout fee or the station keeper’s separate spare Signal Flag Set.'
+      : c.settlement;
   const tags = largeTags({
     hook: c.hook, role: /investigation|mystery/.test(c.activity) ? 'investigator/explorer' : /rescue|animal/.test(c.activity) ? 'helper/rescuer' : /labor|combat/.test(c.activity) ? 'worker' : 'traveler/passenger', activity: c.activity, tone: c.risk === 'LOW' ? 'adventurous' : 'tense/dangerous',
     risk: c.risk, setting: c.setting, fantasy: 'NONE', combat: c.combat ? 'POSSIBLE' : 'NONE',
@@ -55,13 +60,13 @@ function build(c: Card): Scenario {
     ...(c.combat ? [{ id: 'standGround', label: `Hold the line and fight the ${c.combat.enemy}`, hint: 'The other person can retreat while you keep the route open.', effects: { combat: { enemy: c.combat.enemy, winChance: c.combat.winChance, damageOnLoss: c.combat.damageOnLoss, damageOnWin: 1, winNext: 'afterFight', lossNext: 'retreat' } } }] : []),
   ];
   const settlementVariants = followup
-    ? c.responses.flatMap((response) => followup.choices.map((choice) => ({ requirements: { flags: [`support_response_${response.id}`, `support_followup_${choice.id}`] }, text: `${response.consequence} ${choice.consequence} ${c.settlement}` })))
+    ? c.responses.flatMap((response) => followup.choices.map((choice) => ({ requirements: { flags: [`support_response_${response.id}`, `support_followup_${choice.id}`] }, text: `${response.consequence} ${choice.consequence} ${settlementText}` })))
     : c.responses.map((o) => ({ requirements: { flags: [`support_response_${o.id}`] }, text: o.consequence }));
   const scenes: Record<string, Scene> = {
     preparation: scene('preparation', c.startTitle, c.start, options),
     complication: scene('complication', c.turnTitle, c.turn, responses, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', variants),
     ...(followup ? { followup: scene('followup', followup.title, followup.text, followup.choices.map((choice) => ({ id: `followup_${choice.id}`, label: choice.label, next: 'settlement', effects: { setFlags: [`support_followup_${choice.id}`] } })), c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.responses.map((response) => ({ requirements: { flags: [`support_response_${response.id}`] }, text: `${response.consequence} ${followup.text}` }))) } : {}),
-    settlement: scene('settlement', 'What the Work Was Worth', c.settlement, [
+    settlement: scene('settlement', 'What the Work Was Worth', settlementText, [
       { id: 'acceptGear', label: `Accept ${c.gearName} as the agreed hand-off`, requirements: { notOwnedItems: [c.gear] }, next: 'gear', effects: { gainItems: [c.gear], historyFlags: [`earned_${c.id}_gear`] } },
       { id: 'takeCoins', label: `Take ${c.coins} coins instead`, next: 'paid', effects: { money: c.coins } },
       { id: 'declineAll', label: 'Thank them and leave without payment', next: 'unpaid' },

@@ -165,4 +165,17 @@ describe('survival and expedition adventure batch', () => {
     expect(HOLD_UNTIL_MORNING.scenes.morningSignal.text).toContain('No one was in danger');
     expect(THE_ABANDONED_CAMP.scenes.campAnswer.text).toContain('no evidence to turn an empty site into a rescue emergency');
   });
+
+  it('keeps the shared ridge ending neutral across injured and uninjured routes', () => {
+    const safeDescent = act(start(NIGHT_ON_THE_RIDGE), NIGHT_ON_THE_RIDGE, 'ridgeExposure', 'descendRidgeNow', 0);
+    expect(safeDescent.run?.sceneId).toBe('ridgeTrees');
+    const injured = act(start(NIGHT_ON_THE_RIDGE), NIGHT_ON_THE_RIDGE, 'ridgeExposure', 'descendRidgeNow', 0.99);
+    expect(injured.run?.sceneId).toBe('ridgeBruise');
+    const injuredDescent = act(injured, NIGHT_ON_THE_RIDGE, 'ridgeBruise', 'crawlRidgeDown');
+    expect(injuredDescent.run?.sceneId).toBe('ridgeTrees');
+    const ending = NIGHT_ON_THE_RIDGE.scenes.ridgeTrees.text;
+    expect(ending).not.toMatch(/bruised shoulder|dry lantern/i);
+    expect(ending).toMatch(/reach the trees below the exposed ridge/i);
+    expect(NIGHT_ON_THE_RIDGE.scenes.ridgeBruise.text).toMatch(/hurts to bear weight/i);
+  });
 });

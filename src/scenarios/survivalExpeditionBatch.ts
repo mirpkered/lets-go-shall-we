@@ -404,7 +404,7 @@ export const NIGHT_ON_THE_RIDGE: Scenario = {
       { id: 'waitLightning', label: 'Stay low until the storm moves east', next: 'ridgeMorning' },
       { id: 'moveRidgeTrees', label: 'Crawl off the crest toward tree cover', hint: 'Moving in lightning is dangerous, but the boulder is not safe from a direct strike.', chance: { probability: 0.62, successNext: 'ridgeTrees', failureNext: 'ridgeDeath', successMessage: 'You reach the trees between flashes.', failureMessage: 'A strike hits the crest as you cross the open slope.' } },
     ] },
-    ridgeTrees: end('ridgeTrees', 'Below the Tree Line', 'You reach the trees with a bruised shoulder and a dry lantern. The ridge remains dangerous in the storm, but the lower ground offers shelter until the trail can be seen again.'),
+    ridgeTrees: end('ridgeTrees', 'Below the Tree Line', 'You reach the trees below the exposed ridge. The lower ground offers shelter until the trail can be seen again.'),
     ridgeMorning: end('ridgeMorning', 'Light after the Storm', 'You keep low behind the boulder through the storm and descend at first light. The night is cold and uncomfortable, but waiting kept you off the exposed path during the lightning.'),
     ridgeDeath: end('ridgeDeath', 'The Exposed Crest', 'Lightning strikes the open ridge before you reach cover. The storm passes over the empty path.', 'death'),
   },

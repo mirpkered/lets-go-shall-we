@@ -175,4 +175,15 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     const placed = finishRewardResolution(placeReward(reloaded, item!, 'carry'));
     expect(getCarriedItems(placed.character)).toContain(item);
   });
+
+  it('presents mutually exclusive compensation accurately on both ordinary and combat-success routes', () => {
+    const gunhand = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-second-gunhand')!;
+    expect(gunhand.scenes.settlement.text).toMatch(/offers the agreed three-coin guard fee or/i);
+    expect(gunhand.scenes.paid.text).toMatch(/accept 3 coins, not the Travel Rope/i);
+    expect(gunhand.scenes.gear.text).toMatch(/spare rope/i);
+    const blindCut = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-blind-cut')!;
+    expect(blindCut.scenes.settlement.text).toMatch(/offers the agreed three-coin scout fee or/i);
+    expect(blindCut.scenes.paid.text).toMatch(/accept 3 coins, not the Signal Flag Set/i);
+    expect(blindCut.scenes.gear.text).toMatch(/spare set/i);
+  });
 });

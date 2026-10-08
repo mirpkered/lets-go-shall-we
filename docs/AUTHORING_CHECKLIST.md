@@ -158,6 +158,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 - [ ] Endings reflect actual state: tasks, warnings, locations, tools used, injuries, losses, and current-run knowledge.
 - [ ] Consider fictional payment, item, history, relationship, lore, knowledge, cost, or a satisfying narrative payoff. Do not impose reward quotas or forget agreed wages.
 - [ ] Ensure item rewards have believable ownership/provenance, distinct capability, no unintended duplicate, and a safe carry/Bank/decline flow.
+- [ ] Check decision-state consistency: scene setup matches each action, and every ending/reward acknowledgment reflects what was selected and realized (offer is not acceptance; refusal does not imply payment or transfer).
 - [ ] Compare the completed scenario with existing metadata and structural warnings. Similarity is a prompt for human review, never an automatic rejection.
 - [ ] For evidence-led stories, state what each physical trace supports and what it cannot establish; make accusations produce proportionate social consequences rather than unsupported certainty.
 - [ ] For industrial work, establish the machine’s stopped/isolated state and the crew’s position before inviting contact; explain the physical fault, then distinguish a hand check, unloaded test, and loaded return to work.

@@ -46,6 +46,25 @@ const cards: FrontierCard[] = [
   { id: 'the-trail-that-ends-at-stone', title: 'The Trail That Ends at Stone', subtitle: 'A path stops at bare rock where old cut marks continue.', shape: 'trace', risk: 'MODERATE', setting: 'remote rock face', hook: 'Chisel marks and displaced stones distinguish a removed route from a natural dead end.', opening: 'A narrow trail ends at a smooth stone face. Old chisel marks run upward for several feet, then vanish under lichen. A line of foundation stones turns behind a cedar at the trail’s edge.', clue: 'The foundation line reaches a shallow notch in the rock. One stone has been lifted and set back; beyond it is a narrow dry ledge, not a doorway.', turn: 'The trail may have served a quarry or a removed store shed. The ledge continues to a wider shelf, while the path back is clear.', cautious: 'Follow the foundation stones to the wider shelf', bold: 'Test the lichen-covered notch', leave: 'Turn back from the rock face', insight: 'An old trail ended at a worked stone face beside foundations and a narrow ledge.' },
 ];
 
+const decisionCopyOverrides: Record<string, Partial<FrontierCard>> = {
+  'roof-through-the-trees': {
+    turn: 'From the common room, you can watch the approach through the repaired window, inspect its newer board from inside, or return to the timber road.',
+    cautious: 'Watch the approach from the common room',
+    bold: 'Inspect the repaired window from inside',
+  },
+  'empty-assay-office': {
+    turn: 'You can give both sides the same account of the evidence, keep your finding private, or leave the claim unsettled.',
+  },
+  'the-broken-rocker-box': {
+    turn: 'The patch fits the split handle but has not been fastened. You can compare it with the break, rock the box briefly using the damaged handle, or leave both parts for whoever returns.',
+    cautious: 'Compare the patch with the split handle',
+  },
+  'the-cache-under-the-stove': {
+    turn: 'This is stored property, not random debris: the initials and written count show the cache was deliberately kept. You can read the top paper and restore the tin, take the two coins while leaving the papers and tool, or close the compartment untouched.',
+  },
+};
+for (const card of cards) Object.assign(card, decisionCopyOverrides[card.id]);
+
 const closures: Record<string, string> = {
   'roof-through-the-trees': 'The repaired board and clean chair suggest a shelter still used in passing; you leave it ready for whoever returns.',
   'camp-with-fresh-ashes': 'You do not disturb the food or fire pit. The camp remains ready for its absent worker, and your tracks are the only new ones.',

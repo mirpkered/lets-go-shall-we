@@ -47,7 +47,7 @@ const stories: RoadStory[] = [
 // not transfer the item named by their story evidence; keeping them out of
 // the Gear menu prevents a visible offer from contradicting the ownership
 // resolution in the scene.
-for (const id of ['the-courier-who-came-back', 'the-blue-thread', 'the-forked-shadow']) {
+for (const id of ['the-courier-who-came-back', 'the-blue-thread', 'the-forked-shadow', 'the-axle-without-a-mark']) {
   const story = stories.find((candidate) => candidate.id === id);
   if (story) {
     story.gear = undefined;
@@ -55,6 +55,18 @@ for (const id of ['the-courier-who-came-back', 'the-blue-thread', 'the-forked-sh
     story.provenance = undefined;
   }
 }
+
+const compensationOffers: Record<string, string> = {
+  'the-horse-with-the-blue-rope': 'The stablehand offers the agreed two-coin fee or a separately owned pair of Heavy Leather Gloves; the horse and tack remain at the stable.',
+  'the-punctured-tireless-wheel': 'The driver offers the agreed three-coin repair fee or a separate used Pocket Toolkit from duplicate stock; the recovered tool roll stays with its owner.',
+  'the-inn-yard-watch': 'The host offers one coin for the night watch or a separate Lockable Map Case after removing the inn’s key ledger.',
+  'the-second-rope': 'The sawmill offers the contracted recovery fee or a spare Iron Rope Clamp from its duplicate line kit.',
+  'the-courier-who-came-back': 'The county office offers one coin for the witness account; the courier’s satchel and its contents remain with their owner.',
+  'the-blue-thread': 'The owner offers one coin for returning the purse; the purse and its contents are not a reward.',
+  'the-axle-without-a-mark': 'The foreman offers the agreed three-coin road-work fee. The axle and public tools remain with their owners.',
+  'the-cold-iron-latch': 'The family offers one coin or a separate unused pouch of Cold-Iron Nails; the recovered tools remain family property.',
+  'the-forked-shadow': 'The station clerk offers the agreed two-coin witness fee; no purse or property is kept.',
+};
 
 // Optional carried-Gear approaches grant information or safer positioning;
 // none is required to complete the encounter.
@@ -71,6 +83,7 @@ for (const callback of ownedGearCallbacks) {
 
 function build(c: RoadStory): Scenario {
   const rewardClass = c.gear ? inventoryClass(c.gear) : undefined;
+  const offerText = compensationOffers[c.id] ?? c.rewardText;
   const ownedRewardChoice = c.gear && c.gearName ? {
     id: 'acceptGear', label: `Accept ${c.gearName}`,
     requirements: rewardClass === 'SUPPLY' ? { canAddSupplies: { [c.gear]: 1 } } : { notOwnedItems: [c.gear] },
@@ -86,13 +99,13 @@ function build(c: RoadStory): Scenario {
     approach: s('approach', c.startTitle, c.start, approachChoices),
     threat: s('threat', c.threatTitle, c.threat, responseChoices, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.approaches.map((choice) => ({ requirements: { flags: [`road_approach_${choice.id}`] }, text: choice.result }))),
     aftermath: s('aftermath', c.aftermathTitle, c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', c.responses.map((choice) => ({ requirements: { flags: [`road_response_${choice.id}`] }, text: `${choice.result} ${c.aftermath}` }))),
-    settlement: s('settlement', 'The Road Opens', c.rewardText, [
+    settlement: s('settlement', 'The Road Opens', offerText, [
       ...(ownedRewardChoice ? [ownedRewardChoice] : []),
-      { id: 'takeCoins', label: `Take ${c.coins} coins instead`, next: 'coins', effects: { money: c.coins } },
+      { id: 'takeCoins', label: `Take ${c.coins} coins${ownedRewardChoice ? ' instead' : ''}`, next: 'coins', effects: { money: c.coins } },
       { id: 'decline', label: 'Decline all compensation and leave', next: 'unpaid' },
-    ].map((choice) => ({ ...choice, effects: { knowledge: [c.lesson], ...choice.effects } })), 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${choice.result} ${c.rewardText}` }))),
+    ].map((choice) => ({ ...choice, effects: { knowledge: [c.lesson], ...choice.effects } })), 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${choice.result} ${offerText}` }))),
     ...(c.gear && c.gearName ? { gear: e('gear', rewardClass === 'SUPPLY' ? 'A New Owner for the Supply' : 'A New Owner for the Gear', c.provenance ?? '') } : {}),
-    coins: e('coins', 'The Agreed Payment', `You take ${c.coins} coins${c.gearName ? ` instead of the ${c.gearName}` : ''}. ${c.rewardText}`),
+    coins: e('coins', 'The Agreed Payment', `You accept ${c.coins} coins. The payment is recorded; no optional Gear is transferred.`),
     unpaid: e('unpaid', 'The Road behind You', 'You decline compensation. The road is open or safely avoided, and nothing changes ownership.'),
   };
   if (c.combat) {

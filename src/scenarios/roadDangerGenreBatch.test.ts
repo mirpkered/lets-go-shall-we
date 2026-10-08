@@ -40,7 +40,7 @@ describe('Road Danger / Highwaymen genre batch', () => {
     expect(validateScenarioRegistry(ROAD_DANGER_GENRE_BATCH).errors).toEqual([]);
     expect(validateScenarioRegistry(ROAD_DANGER_GENRE_BATCH).warnings).toEqual([]);
     expect(ROAD_DANGER_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE')).toHaveLength(12);
-    expect(ROAD_DANGER_GENRE_BATCH.filter(({ scenes }) => scenes.settlement.choices.some(({ effects }) => effects?.gainItems?.length || effects?.gainSupplies && Object.keys(effects.gainSupplies).length))).toHaveLength(21);
+    expect(ROAD_DANGER_GENRE_BATCH.filter(({ scenes }) => scenes.settlement.choices.some(({ effects }) => effects?.gainItems?.length || effects?.gainSupplies && Object.keys(effects.gainSupplies).length))).toHaveLength(20);
   });
 
   it('uses canonical placement for every offered Gear reward and blocks carried or Bank duplicates', () => {
@@ -119,6 +119,27 @@ describe('Road Danger / Highwaymen genre batch', () => {
         .flatMap(({ id, scenes }) => Object.values(scenes).flatMap((scene) => scene.choices
           .filter(({ requirements }) => requirements?.items?.includes(item)).map((choice) => `${id}.${choice.id}`)));
       expect(callbacks.length, `${item}: ${callbacks.join(', ')}`).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it('keeps compensation offers distinct from accepted payment and suppresses the coin-only axle Gear offer', () => {
+    const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
+    expect(axle.scenes.settlement.choices.map(({ id }) => id)).not.toContain('acceptGear');
+    expect(axle.scenes.settlement.choices.find(({ id }) => id === 'takeCoins')?.label).toBe('Take 3 coins');
+    expect(axle.scenes.settlement.text).toMatch(/three-coin.*fee/i);
+    expect(axle.scenes.coins.text).toMatch(/accept 3 coins/i);
+    expect(axle.scenes.coins.text).not.toMatch(/jack/i);
+    const paidAxle = act(reachSettlement(axle), axle, 'takeCoins');
+    expect(paidAxle.run?.sceneId).toBe('coins');
+    expect(paidAxle.character?.money).toBe(3);
+    expect(paidAxle.character?.carriedItems).not.toContain('foldingCarriageJack');
+    const gearAlternatives = ['the-horse-with-the-blue-rope', 'the-punctured-tireless-wheel', 'the-inn-yard-watch', 'the-second-rope', 'the-cold-iron-latch'];
+    for (const id of gearAlternatives) {
+      const story = ROAD_DANGER_GENRE_BATCH.find((candidate) => candidate.id === id)!;
+      expect(story.scenes.settlement.text, id).toMatch(/offers|or a separate|or the/i);
+      expect(story.scenes.coins.text, id).toMatch(/accept \d+ coins/i);
+      expect(story.scenes.coins.text, id).not.toMatch(/instead of/i);
+      expect(story.scenes.unpaid.text, id).toMatch(/decline compensation/i);
     }
   });
 });

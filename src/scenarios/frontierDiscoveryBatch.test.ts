@@ -87,6 +87,33 @@ describe('remote discovery and frontier claims batch', () => {
     expect(cache.scenes[`${cache.id}Bold`].title).toBe('The Coins Leave with You');
   });
 
+  it('keeps frontier decision narration and button actions in agreement', () => {
+    const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'roof-through-the-trees')!;
+    const cabinDecision = cabin.scenes[`${cabin.id}Decision`];
+    expect(cabinDecision.text).toMatch(/from the common room/i);
+    expect(cabinDecision.text.toLowerCase()).toContain('watch the approach through the repaired window');
+    expect(cabinDecision.text.toLowerCase()).toContain('inspect its newer board from inside');
+
+    const assay = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'empty-assay-office')!;
+    const assayDecision = assay.scenes[`${assay.id}Decision`];
+    for (const choice of assayDecision.choices) expect(assayDecision.text.toLowerCase()).toContain(choice.label.toLowerCase());
+
+    const rocker = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-broken-rocker-box')!;
+    const rockerDecision = rocker.scenes[`${rocker.id}Decision`];
+    expect(rockerDecision.text).toMatch(/patch fits.*not been fastened/i);
+    expect(rockerDecision.choices.find(({ label }) => /compare the patch/i.test(label))!.label).toMatch(/compare the patch/i);
+    expect(rockerDecision.choices.some(({ label }) => /^fit/i.test(label))).toBe(false);
+
+    const cache = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-cache-under-the-stove')!;
+    const cacheDecision = cache.scenes[`${cache.id}Decision`];
+    expect(cacheDecision.text).toContain('take the two coins');
+    expect(cacheDecision.text.toLowerCase()).toContain('leaving the papers and tool');
+    expect(cacheDecision.choices).toHaveLength(3);
+    expect(cacheDecision.text.toLowerCase()).toMatch(/read the top paper.*restore the tin/);
+    expect(cacheDecision.text.toLowerCase()).toMatch(/take the two coins.*leaving the papers and tool/);
+    expect(cacheDecision.text.toLowerCase()).toMatch(/close the compartment untouched/);
+  });
+
   it('separates field surveying from the claimant negotiation in Claim at Dry Creek', () => {
     const survey = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'survey-stakes-are-wrong')!;
     const dryCreek = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'claim-at-dry-creek')!;
