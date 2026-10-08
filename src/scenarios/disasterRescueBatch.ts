@@ -293,7 +293,7 @@ export const THE_CROWD_BREAKS = A('the-crowd-breaks', 'The Crowd Breaks', 'A fal
   crowdSettles: scene('crowdSettles', 'The Hall Empties', 'The crowd reaches the open air without a crush. The constable confirms there was no fire; the shout came from a dropped lantern mistaken for flame. The child is safe only if you reached them, and the cart is clear only if someone moved it.', [
     { id: 'crowdReport', label: 'Give the stewards a clear account', next: 'crowdEnd', effects: { historyFlags: ['helped guide a crowd away from a false alarm'] } },
   ]),
-  crowdEnd: end('crowdEnd', 'Outside the Exhibition Hall', 'The hall closes for inspection of the dropped lantern and the damaged stair rail. Stewards thank the people who opened another way out; the injured are taken to the fair’s first-aid tent.'),
+  crowdEnd: end('crowdEnd', 'Outside the Exhibition Hall', 'The hall closes for inspection of the dropped lantern and the damaged stair rail. Stewards thank the people who opened another way out; the fair’s first-aid tent remains open for anyone hurt in the surge.'),
 }, 'platform');
 
 export const THE_FERRY_LISTS = A('the-ferry-lists', 'The Ferry Lists', 'A loaded crossing takes water on one side and tilts toward the current.', 'disaster/rescue', 'SEVERE', 'A ferry’s uneven load makes saving passengers compete with cargo, livestock, and the boat itself.', {
@@ -366,7 +366,7 @@ export const THE_ROOF_COMES_IN = A('the-roof-comes-in', 'The Roof Comes In', 'A 
   roofCrew: scene('roofCrew', 'Carpenters at the Door', 'The carpenters shore the north wall from outside and take over the search. People are counted in the yard; the person behind the platform is located only if you gave a clear position.', [
     { id: 'roofGiveAccount', label: 'Stay to give the rescue crew your account', next: 'roofAftermath', effects: { historyFlags: ['helped evacuate a town hall after roof collapse'] } },
   ]),
-  roofAftermath: scene('roofAftermath', 'The Hall Is Closed', 'The roof is covered with canvas and the hall is closed until repaired. The rescued people are taken to the inn to be checked; the town meeting must move to the schoolroom.', [
+  roofAftermath: scene('roofAftermath', 'The Hall Is Closed', 'The roof is covered with canvas and the hall is closed until repaired. Anyone brought out is taken to the inn to be checked; the town meeting must move to the schoolroom.', [
     { id: 'roofLeave', label: 'Carry the warning to the schoolroom', next: 'roofEnd' },
   ]),
   roofEnd: end('roofEnd', 'A Meeting Moved Indoors', 'The town posts a notice on the schoolroom door and counts those rescued. The storm passes without another collapse; the hall will need a new roof before it can open.'),
