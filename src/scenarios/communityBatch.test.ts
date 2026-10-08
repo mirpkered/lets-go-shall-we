@@ -136,6 +136,21 @@ describe('community and civic life adventure batch', () => {
     expect(selectionCombos(THE_MEETING_HALL)).toHaveLength(3);
   });
 
+  it('gives meeting suggestions and shared labor a small matter-specific payoff without taking over', () => {
+    const roadSuggestion = act(start(THE_MEETING_HALL, { meetingMatter: 'road' }), THE_MEETING_HALL, 'openMeeting', 'speakBriefly');
+    expect(roadSuggestion.run?.status).toBe('success');
+    expect(sceneText(THE_MEETING_HALL.scenes.suggestionHeard, roadSuggestion)).toContain('mark the wagon-catching rut');
+
+    const fuelHelp = act(start(THE_MEETING_HALL, { meetingMatter: 'fuel' }), THE_MEETING_HALL, 'openMeeting', 'offerLabor');
+    expect(sceneText(THE_MEETING_HALL.scenes.sharedLabor, fuelHelp)).toContain('stack the firewood');
+    expect(sceneText(THE_MEETING_HALL.scenes.sharedLabor, fuelHelp)).toContain('still needs a fair count');
+
+    const gateHelp = act(start(THE_MEETING_HALL, { meetingMatter: 'livestock' }), THE_MEETING_HALL, 'openMeeting', 'offerLabor');
+    expect(sceneText(THE_MEETING_HALL.scenes.sharedLabor, gateHelp)).toContain('new pin to one shared gate');
+    expect(sceneText(THE_MEETING_HALL.scenes.sharedLabor, gateHelp)).toContain('second gate');
+    expect(THE_MEETING_HALL.scenes.sharedLabor.textVariants?.every(({ text }) => text.length <= 400)).toBe(true);
+  });
+
   it('limits witness accounts to narrated observations and lets careful history shape the framing', () => {
     const wheel = start(WHAT_DID_YOU_SEE, { cartIncident: 'wheel' });
     expect(sceneText(WHAT_DID_YOU_SEE.scenes.roadsideQuestion, wheel)).toContain('left wheel strike a buried stone');

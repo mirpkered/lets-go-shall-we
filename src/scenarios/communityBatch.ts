@@ -81,8 +81,16 @@ export const THE_MEETING_HALL: Scenario = {
       { id: 'shareSuggestion', label: 'Suggest checking the facts together', next: 'suggestionHeard' },
       { id: 'leaveAfterListening', label: 'Leave after hearing them out', next: 'movedOn' },
     ] },
-    suggestionHeard: done('suggestionHeard', 'A Suggestion, Not a Verdict', 'The neighbors consider your suggestion, then continue the discussion among themselves. You leave the meeting to the people who live with its result.'),
-    sharedLabor: done('sharedLabor', 'A Hand Among Many', 'You lend a hand beside the neighbors. The practical burden is smaller, though the community still decides together what to do next.'),
+    suggestionHeard: { id: 'suggestionHeard', title: 'A Suggestion, Not a Verdict', ending: 'success', choices: [], text: 'The neighbors take up your practical suggestion without making you responsible for their decision. You leave the meeting to the people who live with its result.', textVariants: [
+      { requirements: { selections: { meetingMatter: 'road' } }, text: 'The neighbors agree to mark the wagon-catching rut and bring gravel when the rain lets up. Your suggestion gives them a first step, not a verdict on who should pay.' },
+      { requirements: { selections: { meetingMatter: 'fuel' } }, text: 'The neighbors decide to tally what each household can spare before dividing the firewood. Your suggestion gives them a fairer count, not a promise that every home can contribute alike.' },
+      { requirements: { selections: { meetingMatter: 'livestock' } }, text: 'Two neighbors volunteer to check the shared gates after the cattle move. Your suggestion gives the meeting a practical next step, while the upkeep remains theirs to arrange.' },
+    ] },
+    sharedLabor: { id: 'sharedLabor', title: 'A Hand Among Many', ending: 'success', choices: [], text: 'You lend an hour beside the neighbors. The work is lighter for having been shared, and the group keeps responsibility for deciding what comes next.', textVariants: [
+      { requirements: { selections: { meetingMatter: 'road' } }, text: 'You help clear loose stones from the wagon rut and mark its edge for the gravel cart. The road is not repaired yet, but the next crew can find the spot and start safely.' },
+      { requirements: { selections: { meetingMatter: 'fuel' } }, text: 'You help stack the firewood households have already offered. The pile is orderly and ready to divide, though the group still needs a fair count before winter.' },
+      { requirements: { selections: { meetingMatter: 'livestock' } }, text: 'You help fit a new pin to one shared gate. It closes for now; the neighbors still need to check the second gate before the cattle change pasture.' },
+    ] },
     movedOn: done('movedOn', 'Back to the Road', 'The meeting continues without you. You have neither taken charge nor stopped the neighbors from deciding for themselves.'),
   },
 };
