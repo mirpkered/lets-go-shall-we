@@ -67,7 +67,7 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
     crossroads: {
       id: 'crossroads', title: 'Miller’s Crossing', tone: 'warning',
       text: 'The sun hangs low over a three-way rural crossing. An overloaded wagon lies on its side beside the ditch; a wheel is half-buried in the road, and sacks and a small travel case are scattered nearby. One traveler, Hal, sits against the post with a cut brow and a stiff leg. His companion Mara is nowhere in sight. “We can’t stay until dark,” he says. “She may have been thrown clear.” The wheel, the road, and the footprints all offer different stories.',
-      textVariants: [{ requirements: { historyFlags: ['searched_for_missing_traveler'] }, text: 'A traveler at Miller’s Crossing recognizes your reputation for careful searches. An overturned wagon lies beside the ditch, one wheel half-buried in the road. Hal is hurt; his companion Mara is missing. “We can’t stay until dark,” he says. “She may have been thrown clear.” The wheel, road, and footprints offer different stories.' }],
+      textVariants: [{ requirements: { historyFlags: ['searched_for_missing_traveler'] }, text: 'You have searched for a missing traveler before; the memory returns as you reach Miller’s Crossing. An overturned wagon lies beside the ditch, one wheel half-buried in the road. Hal is hurt; his companion Mara is missing. “We can’t stay until dark,” he says. “She may have been thrown clear.” The wheel, road, and footprints offer different stories.' }],
       choices: [
         { id: 'helpHalFirst', label: 'Check Hal’s injuries', hint: 'He is conscious, but the road is getting colder and dimmer.', timeCost: 4, next: 'halStabilized', effects: { historyFlags: ['joined_crossroads_search'] } },
         { id: 'inspectWagonFirst', label: 'Inspect the overturned wagon', timeCost: 4, next: 'wagonEvidence', effects: { historyFlags: ['joined_crossroads_search'] } },
@@ -243,7 +243,7 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
       id: 'farmhouse', title: 'A Lamp in the Farm Window', tone: 'safe',
       text: 'The nearest farmhouse is a short walk south. The family has a lantern and is willing to help, though gathering people and reaching the crossing will cost more daylight. Hal can rest here if you brought him; if not, he remains at the wagon.',
       textVariants: [
-        { requirements: { historyFlags: ['escorted_injured_traveler'] }, text: 'The farm family remembers that you helped an injured traveler before. They offer a lantern and agree to search; Hal can rest here while they go, or you can take the light toward the toll marker yourself.' },
+        { requirements: { historyFlags: ['escorted_injured_traveler'] }, text: 'You remember escorting an injured traveler before. The farm family offers a lantern and agrees to search; Hal can rest here while they go, or you can take the light toward the toll marker yourself.' },
         { requirements: { flags: ['survivorEscorted'] }, text: 'Hal is settled by the hearth. The farm family offers a lantern and will search, though gathering people and reaching the crossing will cost daylight.' },
       ],
       choices: [

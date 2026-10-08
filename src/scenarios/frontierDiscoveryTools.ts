@@ -92,7 +92,8 @@ export function frontierAdventure(card: FrontierCard): Scenario {
     // Keep closure in the selected ending; appending it here made the player finish twice.
     [decision]: largeScene(decision, card.shape === 'claim' ? 'A Finding, Not a Verdict' : card.shape === 'salvage' ? 'Take, Leave, or Risk More' : 'What the Place Means', card.turn, finalChoices, card.risk === 'HIGH' || card.risk === 'SEVERE' ? 'warning' : 'safe'),
     [cautiousEnd]: largeEnd(cautiousEnd, card.cautiousEndingTitle ?? 'A Careful Account', card.cautiousEndingText ?? `${closure} You leave with the important distinction that ${card.insight.toLowerCase()}`),
-    [boldEnd]: largeEnd(boldEnd, card.boldEndingTitle ?? 'After Going Further', card.boldEndingText ?? `${closure} What you learned is useful; what happens to the place after you go is not yours to decide.`),
+    // The bold route may not imply a cost unless that scenario's evidence earns one.
+    [boldEnd]: largeEnd(boldEnd, card.boldEndingTitle ?? 'Beyond the First Clue', card.boldEndingText ?? 'You chose to follow the question beyond the first evidence. That added step gives you more to weigh, but it does not establish anything you did not directly observe.'),
     [leftEnd]: largeEnd(leftEnd, 'No Further In', `You decide not to go farther into ${card.title.toLowerCase()}. The visible signs were enough to make you stop, but not enough to settle what the place means. You return to the road without claiming what you have not examined.`),
     [evidenceLeftEnd]: largeEnd(evidenceLeftEnd, 'No Further In', `You turn back with one grounded observation: ${card.insight} The place remains unresolved, but you can describe what was there without claiming what you did not examine.`),
   };

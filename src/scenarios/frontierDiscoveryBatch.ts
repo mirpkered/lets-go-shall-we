@@ -1,7 +1,7 @@
 import type { FrontierCard } from './frontierDiscoveryTools';
 import { frontierAdventure } from './frontierDiscoveryTools';
 import { largeScene } from './largeContentTools';
-import type { Scenario } from '../types';
+import type { Scenario, Scene } from '../types';
 
 const cards: FrontierCard[] = [
   { id: 'roof-through-the-trees', title: 'The Roof Through the Trees', subtitle: 'A repaired cabin may not be as empty as it looks.', shape: 'occupant', risk: 'LOW', setting: 'remote forest cabin', hook: 'A newer window repair and undisturbed dust make an apparently abandoned cabin uncertain.', opening: 'From the old timber road you see a roof deep between the pines. The cabin looks neglected, but one window has a fresh board and the track to its door is hard to read.', clue: 'Inside, most surfaces wear a grey film. One chair is clean, a cup has a dry ring beneath it, and the newer window board is nailed from outside. Nothing proves who last used the cabin.', turn: 'You can watch the cabin from the tree line or enter no farther than the common room.', cautious: 'Watch from the tree line for a while', bold: 'Look through the repaired window', leave: 'Return to the timber road', insight: 'A cabin in disrepair had a recently repaired window and signs of limited use.' },
@@ -160,5 +160,44 @@ function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
 }
 
 export const FRONTIER_DISCOVERY_ADVENTURES = frontierAdventures.map((scenario) =>
-  scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario,
+  specializeSurveyStakes(scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario),
 );
+
+function specializeSurveyStakes(scenario: Scenario): Scenario {
+  if (scenario.id !== 'survey-stakes-are-wrong') return scenario;
+  const startId = `${scenario.id}Start`;
+  const evidenceId = `${scenario.id}Evidence`;
+  const decisionId = `${scenario.id}Decision`;
+  const creekCheckId = `${scenario.id}CreekCheck`;
+  const recordId = `${scenario.id}FieldRecord`;
+  const deferredId = `${scenario.id}Deferred`;
+  const notesId = `${scenario.id}NotesOnly`;
+  const insight = 'Two survey lines followed different courses, and creek erosion could explain part of the change.';
+  // Keep prior terminal/decision IDs addressable for saves created before this route was specialized.
+  const scenes: Record<string, Scene> = { ...scenario.scenes };
+
+  scenes[startId] = { ...scenes[startId], title: 'A Surveyor’s Errand', text: 'A county surveyor has asked you to note two stake rows where the creek changed course. One row follows an old dry channel; the other crosses the present meadow. You are to record what the ground shows, not decide who owns it.', choices: [
+    { id: 'inspectStakeRows', label: 'Walk both rows and read their marks', next: evidenceId },
+    { id: 'markAndLeave', label: 'Mark the site for the surveyor and move on', next: `${scenario.id}Left` },
+    { id: 'turnAway', label: 'Leave without taking the assignment', next: `${scenario.id}Left` },
+  ] };
+  scenes[evidenceId] = { ...scenes[evidenceId], title: 'Two Lines on Changed Ground', text: 'The older stakes carry faded cuts. The newer row has uniform notches but no date. A washed bank shows the creek has moved since the first line was set; neither line alone establishes the present boundary.', choices: [
+    { id: 'copyBothRows', label: 'Copy both rows and their marks', next: decisionId, effects: { knowledge: [insight] } },
+    { id: 'traceNewRow', label: 'Follow the newer row to the current creek', next: creekCheckId, effects: { historyFlags: [`investigated ${scenario.title.toLowerCase()} beyond the first clues`] } },
+    { id: 'leaveSurveyEvidence', label: 'Leave the markers untouched and return', next: `${scenario.id}EvidenceLeft`, effects: { knowledge: [insight], historyFlags: [`left ${scenario.title.toLowerCase()} after recording its visible evidence`] } },
+  ] };
+  scenes[decisionId] = { id: decisionId, title: 'What the Field Book Should Say', tone: 'safe', text: 'Your notes can preserve the two rows without turning a changed creek into a verdict. The surveyor can compare them with the fixed stone when the watercourse is checked again.', choices: [
+    { id: 'recordBothRows', label: 'Enter both rows and the old channel separately', next: recordId, effects: { knowledge: [insight] } },
+    { id: 'requestRemeasure', label: 'Ask the surveyor to remeasure before drawing a line', next: deferredId },
+    { id: 'submitNotesOnly', label: 'Return the observations without a boundary reading', next: notesId },
+  ] };
+  scenes[creekCheckId] = { id: creekCheckId, title: 'Where the Creek Runs Now', tone: 'safe', text: 'The newer stakes turn toward the present creek; the old row tracks a channel that is now dry. That explains why the lines differ, but not when either was meant to govern the land.', choices: [
+    { id: 'recordCreekShift', label: 'Add the present creek bend as a separate note', next: recordId, effects: { knowledge: [insight] } },
+    { id: 'requestCreekRemeasure', label: 'Ask for a fresh survey after the water settles', next: deferredId },
+    { id: 'submitCreekNotes', label: 'Return without drawing a boundary', next: notesId },
+  ] };
+  scenes[recordId] = { id: recordId, title: 'A Record, Not a Ruling', text: 'The field book keeps the older row, newer row, and changed creek as separate observations. The surveyor has something useful to compare; no one has been named right or wrong on incomplete ground.', ending: 'success', choices: [] };
+  scenes[deferredId] = { id: deferredId, title: 'A Line Left for Later', text: 'No boundary is drawn and neither stake row is moved. The surveyor will return with the fixed-stone reference when the creek’s present course can be measured again.', ending: 'success', choices: [] };
+  scenes[notesId] = { id: notesId, title: 'Observations Without a Boundary', text: 'You return only what you saw: two stake rows, a vanished channel, and a creek that moved. The surveyor can decide whether more measurements are worth the trip; your notes make no claim of ownership.', ending: 'success', choices: [] };
+  return { ...scenario, subtitle: 'A field record must separate moved water from a boundary ruling.', scenes };
+}

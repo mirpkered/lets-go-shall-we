@@ -211,6 +211,20 @@ describe('Smoke on the Hill', () => {
     expect(low.run?.status).toBe('death');
   });
 
+  it('keeps the failed-rescue position clear for both yard-rope and indoor approaches', () => {
+    expect(SMOKE_ON_THE_HILL.scenes.barnDiscovery.text).toContain('a small loft window faces the yard just above the warped but reachable side door');
+
+    const indoorFailure = act(reachBarn(), 'rescueEliBare', 0.99);
+    expect(indoorFailure.run?.sceneId).toBe('loftSlip');
+    expect(sceneText(SMOKE_ON_THE_HILL.scenes.loftSlip, indoorFailure)).toContain('back through the side door into the yard');
+
+    const ropeFailure = act(reachBarn(fresh(0, 'travelRope')), 'rescueEliRope', 0.99);
+    expect(ropeFailure.run?.sceneId).toBe('loftSlip');
+    const ropeText = sceneText(SMOKE_ON_THE_HILL.scenes.loftSlip, ropeFailure);
+    expect(ropeText).toContain('remain in the yard below the loft window');
+    expect(ropeText).not.toContain('forces you back through the side door');
+  });
+
   it('offers rewards explicitly, and never offers a duplicate unique reward', () => {
     const state = act(reachBarn(), 'rescueEliBare');
     const thanks = act(state, 'leaveWithEli');

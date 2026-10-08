@@ -218,7 +218,7 @@ describe('The Last Room on the Left', () => {
     returning.character!.historyFlags = ['returned_for_help'];
     const returningState = pick(returning, 'askInnkeeper');
     expect(freshState.run?.sceneId).toBe(returningState.run?.sceneId);
-    expect(THE_LAST_ROOM.scenes.hostAccount.textVariants?.[0].text).toContain('come back for someone');
+    expect(THE_LAST_ROOM.scenes.hostAccount.textVariants?.[0].text).toContain('returning for help in an earlier emergency');
     const continued = startAdventure({ ...returningState, run: null }, SCENARIOS[0]);
     expect(continued.character?.historyFlags).toContain('returned_for_help');
   });

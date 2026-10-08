@@ -48,6 +48,19 @@ describe('Aww, Rats!!', () => {
     expect(state.character?.carriedItems).toContain('ratCatchersHook');
   });
 
+  it('establishes the inner gate ahead before offering the dangerous gate action', () => {
+    const scene = AWW_RATS.scenes.nestCollapse;
+    expect(scene.text).toContain('outside hatch shut behind you');
+    expect(scene.text).toContain('inner board gate blocks the deeper run');
+    expect(scene.choices.find((choice) => choice.id === 'pushDeeper')?.label).toBe('Force the inner gate shut');
+  });
+
+  it('establishes the outer hatch and hinge before offering rope closure', () => {
+    const scene = AWW_RATS.scenes.sealPlan;
+    expect(scene.text).toContain('A rough timber hatch covers the outer nest mouth on an old hinge');
+    expect(scene.choices.find((choice) => choice.id === 'ropeSeal')?.label).toContain('Pull the hatch into place');
+  });
+
   it('lets a broke fresh character clear the nest with ordinary farm materials', () => {
     let state = reachGrainDecision();
     state = act(state, 'destroyGrain');

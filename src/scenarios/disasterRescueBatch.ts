@@ -430,17 +430,17 @@ export const AFTER_THE_TORNADO = A('after-the-tornado', 'After the Tornado', 'Th
   ]),
   childFound: scene('childFound', 'Under the Wash Shed Bench', 'The child is frightened but unharmed beneath a bench. The kitchen smoke has thinned only if the stove was made safe; the cow is safe only if freed. A neighbor’s wagon is coming up the south lane.', [
     { id: 'childCheckHome', label: 'Bring the child to the farmhouse', next: 'tornadoAftermath', effects: { setFlags: ['tornadoChildFound'] } },
-    { id: 'childWarnNeighbor', label: 'Bring the child to the farmhouse', next: 'tornadoAftermath', effects: { setFlags: ['tornadoChildFound'] } },
+    { id: 'childSignalNeighbor', label: 'Signal the neighbor: the child is found', next: 'helpRider', effects: { setFlags: ['tornadoChildFound'] } },
   ]),
   stoveSafe: scene('stoveSafe', 'A Hearth without Smoke', 'The stove is cold and the kitchen is safe for now. The house has lost part of its roof, so the family cannot stay through another storm. The child and cow are still unresolved.', [
-    { id: 'safeSearch', label: 'Search the wash shed for the child', next: 'childFound', effects: { setFlags: ['tornadoFireSafe'] } },
+    { id: 'safeSearch', label: 'Search the wash shed for the child', next: 'childFound', effects: { setFlags: ['tornadoFireSafe', 'tornadoChildFound'] } },
     { id: 'safeCow', label: 'Check the fallen gate in the orchard', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFireSafe', 'tornadoCowMoved'] } },
   ]),
   helpRider: scene('helpRider', 'Help on the South Lane', 'The neighbor arrives with a wagon and two blankets. They can carry the family and a person needing care, but cannot take the cow and household goods together. The north road remains blocked by fallen trees.', [
     { id: 'loadFamily', label: 'Load the family and anyone injured', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFamilyMoved'] } },
-    { id: 'sendNeighborSearch', label: 'Ask the neighbor to search the wash shed', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFamilyMoved'] } },
+    { id: 'sendNeighborSearch', label: 'Ask the neighbor to search the wash shed', requirements: { notFlags: ['tornadoChildFound'] }, next: 'tornadoAftermath', effects: { setFlags: ['tornadoFamilyMoved'] } },
     { id: 'leaveCow', label: 'Use the wagon for the cow instead', next: 'tornadoAftermath', effects: { setFlags: ['tornadoCowMoved'] } },
-  ]),
+  ], 'safe', [{ requirements: { flags: ['tornadoChildFound'] }, text: 'The child is with you at the wash shed. The neighbor arrives with a wagon and two blankets, enough to carry the family and anyone needing care, but not the cow and household goods together. The north road remains blocked by fallen trees.' }]),
   tornadoAftermath: scene('tornadoAftermath', 'A House No One Can Keep Tonight', 'The family moves to the schoolhouse before dusk. The child, cow, and stove are accounted for only according to what was found, moved, or secured. The damaged roof and blocked north road will take a crew, not one traveler, to repair.', [
     { id: 'tornadoReport', label: 'Give the neighbors a list of what remains', next: 'tornadoEnd', effects: { knowledge: ['The south lane remained open after the tornado; the north road was blocked by fallen trees.'], historyFlags: ['helped a farm family triage tornado damage'] } },
   ]),

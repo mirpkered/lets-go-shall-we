@@ -76,6 +76,7 @@ describe('registered scenario graph audit', () => {
       'bell-before-the-wire': ['knowledgeEnding'],
       'horse-change-ledger': ['knowledgeEnding'],
       ...Object.fromEntries(SALVAGE_RECOVERY_GENRE_BATCH.map(({id})=>[id,['unpaid']])),
+      'survey-stakes-are-wrong': ['survey-stakes-are-wrongBold', 'survey-stakes-are-wrongCautious', 'survey-stakes-are-wrongCounterAccount'],
     };
     const found: Record<string, string[]> = {};
     for (const scenario of SCENARIOS) {

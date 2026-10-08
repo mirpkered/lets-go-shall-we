@@ -250,9 +250,9 @@ describe('Last Light at Miller’s Crossing', () => {
 
   it('uses prior history as a light callback without blocking a fresh character', () => {
     const returning = fresh(null, ['searched_for_missing_traveler']);
-    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.crossroads, returning)).toMatch(/recognizes your reputation/i);
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.crossroads, returning)).toContain('You have searched for a missing traveler before');
     const firstRun = fresh();
-    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.crossroads, firstRun)).not.toMatch(/recognizes your reputation/i);
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.crossroads, firstRun)).not.toMatch(/recognizes your reputation|searched for a missing traveler before/i);
     expect(options(firstRun)).toHaveLength(4);
   });
 

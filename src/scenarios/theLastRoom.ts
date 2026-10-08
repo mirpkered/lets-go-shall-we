@@ -1,6 +1,5 @@
 import type { Scenario } from '../types';
 
-const REPUTATION = 'You have come back for someone before. I suppose I can tell you what I know.';
 const ROOM_TOOL = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'brassBottleOpener'];
 const PRY_TOOLS = [...ROOM_TOOL, 'brassCandlestick', 'steelWedge'];
 const CELLAR_LIGHTS = ['lantern', 'minerHeadlamp'];
@@ -31,7 +30,7 @@ export const THE_LAST_ROOM: Scenario = {
     hostAccount: {
       id: 'hostAccount', title: 'The Innkeeper’s Account',
       text: 'The innkeeper identifies the guest as Silas Vale and says he went out the back before the rain grew heavy. Nell has not seen him leave, and his place at supper is still set. He admits there is a narrow service passage behind the kitchen, used for deliveries. The room is closed for the night, he says, though he cannot explain why a chair and table block it from the hallway.',
-      textVariants: [{ requirements: { historyFlags: ['returned_for_help'] }, text: `${REPUTATION} The innkeeper identifies the guest as Silas Vale and says he went out the back before the rain grew heavy. Nell has not seen him leave, and his place at supper is still set. He admits there is a narrow service passage behind the kitchen, used for deliveries. The room is closed for the night, he says, though he cannot explain why a chair and table block it from the hallway.` }],
+      textVariants: [{ requirements: { historyFlags: ['returned_for_help'] }, text: 'You remember returning for help in an earlier emergency. The innkeeper identifies the guest as Silas Vale and says he went out the back before the rain grew heavy. Nell has not seen him leave, and his place at supper is still set. He admits there is a narrow service passage behind the kitchen, used for deliveries. The room is closed for the night, he says, though he cannot explain why a chair and table block it from the hallway.' }],
       choices: [
         { id: 'askAboutRoom', label: 'Ask why the door is blocked', next: 'corridor' },
         { id: 'askServicePassage', label: 'Ask about the rear service passage', next: 'serviceHall' },

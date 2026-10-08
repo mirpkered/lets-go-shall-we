@@ -208,8 +208,9 @@ describe('Dead Man’s Hand', () => {
   it('uses history as optional trust, while a new character retains every core route', () => {
     const freshState = fresh();
     const knownHistory = fresh(0, null, ['rescued_missing_person']);
-    expect(sceneText(DEAD_MANS_HAND.scenes.bartenderOpening, knownHistory)).toContain('recognizes you from the mine rescue');
-    expect(sceneText(DEAD_MANS_HAND.scenes.bartenderOpening, freshState)).not.toContain('recognizes you from the mine rescue');
+    expect(sceneText(DEAD_MANS_HAND.scenes.bartenderOpening, knownHistory)).toContain('An earlier rescue comes to mind');
+    expect(sceneText(DEAD_MANS_HAND.scenes.bartenderOpening, knownHistory)).not.toContain('Mabel recognizes you');
+    expect(sceneText(DEAD_MANS_HAND.scenes.bartenderOpening, freshState)).not.toContain('An earlier rescue comes to mind');
     expect(DEAD_MANS_HAND.scenes.saloonArrival.choices.map((choice) => choice.id)).toEqual(expect.arrayContaining(['takeOpenSeat', 'watchFromRail', 'speakToMabel', 'leaveAtArrival']));
     expect(DEAD_MANS_HAND.scenes.saloonArrival.choices.every((choice) => !choice.requirements?.historyFlags)).toBe(true);
   });

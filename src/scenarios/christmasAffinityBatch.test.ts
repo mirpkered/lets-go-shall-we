@@ -196,4 +196,35 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(visitor.scenes.door.choices.map(({ id }) => id)).toContain('inviteGuest');
     expect(midnight.scenes.door.choices.map(({ id }) => id)).toContain('refuseVisitor');
   });
+
+  it('does not identify the anonymous giver or motive from delivery evidence alone', () => {
+    const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'gift-with-no-name')!;
+    const routes = [
+      ['checkSeal', 'leaveGiftPrivate'],
+      ['keepBoxClosed', 'morningAsk'],
+      ['askGuests', 'askPorter', 'askGiver'],
+    ] as const;
+    for (const route of routes) {
+      let state = fresh(scenario);
+      for (const choiceId of route) state = pick(state, scenario, choiceId);
+      expect(state.run!.sceneId).toBe('reveal');
+      expect(scenario.scenes.reveal.text).toContain('None of that identifies the unnamed payer');
+      expect(scenario.scenes.reveal.text).not.toContain('aunt');
+      expect(scenario.scenes.reveal.text).not.toContain('brooch');
+    }
+
+    let invited = fresh(scenario);
+    invited = pick(invited, scenario, 'checkSeal');
+    invited = pick(invited, scenario, 'leaveGiftPrivate');
+    invited = pick(invited, scenario, 'inviteAunt');
+    expect(invited.run!.sceneId).toBe('auntArrives');
+    expect(scenario.scenes.auntArrives.text).toContain('identifies herself');
+    expect(scenario.scenes.auntArrives.text).toContain('She says');
+
+    let accepted = fresh(scenario);
+    accepted = pick(accepted, scenario, 'checkSeal');
+    accepted = pick(accepted, scenario, 'leaveGiftPrivate');
+    accepted = pick(accepted, scenario, 'acceptGift');
+    expect(scenario.scenes.giftAccepted.text).toContain('giver and contents remain unknown');
+  });
 });

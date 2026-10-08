@@ -203,9 +203,11 @@ describe('High Water', () => {
     expect(ordinaryText).toContain('Rain has soaked the valley');
     expect(ordinaryText).not.toContain('recognize you from the evacuation');
     freshState.character!.historyFlags.push('organized_flood_evacuation');
-    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).toContain('recognize you from the evacuation');
+    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).toContain('You remember organizing a flood evacuation');
+    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).not.toContain('residents recognize you');
     freshState.character!.historyFlags = ['prioritized_property_in_flood'];
-    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).toContain('asks plainly what you intend to save');
+    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).toContain('A past flood choice comes to mind');
+    expect(sceneText(HIGH_WATER.scenes.floodArrival, freshState)).not.toContain('recognizes you');
   });
 
   it('foreshadows fatal danger and retains a less exposed escape alternative', () => {
