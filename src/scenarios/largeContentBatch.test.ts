@@ -85,4 +85,42 @@ describe('disaster, western, and lost-place expansion', () => {
     const tornado = DISASTER_RESCUE_ADVENTURES.find(({ id }) => id === 'after-the-tornado')!;
     expect(tornado.scenes.tornadoEnd.text).toMatch(/child is with them only if found.*cow is safe only if freed or moved/i);
   });
+
+  it('gives the found child a distinct choice between returning home and joining the arriving wagon', () => {
+    const tornado = DISASTER_RESCUE_ADVENTURES.find(({ id }) => id === 'after-the-tornado')!;
+    const character = newCharacter('Tornado Agency Test');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, tornado, () => 0) };
+    const act = (sceneId: string, choiceId: string): void => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = tornado.scenes[sceneId].choices.find((entry) => entry.id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(choice!.requirements, state)).toBe(true);
+      state = choose(state, tornado, choice!, () => 0);
+    };
+
+    act('crossroads', 'callMissing');
+    act('childSearch', 'reachChild');
+    const options = tornado.scenes.childFound.choices.map(({ id }) => id);
+    expect(options).toEqual(['childCheckHome', 'childSignalNeighbor']);
+    act('childFound', 'childSignalNeighbor');
+    expect(state.run?.sceneId).toBe('helpRider');
+    expect(sceneText(tornado.scenes.helpRider, state)).toContain('The child is with you at the wash shed');
+    const helpChoices = tornado.scenes.helpRider.choices.filter(({ requirements }) => meets(requirements, state)).map(({ id }) => id);
+    expect(helpChoices).toEqual(['loadFamily', 'leaveCow']);
+    act('helpRider', 'loadFamily');
+    expect(state.run?.flags).toContain('tornadoChildFound');
+    expect(state.run?.flags).toContain('tornadoFamilyMoved');
+    expect(sceneText(tornado.scenes.tornadoEnd, state)).toContain('The child is with them only if found');
+
+    const alternateCharacter = newCharacter('Stove Route Test');
+    let alternate: SaveData = { ...structuredClone(EMPTY_SAVE), character: alternateCharacter, run: startRun(alternateCharacter, tornado, () => 0) };
+    const stoveChoice = tornado.scenes.crossroads.choices.find(({ id }) => id === 'checkKitchen')!;
+    alternate = choose(alternate, tornado, stoveChoice, () => 0);
+    const smother = tornado.scenes.stoveHazard.choices.find(({ id }) => id === 'stoveSmother')!;
+    alternate = choose(alternate, tornado, smother, () => 0);
+    const search = tornado.scenes.stoveSafe.choices.find(({ id }) => id === 'safeSearch')!;
+    alternate = choose(alternate, tornado, search, () => 0);
+    expect(alternate.run?.sceneId).toBe('childFound');
+    expect(alternate.run?.flags).toContain('tornadoChildFound');
+  });
 });
