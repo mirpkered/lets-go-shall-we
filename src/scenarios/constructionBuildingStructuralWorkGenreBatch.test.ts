@@ -128,6 +128,30 @@ describe('Construction / Building / Structural Work batch',()=>{
     }
   });
 
+  it('records Three Knots as a second source of scaffold Knowledge before the compensation choice',()=>{
+    const scenario=BATCH.find(({id})=>id==='three-knots-on-the-platform')!;
+    const fact=KNOWLEDGE_FACTS.scaffoldFootAndLashing;
+    let state=initial(scenario);
+    state=act(state,scenario,'inspect');
+    state=act(state,scenario,'close');
+    state=act(state,scenario,'resolve');
+    expect(state.run?.sceneId).toBe('settle');
+    expect(state.character?.knowledgeKeys).toContain(fact.id);
+    expect(state.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id]);
+    expect(state.character?.knowledge).toContain(fact.text);
+
+    const source=BATCH.find(({id})=>id==='the-ladder-in-the-west-yard')!;
+    let second=initial(source);
+    second.character=state.character;
+    second.run=startRun(second.character!,source,()=>0);
+    second=act(second,source,'inspect');
+    second=act(second,source,'close');
+    second=act(second,source,'resolve');
+    second=act(second,source,'wage');
+    expect(second.character?.knowledgeKeys?.filter((id)=>id===fact.id)).toHaveLength(1);
+    expect(second.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id,source.id]);
+  });
+
   it('recognizes all new Lore entries later and keeps their history distinct from Knowledge',()=>{
     const loreGrants=BATCH.flatMap(({scenes})=>scenes.settle.choices.flatMap(({effects})=>effects?.lore??[]));
     expect(loreGrants.length).toBeGreaterThanOrEqual(8);

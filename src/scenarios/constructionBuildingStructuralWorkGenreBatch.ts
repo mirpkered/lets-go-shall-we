@@ -67,7 +67,8 @@ const make = (w:BuildStory,index:number):Scenario => {
   if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`A remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
   const revealVariants:NonNullable<Scene['textVariants']> = [];
   if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
-  const learnedKnowledge = w.knowledge ? {knowledgeEntries:[KNOWLEDGE_FACTS[w.knowledge]],historyFlags:[`construction_knowledge_${w.id}`]} : {};
+  const earnedFact = w.knowledge ?? (w.id === 'three-knots-on-the-platform' ? 'scaffoldFootAndLashing' : undefined);
+  const learnedKnowledge = earnedFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[earnedFact]],historyFlags:[`construction_knowledge_${w.id}`]} : {};
   const revealChoices:Scene['choices'] = [
     {id:'resolve',label:w.decision,next:'settle',effects:{...learnedKnowledge,setFlags:['choseCautiousSequence']}},
     {id:'alternate',label:w.alternate,next:'settle',effects:{...learnedKnowledge,setFlags:['choseAlternateSequence']}},

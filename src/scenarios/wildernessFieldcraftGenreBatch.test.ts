@@ -3,6 +3,7 @@ import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newC
 import { eligibleScenarios } from '../scenarioSelection';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { SCENARIOS } from './index';
 import { WILDERNESS_FIELDCRAFT_GENRE_BATCH } from './wildernessFieldcraftGenreBatch';
@@ -109,6 +110,35 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     state = finishRewardResolution(placeReward(state, 'foldingFieldSpade', 'carry'));
     expect(getCarriedItems(state.character)).toContain('foldingFieldSpade');
     expect(itemState(state, 'foldingFieldSpade').provenance.join(' ')).toContain('Released by foreman Eda');
+  });
+
+  it('records the camp runoff as another source of the existing water-path lesson without tying it to compensation', () => {
+    const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-camp-below-the-cut')!;
+    const fact = KNOWLEDGE_FACTS.waterPathBeforeWall;
+    let state = begin(scenario);
+    state = act(state, scenario, 'readSlope');
+    state = act(state, scenario, 'divertWide');
+    expect(state.character?.knowledgeKeys).toContain(fact.id);
+    expect(state.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id]);
+    expect(state.character?.knowledge).toContain(fact.text);
+
+    // Reaching the same learning point again does not duplicate the stable fact or its source.
+    state = begin(scenario);
+    state.character!.knowledgeKeys = [fact.id];
+    state.character!.knowledge = [fact.text];
+    state.character!.knowledgeSources = { [fact.id]: [scenario.id] };
+    state = act(state, scenario, 'readSlope');
+    state = act(state, scenario, 'divertWide');
+    expect(state.character?.knowledgeKeys?.filter((id) => id === fact.id)).toHaveLength(1);
+    expect(state.character?.knowledgeSources?.[fact.id]).toEqual([scenario.id]);
+
+    const result = begin(scenario);
+    result.run!.sceneId = 'result';
+    for (const choiceId of ['takeCoins', 'declinePayment']) {
+      const outcome = act(result, scenario, choiceId);
+      expect(outcome.character?.knowledgeKeys).toContain(fact.id);
+      expect(outcome.character?.knowledgeSources?.[fact.id]).toContain(scenario.id);
+    }
   });
 
   it('uses owned field spade only for limited shallow drainage, not as an automatic crossing solution', () => {
