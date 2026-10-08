@@ -33,6 +33,7 @@ describe('registered scenario graph audit', () => {
       'the-last-train-message': ['deliver-private', 'deliver-wait', 'porter-deliverNow', 'verify-carry'],
       'the-last-shot': ['lastShotDeath'],
       'the-roof-comes-in': ['roofDeath'],
+      'survey-stakes-are-wrong': ['survey-stakes-are-wrongBold', 'survey-stakes-are-wrongCautious', 'survey-stakes-are-wrongCounterAccount'],
     };
     const found: Record<string, string[]> = {};
     for (const scenario of SCENARIOS) {

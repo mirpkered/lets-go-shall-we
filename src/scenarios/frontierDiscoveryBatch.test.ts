@@ -70,6 +70,25 @@ describe('remote discovery and frontier claims batch', () => {
     expect(FRONTIER_DISCOVERY_ADVENTURES.every(({ scenes }) => Object.values(scenes).some(({ ending }) => ending === 'success'))).toBe(true);
   });
 
+  it('separates field surveying from the claimant negotiation in Claim at Dry Creek', () => {
+    const survey = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'survey-stakes-are-wrong')!;
+    const dryCreek = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'claim-at-dry-creek')!;
+    expect(survey.scenes[survey.startScene].text).toContain('county surveyor');
+    expect(survey.scenes[`${survey.id}Decision`].choices.map(({ id }) => id)).toEqual(['recordBothRows', 'requestRemeasure', 'submitNotesOnly']);
+    expect(survey.scenes[`${survey.id}CounterAccount`]).toBeDefined();
+    expect(Object.values(dryCreek.scenes).some(({ choices }) => choices.some(({ id }) => id === 'bringBothAccounts'))).toBe(true);
+
+    const character = newCharacter('Survey QA');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, survey, () => 0) };
+    for (const [sceneId, choiceId] of [[survey.startScene, 'inspectStakeRows'], [`${survey.id}Evidence`, 'traceNewRow'], [`${survey.id}CreekCheck`, 'recordCreekShift']] as const) {
+      const choice = survey.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      state = choose(state, survey, choice);
+    }
+    expect(state.run?.status).toBe('success');
+    expect(survey.scenes[state.run!.sceneId].text).toContain('changed creek as separate observations');
+    expect(state.character?.historyFlags).toContain('investigated the survey stakes are wrong beyond the first clues');
+  });
+
   it('foreshadows each lethal structural route and leaves an authored chance of success', () => {
     const lethal = FRONTIER_DISCOVERY_ADVENTURES.filter(({ scenes }) => Object.values(scenes).some(({ ending }) => ending === 'death'));
     expect(lethal.map(({ id }) => id).sort()).toEqual([
