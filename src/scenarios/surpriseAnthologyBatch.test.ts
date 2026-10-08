@@ -101,6 +101,65 @@ describe('surprise anthology and library gap-fill', () => {
     expect(audit.structuralWarnings.length).toBeLessThan(20);
   });
 
+  it('keeps The Pie with No Recipe centered on a clear, informed contest judgment', () => {
+    const pie = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-pie-with-no-recipe')!;
+    expect(pie.id).toBe('the-pie-with-no-recipe');
+    expect(pie.diversity?.playerRoles).toContain('judge');
+    expect(pie.scenes.tasting.text).toMatch(/keeper asks you to judge taste, texture, and execution—not recipe ownership/i);
+
+    const tastingNotes = pie.scenes.flavor.text;
+    for (const detail of ['Hester’s plum-and-pepper pie', 'Lotte’s apple pie', 'Vale’s pear tart']) {
+      expect(tastingNotes).toContain(detail);
+    }
+    expect(pie.scenes.accounts.text).toMatch(/keeper offers slices by card/i);
+    expect(pie.scenes.accounts.text).toMatch(/ribbon goes to the entry you judge best/i);
+    expect(pie.scenes.accounts.textVariants?.[0].requirements).toEqual({ flags: ['pie_entries_tasted'] });
+    expect(pie.scenes.rule.text).toMatch(/prize is for the pie, not ownership/i);
+
+    const award = pie.scenes.award;
+    expect(award.choices.map(({ label }) => label)).toEqual([
+      'Award Hester’s plum-and-pepper pie',
+      'Award Lotte’s apple pie',
+      'Award Vale’s pear tart',
+      'Ask for a shared ribbon',
+    ]);
+    expect(award.choices.map(({ next }) => next)).toEqual(['winner', 'winnerApple', 'winnerPear', 'shared']);
+
+    const fresh = start(pie);
+    const alreadyTasted = act(fresh, pie, 'tasting', 'tasteBeforeNames');
+    expect(meets(pie.scenes.accounts.textVariants![0].requirements, fresh)).toBe(false);
+    expect(meets(pie.scenes.accounts.textVariants![0].requirements, alreadyTasted)).toBe(true);
+    for (const [choiceId, endingId] of [
+      ['awardPlum', 'winner'],
+      ['awardApple', 'winnerApple'],
+      ['awardPear', 'winnerPear'],
+      ['splitRibbon', 'shared'],
+    ] as const) {
+      let result = act(start(pie), pie, 'tasting', 'tasteBeforeNames');
+      result = act(result, pie, 'flavor', 'judgeTasteOnly');
+      result = act(result, pie, 'award', choiceId);
+      expect(result.run?.sceneId).toBe(endingId);
+      expect(result.run?.status).toBe('success');
+      expect(result.character?.knowledge).toEqual([]);
+      expect(result.character?.knowledgeKeys).toEqual([]);
+      expect(result.character?.lore).toEqual([]);
+      expect(result.character?.historyFlags).toEqual([]);
+    }
+    for (const current of Object.values(pie.scenes)) for (const choice of current.choices) {
+      expect(choice.effects?.knowledge).toBeUndefined();
+      expect(choice.effects?.lore).toBeUndefined();
+      expect(choice.effects?.historyFlags).toBeUndefined();
+    }
+    const recipeFirst = act(act(start(pie), pie, 'tasting', 'askAboutRecipe'), pie, 'accounts', 'separateRecipeAndPrize');
+    expect(recipeFirst.run?.sceneId).toBe('award');
+    const keeperRoute = act(act(act(start(pie), pie, 'tasting', 'askAboutRecipe'), pie, 'accounts', 'askFairKeeper'), pie, 'rule', 'acceptRule');
+    expect(keeperRoute.run?.sceneId).toBe('award');
+    expect(pie.scenes.winner.text).toMatch(/Hester accepts the ribbon/i);
+    expect(pie.scenes.winnerApple.text).toMatch(/Lotte accepts the ribbon/i);
+    expect(pie.scenes.winnerPear.text).toMatch(/Vale accepts the ribbon/i);
+    expect(pie.scenes.shared.text).toMatch(/share the ribbon/i);
+  });
+
   it('uses current-run history, knowledge, and carried gear only when the related experience exists', () => {
     const supper = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'supper-at-the-inn')!;
     const fresh = start(supper);

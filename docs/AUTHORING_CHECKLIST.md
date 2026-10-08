@@ -106,6 +106,7 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 ## Choices and consequences
 
 - [ ] Choices provide real agency, understandable consequences, and consistently framed alternatives.
+- [ ] Preserve Scenario Objective Integrity: let the player act on and resolve the established role/task, or explicitly earn a shift; for a contest or judging assignment, make the actual judgment a clear, informed choice unless it is deliberately delegated, interrupted, or declined.
 - [ ] NPCs explain resources and constraints but do not decide the player’s strategy.
 - [ ] Foreshadow meaningful danger; risky actions generally retain a chance where physically possible.
 - [ ] For lethal branches, show a plausible hazard and warning/escalation; account for mitigation, retreat, and any price retreat carries. Do not add fatality as an arbitrary difficulty bump.

@@ -113,31 +113,35 @@ export const THE_BELL_RINGER_TRIAL = story('the-bell-ringer-trial', 'The Bell-Ri
   stopped: end('stopped', 'A Contest Postponed', 'The contest ends before anyone is hurt. The apprentice is disappointed, but the rope is tied off and the bell will not be pulled again until it is replaced.'),
 });
 
-export const THE_PIE_WITH_NO_RECIPE = story('the-pie-with-no-recipe', 'The Pie with No Recipe', 'The fair’s winning pie came from a recipe no one can agree exists.', T('A pie contest becomes a dispute over a recipe everyone remembers differently, and the traveler must distinguish ownership from cooking skill.', 'judge', 'humorous/absurd', 'county fair dining tent', ['blind tasting', 'testimony comparison', 'public decision'], 'traveler is asked to judge contest', ['narrative-only payoff', 'relationship/referral']), 'tasting', {
-  tasting: scene('tasting', 'Three Pies, Two Recipes', 'Three pies sit under numbered cloths. Two bakers claim the winning crust follows a recipe taught by the late Mrs. Orrow. A third says she invented the filling herself.', [
-    { id: 'tasteBeforeNames', label: 'Taste before hearing more claims', next: 'flavor' },
+export const THE_PIE_WITH_NO_RECIPE = story('the-pie-with-no-recipe', 'The Pie with No Recipe', 'Three pies compete for a ribbon while two bakers remember Mrs. Orrow’s recipe differently.', T('The traveler is asked to judge a pie contest; a disagreement over a remembered recipe complicates the tasting without deciding who deserves the ribbon.', 'judge', 'humorous/absurd', 'county fair dining tent', ['guided tasting', 'testimony comparison', 'public decision'], 'traveler is asked to judge contest', ['narrative-only payoff', 'relationship/referral']), 'tasting', {
+  tasting: scene('tasting', 'Three Pies, Two Recipes', 'Three pies sit beneath numbered cloths. Hester made a bright plum-and-pepper pie with a twice-folded crust; Lotte entered a tender apple pie; Vale baked a pear tart browned at the edges. Hester and Lotte say Mrs. Orrow taught them the winning crust. Vale says the filling idea was hers. The keeper asks you to judge taste, texture, and execution—not recipe ownership.', [
+    { id: 'tasteBeforeNames', label: 'Taste before hearing more claims', next: 'flavor', effects: { setFlags: ['pie_entries_tasted'] } },
     { id: 'askAboutRecipe', label: 'Ask what each baker remembers', next: 'accounts' },
-    { id: 'declineAward', label: 'Decline to judge ownership', next: 'declined' },
+    { id: 'declineAward', label: 'Step aside; let another judge choose', next: 'declined' },
   ]),
-  flavor: scene('flavor', 'A Taste of Plum and Pepper', 'The winning pie tastes of plum, pepper, and a crust folded twice. That tells you how it was made, not whose recipe it was.', [
+  flavor: scene('flavor', 'What the Tasting Shows', 'With the cloths lifted, you can match the entries to their cards: Hester’s plum-and-pepper pie is bright and its folded crust holds cleanly; Lotte’s apple pie is balanced beneath a tender crust; Vale’s pear tart has the most even browning and a crisp edge. You have a basis to judge the pies, though none of those qualities settles who first taught a recipe.', [
     { id: 'judgeTasteOnly', label: 'Judge flavor and texture alone', next: 'award' },
     { id: 'askForAccounts', label: 'Hear both bakers before awarding', next: 'accounts' },
   ]),
-  accounts: scene('accounts', 'What Mrs. Orrow Taught', 'One baker remembers exact measures. The other remembers Mrs. Orrow saying to add pepper “until the filling wakes up.” Both helped in her kitchen, and neither has a written copy.', [
+  accounts: scene('accounts', 'What Mrs. Orrow Taught', 'Hester recalls exact measures; Lotte remembers Mrs. Orrow’s “pepper until the filling wakes up.” Vale says the pear filling was hers. The keeper offers slices by card. You find Hester’s plum pie bright with a firm, folded crust; Lotte’s apple balanced and tender; Vale’s pear tart crisp and evenly browned. Their claims may explain the pies, but the ribbon goes to the entry you judge best.', [
     { id: 'separateRecipeAndPrize', label: 'Separate the prize from the recipe claim', next: 'award' },
     { id: 'askFairKeeper', label: 'Ask the fair keeper to settle the rule', next: 'rule' },
-  ]),
-  rule: scene('rule', 'A Rule for This Contest', 'The keeper says the prize was for the pie, not ownership of the recipe. The bakers can compete on taste without claiming a deed to Mrs. Orrow’s kitchen.', [
+  ], 'safe', [{ requirements: { flags: ['pie_entries_tasted'] }, text: 'Hester recalls exact measures; Lotte remembers Mrs. Orrow’s “pepper until the filling wakes up.” Vale says the pear filling was hers. None has a written copy. Their claims may explain the pies, but the ribbon goes to the entry you judge best.' }]),
+  rule: scene('rule', 'A Rule for This Contest', 'The keeper says the prize is for the pie, not ownership of a recipe. Hester, Lotte, and Vale can still be judged on flavor, texture, and execution without claiming a deed to Mrs. Orrow’s kitchen.', [
     { id: 'acceptRule', label: 'Judge the pies by taste', next: 'award' },
-    { id: 'leaveRule', label: 'Ask the bakers to settle it themselves', next: 'shared' },
+    { id: 'leaveRule', label: 'Suggest sharing the ribbon and settling the recipe claim later', next: 'shared' },
   ]),
-  award: scene('award', 'The Prize Plate', 'The pies are close. The plum filling is brighter, while the twice-folded crust holds together better. The prize can recognize one pie, or the fair can split the ribbon.', [
-    { id: 'awardPlum', label: 'Award the ribbon to the plum pie', next: 'winner' },
+  award: scene('award', 'The Prize Plate', 'You have heard the recipe claims and compared the entries. The keeper sets the ribbon beside the cards: choose the pie that best met the contest standard, or ask the fair to share it. Recipe credit remains a separate question.', [
+    { id: 'awardPlum', label: 'Award Hester’s plum-and-pepper pie', next: 'winner' },
+    { id: 'awardApple', label: 'Award Lotte’s apple pie', next: 'winnerApple' },
+    { id: 'awardPear', label: 'Award Vale’s pear tart', next: 'winnerPear' },
     { id: 'splitRibbon', label: 'Ask for a shared ribbon', next: 'shared' },
   ]),
-  winner: end('winner', 'A Prize for the Pie', 'The baker accepts the ribbon and says the recipe remains Mrs. Orrow’s memory, not a prize to win. The other baker asks to trade notes after the fair.'),
+  winner: end('winner', 'A Prize for the Pie', 'Hester accepts the ribbon for the plum pie’s bright filling and well-held crust. Lotte is disappointed but asks to compare notes after the fair; the ribbon settles the baking, not whose memory of Mrs. Orrow is right.'),
+  winnerApple: end('winnerApple', 'A Prize for the Pie', 'Lotte accepts the ribbon for the apple pie’s balance and tender crust. Hester is disappointed, but the keeper keeps the recipe disagreement separate from the result: the contest has judged the pie, not the source of its method.'),
+  winnerPear: end('winnerPear', 'A Prize for the Pie', 'Vale accepts the ribbon for the pear tart’s even browning and crisp edge. The other bakers still remember Mrs. Orrow differently, but the contest has judged the entry rather than ownership of a recipe.'),
   shared: end('shared', 'Two Pies, One Memory', 'The bakers share the ribbon and agree to compare what they remember. The recipe is still incomplete, but nobody has to claim ownership of it.'),
-  declined: end('declined', 'A Judge Steps Aside', 'The fair keeper asks another judge to choose a pie. You leave the family memory out of a contest that can only reward the baking.'),
+  declined: end('declined', 'A Judge Steps Aside', 'You step aside, and the keeper asks another judge to compare the entries. The recipe disagreement remains with the bakers; the ribbon will still go to the pie that best meets the contest standard.'),
 });
 
 export const THE_PAINTED_SIGN = story('the-painted-sign', 'The Painted Sign', 'A sign painter’s work is accurate, but the town’s new name is not.', tags({ hook: 'A painter finishes a town sign just as residents reveal the place has voted to restore its older name; the traveler must help avoid wasting honest work.', activities: ['labor/repair', 'social interaction'], role: 'witness', tone: 'warm/hopeful', risk: 'LOW', setting: 'town square', structures: ['branching narrative', 'multi-stage sequence'], entry: 'witnesses incident', rewards: ['narrative-only payoff'], consequences: ['time/opportunity', 'money/wages', 'relationship'] }), 'sign', {
