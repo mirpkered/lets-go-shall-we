@@ -24,7 +24,7 @@ const act = (state:SaveData,scenario:(typeof INDUSTRIAL_MILL_RAIL_GEAR_BATCH)[nu
 describe('Industrial / Mill / Rail Work genre batch',()=>{
   it('registers 24 distinct reachable, all-year industrial work Adventures',()=>{
     expect(INDUSTRIAL_MILL_RAIL_GEAR_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(INDUSTRIAL_MILL_RAIL_GEAR_BATCH.map(({id})=>id)).size).toBe(24);
     expect(validateScenarioRegistry(INDUSTRIAL_MILL_RAIL_GEAR_BATCH).errors).toEqual([]);
     expect(validateScenarioRegistry(INDUSTRIAL_MILL_RAIL_GEAR_BATCH).warnings).toEqual([]);

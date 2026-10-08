@@ -81,6 +81,7 @@ function bindQaPanel(): void {
       recentRiskHistory: state.recentRiskHistory ?? [],
       categoryHistory: state.character?.scenarioCategoryHistory ?? [],
       scenarioPlayCounts: state.character?.scenarioPlayCounts ?? {},
+      character: state.character,
       ...(qaSelectionMonth !== null ? { selectionMonth: qaSelectionMonth } : {}),
     }, draws);
     const output = document.querySelector<HTMLElement>('[data-qa-selection-simulation]');
@@ -388,6 +389,7 @@ function renderHome(): void {
       recentRiskHistory: state.recentRiskHistory,
       categoryHistory: state.character?.scenarioCategoryHistory ?? [],
       scenarioPlayCounts: state.character?.scenarioPlayCounts ?? {},
+      character: state.character,
       ...(qaEnabled && qaSelectionMonth !== null ? { selectionMonth: qaSelectionMonth } : {}),
     });
     if (scenario) startScenario(scenario.id);

@@ -65,6 +65,8 @@ Knowledge and Lore are shown as a small recent preview in Inventory & Bank; Hist
 
 ## Before drafting
 
+- [ ] If this is a conditional follow-up, is normal selection gated by the exact persistent outcome(s) that establish its premise—not merely by prior completion—and does it have a distinct new objective?
+
 - [ ] Read the current rules and inspect the adventure roster, continuity registry, history flags, item catalog, and relevant geography/events.
 - [ ] Choose a clear premise, tone, stakes, and a fresh-traveler reason to participate. Establish time, weather, and place where they matter.
 - [ ] Assign a LOW / MODERATE / HIGH / SEVERE risk tier from actual consequence potential, not genre or atmosphere; preserve intended quiet adventures.

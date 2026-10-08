@@ -52,7 +52,7 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
   });
   it('registers 24 distinct all-year Adventures with valid destinations and no duplicate IDs', () => {
     expect(SALVAGE_RECOVERY_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(SALVAGE_RECOVERY_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(SALVAGE_RECOVERY_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(SALVAGE_RECOVERY_GENRE_BATCH).errors).toEqual([]);

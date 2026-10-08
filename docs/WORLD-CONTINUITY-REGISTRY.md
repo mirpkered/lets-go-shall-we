@@ -12,7 +12,9 @@ A concise authoring reference for high-value established connections. This is no
 
 ## People and name cautions
 
-- No cross-adventure NPC identity is currently designated here as a canonical recurring person. Scenario files contain both fixed names and run-randomized name pools; inspect them before assigning a name.
+- **Lotte (baker)** recurs from The Pie with No Recipe in Notes After the Ribbon only when the Traveler awarded Hester’s pie and received Lotte as a Contact. The follow-up is about recording competing memories, not claiming the contest established recipe ownership.
+- **Mara Bell** and **Ansel Reed (printer)** recur from The Last Verse Contest in A Line for the Broadside only after the Traveler accepted Mara’s family verse or favored the printed version. Contest choices establish what the Traveler did, not which account is historically true.
+- Other cross-adventure NPC identities are not designated here as canonical recurring people. Scenario files contain both fixed names and run-randomized name pools; inspect them before assigning a name.
 - Ada is the named Lantern House innkeeper in No Vacancy. The Bridge Out randomized `travelerOne` pool also contains Ada; treat that as a different person unless a future edit explicitly establishes otherwise. Avoid extending this collision to new NPCs.
 - Within an adventure, do not infer a recurring identity from repeated names unless the narrative makes the connection clear.
 
@@ -40,6 +42,9 @@ Use only if the active character still has the flag, and keep the response speci
 | `returned_a_found_locket_to_its_owner` | The Locket; returned a modest found keepsake | If the owner is specifically established later, acknowledge this exact return. |
 | `kept_an_unidentified_found_locket` | The Locket; kept an unclaimed locket without learning its owner | Do not invent the owner or imply the traveler knows who lost it. |
 | `shared_supper_with_a_homesick_traveler` | Supper for Two; shared a meal and listened to an immigrant traveler | A callback may recall the meal, not claim a lasting bond absent further play. |
+| `awarded_hesters_pie_the_ribbon_at_fair` | The Pie with No Recipe; awarded Hester’s plum-and-pepper pie the ribbon | Unlocks Notes After the Ribbon only alongside the Lotte Contact; records a contest result, not recipe authorship. |
+| `accepted_family_transmitted_verse_at_last_verse_contest` | The Last Verse Contest; chose Mara’s family-transmitted version for the prize | A Line for the Broadside may acknowledge this exact contest decision without asserting the verse’s age or truth. |
+| `favored_printed_version_at_last_verse_contest` | The Last Verse Contest; chose the printed version for the prize | A Line for the Broadside may acknowledge this exact contest decision; it does not mean the Traveler disproved Mara’s account. |
 
 Character-history flags are behavior records, not scores. The lists in source are broader than this short index; search the scenario definitions before adding or using a flag. History is character-specific and does not transfer after death, abandonment, or retirement.
 

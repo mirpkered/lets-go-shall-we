@@ -18,7 +18,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current local registry has 859 adventures, including ten fixed-stock merchant encounters and sixteen continuity-expansion genre batches. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
+The current local registry has 861 adventures, including ten fixed-stock merchant encounters, sixteen continuity-expansion genre batches, and two outcome-rooted follow-ups gated by specific character History and Contact state. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 

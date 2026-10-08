@@ -2,7 +2,7 @@
 
 Let’s Go, Shall We? is a mobile-first, choice-driven text RPG by Mirpworks. Each short adventure follows a persistent traveler through a fictional world inspired by the late 19th century. Stories are self-contained; the traveler’s survival, money, history, knowledge, and carried equipment make the wider journey accumulate without levels, accounts, or cloud saves.
 
-The current registry contains **431 playable adventures**. The game uses a reusable, data-driven scenario engine, forward-only scenes, fictional time in authored stories, local save/resume, character death and retirement, a persistent five-item Bank, and a carry capacity that can grow from one to three Gear slots for a living traveler. See [Current Systems](docs/CURRENT_SYSTEMS.md) for implementation boundaries and [Roadmap](docs/ROADMAP.md) for what is actually next.
+The current registry contains **861 playable adventures**, including two outcome-rooted follow-ups that enter normal selection only after their specific contest outcomes. The game uses a reusable, data-driven scenario engine, forward-only scenes, fictional time in authored stories, local save/resume, character death and retirement, a persistent five-item Bank, and a carry capacity that can grow from one to three Gear slots for a living traveler. See [Current Systems](docs/CURRENT_SYSTEMS.md) for implementation boundaries and [Roadmap](docs/ROADMAP.md) for what is actually next.
 
 ## Run, test, build
 

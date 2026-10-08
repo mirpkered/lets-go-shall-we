@@ -17,7 +17,7 @@ const fresh = (scenario: Scenario): SaveData => {
 describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', () => {
   it('registers 24 unique Adventures with valid, reachable, acyclic graphs', () => {
     expect(BATCH).toHaveLength(30);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(30);
     expect(validateScenarioRegistry(BATCH)).toEqual({ errors: [], warnings: [] });
     for (const scenario of BATCH) expect(findScenarioGraphProblems(scenario), scenario.id).toEqual([]);

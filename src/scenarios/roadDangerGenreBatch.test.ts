@@ -34,7 +34,7 @@ function reachSettlement(scenario: (typeof ROAD_DANGER_GENRE_BATCH)[number]): Sa
 describe('Road Danger / Highwaymen genre batch', () => {
   it('registers 24 unique all-year Adventures with valid destinations and an intentionally optional combat share', () => {
     expect(ROAD_DANGER_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(ROAD_DANGER_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(ROAD_DANGER_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(ROAD_DANGER_GENRE_BATCH).errors).toEqual([]);

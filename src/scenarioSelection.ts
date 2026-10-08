@@ -1,4 +1,4 @@
-import type { HistoricalPresence, RecentRiskEntry, RiskTier, Scenario } from './types';
+import type { Character, HistoricalPresence, RecentRiskEntry, RiskTier, Scenario } from './types';
 import { scenarioRiskTier } from './riskClassification';
 import { classifyScenario, getSeasonAvailability, scenarioAvailableInMonth } from './scenarioDiversity';
 
@@ -11,6 +11,8 @@ export interface SelectionPressure {
   recentRiskHistory?: RecentRiskEntry[];
   categoryHistory?: string[];
   scenarioPlayCounts?: Record<string, number>;
+  /** Persistent state used only for explicitly authored conditional Adventures. */
+  character?: Character | null;
   /** QA-only callers may supply a month; normal selection uses the browser-local month. */
   selectionMonth?: number;
 }
@@ -49,8 +51,23 @@ export interface EligibleScenarioResult {
   relaxedRecentIds: string[];
 }
 
-export function eligibleScenarioResult(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, selectionMonth = new Date().getMonth() + 1): EligibleScenarioResult {
-  const seasonPool = scenarios.filter((scenario) => scenarioAvailableInMonth(scenario, selectionMonth));
+export function meetsScenarioSelectionRequirements(scenario: Scenario, character: Character | null | undefined): boolean {
+  const alternatives = scenario.selectionRequirements;
+  if (!alternatives?.length) return true;
+  if (!character) return false;
+  return alternatives.some((requirement) =>
+    (!requirement.historyFlags || requirement.historyFlags.every((id) => character.historyFlags.includes(id)))
+    && (!requirement.anyHistoryFlags || requirement.anyHistoryFlags.some((id) => character.historyFlags.includes(id)))
+    && (!requirement.contacts || requirement.contacts.every((id) => (character.contacts ?? []).some((contact) => contact.id === id)))
+    && (!requirement.favors || requirement.favors.every((id) => (character.favors ?? []).some((favor) => favor.id === id && favor.status === 'available')))
+    && (!requirement.lore || requirement.lore.every((entry) => character.lore.includes(entry)))
+    && (!requirement.knowledge || requirement.knowledge.every((entry) => character.knowledge.includes(entry)))
+    && (!requirement.knowledgeKeys || requirement.knowledgeKeys.every((id) => (character.knowledgeKeys ?? []).includes(id)))
+  );
+}
+
+export function eligibleScenarioResult(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, selectionMonth = new Date().getMonth() + 1, character?: Character | null): EligibleScenarioResult {
+  const seasonPool = scenarios.filter((scenario) => scenarioAvailableInMonth(scenario, selectionMonth) && meetsScenarioSelectionRequirements(scenario, character));
   const recent = Array.isArray(recentScenarioIds) ? recentScenarioIds : recentScenarioIds ? [recentScenarioIds] : [];
   const knownRecent = [...new Set(recent)].filter((id) => seasonPool.some((scenario) => scenario.id === id)).slice(0, RECENT_SCENARIO_WINDOW);
   let excluded = knownRecent.length;
@@ -142,7 +159,7 @@ function normalized<T extends { weight: number }>(values: T[]): T[] {
 /** Two-stage draw: recover a primary activity category, then select within it. */
 export function selectionDiagnostics(scenarios: Scenario[], recentScenarioIds: string[] | string | null | undefined, pressure: SelectionPressure = {}): SelectionDiagnostics {
   const month = pressure.selectionMonth ?? new Date().getMonth() + 1;
-  const eligible = eligibleScenarioResult(scenarios, recentScenarioIds, month);
+  const eligible = eligibleScenarioResult(scenarios, recentScenarioIds, month, pressure.character);
   const groups = new Map<string, Scenario[]>();
   for (const scenario of eligible.scenarios) {
     const category = primaryScenarioCategory(scenario);

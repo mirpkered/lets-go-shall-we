@@ -23,7 +23,7 @@ const act=(state:SaveData,scenario:(typeof MEDICAL_RESCUE_SUPPORT_GEAR_BATCH)[nu
 describe('Medical / Rescue Support / Evacuation genre batch',()=>{
   it('registers 24 distinct, reachable all-year Adventures with continuity choices',()=>{
     expect(MEDICAL_RESCUE_SUPPORT_GEAR_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.map(({id})=>id)).size).toBe(24);
     expect(MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.filter(({scenes})=>scenes.settle.choices.some(({id})=>id==='gear'))).toHaveLength(22);
     expect(validateScenarioRegistry(MEDICAL_RESCUE_SUPPORT_GEAR_BATCH).errors).toEqual([]);

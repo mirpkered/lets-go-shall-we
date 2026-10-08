@@ -10,6 +10,28 @@ export const FAVOR_IDS = {
   nessaSimpleMeal: 'nessa-simple-meal',
 } as const;
 
+export const OUTCOME_HISTORY_FLAGS = {
+  awardedHestersPie: 'awarded_hesters_pie_the_ribbon_at_fair',
+  acceptedFamilyVerse: 'accepted_family_transmitted_verse_at_last_verse_contest',
+  favoredPrintedVerse: 'favored_printed_version_at_last_verse_contest',
+} as const;
+
+export const LOTTE_PIE_CONTACT: TravelerContact = {
+  id: 'lotte-pie-baker',
+  name: 'Lotte',
+  role: 'Baker',
+  sourceScenarioId: 'the-pie-with-no-recipe',
+  notes: 'Asked to compare memories of Mrs. Orrow’s disputed pie method after Hester’s plum pie took the fair ribbon.',
+};
+
+export const ANSEL_PRINTER_CONTACT: TravelerContact = {
+  id: 'ansel-reed-printer',
+  name: 'Ansel Reed',
+  role: 'Printer',
+  sourceScenarioId: 'a-line-for-the-broadside',
+  notes: 'Met while considering how a family-transmitted verse should be represented beside a town broadside.',
+};
+
 export const NESSA_CONTACT: TravelerContact = {
   id: CONTACT_IDS.innCookNessa,
   name: 'Nessa',
@@ -44,5 +66,13 @@ export const LEGACY_CONTINUITY_MIGRATIONS = [
   {
     historyFlag: 'rescued_cold_storage_worker',
     contact: IVEN_CONTACT,
+  },
+] as const;
+
+/** Exact legacy Knowledge proves this one source decision; do not infer the unrecorded printed-version outcome. */
+export const LEGACY_HISTORY_FROM_KNOWLEDGE_MIGRATIONS = [
+  {
+    knowledgeText: 'The recitation contest accepted a family-transmitted verse absent from the printed broadside.',
+    historyFlag: OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse,
   },
 ] as const;

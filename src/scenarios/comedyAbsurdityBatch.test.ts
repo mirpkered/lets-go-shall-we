@@ -40,7 +40,7 @@ function assertReachableActions(scenario: (typeof THE_COMEDY_ABSURDITY_ADVENTURE
 describe('comedy and absurdity additions', () => {
   it('registers 25 unique all-year adventures with complete canonical metadata', () => {
     expect(THE_COMEDY_ABSURDITY_ADVENTURES).toHaveLength(25);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     expect(validateScenarioMetadata(THE_COMEDY_ABSURDITY_ADVENTURES)).toEqual([]);
     expect(THE_COMEDY_ABSURDITY_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);

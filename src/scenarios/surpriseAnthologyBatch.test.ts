@@ -8,7 +8,7 @@ import { simulateScenarioSelection } from '../scenarioSelection';
 import { renderQaPanel } from '../qaPanel';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE, loadSave } from '../storage';
-import { NESSA_CONTACT, NESSA_MEAL_FAVOR } from '../travelerContinuity';
+import { LOTTE_PIE_CONTACT, NESSA_CONTACT, NESSA_MEAL_FAVOR, OUTCOME_HISTORY_FLAGS } from '../travelerContinuity';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
 import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
@@ -61,16 +61,16 @@ function explore(scenario: Scenario): number {
 }
 
 describe('surprise anthology and library gap-fill', () => {
-  it('adds 36 distinct all-year adventures without changing existing stable IDs', () => {
-    expect(ANTHOLOGY).toHaveLength(36);
-    expect(SCENARIOS).toHaveLength(859);
-    expect(new Set(ANTHOLOGY.map(({ id }) => id)).size).toBe(36);
+  it('adds 38 distinct all-year adventures without changing existing stable IDs', () => {
+    expect(ANTHOLOGY).toHaveLength(38);
+    expect(SCENARIOS).toHaveLength(861);
+    expect(new Set(ANTHOLOGY.map(({ id }) => id)).size).toBe(38);
     expect(ANTHOLOGY.every((scenario) => SCENARIOS.includes(scenario))).toBe(true);
     expect(ANTHOLOGY.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioMetadata(ANTHOLOGY)).toEqual([]);
     expect(ANTHOLOGY.filter(({ diversity }) => diversity?.activities?.includes('competition/game')).length).toBeGreaterThanOrEqual(5);
     expect(ANTHOLOGY.filter(({ diversity }) => diversity?.activities?.includes('communication/witness')).length).toBeGreaterThanOrEqual(5);
-    expect(SCENARIOS.slice(370, 406).map(({ id }) => id)).toEqual(ANTHOLOGY.map(({ id }) => id));
+    expect(SCENARIOS.slice(370, 408).map(({ id }) => id)).toEqual(ANTHOLOGY.map(({ id }) => id));
     const qaMarkup = renderQaPanel(true, structuredClone(EMPTY_SAVE), SCENARIOS, ITEMS);
     for (const scenario of ANTHOLOGY) expect(qaMarkup).toContain(`data-qa-start="${scenario.id}"`);
   });
@@ -143,12 +143,18 @@ describe('surprise anthology and library gap-fill', () => {
       expect(result.character?.knowledge).toEqual([]);
       expect(result.character?.knowledgeKeys).toEqual([]);
       expect(result.character?.lore).toEqual([]);
-      expect(result.character?.historyFlags).toEqual([]);
+      expect(result.character?.historyFlags).toEqual(choiceId === 'awardPlum' ? [OUTCOME_HISTORY_FLAGS.awardedHestersPie] : []);
+      expect(result.character?.contacts?.some(({ id }) => id === LOTTE_PIE_CONTACT.id)).toBe(choiceId === 'awardPlum');
     }
     for (const current of Object.values(pie.scenes)) for (const choice of current.choices) {
       expect(choice.effects?.knowledge).toBeUndefined();
       expect(choice.effects?.lore).toBeUndefined();
-      expect(choice.effects?.historyFlags).toBeUndefined();
+      if (current.id === 'award' && choice.id === 'awardPlum') {
+        expect(choice.effects?.historyFlags).toEqual([OUTCOME_HISTORY_FLAGS.awardedHestersPie]);
+        expect(choice.effects?.gainContacts).toEqual([LOTTE_PIE_CONTACT]);
+      } else {
+        expect(choice.effects?.historyFlags).toBeUndefined();
+      }
     }
     const recipeFirst = act(act(start(pie), pie, 'tasting', 'askAboutRecipe'), pie, 'accounts', 'separateRecipeAndPrize');
     expect(recipeFirst.run?.sceneId).toBe('award');
@@ -246,7 +252,7 @@ describe('surprise anthology and library gap-fill', () => {
   });
 
   it('keeps the collection inside the selector’s low-risk share and without new combat or fantasy', () => {
-    expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'LOW').length).toBe(34);
+    expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'LOW').length).toBe(36);
     expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'MODERATE').length).toBe(1);
     expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'HIGH').length).toBe(1);
     expect(ANTHOLOGY.every(({ diversity }) => diversity?.fantasyDensity === 'NONE')).toBe(true);

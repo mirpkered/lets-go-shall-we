@@ -25,7 +25,7 @@ function act(state: SaveData, scenario: Scenario, id: string, random = () => 0):
 describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => {
   it('registers 24 unique Adventures, retains normal seasonal eligibility, and validates every destination', () => {
     expect(WILDERNESS_FIELDCRAFT_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(WILDERNESS_FIELDCRAFT_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(WILDERNESS_FIELDCRAFT_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE')).toBe(true);
     expect(validateScenarioRegistry(WILDERNESS_FIELDCRAFT_GENRE_BATCH)).toEqual({ errors: [], warnings: [] });

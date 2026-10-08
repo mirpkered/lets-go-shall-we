@@ -5,7 +5,7 @@ import { CATEGORY_HISTORY_WINDOW, primaryScenarioCategory, RECENT_SCENARIO_WINDO
 import { scenarioRiskTier, RISK_TIERS } from './riskClassification';
 import { inventoryClass, ITEMS, STARTING_ITEMS } from './items';
 import type { ItemCondition, PersistentItemState, TravelerContact, TravelerFavor } from './types';
-import { LEGACY_CONTINUITY_MIGRATIONS } from './travelerContinuity';
+import { LEGACY_CONTINUITY_MIGRATIONS, LEGACY_HISTORY_FROM_KNOWLEDGE_MIGRATIONS } from './travelerContinuity';
 import { KNOWLEDGE_KEY_MIGRATIONS } from './knowledgeFacts';
 
 const KEY = 'mirpworks.lets-go-shall-we.save.v1';
@@ -36,6 +36,10 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
     }
     if (parsed.character) {
       parsed.character.historyFlags ??= [];
+      for (const migration of LEGACY_HISTORY_FROM_KNOWLEDGE_MIGRATIONS) if (parsed.character.knowledge.includes(migration.knowledgeText) && !parsed.character.historyFlags.includes(migration.historyFlag)) {
+        parsed.character.historyFlags.push(migration.historyFlag);
+        migrated = true;
+      }
       if (!Array.isArray(parsed.character.knowledgeKeys)) { parsed.character.knowledgeKeys = []; migrated = true; }
       const knowledgeKeys = new Set(parsed.character.knowledgeKeys.filter((id): id is string => typeof id === 'string'));
       for (const fact of KNOWLEDGE_KEY_MIGRATIONS) if (parsed.character.knowledge.includes(fact.text)) knowledgeKeys.add(fact.id);

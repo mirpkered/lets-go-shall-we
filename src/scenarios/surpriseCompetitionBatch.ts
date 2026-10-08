@@ -1,4 +1,5 @@
 import { anthologyEnd as end, anthologyScene as scene, anthologyStory as story, anthologyTags as tags } from './surpriseAnthologyTools';
+import { ANSEL_PRINTER_CONTACT, LOTTE_PIE_CONTACT, OUTCOME_HISTORY_FLAGS } from '../travelerContinuity';
 
 const T = (hook: string, role: string, tone: string, setting: string, structures: string[], entry: string, reward = ['narrative-only payoff']) => tags({ hook, activities: ['competition/game', 'social interaction'], role, tone, risk: 'LOW', setting, structures, entry, rewards: reward, consequences: ['time/opportunity', 'relationship'] });
 
@@ -33,29 +34,107 @@ export const THE_THREE_RING_TOSS = story('the-three-ring-toss', 'The Three-Ring 
 });
 
 export const THE_LAST_VERSE_CONTEST = story('the-last-verse-contest', 'The Last Verse Contest', 'A recitation prize depends on remembering what the printed broadside left out.', T('In a public recitation, a missing final verse makes faithful memory more important than confidence or volume.', 'performer', 'warm/hopeful', 'town hall stage', ['performance with information fork', 'memory-gated payoff'], 'traveler is asked to judge contest'), 'broadside', {
-  broadside: scene('broadside', 'A Verse Missing from Print', 'Three reciters compete for a modest book prize. The broadside ends one verse early, and the judge asks you to help decide whether a contestant’s remembered ending is genuine or invented.', [
+  broadside: scene('broadside', 'A Verse Missing from Print', 'Three reciters compete for a modest book prize. The broadside ends one verse early. The youngest contestant, Mara Bell, says her family remembers an extra verse; printer Ansel Reed is collecting notes for the next printing. The judge asks you to help decide how the contest should treat a version absent from the page, not to certify its age.', [
     { id: 'askForSource', label: 'Ask where the verse was learned', next: 'source' },
     { id: 'hearAllReciters', label: 'Hear each reciter before judging', next: 'recitals' },
     { id: 'declineJudge', label: 'Decline to judge from a partial text', next: 'declined' },
   ]),
-  source: scene('source', 'A Family Version', 'The youngest reciter says the ending came from a grandparent, not the printed broadside. The judge can accept that as a valid oral version or limit the contest to the text on the page.', [
+  source: scene('source', 'A Family Version', 'Mara Bell says the ending came from a grandparent, not the printed broadside. The judge can accept that as a valid oral version or limit the contest to the text on the page.', [
     { id: 'compareVersions', label: 'Ask each contestant to recite the ending', next: 'recitals' },
     { id: 'askJudgeRule', label: 'Ask the judge to set the rule openly', next: 'rule' },
   ]),
-  recitals: scene('recitals', 'Three Different Endings', 'The first contestant follows the broadside, the second remembers an extra verse, and the third changes a line to make the audience laugh. None claims the others are lying.', [
-    { id: 'judgeByMemory', label: 'Choose the remembered family verse', next: 'family', effects: { knowledge: ['The recitation contest accepted a family-transmitted verse absent from the printed broadside.'] } },
-    { id: 'judgeByPrint', label: 'Choose the printed version', next: 'printed' },
+  recitals: scene('recitals', 'Three Different Endings', 'The first contestant follows the broadside, Mara Bell remembers an extra family verse, and the third changes a line to make the audience laugh. None claims the others are lying.', [
+    { id: 'judgeByMemory', label: 'Choose Mara’s remembered family verse', next: 'family', effects: { knowledge: ['The recitation contest accepted a family-transmitted verse absent from the printed broadside.'], historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] } },
+    { id: 'judgeByPrint', label: 'Choose the printed version', next: 'printed', effects: { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] } },
     { id: 'askForAudienceChoice', label: 'Let the listeners choose their favorite', next: 'audience' },
   ]),
   rule: scene('rule', 'A Rule Before a Winner', 'The judge decides the contest should reward delivery, not which version is historically correct. Each contestant gets one final stanza, then the room will vote.', [
     { id: 'keepDeliveryRule', label: 'Announce the delivery rule', next: 'audience' },
     { id: 'stepAwayFromRule', label: 'Leave the choice to the judge', next: 'declined' },
   ]),
-  family: end('family', 'A Version Kept Alive', 'The judge awards the book to the reciter who remembered the family verse. The printed broadside remains incomplete, but the room has heard a version worth carrying.'),
-  printed: end('printed', 'Words on the Page', 'The printed version wins by the rule the judge set. The youngest contestant is disappointed, then asks the printer whether the missing verse can be added to a new broadside.'),
+  family: end('family', 'A Version Kept Alive', 'The judge awards the book to Mara Bell, who remembered her family’s verse. The printed broadside remains incomplete; the room has heard a version worth carrying, not proof of where it began.'),
+  printed: end('printed', 'Words on the Page', 'The printed version wins by the rule the judge set. Mara Bell is disappointed, then asks printer Ansel Reed whether the missing verse can be added to a new broadside. The result favors the printed contest text; it does not disprove her family account.'),
   audience: end('audience', 'A Roomful of Favorites', 'The audience chooses the comic ending for the prize. The judge records that it was the crowd’s favorite, not the oldest or truest version.'),
   declined: end('declined', 'No False Certainty', 'You refuse to call a remembered verse false simply because it is missing from print. The judge chooses a rule without asking you to claim certainty you do not have.'),
 });
+
+const MRS_ORROW_ACCOUNTS_LORE = 'At a county-fair table, Hester and Lotte’s distinct memories of Mrs. Orrow’s plum-and-pepper pie method were recorded under their own names; neither account establishes an original recipe.';
+const MRS_ORROW_COMPOSITE_LORE = 'The fair bakers made a working plum-and-pepper pie card from Hester’s measures and Lotte’s seasoning phrase, labeled as their composite rather than Mrs. Orrow’s original recipe.';
+
+export const NOTES_AFTER_THE_RIBBON = {
+  ...story('notes-after-the-ribbon', 'Notes After the Ribbon', 'Lotte follows through on comparing the bakers’ memories, but a community table wants one honest account from several incomplete notes.', T('A named baker asks the traveler to preserve competing oral memories without declaring one an authentic recipe.', 'mediator', 'warm/hopeful', 'county-fair kitchen', ['oral-account comparison', 'attribution decision', 'stateful cultural record'], 'invited/known contact', ['money/item/knowledge/history possible']), 'notes', {
+    notes: scene('notes', 'Three Cards, No Master Recipe', 'After Hester’s plum pie took the ribbon, Lotte kept her promise to compare notes. At the fair kitchen, Hester recalls exact measures and a twice-folded crust; Lotte remembers “pepper until the filling wakes up”; Vale says the pear idea was hers. No one has a complete recipe. A community supper wants a display card, and Lotte asks what these notes can honestly support.', [
+      { id: 'readHesterCard', label: 'Ask Hester which details she remembers directly', next: 'hester' },
+      { id: 'readLotteCard', label: 'Ask Lotte what her phrase meant in practice', next: 'lotte' },
+      { id: 'askValeClaim', label: 'Ask Vale to separate her pear idea from the shared method', next: 'vale' },
+    ]),
+    hester: scene('hester', 'Measures Without a Source', 'Hester can stand behind the measures she used for her own plum pie and remembers Mrs. Orrow folding the crust twice. She cannot say those exact quantities came from Mrs. Orrow; they may be her own working measures.', [
+      { id: 'compareHesterNotes', label: 'Put Hester’s account beside Lotte’s card', next: 'record' },
+      { id: 'askValeAfterHester', label: 'Hear Vale’s separate claim before labeling anything', next: 'vale' },
+    ]),
+    lotte: scene('lotte', 'A Phrase, Not a Measure', 'Lotte remembers Mrs. Orrow saying “pepper until the filling wakes up.” It names a practice, not a quantity; Lotte will not pretend it makes a complete recipe.', [
+      { id: 'compareLotteNotes', label: 'Put Lotte’s phrase beside Hester’s measures', next: 'record' },
+      { id: 'askValeAfterLotte', label: 'Hear Vale’s separate claim before labeling anything', next: 'vale' },
+    ]),
+    vale: scene('vale', 'Vale’s Own Filling', 'Vale says the pear filling was her own idea. She has no claim to Mrs. Orrow’s plum method, and she does not remember the phrase Lotte heard. The disagreement is about what each baker can attribute, not who is lying.', [
+      { id: 'recordSeparateAccounts', label: 'Return to the cards and keep each claim distinct', next: 'record' },
+      { id: 'leaveWithoutNamingAnOriginal', label: 'Tell Lotte no account can establish an original recipe', next: 'record' },
+    ]),
+    record: scene('record', 'What the Supper Card Can Say', 'The supper organizer needs a clear heading before the card is copied. You can preserve the separate memories, mark a present-day composite, or avoid printing a recipe claim at all.', [
+      { id: 'keepAccountsSeparate', label: 'Record Hester’s and Lotte’s memories separately', next: 'separate', effects: { historyFlags: ['preserved_separate_mrs_orrow_recipe_memories'], lore: [MRS_ORROW_ACCOUNTS_LORE] } },
+      { id: 'labelWorkingComposite', label: 'Make a working card labeled as the bakers’ composite', next: 'composite', effects: { historyFlags: ['labeled_fair_bakers_working_recipe_composite'], lore: [MRS_ORROW_COMPOSITE_LORE] } },
+      { id: 'printOnlyTastingNotes', label: 'Print the tasting notes, not a recipe', next: 'tastingOnly', effects: { historyFlags: ['kept_recipe_claim_out_of_fair_supper_notes'] } },
+      { id: 'deferTheCard', label: 'Wait for another family account before printing', next: 'deferred', effects: { historyFlags: ['deferred_mrs_orrow_recipe_record_for_more_accounts'] } },
+    ]),
+    separate: end('separate', 'Accounts Kept in Their Own Hands', 'The supper card gives Hester and Lotte separate lines, with Vale’s pear claim kept apart. Guests can see what each baker remembers without mistaking either memory for a verified original.'),
+    composite: end('composite', 'A Working Card, Not an Original', 'The bakers agree to label the card as a present-day working version assembled from their own methods. It can guide the supper kitchen, but it does not claim to recover Mrs. Orrow’s exact recipe.'),
+    tastingOnly: end('tastingOnly', 'What the Contest Could Say', 'The card records the pies’ flavor and texture, not an unverified recipe. Lotte keeps the separate notes rather than forcing them into one account.'),
+    deferred: end('deferred', 'Room for Another Memory', 'No recipe card is printed yet. Lotte keeps each note attributed and leaves space for another account without calling the blank a solution.'),
+  }),
+  selectionRequirements: [{ historyFlags: [OUTCOME_HISTORY_FLAGS.awardedHestersPie], contacts: [LOTTE_PIE_CONTACT.id] }],
+};
+
+const MARA_FAMILY_VERSE_LORE = 'Mara Bell’s family-transmitted missing verse was printed beside the town broadside as an oral variant; its age and origin remain unverified.';
+const MARA_BOTH_VERSE_LORE = 'Ansel Reed’s broadside preserves Mara Bell’s family-transmitted missing verse beside the printed version as an oral variant; its age and origin remain unverified.';
+
+export const A_LINE_FOR_THE_BROADSIDE = {
+  ...story('a-line-for-the-broadside', 'A Line for the Broadside', 'A printer asks how to handle a family-transmitted verse without mistaking a contest result for proof of origin.', T('The traveler helps a printer label a disputed oral verse in a public broadside while preserving uncertainty.', 'participant', 'thoughtful', 'town print room', ['outcome-aware opening', 'attribution decision', 'cultural record'], 'invited/known contact', ['money/item/knowledge/history possible']), 'proof', {
+    proof: scene('proof', 'The Proof before the Press', 'Printer Ansel Reed is setting a new broadside for the next town-hall reading. A blank line remains where the old sheet stopped. Mara Bell can recite the family version passed down by her grandparent, but nobody can establish how old it is. Ansel asks you to choose how the new sheet should represent the account; the print can preserve a tradition without certifying its origin.', [
+      { id: 'askMara', label: 'Ask Mara to recite the family version once more', next: 'mara' },
+      { id: 'inspectOldBroadside', label: 'Compare the proof with the old printed ending', next: 'oldSheet' },
+      { id: 'askAnselSpace', label: 'Ask what the press can fit without cutting a line', next: 'pressLimit' },
+    ], 'safe', [
+      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] }, text: 'You accepted Mara’s family-transmitted ending at the contest. Ansel recalls that the room heard a version worth carrying—not proof of where it began. Now his new broadside has room for a careful attribution, if you decide the account belongs on the page.' },
+      { requirements: { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] }, text: 'You favored the printed version at the contest, while Mara asked whether the missing verse could be added. That kept the contest rule clear; it did not disprove her family account. Ansel now asks how a new broadside should represent it.' },
+    ]),
+    mara: scene('mara', 'A Version Mara Can Name', 'Mara recites the family version and names her grandparent as its source. One line differs between two household tellings. She asks that the broadside identify it as her family’s account, not as the proven original.', [
+      { id: 'takeVersionToProof', label: 'Return to the proof with Mara’s attribution', next: 'layout' },
+      { id: 'askAnselAboutVariant', label: 'Ask whether both tellings can be shown', next: 'layout' },
+    ]),
+    oldSheet: scene('oldSheet', 'Where the Printing Stops', 'The old broadside ends cleanly at the printed stanza; no torn edge or missing type proves that another verse was once set. The blank was either deliberate or inherited from an earlier copy. The family account remains separate evidence.', [
+      { id: 'markTheBlank', label: 'Mark the blank as an editorial gap, not proof', next: 'layout' },
+      { id: 'askMaraForCopy', label: 'Ask Mara for the family wording to compare', next: 'mara' },
+    ]),
+    pressLimit: scene('pressLimit', 'A Narrow Column', 'Ansel can fit the family verse if he resets the bottom of the sheet. Printing both the old ending and the family version side by side will require a second column, but not a second page.', [
+      { id: 'chooseOneColumn', label: 'Keep the old column and add a source note', next: 'layout' },
+      { id: 'chooseTwoColumns', label: 'Set both versions in parallel columns', next: 'layout' },
+    ]),
+    layout: scene('layout', 'A Version or a Claim', 'The words can be printed, attributed, or left out. None of those choices proves which version is oldest; the question is what the public copy should preserve.', [
+      { id: 'printFamilyWithSource', label: 'Print Mara’s version as a family account', next: 'oral', effects: { historyFlags: ['printed_mara_family_verse_with_attribution'], lore: [MARA_FAMILY_VERSE_LORE], gainContacts: [ANSEL_PRINTER_CONTACT] } },
+      { id: 'printBothVersions', label: 'Print the broadside and family versions side by side', next: 'both', effects: { historyFlags: ['printed_family_verse_beside_broadside_version'], lore: [MARA_BOTH_VERSE_LORE], gainContacts: [ANSEL_PRINTER_CONTACT] } },
+      { id: 'printSourceNoteOnly', label: 'Note that an oral version exists, without printing it', next: 'note', effects: { historyFlags: ['noted_unverified_family_verse_without_printing_it'], gainContacts: [ANSEL_PRINTER_CONTACT] } },
+      { id: 'keepOldText', label: 'Leave the broadside unchanged for now', next: 'unchanged', effects: { historyFlags: ['kept_broadside_unchanged_over_unverified_verse'], gainContacts: [ANSEL_PRINTER_CONTACT] } },
+    ]),
+    oral: end('oral', 'A Family Account in Print', 'Ansel prints Mara’s words under her family’s name and marks the origin as unverified. The next reader can carry the verse without being told it is the original.'),
+    both: end('both', 'Two Endings, Clearly Set', 'The old broadside and Mara’s family version appear in parallel columns. The heading calls one printed text and the other an oral variant; neither is declared the source of the other.'),
+    note: end('note', 'A Note beside the Blank', 'The broadside states that a family-transmitted verse exists but leaves its wording for another edition. The omission is now deliberate, not a silent claim that no other account survives.'),
+    unchanged: end('unchanged', 'The Old Sheet Stands', 'Ansel keeps the old text for this printing and files Mara’s account separately. No one has called the family version false, and no uncertain verse has been presented as fact.'),
+  }),
+  selectionRequirements: [
+    { historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] },
+    { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] },
+  ],
+};
 
 export const THE_CLOCKMAKERS_DEMONSTRATION = story('the-clockmakers-demonstration', 'The Clockmaker’s Demonstration', 'A traveling maker promises a clock that can be set by a single drop of water.', T('A clockmaker demonstrates a water-triggered clock whose apparent failure may be a design flaw, stage trick, or misunderstood instruction.', 'skeptic', 'humorous/absurd', 'town exhibition room', ['demonstration', 'evidence comparison', 'public interpretation'], 'traveler sees unusual demonstration'), 'exhibit', {
   exhibit: scene('exhibit', 'The Clock That Waits for Rain', 'A traveling clockmaker has built a clock with a small brass cup above its face. He says one drop should start the hands. A drop falls, the clock ticks once, then stops.', [
@@ -132,7 +211,7 @@ export const THE_PIE_WITH_NO_RECIPE = story('the-pie-with-no-recipe', 'The Pie w
     { id: 'leaveRule', label: 'Suggest sharing the ribbon and settling the recipe claim later', next: 'shared' },
   ]),
   award: scene('award', 'The Prize Plate', 'You have heard the recipe claims and compared the entries. The keeper sets the ribbon beside the cards: choose the pie that best met the contest standard, or ask the fair to share it. Recipe credit remains a separate question.', [
-    { id: 'awardPlum', label: 'Award Hester’s plum-and-pepper pie', next: 'winner' },
+    { id: 'awardPlum', label: 'Award Hester’s plum-and-pepper pie', next: 'winner', effects: { historyFlags: [OUTCOME_HISTORY_FLAGS.awardedHestersPie], gainContacts: [LOTTE_PIE_CONTACT] } },
     { id: 'awardApple', label: 'Award Lotte’s apple pie', next: 'winnerApple' },
     { id: 'awardPear', label: 'Award Vale’s pear tart', next: 'winnerPear' },
     { id: 'splitRibbon', label: 'Ask for a shared ribbon', next: 'shared' },
@@ -266,7 +345,7 @@ export const THE_TILT_TABLE = story('the-tilt-table', 'The Tilt Table', 'A trave
 });
 
 export const COMPETITION_SURPRISE_ADVENTURES = [
-  THE_THREE_RING_TOSS, THE_LAST_VERSE_CONTEST, THE_CLOCKMAKERS_DEMONSTRATION,
+  THE_THREE_RING_TOSS, THE_LAST_VERSE_CONTEST, NOTES_AFTER_THE_RIBBON, A_LINE_FOR_THE_BROADSIDE, THE_CLOCKMAKERS_DEMONSTRATION,
   THE_BELL_RINGER_TRIAL, THE_PIE_WITH_NO_RECIPE, THE_PAINTED_SIGN,
   THE_WHISTLE_AND_THE_WIND, THE_PAINTED_MULE, THE_TIN_CAN_ORCHESTRA, THE_TILT_TABLE,
 ];

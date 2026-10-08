@@ -52,7 +52,7 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
   });
   it('registers 24 distinct all-year Adventures with valid forward graphs and continuity outcomes', () => {
     expect(ADVENTURER_SUPPORT_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(ADVENTURER_SUPPORT_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(ADVENTURER_SUPPORT_GENRE_BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(ADVENTURER_SUPPORT_GENRE_BATCH).errors).toEqual([]);

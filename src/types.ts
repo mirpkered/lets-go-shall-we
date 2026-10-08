@@ -56,6 +56,9 @@ export interface TravelerFavor {
   status: 'available' | 'consumed';
 }
 
+/** Persistent-state conditions for an Adventure to enter the normal selector. Each authored entry is an alternative; fields within an entry are conjunctive. */
+export type ScenarioSelectionRequirement = Pick<Requirement, 'historyFlags' | 'contacts' | 'favors' | 'lore' | 'knowledge' | 'knowledgeKeys'> & { anyHistoryFlags?: string[] };
+
 export interface ItemUpgradeDefinition {
   id: string;
   name: string;
@@ -326,6 +329,8 @@ export interface Scenario {
   runRandomSelections?: RunRandomSelection[];
   /** Optional authorial overrides; legacy scenarios receive audited keyword/content classification. */
   diversity?: Partial<ScenarioDiversity>;
+  /** Optional character-state gates for conditional follow-ups; ordinary stories omit this. */
+  selectionRequirements?: ScenarioSelectionRequirement[];
   scenes: Record<string, Scene>;
 }
 

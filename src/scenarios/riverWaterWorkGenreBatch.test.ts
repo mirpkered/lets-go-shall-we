@@ -26,7 +26,7 @@ const chooseAt = (state: SaveData, scenario: Scenario, sceneId: string, choiceId
 describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
   it('registers 24 stable all-year Adventures with valid, reachable, acyclic graphs', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(BATCH)).toEqual({ errors: [], warnings: [] });

@@ -39,7 +39,7 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
   });
   it('registers 24 unique reachable Adventures with evidence interpretation and continuity', () => {
     expect(INVESTIGATION_EVIDENCE_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(INVESTIGATION_EVIDENCE_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(validateScenarioRegistry(INVESTIGATION_EVIDENCE_GENRE_BATCH).errors).toEqual([]);
     expect(validateScenarioRegistry(INVESTIGATION_EVIDENCE_GENRE_BATCH).warnings).toEqual([]);

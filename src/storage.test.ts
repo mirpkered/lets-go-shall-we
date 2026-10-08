@@ -5,6 +5,7 @@ import { eligibleScenarioResult, primaryScenarioCategory, scenarioSelectionWeigh
 import { BROKEN_BELL } from './scenarios/brokenBell';
 import { SCENARIOS } from './scenarios';
 import type { SaveData } from './types';
+import { OUTCOME_HISTORY_FLAGS } from './travelerContinuity';
 
 function memoryStorage(initial: string | null = null): Storage {
   const values = new Map<string, string>();
@@ -20,6 +21,18 @@ function memoryStorage(initial: string | null = null): Storage {
 }
 
 describe('save compatibility', () => {
+  it('migrates the exact legacy family-verse Knowledge into its outcome flag without guessing other contest results', () => {
+    const character = newCharacter('Old verse save');
+    character.knowledge = ['The recitation contest accepted a family-transmitted verse absent from the printed broadside.'];
+    character.historyFlags = [];
+    const storage = memoryStorage(JSON.stringify({ version: 1, bank: [], character, run: null }));
+    const migrated = loadSave(storage);
+    expect(migrated.character?.knowledge).toEqual(character.knowledge);
+    expect(migrated.character?.historyFlags).toContain(OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse);
+    expect(migrated.character?.historyFlags).not.toContain(OUTCOME_HISTORY_FLAGS.favoredPrintedVerse);
+    expect(loadSave(storage).character?.historyFlags).toContain(OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse);
+  });
+
   it('keeps QA saves separate from the normal traveler and Bank save', () => {
     const playerCharacter = newCharacter('Player');
     playerCharacter.adventuresCompleted = 19;

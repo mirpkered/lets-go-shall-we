@@ -23,12 +23,12 @@ const act = (state: SaveData, scenario: (typeof COURIER_MAIL_TELEGRAPH_GENRE_BAT
 describe('Courier / Mail / Telegraph / Message Work batch', () => {
   it('registers 24 unique reachable all-year Adventures with an exact 8/8/8 continuity balance', () => {
     expect(COURIER_MAIL_TELEGRAPH_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(COURIER_MAIL_TELEGRAPH_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(COURIER_BATCH_PRIMARY_LANES).toEqual({ GEAR: 8, KNOWLEDGE: 8, LORE: 8 });
     expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
     const authoredLore = new Set(SCENARIOS.flatMap(({ scenes }) => Object.values(scenes).flatMap(({ choices }) => choices.flatMap(({ effects }) => effects?.lore ?? []))));
-    expect(authoredLore).toHaveLength(46);
+    expect(authoredLore).toHaveLength(50);
     expect(validateScenarioRegistry(COURIER_MAIL_TELEGRAPH_GENRE_BATCH)).toMatchObject({ errors: [], warnings: [] });
     expect(COURIER_CONSEQUENCE_MATRIX).toHaveLength(24);
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {

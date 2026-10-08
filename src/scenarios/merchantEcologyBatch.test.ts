@@ -31,7 +31,7 @@ function act(state: SaveData, scenario: Scenario, sceneId: string, choiceId: str
 describe('fixed-stock merchant ecology', () => {
   it('registers ten distinct all-year low-risk encounters with clean, concise, reachable graphs', () => {
     expect(FIXED_STOCK_MERCHANTS).toHaveLength(10);
-    expect(SCENARIOS).toHaveLength(859);
+    expect(SCENARIOS).toHaveLength(861);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
     for (const merchant of FIXED_STOCK_MERCHANTS) {
       expect(findScenarioGraphProblems(merchant), merchant.title).toEqual([]);
