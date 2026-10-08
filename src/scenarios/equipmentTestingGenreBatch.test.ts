@@ -67,6 +67,68 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     expect(BATCH.find(({ id }) => id === 'the-carriage-jack-demonstration')?.scenes.lift.text).toContain('hairline bend');
   });
 
+  it('keeps lessons demonstrated in completed field tests independent of the compensation selected', () => {
+    const testedSettlements = [
+      ['the-line-under-load', 'result', 'lesson'],
+      ['the-caliper-at-the-siding', 'offer', 'learn'],
+      ['the-needle-at-the-north-station', 'offer', 'lesson'],
+      ['the-saddle-that-sat-crooked', 'result', 'lesson'],
+      ['the-rain-cup-at-mill-run', 'offer', 'learn'],
+      ['the-carriage-jack-demonstration', 'result', 'lesson'],
+      ['the-glass-level-disagrees', 'paid', 'knowledge'],
+      ['the-handcart-with-the-new-wheel', 'safe', 'knowledge'],
+      ['the-rope-that-frayed-in-the-sleeve', 'result', 'lesson'],
+    ] as const;
+    for (const [scenarioId, sceneId, learningChoiceId] of testedSettlements) {
+      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      expect(scenario, scenarioId).toBeDefined();
+      const choices = scenario.scenes[sceneId].choices;
+      const learned = choices.find(({ id }) => id === learningChoiceId)?.effects?.knowledge;
+      expect(learned?.length, `${scenarioId} declares the tested lesson`).toBeGreaterThan(0);
+      for (const choice of choices) {
+        expect(choice.effects?.knowledge, `${scenarioId}.${choice.id}`).toEqual(learned);
+      }
+      expect(choices.find(({ id }) => id === learningChoiceId)?.label).toBe('Decline material compensation');
+    }
+
+    const line = BATCH.find(({ id }) => id === 'the-line-under-load')!;
+    const character = newCharacter('Field Trial Tester');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, line, () => 0) };
+    for (const choiceId of ['lowTest', 'stopAndReset']) {
+      const choice = line.scenes[state.run!.sceneId].choices.find(({ id }) => id === choiceId)!;
+      state = choose(state, line, choice);
+    }
+    const lesson = line.scenes.result.choices.find(({ id }) => id === 'lesson')!.effects!.knowledge![0];
+    const coinChoice = line.scenes.result.choices.find(({ id }) => id === 'coins')!;
+    const coinState = choose(state, line, coinChoice);
+    expect(coinState.character?.money).toBe(2);
+    expect(coinState.character?.knowledge).toContain(lesson);
+
+    const gearChoice = line.scenes.result.choices.find(({ id }) => id === 'keep')!;
+    const gearState = choose(state, line, gearChoice);
+    expect(gearState.run?.acquiredThisRun).toContain('lineTensionGauge');
+    expect(gearState.character?.knowledge).toContain(lesson);
+
+    const noPaymentChoice = line.scenes.result.choices.find(({ id }) => id === 'lesson')!;
+    const noPaymentState = choose(state, line, noPaymentChoice);
+    expect(noPaymentState.character?.money).toBe(0);
+    expect(noPaymentState.character?.knowledge).toContain(lesson);
+    expect(noPaymentState.character?.knowledge?.filter((entry) => entry === lesson)).toHaveLength(1);
+  });
+
+  it('does not grant a test lesson when the Traveler refuses before the test, or turn optional instruction into automatic Knowledge', () => {
+    const line = BATCH.find(({ id }) => id === 'the-line-under-load')!;
+    const character = newCharacter('Early Withdrawal Tester');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, line, () => 0) };
+    const refuse = line.scenes.brief.choices.find(({ id }) => id === 'refuseHigh')!;
+    const stopped = choose(initial, line, refuse);
+    expect(stopped.character?.knowledge).not.toContain(line.scenes.result.choices.find(({ id }) => id === 'lesson')!.effects!.knowledge![0]);
+
+    const plumb = BATCH.find(({ id }) => id === 'the-plumb-bob-in-the-barn')!;
+    expect(plumb.scenes.safe.choices.find(({ id }) => id === 'coin')?.effects?.knowledge).toBeUndefined();
+    expect(plumb.scenes.safe.choices.find(({ id }) => id === 'lesson')?.effects?.knowledge).toHaveLength(1);
+  });
+
   it('upgrades existing owned equipment in place and persists its history through save/resume', () => {
     const ropeScenario = BATCH.find(({ id }) => id === 'the-rope-eye-retested')!;
     const character = newCharacter('Prototype Tester');
