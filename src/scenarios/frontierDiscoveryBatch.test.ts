@@ -120,7 +120,9 @@ describe('remote discovery and frontier claims batch', () => {
     expect(decision.text).toBe('The room suggests someone kept working and expected a smaller visitor. No letter explains who they were.');
     expect(decision.choices.map(({ id }) => id)).toEqual(['closeCarefully', 'continueSearch', 'departNow']);
     expect(cabin.scenes['the-old-claim-cabinCautious'].text).toMatch(/worn tools and small boot repair turn an empty room into a remembered life/i);
-    expect(cabin.scenes['the-old-claim-cabinBold'].text).toMatch(/worn tools and small boot repair turn an empty room into a remembered life/i);
+    expect(cabin.scenes['the-old-claim-cabinBold'].text).toMatch(/repaired boot and worn tools suggest a life remembered through its work/i);
+    expect(cabin.scenes['the-old-claim-cabinBold'].title).toBe('A Family Still Unnamed');
+    expect(cabin.scenes['the-old-claim-cabinBold'].text).toMatch(/your search leaves the family unnamed/i);
 
     const character = newCharacter('Claim Cabin Ending QA');
     let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cabin, () => 0) };
@@ -135,6 +137,16 @@ describe('remote discovery and frontier claims batch', () => {
     }
   });
 
+  it('uses cost language in frontier endings only where the route actually leaves an item missing', () => {
+    const costEndings = FRONTIER_DISCOVERY_ADVENTURES.flatMap(({ scenes }) =>
+      Object.values(scenes).filter(({ ending, title }) => ending && title === 'The Find Has a Cost'),
+    );
+    expect(costEndings).toHaveLength(2);
+    expect(costEndings.every(({ text }) => /owner may return to find one useful thing missing/i.test(text))).toBe(true);
+    const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-claim-cabin')!;
+    expect(cabin.scenes['the-old-claim-cabinBold'].title).not.toMatch(/cost|price|sacrifice/i);
+  });
+
   it('does not leak undiscovered facts on an early exit and pays out the explicitly taken cache coins once', () => {
     const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-cache-under-the-stove')!;
     const character = newCharacter('Cache Test');
@@ -146,6 +158,15 @@ describe('remote discovery and frontier claims batch', () => {
     const taken = choose(decision, cabin, cabin.scenes[decision.run!.sceneId].choices.find(({ id }) => id === 'takeRisk')!);
     expect(taken.character?.money).toBe(2);
     expect(taken.character?.historyFlags).toContain('took two coins from an identified cache beneath a cabin stove');
+    expect(cabin.scenes[taken.run!.sceneId].title).toBe('The Coins Leave with You');
+    expect(cabin.scenes[taken.run!.sceneId].text).toMatch(/take the two counted coins/i);
+
+    const carefulEvidence = choose(initial, cabin, cabin.scenes[cabin.startScene].choices.find(({ id }) => id === 'approach')!);
+    const carefulDecision = choose(carefulEvidence, cabin, cabin.scenes[carefulEvidence.run!.sceneId].choices.find(({ id }) => id === 'readEvidence')!);
+    const careful = choose(carefulDecision, cabin, cabin.scenes[carefulDecision.run!.sceneId].choices.find(({ id }) => id === 'takeCareful')!);
+    expect(cabin.scenes[careful.run!.sceneId].title).toBe('The Cache Marked for Return');
+    expect(cabin.scenes[careful.run!.sceneId].text).not.toMatch(/you take the two counted coins/i);
+    expect(careful.character?.money).toBe(0);
   });
 
   it('honors the Forgotten Supply Cache take choice with a named, persistent item and state-aware outcomes', () => {
@@ -172,7 +193,7 @@ describe('remote discovery and frontier claims batch', () => {
     const marked = enterDecision(fresh());
     const markedEnding = act(marked, 'markCacheForOwner');
     expect(markedEnding.run?.sceneId).toBe('the-forgotten-supply-cacheCautious');
-    expect(cache.scenes[markedEnding.run!.sceneId].text).toMatch(/cache’s placement and fresh prints are recorded/i);
+    expect(cache.scenes[markedEnding.run!.sceneId].text).toMatch(/mark the waxed bundle|fresh prints may lead its owner back/i);
 
     let take = enterDecision(fresh());
     take = act(take, 'takeOneFromCache');
@@ -203,6 +224,10 @@ describe('remote discovery and frontier claims batch', () => {
     let bothOwned: SaveData = fresh(['travelRope', 'woolTravelBlanket']);
     bothOwned = act(enterDecision(bothOwned), 'takeOneFromCache');
     expect(cache.scenes[bothOwned.run!.sceneId].choices.filter((choice) => meets(choice.requirements, bothOwned)).map(({ id }) => id)).toEqual(['returnItemToCache']);
+    bothOwned = act(bothOwned, 'returnItemToCache');
+    expect(cache.scenes[bothOwned.run!.sceneId].title).toBe('The Cache Left for Its Owner');
+    expect(cache.scenes[bothOwned.run!.sceneId].text).toMatch(/put the rope and blanket back/i);
+    expect(cache.scenes[bothOwned.run!.sceneId].text).not.toMatch(/coins? (?:were|are) missing|taken earlier/i);
 
     const bankedCharacter = newCharacter('Banked Rope QA');
     const bankedRope: SaveData = { ...structuredClone(EMPTY_SAVE), character: bankedCharacter, run: startRun(bankedCharacter, cache, () => 0), bank: ['travelRope'] };
