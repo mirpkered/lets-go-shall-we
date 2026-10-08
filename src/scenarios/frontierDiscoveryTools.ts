@@ -6,7 +6,7 @@ export interface FrontierCard {
   id: string; title: string; subtitle: string; shape: Shape; risk: ScenarioDiversity['riskTier']; setting: string;
   hook: string; opening: string; clue: string; turn: string; cautious: string; bold: string; leave: string;
   insight: string; closure?: string; activity?: string; role?: string; tone?: string; danger?: number;
-  entry?: string; endingTitle?: string; endingText?: string; boldRisk?: boolean; fatalFailure?: boolean; failureMessage?: string; fatalText?: string; boldEffects?: Scene['choices'][number]['effects']; cautiousEffects?: Scene['choices'][number]['effects'];
+  entry?: string; boldEndingTitle?: string; boldEndingText?: string; cautiousEndingTitle?: string; cautiousEndingText?: string; boldRisk?: boolean; fatalFailure?: boolean; failureMessage?: string; fatalText?: string; boldEffects?: Scene['choices'][number]['effects']; cautiousEffects?: Scene['choices'][number]['effects'];
 }
 
 /** Each record supplies its own evidence, dilemma and consequence; the small graph templates only keep scene plumbing consistent. */
@@ -89,9 +89,13 @@ export function frontierAdventure(card: FrontierCard): Scenario {
       { id: 'turnAway', label: 'Leave without investigating', next: leftEnd },
     ], 'warning'),
     [evidence]: largeScene(evidence, card.shape === 'occupant' ? 'Signs of Another Life' : card.shape === 'claim' ? 'What the Ground Can Prove' : 'What the Evidence Shows', card.clue, choicesForEvidence, 'warning'),
-    [decision]: largeScene(decision, card.shape === 'claim' ? 'A Finding, Not a Verdict' : card.shape === 'salvage' ? 'Take, Leave, or Risk More' : 'What the Place Means', `${card.turn} ${card.closure}`, finalChoices, card.risk === 'HIGH' || card.risk === 'SEVERE' ? 'warning' : 'safe'),
-    [cautiousEnd]: largeEnd(cautiousEnd, card.endingTitle ?? 'A Careful Account', card.endingText ?? `${closure} You leave with the important distinction that ${card.insight.toLowerCase()}`),
-    [boldEnd]: largeEnd(boldEnd, card.endingTitle ?? 'The Find Has a Cost', card.endingText ?? `${card.turn} ${closure} What you learned is useful; what happens to the place after you go is not yours to decide.`),
+    // Keep the scene as a decision setup. A closure belongs after the player has
+    // made the choice, not before it and then again on the completion screen.
+    [decision]: largeScene(decision, card.shape === 'claim' ? 'A Finding, Not a Verdict' : card.shape === 'salvage' ? 'Take, Leave, or Risk More' : 'What the Place Means', card.turn, finalChoices, card.risk === 'HIGH' || card.risk === 'SEVERE' ? 'warning' : 'safe'),
+    [cautiousEnd]: largeEnd(cautiousEnd, card.cautiousEndingTitle ?? 'A Measured Choice', card.cautiousEndingText ?? closure),
+    // The former default title claimed a cost even when the bold route incurred
+    // none. Avoid reusing the cautious-route closure on this divergent outcome.
+    [boldEnd]: largeEnd(boldEnd, card.boldEndingTitle ?? 'Beyond the First Clue', card.boldEndingText ?? 'You chose to follow the question beyond the first evidence. That added step gives you more to weigh, but it does not establish anything you did not directly observe.'),
     [leftEnd]: largeEnd(leftEnd, 'No Further In', `You decide not to go farther into ${card.title.toLowerCase()}. The visible signs were enough to make you stop, but not enough to settle what the place means. You return to the road without claiming what you have not examined.`),
     [evidenceLeftEnd]: largeEnd(evidenceLeftEnd, 'No Further In', `You turn back with one grounded observation: ${card.insight} The place remains unresolved, but you can describe what was there without claiming what you did not examine.`),
   };

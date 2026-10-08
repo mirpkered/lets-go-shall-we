@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishSuccess, meets, newCharacter, startRun } from '../engine';
+import { choose, finishSuccess, meets, newCharacter, setItemCondition, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE } from '../storage';
 import type { SaveData, Scenario } from '../types';
@@ -60,7 +60,7 @@ describe('honest work adventure batch', () => {
       const quietWeight = scenario.runRandomSelections?.[0].values.find(({ value }) => value === 'quiet')?.weight;
       if (scenario.id === 'unload-before-dark') expect(quietWeight).toBe(0);
       else expect(quietWeight).toBeGreaterThan(1);
-      const equipment = Object.values(scenario.scenes).flatMap(({ choices }) => choices).find(({ id }) => id === 'useCarriedTool')?.requirements?.items?.[0];
+      const equipment = Object.values(scenario.scenes).flatMap(({ choices }) => choices).find(({ id }) => id === 'useCarriedTool')?.requirements?.usableItems?.[0];
       if (equipment) expect(ITEMS[equipment]?.carryable, `${scenario.title} equipment`).toBe(true);
       for (const scene of Object.values(scenario.scenes)) {
         for (const text of [scene.text, ...(scene.textVariants ?? []).map(({ text: variant }) => variant)]) {
@@ -76,7 +76,7 @@ describe('honest work adventure batch', () => {
 
   it('keeps every randomized active state actionable without revisiting a scene', () => {
     for (const scenario of HONEST_WORK_ADVENTURES) {
-      const item = Object.values(scenario.scenes).flatMap(({ choices }) => choices).find(({ id }) => id === 'useCarriedTool')?.requirements?.items?.[0];
+      const item = Object.values(scenario.scenes).flatMap(({ choices }) => choices).find(({ id }) => id === 'useCarriedTool')?.requirements?.usableItems?.[0];
       for (const shift of ['quiet', 'complication']) {
         walkAll(scenario, shift);
         if (item) walkAll(scenario, shift, item);
@@ -141,7 +141,7 @@ describe('honest work adventure batch', () => {
 
   it('keeps ordinary hired work accessible without personal specialist Gear while offering carried tools as alternatives', () => {
     for (const scenario of HONEST_WORK_ADVENTURES) {
-      const itemChoices = scenario.scenes.complication.choices.filter(({ requirements }) => (requirements?.items?.length ?? 0) > 0);
+      const itemChoices = scenario.scenes.complication.choices.filter(({ requirements }) => (requirements?.usableItems?.length ?? 0) > 0);
       if (itemChoices.length === 0) continue;
 
       let fresh = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
@@ -151,7 +151,7 @@ describe('honest work adventure batch', () => {
       expect(freshChoices.map(({ id }) => id), `${scenario.title} fresh-worker options`).toContain('askForHelp');
       for (const itemChoice of itemChoices) {
         expect(freshChoices.map(({ id }) => id), `${scenario.title} does not require ${itemChoice.id}`).not.toContain(itemChoice.id);
-        const itemId = itemChoice.requirements!.items![0];
+        const itemId = itemChoice.requirements!.usableItems![0];
         let equipped = act(start(scenario, 'complication', itemId), scenario, 'hiring', 'beginWork');
         equipped = act(equipped, scenario, 'work', 'addressIssue');
         const equippedChoices = scenario.scenes.complication.choices.filter(({ requirements }) => meets(requirements, equipped));
@@ -159,6 +159,18 @@ describe('honest work adventure batch', () => {
         expect(equippedChoices.map(({ id }) => id), `${scenario.title} with ${itemId}`).toContain('workCarefully');
       }
     }
+  });
+
+  it('does not offer a named carried-tool action when the tool is broken', () => {
+    const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'the-mill-job')!;
+    const itemId = scenario.scenes.complication.choices.find(({ id }) => id === 'useCarriedTool')!.requirements!.usableItems![0];
+    let state = act(start(scenario, 'complication', itemId), scenario, 'hiring', 'beginWork');
+    state = act(state, scenario, 'work', 'addressIssue');
+    const toolChoice = scenario.scenes.complication.choices.find(({ id }) => id === 'useCarriedTool')!;
+    expect(meets(toolChoice.requirements, state)).toBe(true);
+    const broken = setItemCondition(state, itemId, 'BROKEN');
+    expect(meets(toolChoice.requirements, broken)).toBe(false);
+    expect(scenario.scenes.complication.choices.filter(({ requirements }) => meets(requirements, broken)).map(({ id }) => id)).toContain('workCarefully');
   });
 
   it('keeps a night watch quiet on most runs and does not manufacture a crime', () => {

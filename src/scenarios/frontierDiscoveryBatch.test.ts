@@ -70,6 +70,23 @@ describe('remote discovery and frontier claims batch', () => {
     expect(FRONTIER_DISCOVERY_ADVENTURES.every(({ scenes }) => Object.values(scenes).some(({ ending }) => ending === 'success'))).toBe(true);
   });
 
+  it('keeps the shared frontier decision scene open and gives divergent outcomes route-appropriate closures', () => {
+    const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-claim-cabin')!;
+    const decision = cabin.scenes[`${cabin.id}Decision`];
+    expect(decision.text).not.toContain('The cabin offers no final explanation');
+    expect(decision.text).toContain('The room suggests someone kept working');
+    expect(decision.choices).toHaveLength(3);
+    expect(cabin.scenes[`${cabin.id}Bold`].title).not.toContain('Cost');
+    expect(cabin.scenes[`${cabin.id}Bold`].text).not.toContain(cabin.scenes[`${cabin.id}Cautious`].text);
+    expect(cabin.scenes[`${cabin.id}Cautious`].text).toContain('The cabin offers no final explanation');
+
+    // This story's legacy ending override describes only the branch that takes
+    // the coins. It must not leak into the separate restore-and-read outcome.
+    const cache = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-cache-under-the-stove')!;
+    expect(cache.scenes[`${cache.id}Cautious`].title).not.toContain('Coins Leave');
+    expect(cache.scenes[`${cache.id}Bold`].title).toBe('The Coins Leave with You');
+  });
+
   it('separates field surveying from the claimant negotiation in Claim at Dry Creek', () => {
     const survey = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'survey-stakes-are-wrong')!;
     const dryCreek = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'claim-at-dry-creek')!;
