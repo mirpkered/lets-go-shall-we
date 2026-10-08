@@ -95,6 +95,18 @@ describe('honest work adventure batch', () => {
     expect(state.character?.knowledge.length).toBeGreaterThan(0);
   });
 
+  it('does not award a task-specific lesson for a generic job-terms question before the work begins', () => {
+    const generic = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'fence-line')!;
+    let state = act(start(generic, 'quiet'), generic, 'hiring', 'askThenWork');
+    expect(state.character?.knowledge).not.toContain('A visible boundary stake can settle a fence-line disagreement before the wire is tightened.');
+    state = act(state, generic, 'work', 'finishQuiet');
+    expect(state.character?.knowledge).toContain('A visible boundary stake can settle a fence-line disagreement before the wire is tightened.');
+
+    const instructed = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'cutting-timber')!;
+    const taught = act(start(instructed, 'quiet'), instructed, 'hiring', 'askThenWork');
+    expect(taught.character?.knowledge).toContain('A bound saw should be released by moving the wood from a clear side, not by pulling harder.');
+  });
+
   it('credits short completed timber work and labels the foreman’s predetermined question specifically', () => {
     const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'cutting-timber')!;
     expect(scenario.scenes.hiring.choices.find(({ id }) => id === 'askThenWork')?.label).toContain('bound saw safely');

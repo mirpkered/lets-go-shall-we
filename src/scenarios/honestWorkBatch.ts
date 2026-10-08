@@ -58,7 +58,7 @@ function workAdventure(spec: WorkSpec): Scenario {
         id: 'hiring', title: 'The Day’s Work', tone: 'safe', text: spec.opening,
         choices: [
           { id: 'beginWork', label: 'Take the job', hint: 'The pay and the work are agreed before you begin.', next: 'work', timeCost: 5 },
-          { id: 'askThenWork', label: spec.questionLabel ?? 'Ask what the day’s work involves, then begin', hint: spec.questionLabel ? 'Ask the foreman to explain how to handle a bound saw safely.' : 'Clarify the day’s arrangement before lifting a hand.', next: 'work', timeCost: 5, effects: { knowledge: [spec.knowledge] } },
+          { id: 'askThenWork', label: spec.questionLabel ?? 'Ask what the day’s work involves, then begin', hint: spec.questionLabel ? 'Ask the foreman to explain how to handle a bound saw safely.' : 'Clarify the day’s arrangement before lifting a hand.', next: 'work', timeCost: 5, effects: spec.questionLabel ? { knowledge: [spec.knowledge] } : undefined },
         ],
       },
       work: {
