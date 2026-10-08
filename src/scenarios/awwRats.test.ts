@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, failCharacter, meets, newCharacter, sceneText, startRun } from '../engine';
+import { choose, failCharacter, finishRewardResolution, meets, newCharacter, newRewardItems, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
 import { AWW_RATS } from './awwRats';
@@ -26,6 +26,28 @@ function reachGrainDecision(state = fresh()): SaveData {
 }
 
 describe('Aww, Rats!!', () => {
+  it('describes tools as offers until selected, then matches the accepted reward to final placement', () => {
+    let state = reachGrainDecision();
+    state = act(state, 'destroyGrain');
+    state = act(state, 'tryTraps');
+    state = act(state, 'simpleTrap');
+    state = act(state, 'checkTraps');
+    expect(state.run?.sceneId).toBe('rewardClean');
+    expect(sceneText(AWW_RATS.scenes.rewardClean, state)).toMatch(/choose one to accept/i);
+    expect(sceneText(AWW_RATS.scenes.rewardClean, state)).not.toMatch(/either is yours to keep/i);
+    expect(state.run?.acquiredThisRun).not.toContain('ratCatchersHook');
+
+    state = act(state, 'takeHook');
+    expect(state.run?.acquiredThisRun).toContain('ratCatchersHook');
+    state = openRewardResolution(state);
+    expect(newRewardItems(state)).toContain('ratCatchersHook');
+    state = placeReward(state, 'ratCatchersHook', 'carry');
+    expect(state.character?.carriedItems).toContain('ratCatchersHook');
+    expect(state.run?.rewardPendingItems).toEqual([]);
+    state = finishRewardResolution(state);
+    expect(state.character?.carriedItems).toContain('ratCatchersHook');
+  });
+
   it('lets a broke fresh character clear the nest with ordinary farm materials', () => {
     let state = reachGrainDecision();
     state = act(state, 'destroyGrain');
