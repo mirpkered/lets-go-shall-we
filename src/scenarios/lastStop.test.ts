@@ -28,6 +28,12 @@ function reachEmergency(state = fresh()): SaveData {
 }
 
 describe('All Aboard!', () => {
+  it('shows the roof handholds before offering a rope-assisted roof crossing', () => {
+    expect(LAST_STOP.scenes.roofAccess.text).toContain('Low iron grab rails run along the roof');
+    expect(LAST_STOP.scenes.roofAccess.text).toContain('a rope tied to one');
+    expect(LAST_STOP.scenes.roofAccess.choices.find((choice) => choice.id === 'ropeCross')?.label).toBe('Clip on the travel rope');
+  });
+
   it('supports a fresh-character brake route to a survivable ending', () => {
     let state = fresh();
     for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
@@ -134,6 +140,13 @@ describe('All Aboard!', () => {
     state = act(state, 'retry', 0.99);
     expect(state.run?.status).toBe('death');
     expect(state.run?.sceneId).toBe('__death');
+  });
+});
+
+describe('For Whom the Bell Tolls', () => {
+  it('locates the cellar window before offering the hazardous entry route', () => {
+    expect(BROKEN_BELL.scenes.chapelExterior.text).toContain('a narrow cellar window sits low in the ivy-covered side wall');
+    expect(BROKEN_BELL.scenes.chapelExterior.choices.find((choice) => choice.id === 'cellarWindow')?.hint).toContain('hard drop');
   });
 });
 

@@ -115,7 +115,7 @@ export const AWW_RATS: Scenario = {
     },
     nestCollapse: {
       id: 'nestCollapse', title: 'Under the Broken Boards', tone: 'danger',
-      text: 'You land among loose boards at the edge of the nest pocket. The farmer and farmhand pull the outside hatch shut, but the low passage is still shifting. Every breath sends dust from the cracks. You have one clear route out; forcing deeper into the pocket could be fatal.',
+      text: 'You land among loose boards at the edge of the nest pocket. The farmer and farmhand pull the outside hatch shut behind you. Ahead, an inner board gate blocks the deeper run; the low passage around it is still shifting, and every breath sends dust from the cracks. You have one clear route out; forcing the gate could be fatal.',
       choices: [
         { id: 'crawlOut', label: 'Crawl toward the daylight', hint: 'Slow and painful, but away from the unstable nest.', effects: { health: -2 }, next: 'survivalEnding' },
         { id: 'pushDeeper', label: 'Force the inner gate shut', hint: 'The floor may collapse completely.', chance: { probability: 0.42, successNext: 'rewardContained', failureNext: '__death', successMessage: 'You force the gate shut and get clear as the pocket collapses.', failureMessage: 'The floor gives way beneath the low passage.' } },
@@ -123,7 +123,7 @@ export const AWW_RATS: Scenario = {
     },
     sealPlan: {
       id: 'sealPlan', title: 'Close Every Route',
-      text: 'The damaged sill and creek drain are the main openings. Sealing them can keep rats away from the stores while the nest runs out of food. The barn floor is hollow, so brace it from the outside rather than standing over the cavity.', tone: 'warning',
+      text: 'The damaged sill and creek drain are the main openings. A rough timber hatch covers the outer nest mouth on an old hinge. Sealing the openings can keep rats away from the stores while the nest runs out of food. The barn floor is hollow, so brace the hatch and sill from firm ground rather than standing over the cavity.', tone: 'warning',
       choices: [
         { id: 'toolSeal', label: 'Reinforce the sill with your toolkit', timeCost: 5, requirements: { items: ['pocketToolkit'] }, chance: { probability: 0.88, successNext: 'routesSealed', failureNext: 'sealBreach', successMessage: 'The boards hold and the tunnel closes flush.', failureMessage: 'A hidden gap defeats the first brace.', failureEffects: { health: -1 } } },
         { id: 'ropeSeal', label: 'Pull the hatch into place with your rope', timeCost: 6, requirements: { items: ['travelRope'] }, chance: { probability: 0.82, successNext: 'routesSealed', failureNext: 'sealBreach', successMessage: 'The rope lets you draw the hatch tight from firm ground.', failureMessage: 'The old hinge shifts and the hatch slips back.', failureEffects: { health: -1 } } },

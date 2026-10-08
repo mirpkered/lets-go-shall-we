@@ -216,7 +216,7 @@ export const LAST_STOP: Scenario = {
     },
     roofAccess: {
       id: 'roofAccess', title: 'Into the Rain', tone: 'danger',
-      text: 'The forward vestibule is jammed. Outside, rain lashes the roof and telegraph poles blur past. Crossing is possible, but one bad step means the ballast. The locked side window offers a less elegant route.',
+      text: 'The forward vestibule is jammed. Outside, rain lashes the roof and telegraph poles blur past. Low iron grab rails run along the roof, one car at a time; a rope tied to one can steady a crossing but will not make a fall harmless. Crossing is possible, but one bad step means the ballast. The locked side window offers a less elegant route.',
       choices: [
         { id: 'toolWindow', label: 'Unfasten the window', timeCost: 3, requirements: { items: ['pocketToolkit'] }, next: 'locomotive' },
         { id: 'smashWindow', label: 'Smash it with brass', timeCost: 2, requirements: { items: ['brassCandlestick'] }, next: 'locomotive' },

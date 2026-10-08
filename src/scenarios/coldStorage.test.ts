@@ -27,6 +27,15 @@ function available(state: SaveData): Choice[] {
 }
 
 describe('Cold Storage', () => {
+  it('maps the service channel and inner latch before offering a descent or hook action', () => {
+    const setup = COLD_STORAGE.scenes.serviceEntry.text;
+    expect(setup).toContain('beneath the loading floor');
+    expect(setup).toContain('far landing');
+    expect(setup).toContain('inner gate');
+    expect(setup).toContain('latch ring');
+    expect(COLD_STORAGE.scenes.serviceEntry.choices.find((choice) => choice.id === 'hookChannelLatch')?.label).toContain('lower latch');
+  });
+
   it('describes outside help through a period-appropriate messenger route', () => {
     expect(COLD_STORAGE.scenes.loadingBay.text).not.toContain('lost contact');
     expect(COLD_STORAGE.scenes.loadingBay.choices.find((choice) => choice.id === 'callCrew')?.label).toBe('Send for the nearby rescue crew');
