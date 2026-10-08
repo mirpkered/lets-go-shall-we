@@ -34,7 +34,7 @@ function loftRescueChoice(kind: 'rope' | 'hood' | 'bare'): Choice {
     hint: isRope ? 'The rope gives Eli a line to follow without crossing the worst of the smoke.' : isHood ? 'The hood helps with smoke, but the hot, shifting loft remains dangerous.' : 'Smoke is already lowering under the eaves; you may have only one short attempt.',
     requirements: isRope ? { items: ['travelRope'] } : isHood ? { anyItems: BREATHING_GEAR } : { notItems: RESCUE_GEAR },
     timeCost: isRope || isHood ? 5 : 7,
-    effects: { setFlags: ['entered_burning_structure', 'tried_person_rescue'], historyFlags: ['entered_burning_structure'] },
+    effects: { setFlags: ['entered_burning_structure', 'tried_person_rescue', ...(isRope ? ['loftRopeApproach'] : [])], historyFlags: ['entered_burning_structure'] },
     chance: {
       probability: isRope ? 0.89 : isHood ? 0.84 : 0.63,
       bonusItems: isRope ? ['smokeHood', 'heavyLeatherGloves'] : isHood ? ['heavyLeatherGloves', 'travelRope'] : ['heavyLeatherGloves'],
@@ -116,10 +116,10 @@ export const SMOKE_ON_THE_HILL: Scenario = {
     },
     barnDiscovery: {
       id: 'barnDiscovery', title: 'The Barn Door', tone: 'danger',
-      text: 'Now you can hear a man shouting from the loft and goats beating at a stall gate below him. Eli, the farmhand, is trapped above the main door; smoke is already gathering under the rafters. The side door is warped but reachable. A safer rescue may take time, and the fire is still moving outside.',
+      text: 'Now you can hear a man shouting from the loft and goats beating at a stall gate below him. Eli, the farmhand, is trapped above the main door; a small loft window faces the yard just above the warped but reachable side door. Smoke is already gathering under the rafters. A safer rescue may take time, and the fire is still moving outside.',
       textVariants: [
-        { requirements: { minElapsedMinutes: 30 }, text: 'Eli shouts from the loft while goats crowd the lower stall. Smoke has sunk almost to the ladder, and the roof timbers pop overhead. You can still attempt a rescue, but there is no time to search for every possible advantage.' },
-        { requirements: { minElapsedMinutes: 18 }, text: 'Eli shouts from the loft while the goats crowd the lower stall. Smoke now fills the route to the lower gate; you cannot reach it safely. The loft is still reachable for one brief attempt, or you can leave and protect yourself.' },
+        { requirements: { minElapsedMinutes: 30 }, text: 'Eli shouts from the loft while goats crowd the lower stall. A small window faces the yard above the side door. Smoke has sunk almost to the ladder, and the roof timbers pop overhead. You can still attempt a rescue, but there is no time to search for every possible advantage.' },
+        { requirements: { minElapsedMinutes: 18 }, text: 'Eli shouts from the loft while the goats crowd the lower stall. A small window faces the yard above the side door. Smoke now fills the route to the lower gate; you cannot reach it safely. The loft is still reachable for one brief attempt, or you can leave and protect yourself.' },
       ],
       choices: [
         loftRescueChoice('rope'),
@@ -132,7 +132,8 @@ export const SMOKE_ON_THE_HILL: Scenario = {
     },
     loftSlip: {
       id: 'loftSlip', title: 'The Ladder Shifts', tone: 'danger',
-      text: 'A hot brace has blocked the direct route. Your bruises and coughing are warning enough: the roof is moving, and the smoke is lowering. Eli is still calling, but another attempt from inside could leave you trapped too.',
+      text: 'The failed entry forces you back through the side door into the yard. A hot brace blocks the direct route to the loft; the window is above you. Your bruises and coughing are warning enough: the roof is moving, and the smoke is lowering. Eli is still calling, but another attempt through the doorway could leave you trapped too.',
+      textVariants: [{ requirements: { flags: ['loftRopeApproach'] }, text: 'The rope slips before Eli can reach it. You remain in the yard below the loft window, while a hot brace blocks the direct route inside. Your bruises and coughing are warning enough: the roof is moving, and the smoke is lowering. Eli is still calling above; another attempt costs precious time.' }],
       choices: [
         { id: 'retreatAfterLoftSlip', label: 'Get clear and bring help', timeCost: 2, next: 'retreatFromFireEnding', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'tryWindowAfterSlip', label: 'Use the loft window from outside', hint: 'A rope makes this possible; without one, the drop and heat are dangerous.', requirements: { items: ['travelRope'] }, timeCost: 3, chance: { probability: 0.74, bonusItems: ['smokeHood', 'heavyLeatherGloves'], bonusProbability: 0.12, successNext: 'eliRescued', failureNext: 'personalEscapeEnding', successMessage: 'The rope reaches the sill and Eli climbs down as the roof shifts.', failureMessage: 'The line snags on a hot shutter. You retreat before the window gives way.', successEffects: { setFlags: ['eliSafe', 'sawBarnOccupants'], historyFlags: ['rescued_person_from_fire'] }, failureEffects: { health: -1 } } },
