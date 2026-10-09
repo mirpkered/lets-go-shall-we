@@ -186,6 +186,50 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'claimClamp')!.requirements, runnerUp)).toBe(false);
   });
 
+  it('keeps Hammer and Ribbon rewards tied to an established result', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-hammer-and-the-ribbon')!;
+
+    // A clean first mark followed by the range pause has no recorded placement.
+    let unranked = act(begin(scenario), scenario, 'throwNow');
+    unranked = act(unranked, scenario, 'resumeSafely');
+    expect(unranked.run?.sceneId).toBe('score');
+    expect(scenario.scenes.score.text).toContain('before any placement is established');
+    expect(scenario.scenes.score.choices.map(({ id }) => id)).toEqual(['takeCoin']);
+    unranked = act(unranked, scenario, 'takeCoin');
+    expect(unranked.character?.money).toBe(6);
+    expect(unranked.run?.inventory).not.toContain('steelWedge');
+    expect(unranked.run?.sceneId).toBe('coin');
+    expect(scenario.scenes.coin.text).toContain('Wedge goes only to the confirmed highest scorer');
+
+    // The revised-round success explicitly confirms the leading score and alone
+    // exposes the winner's prize or its equivalent coin value.
+    let winner = act(begin(scenario), scenario, 'callHold');
+    winner = act(winner, scenario, 'takeTurn', () => 0);
+    expect(winner.run?.sceneId).toBe('win');
+    expect(scenario.scenes.win.text).toContain('confirms your score leads');
+    expect(scenario.scenes.win.choices.map(({ id }) => id)).toEqual(['acceptWonWedge', 'takeWonCoins']);
+    winner = act(winner, scenario, 'acceptWonWedge');
+    expect(winner.run?.inventory).toContain('steelWedge');
+
+    let winningCoinChoice = act(begin(scenario), scenario, 'callHold');
+    winningCoinChoice = act(winningCoinChoice, scenario, 'takeTurn', () => 0);
+    winningCoinChoice = act(winningCoinChoice, scenario, 'takeWonCoins');
+    expect(winningCoinChoice.character?.money).toBe(7);
+    expect(winningCoinChoice.run?.inventory).not.toContain('steelWedge');
+
+    // A recorded miss or withdrawal cannot reach the winner-only reward scene.
+    let miss = act(begin(scenario), scenario, 'callHold');
+    miss = act(miss, scenario, 'takeTurn', () => 0.99);
+    expect(miss.run?.sceneId).toBe('miss');
+    expect(miss.run?.inventory).not.toContain('steelWedge');
+    expect(scenario.scenes.miss.choices.map(({ id }) => id)).toEqual(['takeMissCoin', 'declineMiss']);
+
+    let withdrawn = act(begin(scenario), scenario, 'askJudge');
+    withdrawn = act(withdrawn, scenario, 'withdrawRange');
+    expect(withdrawn.run?.sceneId).toBe('withdrawn');
+    expect(withdrawn.run?.inventory).not.toContain('steelWedge');
+  });
+
   it('keeps Dry Crossing blanket awards exclusive to dry finishes', () => {
     const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-dry-crossing-race')!;
     let dry = act(begin(scenario), scenario, 'studyCurrent');
