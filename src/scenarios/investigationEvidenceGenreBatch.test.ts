@@ -37,13 +37,55 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
     expect(meets(mirror.requirements, setItemCondition(initial(scenario, 'foldingCardMirror'), 'foldingCardMirror', 'BROKEN'))).toBe(false);
     expect(scenario.scenes.observe.choices.some((choice) => meets(choice.requirements, initial(scenario)))).toBe(true);
   });
+
+  it('requires a carried, usable Map Case and gives its route an acknowledged preservation consequence', () => {
+    const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-map-with-two-norths')!;
+    const choice = scenario.scenes.observe.choices.find(({ id }) => id === 'ask')!;
+    expect(choice.label).toMatch(/Lockable Map Case/);
+    expect(meets(choice.requirements, initial(scenario))).toBe(false);
+    expect(meets(choice.requirements, initial(scenario, undefined, ['lockableMapCase']))).toBe(false);
+    expect(meets(choice.requirements, setItemCondition(initial(scenario, 'lockableMapCase'), 'lockableMapCase', 'BROKEN'))).toBe(false);
+    expect(meets(choice.requirements, initial(scenario, 'lockableMapCase', ['lockableMapCase']))).toBe(true);
+
+    let state = act(initial(scenario, 'lockableMapCase', ['lockableMapCase']), scenario, 'ask');
+    expect(state.run?.flags).toContain('map_copy_secured');
+    const testVariant = scenario.scenes.test.textVariants!.find(({ requirements }) => meets(requirements, state));
+    expect(testVariant?.text).toMatch(/remains flat and protected.*Map Case.*later reference/i);
+    expect(testVariant?.text).toMatch(/does not resolve the scale or orientation/i);
+    const visible = scenario.scenes.test.choices.filter(({ requirements }) => meets(requirements, state));
+    expect(visible.map(({ id }) => id)).toEqual(['carefulWithCopy', 'verifyWithCopy', 'accuseWithCopy']);
+    expect(visible[0].label).toMatch(/take the protected copy out/i);
+    expect(visible[1].label).toMatch(/keep the protected working copy/i);
+    state = act(state, scenario, 'carefulWithCopy');
+    const ending = scenario.scenes.settlement.textVariants!.find(({ requirements }) => meets(requirements, state));
+    expect(ending?.text).toMatch(/take the protected copy out.*return it to the clerk/i);
+  });
+
+  it('retains the map lesson regardless of fee, Gear, or no-compensation choice', () => {
+    const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-map-with-two-norths')!;
+    const toSettlement = () => {
+      let state = initial(scenario);
+      state = act(state, scenario, 'measure');
+      return act(state, scenario, 'careful');
+    };
+    for (const id of ['wage', 'tool', 'decline']) {
+      const before = toSettlement();
+      const choice = scenario.scenes.settlement.choices.find(({ id: choiceId }) => choiceId === id)!;
+      expect(choice, id).toBeTruthy();
+      expect(choice.effects?.knowledge, id).toEqual(['A map can preserve direction while losing scale; check its purpose and orientation before relying on measurements.']);
+      const after = act(before, scenario, id);
+      expect(after.character?.knowledge).toContain('A map can preserve direction while losing scale; check its purpose and orientation before relying on measurements.');
+    }
+    expect(scenario.scenes.settlement.choices.find(({ id }) => id === 'recordLesson')).toBeUndefined();
+    expect(scenario.scenes.settlement.choices.find(({ id }) => id === 'decline')?.label).not.toMatch(/lesson|method/i);
+  });
   it('registers 24 unique reachable Adventures with evidence interpretation and continuity', () => {
     expect(INVESTIGATION_EVIDENCE_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);
     expect(new Set(INVESTIGATION_EVIDENCE_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(validateScenarioRegistry(INVESTIGATION_EVIDENCE_GENRE_BATCH).errors).toEqual([]);
     expect(validateScenarioRegistry(INVESTIGATION_EVIDENCE_GENRE_BATCH).warnings).toEqual([]);
-    expect(INVESTIGATION_EVIDENCE_GENRE_BATCH.every(({ scenes }) => scenes.observe.choices.length >= 3 && scenes.test.choices.length >= 2 && scenes.settlement.textVariants?.length === 3)).toBe(true);
+    expect(INVESTIGATION_EVIDENCE_GENRE_BATCH.every(({ scenes }) => scenes.observe.choices.length >= 3 && scenes.test.choices.length >= 2 && (scenes.settlement.textVariants?.length ?? 0) >= 3)).toBe(true);
     expect(INVESTIGATION_EVIDENCE_GENRE_BATCH.filter(({ scenes }) => scenes.settlement.choices.some(({ effects }) => effects?.gainItems?.length))).toHaveLength(24);
   });
 

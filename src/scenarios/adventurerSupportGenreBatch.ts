@@ -54,7 +54,12 @@ function build(c: Card): Scenario {
     outcomes: ['success/partial success', 'walk-away/refusal', 'costly success/no-perfect-outcome possible'],
   });
   const options = c.kit.map((o) => ({ id: `kit_${o.id}`, label: o.label, ...(o.requiresItem ? { requirements: { items: [o.requiresItem], usableItems: [o.requiresItem] } } : {}), next: 'complication', effects: { setFlags: [`support_kit_${o.id}`] } }));
-  const variants = c.kit.map((o) => ({ requirements: { flags: [`support_kit_${o.id}`] }, text: o.consequence }));
+  const variants = c.kit.map((o) => ({
+    requirements: { flags: [`support_kit_${o.id}`] },
+    // This card's kit choice previously replaced the complication text entirely,
+    // hiding the robbers' reveal on the staffed-road approach.
+    text: c.id === 'the-second-gunhand' ? `${o.consequence} ${c.turn}` : o.consequence,
+  }));
   const responses: Scene['choices'] = [
     ...c.responses.map((o) => ({ id: `response_${o.id}`, label: o.label, next: followup ? 'followup' : 'settlement', effects: { setFlags: [`support_response_${o.id}`] } })),
     ...(c.combat ? [{ id: 'standGround', label: `Hold the line and fight the ${c.combat.enemy}`, hint: 'The other person can retreat while you keep the route open.', effects: { combat: { enemy: c.combat.enemy, winChance: c.combat.winChance, damageOnLoss: c.combat.damageOnLoss, damageOnWin: 1, winNext: 'afterFight', lossNext: 'retreat' } } }] : []),

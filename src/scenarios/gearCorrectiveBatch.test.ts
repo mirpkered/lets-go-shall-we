@@ -65,6 +65,21 @@ describe('corrective Gear Adventure batch', () => {
     acquire(THE_BRIDGE_CREWS_WEDGE, ['seatWedge', 'stopAndReset', 'acceptSpareHammer'], 'bridgewrightHammer');
   });
 
+  it('retains the airflow lesson learned during the lamp test regardless of compensation', () => {
+    const lesson = 'A shuttered lamp can go out when its air opening faces a strong gust; turning it or using a local windbreak can steady it.';
+    const routes = [
+      ['checkCaseSeam', 'shieldOpening', 'acceptMatchCase'],
+      ['turnLanternToWind', 'repeatSideways', 'takeTwoCoins'],
+      ['askAboutWick', 'testAngle', 'declineCompensation'],
+    ];
+    for (const route of routes) {
+      let state = start(THE_APPRENTICES_LIGHT);
+      for (const choiceId of route) state = act(state, THE_APPRENTICES_LIGHT, choiceId);
+      expect(state.character?.knowledge).toContain(lesson);
+    }
+    expect(THE_APPRENTICES_LIGHT.scenes.test.choices.find(({ id }) => id === 'rememberAirflow')).toBeUndefined();
+  });
+
   it('keeps salvage ownership unresolved and never silently grants the named chest', () => {
     let state = start(THE_CLAIMED_SALVAGE);
     state = act(state, THE_CLAIMED_SALVAGE, 'inspectCamp');

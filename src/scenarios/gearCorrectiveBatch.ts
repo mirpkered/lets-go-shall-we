@@ -224,9 +224,9 @@ export const THE_APPRENTICES_LIGHT: Scenario = largeAdventure('the-apprentices-l
     { id: 'testWindbreak', label: 'Shield the opening with a board', next: 'test', effects: { setFlags: ['apprentice_windbreak'] } },
   ]),
   test: s('test', 'The Procession’s Practice Lamp', 'The flame holds long enough for the procession marshal to see the route card. A windbreak makes the lamp steadier in one place; turning it helps while walking, but the bearer must keep watching the gusts.', [
-    { id: 'acceptMatchCase', label: 'Accept Rusk’s spare Windproof Match Case', requirements: { notOwnedItems: ['windproofMatchCase'] }, next: 'caseGift', effects: { gainItems: ['windproofMatchCase'], historyFlags: ['earned_match_case_apprenticeship'] } },
-    { id: 'takeTwoCoins', label: 'Take two coins for the testing shift', next: 'coins', effects: { money: 2 } },
-    { id: 'rememberAirflow', label: 'Decline pay and keep the lesson about airflow', next: 'lesson', effects: { knowledge: ['A shuttered lamp can go out when its air opening faces a strong gust; turning it or using a local windbreak can steady it.'] } },
+    { id: 'acceptMatchCase', label: 'Accept Rusk’s spare Windproof Match Case', requirements: { notOwnedItems: ['windproofMatchCase'] }, next: 'caseGift', effects: { gainItems: ['windproofMatchCase'], historyFlags: ['earned_match_case_apprenticeship'], knowledge: ['A shuttered lamp can go out when its air opening faces a strong gust; turning it or using a local windbreak can steady it.'] } },
+    { id: 'takeTwoCoins', label: 'Take two coins for the testing shift', next: 'coins', effects: { money: 2, knowledge: ['A shuttered lamp can go out when its air opening faces a strong gust; turning it or using a local windbreak can steady it.'] } },
+    { id: 'declineCompensation', label: 'Decline all compensation', next: 'lesson', effects: { knowledge: ['A shuttered lamp can go out when its air opening faces a strong gust; turning it or using a local windbreak can steady it.'] } },
   ]),
   caseGift: e('caseGift', 'A Few Matches Kept Dry', 'Rusk gives you a spare brass case that holds only a few matches. It will not create fire, but it can keep ordinary matches dry when weather threatens them.'),
   coins: e('coins', 'The Testing Shift', 'Rusk pays two coins for the testing shift. She keeps the case and adds a note about the lamp’s air opening to the shop card.'),

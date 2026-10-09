@@ -49,7 +49,7 @@ const stories: EvidenceStory[] = [
   { id:'the-sound-behind-the-brick', title:'The Sound Behind the Brick', subtitle:'A repeated knock comes from a wall beside an old service passage.', setting:'closed inn service corridor', risk:'MODERATE', claim:'The innkeeper says a trespasser is trapped behind the wall.', scene:'The wall is solid brick except for a repaired patch near the floor. A knock repeats after a cart passes outside; dust falls from the mortar seam, and the old plan shows a drain beyond the wall.', inspect:['Use the Folding Card Mirror at the low air gap','Tap the wall from two marked points and compare the sound','Ask the innkeeper when the drain was last cleared'], testTitle:'A Vibration Through the Drain', test:'The sound travels through the old drain and follows passing carts. The repaired patch is dry and stable; no voice or movement answers from behind it.', actions:['Mark the patch for a mason and stop opening the wall','Check the drain outlet from the courtyard','Tell the innkeeper someone is trapped inside'], interpretation:'The sound has a plausible route through the drain; it does not establish a person behind the brick.', careful:'The innkeeper clears the drain from the courtyard and leaves the sound unexplained only until the next cart passes.', accuse:'No one is found behind the wall, and the innkeeper apologizes for alarming the staff.', lesson:'Repeated sound can travel through a connected space; locate a path before inferring a hidden person.', coins:1 },
 ];
 
-const s = (id: string, title: string, text: string, choices: Scene['choices']) => largeScene(id, title, text, choices);
+const s = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', textVariants?: Scene['textVariants']) => largeScene(id, title, text, choices, tone, textVariants);
 const e = (id: string, title: string, text: string) => largeEnd(id, title, text);
 const gearGain = (item: string, provenance: string, flag: string) => ({ gainItems: [item], gainItemProvenance: { [item]: provenance }, historyFlags: [flag] });
 const releasedSpare: Record<string, string> = {
@@ -90,29 +90,56 @@ function build(c: EvidenceStory): Scenario {
   };
   const inspectChoices: Scene['choices'] = c.inspect.map((label, i) => {
     const item = inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror/i.test(label)) ? inspectionGear[c.id] : undefined;
-    return { id: inspectIds[i], label, ...(item ? {requirements:{items:[item],usableItems:[item]}} : {}), next: 'test', effects: { setFlags: [`${c.id}_${inspectIds[i]}`] } };
+    const caseRoute = c.id === 'the-map-with-two-norths' && /Lockable Map Case/i.test(label);
+    const caseItem = item ?? (caseRoute ? 'lockableMapCase' : undefined);
+    return {
+      id: inspectIds[i], label,
+      ...(caseItem ? { requirements: { items: [caseItem], usableItems: [caseItem] } } : {}),
+      next: 'test', effects: { setFlags: [`${c.id}_${inspectIds[i]}`, ...(caseRoute ? ['map_copy_secured'] : [])] },
+    };
   });
   if (toolUse) inspectChoices.push({ id:'specialistTool', label:toolUse.label, next:'test', requirements:{items:[toolUse.item],usableItems:[toolUse.item]}, effects:{setFlags:[`${c.id}_specialistTool`]} });
-  const actionChoices = [
+  const actionChoices: Scene['choices'] = [
     { id:'careful', label:c.actions[0], next:'settlement', effects:{ setFlags:[`${c.id}_careful`] } },
     { id:'verify', label:c.actions[1], next:'settlement', effects:{ setFlags:[`${c.id}_verified`] } },
     { id:'accuse', label:c.actions[2], next:'settlement', effects:{ setFlags:[`${c.id}_accused`] } },
   ];
+  if (c.id === 'the-map-with-two-norths') {
+    actionChoices[0] = { ...actionChoices[0], requirements: { notFlags: ['map_copy_secured'] } };
+    actionChoices[1] = { ...actionChoices[1], requirements: { notFlags: ['map_copy_secured'] } };
+    actionChoices[2] = { ...actionChoices[2], requirements: { notFlags: ['map_copy_secured'] } };
+    actionChoices.push(
+      { id:'carefulWithCopy', label:'Take the protected copy out, mark it “not for measurement,” and return it to the clerk', next:'settlement', requirements:{flags:['map_copy_secured']}, effects:{setFlags:[`${c.id}_careful`]} },
+      { id:'verifyWithCopy', label:'Keep the protected working copy in your Map Case while asking the surveyor to confirm which north the notes use', next:'settlement', requirements:{flags:['map_copy_secured']}, effects:{setFlags:[`${c.id}_verified`]} },
+      { id:'accuseWithCopy', label:'Raise the falsification concern while keeping the protected copy in your Map Case', next:'settlement', requirements:{flags:['map_copy_secured']}, effects:{setFlags:[`${c.id}_accused`]} },
+    );
+  }
   const settlementChoices: Scene['choices'] = [
     { id:'wage', label:`Accept the ${c.coins}-coin inspection fee`, next:'paid', effects:{ money:c.coins } },
-    { id:'recordLesson', label:'Decline payment and keep the practical lesson', next:'lesson', effects:{ knowledge:[c.lesson] } },
+    ...(c.id === 'the-map-with-two-norths'
+      ? [{ id:'decline', label:'Decline all material compensation', next:'lesson', effects:{} }]
+      : [{ id:'recordLesson', label:'Decline payment and keep the practical lesson', next:'lesson', effects:{ knowledge:[c.lesson] } }]),
     ...(item && itemName ? [{ id:'tool', label:`Accept the ${itemName} as compensation`, next:'gear', requirements:{ notOwnedItems:[item] }, effects:gearGain(item,provenance!,`earned_${item}_${c.id}`) }] : []),
-  ];
+  ].map((choice) => c.id === 'the-map-with-two-norths'
+    ? { ...choice, effects: { ...choice.effects, knowledge:[c.lesson] } }
+    : choice);
   const scenes: Record<string, Scene> = {
     observe:s('observe','A Claim and a Physical Trace',`${c.scene} ${c.claim} You are asked to help assess the evidence, not to act as an officer.`,inspectChoices),
-    test:s('test',c.testTitle,c.test,[...actionChoices]),
+    test:s('test',c.testTitle,c.test,[...actionChoices], 'safe', c.id === 'the-map-with-two-norths' ? [
+      { requirements:{flags:['map_copy_secured']}, text:`${c.test} The reduced sheet remains flat and protected in your Lockable Map Case for later reference; the case does not resolve the scale or orientation.` },
+    ] : undefined),
     settlement:{...s('settlement','What the Evidence Can Support',`${c.interpretation} The owner asks how you want to close the paid inspection.`,settlementChoices),textVariants:[
+      ...(c.id === 'the-map-with-two-norths' ? [
+        { requirements:{flags:['map_copy_secured',`${c.id}_careful`]}, text:`${c.interpretation} You take the protected copy out of your Map Case, mark it not for measurement, and return it to the clerk.` },
+        { requirements:{flags:['map_copy_secured',`${c.id}_verified`]}, text:`${c.interpretation} You keep the protected working copy in your Map Case while asking the surveyor to confirm which north the route notes use.` },
+        { requirements:{flags:['map_copy_secured',`${c.id}_accused`]}, text:`${c.interpretation} The surveyor shows the full field notes; you keep the protected copy in your Map Case, and the mismatch is confirmed as a filing error rather than falsification.` },
+      ] : []),
       { requirements:{flags:[`${c.id}_careful`]}, text:`${c.interpretation} ${c.careful}` },
       { requirements:{flags:[`${c.id}_verified`]}, text:`${c.interpretation} You preserve or verify the evidence before leaving; no unsupported identity is recorded.` },
       { requirements:{flags:[`${c.id}_accused`]}, text:`${c.interpretation} ${c.accuse}` },
     ]},
-    paid:e('paid','A Limited Finding',`You accept ${c.coins} coins for the practical inspection. ${c.lesson}`),
-    lesson:e('lesson','A Reusable Method',`You leave the fee and retain the method: ${c.lesson}`),
+    paid:e('paid','A Limited Finding',`You accept ${c.coins} coins for the practical inspection. ${c.id === 'the-map-with-two-norths' ? 'The finding itself remains with you; the fee did not replace what the investigation established.' : c.lesson}`),
+    lesson:e('lesson',c.id === 'the-map-with-two-norths' ? 'No Material Compensation' : 'A Reusable Method',c.id === 'the-map-with-two-norths' ? 'You decline material compensation. The reduced copy is labeled for its limited use, and the lesson about direction and scale remains with you.' : `You leave the fee and retain the method: ${c.lesson}`),
     ...(item && itemName ? { gear:e('gear','A Tool for Careful Records',`${provenance} The ${itemName} helps with ${itemSource}; it preserves a comparison, not a conclusion.`) } : {}),
   };
   if (c.combat) {

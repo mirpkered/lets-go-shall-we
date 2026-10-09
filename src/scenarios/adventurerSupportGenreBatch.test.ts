@@ -128,6 +128,18 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(scenario.scenes.retreatWithdraw.text).toMatch(/robbers escape/);
   });
 
+  it('shows the robbers before response choices on every Second Gunhand approach', () => {
+    const scenario = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-second-gunhand')!;
+    for (const approach of scenario.scenes.preparation.choices) {
+      const state = act(start(scenario), scenario, approach.id);
+      expect(state.run?.sceneId, approach.id).toBe('complication');
+      const displayed = scenario.scenes.complication.textVariants!.find(({ requirements }) => meets(requirements, state));
+      expect(displayed?.text, approach.id).toContain('Two armed robbers leave the trees');
+      expect(displayed?.text, approach.id).toContain('order the driver down');
+      expect(scenario.scenes.complication.choices.map(({ label }) => label).join(' '), approach.id).toMatch(/robbers/);
+    }
+  });
+
   it('gives each authored support-work combat loss a scene-specific follow-up decision', () => {
     const combatScenarios = ADVENTURER_SUPPORT_GENRE_BATCH.filter(({ diversity }) => diversity?.combat === 'POSSIBLE');
     for (const scenario of combatScenarios) {
