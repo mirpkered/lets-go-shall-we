@@ -208,6 +208,21 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(scenario.scenes.finish.choices.map(({ id }) => id)).toEqual(['takePartial', 'givePrizeAway']);
   });
 
+  it('keeps The Long Carry winner’s frame on the explicitly confirmed win route', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-long-carry')!;
+    let careful = act(begin(scenario), scenario, 'balanceBeam');
+    careful = act(careful, scenario, 'keepEven');
+    expect(careful.run?.sceneId).toBe('finish');
+    expect(scenario.scenes.finish.choices.map(({ id }) => id)).toEqual(['takeThreeCoins', 'declinePurse']);
+    expect(careful.run?.inventory).not.toContain('packFrame');
+
+    let winner = act(begin(scenario), scenario, 'balanceBeam');
+    winner = act(winner, scenario, 'pushHard', () => 0);
+    expect(winner.run?.sceneId).toBe('won');
+    winner = act(winner, scenario, 'takeWonFrame');
+    expect(winner.run?.inventory).toContain('packFrame');
+  });
+
   it('routes every authored Gear prize through the canonical run inventory grant', () => {
     for (const scenario of COMPETITION_GEAR_GENRE_BATCH) for (const [sceneId, scene] of Object.entries(scenario.scenes)) {
       for (const choice of scene.choices.filter(({ effects }) => effects?.gainItems?.some((id) => ITEMS[id]?.inventoryClass === 'GEAR'))) {
