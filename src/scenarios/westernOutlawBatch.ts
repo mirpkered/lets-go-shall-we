@@ -129,20 +129,20 @@ export const THE_BOUNTY_POSTER = W('the-bounty-poster', 'The Bounty Poster', 'A 
   ]),
   roadside: scene('roadside', 'Tomas by the Fence', 'Tomas says the rancher lent him the mare to carry a sick child, then changed his mind after she returned. He can name the child’s household. The poster offers payment for capture, not for asking questions.', [
     { id: 'askHousehold', label: 'Check the child’s household account', next: 'witness' },
-    { id: 'tellTomasLeave', label: 'Tell Tomas to settle it with the rancher', next: 'rancherWait' },
+    { id: 'tellTomasLeave', label: 'Tell Tomas to take his account to the rancher', next: 'rancherWait' },
     { id: 'takeTomas', label: 'Bring Tomas to the livery for questioning', next: 'livery', effects: { setFlags: ['bountyTomasHeld'] } },
   ]),
   livery: scene('livery', 'The Mare at the Rail', 'The bay mare is in a stall with a fresh blanket, but the brand is hidden beneath the mane. The keeper says both men handled the horse this morning and cannot say who owns it.', [
-    { id: 'liveryBrand', label: 'Ask the rancher to show the mare’s mark', next: 'witness' },
+    { id: 'liveryBrand', label: 'Ask the child’s household whether Tomas had permission', next: 'witness' },
     { id: 'liveryNoClaim', label: 'Leave the horse and decline the bounty', next: 'leave' },
   ]),
   witness: scene('witness', 'A Household Remembers', 'The child’s family confirms Tomas brought the mare to carry the child during the night. The rancher had lent her but expected her before dawn. The charge may have grown from a missed return, not a theft.', [
     { id: 'witnessTellRancher', label: 'Tell the rancher the full account', next: 'rancherWait', effects: { knowledge: ['Tomas used the bay mare to carry a sick child with the rancher’s permission; the dispute was over the late return.'] } },
     { id: 'witnessKeepQuiet', label: 'Leave the bounty unclaimed', next: 'leave' },
   ]),
-  rancherWait: scene('rancherWait', 'The Poster Comes Down', 'The rancher hears the account and withdraws the theft claim, though he still wants the mare returned earlier next time. The reward is not paid. Tomas agrees to mend the stable fence as repayment for the delay.', [{ id: 'bountyClose', label: 'Leave them to settle the fence work', next: 'settled' }]),
+  rancherWait: scene('rancherWait', 'The Poster Comes Down', 'The theft claim is withdrawn. The exact return time remains unsettled, and no bounty is due.', [{ id: 'bountyClose', label: 'Leave the remaining arrangements to them', next: 'settled' }]),
   leave: end('leave', 'No Reward Claimed', 'You leave without turning a resemblance or a poster into proof. Tomas’s status remains uncertain to you; the rancher and teacher may still disagree about the mare.'),
-  settled: end('settled', 'A Claim Corrected', 'No bounty changes hands. The horse returns to the ranch, the child’s family keeps its privacy, and the traveler’s account helped replace an accusation with a practical debt.'),
+  settled: end('settled', 'A Claim Corrected', 'No bounty changes hands. The rancher withdraws the theft claim, but the livery account does not settle the mare’s next handling or the exact return time. Any further arrangements remain between the people involved.'),
 }, 'notice');
 
 export const THE_EMPTY_JAIL = W('the-empty-jail', 'The Empty Jail', 'A jailer leaves you beside one prisoner and fails to return.', 'crime/tension', 'HIGH', 'A prisoner’s account, an empty cell, and a possibly corrupt jailer make restraint costly and uncertain.', {

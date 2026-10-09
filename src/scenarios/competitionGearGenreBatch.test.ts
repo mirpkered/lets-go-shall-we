@@ -182,8 +182,47 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     let runnerUp = act(begin(scenario), scenario, 'learnKnot');
     runnerUp = act(runnerUp, scenario, 'finishLift', () => 0.99);
     expect(runnerUp.run?.sceneId).toBe('loss');
-    expect(scenario.scenes.loss.choices.map(({ id }) => id)).toEqual(['claimLateCoin', 'learnInstead']);
+    expect(scenario.scenes.loss.choices.map(({ id }) => id)).toEqual(['claimLateCoin', 'declineLateCoin']);
     expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'claimClamp')!.requirements, runnerUp)).toBe(false);
+  });
+
+  it('retains the bowline lesson from the chosen method independently of prize or purse', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-knot-before-the-bell')!;
+    const bowline = 'A bowline held the contest barrel securely when the standing line was inspected before loading.';
+    const clamp = begin(scenario);
+    expect(act(clamp, scenario, 'learnKnot').character?.knowledge).toContain(bowline);
+    expect(act(clamp, scenario, 'useClamp').character?.knowledge).not.toContain(bowline);
+
+    let winner = act(clamp, scenario, 'learnKnot');
+    winner = act(winner, scenario, 'finishLift', () => 0);
+    const knowledgeBeforePrize = winner.character!.knowledge;
+    winner = act(winner, scenario, 'claimClamp');
+    expect(winner.character?.knowledge).toEqual(knowledgeBeforePrize);
+    expect(winner.run?.inventory).toContain('ironRopeClamp');
+
+    let runnerUp = act(clamp, scenario, 'learnKnot');
+    runnerUp = act(runnerUp, scenario, 'finishLift', () => 0.99);
+    const knowledgeBeforePurse = runnerUp.character!.knowledge;
+    runnerUp = act(runnerUp, scenario, 'claimLateCoin');
+    expect(runnerUp.character?.knowledge).toEqual(knowledgeBeforePurse);
+    expect(runnerUp.character?.money).toBe(6);
+  });
+
+  it('grants the lookout lesson when the extra movement is actually investigated, not as a prize alternative', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-lookout-at-dusk')!;
+    const lesson = 'A moving cloth outside a signal course may be a person in trouble, not part of the contest.';
+    let state = act(begin(scenario), scenario, 'nakedEye');
+    state = act(state, scenario, 'checkRidge');
+    expect(state.character?.knowledge).toContain(lesson);
+    expect(scenario.scenes.worker.choices.map(({ id }) => id)).toEqual(['takeGlasses', 'takeCoin', 'declineHelperFee']);
+    const beforeCompensation = state.character!.knowledge;
+    state = act(state, scenario, 'takeCoin');
+    expect(state.character?.knowledge).toEqual(beforeCompensation);
+    expect(state.character?.money).toBe(6);
+
+    let wind = act(begin(scenario), scenario, 'askSpotter');
+    wind = act(wind, scenario, 'checkRidgeFirst');
+    expect(wind.character?.knowledge).toContain(lesson);
   });
 
   it('keeps Hammer and Ribbon rewards tied to an established result', () => {

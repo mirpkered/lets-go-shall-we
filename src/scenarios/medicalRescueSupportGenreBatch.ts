@@ -10,6 +10,42 @@ type AidStory = {
   coins: number;
 };
 
+type AidLearningPlan =
+  | { classification: 'ROUTE_DEPENDENT'; assessmentChoices: readonly ('protect' | 'move' | 'signal' | 'useGear')[] }
+  | { classification: 'NOT_PERSISTENT_KNOWLEDGE'; assessmentChoices: readonly [] };
+
+/**
+ * A lesson is retained only when the Traveler chooses an action that actually
+ * demonstrates it. These are deliberately per-story: the shared scene shape
+ * does not mean every situation teaches the same way.
+ */
+export const MEDICAL_SUPPORT_LEARNING_PLANS: Record<string, AidLearningPlan> = {
+  'the-millwrights-hand': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','useGear'] },
+  'the-stonecutters-narrow-way': { classification:'ROUTE_DEPENDENT', assessmentChoices:['move','signal','useGear'] },
+  'lanterns-at-milepost-nine': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-roofers-breath': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-ferry-keepers-shoulder': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect'] },
+  'a-hand-under-the-wagon': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal'] },
+  'the-doctors-case-on-the-wrong-road': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-smoke-room-at-cedar-inn': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-quarry-call-below': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-frozen-post-road': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-mine-mouth-count': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-night-watchmans-lamp': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-signal-on-the-ridge': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-splintered-door-at-south-ward': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-collapsed-shed-door': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-rail-carriage-step': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-sickroom-at-red-hollow': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-trapper-at-the-culvert': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','useGear'] },
+  'the-sleeper-under-the-platform': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','useGear'] },
+  'the-farmers-daughter-at-the-icehouse': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-foggy-lane-to-the-doctor': { classification:'NOT_PERSISTENT_KNOWLEDGE', assessmentChoices:[] },
+  'the-camp-cook-with-the-burned-sleeve': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-dog-handler-at-the-switchback': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+  'the-evacuation-bell-at-pine-crossing': { classification:'ROUTE_DEPENDENT', assessmentChoices:['protect','move','signal','useGear'] },
+};
+
 const stories: AidStory[] = [
   {id:'the-millwrights-hand',title:'The Millwright’s Hand',site:'water-powered grist mill',risk:'MODERATE',patient:'the millwright',observed:'His palm is bleeding where a stopped gear pinched it; he is alert and can answer questions.',caregiver:'The mill owner has sent for the town doctor, who is several miles away.',complication:'The mill wheel is shut, but water is still pressing against the gate. The injured worker can sit under the awning while the miller watches the headrace.',protect:'Use the Field Bandage Roll to cover the visible cut, then keep his hand raised and still',move:'Walk him to the dry office with the miller beside him',signal:'Send a runner to the road junction for the doctor',stay:'Stay with the millwright while the miller manages the gate',transfer:'Ask the miller to take over care when the runner returns',abandon:'Return to the wheel house alone to secure the mill',lesson:'A clean wrap can cover a visible wound, but a hurt hand still needs a trained person to assess it.',tool:'fieldBandageRoll',toolAction:'Use your Field Bandage Roll on the visible cut',reward:'foremanMultiTool',rewardName:'Foreman’s Multi-tool',source:'Millwright Orra Vale releases her personally owned spare Foreman’s Multi-tool after you keep the injured worker clear of the stopped wheel.',coins:2},
   {id:'the-stonecutters-narrow-way',title:'The Stonecutter’s Narrow Way',site:'limestone quarry stair',risk:'HIGH',patient:'a stonecutter',observed:'A worker sits at the bottom of a short quarry stair, awake and holding one ankle still. Loose chips lie on the steps; you cannot tell whether the joint is badly hurt.',caregiver:'A quarry foreman is trained to organize the crew but is not a medical practitioner; the doctor is at the lower works.',complication:'The stair is the only direct route out. A broad shelf path takes longer but has a handrail and firm footing.',protect:'Clear loose chips and shade the worker while the foreman fetches help',move:'Use the Folding Field Stretcher with two quarry hands on the broad shelf path',signal:'Send the foreman down the marked stair for the doctor before anyone lifts',stay:'Keep the worker seated and have the foreman bring the doctor to the shelf',transfer:'Let the quarry hands carry the stretcher while you guide the turns',abandon:'Try to lower the stretcher down the loose stair without clearing it',lesson:'An injured person who can sit may still be harmed by a rushed carry; choose the route before lifting.',tool:'foldingFieldStretcher',toolAction:'Use the Folding Field Stretcher with two helpers on the broad path',reward:'canvasRescueSling',rewardName:'Canvas Rescue Sling',source:'The quarry’s rescue lead formally releases a spare, privately owned Canvas Rescue Sling after the crew returns its stretcher to the works.',coins:2},
@@ -38,6 +74,50 @@ const stories: AidStory[] = [
 ];
 
 const makeAid = (a: AidStory): Scenario => {
+  const learningPlan = MEDICAL_SUPPORT_LEARNING_PLANS[a.id];
+  if (!learningPlan) throw new Error(`Missing medical-support learning classification for ${a.id}`);
+  const actionFlag: Record<'protect' | 'move' | 'signal' | 'useGear', string> = {
+    protect: 'aid_protected',
+    move: 'aid_moved',
+    signal: 'aid_signaled',
+    useGear: 'aid_used_gear',
+  };
+  const qualifyingFlags = learningPlan.assessmentChoices.map((choiceId) => actionFlag[choiceId]);
+  const payoutChoices = (
+    id: string,
+    label: string,
+    next: string,
+    effects: NonNullable<Scenario['scenes'][string]['choices'][number]['effects']>,
+    requirements?: NonNullable<Scenario['scenes'][string]['choices'][number]['requirements']>,
+  ) => {
+    const learnedEffects = {
+      knowledge: [a.lesson],
+      setFlags: ['aid_took_lesson'],
+      historyFlags: [`batch14_aid_${a.id}`],
+    };
+    const eligible = qualifyingFlags.map((flag, index) => ({
+      id: `${id}Learned${index + 1}`,
+      label,
+      next,
+      requirements: { ...requirements, flags: [flag] },
+      effects: {
+        ...effects,
+        knowledge: [...(effects.knowledge ?? []), ...learnedEffects.knowledge],
+        setFlags: [...(effects.setFlags ?? []), ...learnedEffects.setFlags],
+        historyFlags: [...(effects.historyFlags ?? []), ...learnedEffects.historyFlags],
+      },
+    }));
+    return [
+      ...eligible,
+      {
+        id,
+        label,
+        next,
+        requirements: { ...requirements, ...(qualifyingFlags.length ? { notFlags: qualifyingFlags } : {}) },
+        effects,
+      },
+    ];
+  };
   const scenes: Record<string, Scene> = {
     assess: largeScene('assess', 'What You Can See', `${a.observed} ${a.caregiver} ${a.complication}`, [
       { id:'protect', label:a.protect, next:'decision', effects:{setFlags:['aid_protected']} },
@@ -45,30 +125,28 @@ const makeAid = (a: AidStory): Scenario => {
       { id:'signal', label:a.signal, ...(a.signalGear ? {requirements:{items:[a.signalGear],usableItems:[a.signalGear]}} : {}), next:'decision', effects:{setFlags:['aid_signaled']} },
       ...(a.tool && a.toolAction ? [{ id:'useGear', label:a.toolAction, next:'decision', requirements:{items:[a.tool],usableItems:[a.tool]}, effects:{setFlags:['aid_used_gear'], ...(a.tool==='fieldBandageRoll'?{loseItems:['fieldBandageRoll']}:{})} }] : []),
     ]),
-    decision: largeScene('decision', 'The Next Need', `${a.patient} is not suddenly worse, but the practical problem has changed: ${a.complication} You have time for one clear next step while help is arranged.`, [
+    decision: largeScene('decision', 'The Next Need', `You have handled the immediate support decision. Help is being arranged, and someone must stay with ${a.patient} while the next handoff is coordinated. Choose where you will be most useful.`, [
       {id:'stay',label:a.stay,next:'settle',effects:{setFlags:['aid_stayed']}},
       {id:'transfer',label:a.transfer,next:'settle',effects:{setFlags:['aid_transferred']}},
       {id:'abandon',label:a.abandon,next:'settle',effects:{setFlags:['aid_left_patient']}},
-    ], 'safe', [
-      {requirements:{flags:['aid_protected']},text:`Your first choice protects the immediate scene. ${a.complication}`},
-      {requirements:{flags:['aid_moved']},text:`The move is deliberate, with the route and the patient's stated comfort kept in view. ${a.complication}`},
-      {requirements:{flags:['aid_signaled']},text:`The signal gives the caregiver or helpers a clear way to find you; it does not replace their assessment. ${a.complication}`},
-      {requirements:{flags:['aid_used_gear']},text:`Your ${a.tool ? ITEMS[a.tool]?.name ?? 'equipment' : 'equipment'} supports this one task; it does not diagnose or cure the patient. ${a.complication}`},
-    ]),
+    ], 'safe'),
     settle: { ...largeScene('settle','Care Handed On',`${a.patient} is with a responsible person, or remains where you chose while help is on the way. You have not diagnosed the injury. The result is judged by whether the person stayed safer and the trained caregiver could reach them.`,[
-      {id:'learn',label:'Keep the practical lesson for future field work',next:'close',effects:{knowledge:[a.lesson],setFlags:['aid_took_lesson'],historyFlags:[`batch14_aid_${a.id}`]}},
-      {id:'wage',label:`Accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work`,next:'close',effects:{money:a.coins,setFlags:['aid_took_wage'],historyFlags:[`batch14_paid_${a.id}`]}},
-      ...(a.reward && a.rewardName && a.source ? [{id:'gear',label:`Accept the released ${a.rewardName} as practical compensation`,next:'close',requirements:{notOwnedItems:[a.reward]},effects:{gainItems:[a.reward],gainItemProvenance:{[a.reward]:a.source},setFlags:['aid_took_gear'],historyFlags:[`batch14_gear_${a.id}`]}}] : []),
+      ...payoutChoices('wage',`Accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work`,'close',{money:a.coins,setFlags:['aid_took_wage'],historyFlags:[`batch14_paid_${a.id}`]}),
+      ...(a.reward && a.rewardName && a.source ? payoutChoices('gear',`Accept the released ${a.rewardName} as practical compensation`,'close',{gainItems:[a.reward],gainItemProvenance:{[a.reward]:a.source},setFlags:['aid_took_gear'],historyFlags:[`batch14_gear_${a.id}`]},{notOwnedItems:[a.reward]}) : []),
+      ...payoutChoices('decline','Decline material compensation','close',{setFlags:['aid_declined_compensation']}),
     ]),textVariants:[
-      {requirements:{flags:['aid_stayed']},text:`You stayed with ${a.patient} while the next helper took the other task. ${a.lesson}`},
-      {requirements:{flags:['aid_transferred']},text:`The handoff is explicit: someone remains with ${a.patient}, and the next helper knows where to go. ${a.lesson}`},
-      {requirements:{flags:['aid_left_patient']},text:`Leaving the patient alone cost time and trust; a helper had to return before care could continue. No new injury is assumed, but the response was slower. ${a.lesson}`},
-      {requirements:{flags:['aid_used_gear']},text:`Your equipment helped with the task you chose, while the limits of that tool remained clear. ${a.lesson}`},
+      {requirements:{flags:['aid_stayed']},text:`You stayed with ${a.patient} while the next helper took the other task.`},
+      {requirements:{flags:['aid_transferred']},text:`The handoff is explicit: someone remains with ${a.patient}, and the next helper knows where to go.`},
+      {requirements:{flags:['aid_used_gear']},text:`Your equipment helped with the task you chose; it did not diagnose or cure the patient.`},
     ]},
     close: {...largeScene('close','Support Accounted For',`${a.patient} remains with the responsible caregiver; your help made a safer wait or handoff possible.`,[], 'safe',[
-      {requirements:{flags:['aid_took_lesson']},text:`You keep the practical lesson: ${a.lesson}`},
-      {requirements:{flags:['aid_took_wage']},text:`You accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work. ${a.lesson}`},
-      {requirements:{flags:['aid_took_gear']},text:`${a.source} You take the ${a.rewardName}; it helps with practical support but does not replace trained care.`},
+      {requirements:{flags:['aid_took_lesson','aid_took_wage']},text:`You accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work. The reusable method you demonstrated remains learned: ${a.lesson}`},
+      {requirements:{flags:['aid_took_lesson','aid_took_gear']},text:`${a.source} You take the ${a.rewardName}; the reusable method you demonstrated remains learned: ${a.lesson}`},
+      {requirements:{flags:['aid_took_lesson','aid_declined_compensation']},text:`You decline material compensation. The reusable method you demonstrated remains learned: ${a.lesson}`},
+      {requirements:{flags:['aid_took_wage'],notFlags:['aid_took_lesson']},text:`You accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work.`},
+      {requirements:{flags:['aid_took_gear'],notFlags:['aid_took_lesson']},text:`${a.source} You take the ${a.rewardName}; it helps with practical support but does not replace trained care.`},
+      {requirements:{flags:['aid_declined_compensation','aid_took_lesson'],notFlags:['aid_took_wage','aid_took_gear']},text:`You decline material compensation. The handoff is complete, with the patient left to trained care.`},
+      {requirements:{flags:['aid_declined_compensation'],notFlags:['aid_took_lesson','aid_took_wage','aid_took_gear']},text:`You decline material compensation. The handoff is complete, with the patient left to trained care.`},
     ]),ending:'success'},
   };
   const diversity=largeTags({hook:`${a.patient} needs practical support at ${a.site}: ${a.observed}`,role:'helper/rescuer',activity:'rescue/care',tone:a.risk==='LOW'?'warm/hopeful':'tense/dangerous',risk:a.risk,setting:a.site,combat:'NONE',structures:['multi-stage patient support','clear handoff or transport decision','patient state acknowledged at ending'],entry:['accidental encounter','hired/posted work'],rewards:['Gear','coins','Knowledge','narrative-only payoff'],outcomes:['success/partial success','walk-away/refusal','costly success/no-perfect-outcome possible']});
