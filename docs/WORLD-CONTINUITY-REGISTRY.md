@@ -63,7 +63,7 @@ Character-history flags are behavior records, not scores. The lists in source ar
 
 ## World events and current callback cautions
 
-- Last Light at Miller’s Crossing records `searched_for_missing_traveler`. Its current history-conditioned opening uses the phrase “reputation for careful searches,” which is broader than the specific flag supports. If that scene is next revised, prefer a modest report that someone heard about that particular earlier search; do not imply fame or success.
+- Last Light at Miller’s Crossing records `searched_for_missing_traveler`. Its history-conditioned opening is a first-person memory of the Traveler’s own earlier search, not public reputation or proof of success. Keep that callback personal and specific if the scene is revised.
 - The scenarios include recurring motifs and narrowly supernatural item reactions, but no mandatory chronology or global event plot. Keep each adventure understandable if it is the player’s first.
 - No other public event is promoted here to region-wide news without checking how many people witnessed it and how word could travel.
 

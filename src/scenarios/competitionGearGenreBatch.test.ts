@@ -267,6 +267,50 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(winner.run?.inventory).toContain('packFrame');
   });
 
+  it('awards the Fair-Weather cloak only after a forecast meets the posted two-hour test', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-fair-weather-reading')!;
+
+    let qualified = begin(scenario);
+    qualified = act(qualified, scenario, 'readRidge');
+    qualified = act(qualified, scenario, 'forecastRainWindow');
+    expect(qualified.run?.flags).toContain('fair_weather_forecast_qualified');
+    const qualifiedRewards = scenario.scenes.score.choices.filter((choice) => meets(choice.requirements, qualified));
+    expect(qualifiedRewards.map(({ id }) => id)).toEqual(['takeCloak', 'takeCoin', 'declinePrize']);
+    qualified = act(qualified, scenario, 'takeCloak');
+    expect(qualified.run?.inventory).toContain('weatherproofCloak');
+    expect(qualified.run?.acquiredThisRun).toContain('weatherproofCloak');
+    expect(qualified.run?.sceneId).toBe('prize');
+
+    let missed = begin(scenario);
+    missed = act(missed, scenario, 'studyFlags');
+    missed = act(missed, scenario, 'forecastRainLater');
+    const missedRewards = scenario.scenes.noPrizeScore.choices.filter((choice) => meets(choice.requirements, missed));
+    expect(missedRewards.map(({ id }) => id)).toEqual(['takeCoinAfterMiss', 'declineAfterMiss']);
+    missed = act(missed, scenario, 'takeCoinAfterMiss');
+    expect(missed.character?.money).toBe(6);
+    expect(missed.run?.inventory).not.toContain('weatherproofCloak');
+
+    let declined = begin(scenario);
+    declined = act(declined, scenario, 'readRidge');
+    declined = act(declined, scenario, 'forecastRainWindow');
+    declined = act(declined, scenario, 'declinePrize');
+    expect(declined.character?.money).toBe(5);
+    expect(declined.run?.inventory).not.toContain('weatherproofCloak');
+    expect(declined.run?.sceneId).toBe('declined');
+  });
+
+  it('keeps legacy saves at the old Fair-Weather result scene playable without inventing a qualifying forecast', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-fair-weather-reading')!;
+    const legacy = begin(scenario);
+    legacy.run!.sceneId = 'score';
+    const available = scenario.scenes.score.choices.filter((choice) => meets(choice.requirements, legacy));
+    expect(available.map(({ id }) => id)).toEqual(['takeCoin', 'declinePrize']);
+    expect(scenario.scenes.score.textVariants?.some(({ text }) => /saved run has no recorded forecast result/i.test(text))).toBe(true);
+    const continued = act(legacy, scenario, 'takeCoin');
+    expect(continued.character?.money).toBe(6);
+    expect(continued.run?.inventory).not.toContain('weatherproofCloak');
+  });
+
   it('routes every authored Gear prize through the canonical run inventory grant', () => {
     for (const scenario of COMPETITION_GEAR_GENRE_BATCH) for (const [sceneId, scene] of Object.entries(scenario.scenes)) {
       for (const choice of scene.choices.filter(({ effects }) => effects?.gainItems?.some((id) => ITEMS[id]?.inventoryClass === 'GEAR'))) {
