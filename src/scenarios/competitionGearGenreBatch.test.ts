@@ -113,6 +113,95 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(JSON.stringify(state.itemStates?.carpenterSquare?.provenance)).toContain('Awarded by carpenter Willa');
   });
 
+  it('preserves approach, placement, and exclusive prize tiers in The Load on the Siding', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-load-on-the-siding')!;
+    let low = act(begin(scenario), scenario, 'strapLow');
+    expect(low.run?.flags).toContain('siding_strap_low');
+    expect(low.run?.flags).not.toContain('siding_strap_high');
+    expect(meets(scenario.scenes.roll.choices.find(({ id }) => id === 'continueLow')!.requirements, low)).toBe(true);
+    expect(meets(scenario.scenes.roll.choices.find(({ id }) => id === 'keepRolling')!.requirements, low)).toBe(false);
+    low = act(low, scenario, 'continueLow');
+    expect(low.run?.flags).toContain('siding_trial_winner');
+    expect(scenario.scenes.result.choices.map(({ id }) => id)).toEqual(['takeStrap', 'declineWinnerPrize']);
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, low)).toBe(true);
+    low = act(low, scenario, 'takeStrap');
+    expect(low.run?.inventory).toContain('freightmansStrap');
+
+    let high = act(begin(scenario), scenario, 'strapHigh');
+    expect(high.run?.flags).toContain('siding_strap_high');
+    expect(meets(scenario.scenes.roll.choices.find(({ id }) => id === 'keepRolling')!.requirements, high)).toBe(true);
+    high = JSON.parse(JSON.stringify(high)) as SaveData;
+    expect(high.run?.flags).toContain('siding_strap_high');
+    high = act(high, scenario, 'keepRolling', () => 0);
+    expect(high.run?.sceneId).toBe('fast');
+    expect(high.run?.flags).toContain('siding_trial_runner_up');
+    expect(scenario.scenes.fast.choices.map(({ id }) => id)).toEqual(['acceptRunnerUp', 'declineRunnerUp']);
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, high)).toBe(false);
+    high = act(high, scenario, 'acceptRunnerUp');
+    expect(high.character?.money).toBe(7);
+    expect(high.run?.inventory).not.toContain('freightmansStrap');
+
+    const lost = act(act(begin(scenario), scenario, 'strapHigh'), scenario, 'keepRolling', () => 0.99);
+    expect(lost.run?.sceneId).toBe('spill');
+    expect(lost.run?.flags).toContain('siding_trial_lost');
+  });
+
+  it('keeps the siding rail-inspection and disqualification routes distinct and unrewarded', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-load-on-the-siding')!;
+    let state = act(begin(scenario), scenario, 'inspectCart');
+    state = act(state, scenario, 'straightenStop');
+    expect(state.run?.sceneId).toBe('load');
+    state = act(state, scenario, 'loadHigh');
+    expect(state.run?.flags).toContain('siding_strap_high');
+    state = act(state, scenario, 'steadyCart');
+    expect(state.run?.flags).toContain('siding_trial_winner');
+    expect(state.run?.flags).toContain('siding_load_recentered');
+
+    let withdrawn = act(begin(scenario), scenario, 'strapLow');
+    withdrawn = act(withdrawn, scenario, 'callSafeStop');
+    expect(withdrawn.run?.sceneId).toBe('stopped');
+    expect(withdrawn.run?.flags).toContain('siding_trial_disqualified');
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, withdrawn)).toBe(false);
+  });
+
+  it('does not show the runner-up purse on a winning Knot before the Bell route', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-knot-before-the-bell')!;
+    let winner = act(begin(scenario), scenario, 'learnKnot');
+    winner = act(winner, scenario, 'finishLift', () => 0);
+    expect(winner.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.choices.map(({ id }) => id)).toEqual(['claimClamp', 'decline']);
+    winner = act(winner, scenario, 'claimClamp');
+    expect(winner.run?.inventory).toContain('ironRopeClamp');
+
+    let runnerUp = act(begin(scenario), scenario, 'learnKnot');
+    runnerUp = act(runnerUp, scenario, 'finishLift', () => 0.99);
+    expect(runnerUp.run?.sceneId).toBe('loss');
+    expect(scenario.scenes.loss.choices.map(({ id }) => id)).toEqual(['claimLateCoin', 'learnInstead']);
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'claimClamp')!.requirements, runnerUp)).toBe(false);
+  });
+
+  it('keeps Dry Crossing blanket awards exclusive to dry finishes', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-dry-crossing-race')!;
+    let dry = act(begin(scenario), scenario, 'studyCurrent');
+    dry = act(dry, scenario, 'safeLine');
+    expect(dry.run?.sceneId).toBe('safeFinish');
+    expect(scenario.scenes.safeFinish.text).toContain('sacks arrive dry');
+    dry = act(dry, scenario, 'takeDryBlanket');
+    expect(dry.run?.inventory).toContain('weatherproofBlanket');
+
+    let wet = act(begin(scenario), scenario, 'studyCurrent');
+    wet = act(wet, scenario, 'quickLine', () => 0.99);
+    expect(wet.run?.sceneId).toBe('wetFinish');
+    expect(wet.run?.inventory).not.toContain('weatherproofBlanket');
+    expect(wet.run?.sceneId).not.toBe('blanket');
+
+    let damp = act(begin(scenario), scenario, 'strapSacks');
+    damp = act(damp, scenario, 'rushLoad', () => 0.99);
+    expect(damp.run?.sceneId).toBe('finish');
+    expect(damp.run?.inventory).not.toContain('weatherproofBlanket');
+    expect(scenario.scenes.finish.choices.map(({ id }) => id)).toEqual(['takePartial', 'givePrizeAway']);
+  });
+
   it('routes every authored Gear prize through the canonical run inventory grant', () => {
     for (const scenario of COMPETITION_GEAR_GENRE_BATCH) for (const [sceneId, scene] of Object.entries(scenario.scenes)) {
       for (const choice of scene.choices.filter(({ effects }) => effects?.gainItems?.some((id) => ITEMS[id]?.inventoryClass === 'GEAR'))) {
