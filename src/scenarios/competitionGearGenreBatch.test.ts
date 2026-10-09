@@ -124,6 +124,9 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(low.run?.flags).toContain('siding_trial_winner');
     expect(scenario.scenes.result.choices.map(({ id }) => id)).toEqual(['takeStrap', 'declineWinnerPrize']);
     expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, low)).toBe(true);
+    const legacyWinnerSave = begin(scenario);
+    legacyWinnerSave.run!.sceneId = 'result';
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, legacyWinnerSave)).toBe(true);
     low = act(low, scenario, 'takeStrap');
     expect(low.run?.inventory).toContain('freightmansStrap');
 
@@ -137,6 +140,9 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(high.run?.flags).toContain('siding_trial_runner_up');
     expect(scenario.scenes.fast.choices.map(({ id }) => id)).toEqual(['acceptRunnerUp', 'declineRunnerUp']);
     expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'takeStrap')!.requirements, high)).toBe(false);
+    const legacyRunnerUpSave = begin(scenario);
+    legacyRunnerUpSave.run!.sceneId = 'fast';
+    expect(meets(scenario.scenes.fast.choices[0].requirements, legacyRunnerUpSave)).toBe(true);
     high = act(high, scenario, 'acceptRunnerUp');
     expect(high.character?.money).toBe(7);
     expect(high.run?.inventory).not.toContain('freightmansStrap');
