@@ -66,6 +66,16 @@ describe('Medical / Rescue Support / Evacuation genre batch',()=>{
       if(lesson) expect(declined.character!.knowledge).toContain(lesson);
       else expect(declined.character!.knowledge).toEqual(state.character!.knowledge);
 
+      if(qualifies){
+        const nonLearningChoice=scenario.scenes.assess.choices.find(({id})=>!plan.assessmentChoices.some((action)=>action===id));
+        if(nonLearningChoice){
+          let nonLearner=act(fresh(scenario,nonLearningChoice.requirements?.items?.[0]),scenario,nonLearningChoice.id);
+          nonLearner=act(nonLearner,scenario,'stay');
+          const noKnowledge=actPayout(nonLearner,scenario,'wage');
+          expect(noKnowledge.character!.knowledge).toEqual(nonLearner.character!.knowledge);
+        }
+      }
+
       const gear= scenario.scenes.settle.choices.find(({id})=>id==='gear'||id.startsWith('gearLearned'));
       if(gear){
         const gearChoice= scenario.scenes.settle.choices.find(({id})=>(id==='gear'||id.startsWith('gearLearned'))&&meets(scenario.scenes.settle.choices.find((candidate)=>candidate.id===id)!.requirements,state));
@@ -141,6 +151,13 @@ describe('Medical / Rescue Support / Evacuation genre batch',()=>{
     const declined=actPayout(state,mill,'decline');
     expect(declined.character!.knowledge).toContain(mill.scenes.settle.choices.find(({id})=>id.startsWith('wageLearned'))!.effects!.knowledge![0]);
     expect(declined.character!.money).toBe(base);
+
+    const storage={value:'',setItem(_key:string,value:string){this.value=value;},getItem(_key:string){return this.value;}};
+    const saved=act(act(fresh(mill,'fieldBandageRoll'),mill,'useGear'),mill,'stay');
+    saveGame(saved,storage as never);
+    const resumed=loadSave(storage as never);
+    const resumedPaid=actPayout(resumed,mill,'wage');
+    expect(resumedPaid.character!.knowledge).toContain(mill.scenes.settle.choices.find(({id})=>id.startsWith('wageLearned'))!.effects!.knowledge![0]);
   });
 
   it('uses the Canvas Rescue Sling as a limited support option and preserves it through save/resume',()=>{
