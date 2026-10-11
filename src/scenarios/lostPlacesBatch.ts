@@ -91,10 +91,10 @@ export const THE_OLD_SURVEY_STONE = E('the-old-survey-stone', 'The Old Survey St
     { id: 'surveyShare', label: 'Give both neighbors the same account', next: 'resolved', effects: { knowledge: ['An older survey includes the orchard lane; the later fence shift is not shown on the available copy.'] } },
     { id: 'surveyCounty', label: 'Recommend checking the county deed', next: 'record' },
   ]),
-  record: scene('record', 'The County Entry', 'The county book shows the mill parcel kept a right to use the lane, but not ownership of the orchard. The calf is found inside the orchard fence; the boundary remains shared in practice until the neighbors agree on a gate.', [{ id: 'recordTell', label: 'Return the calf and read the entry aloud', next: 'resolved', effects: { historyFlags: ['found an old shared lane in a boundary record'] } }]),
-  calf: scene('calf', 'A Calf in the Orchard', 'The calf stands under a bare apple tree with no injury. The orchard gate can be opened from this side. The old lane reaches the gate, but the boundary itself remains disputed.', [{ id: 'calfReturn', label: 'Lead the calf back through the open gate', next: 'resolved' }]),
-  resolved: scene('resolved', 'A Gate instead of a Verdict', 'The neighbors agree to leave the orchard gate unlatched for the calf and to check the county deed before moving the fence. Neither yields the land claim; the animal is home, and the lane stays passable for now.', [{ id: 'surveyEnd', label: 'Leave the boundary in their hands', next: 'settled' }]),
-  settled: end('settled', 'The Line Still Needs a Deed', 'The old stone changes the discussion but cannot establish the later fence shift by itself. The calf is returned and the lane remains usable while the neighbors seek the original record.'),
+  record: scene('record', 'The County Entry', 'The county book shows the mill parcel kept a right to use the lane, but not ownership of the orchard. The calf is found inside the orchard fence; the boundary remains shared in practice until the neighbors agree on a gate.', [{ id: 'recordTell', label: 'Return the calf and read the entry aloud', next: 'resolved', effects: { setFlags: ['oldSurveyCalfReturned'], historyFlags: ['found an old shared lane in a boundary record'] } }]),
+  calf: scene('calf', 'A Calf in the Orchard', 'The calf stands under a bare apple tree with no injury. The orchard gate can be opened from this side. The old lane reaches the gate, but the boundary itself remains disputed.', [{ id: 'calfReturn', label: 'Lead the calf back through the open gate', next: 'resolved', effects: { setFlags: ['oldSurveyCalfReturned'] } }]),
+  resolved: scene('resolved', 'A Gate instead of a Verdict', 'The neighbors agree to leave the orchard gate unlatched while they check the county deed before moving the fence. Neither yields the land claim; the animal’s whereabouts remain as established by your route.', [{ id: 'surveyEnd', label: 'Leave the boundary in their hands', next: 'settled' }], 'safe', [{ requirements: { flags: ['oldSurveyCalfReturned'] }, text: 'The neighbors agree to leave the orchard gate unlatched for the calf and to check the county deed before moving the fence. Neither yields the land claim; the calf is home, and the lane stays passable for now.' }]),
+  settled: { ...end('settled', 'The Line Still Needs a Deed', 'The old stone changes the discussion but cannot establish the later fence shift by itself. The lane remains usable while the neighbors seek the original record.'), textVariants: [{ requirements: { flags: ['oldSurveyCalfReturned'] }, text: 'The old stone changes the discussion but cannot establish the later fence shift by itself. The calf is returned and the lane remains usable while the neighbors seek the original record.' }] },
   leave: end('leave', 'Only the Calf', 'You leave the boundary argument untouched. The calf may be found by someone else; the old survey stone remains beyond the fence.'),
 }, 'fence', 'orchard and boundary');
 
@@ -111,24 +111,29 @@ export const THE_SEALED_MINE_OFFICE = E('the-sealed-mine-office', 'The Sealed Mi
   ]),
   notice: scene('notice', 'The Notice Names a Flood', 'The closure notice cites a flooded lower drift and unpaid wages. It orders the office sealed pending an account review. It does not say anyone was trapped.', [
     { id: 'noticeAsk', label: 'Take the notice to the owner’s daughter', next: 'permission' },
-    { id: 'noticeCopy', label: 'Copy the date and leave', next: 'discovery', effects: { knowledge: ['The mine office was sealed during a payroll review after a lower drift flooded; no entrapment was reported.'] } },
+    { id: 'noticeCopy', label: 'Copy the date and leave', next: 'discovery', effects: { setFlags: ['mineOfficeNoticeRead'], knowledge: ['The mine office was sealed during a payroll review after a lower drift flooded; no entrapment was reported.'] } },
   ]),
   window: scene('window', 'Papers on the Desk', 'From the open shutter you can see a ledger on the desk and a map pinned to the wall. The sill is sound, but entering through it would damage the shutter and cross a room you do not own.', [
     { id: 'windowAsk', label: 'Ask permission before entering', next: 'permission' },
     { id: 'windowLeave', label: 'Copy only the map title from outside', next: 'discovery' },
   ]),
   inside: scene('inside', 'The Office Kept Dry', 'The ledger is dry and the map shows two old surface routes, one now hidden under brush. A drawer is locked; the daughter says it may contain private wage accounts. The map is already enough to locate the old drainage channel.', [
-    { id: 'copyMap', label: 'Copy the surface route and close the book', next: 'discovery', effects: { knowledge: ['The old mine office map marks a surface drainage channel separate from the flooded lower drift.'] } },
+    { id: 'copyMap', label: 'Copy the surface route and close the book', next: 'discovery', effects: { setFlags: ['mineOfficeMapCopied'], knowledge: ['The old mine office map marks a surface drainage channel separate from the flooded lower drift.'] } },
     { id: 'openDrawer', label: 'Ask the daughter to open the wage drawer', next: 'records' },
     { id: 'checkCut', label: 'Follow the map toward the drainage cut', next: 'drain' },
   ]),
-  records: scene('records', 'The Wages Were Paid Late', 'The daughter opens the drawer herself. The wage book shows payments made two weeks late after the flood, and a list of miners who transferred to another claim. Nothing records a missing worker.', [{ id: 'recordShare', label: 'Return the ledger to the family', next: 'discovery', effects: { historyFlags: ['helped recover a family wage ledger from a sealed mine office'] } }]),
+  records: scene('records', 'The Wages Were Paid Late', 'The daughter opens the drawer herself. The wage book shows payments made two weeks late after the flood, and a list of miners who transferred to another claim. Nothing records a missing worker.', [{ id: 'recordShare', label: 'Return the ledger to the family', next: 'discovery', effects: { setFlags: ['mineOfficeWageLedgerRead'], historyFlags: ['helped recover a family wage ledger from a sealed mine office'] } }]),
   drain: scene('drain', 'The Surface Channel', 'The map’s channel ends at a dry culvert outside the mine. It diverted rain away from the office and never entered the lower workings. A stone marker dates the work; no treasure or secret tunnel lies beyond it.', [
-    { id: 'drainMeasure', label: 'Measure the outlet for the owner', next: 'discovery', effects: { knowledge: ['The sealed office map’s drainage route ends at a surface culvert and does not enter the mine.'] } },
+    { id: 'drainMeasure', label: 'Measure the outlet for the owner', next: 'discovery', effects: { setFlags: ['mineOfficeDrainChecked'], knowledge: ['The sealed office map’s drainage route ends at a surface culvert and does not enter the mine.'] } },
     { id: 'drainEnter', label: 'Climb into the narrow culvert', hint: 'The passage is not a mine entrance and may trap you.', chance: { probability: 0.48, successNext: 'discovery', failureNext: 'culvertInjury', successMessage: 'You reach the outlet bend and find only old water marks.', failureMessage: 'Loose stones jam the narrow return.', failureEffects: { health: -2 } } },
   ], 'warning'),
   culvertInjury: scene('culvertInjury', 'A Narrow Return', 'You wriggle free with a scraped shoulder. The culvert is a drainage outlet, not a safe passage; the owner’s daughter will have it checked before the next rain.', [{ id: 'culvertLeave', label: 'Return the key and leave', next: 'discovery', effects: { health: -1 } }], 'warning'),
-  discovery: end('discovery', 'Records, Not a Hidden Mine', 'The office explains the sealing: a flooded lower drift, late wages, and a move to another claim. The surviving map and ledger belong to the family; you leave with permission-based knowledge, not an unexplained hoard.'),
+  discovery: { ...end('discovery', 'Records, Not a Hidden Mine', 'You leave the office grounds with only the information established on your route; the family’s records remain theirs.'), textVariants: [
+    { requirements: { flags: ['mineOfficeWageLedgerRead'] }, text: 'The wage book shows payments made late after the flood and miners transferred to another claim; it records no missing worker. The ledger remains the family’s property.' },
+    { requirements: { flags: ['mineOfficeNoticeRead'] }, text: 'The closure notice cites a flooded lower drift and unpaid wages, but does not say anyone was trapped. Your copy establishes no later wage payment or transfer.' },
+    { requirements: { flags: ['mineOfficeMapCopied'] }, text: 'The office map marks a surface drainage route separate from the flooded lower drift. The map and ledger remain the family’s property.' },
+    { requirements: { flags: ['mineOfficeDrainChecked'] }, text: 'The mapped channel ends at a dry surface culvert and does not enter the lower workings. The family’s wage records remain unexamined.' },
+  ] },
   leave: end('leave', 'Boards Left in Place', 'You leave the office sealed. The notice records a flood and payroll review; no rescue is waiting underground.'),
 }, 'porch', 'abandoned mine surface');
 
@@ -246,7 +251,7 @@ export const THE_CAVE_WITH_WORKED_STONE = E('the-cave-with-worked-stone', 'The C
     { id: 'cutUnder', label: 'Crawl beneath the low arch', next: 'passage' },
   ]),
   passage: scene('passage', 'Beyond the Low Arch', 'The passage slopes to a small chamber with a dry storage niche and a second opening above the creek. A stone brace has cracked; grit falls from it when the wind moves outside. The exit back is still clear.', [
-    { id: 'chamberNiche', label: 'Inspect the storage niche', next: 'niche' },
+    { id: 'chamberNiche', label: 'Inspect the storage niche', next: 'niche', effects: { setFlags: ['workedStoneNicheSeen'] } },
     { id: 'chamberUpper', label: 'Look toward the creek opening', next: 'upper' },
     { id: 'chamberLeave', label: 'Turn back before the brace shifts', next: 'discovery' },
   ], 'warning'),
@@ -260,7 +265,7 @@ export const THE_CAVE_WITH_WORKED_STONE = E('the-cave-with-worked-stone', 'The C
   ], 'warning'),
   braceSlip: scene('braceSlip', 'The Brace Moves', 'Stone shifts and partly blocks the niche. You retreat toward the entrance with a scraped shoulder; the upper opening is still visible but no longer safe to reach from here.', [{ id: 'braceBack', label: 'Follow your marks out of the cave', next: 'discovery', effects: { health: -1 } }], 'danger'),
   climbInjury: scene('climbInjury', 'A Hard Landing', 'You reach the creek bank with a bruised ankle. The worked passage remains above you; the entrance route can no longer be seen from the thicket, but the daylight direction leads back downstream.', [{ id: 'climbGo', label: 'Follow the creek back to the road', next: 'discovery', effects: { health: -1 } }], 'warning'),
-  discovery: end('discovery', 'A Quarry Crew’s Passage', 'The tool marks and drill suggest a quarry crew cut the passage, though its later use is unknown. You leave with a location and an honest uncertainty, not a treasure claim.'),
+  discovery: { ...end('discovery', 'A Worked Passage, Purpose Unknown', 'The straight cut shows human work, but the passage’s purpose and later use remain unknown. You leave with an honest uncertainty, not a treasure claim.'), textVariants: [{ requirements: { flags: ['workedStoneNicheSeen'] }, text: 'The broken hand drill’s maker’s stamp matches a local quarry mark, suggesting a quarry crew used the passage. Its later use remains unknown; you leave with an honest uncertainty, not a treasure claim.' }] },
   leave: end('leave', 'The Mark at the Entrance', 'You mark the cave mouth and continue. The worked line remains a clue for another day; there was no need to cross it to leave safely.'),
 }, 'mouth', 'limestone cave', ['threshold exploration', 'optional secondary exit', 'retreat before deeper hazard']);
 
@@ -285,12 +290,17 @@ export const THE_LOST_PAYROLL = E('the-lost-payroll', 'The Lost Payroll', 'A fad
     { id: 'rivalsDig', label: 'Dig where the map marks the trench', hint: 'The embankment is loose and the mark may be a drain.', next: 'trench' },
   ]),
   trench: scene('trench', 'Water, Not a Chest', 'The depression is a drainage trench lined with old stone. It carries water beneath the siding. You find a brass payroll seal in the silt, but no chest; the seal could have fallen from a returned delivery.', [
-    { id: 'trenchPreserve', label: 'Keep the seal and stop digging', next: 'discovery', effects: { knowledge: ['The alleged payroll trench was a drain; a brass seal there supports a delivery return but proves no hidden chest.'] } },
-    { id: 'trenchSearch', label: 'Search the embankment beyond the drain', hint: 'Further digging risks a small collapse and may damage the old track.', chance: { probability: 0.4, successNext: 'discovery', failureNext: 'trenchSlip', successMessage: 'You find only old ballast and an intact drainage channel.', failureMessage: 'Loose ballast slides into the cut.', failureEffects: { health: -1 } } },
+    { id: 'trenchPreserve', label: 'Keep the seal and stop digging', next: 'discovery', effects: { setFlags: ['payrollSealFound'], knowledge: ['The alleged payroll trench was a drain; a brass seal there supports a delivery return but proves no hidden chest.'] } },
+    { id: 'trenchSearch', label: 'Search the embankment beyond the drain', hint: 'Further digging risks a small collapse and may damage the old track.', chance: { probability: 0.4, successNext: 'discovery', failureNext: 'trenchSlip', successMessage: 'You find only old ballast and an intact drainage channel.', failureMessage: 'Loose ballast slides into the cut.', successEffects: { setFlags: ['payrollDrainIntact'] }, failureEffects: { setFlags: ['payrollDrainDisturbed'], health: -1 } } },
   ]),
-  office: scene('office', 'The Paymaster’s Duplicate', 'An old duplicate book records the chest returned to the pay office the same week. The account was paid out later under the rail hand’s signature. The lost-payroll story began with a crossed-out delivery, not a buried fortune.', [{ id: 'officeShare', label: 'Show the siblings the duplicate entry', next: 'discovery', effects: { knowledge: ['The payroll chest was returned and paid out later; the crossed-out siding entry did not record a burial.'], historyFlags: ['resolved a lost-payroll legend with a pay-office record'] } }]),
+  office: scene('office', 'The Paymaster’s Duplicate', 'An old duplicate book records the chest returned to the pay office the same week. The account was paid out later under the rail hand’s signature. The lost-payroll story began with a crossed-out delivery, not a buried fortune.', [{ id: 'officeShare', label: 'Show the siblings the duplicate entry', next: 'discovery', effects: { setFlags: ['payrollOfficeRecordConfirmed'], knowledge: ['The payroll chest was returned and paid out later; the crossed-out siding entry did not record a burial.'], historyFlags: ['resolved a lost-payroll legend with a pay-office record'] } }]),
   trenchSlip: scene('trenchSlip', 'The Embankment Gives', 'A small slide fills part of the drain. You escape with a bruised wrist; the brass seal remains in your pocket only if you preserved it earlier.', [{ id: 'slipLeave', label: 'Leave the trench to the rail crew', next: 'discovery', effects: { health: -1 } }], 'warning'),
-  discovery: end('discovery', 'No Chest beneath the Siding', 'The record shows the payroll was returned and paid. The siblings gain an answer about their ancestor’s account; the rumored chest is not found, and the drainage cut is left intact.'),
+  discovery: { ...end('discovery', 'No Chest beneath the Siding', 'The search has not established what happened to the payroll chest. The drainage cut’s condition and the siblings’ account remain only as far as your route determined.'), textVariants: [
+    { requirements: { flags: ['payrollOfficeRecordConfirmed'] }, text: 'The pay-office duplicate shows the chest was returned and its account paid later. The siblings have an answer; the rumored chest was not buried beneath the siding.' },
+    { requirements: { flags: ['payrollSealFound'] }, text: 'The brass seal in the drainage trench supports a returned delivery but proves no hidden chest. The pay-office account remains unchecked.' },
+    { requirements: { flags: ['payrollDrainDisturbed'] }, text: 'Loose ballast slid into the drainage cut during the search. No chest was found, and the rail crew will need to inspect the disturbed trench.' },
+    { requirements: { flags: ['payrollDrainIntact'] }, text: 'The embankment search found old ballast; the drainage channel remained intact. No pay-office record was checked, so the chest’s return remains unconfirmed.' },
+  ] },
   leave: end('leave', 'The Legend Left Behind', 'You leave before searching the siding. The payroll story remains a story, and no one has asked you to disturb the rail embankment.'),
 }, 'notice', 'rail siding');
 
@@ -338,36 +348,47 @@ export const THE_RIVERBOAT_CACHE = E('the-riverboat-cache', 'The Riverboat Cache
   bank: scene('bank', 'A Locker above the Waterline', 'A riverboat wreck lies against a gravel bank. Falling water has exposed a metal locker in the stern. A ferryman says the boat belonged to a trading company; a local farmer says the wreck drifted from his land. The current is still pulling at loose boards.', [
     { id: 'askFerryman', label: 'Ask what the boat carried', next: 'claims' },
     { id: 'checkMark', label: 'Read the company mark from shore', next: 'mark' },
-    { id: 'tieRope', label: 'Secure a line to the locker', requirements: { usableItems: ['travelRope'] }, next: 'secured', effects: { damageItems: ['travelRope'] } },
+    { id: 'tieRope', label: 'Secure a line to the locker', requirements: { usableItems: ['travelRope'] }, next: 'secured', effects: { setFlags: ['riverboatLineSecured'], damageItems: ['travelRope'] } },
     { id: 'leaveWreck', label: 'Leave the wreck for its owners', next: 'leave' },
   ], 'warning'),
   claims: scene('claims', 'Two Claims, No Receipt', 'The ferryman says the company never recovered the boat after a flood. The farmer says the stern has rested against his bank for years. Neither has a salvage paper; the locker is still partly under water.', [
     { id: 'claimsCompany', label: 'Find the company mark on the hull', next: 'mark' },
     { id: 'claimsWait', label: 'Wait for the water to drop farther', next: 'window' },
-    { id: 'claimsOpen', label: 'Try to open the locker now', hint: 'The hull shifts when the current catches it.', next: 'secured' },
+    { id: 'claimsOpen', label: 'Try to open the locker now', hint: 'The hull shifts when the current catches it.', next: 'secured', effects: { setFlags: ['riverboatReachedWithoutLine'] } },
   ]),
   mark: scene('mark', 'A Trading House Stamp', 'A faded stamp matches a trading house still operating upstream. The farmer’s bank may establish where the wreck sits, but the hull mark identifies who owned the boat. The locker may be salvage, cargo, or abandoned records.', [
     { id: 'markAskHouse', label: 'Ask the trading house for its claim', next: 'window' },
     { id: 'markSecure', label: 'Secure the locker before water rises', next: 'secured' },
   ]),
   window: scene('window', 'The Current Turns', 'The trading house confirms the boat was lost, but asks that any papers be returned before cargo is claimed. The current is rising against the stern; the locker is accessible only while the wreck stays pinned.', [
-    { id: 'windowSecure', label: 'Tie the locker before opening it', requirements: { usableItems: ['travelRope'] }, next: 'secured', effects: { damageItems: ['travelRope'] } },
+    { id: 'windowSecure', label: 'Tie the locker before opening it', requirements: { usableItems: ['travelRope'] }, next: 'secured', effects: { setFlags: ['riverboatLineSecured'], damageItems: ['travelRope'] } },
     { id: 'windowRetreat', label: 'Leave before the stern shifts', next: 'discovery' },
     { id: 'windowRisk', label: 'Reach the locker without a line', hint: 'The stern is shifting and the water is rising.', chance: { probability: 0.41, successNext: 'contents', failureNext: 'riverFall', successMessage: 'You reach the locker while the wreck holds.', failureMessage: 'The stern swings away from the bank.', failureEffects: { health: -2 } } },
   ], 'warning'),
-  secured: scene('secured', 'A Line on the Stern', 'The rope steadies the locker but cannot hold the whole wreck. The lid is jammed by silt. You can work the hinge from the bank or stop now and let the owners bring proper tackle.', [
+  secured: scene('secured', 'At the Stern Locker', 'The locker is within reach, but the lid is jammed by silt and the wreck can still shift. You can work the hinge from the bank or stop and let the owners bring proper tackle.', [
     { id: 'openLocker', label: 'Work the locker lid from the bank', next: 'contents' },
-    { id: 'securedStop', label: 'Leave it tied for the trading house', next: 'discovery' },
+    { id: 'securedStop', label: 'Stop and leave the locker for the trading house', next: 'discovery' },
+  ], 'safe', [
+    { requirements: { flags: ['riverboatLineSecured'] }, text: 'Your rope steadies the locker, though it cannot hold the whole wreck. The lid is jammed by silt. You can work the hinge from the bank or stop and let the owners bring proper tackle.' },
+    { requirements: { flags: ['riverboatReachedWithoutLine'] }, text: 'You reach the locker without a line while the wreck holds. The hull can still shift; the lid is jammed by silt. You can work the hinge from the bank or stop and let the owners bring proper tackle.' },
   ]),
   contents: scene('contents', 'A Book in Oilskin', 'The locker contains an oilskin ledger, two corroded trade weights, and no coin. The ledger lists cargo delivered before the wreck and a small shipment marked “returned to sender.”', [
-    { id: 'contentsLedger', label: 'Return the ledger to the trading house', next: 'resolved', effects: { knowledge: ['The riverboat locker held an oilskin cargo ledger and trade weights, not a cache of coin.'], historyFlags: ['returned a riverboat cargo ledger to its trading house'] } },
-    { id: 'contentsWeights', label: 'Show the farmer the salvage weights', next: 'resolved' },
-    { id: 'contentsKeep', label: 'Leave all contents with the hull', next: 'resolved' },
+    { id: 'contentsLedger', label: 'Return the ledger to the trading house', next: 'resolved', effects: { setFlags: ['riverboatLedgerReturned'], knowledge: ['The riverboat locker held an oilskin cargo ledger and trade weights, not a cache of coin.'], historyFlags: ['returned a riverboat cargo ledger to its trading house'] } },
+    { id: 'contentsWeights', label: 'Show the farmer the salvage weights', next: 'resolved', effects: { setFlags: ['riverboatWeightsShown'] } },
+    { id: 'contentsKeep', label: 'Leave all contents with the hull', next: 'resolved', effects: { setFlags: ['riverboatContentsLeft'] } },
   ]),
   riverFall: scene('riverFall', 'The Stern Turns Out', 'The wreck shifts and water closes over the locker. You scramble onto the gravel bank with a bruised shoulder. The rope is damaged only if you used it; the ledger remains out of reach.', [{ id: 'fallReport', label: 'Tell both claimants the hull shifted', next: 'discovery', effects: { health: -1 } }], 'warning'),
-  resolved: scene('resolved', 'Salvage Recorded', 'The trading house records the ledger and weights as recovered freight. The farmer is paid only if the company confirms the wreck rested on his bank; the river has taken the remaining loose cargo.', [{ id: 'riverFinish', label: 'Leave the salvage list with the company', next: 'salvaged' }]),
+  resolved: scene('resolved', 'Salvage Recorded', 'The claimants record only the outcome established by your handling of the locker. Any contents not transferred remain with the wreck for proper salvage.', [{ id: 'riverFinish', label: 'Leave the salvage list with the company', next: 'salvaged' }], 'safe', [
+    { requirements: { flags: ['riverboatLedgerReturned'] }, text: 'The trading house receives the ledger as recovered freight. The weights remain with the wreck; the farmer’s claim is still subject to confirmation.' },
+    { requirements: { flags: ['riverboatWeightsShown'] }, text: 'The farmer inspects the salvage weights; you leave them beside the wreck, while the ledger remains aboard. The company’s shipment record is not corrected until its ledger is returned.' },
+    { requirements: { flags: ['riverboatContentsLeft'] }, text: 'You leave the ledger and weights with the hull. No cargo has been transferred or recovered for either claimant.' },
+  ]),
   discovery: end('discovery', 'The River Keeps the Rest', 'The wreck’s history is clearer, but no treasure is guaranteed. The river remains the strongest claimant to anything not recovered before the water rose.'),
-  salvaged: end('salvaged', 'Cargo Account Closed', 'The ledger corrects a long-missing shipment entry. The trading house records what was found; no one claims the corroded weights are valuable, and the wreck is left for a proper salvage crew.'),
+  salvaged: { ...end('salvaged', 'Salvage Outcome Recorded', 'The claimants have a record of the limited salvage attempt; the wreck and anything not proven transferred remain for a proper crew.'), textVariants: [
+    { requirements: { flags: ['riverboatLedgerReturned'] }, text: 'The returned ledger corrects a long-missing shipment entry. The trading house records the ledger; the weights and remaining cargo stay with the wreck for a proper salvage crew.' },
+    { requirements: { flags: ['riverboatWeightsShown'] }, text: 'The farmer inspected the weights, which you left beside the wreck; the ledger and remaining cargo stay aboard. The shipment entry remains uncorrected.' },
+    { requirements: { flags: ['riverboatContentsLeft'] }, text: 'No contents were taken from the locker. The shipment entry remains uncorrected, and the wreck is left for a proper salvage crew.' },
+  ] },
   leave: end('leave', 'No Claim Taken', 'You leave the wreck alone. Its owner and the farmer can settle salvage rights before anyone opens the locker.'),
 }, 'bank', 'river wreck', ['salvage rights', 'time-window exploration', 'provenance resolution']);
 
