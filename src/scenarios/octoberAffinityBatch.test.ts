@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishSuccess, newCharacter, startRun } from '../engine';
+import { choose, finishSuccess, newCharacter, sceneText, startRun } from '../engine';
 import { scenarioAvailableInMonth, classifyScenario } from '../scenarioDiversity';
 import { eligibleScenarios, scenarioSelectionWeights, selectionDiagnostics, simulateScenarioSelection } from '../scenarioSelection';
 import type { SaveData, Scenario } from '../types';
@@ -116,6 +116,61 @@ describe('Halloween and October-affinity adventures', () => {
     expect(helper.run?.sceneId).toBe('contestSocialAftermath');
     expect(contest.scenes.contestSocialAftermath.textVariants?.[1].text).toContain('holding the canvas');
     expect(helper.character?.money).toBe(0);
+
+    let prioritized = stateAt(contest);
+    for (const choice of ['helpDisplay', 'moveBest', 'contestThanks']) prioritized = pick(prioritized, contest, choice);
+    expect(sceneText(contest.scenes.contestSocialAftermath, prioritized)).not.toMatch(/remember you holding the canvas/i);
+    expect(sceneText(contest.scenes.contestSocialAftermath, prioritized)).toMatch(/not a share of the entrants’ purse/i);
+  });
+
+  it('keeps All Hallows aftermath route-true when the key story is left unexplored', () => {
+    const house = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'all-hallows-boarding-house')!;
+    let leftAlone = stateAt(house);
+    leftAlone = pick(leftAlone, house, 'askKeeper');
+    leftAlone = pick(leftAlone, house, 'leaveKeyAlone');
+    expect(sceneText(house.scenes.boardingAfter, leftAlone)).toMatch(/no one has established where Mr\. Venn learned the detail/i);
+    expect(sceneText(house.scenes.boardingAfter, leftAlone)).not.toMatch(/paper strip is read|ledger note gives/i);
+    const storage = new Map<string, string>();
+    const adapter = { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) } as unknown as Storage;
+    saveGame(leftAlone, adapter);
+    leftAlone = loadSave(adapter);
+    expect(sceneText(house.scenes.boardingAfter, leftAlone)).toMatch(/no one has established where Mr\. Venn learned the detail/i);
+    leftAlone = pick(leftAlone, house, 'boardingEnd');
+    expect(sceneText(house.scenes.boardingEnd, leftAlone)).not.toMatch(/ordinary explanation|Venn stays to repair/i);
+
+    let paperRead = stateAt(house);
+    for (const choice of ['inspectStair', 'readPaper', 'helpKeeperSettle']) paperRead = pick(paperRead, house, choice);
+    expect(sceneText(house.scenes.boardingAfter, paperRead)).toMatch(/paper strip is read with the keeper and returned to the ledger/i);
+    expect(sceneText(house.scenes.boardingAfter, paperRead)).toMatch(/key is not recovered/i);
+  });
+
+  it('does not transfer the Halloween Dare shadow explanation to an outside rescue', () => {
+    const dare = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-halloween-dare')!;
+    let outside = stateAt(dare);
+    for (const choice of ['callYouthOut', 'guideYouth', 'leaveOutsideRescue']) outside = pick(outside, dare, choice);
+    expect(sceneText(dare.scenes.dareAfter, outside)).toMatch(/what caused the movement in the back room remains unknown/i);
+    expect(sceneText(dare.scenes.dareAfter, outside)).not.toMatch(/hanging coat/i);
+
+    let entered = stateAt(dare);
+    entered = pick(entered, dare, 'enterDareHouse');
+    entered = pick(entered, dare, 'crossGap', () => 0);
+    entered = pick(entered, dare, 'leaveAfterRescue');
+    expect(sceneText(dare.scenes.dareAfter, entered)).toMatch(/moving shadow was a hanging coat in the draft/i);
+    const storage = new Map<string, string>();
+    const adapter = { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) } as unknown as Storage;
+    saveGame(entered, adapter);
+    const resumed = loadSave(adapter);
+    expect(sceneText(dare.scenes.dareAfter, resumed)).toMatch(/moving shadow was a hanging coat in the draft/i);
+  });
+
+  it('retains the Headless Rider motive the Traveler already learned before leaving', () => {
+    const rider = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-headless-rider')!;
+    let state = stateAt(rider);
+    for (const choice of ['callRider', 'offerHelp', 'leaveRiderTruth']) state = pick(state, rider, choice);
+    const ending = sceneText(rider.scenes.riderFinish, state);
+    expect(ending).toMatch(/used a hood and lantern to avoid recognition/i);
+    expect(ending).toMatch(/older ridge tale remains unresolved/i);
+    expect(ending).not.toMatch(/do not learn why it was made/i);
   });
 
   it('preserves a completed contest replay penalty across sequential content additions', () => {
