@@ -6,6 +6,7 @@ import { BROKEN_BELL } from './scenarios/brokenBell';
 import { SCENARIOS } from './scenarios';
 import type { SaveData } from './types';
 import { OUTCOME_HISTORY_FLAGS } from './travelerContinuity';
+import { AFTER_THE_STORM } from './scenarios/afterTheStorm';
 
 function memoryStorage(initial: string | null = null): Storage {
   const values = new Map<string, string>();
@@ -20,7 +21,99 @@ function memoryStorage(initial: string | null = null): Storage {
   };
 }
 
+function multiKeyMemoryStorage(entries: Record<string, string>): Storage {
+  const values = new Map(Object.entries(entries));
+  return {
+    getItem: (key: string) => values.get(key) ?? null,
+    setItem: (key: string, value: string) => { values.set(key, value); },
+    removeItem: (key: string) => { values.delete(key); },
+    clear: () => values.clear(),
+    key: (index: number) => [...values.keys()][index] ?? null,
+    get length() { return values.size; },
+  };
+}
+
+function legacyRandomizedSave(name: string, bankItem: string, omitRunId = false): SaveData {
+  const character = newCharacter(name);
+  const run = startRun(character, AFTER_THE_STORM);
+  delete run.randomSelections;
+  if (omitRunId) delete run.runId;
+  return { version: 1, bank: [bankItem], itemStates: {}, character, run, mostRecentScenarioId: null, recentScenarioIds: [] };
+}
+
 describe('save compatibility', () => {
+  it('keeps a migrated QA random-selection save in QA storage and leaves an existing normal save unchanged', () => {
+    const normal = legacyRandomizedSave('Normal traveler', 'travelRope');
+    normal.run!.randomSelections = { farmhand: 'Normal' };
+    const qa = legacyRandomizedSave('QA traveler', 'waxedCanvasSheet');
+    qa.run!.qaMode = true;
+    const normalRaw = JSON.stringify(normal);
+    const qaRaw = JSON.stringify(qa);
+    const storage = multiKeyMemoryStorage({ [SAVE_KEY]: normalRaw, [QA_SAVE_KEY]: qaRaw });
+
+    const migrated = loadQaSave(storage);
+
+    expect(migrated.character?.name).toBe('QA traveler');
+    expect(migrated.run?.randomSelections?.farmhand).toBeTruthy();
+    expect(storage.getItem(SAVE_KEY)).toBe(normalRaw);
+    expect(storage.getItem(QA_SAVE_KEY)).not.toBe(qaRaw);
+    expect(loadQaSave(storage).run?.randomSelections).toEqual(migrated.run?.randomSelections);
+    expect(loadSave(storage).character?.name).toBe('Normal traveler');
+  });
+
+  it('writes a normal random-selection migration only to normal storage and leaves an existing QA save unchanged', () => {
+    const normal = legacyRandomizedSave('Normal traveler', 'travelRope');
+    const qa = legacyRandomizedSave('QA traveler', 'waxedCanvasSheet');
+    qa.run!.randomSelections = { farmhand: 'QA' };
+    qa.run!.qaMode = true;
+    const normalRaw = JSON.stringify(normal);
+    const qaRaw = JSON.stringify(qa);
+    const storage = multiKeyMemoryStorage({ [SAVE_KEY]: normalRaw, [QA_SAVE_KEY]: qaRaw });
+
+    const migrated = loadSave(storage);
+
+    expect(migrated.run?.randomSelections?.farmhand).toBeTruthy();
+    expect(storage.getItem(SAVE_KEY)).not.toBe(normalRaw);
+    expect(storage.getItem(QA_SAVE_KEY)).toBe(qaRaw);
+    expect(loadSave(storage).run?.randomSelections).toEqual(migrated.run?.randomSelections);
+    expect(loadQaSave(storage).run?.randomSelections).toEqual({ farmhand: 'QA' });
+  });
+
+  it('preserves the QA source key through chained run-ID and random-selection migrations', () => {
+    const normal = legacyRandomizedSave('Normal traveler', 'travelRope');
+    normal.run!.randomSelections = { farmhand: 'Normal' };
+    const qa = legacyRandomizedSave('QA traveler', 'waxedCanvasSheet', true);
+    qa.run!.qaMode = true;
+    const normalRaw = JSON.stringify(normal);
+    const qaRaw = JSON.stringify(qa);
+    const storage = multiKeyMemoryStorage({ [SAVE_KEY]: normalRaw, [QA_SAVE_KEY]: qaRaw });
+
+    const migrated = loadQaSave(storage);
+
+    expect(migrated.run?.runId).toBeTruthy();
+    expect(migrated.run?.randomSelections?.farmhand).toBeTruthy();
+    expect(storage.getItem(SAVE_KEY)).toBe(normalRaw);
+    expect(storage.getItem(QA_SAVE_KEY)).not.toBe(qaRaw);
+    expect(loadQaSave(storage)).toEqual(migrated);
+  });
+
+  it('does not write either namespace when normal and QA saves need no migration', () => {
+    const normal = legacyRandomizedSave('Normal traveler', 'travelRope');
+    normal.run!.randomSelections = { farmhand: 'Normal' };
+    const qa = legacyRandomizedSave('QA traveler', 'waxedCanvasSheet');
+    qa.run!.randomSelections = { farmhand: 'QA' };
+    qa.run!.qaMode = true;
+    const normalRaw = JSON.stringify(normal);
+    const qaRaw = JSON.stringify(qa);
+    const storage = multiKeyMemoryStorage({ [SAVE_KEY]: normalRaw, [QA_SAVE_KEY]: qaRaw });
+
+    loadSave(storage);
+    loadQaSave(storage);
+
+    expect(storage.getItem(SAVE_KEY)).toBe(normalRaw);
+    expect(storage.getItem(QA_SAVE_KEY)).toBe(qaRaw);
+  });
+
   it('migrates the exact legacy family-verse Knowledge into its outcome flag without guessing other contest results', () => {
     const character = newCharacter('Old verse save');
     character.knowledge = ['The recitation contest accepted a family-transmitted verse absent from the printed broadside.'];

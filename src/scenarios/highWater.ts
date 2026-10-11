@@ -12,7 +12,7 @@ const SAVED: Record<Priority, string> = {
 const WINDOW: Record<Window, string> = { first: 'priorityWindowOne', second: 'priorityWindowTwo', last: 'priorityWindowThree' };
 const AFTER_WINDOW: Record<Window, string> = { first: 'waterDeepens', second: 'waterCrest', last: 'aftermathDecision' };
 const TOOL_GEAR = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'bridgewrightHammer', 'ironRopeClamp', 'brassCandlestick', 'waxedCanvasSheet'];
-const MEDICINE_GEAR = ['ratCatchersHook', 'minerHeadlamp', 'waxedCanvasSheet', 'weatherproofCloak', 'drainageHook'];
+const MEDICINE_GEAR = ['ratCatchersHook', 'minerHeadlamp', 'waxedCanvasSheet', 'weatherproofCloak'];
 
 function priorityChoice(kind: Priority, window: Window, label: string, sceneId: string, timeCost: number): Choice {
   const suffix = `${window[0].toUpperCase()}${window.slice(1)}`;
@@ -90,12 +90,12 @@ function taskScene(kind: 'resident' | 'livestock' | 'medicine' | 'store', window
     });
     choices.push({
       id: `leadAnimalsDry${suffix}`, label: 'Lead the animals along the dry yard', hint: 'The yard is muddy but still passable; panicked animals may bolt.',
-      requirements: { notItems: ['travelRope'], maxElapsedMinutes: 25 }, timeCost: 11,
+      requirements: { notUsableItems: ['travelRope'], maxElapsedMinutes: 25 }, timeCost: 11,
       effects: { setFlags: [attempt] },
       chance: { probability: 0.65, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.16, successNext: outcome, failureNext: outcome, successMessage: 'The animals follow your voice to the higher field.', failureMessage: 'One animal bolts through a broken rail; the stable is still too low to leave.', successEffects: { setFlags: [success, ...successFlags], historyFlags: [successHistory[kind]] }, failureEffects: { health: -1, setFlags: [`${kind}AttemptFailed`] } },
     }, {
       id: `wadeForAnimals${suffix}`, label: 'Wade into the stable yard', hint: 'The route is under brown water and the current is pulling at the fence.',
-      requirements: { notItems: ['travelRope'], minElapsedMinutes: 18 }, timeCost: 15,
+      requirements: { notUsableItems: ['travelRope'], minElapsedMinutes: 18 }, timeCost: 15,
       effects: { setFlags: [attempt] },
       chance: { probability: 0.42, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.17, successNext: outcome, failureNext: outcome, successMessage: 'You open the stable from the high side and guide the animals out.', failureMessage: 'Water slams the gate against your leg; the animals stay inside as you retreat.', successEffects: { setFlags: [success, ...successFlags], historyFlags: [successHistory[kind]] }, failureEffects: { health: -3, setFlags: [`${kind}AttemptFailed`] } },
     });

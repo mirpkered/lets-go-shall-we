@@ -104,6 +104,34 @@ describe('High Water', () => {
     expect(state.character?.historyFlags).toContain('retrieved_medicine_during_flood');
   });
 
+  it('keeps a no-special-tool clinic fallback available when the Traveler carries a drainage hook', () => {
+    const suffixes = ['First', 'Second', 'Last'];
+    for (const [index, suffix] of suffixes.entries()) {
+      const state = fresh('drainageHook');
+      state.run!.sceneId = `medicine${suffix}`;
+      state.run!.elapsedMinutes = index === 0 ? 0 : index === 1 ? 30 : 50;
+      const available = options(state).map(({ id }) => id);
+      expect(available.some((id) => id === `carryMedicineEarly${suffix}` || id === `wadeForMedicine${suffix}`)).toBe(true);
+    }
+  });
+
+  it('keeps stable actions available when a carried travel rope is broken', () => {
+    for (const [index, suffix] of ['First', 'Second', 'Last'].entries()) {
+      const character = newCharacter('Broken Rope Traveler');
+      character.carriedItem = 'travelRope';
+      character.carriedItems = ['travelRope'];
+      const state: SaveData = { version: 1, bank: [], itemStates: { travelRope: { condition: 'BROKEN', upgrades: [], provenance: [] } }, character, run: startRun(character, HIGH_WATER, Math.random, { travelRope: { condition: 'BROKEN', upgrades: [], provenance: [] } }) };
+      state.run!.sceneId = `livestock${suffix}`;
+      state.run!.elapsedMinutes = index === 0 ? 0 : index === 1 ? 30 : 50;
+      const available = options(state).map(({ id }) => id);
+      const fallbackId = index === 0 ? 'leadAnimalsDryFirst' : `wadeForAnimals${suffix}`;
+      expect(available).toContain(fallbackId);
+      expect(available).not.toContain(`tetherAnimals${suffix}`);
+      const completed = act(state, fallbackId);
+      expect(completed.run?.sceneId).toBe(`livestock${suffix}Outcome`);
+    }
+  });
+
   it('allows outside help without money and makes paying for a hauler faster', () => {
     let broke = reachCrestAfterPeopleAndAnimals();
     broke = act(broke, 'seekOutsideHelpCrest');

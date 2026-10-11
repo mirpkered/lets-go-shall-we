@@ -190,7 +190,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
       }
       if (scenario?.runRandomSelections?.length && !parsed.run.randomSelections) {
         parsed.run.randomSelections = pickRunRandomSelections(scenario);
-        storage.setItem?.(KEY, JSON.stringify(parsed));
+        storage.setItem?.(key, JSON.stringify(parsed));
       }
       if (parsed.run.status === 'active' && parsed.run.scenarioId === 'broken-bell' && scenario && !scenario.scenes[parsed.run.sceneId]) {
         parsed.run.sceneId = 'legacyResume';
