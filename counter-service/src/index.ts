@@ -9,6 +9,7 @@ const ALLOWED_ORIGINS = new Set([
 const RUN_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const MAX_COMPLETION_BODY_BYTES = 128;
 const MAX_FEEDBACK_BODY_BYTES = 24_000;
+const APPLICATION_NAME = 'Let’s Go, Shall We?';
 const FEEDBACK_TO = 'contact@mirpworks.com';
 const FEEDBACK_CATEGORIES = new Set(['Bug', 'Confusing', 'Too short / weak payoff', 'Too repetitive', 'Balance / danger', 'UI / mobile', 'Story / content suggestion', 'Other']);
 
@@ -129,7 +130,11 @@ async function deliverFeedback(payload: FeedbackPayload, env: Env): Promise<bool
   if (!env.RESEND_API_KEY || !env.FEEDBACK_FROM) return false;
   const context = payload.context;
   const lines = [
-    'Let’s Go, Shall We? — player feedback',
+    `Sent from: ${APPLICATION_NAME}`,
+    '',
+    payload.message,
+    '',
+    'Feedback details:',
     `Type: ${payload.category}`,
     `Version: ${context.gameVersion}`,
     `Mode: ${context.qaMode ? 'QA' : 'Normal'}`,
@@ -137,7 +142,6 @@ async function deliverFeedback(payload: FeedbackPayload, env: Env): Promise<bool
     `Viewport class: ${context.viewportClass}`,
     `Scenario: ${context.scenarioTitle ?? 'General feedback'}${context.scenarioId ? ` (${context.scenarioId})` : ''}`,
     `Scene: ${context.sceneId ?? 'Not in an active scene'}`,
-    '', 'Message:', payload.message,
   ];
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -145,7 +149,7 @@ async function deliverFeedback(payload: FeedbackPayload, env: Env): Promise<bool
     body: JSON.stringify({
       from: env.FEEDBACK_FROM,
       to: [FEEDBACK_TO],
-      subject: `Let’s Go, Shall We? feedback — ${payload.category}`,
+      subject: `${APPLICATION_NAME} — Feedback`,
       text: lines.join('\n'),
       ...(payload.replyEmail ? { reply_to: payload.replyEmail } : {}),
     }),

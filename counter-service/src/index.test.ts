@@ -119,6 +119,9 @@ describe('anonymous in-game feedback endpoint', () => {
     expect(new Headers(init?.headers).get('Authorization')).toBe('Bearer server-only-test-key');
     const message = JSON.parse(String(init?.body));
     expect(message.to).toEqual(['contact@mirpworks.com']);
+    expect(message.subject).toBe('Let’s Go, Shall We? — Feedback');
+    expect(message.text.startsWith('Sent from: Let’s Go, Shall We?\n\nThe platform choice did not appear.')).toBe(true);
+    expect(message.text).toContain('Feedback details:');
     expect(message.reply_to).toBeUndefined();
     expect(message.text).toContain('The Last Train Message (last-train-message)');
     expect(message.text).toContain('platform');
