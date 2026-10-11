@@ -43,7 +43,7 @@ export const THE_LAST_VERSE_CONTEST = story('the-last-verse-contest', 'The Last 
     { id: 'compareVersions', label: 'Ask each contestant to recite the ending', next: 'recitals' },
     { id: 'askJudgeRule', label: 'Ask the judge to set the rule openly', next: 'rule' },
   ]),
-  recitals: scene('recitals', 'Three Different Endings', 'The first contestant follows the broadside, Mara Bell remembers an extra family verse, and the third changes a line to make the audience laugh. None claims the others are lying.', [
+  recitals: scene('recitals', 'Three Different Endings', 'The three reciters have finished for the book prize. One follows the broadside, Mara Bell remembers an extra family verse, and the third changes a line to make the audience laugh. None claims the others are lying. The judge asks which version should win; the choice does not establish which is oldest or truest.', [
     { id: 'judgeByMemory', label: 'Choose Mara’s remembered family verse', next: 'family', effects: { knowledge: ['The recitation contest accepted a family-transmitted verse absent from the printed broadside.'], historyFlags: [OUTCOME_HISTORY_FLAGS.acceptedFamilyVerse] } },
     { id: 'judgeByPrint', label: 'Choose the printed version', next: 'printed', effects: { historyFlags: [OUTCOME_HISTORY_FLAGS.favoredPrintedVerse] } },
     { id: 'askForAudienceChoice', label: 'Let the listeners choose their favorite', next: 'audience' },

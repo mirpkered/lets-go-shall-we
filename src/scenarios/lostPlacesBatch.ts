@@ -11,7 +11,7 @@ export const THE_MAP_IN_THE_LEDGER = E('the-map-in-the-ledger', 'The Map in the 
   ledger: scene('ledger', 'Ink beneath the Accounts', 'A retired miller offers an old account book for copying. A folded map has been drawn beneath the totals: a creek bend, a split pine, and a mark beside “third stone.” No sum or name explains what is there.', [
     { id: 'askMiller', label: 'Ask the miller what the mark means', next: 'miller' },
     { id: 'traceCreek', label: 'Follow the creek bend to the pine', next: 'creek' },
-    { id: 'copyMap', label: 'Copy the map and leave it with the book', next: 'copied' },
+    { id: 'copyMap', label: 'Copy the map and leave it with the book', next: 'copied', effects: { historyFlags: ['retained_old_water_gate_location_from_mill_ledger'] } },
     { id: 'leaveLedger', label: 'Decline the errand and move on', next: 'leave' },
   ]),
   miller: scene('miller', 'A Mark for the Old Crew', 'The miller remembers a crew using the creek road to reach a cut bank before the rail spur was built. He never heard of a cache. The third stone may be a boundary marker, not a promise of valuables.', [

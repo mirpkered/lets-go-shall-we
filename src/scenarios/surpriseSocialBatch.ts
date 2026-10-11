@@ -150,7 +150,7 @@ export const THE_SCHOOLROOM_DOOR = story('the-schoolroom-door', 'The Schoolroom 
     { id: 'rehearseBoth', label: 'Let each version be heard once', next: 'performance', effects: { historyFlags: ['let_school_pupils_present_two_versions_of_a_recitation'] } },
     { id: 'askOlderStudent', label: 'Ask the older student to choose', next: 'student' },
   ]),
-  lines: scene('lines', 'Practice Turns to Laughter', 'The pupils begin practicing, but the invented ending keeps interrupting the serious one. The older student asks whether to tell the teacher or let the group decide.', [
+  lines: scene('lines', 'Practice Turns to Laughter', 'The pupils begin practicing, but the invented ending keeps interrupting the printed ending from the recitation text. The older student asks whether to tell the teacher or let the group decide.', [
     { id: 'letVote', label: 'Let the pupils choose together', next: 'performance' },
     { id: 'keepPrintedEnding', label: 'Use the printed version today', next: 'student' },
   ]),
