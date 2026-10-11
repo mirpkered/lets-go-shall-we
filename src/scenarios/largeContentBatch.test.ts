@@ -75,6 +75,9 @@ describe('disaster, western, and lost-place expansion', () => {
     const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, bridge) };
     expect(sceneText(bridge.scenes.bridgeEnd, state)).not.toMatch(/driver.*daughter.*mule reach/i);
     state.run!.flags.push('bridgePeopleSaved');
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver reaches the west bank/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/daughter and the mule are not confirmed ashore/i);
+    state.run!.flags.push('bridgeChildSaved');
     expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver and his daughter reach the west bank/i);
     expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/mule’s position remains uncertain/i);
     state.run!.flags.push('bridgeMuleFreed');

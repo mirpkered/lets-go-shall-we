@@ -7,49 +7,59 @@ export const THE_BRIDGE_GOES_DOWN = A('the-bridge-goes-down', 'The Bridge Goes D
   span: scene('span', 'The Middle Span', 'You are on the west bank as a wagon crosses the timber bridge. A support cracks; the rear wheels drop, leaving the driver and his daughter on the sagging middle span. Their mule is still hitched at the far end. The river below is fast, and the bridge is moving.', [
     { id: 'callDriver', label: 'Tell the driver to leave the wagon', next: 'driverMoves', effects: { setFlags: ['bridgeDriverWarned'] } },
     { id: 'throwLine', label: 'Anchor your rope on the west bank', requirements: { usableItems: ['travelRope'] }, hint: 'The line can steady one crossing, but the cracked rail may cut it.', next: 'lineAcross', effects: { damageItems: ['travelRope'] } },
-    { id: 'reachChild', label: 'Cross the shaking boards for the child', hint: 'The span is already sinking; a second break may be fatal.', chance: { probability: 0.56, successNext: 'childAcross', failureNext: 'bridgeDeath', successMessage: 'You reach the child and pull her onto the west bank.', failureMessage: 'A plank tears free beneath you.' } },
+    { id: 'reachChild', label: 'Cross the shaking boards for the child', hint: 'The span is already sinking; a second break may be fatal.', chance: { probability: 0.56, successNext: 'childAcross', failureNext: 'bridgeDeath', successMessage: 'You reach the child and pull her onto the west bank.', failureMessage: 'A plank tears free beneath you.', successEffects: { setFlags: ['bridgeChildSaved'] } } },
     { id: 'leaveBridge', label: 'Clear the bank and call for help', next: 'bankClear' },
   ], 'danger'),
   driverMoves: scene('driverMoves', 'One Person at a Time', 'The driver hears you and starts toward the west bank with his daughter. The mule pulls against the wagon; the load is still dragging the rear wheels toward the broken support.', [
-    { id: 'takeDaughter', label: 'Guide the child onto firm ground', next: 'childAcross' },
+    { id: 'takeDaughter', label: 'Guide the child onto firm ground', next: 'childAcross', effects: { setFlags: ['bridgeChildSaved'] } },
     { id: 'freeMule', label: 'Cut the mule loose from the wagon', requirements: { usableItems: ['smallKnife'] }, next: 'muleSaved', effects: { setFlags: ['bridgeMuleFreed'] } },
     { id: 'haulWagon', label: 'Pull the wagon toward the west bank', requirements: { usableItems: ['travelRope'] }, hint: 'The wagon is heavier than the failing span can bear.', chance: { probability: 0.38, successNext: 'wagonSaved', failureNext: 'bridgeDrop', successMessage: 'The wagon shifts a few feet onto the sound end.', failureMessage: 'The rear support gives under the load.' } },
   ], 'warning'),
   lineAcross: scene('lineAcross', 'A Handhold over Water', 'The rope reaches the driver, but only the near rail is sound. He can send his daughter first, or cut the mule loose before leaving. There is no safe way to save the wagon and everyone on the bridge.', [
-    { id: 'lineChild', label: 'Bring the child across first', chance: { probability: 0.78, successNext: 'childAcross', failureNext: 'bridgeDrop', successMessage: 'The line holds as the child reaches the bank.', failureMessage: 'The rope catches on a splintering rail.' } },
+    { id: 'lineChild', label: 'Bring the child across first', chance: { probability: 0.78, successNext: 'childAcross', failureNext: 'bridgeDrop', successMessage: 'The line holds as the child reaches the bank.', failureMessage: 'The rope catches on a splintering rail.', successEffects: { setFlags: ['bridgeChildSaved'] } } },
     { id: 'lineMule', label: 'Steady the mule while it steps free', next: 'muleSaved', effects: { setFlags: ['bridgeMuleFreed'] } },
     { id: 'lineWithdraw', label: 'Pull back before the rail breaks', next: 'bankClear' },
   ], 'danger'),
   bankClear: scene('bankClear', 'The Span Lets Go', 'You reach the west bank. The driver and child are still on the bridge; the mule is beyond them, and the wagon is pulling the deck lower with every jolt. A farmhand is running from the road with another length of rope.', [
     { id: 'shoutDriverNow', label: 'Shout for the driver to abandon the load', next: 'driverMoves', effects: { setFlags: ['bridgeDriverWarned'] } },
     { id: 'holdForFarmhand', label: 'Hold the bank clear until help arrives', next: 'bridgeAftermath', effects: { setFlags: ['bridgeWaited'] } },
-    { id: 'rushSpan', label: 'Rush back across the sagging boards', hint: 'A second crossing is more dangerous than the first.', chance: { probability: 0.3, successNext: 'childAcross', failureNext: 'bridgeDeath', successMessage: 'You reach the child in the last steady moment.', failureMessage: 'The span drops into the current.' } },
+    { id: 'rushSpan', label: 'Rush back across the sagging boards', hint: 'A second crossing is more dangerous than the first.', chance: { probability: 0.3, successNext: 'childAcross', failureNext: 'bridgeDeath', successMessage: 'You reach the child in the last steady moment.', failureMessage: 'The span drops into the current.', successEffects: { setFlags: ['bridgeChildSaved'] } } },
   ], 'danger'),
   childAcross: scene('childAcross', 'The Child Reaches Shore', 'The girl is on firm ground. Her father is still on the bridge, and the mule is fighting the wagon’s weight. A deep crack travels from the middle support toward the far bank.', [
     { id: 'callFather', label: 'Call the driver to leave the wagon', next: 'bridgeAftermath', effects: { setFlags: ['bridgePeopleSaved'] } },
     { id: 'turnForMule', label: 'Go back for the mule', hint: 'The span may not hold another crossing.', chance: { probability: 0.48, successNext: 'muleSaved', failureNext: 'bridgeDrop', successMessage: 'The mule steps clear as the deck settles.', failureMessage: 'The wagon shifts and the boards part.' } },
     { id: 'saveCrate', label: 'Reach for the tied document chest', hint: 'The chest is cargo; the driver is still in danger.', chance: { probability: 0.42, successNext: 'wagonSaved', failureNext: 'bridgeDrop', successMessage: 'You drag the small chest onto the bank.', failureMessage: 'The deck tears away before you can turn back.' } },
   ], 'danger'),
-  muleSaved: scene('muleSaved', 'The Mule Is Free', 'The mule reaches the west bank without the wagon. The driver and child remain on the bridge, while the wagon load keeps the broken span under strain.', [
+  muleSaved: { ...scene('muleSaved', 'The Mule Is Free', 'The mule reaches the west bank without the wagon. The driver and child’s positions are not both confirmed here, while the wagon load keeps the broken span under strain.', [
     { id: 'muleCallDriver', label: 'Call the driver to leave the wagon', next: 'bridgeAftermath', effects: { setFlags: ['bridgeMuleFreed', 'bridgePeopleSaved'] } },
     { id: 'muleReturnForDriver', label: 'Cross back for the driver', hint: 'The mule is safe, but the deck is still failing.', chance: { probability: 0.42, successNext: 'bridgeAftermath', failureNext: 'bridgeDeath', successMessage: 'You reach the driver before the outer boards break.', failureMessage: 'The span drops away beneath you.' }, effects: { setFlags: ['bridgeMuleFreed', 'bridgePeopleSaved'] } },
     { id: 'muleLeaveWagon', label: 'Keep everyone off the bridge', next: 'bridgeAftermath', effects: { setFlags: ['bridgeMuleFreed'] } },
-  ], 'warning'),
+  ], 'warning'), textVariants: [
+    { requirements: { flags: ['bridgeChildSaved'] }, text: 'The mule reaches the west bank without the wagon. The driver remains on the bridge, but his daughter is already on firm ground with you. The wagon load keeps the broken span under strain.' },
+  ] },
   wagonSaved: scene('wagonSaved', 'A Little Cargo, Not the Wagon', 'The document chest is on the bank, but the wagon remains caught across the split. The driver has reached the near side; his daughter is with you. The mule is still at the far end.', [
     { id: 'leaveWagonNow', label: 'Leave the wagon and clear the bank', next: 'bridgeAftermath', effects: { setFlags: ['bridgeCargoSaved', 'bridgePeopleSaved'] } },
     { id: 'tryMuleAgain', label: 'Signal the driver to free the mule', next: 'bridgeAftermath', effects: { setFlags: ['bridgeCargoSaved', 'bridgePeopleSaved', 'bridgeMuleFreed'] } },
     { id: 'holdBridge', label: 'Try one more pull on the wagon', hint: 'The span has no sound support under the load.', chance: { probability: 0.28, successNext: 'bridgeAftermath', failureNext: 'bridgeDrop', successMessage: 'The wagon slides one wheel-length before you stop.', failureMessage: 'The center drops under the strain.' }, effects: { setFlags: ['bridgeCargoSaved'] } },
   ], 'danger'),
-  bridgeDrop: scene('bridgeDrop', 'The Far Rail Breaks', 'The wagon falls into the river and the bridge separates. You are on the west bank; the current hides the cargo. The driver is on your side, but the mule’s position is unclear beyond the broken deck.', [
+  bridgeDrop: { ...scene('bridgeDrop', 'The Far Rail Breaks', 'The wagon falls into the river and the bridge separates. You are on the west bank; the current hides the cargo. The driver is on your side, but the mule’s position is unclear beyond the broken deck.', [
     { id: 'searchNearWater', label: 'Keep everyone back from the broken edge', next: 'bridgeAftermath', effects: { health: -1, setFlags: ['bridgePeopleSaved'] } },
     { id: 'reachForWagon', label: 'Climb down toward the drifting wagon', hint: 'The current is strong and the bank is undercut.', chance: { probability: 0.24, successNext: 'bridgeAftermath', failureNext: 'bridgeDeath', successMessage: 'You pull a floating document case from an eddy.', failureMessage: 'The undercut bank gives way.' }, effects: { setFlags: ['bridgePeopleSaved'] } },
-  ], 'danger'),
-  bridgeAftermath: scene('bridgeAftermath', 'The River Takes the Span', 'The last timbers settle into the current. The surviving travelers gather on the west bank while the road crew counts who made it off. The crossing is gone; only what reached shore can be recovered.', [
+  ], 'danger'), textVariants: [
+    { requirements: { flags: ['bridgeChildSaved'] }, text: 'The wagon falls into the river and the bridge separates. You are on the west bank with the driver and his daughter, who reached shore before the span broke. The current hides the cargo; the mule’s position is unclear beyond the broken deck.' },
+  ] },
+  bridgeAftermath: { ...scene('bridgeAftermath', 'The River Takes the Span', 'The last timbers settle into the current. The surviving travelers gather on the west bank while the road crew counts who made it off. The crossing is gone; only what reached shore can be recovered.', [
     { id: 'bridgeLeave', label: 'Help the survivors reach the farm road', next: 'bridgeEnd' },
-  ]),
+  ]), textVariants: [
+    { requirements: { flags: ['bridgeChildSaved'] }, text: 'The last timbers settle into the current. The girl is already on the west bank; the road crew counts the others who made it off. The crossing is gone, and only what reached shore can be recovered.' },
+  ] },
   bridgeEnd: { ...end('bridgeEnd', 'No Crossing Left', 'The wagon and most cargo are lost. The road crew closes both approaches and records whose positions are still unknown.'), textVariants: [
-    { requirements: { flags: ['bridgePeopleSaved', 'bridgeMuleFreed'] }, text: 'The driver, his daughter, and the mule reach the west bank. The wagon and most cargo are lost; the road crew closes both approaches and records the collapse.' },
-    { requirements: { flags: ['bridgePeopleSaved'] }, text: 'The driver and his daughter reach the west bank. The mule’s position remains uncertain beyond the broken deck. The wagon and most cargo are lost; the road crew closes both approaches.' },
+    { requirements: { flags: ['bridgePeopleSaved', 'bridgeMuleFreed', 'bridgeChildSaved'] }, text: 'The driver, his daughter, and the mule reach the west bank. The wagon and most cargo are lost; the road crew closes both approaches and records the collapse.' },
+    { requirements: { flags: ['bridgePeopleSaved', 'bridgeChildSaved'] }, text: 'The driver and his daughter reach the west bank. The mule’s position remains uncertain beyond the broken deck. The wagon and most cargo are lost; the road crew closes both approaches.' },
+    { requirements: { flags: ['bridgeChildSaved', 'bridgeMuleFreed'] }, text: 'The daughter and mule reach the west bank. The driver’s position is not confirmed before the span goes; the road crew closes both approaches and begins a search.' },
+    { requirements: { flags: ['bridgePeopleSaved', 'bridgeMuleFreed'] }, text: 'The driver and mule reach the west bank. His daughter’s position is not confirmed before the span goes; the road crew closes both approaches and begins a search.' },
+    { requirements: { flags: ['bridgePeopleSaved'] }, text: 'The driver reaches the west bank. His daughter and the mule are not confirmed ashore before the span goes; the road crew closes both approaches and begins a search.' },
+    { requirements: { flags: ['bridgeChildSaved'] }, text: 'The daughter reaches the west bank. The driver and mule are not confirmed ashore before the span goes; the road crew closes both approaches and begins a search.' },
     { requirements: { flags: ['bridgeMuleFreed'] }, text: 'The mule reaches the west bank. The driver and his daughter are not confirmed ashore before the span goes; the road crew closes both approaches and begins a search.' },
   ] },
   bridgeDeath: end('bridgeDeath', 'Under the Broken Span', 'The bridge gives way while you are on or below it. The current carries the broken timbers downstream.', 'death'),
