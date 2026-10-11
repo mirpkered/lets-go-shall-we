@@ -87,9 +87,10 @@ function build(c: EvidenceStory): Scenario {
     'the-stone-under-the-floorboard':'foldingCardMirror',
     'the-glass-in-the-lantern-room':'foldingCardMirror',
     'the-red-thread-at-the-bridge':'foldingCardMirror',
+    'the-bent-pin-in-the-harvest-engine':'fieldCalipers',
   };
   const inspectChoices: Scene['choices'] = c.inspect.map((label, i) => {
-    const item = inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror/i.test(label)) ? inspectionGear[c.id] : undefined;
+    const item = inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror|Field Calipers/i.test(label)) ? inspectionGear[c.id] : undefined;
     const caseRoute = c.id === 'the-map-with-two-norths' && /Lockable Map Case/i.test(label);
     const caseItem = item ?? (caseRoute ? 'lockableMapCase' : undefined);
     return {
@@ -104,6 +105,9 @@ function build(c: EvidenceStory): Scenario {
     { id:'verify', label:c.actions[1], next:'settlement', effects:{ setFlags:[`${c.id}_verified`] } },
     { id:'accuse', label:c.actions[2], next:'settlement', effects:{ setFlags:[`${c.id}_accused`] } },
   ];
+  if (c.id === 'the-bent-pin-in-the-harvest-engine') {
+    for (const action of actionChoices) action.effects = { ...action.effects, knowledge:[c.lesson] };
+  }
   if (c.id === 'the-map-with-two-norths') {
     actionChoices[0] = { ...actionChoices[0], requirements: { notFlags: ['map_copy_secured'] } };
     actionChoices[1] = { ...actionChoices[1], requirements: { notFlags: ['map_copy_secured'] } };
@@ -116,7 +120,7 @@ function build(c: EvidenceStory): Scenario {
   }
   const settlementChoices: Scene['choices'] = [
     { id:'wage', label:`Accept the ${c.coins}-coin inspection fee`, next:'paid', effects:{ money:c.coins } },
-    ...(c.id === 'the-map-with-two-norths'
+    ...(c.id === 'the-map-with-two-norths' || c.id === 'the-bent-pin-in-the-harvest-engine'
       ? [{ id:'decline', label:'Decline all material compensation', next:'lesson', effects:{} }]
       : [{ id:'recordLesson', label:'Decline payment and keep the practical lesson', next:'lesson', effects:{ knowledge:[c.lesson] } }]),
     ...(item && itemName ? [{ id:'tool', label:`Accept the ${itemName} as compensation`, next:'gear', requirements:{ notOwnedItems:[item] }, effects:gearGain(item,provenance!,`earned_${item}_${c.id}`) }] : []),
@@ -139,7 +143,7 @@ function build(c: EvidenceStory): Scenario {
       { requirements:{flags:[`${c.id}_accused`]}, text:`${c.interpretation} ${c.accuse}` },
     ]},
     paid:e('paid','A Limited Finding',`You accept ${c.coins} coins for the practical inspection. ${c.id === 'the-map-with-two-norths' ? 'The finding itself remains with you; the fee did not replace what the investigation established.' : c.lesson}`),
-    lesson:e('lesson',c.id === 'the-map-with-two-norths' ? 'No Material Compensation' : 'A Reusable Method',c.id === 'the-map-with-two-norths' ? 'You decline material compensation. The reduced copy is labeled for its limited use, and the lesson about direction and scale remains with you.' : `You leave the fee and retain the method: ${c.lesson}`),
+    lesson:e('lesson',c.id === 'the-map-with-two-norths' || c.id === 'the-bent-pin-in-the-harvest-engine' ? 'No Material Compensation' : 'A Reusable Method',c.id === 'the-map-with-two-norths' ? 'You decline material compensation. The reduced copy is labeled for its limited use, and the lesson about direction and scale remains with you.' : c.id === 'the-bent-pin-in-the-harvest-engine' ? 'You decline the coin and tool compensation. The inspection finding remains: the loose guard may explain the jam, but the bent pin alone does not identify who caused it.' : `You leave the fee and retain the method: ${c.lesson}`),
     ...(item && itemName ? { gear:e('gear','A Tool for Careful Records',`${provenance} The ${itemName} helps with ${itemSource}; it preserves a comparison, not a conclusion.`) } : {}),
   };
   if (c.combat) {
