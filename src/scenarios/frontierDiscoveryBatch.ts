@@ -49,7 +49,7 @@ const cards: FrontierCard[] = [
 const decisionCopyOverrides: Record<string, Partial<FrontierCard>> = {
   'the-old-hydraulic-cut': {
     opening: 'A broad cut gouges the hillside above a creek. Wooden pipes lie along its rim; the inner face is steep and scalloped by old water work. From a firm spur, you can trace the pipe to understand how water reached the excavation without testing the unstable face.',
-    cautiousEndingText: 'Following the pipe along the firm rim explains how water reached the excavation. The lower face remains unstable, so you leave it untested for ore. You have learned what the visible works can establish safely, and why descending would add risk without answering more.',
+    cautiousEndingText: 'The rim-side pipe shows how water reached the excavation. The lower face remains unstable, and you leave it untested for ore. The useful finding is the water route—not a reason to descend again or a claim that ore was found.',
   },
   'roof-through-the-trees': {
     turn: 'From the common room, you can watch the approach through the repaired window, inspect its newer board from inside, or return to the timber road.',

@@ -17,12 +17,12 @@ function fresh(scenario: Scenario, carried: string[] = [], bank: string[] = []):
   return { ...structuredClone(EMPTY_SAVE), character, bank, run: startRun(character, scenario, () => 0) };
 }
 
-function pick(state: SaveData, scenario: Scenario, choiceId: string): SaveData {
+function pick(state: SaveData, scenario: Scenario, choiceId: string, random: () => number = () => 0): SaveData {
   const current = scenario.scenes[state.run!.sceneId];
   const choice = current.choices.find(({ id }) => id === choiceId);
   expect(choice, `${scenario.id}.${current.id}.${choiceId}`).toBeTruthy();
   expect(meets(choice!.requirements, state), `${scenario.id}.${current.id}.${choiceId}`).toBe(true);
-  return choose(state, scenario, choice!);
+  return choose(state, scenario, choice!, random);
 }
 
 describe('focused live-play QA repairs', () => {
@@ -43,9 +43,16 @@ describe('focused live-play QA repairs', () => {
     state = pick(state, scenario, 'closeCarefully');
     const ending = scenario.scenes[state.run!.sceneId];
     expect(ending.title).toBe('A Careful Account');
-    expect(ending.text).toMatch(/following the pipe.*explains how water reached the excavation/i);
+    expect(ending.text).toMatch(/rim-side pipe shows how water reached the excavation/i);
     expect(ending.text).toMatch(/lower face remains unstable.*leave it untested for ore/i);
+    expect(ending.text).not.toMatch(/following the pipe|you traced the pipe/i);
     expect(state.character?.money).toBe(0);
+
+    let descended = pick(fresh(scenario), scenario, 'approach');
+    descended = pick(descended, scenario, 'pressOn', () => 0);
+    descended = pick(descended, scenario, 'closeCarefully');
+    expect(scenario.scenes[descended.run!.sceneId].text).toMatch(/rim-side pipe shows how water reached the excavation/i);
+    expect(scenario.scenes[descended.run!.sceneId].text).not.toMatch(/following the pipe|you traced the pipe/i);
   });
 
   it('gates the Bent Pin caliper method on carried, usable Field Calipers', () => {
