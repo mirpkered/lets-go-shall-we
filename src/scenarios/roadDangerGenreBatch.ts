@@ -97,7 +97,7 @@ function build(c: RoadStory): Scenario {
   ];
   const scenes: Record<string, Scene> = {
     approach: s('approach', c.startTitle, c.start, approachChoices),
-    threat: s('threat', c.threatTitle, c.threat, responseChoices, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.approaches.map((choice) => ({ requirements: { flags: [`road_approach_${choice.id}`] }, text: choice.result }))),
+    threat: s('threat', c.threatTitle, c.threat, responseChoices, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.approaches.map((choice) => ({ requirements: { flags: [`road_approach_${choice.id}`] }, text: `${choice.result} ${c.threat}` }))),
     aftermath: s('aftermath', c.aftermathTitle, c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', c.responses.map((choice) => ({ requirements: { flags: [`road_response_${choice.id}`] }, text: `${choice.result} ${c.aftermath}` }))),
     settlement: s('settlement', 'The Road Opens', offerText, [
       ...(ownedRewardChoice ? [ownedRewardChoice] : []),

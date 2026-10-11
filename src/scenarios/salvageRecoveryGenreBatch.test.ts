@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, sceneText, setItemCondition, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
@@ -159,6 +159,28 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       expect(lost.run?.sceneId).toBe('fightLost');
       expect(lost.run?.status).toBe('success');
       expect(lost.run?.acquiredThisRun).toEqual([]);
+    }
+  });
+
+  it('preserves recovery and ownership setup in access- and decision-specific scene variants', () => {
+    for (const scenario of SALVAGE_RECOVERY_GENRE_BATCH) {
+      for (const access of scenario.scenes.arrival.choices) {
+        const carried = access.requirements?.items?.[0];
+        const entered = act(initial(scenario, carried), scenario, access.id);
+        const evidence = sceneText(scenario.scenes.evidence, entered);
+        expect(evidence, `${scenario.id}.${access.id}: common recovery context`).toContain(scenario.scenes.evidence.text);
+        expect(evidence.split(scenario.scenes.evidence.text).length - 1, `${scenario.id}.${access.id}: setup once`).toBe(1);
+        expect(scenario.scenes.evidence.choices.some(({ id }) => id === 'traceOwnership' && meets(undefined, entered)), scenario.id).toBe(true);
+
+        for (const decisionChoice of ['traceOwnership', 'secureRecovery']) {
+          const state = act(entered, scenario, decisionChoice);
+          const decisionText = sceneText(scenario.scenes.decision, state);
+          expect(decisionText, `${scenario.id}.${decisionChoice}: ownership/release setup`).toContain(scenario.scenes.decision.text);
+          expect(decisionText.split(scenario.scenes.decision.text).length - 1, `${scenario.id}.${decisionChoice}: setup once`).toBe(1);
+          expect(decisionText.length).toBeGreaterThan(scenario.scenes.decision.text.length);
+          expect(scenario.scenes.decision.choices.some(({ id }) => id === 'acceptReleasedGear'), scenario.id).toBe(true);
+        }
+      }
     }
   });
 });

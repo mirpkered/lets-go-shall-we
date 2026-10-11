@@ -47,6 +47,8 @@ function build(story: SalvageStory): Scenario {
     return item?.id;
   });
   const gearName = story.gear ? ITEMS[story.gear]?.name ?? story.gear : undefined;
+  const evidenceSetup = `${story.complication}${story.combat ? ` ${story.combat.warning}` : ''}`;
+  const decisionSetup = `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`;
   const tags = largeTags({
     hook: `${story.title}: recovery reveals a question of ownership before useful property can change hands.`,
     activity: 'labor/repair', role: 'worker', tone: story.risk === 'LOW' ? 'adventurous' : 'tense/dangerous',
@@ -61,24 +63,24 @@ function build(story: SalvageStory): Scenario {
       { id:'verifyFirst', label:story.firstChoices[1], ...(firstChoiceGear[1] ? {requirements:{items:[firstChoiceGear[1]],usableItems:[firstChoiceGear[1]]}} : {}), next:'evidence', effects:{ setFlags:[`${story.id}_access_two`] } },
       { id:'holdAndAsk', label:story.firstChoices[2], ...(firstChoiceGear[2] ? {requirements:{items:[firstChoiceGear[2]],usableItems:[firstChoiceGear[2]]}} : {}), next:'evidence', effects:{ setFlags:[`${story.id}_access_three`] } },
     ], story.risk === 'HIGH' ? 'warning' : 'safe'),
-    evidence: largeScene('evidence', 'What the Recovery Shows', `${story.complication}${story.combat ? ` ${story.combat.warning}` : ''}`, [
+    evidence: largeScene('evidence', 'What the Recovery Shows', evidenceSetup, [
       { id:'traceOwnership', label:'Trace the marks, records, and witnesses before claiming anything', next:'decision', effects:{ setFlags:[`${story.id}_checked_owner`] } },
       { id:'secureRecovery', label:'Secure only the clearly authorized item and leave the rest in place', next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
       { id:'deferRecovery', label:'Stop and ask the responsible owner or crew to settle the claim', next:'deferred', effects:{knowledge:[story.knowledge]} },
       ...(story.combat ? [{ id:'standGround', label:`Stand your ground and fight off the ${story.combat.enemy}`, hint:'The aggressor has made a clear physical threat; you can still withdraw or defer the recovery.', effects:{ combat:{ enemy:story.combat.enemy, winChance:story.combat.winChance, damageOnWin:1, damageOnLoss:3, winNext:'fightWon', lossNext:'fightLost' } } }] : []),
     ], story.risk === 'HIGH' ? 'warning' : 'safe', [
-      { requirements:{ flags:[`${story.id}_access_one`] }, text:story.consequence[0] },
-      { requirements:{ flags:[`${story.id}_access_two`] }, text:story.consequence[1] },
-      { requirements:{ flags:[`${story.id}_access_three`] }, text:story.consequence[2] },
+      { requirements:{ flags:[`${story.id}_access_one`] }, text:`${evidenceSetup} ${story.consequence[0]}` },
+      { requirements:{ flags:[`${story.id}_access_two`] }, text:`${evidenceSetup} ${story.consequence[1]}` },
+      { requirements:{ flags:[`${story.id}_access_three`] }, text:`${evidenceSetup} ${story.consequence[2]}` },
     ]),
-    decision: largeScene('decision', 'The Property Is Accounted For', `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`, [
+    decision: largeScene('decision', 'The Property Is Accounted For', decisionSetup, [
       ...(story.gear ? [{ id:'acceptReleasedGear', label:story.gearCost ? `Buy the released ${gearName} for ${story.gearCost} coin${story.gearCost === 1 ? '' : 's'}` : `Accept the released ${gearName}`, requirements:{ notOwnedItems:[story.gear], ...(story.gearCost ? { minMoney:story.gearCost } : {}) }, next:'gear', effects:{ gainItems:[story.gear], ...(story.gearCost ? { money:-story.gearCost } : {}), gainItemProvenance:{ [story.gear]:story.gearSource ?? `Recovered with clear ownership release in ${story.title}` }, ...(story.repair ? { gainItemConditions:{ [story.gear]:'DAMAGED' as const } } : {}), historyFlags:[`salvage_${story.id}_${story.gear}`] } }] : []),
       ...(story.repairItem ? [{ id:'repairOwnedGear', label:`Have the recovery crew repair your damaged ${ITEMS[story.repairItem]?.name ?? story.repairItem} instead`, requirements:{ items:[story.repairItem], itemConditions:{ [story.repairItem]:['DAMAGED','BROKEN'] as ('DAMAGED'|'BROKEN')[] } }, next:'repaired', effects:{ repairItems:[story.repairItem], repairItemProvenance:{ [story.repairItem]:`Repaired during ${story.title}` }, historyFlags:[`salvage_${story.id}_repair`] } }] : []),
       { id:'takeFee', label:`Take the ${story.coins}-coin recovery fee instead`, next:'paid', effects:{ money:story.coins, setFlags:[`${story.id}_took_fee`] } },
       { id:'keepLesson', label:'Decline all material compensation', next:'lesson', effects:{ setFlags:[`${story.id}_refused`] } },
     ].map((choice)=>({...choice,effects:{knowledge:[story.knowledge],...choice.effects}})), 'safe', [
-      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:'Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.' },
-      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:'Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.' },
+      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:`${decisionSetup} Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.` },
+      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:`${decisionSetup} Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.` },
     ]),
     deferred: largeEnd('deferred', 'A Claim Left Intact', `You stop before disputed property changes hands. ${story.knowledge} The owner or responsible crew will decide what can be recovered.`),
     ...(story.combat ? {

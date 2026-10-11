@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
@@ -140,6 +140,23 @@ describe('Road Danger / Highwaymen genre batch', () => {
       expect(story.scenes.coins.text, id).toMatch(/accept \d+ coins/i);
       expect(story.scenes.coins.text, id).not.toMatch(/instead of/i);
       expect(story.scenes.unpaid.text, id).toMatch(/decline compensation/i);
+    }
+  });
+
+  it('keeps the common threat introduction in every approach-specific threat scene', () => {
+    for (const scenario of ROAD_DANGER_GENRE_BATCH) {
+      for (const approach of scenario.scenes.approach.choices) {
+        const carried = approach.requirements?.items?.[0];
+        let state = initial(scenario, carried);
+        state = act(state, scenario, approach.id);
+        const displayed = sceneText(scenario.scenes.threat, state);
+        const selectedDetail = scenario.scenes.threat.textVariants?.find(({ requirements }) => meets(requirements, state))?.text;
+        expect(selectedDetail, `${scenario.id}.${approach.id}: approach consequence`).toBeTruthy();
+        expect(displayed).toContain(selectedDetail);
+        expect(displayed, `${scenario.id}.${approach.id}: shared threat`).toContain(scenario.scenes.threat.text);
+        expect(displayed.split(scenario.scenes.threat.text).length - 1, `${scenario.id}.${approach.id}: no duplicate setup`).toBe(1);
+        expect(scenario.scenes.threat.choices.some(({ id }) => id.startsWith('respond_') && meets(undefined, state)), scenario.id).toBe(true);
+      }
     }
   });
 });

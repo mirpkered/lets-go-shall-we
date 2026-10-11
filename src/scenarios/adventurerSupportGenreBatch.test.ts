@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ITEMS } from '../items';
-import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, setItemCondition, startRun, meets } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, sceneText, setItemCondition, startRun, meets } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
@@ -197,5 +197,30 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(blindCut.scenes.settlement.text).toMatch(/offers the agreed three-coin scout fee or/i);
     expect(blindCut.scenes.paid.text).toMatch(/accept 3 coins, not the Signal Flag Set/i);
     expect(blindCut.scenes.gear.text).toMatch(/spare set/i);
+  });
+
+  it('keeps each new support complication visible alongside the selected kit detail', () => {
+    for (const scenario of ADVENTURER_SUPPORT_GENRE_BATCH) {
+      for (const kit of scenario.scenes.preparation.choices) {
+        const carried = kit.requirements?.items?.[0];
+        let state = start(scenario, carried);
+        state = act(state, scenario, kit.id);
+        const displayed = sceneText(scenario.scenes.complication, state);
+        expect(displayed, `${scenario.id}.${kit.id}: complication`).toContain(scenario.scenes.complication.text);
+        expect(displayed.split(scenario.scenes.complication.text).length - 1, `${scenario.id}.${kit.id}: no duplicate complication`).toBe(1);
+        const selectedDetail = scenario.scenes.complication.textVariants?.find(({ requirements }) => meets(requirements, state))?.text;
+        expect(selectedDetail, `${scenario.id}.${kit.id}: selected kit detail`).toBeTruthy();
+        expect(displayed).toContain(selectedDetail);
+        const kitDetail = selectedDetail!.replace(scenario.scenes.complication.text, '').trim();
+        expect(kitDetail.length, `${scenario.id}.${kit.id}: nonempty kit detail`).toBeGreaterThan(20);
+        expect(displayed).toContain(kitDetail);
+        expect(scenario.scenes.complication.choices.some(({ id }) => id.startsWith('response_') && meets(undefined, state)), scenario.id).toBe(true);
+      }
+    }
+    const secondGunhand = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-second-gunhand')!;
+    const gunhand = start(secondGunhand);
+    const flagged = act(gunhand, secondGunhand, 'kit_flags');
+    const threatText = sceneText(secondGunhand.scenes.complication, flagged);
+    expect(threatText.match(/Two armed robbers leave the trees/g)).toHaveLength(1);
   });
 });
