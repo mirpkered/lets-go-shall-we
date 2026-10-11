@@ -75,9 +75,9 @@ export const COMMUNICATION_ADVENTURES = authorBatch([
     id: 'wire-down', title: 'Wire Down', subtitle: 'A message matters, but the line has gone quiet.', openingContext: 'depot',
     opening: 'A telegraph operator finds the line dead before a scheduled market notice can be sent to the next town. A repair crew is already looking for the break. The operator asks whether you can carry one short sealed message to the next station.',
     routes: [
-      { id: 'carry', label: 'Carry the sealed message', title: 'The Road Station to Station', text: 'The operator gives you a sealed envelope, the destination, and a small payment for the ride. You are a messenger, not a wire repairer.', timeCost: 20, outcomes: [
-        { id: 'deliver', label: 'Hand it to the receiving clerk', title: 'Message Delivered', text: 'The other clerk signs a receipt and sends a runner to the market office. The operator’s words reach their destination without you touching the line.' },
-        { id: 'wait', label: 'Wait for a receipt before returning', title: 'A Confirmed Delivery', text: 'You bring back the receiving clerk’s note. The route took longer, but the sender knows the message arrived.' },
+      { id: 'carry', label: 'Carry the sealed message', title: 'The Road Station to Station', text: 'The operator gives you a sealed envelope, the destination, and one coin for the ride. You are a messenger, not a wire repairer.', timeCost: 20, outcomes: [
+        { id: 'deliver', label: 'Hand it to the receiving clerk', title: 'Message Delivered', text: 'The other clerk signs a receipt and sends a runner to the market office. The operator’s words reach their destination without you touching the line.', effects: { money: 1 } },
+        { id: 'wait', label: 'Wait for a receipt before returning', title: 'A Confirmed Delivery', text: 'You bring back the receiving clerk’s note. The route took longer, but the sender knows the message arrived.', effects: { money: 1 } },
       ] },
       { id: 'crew', label: 'Ask where the repair crew is searching', title: 'A Break in the Line', text: 'The operator marks the likely stretch on a paper map. A crew has gone out with poles and tools; they do not need an untrained stranger climbing the wire.', outcomes: [
         { id: 'find', label: 'Bring the crew fresh water', title: 'A Small Help', text: 'You find the crew at a roadside pole and bring water from the station. They have located a fallen branch, not yet the line break.' },

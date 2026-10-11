@@ -67,12 +67,12 @@ export const A_NOTICE_PRINTED_BACKWARD = story('a-notice-printed-backward', 'A N
     { id: 'switchToHand', label: 'Set the type aside and write a correction', next: 'hand' },
   ]),
   hand: scene('hand', 'A Plain Correction', 'The handwritten notice is less handsome but clear. The committee may begin late while people read it, or the printer can post the reversed sheets as a demonstration of the mistake.', [
-    { id: 'postCorrection', label: 'Post the handwritten correction', next: 'clear' },
+    { id: 'postCorrection', label: 'Post the handwritten correction', next: 'clear', effects: { money: 1 } },
     { id: 'showReversedSheet', label: 'Show the reversed sheet at the meeting', next: 'demonstration' },
   ]),
   hall: scene('hall', 'The Committee Is Gathering', 'The clerk has not yet posted anything. They can announce the correct place aloud, or wait for a readable notice and start late.', [
-    { id: 'announcePlace', label: 'Ask the clerk to announce it aloud', next: 'clear' },
-    { id: 'waitForPrinter', label: 'Wait for the corrected sheet', next: 'late' },
+    { id: 'announcePlace', label: 'Ask the clerk to announce it aloud', next: 'clear', effects: { money: 1 } },
+    { id: 'waitForPrinter', label: 'Wait for the corrected sheet', next: 'late', effects: { money: 1 } },
   ]),
   clear: end('clear', 'Everyone Finds the Hall', 'The committee meeting starts on time after the clerk announces the place. The printer pays for the sheet you helped prepare and promises to check the type before the next run.'),
   demonstration: end('demonstration', 'A Reversed Lesson', 'The printer turns the mistake into a short explanation of how type reads backward. The corrected meeting notice is written clearly beside it.'),

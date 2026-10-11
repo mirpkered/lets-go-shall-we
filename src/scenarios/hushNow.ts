@@ -236,26 +236,26 @@ export const HUSH_NOW: Scenario = {
     },
     delayedRescueEnding: {
       id: 'delayedRescueEnding', title: 'A Long Wait in the Rain', tone: 'warning', ending: 'success',
-      text: 'The loose rail is kept steady while help is fetched from the neighboring farm. {{farmhand}} is cold and frightened, but conscious. The rain is still falling; the family has chosen a careful rescue over another rushed lift.',
+      text: 'The loose rail is kept steady while help is fetched from the neighboring farm. {{farmhand}} is cold and frightened, but conscious. The rain is still falling; the family has chosen a careful rescue over another rushed lift. The two-coin wage for the gate work completed since noon is settled separately from any rescue thank-you.',
       choices: [],
     },
     safeEnding: {
       id: 'safeEnding', title: 'The House Speaks Again', tone: 'safe', ending: 'success',
-      text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe. The gate needs a proper repair in daylight, but the missing worker is home. The family remembers that you had a choice about staying.',
+      text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe. The gate needs a proper repair in daylight, but the missing worker is home. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.',
       textVariants: [
-        { requirements: { flags: ['heiferLoose'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe, but the heifer ran toward the west road and has not been found. The family remembers that you brought their worker home.' },
-        { requirements: { flags: ['heiferReturned'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep and heifer are back at the farm, and the child is safe. The gate needs a proper repair in daylight. The family remembers that you had a choice about staying.' },
+        { requirements: { flags: ['heiferLoose'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe, but the heifer ran toward the west road and has not been found. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.' },
+        { requirements: { flags: ['heiferReturned'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep and heifer are back at the farm, and the child is safe. The gate needs a proper repair in daylight. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.' },
       ],
       choices: [],
     },
     livestockEnding: {
       id: 'livestockEnding', title: 'A Pen Secured for the Night', tone: 'safe', ending: 'success',
-      text: 'The sheep are behind the closed pen gate, and the household stays together at the farmhouse. {{farmhand}} remains missing in the rain. The family will search again at first light; you do not learn what happened after you left the yard.',
+      text: 'The sheep are behind the closed pen gate, and the household stays together at the farmhouse. {{farmhand}} remains missing in the rain. The family will search again at first light; you do not learn what happened after you left the yard. The two-coin wage for the gate work completed since noon is settled separately from the unfinished search.',
       choices: [],
     },
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Keeps Moving', tone: 'safe', ending: 'success',
-      text: 'You take the west road away from the farmhouse. Rain softens the prints behind you. You do not know whether {{farmhand}} returns or what the family does next.',
+      text: 'You take the west road away from the farmhouse with the two coins promised for the gate work you completed since noon. Rain softens the prints behind you. You do not know whether {{farmhand}} returns or what the family does next.',
       choices: [],
     },
     // Active pre-rewrite saves are moved here without losing health, inventory, flags, discoveries, or time.
@@ -288,3 +288,21 @@ export const HUSH_NOW: Scenario = {
     },
   },
 };
+
+// The gate work was completed before the search began. Settle its earned wage
+// exactly once on whichever terminal outcome the Traveler chooses, separately
+// from the optional practical thank-you for the rescue.
+const HUSH_WAGE_ENDINGS = new Set(['safeEnding', 'delayedRescueEnding', 'livestockEnding', 'walkAwayEnding']);
+for (const scene of Object.values(HUSH_NOW.scenes)) {
+  for (const choice of scene.choices) {
+    if (choice.next && HUSH_WAGE_ENDINGS.has(choice.next)) {
+      choice.effects = { ...choice.effects, money: (choice.effects?.money ?? 0) + 2 };
+    }
+    if (choice.chance?.successNext && HUSH_WAGE_ENDINGS.has(choice.chance.successNext)) {
+      choice.chance.successEffects = { ...choice.chance.successEffects, money: (choice.chance.successEffects?.money ?? 0) + 2 };
+    }
+    if (choice.chance?.failureNext && HUSH_WAGE_ENDINGS.has(choice.chance.failureNext)) {
+      choice.chance.failureEffects = { ...choice.chance.failureEffects, money: (choice.chance.failureEffects?.money ?? 0) + 2 };
+    }
+  }
+}

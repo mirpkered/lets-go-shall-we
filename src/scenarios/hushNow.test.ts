@@ -127,7 +127,7 @@ describe('Hush Now structural rewrite', () => {
     state = act(state, 'acceptGateHook');
     expect(state.run?.sceneId).toBe('safeEnding');
     expect(state.run?.status).toBe('success');
-    expect(state.character?.money).toBe(0);
+    expect(state.character?.money).toBe(2);
     expect(eligibleCarryItems(state)).toContain('gateHook');
   });
 

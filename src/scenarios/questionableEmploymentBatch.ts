@@ -73,7 +73,7 @@ export const QUESTIONABLE_EMPLOYMENT_ADVENTURES = authorBatch([
         { id: 'refuse', label: 'Decline without inspecting it', title: 'A Job Passed By', text: 'You decline rather than break a seal or carry an unknown shipment. The carrier finds another driver.' },
       ] },
       { id: 'destination', label: 'Ask the warehouse to confirm the order', title: 'The Receiving Clerk', text: 'A telegraph clerk confirms the warehouse expects a sealed crate under this bill number. They cannot verify its contents from the message.', outcomes: [
-        { id: 'deliver', label: 'Carry it to the confirmed address', title: 'The Right Warehouse', text: 'The receiving clerk signs the bill and takes the crate. The contents are recorded on their ledger, not shown to you.' },
+        { id: 'deliver', label: 'Carry it to the confirmed address', title: 'The Right Warehouse', text: 'The receiving clerk signs the bill and takes the crate. The signed delivery earns the four coins agreed with the carrier; the contents are recorded on the clerk’s ledger, not shown to you.', effects: { money: 4 } },
         { id: 'hold', label: 'Ask the carrier to collect it instead', title: 'No Parcel in Your Hands', text: 'The carrier agrees to make the trip themselves. You have confirmed the address without accepting the job.' },
       ] },
     ],
