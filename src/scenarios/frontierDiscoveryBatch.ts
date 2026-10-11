@@ -146,7 +146,7 @@ function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
     'You follow the trail to the blind shoulder. The path narrows across loose shale; boot marks cross one another and fade where bare stone begins. Beyond the shoulder, a lower track bends toward the old assay road, but neither the prints nor the route establish that the assayer came this way. You find no sign of an injured person.',
     [
       { id: 'traceToSaddle', label: 'Follow the lower track as far as the ridge saddle', next: 'the-missing-assayerBold', effects: { knowledge: ['The ridge trail from the assay station reaches a lower track toward the old assay road, but the prints cannot identify who used it.'] } },
-      { id: 'callAndReturn', label: 'Call once, then return to leave a note at the station', next: 'the-missing-assayerCautious', effects: { historyFlags: ['recorded the ridge trail and unanswered call at the assay station'] } },
+      { id: 'callAndReturn', label: 'Call once, then return to leave a note at the station', next: 'the-missing-assayerCautious', effects: { setFlags: ['assayer_checked_ridge'], historyFlags: ['recorded the ridge trail and unanswered call at the assay station'] } },
     ],
     'warning',
   );
@@ -169,7 +169,11 @@ function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
   );
   scenes['the-missing-assayerCautious'] = {
     ...scenes['the-missing-assayerCautious'],
-    text: 'You leave a note at the station with the route you checked and the time of your unanswered call. The ridge trail remains passable, and the dated assay entry is undisturbed. You have made it easier for the next visitor to compare accounts, but the assayer’s whereabouts remain unknown.',
+    text: 'You leave a note at the station with the time of your unanswered call. The dated assay entry remains undisturbed, but this visit does not establish whether the ridge trail is passable. You have made it easier for the next visitor to compare accounts; the assayer’s whereabouts remain unknown.',
+    textVariants: [{
+      requirements: { flags: ['assayer_checked_ridge'] },
+      text: 'After checking the ridge trail to the blind shoulder, you return to leave a note with the time of your unanswered call. The dated assay entry remains undisturbed. You have made it easier for the next visitor to compare accounts; the assayer’s whereabouts remain unknown.',
+    }],
   };
   scenes['the-missing-assayerBold'] = {
     ...scenes['the-missing-assayerBold'],
@@ -183,8 +187,45 @@ function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
 }
 
 export const FRONTIER_DISCOVERY_ADVENTURES = frontierAdventures.map((scenario) =>
-  specializeSurveyStakes(scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario),
+  specializeSurveyStakes(specializeFrontierRc12(scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario)),
 );
+
+/** Keep converged frontier closures truthful about the exact object state each route establishes. */
+function specializeFrontierRc12(scenario: Scenario): Scenario {
+  if (scenario.id === 'floorboard-that-was-replaced') {
+    return {
+      ...scenario,
+      scenes: {
+        ...scenario.scenes,
+        'floorboard-that-was-replacedCautious': {
+          ...scenario.scenes['floorboard-that-was-replacedCautious'],
+          text: 'You read only the paper edge visible beneath the board; it remains under the floor, and you do not claim the cabin or its contents. The board is left intact.',
+        },
+        'floorboard-that-was-replacedBold': {
+          ...scenario.scenes['floorboard-that-was-replacedBold'],
+          text: 'You pry up the replaced board and bring the paper into view. You leave it in the cabin: the site has no clear claimant, and finding a hidden paper does not establish permission to take it.',
+        },
+        'floorboard-that-was-replacedMishap': {
+          ...scenario.scenes['floorboard-that-was-replacedMishap'],
+          text: 'The material shifts and the paper slips beyond safe reach. You retreat without recovering it; the cabin and the hidden paper still have no established claimant.',
+        },
+      },
+    };
+  }
+  if (scenario.id === 'forgotten-sluice') {
+    return {
+      ...scenario,
+      scenes: {
+        ...scenario.scenes,
+        'forgotten-sluiceBold': {
+          ...scenario.scenes['forgotten-sluiceBold'],
+          text: 'You open the small gate and test the flow through the old sluice. Water now runs along the channel in the changed position you leave behind; the evidence still does not establish who may use it.',
+        },
+      },
+    };
+  }
+  return scenario;
+}
 
 function specializeSurveyStakes(scenario: Scenario): Scenario {
   if (scenario.id !== 'survey-stakes-are-wrong') return scenario;
