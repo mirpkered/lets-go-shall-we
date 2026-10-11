@@ -5,7 +5,7 @@ import { ITEMS, itemsOfClass } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
 import { SCENARIOS } from './index';
-import { EQUIPMENT_TESTING_GENRE_BATCH as BATCH, EQUIPMENT_TESTING_NARRATED_FEES } from './equipmentTestingGenreBatch';
+import { EQUIPMENT_TESTING_EDITORIAL_DRAFT as AUTHORED, EQUIPMENT_TESTING_GENRE_BATCH as BATCH, EQUIPMENT_TESTING_NARRATED_FEES } from './equipmentTestingGenreBatch';
 import { THE_BROKEN_HARNESS } from './animalsBatch';
 import { WILDERNESS_FIELDCRAFT_GENRE_BATCH } from './wildernessFieldcraftGenreBatch';
 import { TRADES_APPRENTICESHIP_GENRE_BATCH } from './tradesApprenticeshipGenreBatch';
@@ -21,6 +21,10 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(BATCH).errors).toEqual([]);
+    for (const id of ['the-tester-who-left-the-shop', 'the-rain-cup-at-the-bridge', 'the-caliper-for-the-new-buckle', 'the-square-that-lied-on-the-ramp', 'the-quiet-gauge-at-the-river-gate']) {
+      expect(AUTHORED.some(({ id: authoredId }) => authoredId === id), `${id} remains in the authoring draft`).toBe(true);
+      expect(SCENARIOS.some(({ id: registeredId }) => registeredId === id), `${id} is not added to the 861-Adventure registry`).toBe(false);
+    }
   });
 
   it('adds seven mundane, distinct and carryable tools with explicit limits', () => {
@@ -80,7 +84,7 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
       ['the-rope-that-frayed-in-the-sleeve', 'result', 'lesson'],
     ] as const;
     for (const [scenarioId, sceneId, learningChoiceId] of testedSettlements) {
-      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      const scenario = AUTHORED.find(({ id }) => id === scenarioId)!;
       expect(scenario, scenarioId).toBeDefined();
       const choices = scenario.scenes[sceneId].choices;
       const learned = choices.find(({ id }) => id === learningChoiceId)?.effects?.knowledge;
@@ -127,6 +131,86 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     const plumb = BATCH.find(({ id }) => id === 'the-plumb-bob-in-the-barn')!;
     expect(plumb.scenes.safe.choices.find(({ id }) => id === 'coin')?.effects?.knowledge).toBeUndefined();
     expect(plumb.scenes.safe.choices.find(({ id }) => id === 'lesson')?.effects?.knowledge).toHaveLength(1);
+  });
+
+  it('records completed Equipment Testing findings before settlement and keeps them across every material choice', () => {
+    const routes = [
+      ['the-telegraph-tester-in-the-storm', ['testBothEnds', 'temporary'], 'offer', 'A continuity test during calm weather does not clear a line that fails under wind; record conditions and repeat after movement.'],
+      ['the-tester-who-left-the-shop', ['checkSlate', 'returnAndRecord'], 'offer', 'Instrument sign-out needs a return entry as well as an issue entry; a missing slot does not by itself prove theft.'],
+      ['the-rain-cup-at-the-bridge', ['observeStream', 'divert'], 'result', 'A sheltered rain reading can differ from an exposed slope; inspect upstream runoff and the structure directly before reopening a crossing.'],
+      ['the-caliper-for-the-new-buckle', ['useRule', 'markAndReplace'], 'offer', 'A buckle pin must fit sound leather; a narrower pin cannot restore a worn or split loop.'],
+      ['the-square-that-lied-on-the-ramp', ['dryFrame', 'planeBoard'], 'offer', 'Reverse a square on a known straight edge before correcting a wet or warped frame; reference surfaces can be the source of an apparent error.'],
+      ['the-quiet-gauge-at-the-river-gate', ['checkGate', 'keepRecord'], 'offer', 'A low local rain reading does not explain a rising millrace by itself; inspect upstream flow and the outlet for obstructions.'],
+    ] as const;
+    const chooseId = (state: SaveData, scenario: (typeof AUTHORED)[number], id: string) => {
+      const currentScene = scenario.scenes[state.run!.sceneId];
+      const choice = currentScene.choices.find(({ id: choiceId }) => choiceId === id);
+      expect(choice, `${scenario.id}.${currentScene.id}.${id}`).toBeDefined();
+      return choose(state, scenario, choice!, () => 0);
+    };
+
+    for (const [scenarioId, route, settlementId, fact] of routes) {
+      const scenario = AUTHORED.find(({ id }) => id === scenarioId)!;
+      expect(scenario, scenarioId).toBeDefined();
+      const character = newCharacter(`RC04 ${scenarioId}`);
+      if (scenarioId === 'the-telegraph-tester-in-the-storm') {
+        character.carriedItem = 'telegraphLineTester';
+        character.carriedItems = ['telegraphLineTester'];
+      }
+      let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+      for (const choiceId of route) state = chooseId(state, scenario, choiceId);
+      expect(state.character?.knowledge, `${scenarioId} earns its finding before settlement`).toContain(fact);
+
+      const settlement = scenario.scenes[settlementId];
+      expect(settlement.choices.every(({ effects }) => effects?.knowledge?.includes(fact)), `${scenarioId} legacy settlement choices preserve proven learning`).toBe(true);
+      for (const choice of settlement.choices) {
+        const outcome = choose(state, scenario, choice, () => 0);
+        expect(outcome.character?.knowledge, `${scenarioId}.${choice.id}`).toContain(fact);
+        const storage = memoryStorage();
+        saveGame(outcome, storage as never);
+        const restored = loadSave(storage as never);
+        expect(restored.character?.knowledge, `${scenarioId}.${choice.id} reload`).toContain(fact);
+        expect(restored.character?.knowledge?.filter((entry) => entry === fact)).toHaveLength(1);
+      }
+    }
+  });
+
+  it('does not grant these findings on routes that stop before the relevant test or discovery', () => {
+    const earlyExits = [
+      ['the-telegraph-tester-in-the-storm', 'climbNow', 'A continuity test during calm weather does not clear a line that fails under wind; record conditions and repeat after movement.'],
+      ['the-tester-who-left-the-shop', 'accuseLast', 'Instrument sign-out needs a return entry as well as an issue entry; a missing slot does not by itself prove theft.'],
+      ['the-rain-cup-at-the-bridge', 'openDeck', 'A sheltered rain reading can differ from an exposed slope; inspect upstream runoff and the structure directly before reopening a crossing.'],
+      ['the-caliper-for-the-new-buckle', 'forceLoop', 'A buckle pin must fit sound leather; a narrower pin cannot restore a worn or split loop.'],
+      ['the-square-that-lied-on-the-ramp', 'cutFrame', 'Reverse a square on a known straight edge before correcting a wet or warped frame; reference surfaces can be the source of an apparent error.'],
+      ['the-quiet-gauge-at-the-river-gate', 'openSluice', 'A low local rain reading does not explain a rising millrace by itself; inspect upstream flow and the outlet for obstructions.'],
+    ] as const;
+    for (const [scenarioId, choiceId, fact] of earlyExits) {
+      const scenario = AUTHORED.find(({ id }) => id === scenarioId)!;
+      const character = newCharacter(`Early exit ${scenarioId}`);
+      const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+      const choice = scenario.scenes[initial.run!.sceneId].choices.find(({ id }) => id === choiceId)!;
+      const result = choose(initial, scenario, choice, () => 0);
+      expect(result.character?.knowledge, `${scenarioId}.${choiceId}`).not.toContain(fact);
+    }
+  });
+
+  it('offers Nell’s plumb-reading lesson as explicit deferred teaching, not as knowledge already retained', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-plumb-bob-in-the-barn')!;
+    const settlement = scenario.scenes.safe;
+    expect(settlement.text).toContain('says she can show you how to get a true plumb reading');
+    const coin = settlement.choices.find(({ id }) => id === 'coin')!;
+    const teaching = settlement.choices.find(({ id }) => id === 'lesson')!;
+    expect(coin.effects?.knowledge).toBeUndefined();
+    expect(teaching.label).toContain('let Nell show you the method');
+    expect(teaching.effects?.knowledge).toHaveLength(1);
+  });
+
+  it('keeps The Glass Level Disagrees as the healthy compensation reference', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-glass-level-disagrees')!;
+    const paid = scenario.scenes.paid;
+    const learning = paid.choices.find(({ id }) => id === 'knowledge')!;
+    expect(learning.label).toBe('Decline material compensation');
+    for (const choice of paid.choices) expect(choice.effects?.knowledge).toEqual(learning.effects?.knowledge);
   });
 
   it('upgrades existing owned equipment in place and persists its history through save/resume', () => {
