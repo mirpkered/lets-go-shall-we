@@ -147,7 +147,7 @@ export const THE_WIDOWS_BEAST: Scenario = {
     widowYard: scene('widowYard', 'A Shape by the Fence', 'A widow asks you to look at a large shape circling her yard after dark. It has never entered the house or threatened her. Neighbors want it driven away because their sheep are nervous; a broken fence opens toward the woods.', [
       { id: 'askWidowBehavior', label: 'Ask when the shape comes near', next: 'widowAccount', effects: { knowledge: ['A large animal circled a widow’s yard but never crossed her house threshold.'] } },
       { id: 'inspectFence', label: 'Inspect the fence and tracks', next: 'widowTracks' },
-      { id: 'declineBeast', label: 'Refuse to hunt without evidence', next: 'widowLeave', effects: { historyFlags: ['refused to hunt a creature protecting a widow without evidence'] } },
+      { id: 'declineBeast', label: 'Refuse to hunt without evidence', next: 'widowLeave', effects: { historyFlags: ['refused to hunt an unidentified animal without evidence it harmed livestock'] } },
     ]),
     widowAccount: scene('widowAccount', 'Food Left at the Steps', 'The widow says she left scraps outside after a hard winter. The animal now waits beyond the yard fence. She does not want it fed indoors, and does not know whether it has killed any sheep.', [
       { id: 'watchFromWindow', label: 'Watch the yard from inside', next: 'widowWatch' },

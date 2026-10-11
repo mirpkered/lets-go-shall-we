@@ -30,7 +30,7 @@ export const THE_BLUE_HOLE: Scenario = {
       choices: [
         { id: 'swimOut', label: 'Swim out toward the blue shelf', timeCost: 8, next: 'firstSwim' },
         { id: 'floatNearShore', label: 'Float where you can still stand', timeCost: 8, next: 'quietRest' },
-        { id: 'returnFromShallows', label: 'Return to shore', timeCost: 3, effects: { historyFlags: ['chose_not_to_enter_water'] }, next: 'quietRest' },
+        { id: 'returnFromShallows', label: 'Return to shore', timeCost: 3, next: 'quietRest' },
       ] },
     firstSwim: { id: 'firstSwim', title: 'Out Beyond the Shallows', tone: 'safe',
       text: 'You are in the water, beyond easy standing depth, with the bank behind you and the landing visible to one side. Your gear is still with your clothes on shore; nothing carried can be reached from here.',
@@ -42,7 +42,7 @@ export const THE_BLUE_HOLE: Scenario = {
       ],
       choices: [
         { id: 'swimFarther', label: 'Swim farther from the bank', hint: 'You will be farther from standing depth and your belongings.', timeCost: 5, next: 'deepWater' },
-        { id: 'turnBackEarly', label: 'Turn back while the bank is close', timeCost: 5, effects: { historyFlags: ['chose_not_to_enter_water'] }, next: 'quietRest' },
+        { id: 'turnBackEarly', label: 'Turn back while the bank is close', timeCost: 5, next: 'quietRest' },
         { id: 'floatInPlace', label: 'Float and rest for a while', timeCost: 8, next: 'quietRest' },
       ] },
     deepWater: { id: 'deepWater', title: 'The Blue Shelf', tone: 'safe',

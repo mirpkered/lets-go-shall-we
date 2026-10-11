@@ -224,12 +224,12 @@ export const A_PLACE_TO_BURY_HIM: Scenario = {
   scenes: {
     chapelYard: { id: 'chapelYard', title: 'No Family Nearby', tone: 'safe', text: 'An older traveler died during the night after a long illness. The local healer has confirmed it was not an accident, and the body rests under a clean sheet in the chapel yard. His few belongings—a coat, a folded letter, and a purse—are laid on a table for safekeeping. No family is nearby; the neighbors are arranging a respectful burial.', choices: [
       { id: 'checkBelongings', label: 'Help list the belongings for a notice', hint: 'You handle only the items on the table, not the body.', timeCost: 15, next: 'belongingsRecorded', effects: { knowledge: ['The traveler’s table held a coat, folded letter, and purse; the letter names a home settlement but no nearby family.'], historyFlags: ['helped_record_unclaimed_travelers_belongings'] } },
-      { id: 'writeNotice', label: 'Offer to carry a written notice to the next post', timeCost: 10, next: 'noticePrepared', effects: { historyFlags: ['carried_burial_notice_for_stranger'] } },
+      { id: 'writeNotice', label: 'Offer to carry a written notice to the next post', timeCost: 10, next: 'noticePrepared' },
       { id: 'helpBurial', label: 'Help dig the grave in the marked yard', timeCost: 60, next: 'burialHelped', effects: { historyFlags: ['helped_bury_traveler_without_family'] } },
       { id: 'moveOn', label: 'Offer a quiet word and continue your journey', next: 'movedOn' },
     ] },
     belongingsRecorded: { id: 'belongingsRecorded', title: 'A Name to Send Home', tone: 'safe', text: 'The folded letter gives the name of a distant settlement, but not a family address. The purse and coat remain sealed with the local keeper until someone can claim them. A notice can still be sent to the next post.', choices: [
-      { id: 'carryNoticeAfterList', label: 'Carry the notice to the next post', timeCost: 10, next: 'noticePrepared', effects: { historyFlags: ['carried_burial_notice_for_stranger'] } },
+      { id: 'carryNoticeAfterList', label: 'Offer to carry the notice to the next post', timeCost: 10, next: 'noticePrepared' },
       { id: 'assistNow', label: 'Join the neighbors at the grave', timeCost: 45, next: 'burialHelped', effects: { historyFlags: ['helped_bury_traveler_without_family'] } },
       { id: 'leaveAfterList', label: 'Leave the keeper to secure the belongings', next: 'movedOn' },
     ] },

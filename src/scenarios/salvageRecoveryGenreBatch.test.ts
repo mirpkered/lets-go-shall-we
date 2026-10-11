@@ -75,7 +75,15 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
         poor.character!.money = 0;
         expect(meets(offer.requirements, poor), `${scenario.id} insufficient purchase funds`).toBe(false);
       }
-      let state = act(decision(scenario), scenario, 'acceptReleasedGear');
+      let eligible = decision(scenario);
+      if (scenario.id === 'the-missing-pack-frame') {
+        const ordinaryRoute = decision(scenario);
+        expect(meets(offer.requirements, ordinaryRoute), 'frame reward is unavailable without the qualifying recovery').toBe(false);
+        eligible = act(initial(scenario, 'travelRope'), scenario, 'verifyFirst');
+        eligible = act(eligible, scenario, 'secureRecovery');
+      }
+      expect(meets(offer.requirements, eligible), `${scenario.id} qualifying route`).toBe(true);
+      let state = act(eligible, scenario, 'acceptReleasedGear');
       expect(state.character?.money).toBe(5 - (offer.effects?.money ? -offer.effects.money : 0));
       expect(state.run?.inventorySources?.[id]).toBe('found');
       expect(itemState(state, id).provenance).toContain(offer.effects!.gainItemProvenance![id]);
@@ -83,7 +91,8 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       state = openRewardResolution(state);
       expect(state.run?.rewardPendingItems).toContain(id);
       state = finishRewardResolution(placeReward(state, id, 'carry'));
-      expect(getCarriedItems(state.character)).toContain(id);
+      if (scenario.id !== 'the-missing-pack-frame') expect(getCarriedItems(state.character)).toContain(id);
+      else expect(state.run?.inventory).toContain(id);
     }
   });
 

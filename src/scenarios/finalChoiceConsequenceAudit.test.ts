@@ -166,6 +166,6 @@ describe('final-choice consequence audit', () => {
     const opened = take(doorway, stateAt(doorway, 'doorInside'), 'openSecondDoor');
     const retreated = take(doorway, stateAt(doorway, 'doorInside'), 'turnBackDoor');
     expect(endingText(doorway, opened)).toContain('open the far door into the bedroom');
-    expect(endingText(doorway, retreated)).toContain('follow the chalk marks back');
+    expect(endingText(doorway, retreated)).toContain('turn back through the passage');
   });
 });

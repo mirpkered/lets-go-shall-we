@@ -281,7 +281,7 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
       { id: 'scrambleTakeDetour', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
     crossingPassed: { id: 'crossingPassed', title: 'Across the Bridge', tone: 'safe', text: 'You crossed after testing the low stones, accepting a risk the woman’s signal had made visible. The woman is nowhere in sight, but the damaged arch will need repair before carts use it again.', choices: [
-      { id: 'leaveCrossingBehind', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['noticed_and_avoided_a_weak_bridge_arch'] } },
+      { id: 'leaveCrossingBehind', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['crossed_a_weak_bridge_arch_after_testing'] } },
     ] },
     crossingDetourArrival: { id: 'crossingDetourArrival', title: 'Around the Stream', tone: 'safe', text: 'The marked road brings you around to the far bank without putting weight on the damaged arch. The woman is gone; the loose stone and washed mortar remain for the next traveler to notice.', choices: [
       { id: 'leaveDetourCrossing', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['noticed_and_avoided_a_weak_bridge_arch'] } },
@@ -334,10 +334,10 @@ export const THE_ROOM_WITH_NO_DOOR: Scenario = {
   runRandomSelections: [{ id: 'doorlessRoomTruth', values: [{ value: 'sealedRenovation' }, { value: 'storageNook' }, { value: 'removedRoom' }, { value: 'impossibleRoom' }] }],
   scenes: {
     planAndHall: { id: 'planAndHall', title: 'A Room on the Old Plan', tone: 'warning', text: 'An innkeeper asks you to help compare an old house plan with the upstairs hall. The plan shows a small room between the stair landing and two guest rooms. In the actual hall, those walls meet without a door; outside, one shuttered window faces the same spot. A loose strip of trim beside the landing shows a small brass keyhole.', choices: [
-      { id: 'measureDoorlessWall', label: 'Compare the hall and outer wall', timeCost: 4, next: 'wallCompared', effects: { historyFlags: ['entered_room_with_no_door'] } },
-      { id: 'askInnkeeperRoomPlan', label: 'Ask when the plan was last used', timeCost: 3, next: 'innkeeperRoomHistory', effects: { historyFlags: ['entered_room_with_no_door'] } },
-      { id: 'useBrassKeyAtPanel', label: 'Try the Brass Room Key on the small lock', requirements: { items: ['brassRoomKey'] }, timeCost: 3, next: 'keyAtPanel', effects: { historyFlags: ['entered_room_with_no_door'] } },
-      { id: 'leaveDoorlessRoom', label: 'Leave the old plan alone', next: 'roomUnentered', effects: { historyFlags: ['entered_room_with_no_door'] } },
+      { id: 'measureDoorlessWall', label: 'Compare the hall and outer wall', timeCost: 4, next: 'wallCompared' },
+      { id: 'askInnkeeperRoomPlan', label: 'Ask when the plan was last used', timeCost: 3, next: 'innkeeperRoomHistory' },
+      { id: 'useBrassKeyAtPanel', label: 'Try the Brass Room Key on the small lock', requirements: { items: ['brassRoomKey'] }, timeCost: 3, next: 'keyAtPanel' },
+      { id: 'leaveDoorlessRoom', label: 'Leave the old plan alone', next: 'roomUnentered' },
     ] },
     wallCompared: { id: 'wallCompared', title: 'The Walls Do Not Quite Match', tone: 'safe', text: 'The outside wall is deeper than the hall wall by about the width of a cupboard. The shuttered window opens onto no visible room from this side. The innkeeper says no one has entered a separate chamber there in living memory.', textVariants: [
       { requirements: { selections: { doorlessRoomTruth: 'sealedRenovation' } }, text: 'A straight seam in the plaster suggests an old doorway was sealed when the rooms were enlarged.' },

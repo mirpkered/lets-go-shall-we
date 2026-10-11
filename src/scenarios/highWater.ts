@@ -78,7 +78,7 @@ function taskScene(kind: 'resident' | 'livestock' | 'medicine' | 'store', window
     }, {
       id: `carryResidentLate${suffix}`, label: 'Reach the resident through the flooded lane', hint: 'The porch steps are submerged and debris is moving fast.',
       requirements: { notItems: ['travelRope', 'ratCatchersHook'], minElapsedMinutes: 25 }, timeCost: 14,
-      effects: { setFlags: [attempt], historyFlags: ['prioritized_people_in_flood', 'stayed_too_long_to_save_property'] },
+      effects: { setFlags: [attempt], historyFlags: ['prioritized_people_in_flood'] },
       chance: { probability: 0.43, bonusItems: ['heavyLeatherGloves'], bonusProbability: 0.16, successNext: outcome, failureNext: outcome, successMessage: 'You get the resident clear just before the lane disappears.', failureMessage: 'A branch strikes your shoulder; the resident is safe upstairs, but the water cuts off the exit.', successEffects: { setFlags: [success, ...successFlags], historyFlags: [successHistory[kind]] }, failureEffects: { health: -2, setFlags: [`${kind}AttemptFailed`] } },
     });
   } else if (kind === 'livestock') {

@@ -39,7 +39,7 @@ export const BEAR_WITH_ME: Scenario = {
       choices: [
         { id: 'callCamperBack', label: 'Call for them to retreat toward the trees', timeCost: 1, effects: { historyFlags: ['warned_camper_of_bear'] }, next: 'farBankReaction' },
         { id: 'searchForFordEarly', label: 'Search downstream for a crossing', timeCost: 10, next: 'crossingSearch' },
-        { id: 'keepDistance', label: 'Stay on your bank and keep watch', effects: { historyFlags: ['chose_not_to_cross_after_bear_attack'] }, next: 'farBankReaction' },
+        { id: 'keepDistance', label: 'Stay on your bank and keep watch', effects: { historyFlags: ['chose_not_to_cross_after_bear_encounter'] }, next: 'farBankReaction' },
       ] },
     bearAdvances: { id: 'bearAdvances', title: 'The Bear Reaches the Camp', tone: 'danger',
       text: 'The bear lunges toward the far-bank camp. You hear a short cry before the trees hide the scene. From this distance you cannot tell whether {{camper}} is hurt, hiding, or already moving away. The current remains between you.',
@@ -47,7 +47,7 @@ export const BEAR_WITH_ME: Scenario = {
       choices: [
         { id: 'callAfterBear', label: 'Call across and watch for an answer', timeCost: 2, effects: { historyFlags: ['witnessed_bear_attack'] }, next: 'callingAcross' },
         { id: 'searchAfterBear', label: 'Search downstream for a crossing', timeCost: 10, effects: { historyFlags: ['witnessed_bear_attack'] }, next: 'crossingSearch' },
-        { id: 'stayFarBank', label: 'Stay put; the river is too dangerous', effects: { historyFlags: ['witnessed_bear_attack', 'chose_not_to_cross_after_bear_attack'] }, next: 'leftAcrossWater' },
+        { id: 'stayFarBank', label: 'Stay put; the river is too dangerous', effects: { historyFlags: ['witnessed_bear_attack', 'chose_not_to_cross_after_bear_encounter'] }, next: 'leftAcrossWater' },
       ] },
     callingAcross: { id: 'callingAcross', title: 'No Certain Answer', tone: 'warning',
       text: 'You call {{camper}}’s name. There is movement among the far-bank trees, but at this distance you cannot tell who made it. A lack of an answer does not tell you whether the camper is dead.',
@@ -57,7 +57,7 @@ export const BEAR_WITH_ME: Scenario = {
       ],
       choices: [
         { id: 'searchAfterCall', label: 'Look for a way across', timeCost: 8, next: 'crossingSearch' },
-        { id: 'leaveAfterCall', label: 'Leave them to the far bank', effects: { historyFlags: ['chose_not_to_cross_after_bear_attack'] }, next: 'leftAcrossWater' },
+        { id: 'leaveAfterCall', label: 'Leave them to the far bank', effects: { historyFlags: ['chose_not_to_cross_after_bear_encounter'] }, next: 'leftAcrossWater' },
       ] },
     crossingSearch: { id: 'crossingSearch', title: 'Downstream', tone: 'warning',
       text: 'You follow the near bank downstream. The water is still broad and fast; you cannot see the other camper clearly through the trees.',
@@ -68,7 +68,7 @@ export const BEAR_WITH_ME: Scenario = {
       choices: [
         { id: 'crossFord', label: 'Try the stony ford', requirements: { selections: { crossing: 'ford' } }, hint: 'The current is strong; a slip could sweep you downstream.', timeCost: 6, chance: { probability: 0.65, successNext: 'reachedCamper', failureNext: 'sweptDownstream', successMessage: 'You cross between the larger stones and reach the far bank, winded but upright.', failureMessage: 'A step slips and the current knocks you off balance.', successEffects: { historyFlags: ['crossed_to_far_bank_after_bear_attack'] }, failureEffects: { historyFlags: ['attempted_dangerous_river_crossing'] } } },
         { id: 'riskTheSwim', label: 'Attempt the dangerous swim', requirements: { selections: { crossing: 'noFord' } }, hint: 'The current is strong enough to drown you; no safe landing is visible.', timeCost: 7, chance: { probability: 0.24, successNext: 'reachedCamper', failureNext: 'sweptDownstream', successMessage: 'You find a slower seam in the current and reach the opposite bank exhausted.', failureMessage: 'The current takes your legs before you can reach the far side.', successEffects: { health: -3, historyFlags: ['crossed_to_far_bank_after_bear_attack'] }, failureEffects: { health: -6, historyFlags: ['attempted_dangerous_river_crossing'] } } },
-        { id: 'turnBackFromRiver', label: 'Turn back to your camp', effects: { historyFlags: ['chose_not_to_cross_after_bear_attack'] }, next: 'leftAcrossWater' },
+        { id: 'turnBackFromRiver', label: 'Turn back to your camp', effects: { historyFlags: ['chose_not_to_cross_after_bear_encounter'] }, next: 'leftAcrossWater' },
       ] },
     sweptDownstream: { id: 'sweptDownstream', title: 'The Current Breaks Your Attempt', tone: 'danger',
       text: 'You are battered against the near-bank shallows, short of breath and far downstream. The far-bank camper is now out of sight. You could try one last push for the bank, but your strength is failing.',
@@ -95,7 +95,7 @@ export const BEAR_WITH_ME: Scenario = {
       textVariants: [{ requirements: { selections: { bearMood: 'defensive' } }, text: '{{camper}} backs toward the trees, but the bear is still near the camp. It watches the far bank for a moment before turning away. You cannot know whether your shout changed its choice.' }],
       choices: [
         { id: 'callCamperAfterRetreat', label: 'Call once to check they are moving', timeCost: 1, effects: { historyFlags: ['warned_camper_of_bear'] }, next: 'quietAcrossEnding' },
-        { id: 'leaveAfterRetreat', label: 'Stay on your side and let the night pass', effects: { historyFlags: ['chose_not_to_cross_after_bear_attack'] }, next: 'quietAcrossEnding' },
+        { id: 'leaveAfterRetreat', label: 'Stay on your side and let the night pass', effects: { historyFlags: ['chose_not_to_cross_after_bear_encounter'] }, next: 'quietAcrossEnding' },
       ] },
     quietAcrossEnding: { id: 'quietAcrossEnding', title: 'A Long Night by the River', tone: 'safe', text: 'The bear disappears among the trees. Across the water, {{camper}} gathers the scattered things and stays near the fire. You never learn whether the shout made the difference.', ending: 'success', choices: [] },
     quietRiverEnding: { id: 'quietRiverEnding', title: 'A Quiet Camp', tone: 'safe', text: 'Nothing interrupts the evening. Across the water, {{camper}} tends their small fire while you eat beside yours. The river keeps both camps apart until morning.', ending: 'success', choices: [] },
