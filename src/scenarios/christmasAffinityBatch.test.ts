@@ -118,6 +118,110 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(station.scenes.sharedMeal, shared)).not.toMatch(/children receive the first hot bowls/i);
   });
 
+  it('distinguishes a goose seen across the creek from one recovered', () => {
+    const goose = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-christmas-goose')!;
+    let state = pick(fresh(goose), goose, 'followPrints');
+    state = pick(state, goose, 'leaveBird');
+    expect(state.run?.flags).toContain('gooseSeenAcrossCreek');
+    state = pick(state, goose, 'delayMeal');
+    expect(sceneText(goose.scenes.yardSearch, state)).toMatch(/saw the goose across the creek earlier/i);
+    expect(sceneText(goose.scenes.yardSearch, state)).not.toMatch(/no one has seen the goose/i);
+    state = pick(state, goose, 'acceptMissing');
+    expect(sceneText(goose.scenes.mealWithoutGoose, state)).toMatch(/last seen safe across the creek/i);
+
+    const unseen = pick(pick(fresh(goose), goose, 'planOtherMeal'), goose, 'makePot');
+    expect(sceneText(goose.scenes.mealWithoutGoose, unseen)).toMatch(/goose was not found before supper/i);
+    expect(sceneText(goose.scenes.mealWithoutGoose, unseen)).not.toMatch(/across the creek/i);
+  });
+
+  it('keeps the fallen-tree delay distinct from postponing the felling', () => {
+    const tree = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'christmas-tree-millers-hill')!;
+    let rough = pick(pick(fresh(tree), tree, 'joinRopeCrew'), tree, 'pullTreeNow', () => 0.999999);
+    expect(rough.run?.sceneId).toBe('roughFall');
+    rough = pick(rough, tree, 'callForHelp');
+    expect(sceneText(tree.scenes.delay, rough)).toMatch(/tree lies on the slope short of the road/i);
+    rough = pick(rough, tree, 'treeDelayEnd');
+    expect(sceneText(tree.scenes.treeDelayEnd, rough)).toMatch(/fallen short of the road/i);
+
+    let standing = pick(pick(fresh(tree), tree, 'inspectTree'), tree, 'delayTree');
+    standing = pick(standing, tree, 'treeDelayEnd');
+    expect(sceneText(tree.scenes.treeDelayEnd, standing)).toMatch(/does not reach the square tonight/i);
+    expect(sceneText(tree.scenes.treeDelayEnd, standing)).not.toMatch(/fallen short/i);
+  });
+
+  it('mentions the repaired carving tool only on the binding route', () => {
+    const toy = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'toymakers-last-order')!;
+    let repaired = pick(pick(fresh(toy), toy, 'inspectTool'), toy, 'bindHandle');
+    repaired = pick(repaired, toy, 'carefulMane');
+    expect(sceneText(toy.scenes.finishedHorse, repaired)).toMatch(/repaired tool/i);
+
+    let simplified = pick(fresh(toy), toy, 'simplifyToy');
+    simplified = pick(simplified, toy, 'carveSimple');
+    expect(sceneText(toy.scenes.finishedHorse, simplified)).not.toMatch(/repaired tool/i);
+    expect(sceneText(toy.scenes.finishedHorse, simplified)).toMatch(/tool is set aside for the night/i);
+  });
+
+  it('matches pageant performer acknowledgements to the selected route', () => {
+    const pageant = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-pageant-problem')!;
+    let traveler = pick(fresh(pageant), pageant, 'suggestSubstitute');
+    traveler = pick(traveler, pageant, 'chooseGentlePace');
+    expect(sceneText(pageant.scenes.performance, traveler)).toMatch(/you deliver the innkeeper’s brief lines/i);
+    traveler = pick(traveler, pageant, 'takeCurtainCall');
+    expect(sceneText(pageant.scenes.applause, traveler)).toMatch(/thanks you for stepping into the innkeeper’s brief part/i);
+    expect(sceneText(pageant.scenes.applause, traveler)).not.toMatch(/children perform rather than replacing them with adults/i);
+
+    let sibling = pick(fresh(pageant), pageant, 'findChild');
+    sibling = pick(sibling, pageant, 'inviteSibling');
+    sibling = pick(sibling, pageant, 'startOnTime');
+    expect(sceneText(pageant.scenes.performance, sibling)).toMatch(/older sibling takes the innkeeper’s brief lines/i);
+
+    let child = pick(fresh(pageant), pageant, 'findChild');
+    child = pick(child, pageant, 'walkChildBack');
+    child = pick(child, pageant, 'chooseGentlePace');
+    expect(sceneText(pageant.scenes.performance, child)).toMatch(/returning child speaks the innkeeper’s lines/i);
+  });
+
+  it('states whether the Christmas visitor letter reached the family', () => {
+    const visitor = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-christmas-visitor')!;
+    let uncollected = pick(pick(fresh(visitor), visitor, 'askFromDoor'), visitor, 'letThemGo');
+    expect(uncollected.run?.sceneId).toBe('departure');
+    expect(sceneText(visitor.scenes.departure, uncollected)).toMatch(/station letter remains an unchecked lead/i);
+    expect(sceneText(visitor.scenes.departure, uncollected)).not.toMatch(/family has the letter/i);
+
+    let read = pick(fresh(visitor), visitor, 'inviteGuest');
+    read = pick(read, visitor, 'askForProof');
+    read = pick(read, visitor, 'seekLetter');
+    read = pick(read, visitor, 'bringLetter');
+    expect(read.run?.flags).toContain('christmasVisitorLetterRead');
+    read = pick(read, visitor, 'askThemToLeave');
+    expect(sceneText(visitor.scenes.departure, read)).toMatch(/family has read the brother’s note/i);
+
+    let supper = pick(fresh(visitor), visitor, 'inviteGuest');
+    supper = pick(supper, visitor, 'askForProof');
+    supper = pick(supper, visitor, 'shareMeal');
+    supper = pick(supper, visitor, 'visitorMealEnd');
+    expect(sceneText(visitor.scenes.visitorMealEnd, supper)).toMatch(/until they can retrieve and read the station letter/i);
+    expect(sceneText(visitor.scenes.visitorMealEnd, supper)).not.toMatch(/keeps the brother’s note/i);
+  });
+
+  it('distinguishes passing the warm-window house from speaking with its resident', () => {
+    const house = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'house-with-warm-window')!;
+    let direct = pick(fresh(house), house, 'passHouse');
+    expect(sceneText(house.scenes.pass, direct)).toMatch(/continue along the cold road/i);
+    expect(sceneText(house.scenes.pass, direct)).not.toMatch(/meaning you have not learned/i);
+
+    let spoke = pick(fresh(house), house, 'knockWarmHouse');
+    spoke = pick(spoke, house, 'sayGoodnight');
+    expect(spoke.run?.flags).toContain('warmHouseLampExplained');
+    expect(sceneText(house.scenes.pass, spoke)).toMatch(/keeps the lamp lit for her absent son/i);
+
+    let food = pick(fresh(house), house, 'knockWarmHouse');
+    food = pick(food, house, 'leaveFood');
+    food = pick(food, house, 'foodEnd');
+    expect(sceneText(house.scenes.foodEnd, food)).toMatch(/no word about her son arrives tonight/i);
+    expect(sceneText(house.scenes.foodEnd, food)).not.toMatch(/a message is left at the inn/i);
+  });
+
   it('keeps the non-urgent miller-letter branch reachable as its own deliberate ending', () => {
     const letter = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-frozen-letter')!;
     let state = pick(fresh(letter), letter, 'liftSatchel');
