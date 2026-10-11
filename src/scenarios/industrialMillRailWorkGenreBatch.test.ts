@@ -112,6 +112,22 @@ describe('Industrial / Mill / Rail Work genre batch',()=>{
     }
   });
 
+  it('does not award completion-provenance Gear after rushed failure in the 15 affected stories',()=>{
+    const affected = ['the-belt-that-slapped-back','one-tooth-on-the-sawmill','the-east-siding-points','the-load-under-the-warehouse-hoist','the-pump-below-number-three','the-grain-under-the-guard','the-hoist-that-would-not-set-down','the-lathe-chip','the-winches-uneven-pull','the-misfed-grain-gate','the-dragging-brake-at-bell-yard','the-sorting-table-jam','the-bell-before-the-restart','the-oil-on-the-switch-rod','the-sparks-at-the-belt-house'];
+    for (const id of affected) {
+      const scenario=INDUSTRIAL_MILL_RAIL_GEAR_BATCH.find(({id:scenarioId})=>scenarioId===id)!;
+      let rushed=initial(scenario);
+      rushed=act(rushed,scenario,'observe'); rushed=act(rushed,scenario,'rush'); rushed=act(rushed,scenario,'secure');
+      const gear=scenario.scenes.settle.choices.find(({id:choiceId})=>choiceId==='gear')!;
+      expect(meets(gear.requirements,rushed),`${id} after rushed failure`).toBe(false);
+      expect(meets(scenario.scenes.settle.choices.find(({id:choiceId})=>choiceId==='wage')!.requirements,rushed)).toBe(true);
+
+      let safe=initial(scenario);
+      safe=act(safe,scenario,'observe'); safe=act(safe,scenario,'repair'); safe=act(safe,scenario,'slow');
+      expect(meets(gear.requirements,safe),`${id} after controlled test`).toBe(true);
+    }
+  });
+
   it('persists the new Machinist’s File Set through reward placement and save/resume',()=>{
     expect(ITEMS.machinistFileSet.description).toContain('cannot align a shaft');
     expect(itemsOfClass('GEAR').some(({id})=>id==='machinistFileSet')).toBe(true);

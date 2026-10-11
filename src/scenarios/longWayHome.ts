@@ -192,7 +192,7 @@ export const THE_LONG_WAY_HOME: Scenario = {
         { id: 'standWithRowan', label: 'Stay as Rowan’s witness', hint: 'You can support her without claiming to know what the ledger proves.', timeCost: 3, effects: { historyFlags: ['escorted_injured_stranger', 'protected_stranger_from_pursuer', 'uncovered_strangers_truth'] }, next: 'rewardOffer' },
         { id: 'letWardenReview', label: 'Leave the decision to the town warden', hint: 'Both accounts and the ledger will be heard; you need not choose a side.', timeCost: 2, effects: { historyFlags: ['escorted_injured_stranger', 'uncovered_strangers_truth'] }, next: 'rewardOffer' },
         { id: 'returnBookToBenn', label: 'Let Benn take the ledger back to the mill', hint: 'Rowan will be treated, but the book leaves the warden’s hands.', effects: { historyFlags: ['uncovered_strangers_truth'] }, next: 'handOverEnding' },
-        { id: 'leaveFromClinic', label: 'Leave Rowan in the doctor’s care', hint: 'She has medical help; you can end the escort here.', effects: { historyFlags: ['abandoned_injured_stranger', 'uncovered_strangers_truth'] }, next: 'partialHelpEnding' },
+        { id: 'leaveFromClinic', label: 'Leave Rowan in the doctor’s care', hint: 'She has medical help; you can end the escort here.', effects: { historyFlags: ['uncovered_strangers_truth'] }, next: 'partialHelpEnding' },
       ],
     },
     rewardOffer: {

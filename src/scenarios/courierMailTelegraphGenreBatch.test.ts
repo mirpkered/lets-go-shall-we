@@ -135,8 +135,17 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
       delayed = act(delayed, scenario, 'acceptDelivery');
       delayed = act(delayed, scenario, 'verifyOutside');
       delayed = act(delayed, scenario, 'holdOrReturn');
-      expect(delayed.character?.historyFlags).toContain(COURIER_CONSEQUENCE_MATRIX.find(({ id }) => id === scenario.id)!.negative);
+      expect(delayed.character?.historyFlags).toContain('courier_delayed_or_returned_message');
+      expect(delayed.character?.historyFlags).not.toContain(COURIER_CONSEQUENCE_MATRIX.find(({ id }) => id === scenario.id)!.negative);
       expect(delayed.character?.money).toBeGreaterThanOrEqual(0);
+
+      let refused=fresh(scenario);
+      refused=act(refused,scenario,'declineDelivery');
+      refused=act(refused,scenario,'settleDeclined');
+      expect(refused.character?.historyFlags).toContain('courier_declined_delivery');
+      expect(refused.character?.historyFlags).not.toContain(COURIER_CONSEQUENCE_MATRIX.find(({ id }) => id === scenario.id)!.negative);
+      const gear=scenario.scenes.settle.choices.find(({id})=>id==='takeGear');
+      if(gear) expect(meets(gear.requirements,refused)).toBe(false);
     }
   });
 

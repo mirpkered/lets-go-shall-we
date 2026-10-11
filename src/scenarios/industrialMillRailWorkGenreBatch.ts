@@ -33,6 +33,7 @@ const work: Work[] = [
 const s = (id:string,title:string,text:string,choices:Scene['choices'],textVariants?:Scene['textVariants']) => largeScene(id,title,text,choices,undefined,textVariants);
 const e = (id:string,title:string,text:string) => largeEnd(id,title,text);
 const pay = (item:string,source:string,flag:string) => ({gainItems:[item],gainItemProvenance:{[item]:source},historyFlags:[flag]});
+const rushedFailureGearIds = new Set(['the-belt-that-slapped-back','one-tooth-on-the-sawmill','the-east-siding-points','the-load-under-the-warehouse-hoist','the-pump-below-number-three','the-grain-under-the-guard','the-hoist-that-would-not-set-down','the-lathe-chip','the-winches-uneven-pull','the-misfed-grain-gate','the-dragging-brake-at-bell-yard','the-sorting-table-jam','the-bell-before-the-restart','the-oil-on-the-switch-rod','the-sparks-at-the-belt-house']);
 const learnedLesson = (w:Work) => w.knowledgeFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[w.knowledgeFact]]} : {knowledge:[w.lesson]};
 const make = (w:Work):Scenario => {
   const inspection:Scene['choices'] = [
@@ -66,7 +67,7 @@ const make = (w:Work):Scenario => {
     settle:{...s('settle','The Work and Its Limits',`${w.machine} is either safely tested, left isolated for the fitter, or stopped after an irregular full-load attempt. The foreman confirms the fault report before discussing your compensation.`,[
       {id:'wage',label:`Take the ${w.coins}-coin work fee`,next:'paid',effects:{...learnedLesson(w),money:w.coins}},
       {id:'declineFee',label:'Decline the fee',next:'unpaid',effects:learnedLesson(w)},
-      {id:'gear',label:`Accept the released ${w.rewardName} as wages`,next:'kept',requirements:{notOwnedItems:[w.reward]},effects:{...learnedLesson(w),...pay(w.reward,`${w.custodian} The operational machine and employer-owned tools remain with the worksite.`,`earned_industrial_${w.id}`)}},
+      {id:'gear',label:`Accept the released ${w.rewardName} as wages`,next:'kept',requirements:{notOwnedItems:[w.reward],...(rushedFailureGearIds.has(w.id)?{notFlags:['choseRush']}: {})},effects:{...learnedLesson(w),...pay(w.reward,`${w.custodian} The operational machine and employer-owned tools remain with the worksite.`,`earned_industrial_${w.id}`)}},
     ]),textVariants:[
       {requirements:{flags:['testedCarefully']},text:`The controlled test gives the crew a result without promising more than it checked. ${w.complication}`},
       {requirements:{flags:['choseShutdown']},text:'The work stays stopped for the fitter. Your decision prevents an unresolved machine state from being treated as a safe restart.'},

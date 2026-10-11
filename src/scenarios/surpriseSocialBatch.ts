@@ -36,7 +36,7 @@ export const AN_INVITATION_FOR_SOMEONE_ELSE = story('an-invitation-for-someone-e
     { id: 'declineDoorstep', label: 'Thank her and continue on', next: 'leave' },
   ]),
   explanation: scene('explanation', 'The Expected Guest', 'The name belongs to her brother, who has not written since their last quarrel. She had hoped the invitation would bring him back, but she does not mistake you for him now.', [
-    { id: 'offerToCarryNote', label: 'Offer to carry her reply', next: 'note', effects: { historyFlags: ['carried_a_family_reply_after_a_mistaken_invitation'] } },
+    { id: 'offerToCarryNote', label: 'Offer to carry her reply', next: 'note' },
     { id: 'stayAsTraveler', label: 'Stay only as a passing guest', next: 'meal' },
   ]),
   letter: scene('letter', 'A Name in Ink', 'The invitation asks her brother to come before the first frost. The date has passed. The woman folds it along its old crease and says she would rather not ask a stranger to take sides.', [

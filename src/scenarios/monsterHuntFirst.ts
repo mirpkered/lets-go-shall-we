@@ -94,7 +94,7 @@ export const SOMETHING_IN_THE_CORN: Scenario = {
     rowEvidence: scene('rowEvidence', 'A Trail That Bends', 'The path bends around the field’s stone boundary and ends at a gap beneath the outer fence. A dark bristle and a smear of feed lie there. The corn is dense enough to hide a boar, a person crawling, or something smaller.', [
       { id: 'followFence', label: 'Follow the fence from outside', next: 'boarReveal' },
       { id: 'waitByGap', label: 'Wait by the gap from the open gate', next: 'penWatch' },
-      { id: 'keepFamilyAway', label: 'Close the gap and end the watch', next: 'cornContained', effects: { historyFlags: ['closed a farm fence gap after identifying a night visitor'] } },
+      { id: 'keepFamilyAway', label: 'Close the gap and end the watch', next: 'cornContained' },
     ]),
     penWatch: scene('penWatch', 'A Scrape against the Boards', 'Near midnight, claws scrape the outer hen pen. A low bristled back passes between two rows. The family remains inside the gate; the boar is focused on the feed bin and has not noticed you.', [
       { id: 'openSideGate', label: 'Open the side gate toward open pasture', next: 'boarDiverted', effects: { knowledge: ['A boar came to the cornfield for feed and left when an open pasture route was available.'] } },
@@ -140,7 +140,7 @@ export const THE_BARROW_HOUND: Scenario = {
     ]),
     westSlope: scene('westSlope', 'A Shallow Pocket', 'The hound stays with the shepherd as you circle to the firm west slope. A narrow gap opens into the sheep’s pocket from this side; the cracked south roof does not extend over it. The shepherd has his spade ready.', [
       { id: 'callSheepOut', label: 'Call the sheep through the low gap', next: 'sheepFreed', effects: { knowledge: ['A farm hound at the burial mound warned people away from a settling south rim; the sheep could be reached from firm ground on the west.'] } },
-      { id: 'clearGap', label: 'Clear the low gap with the spade', next: 'sheepFreed', effects: { historyFlags: ['helped retrieve a sheep from a settling burial mound without crossing its cracked rim'] } },
+      { id: 'clearGap', label: 'Clear the low gap with the spade', next: 'sheepFreed', effects: { historyFlags: ['helped retrieve a sheep from a settling burial mound'] } },
       { id: 'crawlUnderCrack', label: 'Crawl beneath the cracked south roof', hint: 'The stones above the south rim are split and the turf is falling inward.', chance: { probability: 0.36, successNext: 'sheepFreed', failureNext: 'moundSlip', successMessage: 'You reach the sheep and guide it into the low west gap.', failureMessage: 'The loose roof drops soil across the pocket.', successEffects: { health: -1 }, failureEffects: { health: -4 } } },
     ], 'warning'),
     moundSlip: scene('moundSlip', 'The Rim Gives Way', 'The south edge collapses a few feet into the hollow. You are bruised, but the west slope remains firm; the shepherd keeps the hound back while the sheep answers from the pocket.', [
@@ -183,7 +183,7 @@ export const THE_WHITE_STAG: Scenario = {
     ]),
     stagAtOrchard: scene('stagAtOrchard', 'A Stag at the Orchard Edge', 'A pale stag feeds beyond the fence, limping slightly. It lifts its head when you move but does not charge. The orchard is quiet; there is no sign that it has harmed anyone.', [
       { id: 'letStagPass', label: 'Leave a clear path toward the woods', next: 'stagAfter', effects: { knowledge: ['A pale, limping stag fed beyond the orchard fence and left when given room.'] } },
-      { id: 'leadFarmerAway', label: 'Call the farmer away from the orchard', next: 'stagAfter', effects: { historyFlags: ['prevented a hunt before the animal was identified as a stag'] } },
+      { id: 'leadFarmerAway', label: 'Call the farmer away from the orchard', next: 'stagAfter', effects: { historyFlags: ['called_farmer_away_from_identified_white_stag'] } },
       { id: 'approachStag', label: 'Approach the injured stag', hint: 'A frightened animal can kick if cornered.', chance: { probability: 0.61, successNext: 'stagAfter', failureNext: 'stagInjured', successMessage: 'The stag slips through the open fence and reaches the woods.', failureMessage: 'The stag kicks free and leaves you bruised.', failureEffects: { health: -2 } } },
     ]),
     huntersFound: scene('huntersFound', 'A Boundary Dispute', 'The two hunters are alive on opposite sides of a fallen fence, arguing over whose livestock trampled the crops. Their tracks mix with the stag’s only near the orchard. The animal is nowhere in sight.', [

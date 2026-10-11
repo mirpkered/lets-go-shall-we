@@ -34,7 +34,7 @@ function loftRescueChoice(kind: 'rope' | 'hood' | 'bare'): Choice {
     hint: isRope ? 'The rope gives Eli a line to follow without crossing the worst of the smoke.' : isHood ? 'The hood helps with smoke, but the hot, shifting loft remains dangerous.' : 'Smoke is already lowering under the eaves; you may have only one short attempt.',
     requirements: isRope ? { items: ['travelRope'] } : isHood ? { anyItems: BREATHING_GEAR } : { notItems: RESCUE_GEAR },
     timeCost: isRope || isHood ? 5 : 7,
-    effects: { setFlags: ['entered_burning_structure', 'tried_person_rescue', ...(isRope ? ['loftRopeApproach'] : [])], historyFlags: ['entered_burning_structure'] },
+    effects: { setFlags: [...(!isRope ? ['entered_burning_structure'] : []), 'tried_person_rescue', ...(isRope ? ['loftRopeApproach'] : [])], historyFlags: isRope ? [] : ['entered_burning_structure'] },
     chance: {
       probability: isRope ? 0.89 : isHood ? 0.84 : 0.63,
       bonusItems: isRope ? ['smokeHood', 'heavyLeatherGloves'] : isHood ? ['heavyLeatherGloves', 'travelRope'] : ['heavyLeatherGloves'],
