@@ -461,6 +461,80 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(continued.run?.inventory).not.toContain('weatherproofCloak');
   });
 
+  it('keeps Bell Rope refusal and prize endings distinct while retaining the learned signal lesson', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-bell-rope-at-ferry-end')!;
+    const signalLesson = 'A signal is useful only when the person who can act can see or hear it; place a lookout accordingly.';
+
+    let declined = begin(scenario);
+    declined = act(declined, scenario, 'repeatRules');
+    declined = act(declined, scenario, 'warnCrew');
+    declined = act(declined, scenario, 'declinePrize');
+    expect(declined.run?.sceneId).toBe('declinedWhistle');
+    expect(sceneText(scenario.scenes.declinedWhistle, declined)).toMatch(/decline the Farm Whistle/i);
+    expect(sceneText(scenario.scenes.declinedWhistle, declined)).not.toMatch(/accept the Farm Whistle/i);
+    expect(declined.run?.inventory).not.toContain('farmWhistle');
+    expect(declined.character?.knowledge).toContain(signalLesson);
+
+    let accepted = begin(scenario);
+    accepted = act(accepted, scenario, 'repeatRules');
+    accepted = act(accepted, scenario, 'warnCrew');
+    accepted = act(accepted, scenario, 'claimWhistle');
+    accepted = act(accepted, scenario, 'acceptWhistle');
+    expect(accepted.run?.sceneId).toBe('whistleEnd');
+    expect(sceneText(scenario.scenes.whistleEnd, accepted)).not.toMatch(/accept the Farm Whistle/i);
+    expect(accepted.run?.inventory).toContain('farmWhistle');
+
+    const legacyEnding = begin(scenario);
+    legacyEnding.run!.sceneId = 'whistleEnd';
+    expect(sceneText(scenario.scenes.whistleEnd, legacyEnding)).not.toMatch(/accept|decline the Farm Whistle/i);
+  });
+
+  it('describes the Millwheel forced-turn outcome separately without changing its risk result', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-millwheel-hand')!;
+
+    let forcedSuccess = begin(scenario);
+    forcedSuccess = act(forcedSuccess, scenario, 'tightenBelt');
+    forcedSuccess = act(forcedSuccess, scenario, 'forceTurn', () => 0);
+    expect(forcedSuccess.run?.sceneId).toBe('forcedStopped');
+    expect(sceneText(scenario.scenes.forcedStopped, forcedSuccess)).toMatch(/force one more turn after Pella calls for an immediate stop/i);
+    expect(sceneText(scenario.scenes.forcedStopped, forcedSuccess)).not.toMatch(/your caution prevents/i);
+    expect(forcedSuccess.run?.inventory).not.toContain('pocketToolkit');
+
+    let forcedFailure = begin(scenario);
+    forcedFailure = act(forcedFailure, scenario, 'tightenBelt');
+    forcedFailure = act(forcedFailure, scenario, 'forceTurn', () => 0.99);
+    expect(forcedFailure.run?.sceneId).toBe('damaged');
+
+    let reported = begin(scenario);
+    reported = act(reported, scenario, 'inspectPeg');
+    reported = act(reported, scenario, 'reportWear');
+    expect(reported.run?.sceneId).toBe('stopped');
+    expect(sceneText(scenario.scenes.stopped, reported)).not.toMatch(/your caution/i);
+    expect(sceneText(scenario.scenes.stopped, reported)).toMatch(/toolkit is not awarded/i);
+    const legacyStopped = begin(scenario);
+    legacyStopped.run!.sceneId = 'stopped';
+    expect(sceneText(scenario.scenes.stopped, legacyStopped)).not.toMatch(/your caution/i);
+  });
+
+  it('keeps the Fair-Weather prize closure limited to the qualifying forecast', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-fair-weather-reading')!;
+
+    let qualified = begin(scenario);
+    qualified = act(qualified, scenario, 'readRidge');
+    qualified = act(qualified, scenario, 'forecastRainWindow');
+    qualified = act(qualified, scenario, 'takeCloak');
+    expect(qualified.run?.sceneId).toBe('prize');
+    expect(sceneText(scenario.scenes.prize, qualified)).toMatch(/forecast met the posted two-hour test/i);
+    expect(sceneText(scenario.scenes.prize, qualified)).not.toMatch(/parade|route change/i);
+    expect(qualified.run?.inventory).toContain('weatherproofCloak');
+
+    let warned = begin(scenario);
+    warned = act(warned, scenario, 'askOldCook');
+    warned = act(warned, scenario, 'warnCamp');
+    expect(warned.run?.sceneId).toBe('warning');
+    expect(sceneText(scenario.scenes.warning, warned)).toMatch(/takes the lower path/i);
+  });
+
   it('routes every authored Gear prize through the canonical run inventory grant', () => {
     for (const scenario of COMPETITION_GEAR_GENRE_BATCH) for (const [sceneId, scene] of Object.entries(scenario.scenes)) {
       for (const choice of scene.choices.filter(({ effects }) => effects?.gainItems?.some((id) => ITEMS[id]?.inventoryClass === 'GEAR'))) {
