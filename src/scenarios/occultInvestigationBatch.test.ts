@@ -193,6 +193,111 @@ describe('occult investigation adventures', () => {
     expect(act(without, scenario, 'leavePattern').run?.status).toBe('success');
   });
 
+  it('keeps the Red Chalk Circle aftermath conditional on whether Orin was found', () => {
+    const scenario = adventures.find(({ id }) => id === 'red-chalk-circle')!;
+    let retreat = fresh(scenario);
+    retreat = act(retreat, scenario, 'crossCircle');
+    retreat = act(retreat, scenario, 'retreatFromChalk');
+    expect(sceneText(scenario.scenes.chalkAfter, retreat)).toMatch(/nature of the empty coat is unexplained/i);
+    expect(sceneText(scenario.scenes.chalkAfter, retreat)).not.toMatch(/Orin is out/i);
+
+    let found = fresh(scenario);
+    found = act(found, scenario, 'studyChalk');
+    found = act(found, scenario, 'liftFloor');
+    found = act(found, scenario, 'callForHands');
+    found = roundTrip(found);
+    expect(found.run?.sceneId).toBe('chalkAfter');
+    expect(sceneText(scenario.scenes.chalkAfter, found)).toMatch(/Orin is found alive/i);
+  });
+
+  it('does not give the Book Without a Title printer knowledge before examining the mark', () => {
+    const scenario = adventures.find(({ id }) => id === 'book-without-a-title')!;
+    const unopened = act(fresh(scenario), scenario, 'closeBook');
+    expect(sceneText(scenario.scenes.bookAfter, unopened)).not.toMatch(/repeated printer’s mark/i);
+    expect(sceneText(scenario.scenes.bookAfter, unopened)).not.toMatch(/printer takes a copy/i);
+
+    let examined = fresh(scenario);
+    examined = act(examined, scenario, 'copyMarks');
+    examined = act(examined, scenario, 'tearMarkedPage');
+    examined = roundTrip(examined);
+    expect(sceneText(scenario.scenes.bookAfter, examined)).toMatch(/printer recognizes the repeated mark/i);
+  });
+
+  it('keeps the Empty Coffin cause unknown unless the cooper is found', () => {
+    const scenario = adventures.find(({ id }) => id === 'the-empty-coffin')!;
+    const delayed = act(fresh(scenario), scenario, 'closeCoffin');
+    expect(sceneText(scenario.scenes.coffinAfter, delayed)).toBe('The burial is delayed.');
+
+    let found = fresh(scenario);
+    found = act(found, scenario, 'inspectCoffin');
+    found = act(found, scenario, 'followTracks');
+    found = act(found, scenario, 'helpBrotherEscape');
+    found = roundTrip(found);
+    expect(sceneText(scenario.scenes.coffinAfter, found)).toMatch(/cooper is found alive/i);
+    expect(sceneText(scenario.scenes.coffinAfter, found)).toMatch(/help the brothers leave town/i);
+  });
+
+  it('keeps The Man Who Came Back Wrong aftermath neutral until the sluice is inspected', () => {
+    const scenario = adventures.find(({ id }) => id === 'the-man-who-came-back-wrong')!;
+    let noInspection = fresh(scenario);
+    noInspection = act(noInspection, scenario, 'giveSpace');
+    expect(sceneText(scenario.scenes.workerAfter, noInspection)).toMatch(/account of the worker’s return remains unresolved/i);
+    expect(sceneText(scenario.scenes.workerAfter, noInspection)).not.toMatch(/miller secures the drain/i);
+
+    let inspected = fresh(scenario);
+    inspected = act(inspected, scenario, 'askPrivateDetail');
+    inspected = act(inspected, scenario, 'inspectSluice');
+    inspected = act(inspected, scenario, 'takeWorkerHome');
+    inspected = roundTrip(inspected);
+    expect(sceneText(scenario.scenes.workerAfter, inspected)).toMatch(/two sets of prints/i);
+    expect(sceneText(scenario.scenes.workerAfter, inspected)).toMatch(/walk the worker home/i);
+  });
+
+  it('does not give The Third Knock reader a name on the burned or unread-letter routes', () => {
+    const scenario = adventures.find(({ id }) => id === 'the-third-knock')!;
+    let burned = fresh(scenario);
+    burned = act(burned, scenario, 'watchLetter');
+    burned = act(burned, scenario, 'burnLetter');
+    expect(sceneText(scenario.scenes.thirdKnockAfter, burned)).toMatch(/no name was revealed/i);
+    expect(sceneText(scenario.scenes.thirdKnockAfter, burned)).not.toMatch(/name it showed stays with you/i);
+
+    let unread = fresh(scenario);
+    unread = act(unread, scenario, 'leaveHouseKnock');
+    expect(sceneText(scenario.scenes.thirdKnockAfter, unread)).toMatch(/before its name appears/i);
+
+    let readAndLeft = fresh(scenario);
+    readAndLeft = act(readAndLeft, scenario, 'watchLetter');
+    readAndLeft = act(readAndLeft, scenario, 'readLetterAloud');
+    readAndLeft = act(readAndLeft, scenario, 'keepLetterHome');
+    readAndLeft = roundTrip(readAndLeft);
+    expect(sceneText(scenario.scenes.thirdKnockAfter, readAndLeft)).toMatch(/name appears on the page/i);
+    expect(sceneText(scenario.scenes.thirdKnockAfter, readAndLeft)).toMatch(/do not carry it to the ferryman/i);
+  });
+
+  it('preserves Below the Old Fort route facts at the two converged closures', () => {
+    const scenario = adventures.find(({ id }) => id === 'below-the-old-fort')!;
+    let untouched = fresh(scenario);
+    untouched = act(untouched, scenario, 'retreatFort');
+    expect(sceneText(scenario.scenes.fortExit, untouched)).not.toMatch(/tool chest|route plan/i);
+
+    let chest = fresh(scenario);
+    chest = act(chest, scenario, 'openPowderRoom');
+    chest = act(chest, scenario, 'takeToolFort');
+    expect(sceneText(scenario.scenes.fortExit, chest)).toMatch(/take the tool chest/i);
+    expect(sceneText(scenario.scenes.fortExit, chest)).not.toMatch(/rooms undisturbed/i);
+
+    let routePlan = fresh(scenario);
+    routePlan = act(routePlan, scenario, 'openPowderRoom');
+    routePlan = act(routePlan, scenario, 'pushThroughFort', 0);
+    expect(routePlan.run?.sceneId).toBe('fortGreen');
+    routePlan = roundTrip(routePlan);
+    routePlan = act(routePlan, scenario, 'breakLampAnchor');
+    const ending = sceneText(scenario.scenes.fortAfter, routePlan);
+    expect(ending).toMatch(/find the old route plan/i);
+    expect(ending).toMatch(/break the green lamp’s bracket/i);
+    expect(ending).not.toMatch(/skeleton collapses/i);
+  });
+
   it.each([
     ['ritualChalk', 'breakCircleInsideWithChalk', 'chalkBrokeChapelLine', 'chalk'],
     ['consecratedSalt', 'interruptInsideWithSalt', 'saltBrokeChapelLine', 'Salt'],

@@ -224,3 +224,121 @@ doorwayScenario.scenes.doorAfter.textVariants = [
   { requirements: { historyFlags: ['opened_far_door_in_impossible_passage'] }, text: 'You open the far door into the bedroom you left. No one stands there, and the knocking stops without explaining itself. The owner bricks in both openings; the chalk line remains on the old floorboard.' },
   { requirements: { historyFlags: ['turned_back_from_impossible_passage'] }, text: 'You turn back through the passage rather than opening the far door. The owner bricks in both openings; the builder confirms the corridor cannot fit, but you leave the knocking unanswered.' },
 ];
+
+// Preserve the route facts at converged occult-investigation closures. The audit
+// found these endings claiming a discovery or result from sibling paths that had
+// not established it. Run flags keep this local to the active route; legacy saves
+// without them receive the deliberately neutral base text.
+const addRunFlags = (effects: NonNullable<Scene['choices'][number]['effects']> | undefined, flags: string[]) => ({
+  ...effects,
+  setFlags: [...new Set([...(effects?.setFlags ?? []), ...flags])],
+});
+
+const chalkCircle = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'red-chalk-circle')!;
+chalkCircle.scenes.chalkCrawl.choices = chalkCircle.scenes.chalkCrawl.choices.map((choice) => ({
+  ...choice,
+  effects: addRunFlags(choice.effects, ['chalk_orin_found_alive']),
+}));
+chalkCircle.scenes.chalkAfter.text = 'The room is left under the landlord’s watch. The disturbed boundary remains, and the nature of the empty coat is unexplained.';
+chalkCircle.scenes.chalkAfter.textVariants = [
+  { requirements: { flags: ['chalk_orin_found_alive'] }, text: 'Orin is found alive beneath the room and brought out; the landlord boards the crawlspace for daylight. The empty coat stops moving, but what animated it remains unexplained.' },
+];
+
+const untitledBook = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'book-without-a-title')!;
+untitledBook.scenes.bookMarks.choices = untitledBook.scenes.bookMarks.choices.map((choice) => ({
+  ...choice,
+  effects: addRunFlags(choice.effects, ['book_repeated_mark_examined']),
+}));
+untitledBook.scenes.bookAfter.text = 'The bookseller puts the volume away closed. The conflicting readings remain unexplained.';
+untitledBook.scenes.bookAfter.textVariants = [
+  { requirements: { flags: ['book_repeated_mark_examined'] }, text: 'The retired printer recognizes the repeated mark you examined. It does not explain why the fresh ink appeared on an old page, and the bookseller keeps the volume closed.' },
+];
+
+const emptyCoffin = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-empty-coffin')!;
+emptyCoffin.scenes.coffinChapel.choices = emptyCoffin.scenes.coffinChapel.choices.map((choice) => {
+  if (choice.id === 'callPhysician') return { ...choice, effects: addRunFlags(choice.effects, ['cooper_found_alive', 'physician_called_for_cooper']) };
+  if (choice.id === 'helpBrotherEscape') return { ...choice, effects: addRunFlags(choice.effects, ['cooper_found_alive', 'brothers_helped_to_leave']) };
+  return choice;
+});
+emptyCoffin.scenes.coffinAfter.text = 'The burial is delayed.';
+emptyCoffin.scenes.coffinAfter.textVariants = [
+  { requirements: { flags: ['cooper_found_alive', 'physician_called_for_cooper'] }, text: 'The cooper is found alive behind the side-room screen, and the physician is called before burial. His brother’s attempt to hide him from creditors explains the empty coffin.' },
+  { requirements: { flags: ['cooper_found_alive', 'brothers_helped_to_leave'] }, text: 'The cooper is found alive behind the side-room screen, and you help the brothers leave town. His brother’s attempt to hide him from creditors explains the empty coffin.' },
+];
+
+const returnedWorker = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-man-who-came-back-wrong')!;
+returnedWorker.scenes.workerAccount.choices = returnedWorker.scenes.workerAccount.choices.map((choice) => choice.id === 'inspectSluice'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['worker_sluice_examined']) }
+  : choice);
+returnedWorker.scenes.workerMark.choices = returnedWorker.scenes.workerMark.choices.map((choice) => choice.id === 'wipeMark'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['worker_sluice_examined']) }
+  : choice);
+returnedWorker.scenes.workerSluice.choices = returnedWorker.scenes.workerSluice.choices.map((choice) => {
+  if (choice.id === 'takeWorkerHome') return { ...choice, effects: addRunFlags(choice.effects, ['worker_sluice_examined', 'worker_taken_home']) };
+  if (choice.id === 'keepAtMill') return { ...choice, effects: addRunFlags(choice.effects, ['worker_sluice_examined', 'worker_kept_at_mill']) };
+  return choice;
+});
+returnedWorker.scenes.workerAfter.text = 'The account of the worker’s return remains unresolved; it does not establish what happened while he was missing.';
+returnedWorker.scenes.workerAfter.textVariants = [
+  { requirements: { flags: ['worker_sluice_examined', 'worker_taken_home'] }, text: 'You walk the worker home with his sister after seeing two sets of prints at the sealed culvert, one wearing his boots. The miller secures the drain; the voice and the second prints remain unexplained.' },
+  { requirements: { flags: ['worker_sluice_examined', 'worker_kept_at_mill'] }, text: 'The worker remains at the mill after you see two sets of prints at the sealed culvert, one wearing his boots. The miller secures the drain; the voice and the second prints remain unexplained.' },
+  { requirements: { flags: ['worker_sluice_examined'] }, text: 'You inspect the sealed culvert and find two sets of prints, one wearing the worker’s boots. The family keeps him close; the voice and the second prints remain unexplained.' },
+];
+
+const thirdKnock = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-third-knock')!;
+thirdKnock.scenes.thirdKnockFirst.choices = thirdKnock.scenes.thirdKnockFirst.choices.map((choice) => choice.id === 'leaveHouseKnock'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['letter_left_with_innkeeper']) }
+  : choice);
+thirdKnock.scenes.thirdKnockMessage.choices = thirdKnock.scenes.thirdKnockMessage.choices.map((choice) => {
+  if (choice.id === 'carryLetter') return { ...choice, effects: addRunFlags(choice.effects, ['letter_name_appeared']) };
+  if (choice.id === 'keepLetterHome') return { ...choice, effects: addRunFlags(choice.effects, ['letter_name_appeared', 'letter_left_with_innkeeper']) };
+  return choice;
+});
+thirdKnock.scenes.letterInHand.choices = thirdKnock.scenes.letterInHand.choices.map((choice) => choice.id === 'returnLetterToInnkeeper'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['letter_returned_at_dawn', 'letter_name_appeared']) }
+  : choice);
+thirdKnock.scenes.thirdKnockAfter.text = 'No fourth knock comes before dawn.';
+thirdKnock.scenes.thirdKnockAfter.textVariants = [
+  { requirements: { flags: ['letterBurned'] }, text: 'You burn the letter while its page is still blank; no name was revealed. No fourth knock comes before dawn, and no message is ready to deliver.' },
+  { requirements: { flags: ['letter_left_with_innkeeper', 'letter_name_appeared'] }, text: 'The name appears on the page, but you leave the letter with the innkeeper. They keep it dry and will decide whether to send it; you do not carry it to the ferryman.' },
+  { requirements: { flags: ['letter_left_with_innkeeper'] }, text: 'You leave the still-blank letter with the innkeeper before its name appears. They keep it dry; no living hand is known to have written it.' },
+  { requirements: { flags: ['letter_returned_at_dawn', 'letter_name_appeared'] }, text: 'After the name appears, you return the envelope to the innkeeper before setting out. They keep it; you do not deliver it to the ferryman.' },
+];
+
+const oldFort = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'below-the-old-fort')!;
+oldFort.scenes.fortEntrance.choices = oldFort.scenes.fortEntrance.choices.map((choice) => choice.id === 'retreatFort' ? choice : {
+  ...choice,
+  effects: addRunFlags(choice.effects, ['fort_lower_rooms_entered']),
+});
+oldFort.scenes.fortPowder.choices = oldFort.scenes.fortPowder.choices.map((choice) => {
+  if (choice.id === 'takeToolFort') return { ...choice, effects: addRunFlags(choice.effects, ['fort_tool_chest_taken']) };
+  if (choice.id === 'pushThroughFort') return {
+    ...choice,
+    chance: { ...choice.chance!, successEffects: addRunFlags(choice.chance?.successEffects, ['fort_route_plan_found']) },
+  };
+  return choice;
+});
+oldFort.scenes.fortGreen.choices = oldFort.scenes.fortGreen.choices.map((choice) => {
+  if (choice.id === 'breakLampAnchor') return { ...choice, effects: addRunFlags(choice.effects, ['fort_lamp_bracket_broken']) };
+  if (choice.id === 'useSilverFort') return { ...choice, effects: addRunFlags(choice.effects, ['fort_guard_disrupted']) };
+  return choice;
+});
+oldFort.scenes.fortGuardian.choices = oldFort.scenes.fortGuardian.choices.map((choice) => choice.id === 'fightGuard'
+  ? { ...choice, chance: { ...choice.chance!, successEffects: addRunFlags(choice.chance?.successEffects, ['fort_guard_scattered']) } }
+  : choice);
+oldFort.scenes.fortExit.text = 'You return to daylight and mark the entrance for the keeper.';
+oldFort.scenes.fortExit.textVariants = [
+  { requirements: { flags: ['fort_tool_chest_taken'] }, text: 'You take the tool chest from the powder store and return to daylight. The fort entrance is marked for the keeper; you found no route plan.' },
+  { requirements: { flags: ['fort_route_plan_found'] }, text: 'You find an old route plan in the powder store and return to daylight with the entrance marked for the keeper.' },
+  { requirements: { flags: ['fort_lower_rooms_entered'] }, text: 'You return to daylight after entering the lower rooms. The fort entrance is marked for the keeper; no tool chest or route plan is claimed.' },
+];
+oldFort.scenes.fortAfter.text = 'You return to daylight from the lower chambers. The deeper stair remains unexplored.';
+oldFort.scenes.fortAfter.textVariants = [
+  { requirements: { flags: ['fort_route_plan_found', 'fort_lamp_bracket_broken'] }, text: 'You find the old route plan in the powder store, then break the green lamp’s bracket before returning to daylight. The deeper stair remains unexplored.' },
+  { requirements: { flags: ['fort_route_plan_found', 'fort_guard_disrupted'] }, text: 'You find the old route plan in the powder store; your silvered knife disrupts the guard and chips at its ribs. You return to daylight without exploring the deeper stair.' },
+  { requirements: { flags: ['fort_route_plan_found', 'fort_guard_scattered'] }, text: 'You find the old route plan in the powder store, then scatter the guard’s bones down the steps. You return to daylight without exploring the deeper stair.' },
+  { requirements: { flags: ['fort_route_plan_found'] }, text: 'You find the old route plan in the powder store and return to daylight. The deeper stair remains unexplored.' },
+  { requirements: { flags: ['fort_lamp_bracket_broken'] }, text: 'You break the green lamp’s bracket and return to daylight. No route plan was found, and the deeper stair remains unexplored.' },
+  { requirements: { flags: ['fort_guard_disrupted'] }, text: 'Your silvered knife disrupts the guard and chips at its ribs. You return to daylight without claiming that the guard was destroyed or a route plan found.' },
+  { requirements: { flags: ['fort_guard_scattered'] }, text: 'The guard’s bones scatter down the steps. You return to daylight without finding a route plan or exploring the deeper stair.' },
+];
