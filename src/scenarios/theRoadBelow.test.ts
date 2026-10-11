@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startAdventure, startRun, timeStatus } from '../engine';
+import { loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { renderQaPanel } from '../qaPanel';
@@ -92,9 +93,20 @@ describe('The Road Below', () => {
     let state = act(fresh(), 'markRoadForTravelers');
     state = act(state, 'leaveAfterMarking');
     expect(state.run?.sceneId).toBe('warningEnding');
+    expect(THE_ROAD_BELOW.scenes.warningEnding.text).not.toMatch(/do not enter|do not know whether anyone was below/i);
+    expect(sceneText(THE_ROAD_BELOW.scenes.warningEnding, state)).not.toMatch(/Neri|surveyor/i);
     expect(state.character?.historyFlags).toContain('protected_road_users');
     expect(state.character?.historyFlags).toContain('left_collapsed_road');
     expect(state.run?.acquiredThisRun).toEqual([]);
+  });
+
+  it('does not erase the known Neri encounter in the crew-warning result', () => {
+    let state = reachDirectRescue();
+    state = act(state, 'leaveToGetCrew');
+    state = act(state, 'warnRoadCrewOnly');
+    expect(state.run?.sceneId).toBe('warningEnding');
+    expect(sceneText(THE_ROAD_BELOW.scenes.warningEnding, state)).toMatch(/Neri was alive on the high shelf when you last saw him/i);
+    expect(sceneText(THE_ROAD_BELOW.scenes.warningEnding, state)).not.toMatch(/do not enter|do not know whether anyone was below/i);
   });
 
   it('uses the Miner’s Headlamp to survey faster and with lower risk', () => {
@@ -167,6 +179,52 @@ describe('The Road Below', () => {
     }
     expect(THE_ROAD_BELOW.scenes.trappedWorker.text).toContain('Neri');
     expect(THE_ROAD_BELOW.scenes.hazardAssessment.text).toContain('storm-drain culvert');
+  });
+
+  it('keeps the early retreat separate from road marking and the Neri thread', () => {
+    let state = fresh();
+    for (const id of ['inspectFreshTracks', 'followTracksToOpening', 'chooseDirectDescent', 'retreatFromDirectLip']) state = act(state, id);
+    expect(state.run?.sceneId).toBe('personLeftEnding');
+    expect(state.run?.flags).not.toContain('roadWarned');
+    expect(state.run?.flags).not.toContain('neriEncountered');
+    const text = sceneText(THE_ROAD_BELOW.scenes.personLeftEnding, state);
+    expect(text).not.toMatch(/marked|Neri|surveyor/i);
+    expect(text).toMatch(/beyond your route/i);
+  });
+
+  it('mentions road marking only when its existing run flag proves it', () => {
+    let state = fresh();
+    for (const id of ['markRoadForTravelers', 'assessAfterMarking', 'chooseDirectDescent', 'retreatFromDirectLip']) state = act(state, id);
+    expect(state.run?.flags).toContain('roadWarned');
+    const text = sceneText(THE_ROAD_BELOW.scenes.personLeftEnding, state);
+    expect(text).toMatch(/road edge has been marked for closure/i);
+    expect(text).not.toMatch(/Neri|surveyor/i);
+  });
+
+  it('records the Neri encounter at the approach and preserves known status through save/reload', () => {
+    let state = reachDirectRescue();
+    expect(state.run?.flags).toContain('neriEncountered');
+    state = act(state, 'braceBeforeFreeing');
+    state = act(state, 'stopBracingAndPull');
+    state = act(state, 'retreatAfterRescueFailure');
+    expect(state.run?.sceneId).toBe('personLeftEnding');
+    expect(state.run?.flags).not.toContain('roadWarned');
+
+    let serialized = '';
+    const storage = { setItem: (_key: string, value: string) => { serialized = value; }, getItem: () => serialized };
+    saveGame(state, storage);
+    state = loadSave(storage);
+    expect(state.run?.flags).toContain('neriEncountered');
+    expect(sceneText(THE_ROAD_BELOW.scenes.personLeftEnding, state)).toMatch(/He was alive when you left, but you did not bring him out/i);
+    expect(sceneText(THE_ROAD_BELOW.scenes.personLeftEnding, state)).not.toMatch(/road edge has been marked/i);
+  });
+
+  it('uses neutral text for legacy result saves without route-state proof', () => {
+    const state = fresh();
+    state.run!.sceneId = 'personLeftEnding';
+    const text = sceneText(THE_ROAD_BELOW.scenes.personLeftEnding, state);
+    expect(text).toMatch(/beyond your route/i);
+    expect(text).not.toMatch(/Neri|surveyor|marked/i);
   });
 
   it('uses visible above-water evidence and makes the rescue about water and access, not a pinned body', () => {

@@ -244,9 +244,9 @@ export const THE_ROAD_BELOW: Scenario = {
         { requirements: { flags: ['guideLineSecured'] }, text: `${mainChannelSetup} Your guide line trails back toward the lower outlet, marking your way back.` },
       ],
       choices: [
-        { id: 'followArchEarly', label: 'Follow the tapping through the stone arch', hint: 'The arch is passable now; dirt is already falling from it.', requirements: { maxElapsedMinutes: 21 }, timeCost: 3, effects: { setFlags: ['risked_collapse_for_rescue'] }, next: 'trappedWorker' },
-        { id: 'useSideRunLate', label: 'Take the narrow side run around the arch', hint: 'Longer route, less exposure to the failing roof.', requirements: { minElapsedMinutes: 22 }, timeCost: 7, effects: { setFlags: ['foundSideChannel'] }, next: 'trappedWorker' },
-        { id: 'shoreMainArch', label: 'Prop the rattling arch before moving', requirements: { anyItems: BRACE_TOOLS }, timeCost: 6, chance: { probability: 0.82, bonusItems: BRACE_TOOLS, bonusProbability: 0.08, successNext: 'trappedWorker', failureNext: 'timberShift', successMessage: 'The prop takes the pressure and the tapping grows clearer.', failureMessage: 'The stone shifts as the prop turns; you retreat from falling grit.', successEffects: { setFlags: ['archPropped'] }, failureEffects: { health: -1, setFlags: ['chamberShifted'] } } },
+        { id: 'followArchEarly', label: 'Follow the tapping through the stone arch', hint: 'The arch is passable now; dirt is already falling from it.', requirements: { maxElapsedMinutes: 21 }, timeCost: 3, effects: { setFlags: ['risked_collapse_for_rescue', 'neriEncountered'] }, next: 'trappedWorker' },
+        { id: 'useSideRunLate', label: 'Take the narrow side run around the arch', hint: 'Longer route, less exposure to the failing roof.', requirements: { minElapsedMinutes: 22 }, timeCost: 7, effects: { setFlags: ['foundSideChannel', 'neriEncountered'] }, next: 'trappedWorker' },
+        { id: 'shoreMainArch', label: 'Prop the rattling arch before moving', requirements: { anyItems: BRACE_TOOLS }, timeCost: 6, chance: { probability: 0.82, bonusItems: BRACE_TOOLS, bonusProbability: 0.08, successNext: 'trappedWorker', failureNext: 'timberShift', successMessage: 'The prop takes the pressure and the tapping grows clearer.', failureMessage: 'The stone shifts as the prop turns; you retreat from falling grit.', successEffects: { setFlags: ['archPropped', 'neriEncountered'] }, failureEffects: { health: -1, setFlags: ['chamberShifted'] } } },
         { id: 'retreatFromMainChannel', label: 'Turn back before the channel floods', timeCost: 1, effects: { historyFlags: ['left_collapsed_road'] }, next: 'personLeftEnding' },
       ],
     },
@@ -254,7 +254,7 @@ export const THE_ROAD_BELOW: Scenario = {
       id: 'timberShift', title: 'The Arch Shifts', tone: 'danger',
       text: 'A support stone rolls and clips your shoulder. The channel remains open, but the main arch is no longer safe to cross directly. The side run is still visible; water has climbed another few inches.',
       choices: [
-        { id: 'takeSideRunAfterShift', label: 'Use the narrow side run', timeCost: 4, next: 'trappedWorker', effects: { setFlags: ['foundSideChannel'] } },
+        { id: 'takeSideRunAfterShift', label: 'Use the narrow side run', timeCost: 4, next: 'trappedWorker', effects: { setFlags: ['foundSideChannel', 'neriEncountered'] } },
         { id: 'callCrewFromShift', label: 'Retreat and bring the road crew', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
         { id: 'retreatAfterShift', label: 'Get clear of the culvert', effects: { historyFlags: ['left_collapsed_road'] }, next: 'personLeftEnding' },
       ],
@@ -378,12 +378,21 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     personLeftEnding: {
       id: 'personLeftEnding', title: 'The Passage Goes Quiet', ending: 'success',
-      text: 'You retreat to firm ground and leave the culvert to the road crew. The opening is marked as dangerous, but you do not know whether Neri was found. Leaving kept you from taking a risk you could not accept.',
+      text: 'You retreat to firm ground and leave the damaged road behind. The road crew can assess what remains beyond your route; you leave before confirming what lies farther below.',
+      textVariants: [
+        { requirements: { flags: ['neriEncountered', 'roadWarned'] }, text: 'You retreat to firm ground after reaching Neri on the high shelf. He was alive when you left, but you did not bring him out. The road edge has been marked for closure.' },
+        { requirements: { flags: ['neriEncountered'] }, text: 'You retreat to firm ground after reaching Neri on the high shelf. He was alive when you left, but you did not bring him out. No road warning was placed on this route.' },
+        { requirements: { flags: ['roadWarned'] }, text: 'You retreat to firm ground. The road edge has been marked for closure; what remains beyond the route you took is for the road crew to assess.' },
+        { requirements: { flags: ['heardTapping'], notFlags: ['neriEncountered', 'roadWarned'] }, text: 'You retreat to firm ground after hearing the knocks. Their source remains unidentified; your route ends before reaching it.' },
+      ],
       choices: [],
     },
     warningEnding: {
       id: 'warningEnding', title: 'The Road Is Closed', ending: 'success',
-      text: 'The warning keeps traffic away from the broken shoulder. The crew will inspect the culvert before reopening the road. You do not enter, and you do not know whether anyone was below; the immediate danger to travelers is contained.',
+      text: 'The warning keeps traffic away from the broken shoulder. The crew will inspect the culvert before reopening the road; no later search result is established here.',
+      textVariants: [
+        { requirements: { flags: ['neriEncountered'] }, text: 'The warning keeps traffic away from the broken shoulder. Neri was alive on the high shelf when you last saw him; the crew has been asked to search, but its later result is not known here.' },
+      ],
       choices: [],
     },
     turnBackEnding: {
