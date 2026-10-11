@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { SCENARIOS } from './index';
@@ -22,6 +22,96 @@ function act(state: ReturnType<typeof begin>, scenario: Scenario, id: string, ra
 }
 
 describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', () => {
+  it('retains practical Knowledge independently of competition compensation', () => {
+    const siding = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-load-on-the-siding')!;
+    const sidingLesson = 'A high strap restrains a load but can pull its center of weight sideways on a curve.';
+    const sidingToRunnerUp = () => {
+      let state = begin(siding);
+      state = act(state, siding, 'strapHigh');
+      expect(sceneText(siding.scenes.roll, state)).toMatch(/pulls its weight toward one side/i);
+      state = act(state, siding, 'keepRolling', () => 0);
+      expect(state.run?.sceneId).toBe('fast');
+      expect(state.character?.knowledge).toContain(sidingLesson);
+      return state;
+    };
+    const runnerUpPaid = act(sidingToRunnerUp(), siding, 'acceptRunnerUp');
+    expect(runnerUpPaid.character?.money).toBe(7);
+    expect(runnerUpPaid.character?.knowledge).toContain(sidingLesson);
+    const sidingStorage = { value:'', setItem(_key:string,value:string){this.value=value;}, getItem(_key:string){return this.value;} };
+    saveGame(runnerUpPaid, sidingStorage as never);
+    expect(loadSave(sidingStorage as never).character?.knowledge).toContain(sidingLesson);
+    const runnerUpDeclined = act(sidingToRunnerUp(), siding, 'declineRunnerUp');
+    expect(runnerUpDeclined.character?.knowledge).toContain(sidingLesson);
+
+    const longCarry = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-long-carry')!;
+    const beamLesson = 'A long beam travels more safely when carriers change at marked rests before the load begins twisting.';
+    const balancedFinish = () => {
+      let state = begin(longCarry);
+      state = act(state, longCarry, 'balanceBeam');
+      expect(state.character?.knowledge).toContain(beamLesson);
+      return act(state, longCarry, 'keepEven');
+    };
+    const beamPaid = act(balancedFinish(), longCarry, 'takeThreeCoins');
+    expect(beamPaid.character?.money).toBe(8);
+    expect(beamPaid.character?.knowledge).toContain(beamLesson);
+    const learnedFinish = balancedFinish();
+    expect(meets(longCarry.scenes.finish.choices.find(({ id }) => id === 'declinePurse')?.requirements, learnedFinish)).toBe(false);
+    expect(meets(longCarry.scenes.finish.choices.find(({ id }) => id === 'declinePurseAfterLearning')?.requirements, learnedFinish)).toBe(true);
+    const learnedDecline = act(learnedFinish, longCarry, 'declinePurseAfterLearning');
+    expect(learnedDecline.character?.knowledge).toContain(beamLesson);
+    const beamGear = (() => {
+      let state = begin(longCarry);
+      state = act(state, longCarry, 'balanceBeam');
+      state = act(state, longCarry, 'pushHard', () => 0);
+      return act(state, longCarry, 'takeWonFrame');
+    })();
+    expect(beamGear.character?.knowledge).toContain(beamLesson);
+    const deferredFinish = (() => {
+      let state = begin(longCarry);
+      state = act(state, longCarry, 'dragBeam');
+      return act(state, longCarry, 'keepEven');
+    })();
+    expect(deferredFinish.character?.knowledge).not.toContain(beamLesson);
+    expect(sceneText(longCarry.scenes.finish, deferredFinish)).toMatch(/offers to demonstrate the carrier changes/i);
+    const beamDeclined = act(deferredFinish, longCarry, 'declinePurse');
+    expect(beamDeclined.character?.knowledge).toContain(beamLesson);
+    const storage = { value:'', setItem(_key:string,value:string){this.value=value;}, getItem(_key:string){return this.value;} };
+    saveGame(beamPaid, storage as never);
+    expect(loadSave(storage as never).character?.knowledge).toContain(beamLesson);
+    const unpaidLate = (() => {
+      let state = begin(longCarry);
+      state = act(state, longCarry, 'dragBeam');
+      state = act(state, longCarry, 'pushHard', () => 0.99);
+      return state;
+    })();
+    expect(unpaidLate.run?.sceneId).toBe('late');
+    expect(unpaidLate.character?.knowledge).not.toContain(beamLesson);
+    expect(sceneText(longCarry.scenes.late, unpaidLate)).toMatch(/offers to demonstrate the carrier changes/i);
+    const taughtLate = act(unpaidLate, longCarry, 'declineLate');
+    expect(taughtLate.character?.knowledge).toContain(beamLesson);
+
+    const harness = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-harness-stitch-trial')!;
+    const stitchLesson = 'Flex a harness strap at its fold; worn stitches can fail there before the leather looks damaged.';
+    const safeStitchResult = (stopPull: boolean) => {
+      let state = begin(harness);
+      if (stopPull) {
+        state = act(state, harness, 'pullTest');
+        state = act(state, harness, 'stopPull');
+      } else {
+        state = act(state, harness, 'flexStitch');
+        state = act(state, harness, 'replaceThread');
+      }
+      expect(state.run?.sceneId).toBe('safeResult');
+      expect(state.character?.knowledge).toContain(stitchLesson);
+      return state;
+    };
+    for (const choice of ['takeRoll', 'takeTwoCoins', 'learnStitch']) {
+      const after = act(safeStitchResult(choice === 'takeTwoCoins'), harness, choice);
+      expect(after.character?.knowledge, choice).toContain(stitchLesson);
+    }
+    for (const choice of harness.scenes.safeResult.choices) expect(choice.effects?.knowledge).toEqual([stitchLesson]);
+  });
+
   it('registers 24 unique, all-year Adventures with clean complete graphs and no new Gear IDs', () => {
     expect(COMPETITION_GEAR_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);
@@ -317,7 +407,7 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     let careful = act(begin(scenario), scenario, 'balanceBeam');
     careful = act(careful, scenario, 'keepEven');
     expect(careful.run?.sceneId).toBe('finish');
-    expect(scenario.scenes.finish.choices.map(({ id }) => id)).toEqual(['takeThreeCoins', 'declinePurse']);
+    expect(scenario.scenes.finish.choices.map(({ id }) => id)).toEqual(['takeThreeCoins', 'declinePurse', 'declinePurseAfterLearning']);
     expect(careful.run?.inventory).not.toContain('packFrame');
 
     let winner = act(begin(scenario), scenario, 'balanceBeam');

@@ -79,6 +79,28 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
     expect(scenario.scenes.settlement.choices.find(({ id }) => id === 'recordLesson')).toBeUndefined();
     expect(scenario.scenes.settlement.choices.find(({ id }) => id === 'decline')?.label).not.toMatch(/lesson|method/i);
   });
+
+  it('records investigation findings before settlement, independent of material compensation', () => {
+    for (const scenario of INVESTIGATION_EVIDENCE_GENRE_BATCH.filter(({ id }) => id !== 'the-map-with-two-norths')) {
+      const before = reachSettlement(scenario);
+      const lessonChoice = scenario.scenes.test.choices.find(({ id }) => id === (scenario.diversity?.combat === 'POSSIBLE' ? 'callWitness' : 'careful'))!;
+      const knowledge = lessonChoice.effects?.knowledge?.[0];
+      expect(knowledge, `${scenario.id} learns from the evidence before settlement`).toBeTruthy();
+      expect(before.character?.knowledge).toContain(knowledge);
+      const settlement = scenario.scenes.settlement;
+      const noCompensation = settlement.choices.find(({ label }) => /Decline.*material compensation/i.test(label));
+      expect(noCompensation, scenario.id).toBeTruthy();
+      for (const choice of settlement.choices) expect(choice.effects?.knowledge, `${scenario.id}.${choice.id} compatibility-safe grant`).toEqual([knowledge]);
+      for (const choice of settlement.choices) {
+        let after = act(before, scenario, choice.id);
+        expect(after.character?.knowledge, `${scenario.id}.${choice.id}`).toContain(knowledge);
+        const storage = { value:'', setItem(_key:string,value:string){this.value=value;}, getItem(_key:string){return this.value;} };
+        saveGame(after, storage as never);
+        after = loadSave(storage as never);
+        expect(after.character?.knowledge, `${scenario.id}.${choice.id} save/reload`).toContain(knowledge);
+      }
+    }
+  });
   it('registers 24 unique reachable Adventures with evidence interpretation and continuity', () => {
     expect(INVESTIGATION_EVIDENCE_GENRE_BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);

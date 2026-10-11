@@ -9,8 +9,28 @@ const tags = (hook: string, setting: string, risk: ScenarioDiversity['riskTier']
   structures: ['trade diagnosis', 'field complication', 'work-quality consequence'], entry: ['hired/posted work'],
   rewards: ['Gear', 'coins', 'reusable Knowledge'], outcomes: ['success/partial success', 'walk-away/refusal', 'negotiated compromise'],
 });
+const priorLearningRoutes: Record<string, { scene: string; choice: string; flag: string }> = {
+  'the-harness-stitch': { scene:'threads', choice:'reinforce', flag:'trade_harness_fold_lesson_earned' },
+  'the-line-that-would-not-hold': { scene:'splice', choice:'relay', flag:'trade_wet_splice_lesson_earned' },
+  'the-press-before-noon': { scene:'test', choice:'post', flag:'trade_press_bed_lesson_earned' },
+  'the-ropewalk-splice': { scene:'load', choice:'wait', flag:'trade_rope_lay_lesson_earned' },
+  'paper-under-the-press': { scene:'ink', choice:'wait', flag:'trade_damp_book_lesson_earned' },
+  'the-door-at-the-telephone-office': { scene:'hinge', choice:'explain', flag:'trade_latch_alignment_lesson_earned' },
+  'the-glasshouse-lanterns': { scene:'draft', choice:'record', flag:'trade_lamp_draft_lesson_earned' },
+};
 const make = (id: string, title: string, subtitle: string, hook: string, setting: string, risk: ScenarioDiversity['riskTier'], start: string, authoredScenes: Record<string, Scene>, activity?: string): Scenario => {
   const scenes = structuredClone(authoredScenes);
+  const priorLearning = priorLearningRoutes[id];
+  if (priorLearning) {
+    const learningChoice = scenes[priorLearning.scene]?.choices.find(({ id: choiceId }) => choiceId === priorLearning.choice);
+    if (learningChoice) learningChoice.effects = { ...learningChoice.effects, setFlags:[...(learningChoice.effects?.setFlags ?? []), priorLearning.flag] };
+    const instructionChoice = scenes.settlement?.choices.find(({ id: choiceId }) => choiceId === 'learnMethod');
+    if (instructionChoice) instructionChoice.requirements = { ...instructionChoice.requirements, notFlags:[...(instructionChoice.requirements?.notFlags ?? []), priorLearning.flag] };
+    if (scenes.settlement) scenes.settlement.textVariants = [
+      { requirements:{flags:[priorLearning.flag]}, text:`${scenes.settlement.text} Your earlier action established the method, so that finding is already in your notes.` },
+      { requirements:{notFlags:[priorLearning.flag]}, text:`${scenes.settlement.text} The craftsperson offers to show you the method now if you would rather learn than take a material share.` },
+    ];
+  }
   const settlement = scenes.settlement;
   if (settlement?.choices.some(({ id: choiceId }) => ['takeTool', 'takeCoins', 'learnMethod', 'decline', 'repairOwnRope', 'spliceOwnRope'].includes(choiceId))) {
     const gear = settlement.choices.find(({ id: choiceId }) => choiceId === 'takeTool')?.effects?.gainItems?.[0];
@@ -49,7 +69,7 @@ const make = (id: string, title: string, subtitle: string, hook: string, setting
 const itemOffer = (id: string, name: string, _next: string, provenance: string, knowledge: string) => [
   { id: 'takeTool', label: `Take the ${name} as your share instead of coins`, requirements: { notOwnedItems: [id] }, effects: { gainItems: [id], inventorySources: { [id]: 'found' as const }, setFlags: ['trade_batch4_tool_chosen'], historyFlags: [`received_${id}_for_trade_work`] }, next: 'workResolved', hint: `${provenance} The item is offered instead of the two coins.` },
   { id: 'takeCoins', label: 'Take the two-coin wage', effects: { money: 2, setFlags: ['trade_batch4_coins_chosen'], historyFlags: ['earned_trade_wages'] }, next: 'workResolved' },
-  { id: 'learnMethod', label: 'Ask the craftsperson to show you the method', effects: { knowledge: [knowledge], setFlags: ['trade_batch4_knowledge_chosen'], historyFlags: ['learned_trade_method'] }, next: 'workResolved' },
+  { id: 'learnMethod', label: 'Ask the craftsperson to show you the method now', effects: { knowledge: [knowledge], setFlags: ['trade_batch4_knowledge_chosen'], historyFlags: ['learned_trade_method'] }, next: 'workResolved' },
   { id: 'decline', label: 'Decline the extra share and finish the work', effects: { setFlags: ['trade_batch4_declined'] }, next: 'workResolved' },
 ];
 
@@ -203,7 +223,7 @@ export const TRADES_APPRENTICESHIP_GENRE_BATCH: Scenario[] = [
   make('the-door-at-the-telephone-office', 'The Door at the Telephone Office', 'A locksmith asks you to help repair a service-room latch without replacing the old lock.', 'The latch tongue is sound; the swollen door has dropped on one hinge.', 'telegraph office', 'LOW', 'lock', {
     lock: scene('lock', 'A Key that Turns', 'Locksmith Farah Bell tests the office key. It turns fully, but the latch will not retract unless someone lifts the door. The clerk wants a new lock before the dispatch riders arrive.', [{ id: 'lift', label: 'Lift the door while Farah tests the latch tongue', next: 'hinge' }, { id: 'tool', label: 'Use your Pocket Toolkit to remove the strike plate', requirements: { items: ['pocketToolkit'] , usableItems: ['pocketToolkit']}, next: 'hinge' }, { id: 'replace', label: 'Replace the lock before the office opens', next: 'waste' }]),
     hinge: scene('hinge', 'A Hinge Screw in Soft Wood', 'The lower hinge screw has pulled loose from wet wood. Farah can move the plate to sound timber and refit the same lock; the clerk must accept a short delay.', [{ id: 'refit', label: 'Refit the hinge plate in sound wood', next: 'settlement' }, { id: 'explain', label: 'Show the clerk why the lock itself is not faulty', next: 'settlement', effects: { knowledge: ['When a key turns but a latch binds only under door weight, inspect the hinge and strike alignment before replacing the lock.'] } }]),
-    settlement: scene('settlement', 'The Key Turns Easily', 'The door closes without lifting and the original lock stays in service. Farah offers her small folding card mirror for future close inspection, or the clerk pays the repair fee.', [{ id: 'takeTool', label: 'Take the Folding Card Mirror instead of the fee', requirements: { notOwnedItems: ['foldingCardMirror'] }, effects: { gainItems: ['foldingCardMirror'], historyFlags: ['received_folding_card_mirror_for_latch_repair'] }, next: 'tool' }, { id: 'takeCoins', label: 'Take two coins for the repair', effects: { money: 2 }, next: 'paid' }, { id: 'learnMethod', label: 'Learn how to read latch alignment under door weight', effects: { knowledge: ['A latch that binds under door weight can be a hinge-alignment problem rather than a lock failure.'] }, next: 'learned' }]),
+    settlement: scene('settlement', 'The Key Turns Easily', 'The door closes without lifting and the original lock stays in service. Farah offers her small folding card mirror for future close inspection, the clerk can pay the repair fee, or Farah can show you how to read latch alignment under door weight.', [{ id: 'takeTool', label: 'Take the Folding Card Mirror instead of the fee', requirements: { notOwnedItems: ['foldingCardMirror'] }, effects: { gainItems: ['foldingCardMirror'], historyFlags: ['received_folding_card_mirror_for_latch_repair'] }, next: 'tool' }, { id: 'takeCoins', label: 'Take two coins for the repair', effects: { money: 2 }, next: 'paid' }, { id: 'learnMethod', label: 'Ask Farah to show you how to read latch alignment under door weight', effects: { knowledge: ['A latch that binds under door weight can be a hinge-alignment problem rather than a lock failure.'] }, next: 'learned' }]),
     tool: end('tool', 'A Mirror for Close Work', 'Farah transfers the mirror and shows how it sees behind a strike plate without dismantling the lock.'),
     paid: end('paid', 'A Repair, Not a Replacement', 'The clerk pays the agreed repair fee and keeps the original lock.'),
     learned: end('learned', 'A Lock Kept in Service', 'Farah records the alignment check in the office ledger.'),

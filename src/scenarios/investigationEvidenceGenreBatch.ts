@@ -101,9 +101,9 @@ function build(c: EvidenceStory): Scenario {
   });
   if (toolUse) inspectChoices.push({ id:'specialistTool', label:toolUse.label, next:'test', requirements:{items:[toolUse.item],usableItems:[toolUse.item]}, effects:{setFlags:[`${c.id}_specialistTool`]} });
   const actionChoices: Scene['choices'] = [
-    { id:'careful', label:c.actions[0], next:'settlement', effects:{ setFlags:[`${c.id}_careful`] } },
-    { id:'verify', label:c.actions[1], next:'settlement', effects:{ setFlags:[`${c.id}_verified`] } },
-    { id:'accuse', label:c.actions[2], next:'settlement', effects:{ setFlags:[`${c.id}_accused`] } },
+    { id:'careful', label:c.actions[0], next:'settlement', effects:{ setFlags:[`${c.id}_careful`], ...(['the-map-with-two-norths'].includes(c.id) ? {} : { knowledge:[c.lesson] }) } },
+    { id:'verify', label:c.actions[1], next:'settlement', effects:{ setFlags:[`${c.id}_verified`], ...(['the-map-with-two-norths'].includes(c.id) ? {} : { knowledge:[c.lesson] }) } },
+    { id:'accuse', label:c.actions[2], next:'settlement', effects:{ setFlags:[`${c.id}_accused`], ...(['the-map-with-two-norths'].includes(c.id) ? {} : { knowledge:[c.lesson] }) } },
   ];
   if (c.id === 'the-bent-pin-in-the-harvest-engine') {
     for (const action of actionChoices) action.effects = { ...action.effects, knowledge:[c.lesson] };
@@ -122,11 +122,11 @@ function build(c: EvidenceStory): Scenario {
     { id:'wage', label:`Accept the ${c.coins}-coin inspection fee`, next:'paid', effects:{ money:c.coins } },
     ...(c.id === 'the-map-with-two-norths' || c.id === 'the-bent-pin-in-the-harvest-engine'
       ? [{ id:'decline', label:'Decline all material compensation', next:'lesson', effects:{} }]
-      : [{ id:'recordLesson', label:'Decline payment and keep the practical lesson', next:'lesson', effects:{ knowledge:[c.lesson] } }]),
+      : [{ id:'recordLesson', label:'Decline material compensation', next:'lesson', effects:{} }]),
     ...(item && itemName ? [{ id:'tool', label:`Accept the ${itemName} as compensation`, next:'gear', requirements:{ notOwnedItems:[item] }, effects:gearGain(item,provenance!,`earned_${item}_${c.id}`) }] : []),
-  ].map((choice) => c.id === 'the-map-with-two-norths'
-    ? { ...choice, effects: { ...choice.effects, knowledge:[c.lesson] } }
-    : choice);
+  // Idempotent fallback keeps existing active runs saved at settlement intact;
+  // new runs already acquire the finding at the preceding evidence decision.
+  ].map((choice) => ({ ...choice, effects: { ...choice.effects, knowledge:[c.lesson] } }));
   const scenes: Record<string, Scene> = {
     observe:s('observe','A Claim and a Physical Trace',`${c.scene} ${c.claim} You are asked to help assess the evidence, not to act as an officer.`,inspectChoices),
     test:s('test',c.testTitle,c.test,[...actionChoices], 'safe', c.id === 'the-map-with-two-norths' ? [
@@ -143,14 +143,14 @@ function build(c: EvidenceStory): Scenario {
       { requirements:{flags:[`${c.id}_accused`]}, text:`${c.interpretation} ${c.accuse}` },
     ]},
     paid:e('paid','A Limited Finding',`You accept ${c.coins} coins for the practical inspection. ${c.id === 'the-map-with-two-norths' ? 'The finding itself remains with you; the fee did not replace what the investigation established.' : c.lesson}`),
-    lesson:e('lesson',c.id === 'the-map-with-two-norths' || c.id === 'the-bent-pin-in-the-harvest-engine' ? 'No Material Compensation' : 'A Reusable Method',c.id === 'the-map-with-two-norths' ? 'You decline material compensation. The reduced copy is labeled for its limited use, and the lesson about direction and scale remains with you.' : c.id === 'the-bent-pin-in-the-harvest-engine' ? 'You decline the coin and tool compensation. The inspection finding remains: the loose guard may explain the jam, but the bent pin alone does not identify who caused it.' : `You leave the fee and retain the method: ${c.lesson}`),
+    lesson:e('lesson','No Material Compensation',c.id === 'the-map-with-two-norths' ? 'You decline material compensation. The reduced copy is labeled for its limited use, and the lesson about direction and scale remains with you.' : c.id === 'the-bent-pin-in-the-harvest-engine' ? 'You decline the coin and tool compensation. The inspection finding remains: the loose guard may explain the jam, but the bent pin alone does not identify who caused it.' : `You decline material compensation. The finding established during the inspection remains in your notes: ${c.lesson}`),
     ...(item && itemName ? { gear:e('gear','A Tool for Careful Records',`${provenance} The ${itemName} helps with ${itemSource}; it preserves a comparison, not a conclusion.`) } : {}),
   };
   if (c.combat) {
     scenes.test = s('test',c.testTitle,`${c.test} Before the owner can decide what to do, a person comes back to remove the disputed item and shoves the clerk aside. They have not drawn a weapon; the office door and public street are both clear.`,[
-      { id:'callWitness',label:'Call the street watch and keep the clerk behind the counter',next:'settlement',effects:{setFlags:[`${c.id}_careful`]} },
-      { id:'secureEvidence',label:'Move the evidence to the locked public office and withdraw',next:'settlement',effects:{setFlags:[`${c.id}_verified`]} },
-      { id:'standGround',label:'Restrain the returning intruder',chance:{probability:.55,successNext:'settlement',failureNext:'settlement',successMessage:'The intruder backs away when the watch answers.',failureMessage:'You are struck in the struggle, but the intruder flees when the street watch arrives.',failureEffects:{health:-3,setFlags:[`${c.id}_verified`]},successEffects:{setFlags:[`${c.id}_careful`]} } },
+      { id:'callWitness',label:'Call the street watch and keep the clerk behind the counter',next:'settlement',effects:{setFlags:[`${c.id}_careful`],knowledge:[c.lesson]} },
+      { id:'secureEvidence',label:'Move the evidence to the locked public office and withdraw',next:'settlement',effects:{setFlags:[`${c.id}_verified`],knowledge:[c.lesson]} },
+      { id:'standGround',label:'Restrain the returning intruder',chance:{probability:.55,successNext:'settlement',failureNext:'settlement',successMessage:'The intruder backs away when the watch answers.',failureMessage:'You are struck in the struggle, but the intruder flees when the street watch arrives.',failureEffects:{health:-3,setFlags:[`${c.id}_verified`],knowledge:[c.lesson]},successEffects:{setFlags:[`${c.id}_careful`],knowledge:[c.lesson]} } },
     ]);
   }
   const tags = largeTags({ hook:`${c.claim} ${c.interpretation}`, role:'traveler/passenger', activity:'investigation/mystery', tone:c.risk === 'LOW' ? 'adventurous' : c.risk === 'HIGH' ? 'tense/dangerous' : 'tense', risk:c.risk, setting:c.setting, fantasy:'NONE', combat:c.combat ? 'POSSIBLE' : 'NONE', structures:['evidence review','multiple explanations','choice changes response','interpretation with uncertainty'], entry:['hired/posted work','accidental encounter'], rewards:['Knowledge','coins',...(item ? ['Gear'] : [])], outcomes:['success/partial success','walk-away/refusal'] });
