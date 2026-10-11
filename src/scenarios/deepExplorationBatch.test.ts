@@ -397,4 +397,37 @@ describe('deep exploration anthology', () => {
     const legacy = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'vaultEnding' } };
     expect(sceneText(vault.scenes.vaultEnding, legacy)).toMatch(/account of what your route established/i);
   });
+
+  it('does not give the drain-only Hollow Fort route credit for the unseen roster or escape tunnel', () => {
+    const fort = getScenario('hollow-fort')!;
+    const traveler = newCharacter('Fort Drainage Inspector');
+    traveler.carriedItem = 'drainageHook';
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, fort, () => 0) };
+    const cistern = choose(initial, fort, fort.scenes.fortYard.choices.find(({ id }) => id === 'cistern')!, () => 0);
+    const drained = choose(cistern, fort, fort.scenes.fortCistern.choices.find(({ id }) => id === 'drainCistern')!, () => 0);
+    expect(drained.run?.flags).toContain('fortDrainClear');
+    const report = choose(drained, fort, fort.scenes.fortDrained.choices.find(({ id }) => id === 'reportDrain')!, () => 0);
+    expect(sceneText(fort.scenes.fortResolution, report)).toMatch(/cleared drain carries water toward the outer slope/i);
+    expect(sceneText(fort.scenes.fortResolution, report)).toMatch(/roster.*remain unexamined/i);
+    expect(sceneText(fort.scenes.fortResolution, report)).not.toMatch(/workers preserve the escape route and the flood roster/i);
+  });
+
+  it('qualifies Hollow Fort record and escape-route closure details by the route actually taken', () => {
+    const fort = getScenario('hollow-fort')!;
+    const traveler = newCharacter('Fort Bastion Explorer');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, fort, () => 0) };
+    initial.run!.sceneId = 'fortDrained';
+    initial.run!.flags.push('fortDrainClear');
+    const entered = choose(initial, fort, fort.scenes.fortDrained.choices.find(({ id }) => id === 'lowerBastion')!, () => 0);
+    const copied = choose(entered, fort, fort.scenes.fortBastion.choices.find(({ id }) => id === 'copyRoster')!, () => 0);
+    expect(sceneText(fort.scenes.fortResolution, copied)).toMatch(/copied the flood roster in the lower bastion/i);
+    expect(sceneText(fort.scenes.fortResolution, copied)).not.toMatch(/preserve both the record and route/i);
+
+    const tunnel = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'fortPowder' } };
+    const escaped = choose(tunnel, fort, fort.scenes.fortPowder.choices.find(({ id }) => id === 'escapeTunnel')!, () => 0);
+    expect(escaped.run?.flags).toContain('fortEscapeRouteFound');
+    const farEntry = choose(escaped, fort, fort.scenes.fortTunnel.choices.find(({ id }) => id === 'farBastion')!, () => 0);
+    const fullRecord = choose(farEntry, fort, fort.scenes.fortBastion.choices.find(({ id }) => id === 'copyRoster')!, () => 0);
+    expect(sceneText(fort.scenes.fortResolution, fullRecord)).toMatch(/preserve both the record and route/i);
+  });
 });
