@@ -2,6 +2,7 @@ import type { Choice, Scenario } from '../types';
 import { IVEN_CONTACT } from '../travelerContinuity';
 
 const loadingBaySetup = 'The rural cooperative’s cold store is humming far louder than it should. A worker named Mara is trapped somewhere inside; before the refrigeration machinery jammed, the foreman heard her answer from within. Since then, no one has heard from her. Frost is spreading around a sealed service door, while the building also holds supplies the nearby settlement depends on. The foreman asks you to help before either problem gets worse.';
+const ivenDebriefInvite = 'The foreman gives his name as Iven and says to ask for him if the road brings you back to the cooperative.';
 
 const REPAIR_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'compactStoveTool', 'bridgewrightHammer'];
 const DOOR_TOOLS = ['ratCatchersHook', 'foldingPryTool', 'brassCandlestick', 'pocketToolkit', 'foremanMultiTool', 'icehouseTongs', 'brassBottleOpener'];
@@ -200,11 +201,11 @@ export const COLD_STORAGE: Scenario = {
     },
     rescueDebrief: {
       id: 'rescueDebrief', title: 'A Warm Coat Around Mara',
-      text: 'Mara is out of the cold room and wrapped in a rescue blanket. The foreman thanks you, gives his name as Iven, and says to ask for him if the road brings you back to the cooperative. He then offers one of two tools from the repair chest: a compact block-and-tackle or a pair of icehouse tongs. Both are useful; the co-op can spare only one.',
+      text: `Mara is out of the cold room and wrapped in a rescue blanket. The foreman thanks you. ${ivenDebriefInvite} He then offers one of two tools from the repair chest: a compact block-and-tackle or a pair of icehouse tongs. Both are useful; the co-op can spare only one.`,
       textVariants: [
-        { requirements: { historyFlags: ['saved_community_supplies'] }, text: 'Mara is out of the cold room and wrapped in a rescue blanket. The clinic confirms the medicines you protected are still usable. In thanks, the foreman offers one tool from the co-op’s repair chest: a compact block-and-tackle or a pair of icehouse tongs.' },
-        { requirements: { historyFlags: ['prioritized_goods_over_worker'] }, text: 'Mara is out of the cold room and wrapped in a rescue blanket. She is weaker after the delay, though the foreman understands why you tried to protect the clinic’s supply. The co-op offers one tool from its repair chest: a compact block-and-tackle or a pair of icehouse tongs.' },
-        { requirements: { historyFlags: ['returned_with_help'] }, text: 'Mara is out of the cold room, thanks in part to the crew you brought back. The foreman offers one tool from the co-op’s repair chest: a compact block-and-tackle or a pair of icehouse tongs.' },
+        { requirements: { historyFlags: ['saved_community_supplies'] }, text: `Mara is out of the cold room and wrapped in a rescue blanket. The clinic confirms the medicines you protected are still usable. ${ivenDebriefInvite} In thanks, he offers one tool from the co-op’s repair chest: a compact block-and-tackle or a pair of icehouse tongs.` },
+        { requirements: { historyFlags: ['prioritized_goods_over_worker'] }, text: `Mara is out of the cold room and wrapped in a rescue blanket. She is weaker after the delay, though the foreman understands why you tried to protect the clinic’s supply. ${ivenDebriefInvite} The cooperative offers one tool from its repair chest: a compact block-and-tackle or a pair of icehouse tongs.` },
+        { requirements: { historyFlags: ['returned_with_help'] }, text: `Mara is out of the cold room, thanks in part to the crew you brought back. ${ivenDebriefInvite} He offers one tool from the co-op’s repair chest: a compact block-and-tackle or a pair of icehouse tongs.` },
       ],
       choices: rewardChoices('finalOutcome'),
     },

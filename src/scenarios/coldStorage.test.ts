@@ -43,6 +43,23 @@ describe('Cold Storage', () => {
     expect(scene.choices.map(({id})=>id)).toEqual(['inspectDoor','inspectControls','inspectStock','callCrew']);
   });
 
+  it('introduces Iven and his return invitation in every rescue-debrief variant before Contact reward choices',()=>{
+    const scene=COLD_STORAGE.scenes.rescueDebrief;
+    const invite='The foreman gives his name as Iven and says to ask for him if the road brings you back to the cooperative.';
+    expect(scene.textVariants).toHaveLength(3);
+    for(const variant of scene.textVariants??[]){
+      const state=fresh();
+      state.run!.sceneId='rescueDebrief';
+      state.character!.historyFlags=[...(variant.requirements?.historyFlags??[])];
+      expect(meets(variant.requirements,state)).toBe(true);
+      const rendered=sceneText(scene,state);
+      expect(rendered).toBe(variant.text);
+      expect(rendered.split(invite)).toHaveLength(2);
+      expect(rendered).toContain('Mara is out of the cold room');
+      expect(scene.choices.every(({effects})=>effects?.gainContacts?.some(({id})=>id===IVEN_CONTACT.id))).toBe(true);
+    }
+  });
+
   it('maps the service channel and inner latch before offering a descent or hook action', () => {
     const setup = COLD_STORAGE.scenes.serviceEntry.text;
     expect(setup).toContain('beneath the loading floor');
