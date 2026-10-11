@@ -65,7 +65,7 @@ export const SEASONAL_LIFE_ADVENTURES = authorBatch([
       ] },
       { id: 'coach', label: 'Ask whether the morning coach is confirmed', title: 'A Note from the Driver', text: 'The keeper has a note from the coach driver: the road is open, and the coach will leave at the usual hour if the snow stays light.', outcomes: [
         { id: 'stay', label: 'Book a place for the morning', title: 'A Confirmed Seat', text: 'The keeper reserves your seat and writes your name in the book. You can enjoy the evening without watching the road.' },
-        { id: 'leave', label: 'Choose to walk after daylight', title: 'No Ticket Needed', text: 'You decide to travel on foot after breakfast. The coach carries whoever wants it, and the keeper refunds your place.' },
+        { id: 'leave', label: 'Choose to walk after daylight', title: 'No Ticket Needed', text: 'You decide to travel on foot after breakfast. The keeper releases the unpurchased seat for another traveler; no fare was paid or refunded.' },
       ] },
       { id: 'help', label: 'Help set the table and carry in wood', title: 'Ready for Guests', text: 'You carry two armloads of wood from the shed and set bowls on the table. It is ordinary help on a cold evening.', outcomes: [
         { id: 'eat', label: 'Stay for a bowl', title: 'A Place at the Table', text: 'The keeper seats you with the others and will not take payment for the small favor. The evening passes pleasantly.' },

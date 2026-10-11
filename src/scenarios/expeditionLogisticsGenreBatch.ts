@@ -40,10 +40,10 @@ const EXPEDITION_LOGISTICS_EDITORIAL_DRAFT: Scenario[] = [
       { id: 'forceLoad', label: 'Fasten the whole load onto the tender mule', next: 'strain', effects: { setFlags: ['fourth_mule_overloaded'] } },
     ]),
     camp: s('camp', 'The Camp Needs the Missing Load', 'The route takes longer than planned. A cold rain begins before the cook fire is raised; the remaining supplies determine whether the party can shelter in place or must return for the bedding.', [
-      { id: 'useBlanket', label: 'Use the crew’s temporary spare blanket and make a smaller fire', next: 'safe' },
+      { id: 'useBlanket', label: 'Use the crew’s temporary spare blanket and make a smaller fire', next: 'safe', effects: { money: 1 } },
       { id: 'returnBedding', label: 'Send two rested carriers back for the cached bedding', next: 'paid', requirements: { flags: ['fourth_mule_bedding_cached'] } },
       { id: 'shareShelter', label: 'Share the tarp and keep the fire low', next: 'paid', requirements: { flags: ['fourth_mule_hand_load'] } },
-      { id: 'retreat', label: 'Return to the staging shed together', next: 'safe' },
+      { id: 'retreat', label: 'Return to the staging shed together', next: 'safe', effects: { money: 1 } },
     ]),
     strain: s('strain', 'The Saddle Slips Again', 'The mule stumbles on the first rise. No one is hurt, but the load must come off and the animal rests while the party reorganizes.', [{ id: 'unload', label: 'Unload and divide the goods by hand', next: 'partial', effects: { historyFlags: ['refused_overload_on_pack_animal'] } }]),
     safe: end('safe', 'Animals and Supplies Safe', 'The party postpones the climb. The mule is rested and the goods remain together; the leader pays one coin for the extra handling.'),

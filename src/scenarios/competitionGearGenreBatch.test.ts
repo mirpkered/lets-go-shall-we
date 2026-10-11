@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE } from '../storage';
 import { ITEMS } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
@@ -67,6 +67,15 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     const loser = act(act(begin(scenario, 3), scenario, 'stakeCoin'), scenario, 'callWide', () => 0.99);
     expect(loser.character?.money).toBe(2);
     expect(loser.run?.sceneId).toBe('testNarrow');
+    expect(sceneText(scenario.scenes.testNarrow, loser)).toMatch(/call was wrong.*keeps the one-coin stake/i);
+
+    const wrongWide = act(act(begin(scenario, 3), scenario, 'stakeCoin'), scenario, 'callNarrow', () => 0.99);
+    expect(wrongWide.character?.money).toBe(2);
+    expect(wrongWide.run?.sceneId).toBe('testWide');
+    expect(sceneText(scenario.scenes.testWide, wrongWide)).toMatch(/call was wrong.*keeps the one-coin stake/i);
+    const correctWide = act(act(begin(scenario, 3), scenario, 'stakeCoin'), scenario, 'callWide', () => 0);
+    expect(correctWide.character?.money).toBe(4);
+    expect(sceneText(scenario.scenes.testWide, correctWide)).toMatch(/returns your one-coin stake and pays one coin in winnings/i);
   });
 
   it('keeps the inn wager one hand only and pays the agreed stake once', () => {
@@ -86,6 +95,18 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     loss = act(loss, scenario, 'callLow');
     expect(loss.character?.money).toBe(2);
     expect(loss.run?.sceneId).toBe('lost');
+
+    let instructional = begin(scenario, 3);
+    instructional = act(instructional, scenario, 'playHand');
+    expect(scenario.scenes.hand.choices.filter(({ requirements }) => meets(requirements, instructional)).map(({ id }) => id)).toContain('askMethodAfterStake');
+    expect(scenario.scenes.hand.choices.filter(({ requirements }) => meets(requirements, instructional)).map(({ id }) => id)).not.toContain('askMethod');
+    instructional = act(instructional, scenario, 'askMethodAfterStake');
+    expect(instructional.character?.money).toBe(3);
+    expect(sceneText(scenario.scenes.lesson, instructional)).toMatch(/returns your one-coin stake/i);
+
+    const noStake = act(begin(scenario, 3), scenario, 'watchOnly');
+    expect(scenario.scenes.hand.choices.filter(({ requirements }) => meets(requirements, noStake)).map(({ id }) => id)).toContain('askMethod');
+    expect(scenario.scenes.hand.choices.filter(({ requirements }) => meets(requirements, noStake)).map(({ id }) => id)).not.toContain('askMethodAfterStake');
   });
 
   it('persists an explicitly won Gear prize through the real acquisition path', () => {

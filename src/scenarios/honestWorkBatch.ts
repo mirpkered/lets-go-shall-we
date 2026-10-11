@@ -285,7 +285,7 @@ CUTTING_TIMBER.scenes.timberTally = {
   choices: [
     { id: 'finishTimberLoad', label: 'Leave the finished stack as agreed', timeCost: 60, next: 'ordinaryFinish', effects: { money: 4, historyFlags: ['completed_paid_timber_work'] } },
     { id: 'extraTimberLoad', label: 'Trim one more short load', hint: 'The extra work may bring a coin, but a bound branch can strain your hand.', timeCost: 60, chance: { probability: 0.78, successNext: 'timberBonusFinish', failureNext: 'timberSetbackFinish', successMessage: 'The short extra load is trimmed and stacked before the light fades.', failureMessage: 'A branch shifts against your forearm. You step back safely, but the extra load is left unfinished.',
-      successEffects: { money: 5, historyFlags: ['completed_paid_timber_work', 'earned_timber_load_bonus'] }, failureEffects: { money: 2, historyFlags: ['completed_paid_timber_work_had_setback'] } } },
+      successEffects: { money: 5, historyFlags: ['completed_paid_timber_work', 'earned_timber_load_bonus'] }, failureEffects: { money: 4, historyFlags: ['completed_paid_timber_work_had_setback'] } } },
     { id: 'helpTimberCrew', label: 'Help the sawyers balance the cart', timeCost: 45, next: 'timberCrewFinish', effects: { money: 4, historyFlags: ['completed_paid_timber_work', 'helped_balance_timber_cart'] } },
   ],
 };

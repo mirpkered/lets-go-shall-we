@@ -119,6 +119,21 @@ describe('honest work adventure batch', () => {
     expect(finishSuccess(state, null).character?.adventuresCompleted).toBe(1);
   });
 
+  it('pays for the two agreed timber loads after an unfinished extra load, and adds only the earned bonus when it succeeds', () => {
+    const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'cutting-timber')!;
+    let state = act(start(scenario, 'quiet'), scenario, 'hiring', 'askThenWork');
+    state = act(state, scenario, 'work', 'finishQuiet');
+    state = act(state, scenario, 'timberTally', 'extraTimberLoad', () => 0.99);
+    expect(state.run?.sceneId).toBe('timberSetbackFinish');
+    expect(state.character?.money).toBe(4);
+    expect(scenario.scenes.timberSetbackFinish.text).toMatch(/pays for the two loads already stacked/i);
+
+    let bonus = act(start(scenario, 'quiet'), scenario, 'hiring', 'askThenWork');
+    bonus = act(bonus, scenario, 'work', 'finishQuiet');
+    bonus = act(bonus, scenario, 'timberTally', 'extraTimberLoad', () => 0);
+    expect(bonus.character?.money).toBe(5);
+  });
+
   it('supports a fresh-character resolution, an item-assisted approach, and an imperfect failed check', () => {
     const scenario = HONEST_WORK_ADVENTURES[4];
     let state = act(start(scenario, 'complication'), scenario, 'hiring', 'askThenWork');

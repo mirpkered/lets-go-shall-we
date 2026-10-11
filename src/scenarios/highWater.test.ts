@@ -37,6 +37,14 @@ function reachCrestAfterPeopleAndAnimals(): SaveData {
 }
 
 describe('High Water', () => {
+  it('makes clear that the second hauler costs the Traveler two coins rather than paying them', () => {
+    const outside = HIGH_WATER.scenes.outsideHelp;
+    expect(outside.text).toMatch(/hire a second hauler and cart by paying two coins/i);
+    const choice = outside.choices.find(({ id }) => id === 'payForHauler')!;
+    expect(choice.effects?.money).toBe(-2);
+    expect(choice.requirements?.minMoney).toBe(2);
+  });
+
   it('registers for random repeat-avoiding play and direct QA launch', () => {
     expect(SCENARIOS).toContain(HIGH_WATER);
     expect(HIGH_WATER.id).toBe('high-water');

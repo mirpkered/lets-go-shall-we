@@ -110,7 +110,19 @@ describe('Aww, Rats!!', () => {
     expect(lost.run?.flags).toContain('grainDestroyed');
     expect(lost.run?.flags).toContain('salvageFailed');
     expect(lost.run?.sceneId).toBe('grainSpoiled');
-    expect(lost.character?.money).toBe(2);
+    expect(lost.character?.money).toBe(4);
+  });
+
+  it('does not charge the Traveler for the farm’s lost feed on either disposal route', () => {
+    let discarded = act(act(fresh(), 'askAdvance'), 'headToStore');
+    discarded = act(discarded, 'skipSupplies');
+    discarded = act(discarded, 'destroyGrain');
+    expect(discarded.character?.money).toBe(4);
+
+    let failedSalvage = act(act(fresh(), 'askAdvance'), 'headToStore');
+    failedSalvage = act(failedSalvage, 'skipSupplies');
+    failedSalvage = act(failedSalvage, 'salvageGrain', 0.99);
+    expect(failedSalvage.character?.money).toBe(4);
   });
 
   it('lends ordinary farm supplies without charge while preserving legitimate money paths', () => {
@@ -131,7 +143,8 @@ describe('Aww, Rats!!', () => {
     expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.hint).toMatch(/grain dust/i);
     expect(AWW_RATS.scenes.grainDecision.text).not.toMatch(/lays out (the )?(three )?choices/i);
     expect(AWW_RATS.scenes.grainDecision.textVariants?.some((entry) => /leaves you to decide/i.test(entry.text))).toBe(true);
-    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.effects?.money).toBe(-2);
+    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'destroyGrain')?.effects?.money).toBeUndefined();
+    expect(AWW_RATS.scenes.grainDecision.choices.find((choice) => choice.id === 'salvageGrain')?.chance?.failureEffects?.money).toBeUndefined();
   });
 
   it('makes carried toolkit useful without making it necessary', () => {

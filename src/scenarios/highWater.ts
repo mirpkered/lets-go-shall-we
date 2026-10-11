@@ -245,7 +245,7 @@ export const HIGH_WATER: Scenario = {
     storeFirstOutcome: objectiveOutcome('store', 'first'), storeSecondOutcome: objectiveOutcome('store', 'second'), storeLastOutcome: objectiveOutcome('store', 'last'),
     outsideHelp: {
       id: 'outsideHelp', title: 'A Call across the Rain', tone: 'warning',
-      text: 'The village rescue crew is assembling on the far side of the river. A runner can bring them in, but the trip will take a long time. The storekeeper offers two coins for a second hauler and cart; that route is faster, though neither promises what will still be reachable when they arrive.',
+      text: 'The village rescue crew is assembling on the far side of the river. A runner can bring them in, but the trip will take a long time. The storekeeper says you can hire a second hauler and cart by paying two coins; that route is faster, though neither promises what will still be reachable when they arrive.',
       choices: [
         { id: 'payForHauler', label: 'Pay two coins for a faster crew', requirements: { minMoney: 2 }, timeCost: 9, effects: { money: -2, setFlags: ['helpCalled', 'paidFloodHauler'], historyFlags: ['returned_with_flood_help'] }, next: 'crewArrives' },
         { id: 'sendRunner', label: 'Send a runner and wait for the crew', hint: 'No money required, but the river will rise during the wait.', timeCost: 17, effects: { setFlags: ['helpCalled'], historyFlags: ['returned_with_flood_help'] }, next: 'crewArrives' },

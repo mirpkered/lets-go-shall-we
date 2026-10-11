@@ -153,7 +153,7 @@ describe('What’s Mine is Mine', () => {
     state = pick(state, 'duckUnderShelf');
     state = pick(state, 'inspectSilverVein');
     state = pick(state, 'takeSilverSample');
-    expect(state.character?.money).toBe(5);
+    expect(state.character?.money).toBe(0);
     expect(state.character?.historyFlags).toContain('chose_silver_over_rescue');
     expect(state.run?.flags).toContain('personWeakened');
     state = pick(state, 'hurryAfterSilver');
@@ -177,7 +177,8 @@ describe('What’s Mine is Mine', () => {
     state = pick(state, 'takeSilverAndLeave', () => 0);
     expect(state.run?.sceneId).toBe('profitEnding');
     expect(state.run?.status).toBe('success');
-    expect(state.character?.money).toBe(13);
+    expect(state.character?.money).toBe(0);
+    expect(WHATS_MINE.scenes.profitEnding.text).toMatch(/could be sold later.*no buyer or payment has been arranged/i);
     expect(state.character?.historyFlags).toContain('abandoned_injured_person');
     expect(WHATS_MINE.scenes.rescueCollapse.choices.map((choice) => choice.label)).toContain('Get out and bring the rescue crew');
     expect(WHATS_MINE.scenes.rescueCollapse.choices.map((choice) => choice.label)).toContain('Make one last pull on the beam');
