@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { SCENARIOS } from './index';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
@@ -85,5 +85,126 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     const crates = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'two-crates-short')!;
     expect(crates.scenes.manifest.choices.find(({ id }) => id === 'weighSealed')?.requirements).toEqual({ items: ['cargoBalanceScale'], usableItems: ['cargoBalanceScale'] });
     expect(crates.scenes.siding.text).toMatch(/not stolen/i);
+  });
+
+  it('keeps Cache Ledger rewards and outcomes truthful when supplies were taken', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-cache-ledger')!;
+    let preserved = fresh(scenario);
+    preserved = take(preserved, scenario, 'cache', 'inspectMarks');
+    preserved = take(preserved, scenario, 'evidence', 'notifyCrew');
+    expect(scenario.scenes.paid.choices.filter((choice) => meets(choice.requirements, preserved)).map(({ id }) => id)).toEqual(['marker', 'coins']);
+    expect(sceneText(scenario.scenes.paid, preserved)).toMatch(/bringing the cache question to them/i);
+
+    let used = fresh(scenario);
+    used = take(used, scenario, 'cache', 'takeWhatRemains');
+    used = take(used, scenario, 'shortage', 'follow');
+    expect(used.run?.flags).toContain('cache_resealed');
+    const cacheStorage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(used, cacheStorage as never);
+    used = loadSave(cacheStorage as never);
+    expect(used.run?.sceneId).toBe('paid');
+    const moneyBeforeStockReport = used.character?.money;
+    expect(scenario.scenes.paid.choices.filter((choice) => meets(choice.requirements, used)).map(({ id }) => id)).toEqual(['reportUse']);
+    expect(sceneText(scenario.scenes.paid, used)).toMatch(/cloth and tinder helped the camp/i);
+    used = take(used, scenario, 'paid', 'reportUse');
+    expect(sceneText(scenario.scenes.usedStockReport, used)).toMatch(/without a reward for preserving stock/i);
+    expect(used.character?.money).toBe(moneyBeforeStockReport);
+    expect(used.run?.inventory).not.toContain('foldingTrailMarker');
+
+    let stopped = fresh(scenario);
+    stopped = take(stopped, scenario, 'cache', 'takeWhatRemains');
+    stopped = take(stopped, scenario, 'shortage', 'stop');
+    expect(sceneText(scenario.scenes.partial, stopped)).toMatch(/cloth and tinder helped the camp/i);
+    expect(sceneText(scenario.scenes.partial, stopped)).not.toMatch(/no cache goods are claimed/i);
+  });
+
+  it('keeps Canvas Over the Crate findings limited to routes that inspected the packing', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-canvas-over-the-crate')!;
+    let inspected = fresh(scenario);
+    inspected = take(inspected, scenario, 'shed', 'raiseCase');
+    inspected = take(inspected, scenario, 'inspection', 'delay');
+    expect(sceneText(scenario.scenes.paid, inspected)).toMatch(/missing brass fitting is found/i);
+
+    let transported = fresh(scenario);
+    transported = take(transported, scenario, 'shed', 'carryOut');
+    transported = take(transported, scenario, 'risk', 'wait');
+    expect(sceneText(scenario.scenes.paid, transported)).toMatch(/case stays dry/i);
+    expect(sceneText(scenario.scenes.paid, transported)).not.toMatch(/fitting is found/i);
+
+    let carriedToShed = fresh(scenario);
+    carriedToShed = take(carriedToShed, scenario, 'shed', 'carryOut');
+    carriedToShed = take(carriedToShed, scenario, 'risk', 'carry');
+    expect(sceneText(scenario.scenes.partial, carriedToShed)).toMatch(/survey does not proceed from the current setup/i);
+    expect(sceneText(scenario.scenes.partial, carriedToShed)).not.toMatch(/measurement limitation/i);
+  });
+
+  it('does not claim the ferry box was borrowed on The Paper Tube routes that never used it', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-paper-tube')!;
+    let deckRoute = fresh(scenario);
+    deckRoute = take(deckRoute, scenario, 'packet', 'wrapTube');
+    deckRoute = take(deckRoute, scenario, 'transfer', 'holdLine');
+    deckRoute = take(deckRoute, scenario, 'paid', 'wage');
+    expect(deckRoute.run?.sceneId).toBe('coinEnd');
+    expect(sceneText(scenario.scenes.coinEnd, deckRoute)).not.toMatch(/return the borrowed ferry box/i);
+    expect(deckRoute.character?.money).toBe(2);
+
+    let lockerRoute = fresh(scenario);
+    lockerRoute = take(lockerRoute, scenario, 'packet', 'useLocker');
+    lockerRoute = take(lockerRoute, scenario, 'locker', 'returnBox');
+    expect(sceneText(scenario.scenes.locker, lockerRoute)).toMatch(/returned before the next crossing/i);
+    lockerRoute = take(lockerRoute, scenario, 'paid', 'wage');
+    expect(sceneText(scenario.scenes.coinEnd, lockerRoute)).not.toMatch(/return the borrowed ferry box/i);
+  });
+
+  it('limits Empty Feed Sack resupply rewards to the route that sent a runner', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-empty-feed-sack')!;
+    let resupplied = fresh(scenario);
+    resupplied = take(resupplied, scenario, 'feed', 'rest');
+    resupplied = take(resupplied, scenario, 'wait', 'receive');
+    expect(sceneText(scenario.scenes.paid, resupplied)).toMatch(/runner returns with the farm’s measured feed bundle/i);
+    expect(scenario.scenes.paid.choices.filter((choice) => meets(choice.requirements, resupplied)).map(({ id }) => id)).toEqual(['whistle', 'coin']);
+
+    let rationOnly = fresh(scenario);
+    rationOnly = take(rationOnly, scenario, 'feed', 'divide');
+    rationOnly = take(rationOnly, scenario, 'move', 'restMule');
+    expect(rationOnly.run?.flags).not.toContain('feed_runner_sent');
+    const moneyBeforeNoResupply = rationOnly.character?.money;
+    expect(sceneText(scenario.scenes.paid, rationOnly)).toMatch(/no runner or farm resupply has arrived/i);
+    expect(scenario.scenes.paid.choices.filter((choice) => meets(choice.requirements, rationOnly)).map(({ id }) => id)).toEqual(['closeRationPlan']);
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(rationOnly, storage as never);
+    rationOnly = loadSave(storage as never);
+    expect(scenario.scenes.paid.choices.filter((choice) => meets(choice.requirements, rationOnly)).map(({ id }) => id)).toEqual(['closeRationPlan']);
+    rationOnly = take(rationOnly, scenario, 'paid', 'closeRationPlan');
+    expect(sceneText(scenario.scenes.rationManaged, rationOnly)).toMatch(/no farm runner or new feed has reached/i);
+    expect(rationOnly.character?.money).toBe(moneyBeforeNoResupply);
+    expect(rationOnly.run?.inventory).not.toContain('farmWhistle');
+  });
+
+  it('renders Return Wagon delivery order from the route actually chosen', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-wheel-of-the-return-wagon')!;
+
+    let samplesFirst = fresh(scenario);
+    samplesFirst = take(samplesFirst, scenario, 'return', 'samplesFirst');
+    samplesFirst = take(samplesFirst, scenario, 'check', 'guardSamples');
+    expect(sceneText(scenario.scenes.paid, samplesFirst)).toMatch(/pump is delivered later/i);
+
+    let pumpFirst = fresh(scenario);
+    pumpFirst = take(pumpFirst, scenario, 'return', 'pumpFirst');
+    pumpFirst = take(pumpFirst, scenario, 'check', 'handCarryPump');
+    expect(sceneText(scenario.scenes.paid, pumpFirst)).toMatch(/hand-carry the pump .* first/i);
+    expect(sceneText(scenario.scenes.paid, pumpFirst)).not.toMatch(/pump is delivered later/i);
+
+    let split = fresh(scenario);
+    split.run!.inventory.push('packFrame');
+    split = take(split, scenario, 'return', 'splitEvenly');
+    split = take(split, scenario, 'check', 'rebalance');
+    expect(sceneText(scenario.scenes.paid, split)).toMatch(/rebalanced across carriers/i);
+    expect(sceneText(scenario.scenes.paid, split)).not.toMatch(/pump is delivered later/i);
+
+    const legacy = fresh(scenario);
+    legacy.run!.sceneId = 'paid';
+    expect(sceneText(scenario.scenes.paid, legacy)).toMatch(/return load is accounted for at a safe pace/i);
+    expect(sceneText(scenario.scenes.paid, legacy)).not.toMatch(/pump is delivered later/i);
   });
 });
