@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, startRun, meets } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, newCharacter, openRewardResolution, placeReward, sceneText, startRun, meets } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { SCENARIOS } from './index';
@@ -54,6 +54,21 @@ describe('corrective Gear Adventure batch', () => {
     expect(toolkit.run?.sceneId).toBe('toolkitMarker');
     const marker = act(act(start(THE_SQUIRES_PACK), THE_SQUIRES_PACK, 'giveMarker'), THE_SQUIRES_PACK, 'useMarkerForReturn');
     expect(marker.run?.sceneId).toBe('markerReturn');
+  });
+
+  it('keeps the washout, safe tube, and dropped stakes visible in each prepared-kit callback',()=>{
+    const scene=THE_SQUIRES_PACK.scenes.ridge;
+    const variants=scene.textVariants??[];
+    expect(variants).toHaveLength(3);
+    for(const variant of variants){
+      const state=start(THE_SQUIRES_PACK);
+      state.run!.flags.push(...(variant.requirements?.flags??[]));
+      expect(sceneText(scene,state)).toBe(variant.text);
+      expect(variant.text.split('A section of trail has slumped toward a shallow ravine')).toHaveLength(2);
+      expect(variant.text).toContain('Mara’s survey tube is safe');
+      expect(variant.text).toContain('tin of numbered stakes has rolled onto a shelf below');
+      expect(scene.choices.map(({id})=>id)).toEqual(['useRopeOnShelf','useToolkitOnMarker','useMarkerForReturn','retrieveByHand','takeLongRoute','markAndLeave']);
+    }
   });
 
   it('grants distinct existing Gear through hand-off, wages-in-kind, ferry work, repair, and apprenticeship', () => {

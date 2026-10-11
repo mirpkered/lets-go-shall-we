@@ -68,6 +68,30 @@ describe('Construction / Building / Structural Work batch',()=>{
     }
   });
 
+  it('keeps current construction setup before every targeted memory callback and dependent choice',()=>{
+    const targeted = new Set(['the-square-at-mill-street','the-roof-that-held-its-breath','three-knots-on-the-platform','the-riverward-retaining-wall','the-wedge-at-the-schoolhouse','the-last-board-at-harper-yard','the-joint-that-opened-in-winter','the-shed-with-two-roofs','the-brace-before-the-bell','the-stone-that-kept-the-water','the-ladder-in-the-west-yard','the-chimney-that-pulled-away','the-tower-without-its-shadow','the-bridge-camp-post','the-old-well-house']);
+    for (const scenario of BATCH.filter(({id})=>targeted.has(id))) {
+      let callbackScenes=0;
+      for (const sceneId of ['start','reveal'] as const) {
+        const scene=scenario.scenes[sceneId];
+        const base=scene.text;
+        const variants=scene.textVariants??[];
+        if(variants.length) callbackScenes++;
+        for (const variant of variants) {
+          expect(variant.text.startsWith(base),`${scenario.id}.${sceneId} retains base setup`).toBe(true);
+          expect(variant.text.split(base)).toHaveLength(2);
+          const recalled=initial(scenario);
+          recalled.character!.knowledgeKeys=[...(variant.requirements.knowledgeKeys??[])];
+          recalled.character!.knowledgeSources=variant.requirements.knowledgeSources??{};
+          recalled.character!.lore=[...(variant.requirements.lore??[])];
+          expect(meets(variant.requirements,recalled)).toBe(true);
+          expect(sceneText(scene,recalled)).toBe(variant.text);
+        }
+      }
+      expect(callbackScenes,`${scenario.id} callback route`).toBeGreaterThan(0);
+    }
+  });
+
   it('keeps primary reward choices exclusive, state-aware, and persistent',()=>{
     const gearRecords=BATCH.filter(({scenes})=>scenes.settle.choices.some(({id})=>id==='keepGear'));
     expect(gearRecords).toHaveLength(8);

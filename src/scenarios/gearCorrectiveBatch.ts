@@ -9,13 +9,15 @@ const tags = (hook: string, role: string, activity: string, setting: string, ris
 const s = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', variants?: Scene['textVariants']) => largeScene(id, title, text, choices, tone, variants);
 const e = (id: string, title: string, text: string) => largeEnd(id, title, text);
 
+const squirePackRidgeSetup = 'A section of trail has slumped toward a shallow ravine. The far side is reachable by a longer path along the ridge. Mara’s survey tube is safe, but a tin of numbered stakes has rolled onto a shelf below. The equipment you put in Mara’s hand changes how you can deal with the shelf.';
+
 export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'The Squire’s Pack', 'A veteran explorer asks you to prepare for a short descent—and trust your judgment.', tags('A traveler assisting an experienced explorer chooses how to distribute a limited kit, then adapts when the route changes.', 'helper/rescuer', 'travel/exploration', 'foothill survey trail', 'MODERATE', 'hired/posted work'), 'pack', {
   pack: s('pack', 'Three Useful Things', 'Mara Venn, a veteran route-finder, is taking a written survey to a ridge station. She has a rope, a Pocket Toolkit, and a Folding Trail Marker. You are helping carry and prepare the kit, not merely watching. A washout has narrowed the next stretch; Mara asks which piece she should keep immediately at hand while you carry the other two.', [
     { id: 'giveRope', label: 'Put Mara’s rope in her hand', next: 'ridge', effects: { setFlags: ['squire_rope_ready'] } },
     { id: 'giveToolkit', label: 'Put Mara’s Pocket Toolkit in her hand', next: 'ridge', effects: { setFlags: ['squire_toolkit_ready'] } },
     { id: 'giveMarker', label: 'Put Mara’s Folding Trail Marker in her hand', next: 'ridge', effects: { setFlags: ['squire_marker_ready'] } },
   ]),
-  ridge: s('ridge', 'The Cut in the Trail', 'A section of trail has slumped toward a shallow ravine. The far side is reachable by a longer path along the ridge. Mara’s survey tube is safe, but a tin of numbered stakes has rolled onto a shelf below. The equipment you put in Mara’s hand changes how you can deal with the shelf.', [
+  ridge: s('ridge', 'The Cut in the Trail', squirePackRidgeSetup, [
     { id: 'useRopeOnShelf', label: 'Ask Mara to lower the Travel Rope as a handline', requirements: { flags: ['squire_rope_ready'] }, next: 'ropeShelf', effects: { setFlags: ['squire_retrieved_stakes', 'squire_rope_used'] } },
     { id: 'useToolkitOnMarker', label: 'Ask Mara to tighten the loose trail marker with the toolkit', requirements: { flags: ['squire_toolkit_ready'] }, next: 'toolkitMarker', effects: { setFlags: ['squire_marker_secured'] } },
     { id: 'useMarkerForReturn', label: 'Ask Mara to mark the firm return path', requirements: { flags: ['squire_marker_ready'] }, next: 'markerReturn', effects: { setFlags: ['squire_return_marked'] } },
@@ -23,9 +25,9 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
     { id: 'takeLongRoute', label: 'Use the longer ridge path', next: 'arrival' },
     { id: 'markAndLeave', label: 'Mark the washout and leave the stakes', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ], 'warning', [
-    { requirements: { flags: ['squire_rope_ready'] }, text: 'Mara keeps her rope ready on the firm ridge. She can lower it while you reach for the tin; the shelf is still loose, but you will not have to climb back empty-handed.' },
-    { requirements: { flags: ['squire_toolkit_ready'] }, text: 'Mara has her Pocket Toolkit ready. A trail marker above the washout has a loose clamp; securing it will keep the warning visible, but it will not retrieve the tin.' },
-    { requirements: { flags: ['squire_marker_ready'] }, text: 'Mara sets her Folding Trail Marker on the firm return path before anyone approaches the shelf, trading a little time for clearer footing.' },
+    { requirements: { flags: ['squire_rope_ready'] }, text: `${squirePackRidgeSetup} Mara keeps her rope ready on the firm ridge. She can lower it while you reach; the shelf remains loose, but you will not have to climb back empty-handed.` },
+    { requirements: { flags: ['squire_toolkit_ready'] }, text: `${squirePackRidgeSetup} Mara has her Pocket Toolkit ready. A nearby trail marker has a loose clamp; securing it will keep the warning visible, but will not retrieve the tin.` },
+    { requirements: { flags: ['squire_marker_ready'] }, text: `${squirePackRidgeSetup} Mara sets her Folding Trail Marker on the firm return path before anyone approaches the shelf, trading a little time for clearer footing.` },
   ]),
   ropeShelf: s('ropeShelf', 'The Tin Comes Up Slowly', 'Mara anchors the handline around a sound tree and lowers it from firm ground. You retrieve the closed tin and climb back with the rope taking some of your weight; the line is scuffed but remains usable.', [
     { id: 'continueAfterRope', label: 'Carry the stakes to the ridge station', next: 'arrival' },

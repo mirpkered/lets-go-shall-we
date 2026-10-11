@@ -52,6 +52,7 @@ const itemSources:Record<string,string> = {
 
 const make = (w:BuildStory,index:number):Scenario => {
   const nextLore = stories[(index+9)%stories.length].lore;
+  const startSetup = `${w.job}\n\n${w.sign} The builder tells you what has already been checked and what remains uncertain.`;
   const inspectVariants:NonNullable<Scene['textVariants']> = [];
   const recall:Record<string,{fact:keyof typeof KNOWLEDGE_FACTS;memories:Record<string,string>;fallback:string}> = {
     'the-roof-that-held-its-breath': {fact:'winterJointMovement',memories:{'the-joint-that-opened-in-winter':'The inn landing’s pencil mark kept separating even while the door still swung freely; that earlier inspection returns as Ellery checks the fresh split.'},fallback:'The earlier joint inspection comes back to mind: a familiar shape can hide movement that is still active.'},
@@ -61,12 +62,13 @@ const make = (w:BuildStory,index:number):Scenario => {
   const priorLesson=recall[w.id];
   if(priorLesson){
     const factId=KNOWLEDGE_FACTS[priorLesson.fact].id;
-    for(const [source,text] of Object.entries(priorLesson.memories)) inspectVariants.push({requirements:{knowledgeKeys:[factId],knowledgeSources:{[factId]:[source]}},text});
-    inspectVariants.push({requirements:{knowledgeKeys:[factId]},text:priorLesson.fallback});
+    for(const [source,text] of Object.entries(priorLesson.memories)) inspectVariants.push({requirements:{knowledgeKeys:[factId],knowledgeSources:{[factId]:[source]}},text:`${startSetup}\n\n${text}`});
+    inspectVariants.push({requirements:{knowledgeKeys:[factId]},text:`${startSetup}\n\n${priorLesson.fallback}`});
   }
-  if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`A remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
+  if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`${startSetup}\n\nA remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
+  const revealSetup = `${w.turn} The physical sign supports a concern, but does not by itself establish the whole history or certify the structure.`;
   const revealVariants:NonNullable<Scene['textVariants']> = [];
-  if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
+  if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`${revealSetup} The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
   const earnedFact = w.knowledge ?? (w.id === 'three-knots-on-the-platform' ? 'scaffoldFootAndLashing' : undefined);
   const learnedKnowledge = earnedFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[earnedFact]],historyFlags:[`construction_knowledge_${w.id}`]} : {};
   const revealChoices:Scene['choices'] = [
@@ -83,7 +85,7 @@ const make = (w:BuildStory,index:number):Scenario => {
   ];
   if (w.tool) actions.push({id:'gear',label:`Use your ${w.toolName} to check the structure`,requirements:{items:[w.tool],usableItems:[w.tool]},next:'reveal',effects:{setFlags:['constructionUsedGear']}});
   const scenes:Scenario['scenes'] = {
-    start:s('start','A Structure Under Question',`${w.job}\n\n${w.sign} The builder tells you what has already been checked and what remains uncertain.`,[
+    start:s('start','A Structure Under Question',startSetup,[
       {id:'inspect',label:'Ask the builder to show the load path and inspect the visible sign',next:'work',effects:{setFlags:['askedBuilder']}},
       {id:'rush',label:'Begin the requested work without checking the support',next:'work',effects:{setFlags:['rushedWork']}},
       {id:'withdraw',label:'Decline the unsafe part and keep others out of the area',next:'hold',effects:{setFlags:['declinedWork']}},
@@ -92,7 +94,7 @@ const make = (w:BuildStory,index:number):Scenario => {
       ...actions,
       {id:'force',label:'Force the planned alteration while the support is uncertain',next:'partial',effects:{setFlags:['forcedWork']}},
     ]),
-    reveal:s('reveal','The New Question',`${w.turn} The physical sign supports a concern, but does not by itself establish the whole history or certify the structure.`,revealChoices,revealVariants),
+    reveal:s('reveal','The New Question',revealSetup,revealChoices,revealVariants),
     settle:s('settle','Work Accounted For',`The structure is left in a known state: ${w.safe} The owner and builder agree that the next work follows the observed condition, not an assumption.`,[
       ...(w.lane==='GEAR'&&w.tool?[{id:'keepGear',label:`Accept the released ${w.toolName} as part of your pay`,requirements:{notOwnedItems:[w.tool]},next:'gearEnding',effects:{gainItems:[w.tool],gainItemProvenance:{[w.tool]:w.toolSource??itemSources[w.tool]},historyFlags:[`construction_gear_${w.id}`]}}]:[]),
       ...(w.lore?[{id:'recordLore',label:'Record the place’s history and the mark that connects it',next:'loreEnding',effects:{lore:[w.lore],historyFlags:[`construction_lore_${w.id}`]}}]:[]),

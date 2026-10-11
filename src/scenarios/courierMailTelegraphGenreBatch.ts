@@ -81,9 +81,11 @@ const s=(id:string,title:string,text:string,choices:Scene['choices'],variants?:S
 const e=(id:string,title:string,text:string)=>largeEnd(id,title,text);
 
 function make(w:Story,index:number):Scenario{
- const routeVariants:NonNullable<Scene['textVariants']>=[{requirements:{historyFlags:['opened_private_courier_letter']},text:'The clerk remembers that you once opened private correspondence; they keep the duplicate behind the counter until the recipient arrives.'},{requirements:{historyFlags:['courier_seen_by_message_interceptor']},text:'The operator checks the street before handing over the route slip; someone who watched an earlier exchange may recognize you.'}];
+ const routeVariants:NonNullable<Scene['textVariants']>=[{requirements:{historyFlags:['opened_private_courier_letter']},text:'You remember opening private correspondence on an earlier route. That breach is a reason to handle this dispatch carefully, not evidence about its contents.'},{requirements:{historyFlags:['courier_seen_by_message_interceptor']},text:'You remember being watched during an earlier handoff. That memory does not identify anyone here or prove this dispatch is being followed.'}];
  for(const [key,targets] of Object.entries(knowledgeCallbackTargets)) if(targets?.includes(w.id)) routeVariants.push({requirements:{knowledgeKeys:[KNOWLEDGE_FACTS[key as keyof typeof KNOWLEDGE_FACTS].id]},text:knowledgeRecall[key as keyof typeof KNOWLEDGE_FACTS]!});
  for(const [lore,targets] of Object.entries(loreCallbackTargets)) if(targets.includes(w.id)) routeVariants.push({requirements:{lore:[lore]},text:`You remember the history attached to this route: ${lore} The old account adds context, not proof about this dispatch.`});
+ // Variants replace base text in the renderer; retain each story's actual sender, recipient, route, and custody context.
+ for(const variant of routeVariants) variant.text=`${w.opening}\n\n${variant.text}`;
  const choices:Scene['choices']=[
   {id:'deliverAsKnown',label:w.deliver,next:'delivered',effects:{historyFlags:[w.positive]}},
   {id:'holdOrReturn',label:w.delay,next:'delayed',effects:{historyFlags:[w.negative]}},

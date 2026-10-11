@@ -130,8 +130,22 @@ describe('The Road Below', () => {
     const lateOptions = options(heldTooLong).map((choice) => choice.id);
     expect(lateOptions).toContain('useSideRunLate');
     expect(lateOptions).not.toContain('followArchEarly');
-    expect(sceneText(THE_ROAD_BELOW.scenes.mainChannel, heldTooLong)).toMatch(/main channel is taking on water/i);
+    expect(sceneText(THE_ROAD_BELOW.scenes.mainChannel, heldTooLong)).toMatch(/road above may not hold another loaded cart/i);
     expect(timeStatus(THE_ROAD_BELOW, 34).phase?.label).toBe('Critical');
+  });
+
+  it('renders the strongest main-channel arch warning after the 34-minute threshold',()=>{
+    const state=fresh();
+    for(const variant of THE_ROAD_BELOW.scenes.mainChannel.textVariants??[]){
+      expect(variant.text.startsWith(THE_ROAD_BELOW.scenes.mainChannel.text)).toBe(true);
+      expect(variant.text.split(THE_ROAD_BELOW.scenes.mainChannel.text)).toHaveLength(2);
+    }
+    state.run!.sceneId='mainChannel';
+    state.run!.elapsedMinutes=22;
+    expect(sceneText(THE_ROAD_BELOW.scenes.mainChannel,state)).toContain('side run remains open');
+    state.run!.elapsedMinutes=34;
+    expect(sceneText(THE_ROAD_BELOW.scenes.mainChannel,state)).toContain('arch flexes under traffic');
+    expect(sceneText(THE_ROAD_BELOW.scenes.mainChannel,state)).not.toContain('arch is taking on water');
   });
 
   it('keeps real-world waiting out of fictional time and preserves the exact saved state', () => {

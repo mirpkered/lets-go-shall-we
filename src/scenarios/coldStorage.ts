@@ -1,6 +1,8 @@
 import type { Choice, Scenario } from '../types';
 import { IVEN_CONTACT } from '../travelerContinuity';
 
+const loadingBaySetup = 'The rural cooperative’s cold store is humming far louder than it should. A worker named Mara is trapped somewhere inside; before the refrigeration machinery jammed, the foreman heard her answer from within. Since then, no one has heard from her. Frost is spreading around a sealed service door, while the building also holds supplies the nearby settlement depends on. The foreman asks you to help before either problem gets worse.';
+
 const REPAIR_TOOLS = ['pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'compactStoveTool', 'bridgewrightHammer'];
 const DOOR_TOOLS = ['ratCatchersHook', 'foldingPryTool', 'brassCandlestick', 'pocketToolkit', 'foremanMultiTool', 'icehouseTongs', 'brassBottleOpener'];
 const SERVICE_GEAR = ['travelRope', 'minerHeadlamp'];
@@ -28,8 +30,8 @@ export const COLD_STORAGE: Scenario = {
   scenes: {
     loadingBay: {
       id: 'loadingBay', title: 'The Cooperative Icehouse', tone: 'warning',
-      text: 'The rural cooperative’s cold store is humming far louder than it should. A worker named Mara is trapped somewhere inside; before the refrigeration machinery jammed, the foreman heard her answer from within. Since then, no one has heard from her. Frost is spreading around a sealed service door, while the building also holds supplies the nearby settlement depends on. The foreman asks you to help before either problem gets worse.',
-      textVariants: [{ requirements: { contacts: [IVEN_CONTACT.id] }, text: 'The rural cooperative’s cold store is humming far louder than it should. Foreman Iven recognizes you as someone who has brought a trapped worker home before. Mara is trapped somewhere inside, the refrigeration cycle jammed, and frost is spreading around a sealed service door. The building also holds supplies the nearby settlement depends on.' }],
+      text: loadingBaySetup,
+      textVariants: [{ requirements: { contacts: [IVEN_CONTACT.id] }, text: `${loadingBaySetup} Foreman Iven recognizes you from the earlier rescue, but asks you to judge this cold store by the conditions here now.` }],
       choices: [
         { id: 'inspectDoor', label: 'Inspect the sealed service door', timeCost: 3, next: 'doorSurvey' },
         { id: 'inspectControls', label: 'Check the refrigeration controls', timeCost: 4, next: 'controlSurvey' },

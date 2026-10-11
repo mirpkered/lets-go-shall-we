@@ -5,6 +5,7 @@ const GRATE_TOOLS = ['ratCatchersHook', 'pocketToolkit', 'foremanMultiTool', 'fo
 const BRACE_TOOLS = ['ratCatchersHook', 'drainageHook', 'pocketToolkit', 'foremanMultiTool', 'foldingPryTool', 'steelWedge'];
 const LIGHT_GEAR = ['minerHeadlamp', 'roadmansLantern'];
 const WORK_GEAR = ['heavyLeatherGloves', 'travelRope', 'ironRopeClamp', 'weatherproofCloak'];
+const mainChannelSetup = 'The main channel bends beneath the road. A fresh mud smear continues along the raised ledge, and two knocks answer from farther in. Water trickles along the wall. The stone arch is intact for now, though fine dirt falls when a cart crosses above.';
 
 function grateChoice(withTool: boolean): Choice {
   return {
@@ -236,11 +237,11 @@ export const THE_ROAD_BELOW: Scenario = {
     },
     mainChannel: {
       id: 'mainChannel', title: 'Water in the Main Run', tone: 'warning',
-      text: 'The main channel bends beneath the road. A fresh mud smear continues along the raised ledge, and two knocks answer from farther in. Water trickles along the wall. The stone arch is intact for now, though fine dirt falls when a cart crosses above.',
+      text: mainChannelSetup,
       textVariants: [
-        { requirements: { minElapsedMinutes: 22 }, text: 'The main channel is taking on water. The arch sheds grit with every cart overhead, and a side run remains open where the wall has cracked. The tapping is farther in; the direct arch is becoming harder to reach.' },
-        { requirements: { minElapsedMinutes: 34 }, text: 'Water now pushes through the main run and the stone arch flexes under traffic. A narrow side channel remains passable, but the direct route toward the tapping is partly blocked. The road above may not hold another loaded cart.' },
-        { requirements: { flags: ['guideLineSecured'] }, text: 'Your guide line trails back toward the lower outlet. The main channel bends ahead; the mud smear follows the raised ledge, and two knocks answer from beyond the arch.' },
+        { requirements: { minElapsedMinutes: 34 }, text: `${mainChannelSetup} The trickle now pushes through the main run, and the arch flexes under traffic. A narrow side channel is still passable; the direct route is partly blocked, and the road above may not hold another loaded cart.` },
+        { requirements: { minElapsedMinutes: 22 }, text: `${mainChannelSetup} Water has begun pooling along the wall. Each cart overhead knocks more grit from the arch; the cracked side run remains open, while the direct passage is harder to reach.` },
+        { requirements: { flags: ['guideLineSecured'] }, text: `${mainChannelSetup} Your guide line trails back toward the lower outlet, marking your way back.` },
       ],
       choices: [
         { id: 'followArchEarly', label: 'Follow the tapping through the stone arch', hint: 'The arch is passable now; dirt is already falling from it.', requirements: { maxElapsedMinutes: 21 }, timeCost: 3, effects: { setFlags: ['risked_collapse_for_rescue'] }, next: 'trappedWorker' },

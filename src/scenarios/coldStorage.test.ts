@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startAdventure, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startAdventure, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { selectScenario } from '../scenarioSelection';
 import { SCENARIOS } from './index';
 import { COLD_STORAGE } from './coldStorage';
+import { IVEN_CONTACT } from '../travelerContinuity';
 import type { Choice, SaveData } from '../types';
 
 function fresh(carriedItem: string | null = null, money = 0): SaveData {
@@ -27,6 +28,21 @@ function available(state: SaveData): Choice[] {
 }
 
 describe('Cold Storage', () => {
+  it('keeps the trapped-worker, machinery, service-door, and supplies setup when Foreman Iven callback appears',()=>{
+    const state=fresh();
+    const scene=COLD_STORAGE.scenes.loadingBay;
+    const variant=scene.textVariants?.[0]!;
+    state.character!.contacts=[IVEN_CONTACT];
+    expect(meets(variant.requirements,state)).toBe(true);
+    const rendered=sceneText(scene,state);
+    expect(rendered).toBe(variant.text);
+    expect(rendered.split('A worker named Mara is trapped somewhere inside')).toHaveLength(2);
+    expect(rendered).toContain('sealed service door');
+    expect(rendered).toContain('supplies the nearby settlement depends on');
+    expect(rendered).toContain('Foreman Iven recognizes you from the earlier rescue');
+    expect(scene.choices.map(({id})=>id)).toEqual(['inspectDoor','inspectControls','inspectStock','callCrew']);
+  });
+
   it('maps the service channel and inner latch before offering a descent or hook action', () => {
     const setup = COLD_STORAGE.scenes.serviceEntry.text;
     expect(setup).toContain('beneath the loading floor');

@@ -65,6 +65,26 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     }
   });
 
+  it('preserves each dispatch assignment before all 24 callback variants without leaking message contents',()=>{
+    for(const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH){
+      const startScene=scenario.scenes.start;
+      for(const variant of startScene.textVariants??[]){
+        const recalled=fresh(scenario);
+        recalled.character!.historyFlags=[...(variant.requirements?.historyFlags??[])];
+        recalled.character!.knowledgeKeys=[...(variant.requirements?.knowledgeKeys??[])];
+        recalled.character!.knowledgeSources=variant.requirements?.knowledgeSources??{};
+        recalled.character!.lore=[...(variant.requirements?.lore??[])];
+        expect(meets(variant.requirements,recalled),`${scenario.id} callback requirements`).toBe(true);
+        expect(variant.text.startsWith(`${startScene.text}\n\n`),`${scenario.id} delivery context`).toBe(true);
+        expect(variant.text.split(startScene.text)).toHaveLength(2);
+        expect(sceneText(startScene,recalled)).toBe(variant.text);
+        expect(startScene.choices.map(({id})=>id)).toEqual(['acceptDelivery','declineDelivery']);
+        const callback=variant.text.slice(startScene.text.length);
+        expect(callback).not.toMatch(/clerk remembers|duplicate behind the counter|operator checks the street/i);
+      }
+    }
+  });
+
   it('grants the eight message conventions demonstrated in handling before any compensation choice',()=>{
     const primaryKnowledgeIds=new Set(['station-mark-in-margin','seal-that-cooled-wrong','copy-that-came-back','flooded-relay-book','initials-on-the-wire','town-name-that-moved','bell-before-the-wire','horse-change-ledger']);
     const knowledgeStories=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({id})=>primaryKnowledgeIds.has(id));

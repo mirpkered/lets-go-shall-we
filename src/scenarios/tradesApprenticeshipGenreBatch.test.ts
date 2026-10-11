@@ -109,9 +109,10 @@ describe('Trades / Apprenticeships / Practical Work batch', () => {
     const carried = makeState(true);
     expect(meets(choice.requirements, carried)).toBe(true);
     const after = choose(carried, scenario, choice, () => 0);
-    expect(sceneText(scenario.scenes.hiddenRot, after)).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell/i);
+    expect(sceneText(scenario.scenes.hiddenRot, after)).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell.*hairline opens.*damp plaster hid a split.*rotten end is cut back/i);
+    expect(scenario.scenes.hiddenRot.choices.some(({label})=>label==='Cover the split and finish before the market')).toBe(true);
     const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
     saveGame(after, storage as never);
-    expect(sceneText(scenario.scenes.hiddenRot, loadSave(storage as never))).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell/i);
+    expect(sceneText(scenario.scenes.hiddenRot, loadSave(storage as never))).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell.*hairline opens.*damp plaster hid a split.*rotten end is cut back/i);
   });
 });
