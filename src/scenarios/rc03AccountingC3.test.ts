@@ -132,4 +132,31 @@ describe('RC03 C3 compensation and accounting repairs', () => {
     unpaid = act(unpaid, adventure, 'leaveWithoutRefund');
     expect(unpaid.character?.money).toBe(3);
   });
+
+  it('migrates legacy Medium saves without losing or duplicating a promised refund', () => {
+    const adventure = scenario('medium-knows-too-much');
+    const paidLegacy = fresh(adventure, 3);
+    paidLegacy.character!.money = 2;
+    paidLegacy.run!.sceneId = 'mediumConfront';
+    paidLegacy.run!.visitedSceneIds = ['mediumParlor', 'mediumClaim', 'mediumConfront'];
+    paidLegacy.run!.scenarioSaveVersion = 0;
+    let storage = { value: JSON.stringify(paidLegacy), getItem(_key: string) { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    let migrated = loadSave(storage as never);
+    expect(migrated.character?.money).toBe(3);
+    expect(migrated.run?.flags).toContain('mediumPaidForReading');
+    expect(sceneText(adventure.scenes.mediumConfront, migrated)).toMatch(/return the one-coin reading fee now/i);
+    saveGame(migrated, storage as never);
+    migrated = loadSave(storage as never);
+    expect(migrated.character?.money).toBe(3);
+
+    const unpaidLegacy = fresh(adventure, 3);
+    unpaidLegacy.run!.sceneId = 'mediumConfront';
+    unpaidLegacy.run!.visitedSceneIds = ['mediumParlor', 'mediumSpy', 'mediumConfront'];
+    unpaidLegacy.run!.scenarioSaveVersion = 0;
+    storage = { value: JSON.stringify(unpaidLegacy), getItem(_key: string) { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    const unpaid = loadSave(storage as never);
+    expect(unpaid.character?.money).toBe(3);
+    expect(unpaid.run?.flags).not.toContain('mediumPaidForReading');
+    expect(sceneText(adventure.scenes.mediumConfront, unpaid)).toMatch(/no reading fee was paid/i);
+  });
 });

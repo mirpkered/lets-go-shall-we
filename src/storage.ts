@@ -174,6 +174,13 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
         if (parsed.run.visitedSceneIds.some((sceneId) => ['serviceHall', 'cellarClues', 'cellarEntry', 'cellarIdentity'].includes(sceneId))) {
           parsed.run.flags = [...new Set([...parsed.run.flags, 'knowsCellar'])];
         }
+        if (parsed.run.scenarioId === 'medium-knows-too-much' && parsed.run.visitedSceneIds.includes('mediumClaim')) {
+          parsed.run.flags = [...new Set([...parsed.run.flags, 'mediumPaidForReading'])];
+          if (parsed.run.visitedSceneIds.includes('mediumConfront')) {
+            // Legacy text promised a refund on confrontation, but the old route never granted the coin.
+            parsed.character!.money += 1;
+          }
+        }
         if (parsed.run.scenarioId === 'hush-now') {
           const oldScene = parsed.run.sceneId;
           const oldRescueScenes = new Set(['personFound', 'braceStrain', 'neighborRescue', 'neighborLiftsNell', 'animalsHeldForLift', 'braceStrainWithHelp']);
@@ -187,6 +194,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
           parsed.run.message = 'Your earlier Hush Now choices and discoveries are preserved. Continue from this brief transition.';
         }
         parsed.run.scenarioSaveVersion = scenario.saveVersion;
+        migrated = true;
       }
       if (scenario?.runRandomSelections?.length && !parsed.run.randomSelections) {
         parsed.run.randomSelections = pickRunRandomSelections(scenario);
