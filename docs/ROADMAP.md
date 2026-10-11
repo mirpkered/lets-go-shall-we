@@ -10,7 +10,7 @@ When local-only commits contain functional application changes, do not discard t
 
 ## Automatic Scenario Creation
 
-**Canonical operational ruleset for automatic / scheduled scenario batches.** Any recurring scenario-generation task must read this section and its linked canonical references before choosing a genre, planning, or authoring content. This guide centralizes the operating process; it does not replace or weaken the broader authoring, continuity, safety, testing, or release rules in those references.
+**Canonical operational ruleset for automatic / scheduled scenario batches.** At execution time, every recurring scenario-generation task must read this section and the current versions of its linked canonical references—including `DESIGN_RULES.md`, `AUTHORING_CHECKLIST.md`, `CURRENT_SYSTEMS.md`, and continuity/system docs relevant to the proposed content—before choosing a genre, planning, or authoring. The checked-in docs at run time are authoritative; a scheduled prompt or prior batch’s copied rules never freezes an older snapshot. The [Weekly Scenario Batch Prompt](WEEKLY-SCENARIO-BATCH-PROMPT.md) is an operational wrapper that requires this live read and gap analysis; it does not replace or weaken the canonical rules.
 
 The scheduled batch exists to expand the library gradually, fill demonstrated gaps, maintain variety, reinforce persistent continuity, preserve quality, and make the world feel broader over time. It is not a scenario factory. Use this sequence:
 
@@ -66,12 +66,14 @@ Preserve, at minimum: Fair Consequence; Risk Is Not Certainty; Consequential Ris
 - [ ] Ensure the premise, player role, decisions, complication, risk, consequence, and payoff are distinct from existing Adventures.
 - [ ] Avoid trivial engaged resolutions; preserve concise, intentional opt-outs.
 - [ ] Add new Gear or Knowledge only with a justified need and plausible future use; keep Lore meaningful and distinct.
+- [ ] Complete every applicable check in the [Mandatory pre-publication integrity gate](AUTHORING_CHECKLIST.md#mandatory-pre-publication-integrity-gate); unresolved authoring-rule compliance blocks publication.
 
 ### Post-author checklist
 
 - [ ] Re-audit for near-duplicates, repeated structures, weak engaged routes, unsupported certainty, unfair consequences, and reward inflation.
 - [ ] Confirm meaningful continuity opportunities, correct state-aware reward and ownership behavior, and that the intended mix remains reasonable; do not add a reward only to satisfy a ratio.
 - [ ] Validate registry IDs, destinations, reachability, seasonality, death routing, saves/migration, selector neutrality, rewards, continuity callbacks, responsive/mobile behavior, types, build, and tests required by the project.
+- [ ] Re-run fresh-character actionability and route-by-route compensation/state checks after implementation; do not publish while any mandatory integrity check is unresolved.
 - [ ] Do not release if validation fails; report scope, results, and any limitations accurately.
 
 ### Living rules

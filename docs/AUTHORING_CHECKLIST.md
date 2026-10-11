@@ -13,6 +13,40 @@ For continuity batches after Batch 14, also use the [Continuity Expansion Progra
 5. Add focused scenario tests for important branches, required state, payoff, and save-sensitive behavior. The global registry release test checks graph targets, stable-reference catalogs, metadata, and IDs; use `validateScenarioRegistry` for focused fixtures when useful.
 6. Launch it in QA and inspect substantive endings, reward resolution, and the longest mobile scenes. Completion is handled by canonical terminal qualification, not bespoke scenario code.
 
+## Mandatory pre-publication integrity gate
+
+Apply this gate to every new Adventure and every changed shared builder/variant. Resolve each applicable item before publication; an unresolved failure blocks release.
+
+### Setup and choices
+
+- [ ] Every decision-relevant person, threat, object, hazard, ownership condition, job term, location, complication, and evidence is introduced before a dependent choice.
+- [ ] Base premise and route/kit/history/Knowledge variant both survive rendering; required setup appears exactly once.
+- [ ] Choice labels and unfamiliar terminology are understandable from the scene before the player chooses.
+- [ ] A fresh Traveler has meaningful legal actions. No reachable nonterminal state has zero available choices; no optional, banked, broken, or unusable Gear suppresses the necessary fallback. Do not add filler choices.
+
+### Gear and compensation
+
+- [ ] Every Gear-specific choice requires the exact carried, usable item, or explicitly establishes scenario-supplied equipment; banked Gear does not satisfy an in-run requirement.
+- [ ] Employer-owned equipment is distinguished from the Traveler’s Gear and explicitly released before it becomes persistent.
+- [ ] Narrated coin amounts equal actual route effects. For wages, calculate balance owed = agreed total − advances already paid, then count the advance once in total net change. For wagers, count stake paid, returned stake, and winnings separately; reconcile all fees, bonuses, refunds, and final net change.
+- [ ] Earned wages remain earned when optional Gear or another reward is offered, unless the story clearly establishes an exclusive alternative.
+- [ ] Failure, refusal, partial work, and successful work receive only the compensation each route earns.
+
+### Knowledge and continuity
+
+- [ ] Grant Knowledge at the action that teaches it; route-dependent learning is granted only on the demonstrating route and survives later compensation choices.
+- [ ] Post-work instruction is explicitly offered as teaching/showing/explaining/demonstrating; never offer to “keep” a lesson the Traveler has not yet learned.
+- [ ] Do not persist common sense, unsupported speculation, generic advice, or a one-site conclusion as reusable Knowledge.
+- [ ] History, Lore, Contact, Favor, and item provenance state only what this route actually established; callbacks respect this Traveler’s information boundary.
+
+### Objective, result, and release
+
+- [ ] The opening establishes why the Traveler is involved and what they are trying to accomplish; the ending resolves or deliberately relinquishes that objective and makes the practical result/payoff clear.
+- [ ] Route-specific results and endings describe only actions, methods, placements, costs, consequences, and rewards established on that route.
+- [ ] Before judgment/competition choices, the event, Traveler’s role, what is judged, and relevant prize/stakes are clear without forcing an unsupported “correct” criterion.
+- [ ] QA mutations and migrations preserve the source namespace through load → migration → normalization → save; normal and QA saves cannot overwrite one another.
+- [ ] Run fresh-character route/actionability checks, explicit reward-accounting review, registry validation, focused regression tests, and the project’s required release checks.
+
 For an automatically scheduled scenario batch, use the flexible target in [Automatic Scenario Creation](ROADMAP.md#automatic-scenario-creation): approximately 70–80% meaningful reward/continuity-opportunity scenarios and 20–30% non-reward scenarios. This is a batch-level review, not a rigid minimum or a requirement to reward every story. Count only meaningful, fictionally justified opportunities, and do not add a reward merely to hit a ratio. See [Canonical Design Rules](DESIGN_RULES.md) for the general principle and use any newer, explicitly scoped batch rule when applicable.
 
 Also review the early-accessible portion of the library separately: global batch density does not guarantee that ordinary Travelers encounter continuity-bearing choices early, or that the choices are reachable and understandable.
@@ -21,7 +55,7 @@ Also review the early-accessible portion of the library separately: global batch
 
 **Gear Expansion Program — Genre Batch 2: Road Danger / Highwaymen / Bandits / Robbers.** Road-threat stories should show hostile equipment in use before it becomes available, preserve a credible noncombat response where the fiction permits, and resolve ownership through surrender, witnessed abandonment, restitution, or an explicit owner transfer. A fight alone is never an automatic loot grant. Keep hostile intent and violence fairly foreshadowed; temporary separation from player-owned Gear must not become silent permanent loss. This is another temporary corrective batch, not a permanent change to mixed-batch reward density.
 
-**Gear Expansion Program — Genre Batch 4: Trades / Apprenticeships / Practical Work.** Work stories should show diagnosis, a tool’s actual capability, a complication, and a quality check; avoid reducing skilled labor to a one-choice wage. Temporary shop equipment remains temporary unless ownership is explicitly released. Gear repair and improvement use canonical item-condition and upgrade effects, preserving provenance without consuming a new carry slot. Wages-in-kind should compete honestly with coins or useful learning. The corrective exception described here is historical; use the current flexible batch mix in [Automatic Scenario Creation](ROADMAP.md#automatic-scenario-creation).
+**Gear Expansion Program — Genre Batch 4: Trades / Apprenticeships / Practical Work.** Work stories should show diagnosis, a tool’s actual capability, a complication, and a quality check; avoid reducing skilled labor to a one-choice wage. Temporary shop equipment remains temporary unless ownership is explicitly released. Gear repair and improvement use canonical item-condition and upgrade effects, preserving provenance without consuming a new carry slot. If Gear is explicitly offered instead of earned wages, make the choice clear; already-learned Knowledge is not payment-in-kind. The corrective exception described here is historical; use the current flexible batch mix in [Automatic Scenario Creation](ROADMAP.md#automatic-scenario-creation).
 
 **Gear Expansion Program — Genre Batch 5: Salvage / Recovery / Reclamation.** A find is not an ownership transfer. Establish the chain of custody through marks, records, witnesses, a written salvage agreement, owner release, or a sale; return disputed/private property rather than treating absence as abandonment. Show the physical recovery, then let its evidence create a second question about safety, ownership, or priority. Record recovered Gear’s explicit provenance, and preserve a damaged condition when the item still needs repair. Its reward-density wording records historical guidance; use the current flexible batch mix in [Automatic Scenario Creation](ROADMAP.md#automatic-scenario-creation).
 

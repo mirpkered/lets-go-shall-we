@@ -10,7 +10,7 @@ The registry also contains an earlier, unnumbered corrective Gear-content set (`
 
 ## Primary continuity balance rule
 
-For a mixed continuity batch, aim for roughly even primary representation among Gear, Knowledge, and Lore unless the genre strongly favors one. At 24 scenarios, 8/8/8 is a strong default. This is an editorial target, not a quota that overrides story quality. Every scenario still needs a meaningful persistent continuity opportunity; most should touch more than one lane over the full route or through later callbacks. Coins may be a legitimate choice but do not substitute for shallow or missing Gear/Knowledge/Lore design across the batch.
+For a planned mixed-continuity batch, aim for roughly even primary representation among Gear, Knowledge, and Lore unless the genre strongly favors one. At 24 scenarios, 8/8/8 is a useful editorial target, not a quota. Continuity opportunity is evaluated across the batch: an individual Adventure may be intentionally non-rewarding and need not touch multiple persistence lanes. Coins can be a legitimate result, but neither coins nor continuity should be forced where the fiction does not support them. Story quality takes priority over lane counts.
 
 Knowledge answers “how or what should I recognize?” Lore answers “what does this place, event, or object mean?” Do not persist an incidental observation as either. Stable Knowledge belongs in `src/knowledgeFacts.ts`; exact Lore strings remain character memory and may be required by authored narration or choices. Existing character arrays and save migration preserve both; neither is Bank property.
 
@@ -34,7 +34,7 @@ The local registry after Batch 15 was 835 adventures: 59 ENCOUNTER, 760 effectiv
 
 ## Primary continuity balance rule
 
-For planned mixed-continuity batches, aim for roughly even primary representation among Gear, Knowledge, and Lore unless the genre strongly favors one. With about 24 Adventures, 8/8/8 is a useful editorial target, not a quota. Every story needs a meaningful continuity opportunity; most should connect at least two lanes. Knowledge is a reusable method or recognition skill; Lore is persistent understanding of history, place, and meaning. Neither lane should be padded with incidental facts.
+For planned mixed-continuity batches, aim for roughly even primary representation among Gear, Knowledge, and Lore unless the genre strongly favors one. With about 24 Adventures, 8/8/8 is a useful editorial target, not a quota. Assess meaningful continuity opportunities across the batch; a story may properly have no persistent reward, and no individual story must connect multiple lanes. Knowledge is a reusable method or recognition skill; Lore is persistent understanding of history, place, and meaning. Neither lane should be padded with incidental facts.
 
 ## Consequence must carry weight
 
