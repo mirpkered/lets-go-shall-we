@@ -84,7 +84,8 @@ describe('deep exploration anthology', () => {
     expect(orchard.scenes.rodEnding.text).not.toBe(orchard.scenes.rescueOnly.text);
 
     const harker = getScenario('deep-room-at-harker-mine')!;
-    expect(harker.scenes.harkerRescueEnd.text).toMatch(/old worked-stone door remains unexplored/i);
+    expect(harker.scenes.harkerRescueEnd.text).toMatch(/deeper question unresolved/i);
+    expect(harker.scenes.harkerRescueEnd.textVariants?.some(({ requirements }) => requirements.flags?.includes('harkerDoorEntered'))).toBe(true);
     expect(harker.scenes.harkerDoor.text).toMatch(/way back remains clear/i);
 
     const mill = getScenario('black-stair-wrens-mill')!;
@@ -284,5 +285,116 @@ describe('deep exploration anthology', () => {
     fullCharacter.supplies = { ritualChalk: 4 };
     const full: SaveData = { ...structuredClone(EMPTY_SAVE), character: fullCharacter, run: startRun(fullCharacter, cave, () => 0) };
     expect(meets(request.requirements, full)).toBe(false);
+  });
+
+  it('qualifies Briar House conclusions by whether the hidden bedroom was reached', () => {
+    const house = getScenario('last-door-briar-house')!;
+    const character = newCharacter('Briar House Reader');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, house, () => 0) };
+    initial.run!.sceneId = 'hallOne';
+    const letterOnly = choose(initial, house, house.scenes.hallOne.choices.find(({ id }) => id === 'compareLetter')!, () => 0);
+    expect(sceneText(house.scenes.letterEnding, letterOnly)).toMatch(/account of writing about someone associated with Briar House/i);
+
+    const bedroom = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'bedroomShift' } };
+    const entered = choose(bedroom, house, house.scenes.bedroomShift.choices.find(({ id }) => id === 'closeBedroom')!, () => 0);
+    expect(entered.run?.flags).toContain('briarSecondBedroomReached');
+    let saved = '';
+    saveGame(entered, { setItem: (_key, value) => { saved = value; } });
+    const resumed = loadSave({ getItem: () => saved });
+    const confirmed = choose(resumed, house, house.scenes.secondBedroom.choices.find(({ id }) => id === 'readLetters')!, () => 0);
+    expect(sceneText(house.scenes.letterEnding, confirmed)).toMatch(/confirm that the rooms concealed a person/i);
+    expect(sceneText(house.scenes.houseUnderstood, confirmed)).toMatch(/letters in the hidden bedroom explain whom/i);
+
+    const legacy = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'letterEnding' } };
+    expect(sceneText(house.scenes.letterEnding, legacy)).toMatch(/account of writing about someone associated with Briar House/i);
+  });
+
+  it('keeps the Iron Orchard ending accurate when a rod was removed', () => {
+    const orchard = getScenario('iron-orchard')!;
+    const traveler = newCharacter('Rod Inspector');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, orchard, () => 0) };
+    initial.run!.sceneId = 'stakeGallery';
+    const pulled = choose(initial, orchard, orchard.scenes.stakeGallery.choices.find(({ id }) => id === 'removeRod')!, () => 0);
+    expect(pulled.run?.flags).toContain('rodRemoved');
+    const sealed = choose(pulled, orchard, orchard.scenes.openedDeep.choices.find(({ id }) => id === 'sealDeep')!, () => 0);
+    expect(sceneText(orchard.scenes.sealedOrchard, sealed)).toMatch(/one rod was pulled from the floor/i);
+    expect(sceneText(orchard.scenes.sealedOrchard, sealed)).toMatch(/the others remain in place/i);
+
+    const left = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'stakeGallery' } };
+    const untouched = choose(left, orchard, orchard.scenes.stakeGallery.choices.find(({ id }) => id === 'retreatStakes')!, () => 0);
+    expect(sceneText(orchard.scenes.sealedOrchard, untouched)).toMatch(/the rods remain where they were found/i);
+  });
+
+  it('does not tell the road crew an unrecovered wagon can take the detour', () => {
+    const road = getScenario('door-beneath-the-road')!;
+    const traveler = newCharacter('Road Reporter');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, road, () => 0) };
+    initial.run!.sceneId = 'driverAccount';
+    const report = choose(initial, road, road.scenes.driverAccount.choices.find(({ id }) => id === 'reportHole')!, () => 0);
+    expect(sceneText(road.scenes.roadReport, report)).toMatch(/wagon still needs to be recovered/i);
+    expect(sceneText(road.scenes.roadReport, report)).not.toMatch(/wagon can use the detour/i);
+    expect(road.scenes.shallowRoad.text).toMatch(/wagon and its cargo are recovered/i);
+  });
+
+  it('varies Harker Mine closure for direct rescue, crew rescue, and entered lower room', () => {
+    const harker = getScenario('deep-room-at-harker-mine')!;
+    const traveler = newCharacter('Harker Rescuer');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, harker, () => 0) };
+    const drift = choose(initial, harker, harker.scenes.harkerMouth.choices.find(({ id }) => id === 'mainDrift')!, () => 0);
+    const found = choose(drift, harker, harker.scenes.harkerDrift.choices.find(({ id }) => id === 'crawlDrift')!, () => 0);
+    const rescued = choose(found, harker, harker.scenes.harkerMiner.choices.find(({ id }) => id === 'freeMiner')!, () => 0);
+    const directExit = choose(rescued, harker, harker.scenes.minerOutside.choices.find(({ id }) => id === 'leaveHarker')!, () => 0);
+    expect(sceneText(harker.scenes.harkerRescueEnd, directExit)).not.toMatch(/foreman and two miners bring/i);
+    expect(sceneText(harker.scenes.harkerRescueEnd, directExit)).not.toMatch(/door remains unexplored/i);
+
+    const inspect = choose(rescued, harker, harker.scenes.minerOutside.choices.find(({ id }) => id === 'inspectDeepDoor')!, () => 0);
+    expect(inspect.run?.flags).toContain('harkerDoorEntered');
+    const retreat = choose(inspect, harker, harker.scenes.harkerDoor.choices.find(({ id }) => id === 'retreatDoor')!, () => 0);
+    expect(sceneText(harker.scenes.harkerRescueEnd, retreat)).toMatch(/saw the worked-stone room/i);
+    expect(sceneText(harker.scenes.harkerRescueEnd, retreat)).toMatch(/without opening the lower door/i);
+
+    const waiting = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'harkerWaiting' } };
+    const crewOutcome = choose(waiting, harker, harker.scenes.harkerWaiting.choices.find(({ id }) => id === 'leaveMine')!, () => 0);
+    expect(sceneText(harker.scenes.harkerRescueEnd, crewOutcome)).toMatch(/foreman leads two miners/i);
+    const legacy = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'harkerRescueEnd' } };
+    expect(sceneText(harker.scenes.harkerRescueEnd, legacy)).toMatch(/deeper question unresolved/i);
+  });
+
+  it('states the ferry’s cause and inspection settlement only after the timber was freed', () => {
+    const ferry = getScenario('ferry-beneath-the-ferry')!;
+    const traveler = newCharacter('Ferry Explorer');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, ferry, () => 0) };
+    initial.run!.sceneId = 'ferryCache';
+    const copiedSlate = choose(initial, ferry, ferry.scenes.ferryCache.choices.find(({ id }) => id === 'copyToll')!, () => 0);
+    expect(sceneText(ferry.scenes.ferryHistory, copiedSlate)).toMatch(/older crossing lies beneath the present ferry/i);
+    expect(sceneText(ferry.scenes.ferryHistory, copiedSlate)).not.toMatch(/pays three coins|cause of the strike is settled/i);
+    expect(copiedSlate.character?.money).toBe(0);
+
+    const road = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'oldRoad' } };
+    const freed = choose(road, ferry, ferry.scenes.oldRoad.choices.find(({ id }) => id === 'freeTimber')!, () => 0);
+    expect(freed.run?.flags).toContain('ferryTimberCleared');
+    const paid = choose(freed, ferry, ferry.scenes.timberFreed.choices.find(({ id }) => id === 'tellFerryman')!, () => 0);
+    expect(paid.character?.money).toBe(3);
+    expect(sceneText(ferry.scenes.ferryHistory, paid)).toMatch(/pays three coins/i);
+    expect(sceneText(ferry.scenes.ferryHistory, paid)).toMatch(/when you freed the timber/i);
+  });
+
+  it('keeps the Lantern Vault closure neutral unless the night register room was entered', () => {
+    const vault = getScenario('lantern-vault')!;
+    const traveler = newCharacter('Vault Reader');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, vault, () => 0) };
+    const left = choose(initial, vault, vault.scenes.innCellar.choices.find(({ id }) => id === 'leaveVault')!, () => 0);
+    expect(sceneText(vault.scenes.vaultEnding, left)).not.toMatch(/without opening any numbered room/i);
+    expect(sceneText(vault.scenes.vaultEnding, left)).toMatch(/other numbered rooms remain unexamined/i);
+
+    const entered = choose(initial, vault, vault.scenes.innCellar.choices.find(({ id }) => id === 'seven')!, () => 0);
+    const copied = choose(entered, vault, vault.scenes.vaultSeven.choices.find(({ id }) => id === 'copyEntries')!, () => 0);
+    const ended = choose(copied, vault, vault.scenes.vaultLedger.choices.find(({ id }) => id === 'closeRack')!, () => 0);
+    expect(ended.run?.flags).toContain('vaultSevenEntered');
+    expect(sceneText(vault.scenes.vaultEnding, ended)).toMatch(/examining the night register in numbered room seven/i);
+    expect(sceneText(vault.scenes.vaultEnding, ended)).toMatch(/other numbered rooms remain unexamined/i);
+
+    const legacy = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'vaultEnding' } };
+    expect(sceneText(vault.scenes.vaultEnding, legacy)).toMatch(/account of what your route established/i);
   });
 });
