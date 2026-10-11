@@ -134,7 +134,7 @@ describe('final-choice consequence audit', () => {
     const neighbor = take(scenario, stateAt(scenario, 'goatLedger'), 'askNeighbor');
     const closeGrave = take(scenario, stateAt(scenario, 'goatBurial'), 'closeGrave');
     const leaveGrave = take(scenario, stateAt(scenario, 'goatBurial'), 'leaveGrave');
-    expect(endingText(scenario, decline)).toContain('do not settle which animal was buried');
+    expect(endingText(scenario, decline)).toContain('which goat was buried and what happened afterward remain unresolved');
     expect(endingText(scenario, tally)).toContain('show the stable book');
     expect(endingText(scenario, neighbor)).toContain('neighbor recalls the loose gray goat');
     expect(endingText(scenario, closeGrave)).toContain('You close the shallow grave');

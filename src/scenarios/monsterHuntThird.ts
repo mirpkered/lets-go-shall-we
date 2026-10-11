@@ -53,16 +53,18 @@ export const THE_MAN_EATER_OF_MILLERS_GAP: Scenario = {
       { id: 'followCatLedge', label: 'Follow the cat’s tracks along the ledge', hint: 'Loose gravel lies above a steep drop.', chance: { probability: 0.42, successNext: 'catSeen', failureNext: 'catFall', successMessage: 'You reach a broad ledge with a clear route back.', failureMessage: 'Gravel slides beneath your boot toward the drop.', failureEffects: { health: -5 } } },
     ]),
     catSeen: scene('catSeen', 'A Cat above the Trail', 'A mountain lion watches from the ledge, muscles low and still. It is a real predator and has taken livestock, but it has not attacked while you stay in the open. The marked retreat route remains behind the upper rock.', [
-      { id: 'retreatLion', label: 'Withdraw and keep the pen secured', next: 'gapAfter', effects: { historyFlags: ['protected a flock from a mountain lion without pursuing it'] } },
+      { id: 'retreatLion', label: 'Withdraw and keep the pen secured', next: 'gapAfter', effects: { setFlags: ['mountainLionSeenAtLedge'], historyFlags: ['protected a flock from a mountain lion without pursuing it'] } },
       { id: 'ringBellLion', label: 'Ring the warning bell from cover', next: 'lionDriven' },
       { id: 'confrontLion', label: 'Confront the cat at the ledge', hint: 'It has attacked livestock and a drover; failure is likely fatal.', effects: { combat: { enemy: 'mountain lion', winChance: 0.2, damageOnWin: 4, damageOnLoss: 10, winNext: 'lionDriven', lossNext: 'catFatal' } } },
     ], 'danger'),
     catSeenAtDistance: scene('catSeenAtDistance', 'Seen from Safe Ground', 'Through your Field Glasses, you make out a mountain lion watching the flock from the ledge. It has not noticed you on the broad upper rock. The drover can keep the pen closed while you leave the pass or ring the warning bell from cover.', [
-      { id: 'retreatObservedLion', label: 'Withdraw without drawing the cat closer', next: 'gapAfter', effects: { historyFlags: ['observed a mountain lion at Miller’s Gap from safe ground'] } },
+      { id: 'retreatObservedLion', label: 'Withdraw without drawing the cat closer', next: 'gapAfter', effects: { setFlags: ['mountainLionSeenAtLedge'], historyFlags: ['observed a mountain lion at Miller’s Gap from safe ground'] } },
       { id: 'ringBellObservedLion', label: 'Ring the warning bell from the upper rock', next: 'lionDriven' },
     ], 'warning'),
     lionDriven: end('lionDriven', 'The Pass Opens in Daylight', 'The bell carries through the gap and the cat withdraws uphill. The drover keeps the flock penned until daylight and calls an experienced hunter; the pass is not declared safe just because the animal has moved.'),
-    gapAfter: end('gapAfter', 'A Pass Left Closed', 'The remaining sheep stay behind the upper wall. The drover marks the gap closed and sends for an experienced hunter. The cat has not been located, and the pass is no longer an easy path to the flock.'),
+    gapAfter: { ...end('gapAfter', 'A Pass Left Closed', 'The remaining sheep stay behind the upper wall. The drover marks the gap closed and sends for an experienced hunter. The cat’s present whereabouts are uncertain, and the pass is no longer an easy path to the flock.'), textVariants: [
+      { requirements: { flags: ['mountainLionSeenAtLedge'] }, text: 'You saw the mountain lion watching from the ledge before withdrawing. Its whereabouts now are unknown; the remaining sheep stay behind the upper wall while the drover keeps the gap closed and sends for an experienced hunter.' },
+    ] },
     gapClosed: end('gapClosed', 'The Hunt Can Wait', 'The drover closes Miller’s Gap and moves the flock uphill. No one enters the blind bend alone. The predator remains unlocated, but travelers are warned before they reach the narrow pass.'),
     catFall: end('catFall', 'Loose Gravel', 'You slide against the rock face and bruise your hip before the drover pulls you back. The flock stays penned. Tracks still lead above the pass, but the cat’s location remains unknown.'),
     catFatal: end('catFatal', 'The Narrow Bend', 'The predator strikes where the pass leaves no room to turn. The drover closes the route and does not send anyone after you.', 'death'),

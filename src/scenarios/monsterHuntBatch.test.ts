@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { inventoryClass, ITEMS } from '../items';
 import { scenarioRiskTier } from '../riskClassification';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -166,11 +166,14 @@ describe('Monster Hunt / Creature Threat batch', () => {
     const slipped = take(sheepMoved, scenario, 'followCatLedge', 0.999999);
     expect(slipped.run?.sceneId).toBe('catFall');
     expect(scenario.scenes.catFall.text).toMatch(/cat’s location remains unknown/i);
-    expect(scenario.scenes.gapAfter.text).toMatch(/cat has not been located/i);
+    expect(scenario.scenes.gapAfter.text).toMatch(/cat’s present whereabouts are uncertain/i);
 
     const directSighting = take(sheepMoved, scenario, 'watchFromRock');
     expect(directSighting.run?.sceneId).toBe('catSeen');
     expect(scenario.scenes.catSeen.text).toMatch(/mountain lion watches from the ledge/i);
+    const withdrawnAfterSighting = take(directSighting, scenario, 'retreatLion');
+    expect(sceneText(scenario.scenes.gapAfter, withdrawnAfterSighting)).toMatch(/saw the mountain lion watching from the ledge/i);
+    expect(sceneText(scenario.scenes.gapAfter, withdrawnAfterSighting)).toMatch(/whereabouts now are unknown/i);
     const glassesRoute = take(fresh(scenario, 'fieldGlasses'), scenario, 'moveSheep');
     const glassChoice = scenario.scenes.sheepMoved.choices.find(({ id }) => id === 'watchWithFieldGlasses')!;
     expect(meets(glassChoice.requirements, glassesRoute)).toBe(true);

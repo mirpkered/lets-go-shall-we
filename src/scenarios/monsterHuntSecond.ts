@@ -18,17 +18,17 @@ export const THE_MILLERS_BEAST: Scenario = {
     millCadence: scene('millCadence', 'Steps between the Turning', 'The scrapes pause whenever the wheel knocks, then cross during the quieter beat. A low shape slips behind the grain chute without touching the belt. The miller can stop the wheel from the upper lever.', [
       { id: 'stopWheel', label: 'Ask the miller to stop the wheel', next: 'millVisitor' },
       { id: 'watchOneTurn', label: 'Wait for one more wheel turn', next: 'millVisitor' },
-      { id: 'reachBehindBelt', label: 'Reach behind the moving belt', hint: 'The belt can catch a sleeve or hand.', chance: { probability: 0.43, successNext: 'millVisitor', failureNext: 'millInjury', successMessage: 'Your hand reaches the wall before the next belt turn.', failureMessage: 'The belt catches your sleeve and throws you back.', failureEffects: { health: -4 } } },
+      { id: 'reachBehindBelt', label: 'Reach behind the moving belt', hint: 'The belt can catch a sleeve or hand.', chance: { probability: 0.43, successNext: 'millVisitor', failureNext: 'millInjury', successMessage: 'Your hand reaches the wall before the next belt turn.', failureMessage: 'The belt catches your sleeve and throws you back.', failureEffects: { health: -4, setFlags: ['beltCaughtSleeve'] } } },
     ], 'warning'),
     millLatch: scene('millLatch', 'A Latch from Outside', 'The latch bears fresh tool marks, but the prints stop under a broken drain cover. No one has been inside the mill since closing. The route ends at a dry culvert beyond the wheel house.', [
       { id: 'waitForOutside', label: 'Watch the culvert from daylight', next: 'millHuman' },
       { id: 'askMillerAboutTools', label: 'Ask who can reach the outer latch', next: 'millHuman' },
       { id: 'returnInside', label: 'Check the lower aisle without the wheel', next: 'millVisitor' },
     ]),
-    millVisitor: scene('millVisitor', 'A Shape beside the Chute', 'With the wheel stopped, a large badger comes from the wall gap. It has been nesting behind the chute and tearing sacks for straw, not food. It freezes when the miller steps toward its burrow; the culvert offers a way out.', [
+    millVisitor: scene('millVisitor', 'A Shape beside the Chute', 'A large badger comes from the wall gap. It has been nesting behind the chute and tearing sacks for straw, not food. It freezes when the miller steps toward its burrow; the culvert offers a way out.', [
       { id: 'openCulvert', label: 'Open the culvert route and step back', next: 'badgerLeaves', effects: { knowledge: ['A badger nested behind the mill chute and used the culvert; stopping the wheel let it leave safely.'] } },
       { id: 'guideOutside', label: 'Guide it toward the open yard', next: 'badgerLeaves' },
-      { id: 'cornerBadger', label: 'Corner it before it reaches the gears', hint: 'The badger is trapped between the chute and machinery.', chance: { probability: 0.35, successNext: 'badgerLeaves', failureNext: 'millInjury', successMessage: 'It bolts through the culvert.', failureMessage: 'It bites through your glove and darts under the belt.', failureEffects: { health: -3 } } },
+      { id: 'cornerBadger', label: 'Corner it before it reaches the gears', hint: 'The badger is trapped between the chute and machinery.', chance: { probability: 0.35, successNext: 'badgerLeaves', failureNext: 'millInjury', successMessage: 'It bolts through the culvert.', failureMessage: 'It bites through your glove and darts under the belt.', failureEffects: { health: -3, setFlags: ['badgerBitTraveler'] } } },
     ], 'warning'),
     millHuman: scene('millHuman', 'Someone at the Drain', 'A mill apprentice admits using the outer latch to sleep in the dry culvert. They tore the sacks for bedding, then fled when they heard the wheel. They are embarrassed, not armed; the miller is angry about the damage.', [
       { id: 'askApprenticeRepair', label: 'Have the apprentice help replace the sacks', next: 'millRepaid', effects: { historyFlags: ['helped a mill apprentice repair damage caused by hiding in a culvert'] } },
@@ -38,7 +38,10 @@ export const THE_MILLERS_BEAST: Scenario = {
     badgerLeaves: end('badgerLeaves', 'The Wheel Turns Empty', 'The badger leaves through the culvert and the miller patches the wall. The torn sacks are replaced before the next grinding; the mill can turn again without trapping an animal behind its gears.'),
     millRepaid: end('millRepaid', 'Sacks Replaced', 'The apprentice helps replace the torn sacks and agrees to ask for shelter rather than hide in the mill. The miller keeps the outer latch repaired; no beast was in the machinery.'),
     millClosed: end('millClosed', 'A Mill Kept Shut', 'The miller closes the loading door and waits for daylight before inspecting the culvert. The damaged grain is lost, but no one reaches behind the turning belt.'),
-    millInjury: end('millInjury', 'The Lower Aisle', 'The belt tears your sleeve and leaves your arm bruised. The miller stops the wheel and closes the building until a proper repair and animal check can be made.'),
+    millInjury: { ...end('millInjury', 'The Lower Aisle', 'You are hurt. The miller stops the wheel and closes the building until a proper repair and animal check can be made.'), textVariants: [
+      { requirements: { flags: ['badgerBitTraveler'] }, text: 'The badger bites through your glove and darts under the belt. Your hand is bruised; the miller stops the wheel and closes the building until a proper repair and animal check can be made.' },
+      { requirements: { flags: ['beltCaughtSleeve'] }, text: 'The moving belt catches your sleeve and throws you back. Your arm is bruised; the miller stops the wheel and closes the building until a proper repair and animal check can be made.' },
+    ] },
   },
 };
 
@@ -129,7 +132,7 @@ export const THE_GOAT_THAT_WOULDNT_STAY_DEAD: Scenario = {
       { id: 'claimMiracle', label: 'Tell the farmer the goat returned', next: 'goatAfter', effects: { historyFlags: ['called_living_goat_a_miracle'] } },
     ]),
     goatAfter: { ...end('goatAfter', 'Three Goats, One Story', 'The farmer counts three different goats: one wandered, one was buried, and the one before you was never missing. The empty grave remains unexplained, but the gate is fixed and the living animals are counted.'), textVariants: [
-      { requirements: { historyFlags: ['left_goat_identity_unresolved'] }, text: 'You leave the farmer with the tally and the marked goats but do not settle which animal was buried. The gate remains repaired from the earlier escape; the empty grave and the repeated-death story remain unresolved.' },
+      { requirements: { historyFlags: ['left_goat_identity_unresolved'] }, text: 'You leave the farmer with the marked goats. Without checking the stable book or following up on the burial, which goat was buried and what happened afterward remain unresolved.' },
       { requirements: { historyFlags: ['resolved_goat_identity_with_feed_tally'] }, text: 'You show the stable book beside the ear marks. The farmer can separate the goat that wandered from the one buried and the living animal that was never missing; the empty grave still has no certain explanation.' },
       { requirements: { historyFlags: ['resolved_goat_identity_with_neighbor_account'] }, text: 'The neighbor recalls the loose gray goat coming back after the gate blew open. The farmer compares that account with the ear marks and feed tally: three animals, not one returning from the dead. The empty grave remains unexplained.' },
       { requirements: { historyFlags: ['closed_goat_grave_and_checked_gate'] }, text: 'You close the shallow grave and check the repaired gate with the farmer. The ear marks and feed tally separate the three goats; no one claims to know what happened to the body.' },
@@ -300,11 +303,14 @@ export const THE_ANTLERED_THING: Scenario = {
       { id: 'approachCreature', label: 'Approach the antlered shape', hint: 'It is above the trail and has already struck once.', chance: { probability: 0.2, successNext: 'workerOut', failureNext: 'antlerFatal', successMessage: 'It withdraws into the higher branches.', failureMessage: 'It drops from the tree before you can turn.', failureEffects: { health: -10 } } },
     ], 'danger'),
     workerOut: scene('workerOut', 'Back beyond the Branches', 'The worker reaches the road side of the arch. The shape remains above the marked trail, watching but not pursuing. The road crew can abandon this stretch or cut a new path around the boundary.', [
-      { id: 'abandonForestRoad', label: 'Abandon the trail and leave', next: 'forestEvacuated', effects: { historyFlags: ['evacuated a worker from the Antlered Thing’s marked territory'] } },
+      { id: 'abandonForestRoad', label: 'Abandon the trail and leave', next: 'forestEvacuated', effects: { setFlags: ['workerReachedRoad'], historyFlags: ['evacuated a worker from the Antlered Thing’s marked territory'] } },
       { id: 'cutDetour', label: 'Mark a detour around the trees', next: 'forestDetour', effects: { knowledge: ['The Antlered Thing stayed within the branch-arch territory and did not pursue travelers onto the road.'] } },
     ]),
     forestDetour: end('forestDetour', 'A Road around the Territory', 'The crew marks a detour and leaves the branch arches untouched. The missing worker is safe; the entity keeps its territory, and no one treats the forest as cleared.'),
-    forestEvacuated: { ...end('forestEvacuated', 'The Trail Abandoned', 'The road crew leaves the marked forest. The worker’s fate is not confirmed; the branch arches remain, and the road is closed until a larger party can assess the area.'), textVariants: [{ requirements: { flags: ['heardWorkerBeyondArch'] }, text: 'The worker’s voice remains beyond the branch arch, alive but unwilling to cross while the shape watches. The crew leaves for trained help; the trail is closed until a larger party can return.' }] },
+    forestEvacuated: { ...end('forestEvacuated', 'The Trail Abandoned', 'The road crew leaves the marked forest. The worker’s fate is not confirmed; the branch arches remain, and the road is closed until a larger party can assess the area.'), textVariants: [
+      { requirements: { flags: ['workerReachedRoad'] }, text: 'The worker reached the road safely before the crew abandoned the marked forest. The branch arches remain, and the route is closed until a larger party can assess the area.' },
+      { requirements: { flags: ['heardWorkerBeyondArch'] }, text: 'The worker’s voice remains beyond the branch arch, alive but unwilling to cross while the shape watches. The crew leaves for trained help; the trail is closed until a larger party can return.' },
+    ] },
     antlerAttack: end('antlerAttack', 'The Arch Answers', 'A branch-thick limb strikes you from above. The crew pulls you to the road; the missing worker remains beyond the boundary.'),
     antlerFatal: end('antlerFatal', 'Under the Crowned Branches', 'The antlered shape drops from the trees and pins you beyond the arch. The crew retreats without crossing the marked line again.', 'death'),
   },
