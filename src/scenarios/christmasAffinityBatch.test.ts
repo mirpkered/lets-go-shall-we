@@ -130,8 +130,12 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(goose.scenes.mealWithoutGoose, state)).toMatch(/last seen safe across the creek/i);
 
     const unseen = pick(pick(fresh(goose), goose, 'planOtherMeal'), goose, 'makePot');
-    expect(sceneText(goose.scenes.mealWithoutGoose, unseen)).toMatch(/goose was not found before supper/i);
+    expect(sceneText(goose.scenes.mealWithoutGoose, unseen)).toMatch(/goose was not brought back before supper/i);
     expect(sceneText(goose.scenes.mealWithoutGoose, unseen)).not.toMatch(/across the creek/i);
+
+    const legacySeen = structuredClone(state);
+    legacySeen.run!.flags = legacySeen.run!.flags.filter((flag) => flag !== 'gooseSeenAcrossCreek');
+    expect(sceneText(goose.scenes.mealWithoutGoose, legacySeen)).toMatch(/goose was not brought back before supper/i);
   });
 
   it('keeps the fallen-tree delay distinct from postponing the felling', () => {
@@ -185,8 +189,8 @@ describe('Christmas and winter-affinity adventures', () => {
     const visitor = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-christmas-visitor')!;
     let uncollected = pick(pick(fresh(visitor), visitor, 'askFromDoor'), visitor, 'letThemGo');
     expect(uncollected.run?.sceneId).toBe('departure');
-    expect(sceneText(visitor.scenes.departure, uncollected)).toMatch(/station letter remains an unchecked lead/i);
-    expect(sceneText(visitor.scenes.departure, uncollected)).not.toMatch(/family has the letter/i);
+    expect(sceneText(visitor.scenes.departure, uncollected)).toMatch(/family has not accepted a claim of ownership/i);
+    expect(sceneText(visitor.scenes.departure, uncollected)).not.toMatch(/family has the letter|letter to consider/i);
 
     let read = pick(fresh(visitor), visitor, 'inviteGuest');
     read = pick(read, visitor, 'askForProof');
@@ -195,6 +199,10 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(read.run?.flags).toContain('christmasVisitorLetterRead');
     read = pick(read, visitor, 'askThemToLeave');
     expect(sceneText(visitor.scenes.departure, read)).toMatch(/family has read the brother’s note/i);
+    const legacyRead = structuredClone(read);
+    legacyRead.run!.flags = legacyRead.run!.flags.filter((flag) => flag !== 'christmasVisitorLetterRead');
+    expect(sceneText(visitor.scenes.departure, legacyRead)).toMatch(/stranger’s identity remains unestablished/i);
+    expect(sceneText(visitor.scenes.departure, legacyRead)).not.toMatch(/unchecked lead/i);
 
     let supper = pick(fresh(visitor), visitor, 'inviteGuest');
     supper = pick(supper, visitor, 'askForProof');
