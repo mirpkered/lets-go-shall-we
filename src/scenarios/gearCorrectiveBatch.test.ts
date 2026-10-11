@@ -71,6 +71,36 @@ describe('corrective Gear Adventure batch', () => {
     }
   });
 
+  it('settles The Squire’s Pack against the actual recovery result',()=>{
+    const unpaidScene=THE_SQUIRES_PACK.scenes.unpaid;
+    const arrival=THE_SQUIRES_PACK.scenes.arrival;
+    const paid=THE_SQUIRES_PACK.scenes.paid;
+
+    let left= start(THE_SQUIRES_PACK);
+    left=act(left,THE_SQUIRES_PACK,'giveToolkit');
+    left=act(left,THE_SQUIRES_PACK,'takeLongRoute');
+    expect(left.run?.sceneId).toBe('arrival');
+    expect(sceneText(arrival,left)).toContain('remains below');
+    expect(sceneText(arrival,left)).not.toContain('brought up the closed tin');
+    left=act(left,THE_SQUIRES_PACK,'takeTwoCoins');
+    expect(paid.text).toContain('whether the tin of stakes came up');
+    expect(unpaidScene.text).not.toContain('recovered stakes');
+
+    let recovered=start(THE_SQUIRES_PACK);
+    recovered=act(recovered,THE_SQUIRES_PACK,'giveRope');
+    recovered=act(recovered,THE_SQUIRES_PACK,'useRopeOnShelf');
+    recovered=act(recovered,THE_SQUIRES_PACK,'continueAfterRope');
+    expect(sceneText(arrival,recovered)).toContain('brought up the closed tin');
+
+    let returned=start(THE_SQUIRES_PACK);
+    returned=act(returned,THE_SQUIRES_PACK,'giveMarker');
+    returned=act(returned,THE_SQUIRES_PACK,'retrieveByHand');
+    returned=act(returned,THE_SQUIRES_PACK,'leaveTinAfterAll');
+    expect(returned.run?.sceneId).toBe('arrival');
+    expect(sceneText(arrival,returned)).toContain('remains on the shelf below');
+    expect(sceneText(arrival,returned)).not.toContain('brought up the closed tin');
+  });
+
   it('grants distinct existing Gear through hand-off, wages-in-kind, ferry work, repair, and apprenticeship', () => {
     acquire(THE_LAST_SURVEY, ['measureStones', 'recordNewEdge', 'acceptRule'], 'joinersFoldingRule');
     acquire(THE_QUARTERMASTERS_TALLY, ['secureFlour', 'unloadAndRestack', 'acceptStrap'], 'freightmansStrap');

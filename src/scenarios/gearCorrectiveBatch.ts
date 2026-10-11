@@ -21,7 +21,7 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
     { id: 'useRopeOnShelf', label: 'Ask Mara to lower the Travel Rope as a handline', requirements: { flags: ['squire_rope_ready'] }, next: 'ropeShelf', effects: { setFlags: ['squire_retrieved_stakes', 'squire_rope_used'] } },
     { id: 'useToolkitOnMarker', label: 'Ask Mara to tighten the loose trail marker with the toolkit', requirements: { flags: ['squire_toolkit_ready'] }, next: 'toolkitMarker', effects: { setFlags: ['squire_marker_secured'] } },
     { id: 'useMarkerForReturn', label: 'Ask Mara to mark the firm return path', requirements: { flags: ['squire_marker_ready'] }, next: 'markerReturn', effects: { setFlags: ['squire_return_marked'] } },
-    { id: 'retrieveByHand', label: 'Climb down carefully and retrieve the stakes', hint: 'The shelf is reachable, though loose gravel may shift.', next: 'stakes', effects: { setFlags: ['squire_retrieved_stakes'] } },
+    { id: 'retrieveByHand', label: 'Climb down carefully and retrieve the stakes', hint: 'The shelf is reachable, though loose gravel may shift.', next: 'stakes' },
     { id: 'takeLongRoute', label: 'Use the longer ridge path', next: 'arrival' },
     { id: 'markAndLeave', label: 'Mark the washout and leave the stakes', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ], 'warning', [
@@ -36,23 +36,27 @@ export const THE_SQUIRES_PACK: Scenario = largeAdventure('the-squires-pack', 'Th
     { id: 'continueAfterMarker', label: 'Take the longer ridge route to the station', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ]),
   markerReturn: s('markerReturn', 'A Marked Way Back', 'Mara places the Folding Trail Marker on the firm approach, then waits while you check the shelf from above. The route is easier to recognize on return, though the tin is still below.', [
-    { id: 'retrieveAfterMark', label: 'Climb down carefully for the tin', next: 'stakes', effects: { setFlags: ['squire_retrieved_stakes'] } },
+    { id: 'retrieveAfterMark', label: 'Climb down carefully for the tin', next: 'stakes' },
     { id: 'leaveAfterMark', label: 'Leave the tin and take the ridge route', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ]),
   stakes: s('stakes', 'A Problem with the Tin', 'The tin is dented but closed. As you lift it, the shelf sheds a few stones. Mara has room to steady you, but the narrowed trail means you cannot both carry the same load at once.', [
-    { id: 'secureTinWithStrap', label: 'Tie the tin to your pack and climb without a line', next: 'arrival', effects: { setFlags: ['squire_tin_secured'] } },
+    { id: 'secureTinWithStrap', label: 'Tie the tin to your pack and climb without a line', next: 'arrival', effects: { setFlags: ['squire_tin_secured', 'squire_retrieved_stakes'] } },
     { id: 'leaveTinAfterAll', label: 'Set the tin back and climb out empty-handed', next: 'arrival', effects: { setFlags: ['squire_left_stakes'] } },
   ], 'warning'),
-  arrival: s('arrival', 'The Survey Reaches the Ridge', 'At the ridge station, Mara checks the survey against the surviving trail marks. The missing tin would have made the next crew’s work easier, but no one is endangered by its loss. She credits your choice: the route was slower with the kit divided, while the recovered stakes confirm one old marker was out of place.', [
+  arrival: s('arrival', 'The Survey Reaches the Ridge', 'At the ridge station, Mara checks the survey against the surviving trail marks. The route was slower with the kit divided, but the survey records what happened to the numbered stakes.', [
     { id: 'takeRopeAsThanks', label: 'Accept Mara’s spare Travel Rope as thanks', requirements: { notOwnedItems: ['travelRope'] }, next: 'ropeGift', effects: { gainItems: ['travelRope'], historyFlags: ['earned_travel_rope_helping_surveyor'] } },
     { id: 'takeTwoCoins', label: 'Take two coins for the day’s work', next: 'paid', effects: { money: 2 } },
     { id: 'keepTheMethod', label: 'Leave the payment and remember Mara’s route-marking method', next: 'method', effects: { knowledge: ['Mara Venn marks a washed-out trail from firm ground before anyone tries to recover equipment below it.'] } },
     { id: 'declineThanks', label: 'Thank Mara and leave without payment', next: 'unpaid' },
+  ], 'safe', [
+    { requirements: { flags: ['squire_left_stakes'] }, text: 'At the ridge station, Mara checks the survey against the surviving trail marks. The tin of numbered stakes remains on the shelf below; the next crew can find its marked location, but no one claims it was recovered.' },
+    { requirements: { flags: ['squire_retrieved_stakes'], notFlags: ['squire_left_stakes'] }, text: 'At the ridge station, Mara checks the survey against the surviving trail marks. You brought up the closed tin of numbered stakes; comparing them confirms one old marker was out of place.' },
+    { requirements: { notFlags: ['squire_retrieved_stakes', 'squire_left_stakes'] }, text: 'At the ridge station, Mara checks the survey against the surviving trail marks. The tin of numbered stakes remains below, and the survey records its location for the next crew.' },
   ]),
   ropeGift: e('ropeGift', 'A Line for Your Own Pack', 'Mara gives you her sound spare rope; the line used on the survey was hers, and this is a second one she had kept wrapped at the station. Your choice helped her finish the route, but it did not make the washout safe.'),
-  paid: e('paid', 'A Day’s Wages', 'Mara pays the agreed two coins for the survey work. The recovered stakes will save the next crew a search, though one marker will still need replacing.'),
+  paid: e('paid', 'A Day’s Wages', 'Mara pays the agreed two coins for the survey work. The route record notes whether the tin of stakes came up from the shelf.'),
   method: e('method', 'A Method Worth Keeping', 'You leave without coin or equipment. Mara shows you how she marks a washout from firm ground before anyone goes below; it is a practical lesson, not a promise that every trail will be safe.'),
-  unpaid: e('unpaid', 'The Ridge Road Continues', 'You leave without payment. Mara files the survey and notes which stakes were missing; neither of you pretends the longer route was wasted.'),
+  unpaid: e('unpaid', 'The Ridge Road Continues', 'You leave without payment. Mara files the survey with the stakes’ actual disposition; neither of you pretends the longer route was wasted.'),
 });
 
 export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The Last Survey', 'A retiring mapmaker needs one final set of measurements before he gives up the road.', tags('A retiring surveyor asks the traveler to test a disputed route measurement, then decides what useful tool should pass to the next hand.', 'worker', 'investigation/mystery', 'mountain road and county survey shed', 'LOW', 'hired/posted work'), 'milepost', {

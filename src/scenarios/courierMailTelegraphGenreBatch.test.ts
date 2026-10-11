@@ -149,6 +149,53 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     }
   });
 
+  it('offers Courier settlement rewards only after a completed handoff', () => {
+    const rewardIds = ['takeGear', 'recordProcedure', 'recordLore', 'recordRelatedLore', 'takeFee', 'declineFee'];
+    for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
+      let refused = act(fresh(scenario), scenario, 'declineDelivery');
+      refused = act(refused, scenario, 'settleDeclined');
+      const refusalChoices = scenario.scenes.settle.choices.filter(({ requirements }) => meets(requirements, refused));
+      expect(refusalChoices.map(({ id }) => id)).toEqual(['closeWithoutHandoff']);
+      expect(refusalChoices[0].next).toBe('unpaid');
+      expect(refusalChoices[0].effects?.money ?? 0).toBe(0);
+
+      let delayed = act(fresh(scenario), scenario, 'acceptDelivery');
+      delayed = act(delayed, scenario, 'verifyOutside');
+      delayed = act(delayed, scenario, 'holdOrReturn');
+      delayed = act(delayed, scenario, 'settleDelayed');
+      expect(scenario.scenes.settle.choices.filter(({ requirements }) => meets(requirements, delayed)).map(({ id }) => id))
+        .toEqual(['closeWithoutHandoff']);
+
+      let delivered = act(fresh(scenario), scenario, 'acceptDelivery');
+      delivered = act(delivered, scenario, 'carryNow');
+      delivered = act(delivered, scenario, 'deliverAsKnown');
+      delivered = act(delivered, scenario, 'settleDelivered');
+      const earned = scenario.scenes.settle.choices.filter(({ requirements }) => meets(requirements, delivered));
+      expect(earned.map(({ id }) => id)).toContain('takeFee');
+      expect(earned.filter(({ id }) => rewardIds.includes(id)).every(({ requirements }) => requirements?.flags?.includes('courier_completed_handoff'))).toBe(true);
+      const fee = earned.find(({ id }) => id === 'takeFee')!;
+      const balanceBeforeFee = delivered.character!.money;
+      delivered = act(delivered, scenario, 'takeFee');
+      expect(delivered.character?.money).toBe(balanceBeforeFee + fee.effects!.money!);
+      expect(delivered.run?.sceneId).toBe('paid');
+    }
+  });
+
+  it('keeps a legacy save at settlement actionable without assuming delivery', () => {
+    const scenario = COURIER_MAIL_TELEGRAPH_GENRE_BATCH[0];
+    let state = act(fresh(scenario), scenario, 'declineDelivery');
+    state = act(state, scenario, 'settleDeclined');
+    state.run!.sceneId = 'settle';
+    state.run!.flags = state.run!.flags.filter((flag) => flag !== 'courier_completed_handoff');
+    const available = scenario.scenes.settle.choices.filter(({ requirements }) => meets(requirements, state));
+    expect(available.map(({ id }) => id)).toEqual(['closeWithoutHandoff']);
+    state = act(state, scenario, 'closeWithoutHandoff');
+    expect(state.run?.sceneId).toBe('unpaid');
+    expect(state.character?.money).toBe(0);
+    const possibleGear = scenario.scenes.settle.choices.find(({ id }) => id === 'takeGear')?.effects?.gainItems ?? [];
+    expect(possibleGear.some((item) => state.run?.acquiredThisRun?.includes(item))).toBe(false);
+  });
+
   it('keeps sealed correspondence closed unless the explicit open choice is made, and records the breach', () => {
     const sealed = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({ scenes }) => scenes.handling.choices.some(({ id }) => id === 'openSealedMessage'));
     expect(sealed.length).toBeGreaterThanOrEqual(5);

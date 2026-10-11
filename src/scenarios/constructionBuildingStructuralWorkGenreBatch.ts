@@ -101,6 +101,7 @@ const make = (w:BuildStory,index:number):Scenario => {
       {id:'wage',label:`Take the ${w.coins}-coin work fee`,next:'paid',effects:{money:w.coins}},
       {id:'leave',label:'Decline further work and leave the area closed for the builder',next:'partial',effects:{setFlags:['declinedFurtherWork']}},
     ],[
+      {requirements:{flags:['choseAlternateSequence']},text:`The alternate plan is followed: ${w.alternate} The settlement below reflects that work and does not claim the original repair was completed.`},
       {requirements:{flags:['usedRememberedConstructionKnowledge']},text:'You explain which structural sign you remembered and ask the builder to compare it here. The second check narrows the concern; the builder—not memory alone—decides what work is safe.'},
       {requirements:{flags:['connectedRememberedConstructionLore']},text:'The clerk recognizes the place you describe and adds that context to the account. The history explains the mark, but the present structure still needs its own inspection.'},
       {requirements:{flags:['rushedWork']},text:`Because you began before checking the support, the builder stops the alteration and resets the work sequence. ${w.sign}`},

@@ -39,6 +39,19 @@ describe('Construction / Building / Structural Work batch',()=>{
     expect(BATCH.every(({scenes})=>scenes.start&&scenes.work&&scenes.reveal&&scenes.settle)).toBe(true);
   });
 
+  it('preserves alternate outcomes in settlement for the six audited construction routes',()=>{
+    const auditedIds=['the-ramp-for-the-grain-cart','the-hall-with-the-mismatched-stone','the-lodge-wall-under-new-paint','the-school-bell-frame','the-old-well-house','the-theater-that-never-opened'];
+    for(const id of auditedIds){
+      const scenario=BATCH.find(({id:scenarioId})=>scenarioId===id)!;
+      let state=initial(scenario);
+      state=act(state,scenario,'inspect');
+      state=act(state,scenario,'measure');
+      state=act(state,scenario,'alternate');
+      expect(sceneText(scenario.scenes.settle,state)).toContain('The alternate plan is followed');
+      expect(sceneText(scenario.scenes.settle,state)).not.toContain('The structure is left in a known state:');
+    }
+  });
+
   it('shows owned construction tools only when usable and preserves non-Gear work routes',()=>{
     const roof=BATCH.find(({id})=>id==='the-roof-that-held-its-breath')!;
     const measure=roof.scenes.work.choices.find(({id})=>id==='measure')!;
