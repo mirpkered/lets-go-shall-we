@@ -6,7 +6,7 @@ import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { EMPTY_SAVE } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
-import { AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH as BATCH } from './agricultureRanchAnimalWorkGenreBatch';
+import { AGRICULTURE_NARRATED_WAGE_PAYMENTS, AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH as BATCH } from './agricultureRanchAnimalWorkGenreBatch';
 import { FENCE_LINE } from './honestWorkBatch';
 
 const fresh = (scenario: Scenario): SaveData => {
@@ -67,6 +67,34 @@ describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', 
     expect(BATCH.find(({ id }) => id === 'the-red-lantern-in-the-pig-shed')?.scenes.lantern.choices[0].label.toLowerCase()).toContain('move the pigs');
     expect(BATCH.find(({ id }) => id === 'the-cut-wire-at-ash-pasture')?.scenes.resolved.choices.some(({ effects }) => effects?.money === 2)).toBe(true);
     expect(BATCH.some(({ id }) => id === 'the-frozen-pump-at-lower-pasture' && Object.values(BATCH.find((entry) => entry.id === id)!.scenes).some(({ choices }) => choices.some(({ effects }) => effects?.money === 1)))).toBe(true);
+  });
+
+  it('grants the exact narrated partial-work payment only on each qualifying farm route', () => {
+    let routeCount = 0;
+    for (const [scenarioId, endings] of Object.entries(AGRICULTURE_NARRATED_WAGE_PAYMENTS)) {
+      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      for (const [endingId, amount] of Object.entries(endings)) {
+        const incoming = Object.values(scenario.scenes).flatMap((scene) => scene.choices
+          .filter(({ next }) => next === endingId).map((choice) => ({ scene, choice })));
+        expect(incoming.length, `${scenarioId}.${endingId} has a qualifying transition`).toBeGreaterThan(0);
+        for (const { scene, choice } of incoming) {
+          routeCount++;
+          expect(choice.effects?.money, `${scenarioId}.${scene.id}.${choice.id}`).toBe(amount);
+          const state = fresh(scenario);
+          state.run!.sceneId = scene.id;
+          const paid = choose(state, scenario, choice, () => 0);
+          expect(paid.run?.sceneId).toBe(endingId);
+          expect(paid.character?.money).toBe(amount);
+        }
+      }
+    }
+    expect(Object.keys(AGRICULTURE_NARRATED_WAGE_PAYMENTS)).toHaveLength(23);
+    expect(routeCount).toBeGreaterThan(23);
+
+    const alreadyCorrect = BATCH.find(({ id }) => id === 'the-cut-wire-at-ash-pasture')!;
+    const resolved = alreadyCorrect.scenes.resolved.choices.find(({ id }) => id === 'coin')!;
+    const paid = choose(fresh(alreadyCorrect), alreadyCorrect, resolved, () => 0);
+    expect(paid.character?.money).toBe(2);
   });
 
   it('does not persist temporary farm tools or animal supplies as inventory items', () => {

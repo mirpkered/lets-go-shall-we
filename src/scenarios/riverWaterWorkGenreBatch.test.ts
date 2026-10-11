@@ -6,7 +6,7 @@ import { findScenarioGraphProblems } from '../scenarioGraph';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
-import { RIVER_WATER_WORK_GENRE_BATCH as BATCH } from './riverWaterWorkGenreBatch';
+import { RIVER_WATER_WORK_GENRE_BATCH as BATCH, RIVER_WATER_WORK_NARRATED_FEES } from './riverWaterWorkGenreBatch';
 import { THE_MISSING_BOAT } from './missingBoat';
 import { TAKING_ON_WATER } from './takingOnWater';
 
@@ -121,5 +121,26 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     const gearChoices = BATCH.flatMap((scenario) => Object.values(scenario.scenes).flatMap(({ choices }) => choices))
       .filter(({ requirements }) => requirements?.items?.some((id) => ['boatHook', 'foldingBailer', 'waterproofLedgerTube'].includes(id)));
     expect(gearChoices.length).toBeGreaterThanOrEqual(6);
+  });
+
+  it('grants all audited one-coin river closure fees on their qualifying transitions', () => {
+    let routeCount = 0;
+    for (const [scenarioId, endings] of Object.entries(RIVER_WATER_WORK_NARRATED_FEES)) {
+      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      for (const [endingId, amount] of Object.entries(endings)) {
+        const incoming = Object.values(scenario.scenes).flatMap((scene) => scene.choices
+          .filter(({ next }) => next === endingId).map((choice) => ({ scene, choice })));
+        expect(incoming.length, `${scenarioId}.${endingId}`).toBeGreaterThan(0);
+        for (const { scene, choice } of incoming) {
+          routeCount++;
+          expect(choice.effects?.money).toBe(amount);
+          const state = fresh(scenario);
+          state.run!.sceneId = scene.id;
+          expect(choose(state, scenario, choice, () => 0).character?.money).toBe(amount);
+        }
+      }
+    }
+    expect(Object.keys(RIVER_WATER_WORK_NARRATED_FEES)).toHaveLength(5);
+    expect(routeCount).toBeGreaterThan(5);
   });
 });

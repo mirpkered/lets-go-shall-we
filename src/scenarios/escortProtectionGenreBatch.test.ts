@@ -5,7 +5,7 @@ import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
 import { SCENARIOS } from './index';
-import { ESCORT_PROTECTION_GENRE_BATCH } from './escortProtectionGenreBatch';
+import { ESCORT_NARRATED_WAGE_PAYMENTS, ESCORT_PROTECTION_GENRE_BATCH } from './escortProtectionGenreBatch';
 
 function destinations(scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], sceneId: string): string[] {
   const scene = scenario.scenes[sceneId];
@@ -121,5 +121,49 @@ describe('Escort / Protection genre batch', () => {
     expect(courier.scenes.handoff.text).toContain('not carry it onward');
     expect(courier.scenes.stable.text).not.toMatch(/the letter says|the document reveals/i);
     expect(courier.scenes.breach.text).toContain('refuses to break');
+  });
+
+  it('grants each narrated escort wage only on its paid ending route, once, and preserves existing reward choices', () => {
+    let routeCount = 0;
+    for (const [scenarioId, endings] of Object.entries(ESCORT_NARRATED_WAGE_PAYMENTS)) {
+      const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === scenarioId)!;
+      for (const [endingId, amount] of Object.entries(endings)) {
+        const incoming = Object.values(scenario.scenes).flatMap((scene) => scene.choices
+          .filter(({ next }) => next === endingId).map((choice) => ({ scene, choice })));
+        expect(incoming.length, `${scenarioId}.${endingId} has a direct paid route`).toBeGreaterThan(0);
+        for (const { scene, choice } of incoming) {
+          routeCount++;
+          expect(choice.effects?.money, `${scenarioId}.${scene.id}.${choice.id}`).toBe(amount);
+          const character = newCharacter('Wage Route Tester');
+          const requiredItems = choice.requirements?.items ?? [];
+          character.carriedItems = [...requiredItems];
+          character.carriedItem = requiredItems[0] ?? null;
+          let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+          state.run!.sceneId = scene.id;
+          state = choose(state, scenario, choice, () => 0);
+          expect(state.character?.money, `${scenarioId}.${scene.id}.${choice.id} pays ${amount}`).toBe(amount);
+          const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+          saveGame(state, storage as never);
+          expect(loadSave(storage as never).character?.money).toBe(amount);
+        }
+      }
+    }
+    expect(Object.keys(ESCORT_NARRATED_WAGE_PAYMENTS)).toHaveLength(20);
+    expect(routeCount).toBeGreaterThan(20);
+    const noWage = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-wagon-with-the-lame-wheel')!;
+    for (const [sceneId, choiceId] of [['repair', 'stop'], ['unload', 'all']] as const) {
+      const choice = noWage.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      expect(choice.next).toBe('wait');
+      expect(choice.effects?.money ?? 0).toBe(0);
+      const character = newCharacter('Unpaid Route Tester');
+      const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, noWage, () => 0) };
+      state.run!.sceneId = sceneId;
+      expect(choose(state, noWage, choice, () => 0).character?.money).toBe(0);
+    }
+    const twoCoinFee = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-quiet-coffin-cart')!;
+    expect(twoCoinFee.scenes.brake.choices.find(({ id }) => id === 'steady')?.effects?.money).toBe(2);
+    const excludedCrewPayment = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-fence-at-crow-road')!;
+    expect(excludedCrewPayment.scenes.fight.text).toContain('pays the crew');
+    expect(excludedCrewPayment.scenes.fight.choices).toHaveLength(0);
   });
 });

@@ -1,5 +1,5 @@
 import type { Scenario, Scene } from '../types';
-import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
+import { addEndingPaymentEffects, largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
 
 const s = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', textVariants?: Scene['textVariants']) => largeScene(id, title, text, choices, tone, textVariants);
 const e = (id: string, title: string, text: string) => largeEnd(id, title, text);
@@ -339,3 +339,12 @@ export const RIVER_WATER_WORK_GENRE_BATCH = [
 ];
 
 export const RIVER_WATER_WORK_GEAR_COUNT = GEAR.length;
+
+export const RIVER_WATER_WORK_NARRATED_FEES: Record<string, Record<string, number>> = {
+  'the-ferry-line-at-redbank': { warned: 1 },
+  'the-ferry-that-would-not-turn': { partial: 1 },
+  'the-cable-ferry-in-crosswind': { partial: 1 },
+  'the-iron-ring-at-low-water': { partial: 1 },
+  'the-flooded-cellar-pump': { wait: 1, partial: 1 },
+};
+addEndingPaymentEffects(RIVER_WATER_WORK_GENRE_BATCH, RIVER_WATER_WORK_NARRATED_FEES);

@@ -1,5 +1,5 @@
 import type { Scenario, Scene, ScenarioDiversity } from '../types';
-import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
+import { addEndingPaymentEffects, largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
 
 const choice = (id: string, label: string, next: string, effects?: Scene['choices'][number]['effects'], requirements?: Scene['choices'][number]['requirements']): Scene['choices'][number] => ({ id, label, next, ...(effects ? { effects } : {}), ...(requirements ? { requirements: { ...requirements, ...(requirements.items?.length ? { usableItems: [...new Set([...(requirements.usableItems ?? []), ...requirements.items])] } : {}) } } : {}) });
 const tags = (id: string, title: string, hook: string, setting: string, risk: ScenarioDiversity['riskTier'], activity = 'rescue/care'): ScenarioDiversity => largeTags({ hook, activity, role: 'traveler/passenger', tone: 'tense/dangerous', risk, setting, fantasy: 'NONE', combat: ['the-pay-carriage-at-dusk', 'the-witness-under-escort', 'the-fence-at-crow-road', 'the-courier-relay-box', 'the-silent-warehouse-shift', 'the-bridge-pins', 'the-glass-plate-box', 'the-night-mail-train'].includes(id) ? 'POSSIBLE' : 'NONE', structures: ['escort responsibility', 'divided protection', 'partial outcome'], entry: ['hired/posted work'], rewards: ['Gear', 'coins', 'reusable Knowledge'], outcomes: ['success/partial success', 'escape/survival', 'walk-away/refusal'] });
@@ -291,3 +291,30 @@ export const ESCORT_PROTECTION_GENRE_BATCH: Scenario[] = [
     both: end('both', 'Two Useful Arrivals', 'The driver reaches the doctor and the axle reaches the crew. The repair starts late; the foreman pays a smaller wage for the divided delay.'),
   }, 'rescue/care'),
 ];
+
+// Paid terminal routes grant their narrated fee exactly once on the choice that completes them.
+// Where the story gives no numeral, standard agreed fees are two coins and explicitly reduced/partial
+// fees are one; singular/modest fees remain one. The coffin route explicitly states two coins.
+export const ESCORT_NARRATED_WAGE_PAYMENTS: Record<string, Record<string, number>> = {
+  'the-crate-of-window-glass': { carried: 1, cracked: 1 },
+  'the-shepherds-return': { neighbors: 2, split: 1 },
+  'the-ferry-for-the-midwife': { delay: 1 },
+  'the-wagon-with-the-lame-wheel': { arrive: 1 },
+  'the-archive-through-the-rain': { partial: 1 },
+  'the-night-guard-at-the-icehouse': { safe: 2 },
+  'the-horse-for-the-farrier': { arrived: 2 },
+  'the-smallpox-letter': { delivered: 2 },
+  'the-winter-feed-sled': { arrived: 2 },
+  'the-glass-plate-box': { safe: 2, cracked: 1 },
+  'the-night-mail-train': { shared: 2 },
+  'the-lost-childs-lantern': { farm: 1 },
+  'the-supper-wagon': { delivered: 2 },
+  'the-fence-at-the-fog-line': { safe: 2 },
+  'the-lumber-crew-at-the-gully': { workerSafe: 1 },
+  'the-quiet-coffin-cart': { arrived: 2 },
+  'the-silent-warehouse-shift': { help: 2 },
+  'the-last-mile-of-the-medicine-wagon': { split: 1, delivered: 2 },
+  'the-watch-at-the-sheepfold': { safe: 2 },
+  'the-broken-axle-relay': { both: 1 },
+};
+addEndingPaymentEffects(ESCORT_PROTECTION_GENRE_BATCH, ESCORT_NARRATED_WAGE_PAYMENTS);

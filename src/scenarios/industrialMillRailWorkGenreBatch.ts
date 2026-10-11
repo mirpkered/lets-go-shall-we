@@ -56,12 +56,12 @@ const make = (w:Work):Scenario => {
       {id:'fullLoad',label:'Put the machine straight back to its full work load',next:'unsafe',effects:{...learnedLesson(w),setFlags:['choseRush']}},
     ]),
     shutdown:s('shutdown','Work Held for a Reason',`You keep the ${w.machine} out of service. The crew moves clear, and the responsible operator takes over the repair or inspection. The delay costs production, but the unresolved condition is not passed to the next shift.`,[
-      {id:'closeOut',label:'Record the fault and accept the partial work payment',next:'partial',effects:{...learnedLesson(w),setFlags:['partialWork']}},
+      {id:'closeOut',label:'Record the fault and accept the partial work payment',next:'partial',effects:{...learnedLesson(w),setFlags:['partialWork'],money:1}},
       {id:'stay',label:'Wait for the fitter and help verify the hand test',next:'settle',effects:{...learnedLesson(w),setFlags:['testedCarefully']}},
     ]),
     unsafe:s('unsafe','The Full Load Finds the Weak Point',`The untested ${w.machine} jolts under load. The crew hits the stop and steps clear; a small part is damaged, but the clear work zone prevents an injury. The production order is delayed while the fitter checks the machine.`,[
       {id:'secure',label:'Keep the drive isolated and help account for the damaged parts',next:'settle',effects:{...learnedLesson(w),setFlags:['choseRush','partialWork']}},
-      {id:'withdraw',label:'Leave the repair to the fitter and report what moved',next:'partial',effects:{...learnedLesson(w),setFlags:['partialWork']}},
+      {id:'withdraw',label:'Leave the repair to the fitter and report what moved',next:'partial',effects:{...learnedLesson(w),setFlags:['partialWork'],money:1}},
     ]),
     settle:{...s('settle','The Work and Its Limits',`${w.machine} is either safely tested, left isolated for the fitter, or stopped after an irregular full-load attempt. The foreman confirms the fault report before discussing your compensation.`,[
       {id:'wage',label:`Take the ${w.coins}-coin work fee`,next:'paid',effects:{...learnedLesson(w),money:w.coins}},

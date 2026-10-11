@@ -6,6 +6,32 @@ export type LargeFantasy = ScenarioDiversity['fantasyDensity'];
 export const largeScene = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe', textVariants?: Scene['textVariants']): Scene => ({ id, title, text, choices, tone, ...(textVariants ? { textVariants } : {}) });
 export const largeEnd = (id: string, title: string, text: string, ending: 'success' | 'death' = 'success'): Scene => ({ id, title, text, ending, choices: [] });
 
+/** Add an explicitly authored payment to every direct route into a paid ending. */
+export function addEndingPaymentEffects(
+  scenarios: Scenario[],
+  payments: Record<string, Record<string, number>>,
+): void {
+  for (const [scenarioId, endings] of Object.entries(payments)) {
+    const scenario = scenarios.find(({ id }) => id === scenarioId);
+    if (!scenario) throw new Error(`Payment map references missing scenario ${scenarioId}`);
+    for (const [endingId, amount] of Object.entries(endings)) {
+      if (!Number.isInteger(amount) || amount <= 0 || scenario.scenes[endingId]?.ending !== 'success') {
+        throw new Error(`Invalid paid ending ${scenarioId}.${endingId}`);
+      }
+      let incoming = 0;
+      for (const scene of Object.values(scenario.scenes)) {
+        for (const choice of scene.choices) {
+          if (choice.next !== endingId) continue;
+          incoming++;
+          // Existing authored payments remain authoritative; this helper never stacks them.
+          if ((choice.effects?.money ?? 0) === 0) choice.effects = { ...choice.effects, money: amount };
+        }
+      }
+      if (incoming === 0) throw new Error(`Paid ending has no direct choice route: ${scenarioId}.${endingId}`);
+    }
+  }
+}
+
 const ACTIVITY_TAGS = ['labor/repair', 'rescue/care', 'survival', 'negotiation/trade', 'investigation/mystery', 'travel/exploration', 'social interaction', 'animals', 'combat/defense', 'puzzle/problem-solving', 'moral prioritization', 'communication/witness'];
 const STRUCTURE_TAGS = ['short focused sequence', 'multi-stage sequence', 'branching narrative', 'time-pressure sequence', 'run-specific variable', 'other structure'];
 const TONE_TAGS = ['peaceful', 'warm/hopeful', 'humorous/absurd', 'mysterious/eerie', 'adventurous', 'tense/dangerous', 'melancholy/tragic', 'grim', 'other tone'];

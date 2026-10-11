@@ -1,5 +1,5 @@
 import type { Scenario, Scene } from '../types';
-import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
+import { addEndingPaymentEffects, largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
 
 const s = (id: string, title: string, text: string, choices: Scene['choices'], earnedLearningChoice?: string) => {
   if (earnedLearningChoice) {
@@ -349,3 +349,13 @@ const EQUIPMENT_TESTING_EDITORIAL_DRAFT: Scenario[] = [
 
 export const EQUIPMENT_TESTING_GENRE_BATCH = EQUIPMENT_TESTING_EDITORIAL_DRAFT.slice(0, 24);
 export const EQUIPMENT_TESTING_GENRE_IDS = new Set(EQUIPMENT_TESTING_GENRE_BATCH.map(({ id }) => id));
+
+export const EQUIPMENT_TESTING_NARRATED_FEES: Record<string, Record<string, number>> = {
+  'the-lantern-in-crosswind': { partial: 1 },
+  'the-test-in-the-windbreak': { partial: 1 },
+  'the-needle-in-the-grain-shed': { partial: 1 },
+  'the-bellows-that-drew-too-hard': { stop: 1, safe: 1 },
+  'the-spring-that-would-not-return': { partial: 1 },
+  'the-saddle-pad-in-the-rain': { partial: 1 },
+};
+addEndingPaymentEffects(EQUIPMENT_TESTING_GENRE_BATCH, EQUIPMENT_TESTING_NARRATED_FEES);

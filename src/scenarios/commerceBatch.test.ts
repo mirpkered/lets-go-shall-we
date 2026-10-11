@@ -214,6 +214,23 @@ describe('commerce, bargains, and property adventure batch', () => {
     expect(quit.character?.money).toBe(3);
   });
 
+  it('preserves the original earned balance when extra work is renegotiated or accepted in kind', () => {
+    let success = act(start(HALF_NOW), HALF_NOW, 'offer', 'takeAdvance');
+    success = act(success, HALF_NOW, 'storeroom', 'renegotiateTerms', () => 0);
+    expect(success.run?.sceneId).toBe('renegotiated');
+    expect(success.character?.money).toBe(8);
+
+    let declineExtra = act(start(HALF_NOW), HALF_NOW, 'offer', 'takeAdvance');
+    declineExtra = act(declineExtra, HALF_NOW, 'storeroom', 'renegotiateTerms', () => 0.999999);
+    expect(declineExtra.run?.sceneId).toBe('keptOriginal');
+    expect(declineExtra.character?.money).toBe(6);
+
+    let inKind = act(start(HALF_NOW), HALF_NOW, 'offer', 'takeAdvance');
+    inKind = act(inKind, HALF_NOW, 'storeroom', 'acceptCanvasInstead');
+    expect(inKind.character?.money).toBe(7);
+    expect(inKind.run?.inventory).toContain('waxedCanvasSheet');
+  });
+
   it('uses the folding rule as limited property evidence in both land stories', () => {
     let land = act(start(SOMEBODY_ELSES_LAND, {}, 'joinersFoldingRule'), SOMEBODY_ELSES_LAND, 'ditchWork', 'inspectMarker');
     land = act(land, SOMEBODY_ELSES_LAND, 'markerEvidence', 'measurePostSpacing');

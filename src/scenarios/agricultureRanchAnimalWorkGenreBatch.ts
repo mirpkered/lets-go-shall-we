@@ -1,5 +1,5 @@
 import type { Scenario, Scene, SeasonKey } from '../types';
-import { largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
+import { addEndingPaymentEffects, largeAdventure, largeEnd, largeScene, largeTags } from './largeContentTools';
 
 const s = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe') => largeScene(id, title, text, choices, tone);
 const e = (id: string, title: string, text: string) => largeEnd(id, title, text);
@@ -369,3 +369,32 @@ export const AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH: Scenario[] = [
   'the-sheep-wash-at-cold-creek', 'the-horse-tracks-through-sweetgrass', 'the-goat-on-the-schoolhouse-roof',
   'the-marks-under-the-saddle-blanket',
 ].includes(id));
+
+// These outcomes describe payment for useful partial work or careful handling.
+// Their effects belong on the qualifying transition, not on unrelated refusal/failure routes.
+export const AGRICULTURE_NARRATED_WAGE_PAYMENTS: Record<string, Record<string, number>> = {
+  'the-cut-wire-at-ash-pasture': { partial: 2 },
+  'the-last-post-at-miller-fence': { argument: 1, partial: 1 },
+  'the-feed-bin-with-the-blue-seam': { stop: 1, returned: 1 },
+  'the-plowshare-before-rain': { partial: 1 },
+  'the-apple-row-after-hail': { partial: 1 },
+  'the-steer-in-the-threshing-lane': { partial: 1 },
+  'the-calf-with-two-ear-notches': { partial: 1 },
+  'the-saddle-marks-on-the-wagon': { partial: 1 },
+  'the-calfing-lamp-at-three-oaks': { partial: 1 },
+  'the-dry-row-before-the-threshing': { partial: 1 },
+  'the-grain-lift-at-low-barn': { partial: 1 },
+  'the-irrigation-stone-at-south-field': { partial: 1 },
+  'the-hitch-pin-at-gray-mill': { partial: 1 },
+  'the-night-watch-at-hollow-barn': { partial: 1 },
+  'the-two-haystacks-at-birch-meadow': { partial: 1 },
+  'the-frozen-pump-at-lower-pasture': { partial: 1 },
+  'the-broken-rail-at-crow-field': { partial: 1 },
+  'the-sheep-shears-that-went-missing': { partial: 1 },
+  'the-first-light-at-the-silo': { partial: 1 },
+  'the-pasture-bell-before-dusk': { partial: 1 },
+  'the-branded-barrel-at-the-stock-road': { partial: 1 },
+  'the-last-bin-at-winter-yard': { partial: 1 },
+  'the-old-fence-tool-at-red-house': { returned: 1, partial: 1 },
+};
+addEndingPaymentEffects(AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH, AGRICULTURE_NARRATED_WAGE_PAYMENTS);

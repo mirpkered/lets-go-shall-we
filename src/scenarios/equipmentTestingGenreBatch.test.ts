@@ -5,7 +5,7 @@ import { ITEMS, itemsOfClass } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import type { SaveData } from '../types';
 import { SCENARIOS } from './index';
-import { EQUIPMENT_TESTING_GENRE_BATCH as BATCH } from './equipmentTestingGenreBatch';
+import { EQUIPMENT_TESTING_GENRE_BATCH as BATCH, EQUIPMENT_TESTING_NARRATED_FEES } from './equipmentTestingGenreBatch';
 import { THE_BROKEN_HARNESS } from './animalsBatch';
 import { WILDERNESS_FIELDCRAFT_GENRE_BATCH } from './wildernessFieldcraftGenreBatch';
 import { TRADES_APPRENTICESHIP_GENRE_BATCH } from './tradesApprenticeshipGenreBatch';
@@ -178,5 +178,24 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
       expect(ITEMS[item], `${scenario.id}.${scene.id}.${choice.id}`).toBeTruthy();
       expect(choice.effects?.gainItemProvenance?.[item]?.length).toBeGreaterThan(12);
     }
+  });
+
+  it('grants each audited one-coin partial test fee on the qualifying route only', () => {
+    for (const [scenarioId, endings] of Object.entries(EQUIPMENT_TESTING_NARRATED_FEES)) {
+      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      for (const [endingId, amount] of Object.entries(endings)) {
+        const incoming = Object.values(scenario.scenes).flatMap((scene) => scene.choices
+          .filter(({ next }) => next === endingId).map((choice) => ({ scene, choice })));
+        expect(incoming.length, `${scenarioId}.${endingId}`).toBeGreaterThan(0);
+        for (const { scene, choice } of incoming) {
+          expect(choice.effects?.money).toBe(amount);
+          const character = newCharacter('Partial Test Wage');
+          const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+          state.run!.sceneId = scene.id;
+          expect(choose(state, scenario, choice, () => 0).character?.money).toBe(amount);
+        }
+      }
+    }
+    expect(Object.keys(EQUIPMENT_TESTING_NARRATED_FEES)).toHaveLength(6);
   });
 });

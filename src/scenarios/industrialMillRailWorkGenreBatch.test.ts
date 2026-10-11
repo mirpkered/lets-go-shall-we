@@ -62,6 +62,23 @@ describe('Industrial / Mill / Rail Work genre batch',()=>{
     }
   });
 
+  it('pays the one-coin inspection fee once on both partial-work entries without changing full-work settlement',()=>{
+    for(const scenario of INDUSTRIAL_MILL_RAIL_GEAR_BATCH){
+      for(const [sceneId,choiceId] of [['shutdown','closeOut'],['unsafe','withdraw']] as const){
+        const state=initial(scenario);
+        state.run!.sceneId=sceneId;
+        const paid=act(state,scenario,choiceId);
+        expect(paid.run?.sceneId).toBe('partial');
+        expect(paid.character?.money).toBe(1);
+        expect(scenario.scenes.partial.text).toMatch(/one coin/i);
+      }
+      const completed=initial(scenario);
+      completed.run!.sceneId='settle';
+      const wage=act(completed,scenario,'wage');
+      expect(wage.character?.money).toBe(scenario.scenes.settle.choices.find(({id})=>id==='wage')?.effects?.money);
+    }
+  });
+
   it('keeps the Sorting Table lesson across coin, no-fee, and clamp compensation without stacking rewards',()=>{
     const scenario=INDUSTRIAL_MILL_RAIL_GEAR_BATCH.find(({id})=>id==='the-sorting-table-jam')!;
     const settle=()=>{let state=initial(scenario);state=act(state,scenario,'observe');state=act(state,scenario,'repair');return act(state,scenario,'slow');};
