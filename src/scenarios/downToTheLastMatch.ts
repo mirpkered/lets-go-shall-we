@@ -245,6 +245,10 @@ export const DOWN_TO_THE_LAST_MATCH: Scenario = {
       id: 'criticalCold', title: 'The Last Warm Hours', tone: 'danger',
       text: 'The stove is still burning, though it ticks as the fuel dwindles. One dry match and the remaining firewood are within reach. Burning the last wood would warm the whole one-room cabin; holding it back leaves everyone colder now but preserves fuel for later. Outside, the pass is nearly erased. If Eli came inside, they are still here sharing the cold.',
       textVariants: [
+        { requirements: { flags: ['lastMatchSpent', 'travelerInside'], minElapsedMinutes: 40 }, text: 'The last coals have gone dark, and the last match was already spent; it cannot be used to relight the stove or signal for help. You and Eli are beneath the cabin roof as the pass disappears under snow.' },
+        { requirements: { flags: ['lastMatchSpent'], notFlags: ['travelerInside'], minElapsedMinutes: 40 }, text: 'The last coals have gone dark, and the last match was already spent; it cannot be used to relight the stove or signal for help. The pass is nearly erased, and the route does not establish who else is sheltered.' },
+        { requirements: { flags: ['lastMatchSpent', 'travelerInside'] }, text: 'The last match has already been spent; it cannot be used to relight the stove or signal for help. You and Eli are beneath the cabin roof as the pass disappears under snow.' },
+        { requirements: { flags: ['lastMatchSpent'], notFlags: ['travelerInside'] }, text: 'The last match has already been spent; it cannot be used to relight the stove or signal for help. The pass is nearly erased, and the route does not establish who else is sheltered.' },
         { requirements: { flags: ['savedKindling', 'travelerInside', 'savedKindlingUsed'], minElapsedMinutes: 40 }, text: 'The saved branches have burned down and the stove is cold again. Eli shivers beneath the spare blanket. Your match is gone, so the room must last until morning without another fire.' },
         { requirements: { flags: ['savedKindling', 'travelerInside'], notFlags: ['savedKindlingUsed'], minElapsedMinutes: 40 }, text: 'The stove has gone fully out; the saved dry branches remain beside it, but they need the last match to catch. Eli shivers beneath the spare blanket. The single stove warms the whole room.' },
         { requirements: { flags: ['savedKindling'], notFlags: ['savedKindlingUsed'], minElapsedMinutes: 40 }, text: 'The stove has gone fully out. Your saved dry branches remain beside it, but they need the last match to catch. The pass outside is now a white slope.' },
@@ -285,8 +289,8 @@ export const DOWN_TO_THE_LAST_MATCH: Scenario = {
     },
     signalSeen: {
       id: 'signalSeen', title: 'A Lantern on the Ridge', tone: 'safe',
-      text: 'The road warden’s lantern moves toward the cabin. The signal cost the last match, but the warden knows the pass and brings a sealed warmth cloak from the shelter store. Eli and Marta are not left alone in the storm.',
-      choices: [{ id: 'acceptWardenHelp', label: 'Let the warden guide you all to shelter', timeCost: 8, next: 'rewardOffer', effects: { setFlags: ['rescuedByWarden'], historyFlags: ['rescued_stranded_traveler'] } }],
+      text: 'The road warden’s lantern moves toward the cabin. The signal cost the last match, and the warden brings a sealed warmth cloak from the shelter store. You have not yet learned whether Eli or Marta can leave the cabin.',
+      choices: [{ id: 'acceptWardenHelp', label: 'Let the warden guide you to shelter', timeCost: 8, next: 'rewardOffer', effects: { setFlags: ['rescuedByWarden'], historyFlags: ['rescued_stranded_traveler'] } }],
     },
     signalUnseen: {
       id: 'signalUnseen', title: 'No Light Answers', tone: 'danger',
@@ -304,6 +308,7 @@ export const DOWN_TO_THE_LAST_MATCH: Scenario = {
     keptLastWood: {
       id: 'keptLastWood', title: 'Fuel Held Back', tone: 'warning',
       text: 'You leave the remaining dry wood in reserve instead of feeding it to the stove. The whole cabin stays colder now, but the fuel may be useful if the fire dies later. The spare blanket is still on the bench; it can warm one person, unlike the stove.',
+      textVariants: [{ requirements: { flags: ['blanketShared'] }, text: 'You leave the remaining dry wood in reserve instead of feeding it to the stove. The whole cabin stays colder now, but the fuel may be useful if the fire dies later. The blanket remains around Eli’s shoulders; you have kept the fuel, not taken back the blanket.' }],
       choices: [
         { id: 'stayWithYourFuel', label: 'Keep the spare blanket for yourself', timeCost: 12, next: 'rewardOffer', effects: { setFlags: ['blanketKeptForSelf'], historyFlags: ['kept_blanket_for_self_in_cold'] } },
         { id: 'giveEliBlanket', label: 'Give Eli the spare blanket', timeCost: 12, next: 'rewardOffer', effects: { setFlags: ['blanketGivenToEli'], historyFlags: ['shared_shelter_in_cold'] } },
@@ -352,8 +357,9 @@ export const DOWN_TO_THE_LAST_MATCH: Scenario = {
     },
     rewardOffer: {
       id: 'rewardOffer', title: 'First Gray Light', tone: 'safe',
-      text: 'The storm eases just enough for the cabin door to open. Marta thanks you for keeping the shelter standing. She offers a windproof match case or a wool travel blanket—useful on a road that may turn cold again.',
+      text: 'The storm eases enough for shelter to open onto the road. A windproof match case or wool travel blanket is available for the journey ahead.',
       textVariants: [
+        { requirements: { flags: ['rescuedByWarden'] }, text: 'The storm eases at the warden’s shelter. The warden has brought you clear of the cabin; the route does not establish who else reached the shelter.' },
         { requirements: { flags: ['travelerInside'] }, text: 'The storm eases. Eli and Marta are both alive in the cabin; neither slept much, and neither claims the night was comfortable. Marta thanks you for sharing the shelter and offers a windproof match case or a wool travel blanket.' },
         { requirements: { flags: ['propertyBurned'] }, text: 'The storm eases. The chair is gone, but the cabin stands and Marta is safe. She thanks you for choosing heat over the furniture and offers a windproof match case or a wool travel blanket.' },
         { requirements: { flags: ['travelerOutside', 'lastMatchSpent'] }, text: 'The storm eases. The last match is gone, and you cannot know whether Eli found the shed or the road. Marta thanks you for staying through the night and offers a windproof match case or a wool travel blanket.' },
@@ -369,7 +375,9 @@ export const DOWN_TO_THE_LAST_MATCH: Scenario = {
       id: 'dawnEnding', title: 'Warmth, Whatever It Cost', tone: 'safe', ending: 'success',
       text: 'Morning comes through the cabin window. The cold has not been beaten so much as bargained with, one choice at a time.',
       textVariants: [
-        { requirements: { flags: ['travelerInside', 'travelerWarmthShared'] }, text: 'Morning finds you, Eli, and Marta alive in the cabin. You shared bread and the spare blanket while the single stove warmed the room; none of you got much sleep, but no one faced the storm alone.' },
+        { requirements: { flags: ['rescuedByWarden'] }, text: 'Morning finds you in the warden’s shelter, away from the cabin you left during the storm. The warden has taken you to safety; the storm has not established what became of anyone who remained behind.' },
+        { requirements: { flags: ['travelerInside', 'travelerWarmthShared', 'foodShared', 'blanketShared'] }, text: 'Morning finds you, Eli, and Marta alive in the cabin. You shared bread and the spare blanket while the single stove warmed the room; none of you got much sleep, but no one faced the storm alone.' },
+        { requirements: { flags: ['travelerInside', 'travelerWarmthShared'], notFlags: ['foodShared', 'blanketShared'] }, text: 'Morning finds you, Eli, and Marta alive in the cabin. The shared stove fire warmed the room; the route does not establish that bread or the spare blanket was shared.' },
         { requirements: { flags: ['travelerInside', 'blanketKeptForSelf'] }, text: 'Morning finds you, Eli, and Marta alive. You kept the spare blanket for yourself while Eli stayed nearer the stove. Neither of you could claim a separate share of its heat.' },
         { requirements: { flags: ['travelerInside', 'blanketGivenToEli'] }, text: 'Morning finds you, Eli, and Marta alive. Eli had the spare blanket while you sat nearer the stove; the fire warmed the common room as best it could.' },
         { requirements: { flags: ['travelerInside'] }, text: 'Morning finds you, Eli, and Marta alive in the cabin. The stove never made the night easy, but the door stayed shut and you shared what warmth you could.' },

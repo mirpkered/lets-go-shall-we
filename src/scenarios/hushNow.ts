@@ -216,9 +216,11 @@ export const HUSH_NOW: Scenario = {
       id: 'aftercare', title: 'Supper Kept Warm', tone: 'safe',
       text: 'At the farmhouse, {{farmhand}} rests by the stove while {{farmOwner}} checks the ankle and cleans the small scrape. The foot was not crushed; it will need rest, not a miracle cure. The child is safe inside. The family can repair the gate in daylight.',
       textVariants: [
-        { requirements: { flags: ['heiferLoose'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove while {{farmOwner}} checks the ankle and cleans the small scrape. The foot was not crushed; it will need rest. The child and sheep are safe, but the heifer ran toward the west road and has not been found.' },
+        { requirements: { flags: ['heiferReturned', 'scrapeWrapped'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove with the shallow palm scrape cleanly wrapped. The ankle is sore but bears weight; the bandage did not treat it. The child, sheep, and heifer are back at the farm.' },
+        { requirements: { flags: ['heiferLoose', 'scrapeWrapped'], notFlags: ['heiferReturned'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove with the shallow palm scrape cleanly wrapped. The ankle is sore but bears weight; the bandage did not treat it. The child is safe; the heifer that ran west has not been found.' },
         { requirements: { flags: ['heiferReturned'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove while {{farmOwner}} checks the ankle and cleans the small scrape. The foot was not crushed; it will need rest. The child, sheep, and heifer are all back at the farm.' },
-        { requirements: { flags: ['scrapeWrapped'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove with the shallow palm scrape cleanly wrapped. The ankle is sore but bears weight; the bandage did not treat it. The child is safe, and the rain makes another search for the loose heifer a poor choice tonight.' },
+        { requirements: { flags: ['heiferLoose'], notFlags: ['heiferReturned'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove while {{farmOwner}} checks the ankle and cleans the small scrape. The foot was not crushed; it will need rest. The child and sheep are safe, but the heifer ran toward the west road and has not been found.' },
+        { requirements: { flags: ['scrapeWrapped'], notFlags: ['heiferLoose', 'heiferReturned'] }, text: 'At the farmhouse, {{farmhand}} rests by the stove with the shallow palm scrape cleanly wrapped. The ankle is sore but bears weight; the bandage did not treat it. The child is safe, and the family can rest for the night.' },
       ],
       choices: [
         { id: 'acceptFarmReward', label: 'Accept one practical thank-you', timeCost: 2, next: 'rewardOffer', effects: { historyFlags: ['rescued_missing_family_member'] } },
@@ -243,7 +245,7 @@ export const HUSH_NOW: Scenario = {
       id: 'safeEnding', title: 'The House Speaks Again', tone: 'safe', ending: 'success',
       text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe. The gate needs a proper repair in daylight, but the missing worker is home. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.',
       textVariants: [
-        { requirements: { flags: ['heiferLoose'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe, but the heifer ran toward the west road and has not been found. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.' },
+        { requirements: { flags: ['heiferLoose'], notFlags: ['heiferReturned'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep are penned and the child is safe, but the heifer ran toward the west road and has not been found. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.' },
         { requirements: { flags: ['heiferReturned'] }, text: '{{farmhand}} rests by the stove with the family nearby. The sheep and heifer are back at the farm, and the child is safe. The gate needs a proper repair in daylight. Your two-coin wage for the gate work completed since noon is paid separately from the family’s practical thank-you.' },
       ],
       choices: [],

@@ -155,7 +155,7 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
       id: 'insideJobRevealed', title: 'The Route Was His Idea', tone: 'warning',
       text: 'Pell admits he knew the axle was overdue for repair and chose this isolated cut hoping a failure would leave a bar uncounted. The axle still broke in the rut; he did not cause the accident. He did use it as cover. His hand is bleeding, and the bar is too heavy to carry back quickly.',
       choices: [
-        { id: 'returnPellAndBar', label: 'Bring Pell and the bar back to Ada', timeCost: 10, next: 'shipmentReturned', effects: { historyFlags: ['exposed_inside_job', 'returned_valuable_shipment', 'rescued_missing_guard'], setFlags: ['shipmentReturned'] } },
+        { id: 'returnPellAndBar', label: 'Bring Pell and the bar back to Ada', timeCost: 10, next: 'shipmentReturned', effects: { historyFlags: ['exposed_inside_job', 'returned_valuable_shipment', 'rescued_missing_guard'], setFlags: ['shipmentReturned', 'pellRoleLearned', 'pellReturned'] } },
         { id: 'leaveBarWithPell', label: 'Take the bar; let Pell walk away', hint: 'The bar is awkward and the injured guard cannot chase you.', timeCost: 4, next: 'stolenEscapeEnding', effects: { money: 18, historyFlags: ['stole_from_freight_wagon', 'profited_from_abandoned_cargo', 'exposed_inside_job'] } },
         { id: 'sendPellForHelp', label: 'Send Pell ahead while you help Ada', timeCost: 8, next: 'peopleSavedEnding', effects: { historyFlags: ['rescued_missing_guard', 'prioritized_injured_person', 'exposed_inside_job'] } },
       ],
@@ -164,7 +164,7 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
       id: 'pellReturned', title: 'Back at the Wreck', tone: 'warning',
       text: 'Pell walks beside you, holding his bandaged hand. Ada looks first at him, then at the bar. He says the route was his idea and that he took the bar after the crash. The two guards are alive, but the axle will not carry the full load much farther.',
       choices: [
-        { id: 'returnShipmentWithBoth', label: 'Return the bar and report what happened', timeCost: 5, next: 'shipmentReturned', effects: { historyFlags: ['returned_valuable_shipment', 'exposed_inside_job'], setFlags: ['shipmentReturned'] } },
+        { id: 'returnShipmentWithBoth', label: 'Return the bar and report what happened', timeCost: 5, next: 'shipmentReturned', effects: { historyFlags: ['returned_valuable_shipment', 'exposed_inside_job'], setFlags: ['shipmentReturned', 'pellRoleLearned', 'pellReturned'] } },
         { id: 'leaveAfterReturningPell', label: 'Leave the guards to settle it', next: 'peopleSavedEnding', effects: { historyFlags: ['rescued_missing_guard'] } },
         { id: 'takeBarWhileTheyArgue', label: 'Pocket the bar while they argue', hint: 'They are distracted, but the weight is unmistakable.', timeCost: 3, next: 'stolenEscapeEnding', effects: { money: 18, historyFlags: ['stole_from_freight_wagon', 'profited_from_abandoned_cargo'] } },
       ],
@@ -277,8 +277,12 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
     },
     shipmentReturned: {
       id: 'shipmentReturned', title: 'The Shipment Accounted For', tone: 'safe',
-      text: 'Ada and the returning crew secure what remains of the shipment. Pell’s role is reported plainly; the broken axle is recorded as an accident, not his work. The assay office will count the bars and settle the payroll. Ada offers you a freightman’s strap, while the assay clerk has a small loupe for the road.',
-      textVariants: [{ requirements: { flags: ['tookLooseCoin'] }, text: 'The crew secures the shipment and reports Pell’s part in the missing bar. The assay office will count the bars and settle the payroll. The few coins you pocketed are not in the manifest, and no one asks about them. Ada offers you a freightman’s strap.' }],
+      text: 'The returning crew secures what remains of the shipment. The assay office will count the bars and settle the payroll. Ada offers you a freightman’s strap, while the assay clerk has a small loupe for the road.',
+      textVariants: [
+        { requirements: { flags: ['tookLooseCoin', 'pellRoleLearned'] }, text: 'The crew secures the shipment and reports Pell’s part in the missing bar. The assay office will count the bars and settle the payroll. The few coins you pocketed are not in the manifest, and no one asks about them. Ada offers you a freightman’s strap.' },
+        { requirements: { flags: ['tookLooseCoin'] }, text: 'The crew secures what remains of the shipment. The few coins you pocketed are not in the manifest, and no one asks about them. Ada offers you a freightman’s strap.' },
+        { requirements: { flags: ['pellRoleLearned'] }, text: 'Ada and the returning crew secure what remains of the shipment. Pell’s role is reported plainly; the broken axle is recorded as an accident, not his work. The assay office will count the bars and settle the payroll. Ada offers you a freightman’s strap, while the assay clerk has a small loupe for the road.' },
+      ],
       choices: [
         { id: 'acceptFreightmansStrap', label: 'Accept the freightman’s strap', effects: { gainItems: ['freightmansStrap'], historyFlags: ['protected_freight_cargo'] }, next: 'shipmentRewardEnding' },
         { id: 'acceptAssayersLoupe', label: 'Accept the assay clerk’s loupe', hint: 'The returning clerk offers a small tool used to check fine marks.', effects: { gainItems: ['assayersLoupe'], historyFlags: ['protected_freight_cargo'] }, next: 'shipmentRewardEnding' },
@@ -287,7 +291,8 @@ export const THE_WEIGHT_OF_GOLD: Scenario = {
     },
     shipmentRewardEnding: {
       id: 'shipmentRewardEnding', title: 'The Weight of Gold', tone: 'safe', ending: 'success',
-      text: 'The last crates are counted as the repair crew takes over. The assay office will recover most of its shipment, and the people on the road are safe. A freightman’s strap, if you accepted it, is a modest reward for a difficult piece of work.',
+      text: 'The repair crew takes over the shipment account. The assay office will count what reached the milepost, and a freightman’s strap, if you accepted it, is a modest reward for the work completed.',
+      textVariants: [{ requirements: { flags: ['pellReturned'] }, text: 'The repair crew takes over the shipment account. Pell has returned with you; the assay office will count what reached the milepost, and a freightman’s strap, if you accepted it, is a modest reward for the work completed.' }],
       choices: [],
     },
   },

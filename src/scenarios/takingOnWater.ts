@@ -289,9 +289,11 @@ export const TAKING_ON_WATER: Scenario = {
     },
     shoreEnding: { id: 'shoreEnding', title: 'A Long Paddle Behind You', text: 'The lake settles behind the near shore. You saved yourself and what you deliberately kept close; the rest can be replaced. The canoe is beached if you brought it in, or can be recovered when the water calms.', choices: [], ending: 'success' },
     rescueEnding: {
-      id: 'rescueEnding', title: 'Seen in Time', text: 'The fisherman brings you and the canoe to the landing. Anything you secured or kept with you is safe; ordinary food and cooking gear are soaked.', choices: [], ending: 'success',
+      id: 'rescueEnding', title: 'Seen in Time', text: 'The fisherman brings you and the canoe to the landing. You are safe; this route does not establish the condition of every ordinary supply.', choices: [], ending: 'success',
       textVariants: [
+        { requirements: { flags: ['possessionsLeftBehind', 'cargoLightened'] }, text: 'The fisherman brings you and the canoe to the landing. The food and cooking gear thrown overboard are lost, and unsecured money or carried gear left behind is not recovered. You are safe.' },
         { requirements: { flags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you and the canoe to the landing. Any unsecured money or carried gear you left behind is not recovered. You are safe.' },
+        { requirements: { flags: ['cargoLightened'], notFlags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you and the canoe to the landing. The food and cooking gear deliberately thrown overboard are lost; anything separately secured or kept with you remains yours. You are safe.' },
       ],
     },
     deathEnding: { id: 'deathEnding', title: 'The Cold Takes Hold', text: 'The shore was visible, but cold water and exhaustion left you without the strength to reach it. The canoe drifts beyond the reeds.', choices: [], ending: 'death' },

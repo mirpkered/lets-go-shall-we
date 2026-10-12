@@ -216,7 +216,8 @@ export const THE_EMPTY_CRADLE: Scenario = {
     },
     childOutWithHelp: {
       id: 'childOutWithHelp', title: 'The Searchers Lift Together', tone: 'warning',
-      text: 'The neighbors hold the door while Tom eases Nessa onto the dry threshold. She is cold but alert, wrapped in a blanket, with Bramble at her side. The creek is rising; the group can take the high path rather than risk the ford.',
+      text: 'Nessa is cold but alert, wrapped in a blanket, with Bramble at her side. The creek is rising; the group can take the high path rather than risk the ford.',
+      textVariants: [{ requirements: { flags: ['nessaAlreadyOnHighBank'] }, text: 'The searchers join you on the higher creek bank. Nessa is already clear of the shed, cold but alert and wrapped in a blanket, with Bramble at her side. The group can take the high path rather than risk the ford.' }],
       choices: [
         { id: 'takeChildHomeWithParty', label: 'Walk Nessa home with the searchers', timeCost: 8, next: 'familyThanks', effects: { historyFlags: ['found_missing_child', 'protected_child_during_return'] } },
         { id: 'letTomTakeChildHome', label: 'Let Tom and a neighbor take the high path', timeCost: 6, next: 'familyThanks', effects: { historyFlags: ['found_missing_child', 'protected_child_during_return'] } },
@@ -227,7 +228,7 @@ export const THE_EMPTY_CRADLE: Scenario = {
       text: 'The crossing does not hold. You and Nessa stay on the higher bank; the water has not carried either of you, but you are bruised and the ford is no longer a reasonable shortcut. The upper path remains passable, and the searchers know the shed’s location.',
       choices: [
         { id: 'takeHighPathAfterSlip', label: 'Take the upper path home together', timeCost: 9, next: 'familyThanks', effects: { historyFlags: ['protected_child_during_return'] } },
-        { id: 'waitForSearchersAfterSlip', label: 'Wait with Nessa for the search party', timeCost: 8, next: 'childOutWithHelp', effects: { historyFlags: ['sought_outside_help_for_child'] } },
+        { id: 'waitForSearchersAfterSlip', label: 'Wait with Nessa for the search party', timeCost: 8, next: 'childOutWithHelp', effects: { setFlags: ['nessaAlreadyOnHighBank'], historyFlags: ['sought_outside_help_for_child'] } },
         { id: 'sendTomForBlanketAfterSlip', label: 'Send Tom for a dry blanket and escort', timeCost: 6, next: 'familyThanks', effects: { historyFlags: ['protected_child_during_return'] } },
       ],
     },
