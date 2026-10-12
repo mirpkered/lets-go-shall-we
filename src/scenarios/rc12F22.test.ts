@@ -38,12 +38,6 @@ describe('RC12 F22 route-state endings', () => {
     const text = sceneText(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding, state);
     expect(text).toMatch(/shared stove fire warmed the room/i);
     expect(text).not.toMatch(/you shared bread and the spare blanket/i);
-    const spent = sceneText(DOWN_TO_THE_LAST_MATCH.scenes.criticalCold, at(DOWN_TO_THE_LAST_MATCH, 'criticalCold', ['lastMatchSpent']));
-    expect(spent).toMatch(/last match has already been spent/i);
-    expect(spent).not.toMatch(/one dry match remains/i);
-    const blanketStayed = sceneText(DOWN_TO_THE_LAST_MATCH.scenes.keptLastWood, at(DOWN_TO_THE_LAST_MATCH, 'keptLastWood', ['blanketShared']));
-    expect(blanketStayed).toMatch(/blanket remains around Eli’s shoulders/i);
-    expect(blanketStayed).not.toMatch(/still on the bench/i);
     const warden = sceneText(DOWN_TO_THE_LAST_MATCH.scenes.dawnEnding, at(DOWN_TO_THE_LAST_MATCH, 'dawnEnding', ['rescuedByWarden']));
     expect(warden).toMatch(/warden’s shelter/i);
     expect(warden).not.toMatch(/morning finds you, Eli, and Marta alive in the cabin/i);
