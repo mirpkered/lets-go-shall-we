@@ -1,0 +1,4432 @@
+{
+  "schema": "lgsw.rc12-verification.v1",
+  "baselineMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
+  "lastReviewedMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
+  "verificationBatch": 1,
+  "confirmedFindingRecords": 109,
+  "findingAdventureAssignments": 144,
+  "canonicalAdventureCount": 124,
+  "singleFindingAdventureCount": 106,
+  "multiFindingAdventureCount": 18,
+  "maxFindingsPerAdventure": 3,
+  "adventures": [
+    {
+      "adventureId": "a-gun-on-the-table",
+      "slug": "a-gun-on-the-table",
+      "title": "A Gun on the Table",
+      "sourceFile": "westernOutlawBatch.ts",
+      "adventureIndex": 285,
+      "findings": [
+        {
+          "findingId": "R125-063",
+          "severity": "MEDIUM",
+          "auditText": "Disarming shortcut inherits unread repayment ledger",
+          "auditWitness": "room.grabGun success → weaponSafe",
+          "auditEvidence": "Direct grab only moves weapon; weaponSafe asserts old book supports eight payment and four balance, discovered only book.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "all-hallows-boarding-house",
+      "slug": "all-hallows-boarding-house",
+      "title": "All Hallows at the Boarding House",
+      "sourceFile": "octoberAffinityBatch.ts",
+      "adventureIndex": 177,
+      "findings": [
+        {
+          "findingId": "R125-007",
+          "severity": "MEDIUM",
+          "auditText": "Uninvestigated route assumes paper recovery and ordinary explanation",
+          "auditWitness": "boardingStories.askKeeper → keeperAccount.leaveKeyAlone → boardingAfter → boardingEnd",
+          "auditEvidence": "No board is lifted or Venn source discovered, yet aftermath returns paper to ledger and ending claims ordinary explanation for story.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "bell-before-the-wire",
+      "slug": "bell-before-the-wire",
+      "title": "The Bell before the Wire",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 852,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "below-the-old-fort",
+      "slug": "below-the-old-fort",
+      "title": "Below the Old Fort",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 209,
+      "findings": [
+        {
+          "findingId": "R125-025",
+          "severity": "MEDIUM",
+          "auditText": "Shared endings contradict removal and grant unacquired map",
+          "auditWitness": "fortEntrance.openPowderRoom → fortPowder.takeToolFort → fortExit; fortBarracks.takeScabbard → fortGuardian.fightGuard success → fortAfter",
+          "auditEvidence": "Take chest grants money2, yet fortExit says rooms undisturbed. Guard-only victory ends with copied route plan; plan is established only powder squeeze success.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "blue-chalk-milepost",
+      "slug": "blue-chalk-milepost",
+      "title": "Blue Chalk at the Milepost",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 840,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "blue-room-dispatch",
+      "slug": "blue-room-dispatch",
+      "title": "The Blue Room Dispatch",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 859,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "book-without-a-title",
+      "slug": "book-without-a-title",
+      "title": "The Book Without a Title",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 200,
+      "findings": [
+        {
+          "findingId": "R125-020",
+          "severity": "MEDIUM",
+          "auditText": "Refusal ending obtains printer and mark evidence never examined",
+          "auditWitness": "untitledBook.closeBook → bookAfter",
+          "auditEvidence": "Close immediately still says printer takes repeated mark copy and discusses fresh ink, introduced only bookMarks.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "bridge-out",
+      "slug": "bridge-out",
+      "title": "Bridge Out",
+      "sourceFile": "bridgeOut.ts",
+      "adventureIndex": 7,
+      "findings": [
+        {
+          "findingId": "O01-018",
+          "severity": "HIGH",
+          "auditText": "Unloaded medicine is lost from wagon and saved flag contradicts loss",
+          "auditWitness": "cargoDecision.freeWagonLoad success > costlySuccess > costlyEnding",
+          "auditEvidence": "Action unload medicine then lighter wagon; effects medicineSaved; next scene medicine chest breaks loose from wagon and disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "bridgeOut.test.ts — preserves saved medicine chest across costly lightened-wagon success",
+            "bridgeOut.test.ts — neutral medicine wording for legacy costly-crossing saves"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-019"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-020",
+          "severity": "MEDIUM",
+          "auditText": "Hand crossing produces nonexistent frayed rope",
+          "auditWitness": "repairFailure.helpAfterRepair > peopleFirst.guideByHand success > ropeSuccess; travelerAssessment.improviseGuideLine success > ropeSuccess",
+          "auditEvidence": "Both routes require no usable rope; generic success says rope frayed on stone. Strap route used wagon leather strap, hand route no line at all.",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "bridgeOut.ts — hand crossing and improviseGuideLine routes target ropeSuccess",
+            "bridgeOut.ts — ropeSuccess unconditionally claims the rope is frayed"
+          ],
+          "reviewNotes": "A non-rope hand-crossing route converges on text claiming a rope was used and frayed; current tests do not assert the hand-crossing ending.",
+          "crossClusterFindingIds": [
+            "O01-019"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-021",
+          "severity": "MEDIUM",
+          "auditText": "Failed repair walkaway claims crossing not worsened",
+          "auditWitness": "supportAssessment brace failure > repairFailure.leaveAfterRepair > turnBackEnding",
+          "auditEvidence": "Failure explicitly shifts support/worsens bridge; ending claims left without making more dangerous.",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "bridgeOut.ts — failed brace path reaches turnBackEnding",
+            "bridgeOut.ts — turnBackEnding says departure did not make bridge more dangerous"
+          ],
+          "reviewNotes": "The failed-repair route worsens the bridge, then shares text saying it was not made more dangerous.",
+          "crossClusterFindingIds": [
+            "O01-019"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-019",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "OPEN"
+    },
+    {
+      "adventureId": "christmas-tree-millers-hill",
+      "slug": "christmas-tree-millers-hill",
+      "title": "The Christmas Tree on Miller’s Hill",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 242,
+      "findings": [
+        {
+          "findingId": "R125-040",
+          "severity": "MEDIUM",
+          "auditText": "Already fallen tree becomes not lowered",
+          "auditWitness": "haul.pullTreeNow failure → roughFall.callForHelp → delay → treeDelayEnd",
+          "auditEvidence": "roughFall has tree on slope with split branches; delay says tomorrow lowering safer and final no tree brought down tonight.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "copy-that-came-back",
+      "slug": "copy-that-came-back",
+      "title": "The Copy That Came Back",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 848,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "copyists-pencil",
+      "slug": "copyists-pencil",
+      "title": "The Copyist’s Pencil",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 844,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "dead-mans-hand",
+      "slug": "dead-mans-hand",
+      "title": "Dead Man’s Hand",
+      "sourceFile": "deadMansHand.ts",
+      "adventureIndex": 6,
+      "findings": [
+        {
+          "findingId": "O01-017",
+          "severity": "MEDIUM",
+          "auditText": "Gunshot outcome changes hit and invents a shot on tackle branch",
+          "auditWitness": "gunDrawn.diveForDoor failure > gunshotAftermath; weaponDown.retrievePistol failure > gunshotAftermath",
+          "auditEvidence": "Door failure shot catches side, next scene floor shot and bleeding leg. Retrieve failure only tackle, next scene a gunshot and leg injury despite no shot in result/effect.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "O01-015",
+            "O01-016"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-015",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-016",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "deep-room-at-harker-mine",
+      "slug": "deep-room-at-harker-mine",
+      "title": "The Deep Room at Harker Mine",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 440,
+      "findings": [
+        {
+          "findingId": "R371-015",
+          "severity": "MEDIUM",
+          "auditText": "Shared rescue ending erases exploration and method",
+          "auditWitness": "harkerDoor.retreatDoor > harkerRescueEnd; minerOutside.leaveHarker > harkerRescueEnd",
+          "auditEvidence": "Ending says old worked-stone door remains unexplored after player stood within worked room, and repeats crew rescue after direct rescue.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "door-beneath-the-road",
+      "slug": "door-beneath-the-road",
+      "title": "The Door Beneath the Road",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 437,
+      "findings": [
+        {
+          "findingId": "R371-013",
+          "severity": "MEDIUM",
+          "auditText": "Unrecovered damaged wagon declared able to use detour",
+          "auditWitness": "roadCollapse.askDriver > driverAccount.reportHole > roadReport",
+          "auditEvidence": "Wheel fell through ceiling and axle broken; only shallowRoad recovers wagon. roadReport says wagon can use detour.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "down-to-the-last-match",
+      "slug": "down-to-the-last-match",
+      "title": "Down to the Last Match",
+      "sourceFile": "downToTheLastMatch.ts",
+      "adventureIndex": 20,
+      "findings": [
+        {
+          "findingId": "O15-016",
+          "severity": "MEDIUM",
+          "auditText": "Last-wood route claims bread and blanket were shared when they were not",
+          "auditWitness": "Enter sharedShelter/askEliToHelpStove or rationFuelApart -> criticalCold/shareLastWood -> sharedLastWood/stayWithSharedFire -> rewardOffer -> dawnEnding",
+          "auditEvidence": "Enter sharedShelter/askEliToHelpStove or rationFuelApart -> criticalCold/shareLastWood -> sharedLastWood/stayWithSharedFire -> rewardOffer -> dawnEnding — stayWithSharedFire sets travelerWarmthShared. First dawn variant uses that flag to assert shared bread and spare blanket, which only shareBreadAndBlanket does. Shared fuel alone changes unrelated past actions. Conversely shareBreadAndBlanket -> criticalCold/keepLastWood says spare blanket still on bench after it was laid on Eli.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "downToTheLastMatch.ts — dawnEnding variants condition bread/blanket claims on foodShared/blanketShared",
+            "downToTheLastMatch.test.ts — final stove-fuel choice communal; only blanket personal"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-014",
+            "O15-015",
+            "O15-017"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O15-018",
+          "severity": "MEDIUM",
+          "auditText": "Warden evacuation returns everyone to original cabin and summons Eli",
+          "auditWitness": "criticalCold/useMatchToSignal success -> signalSeen/acceptWardenHelp -> rewardOffer -> dawnEnding",
+          "auditEvidence": "criticalCold/useMatchToSignal success -> signalSeen/acceptWardenHelp -> rewardOffer -> dawnEnding — Signal only available when travelerInside absent. Eli may have been refused or never admitted, yet signalSeen guarantees Eli and Marta not left alone and choice guides all to shelter. rewardOffer/dawnEnding then place party back in cabin as dawn arrives, never acknowledging rescue destination or absent Eli. rescuedByWarden is never used in these scenes.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "downToTheLastMatch.ts — rescuedByWarden ending remains at warden’s shelter; cabin occupants left uncertain",
+            "downToTheLastMatch.test.ts — caller remains present and retrieval method-specific narration"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-014",
+            "O15-015",
+            "O15-017"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-014",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-015",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "O15-017",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "envelope-returned-five-times",
+      "slug": "envelope-returned-five-times",
+      "title": "The Envelope Returned Five Times",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 861,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "ferry-beneath-the-ferry",
+      "slug": "ferry-beneath-the-ferry",
+      "title": "The Ferry Beneath the Ferry",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 441,
+      "findings": [
+        {
+          "findingId": "R371-016",
+          "severity": "HIGH",
+          "auditText": "Cache-only route claims repaired ferry and unpaid coin",
+          "auditWitness": "ferryLanding.drainAccess > drainTunnel.turnGate > lowerWater.upperRoom > ferryCache.copyToll > ferryHistory",
+          "auditEvidence": "Cache route never reaches oldRoad/freeTimber; ending says timber freed and pays three coins, but no money grant.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "first-words-over-the-wire",
+      "slug": "first-words-over-the-wire",
+      "title": "First Words over the Wire",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 854,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04",
+            "COU-08"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04",
+            "COU-08"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "COU-08",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "flooded-relay-book",
+      "slug": "flooded-relay-book",
+      "title": "The Flooded Relay Book",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 849,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "floorboard-that-was-replaced",
+      "slug": "floorboard-that-was-replaced",
+      "title": "The Floorboard That Was Replaced",
+      "sourceFile": "frontierDiscoveryBatch.ts",
+      "adventureIndex": 333,
+      "findings": [
+        {
+          "findingId": "RF331-02",
+          "severity": "MEDIUM",
+          "auditText": "The careful route returns a paper never removed, and the failed route returns an object said to be beyond reach.",
+          "auditWitness": "Evidence.readEvidence -> Decision.takeCareful -> Cautious; Decision.takeRisk failure -> Mishap",
+          "auditEvidence": "Both careful labels explicitly read the paper edge without lifting the board; closure says The paper is put back beneath the board. Failure says object slips beyond safe reach, then same closure restores paper.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "RF331-13"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "RF331-13",
+          "cluster": "RC15",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "forgotten-sluice",
+      "slug": "forgotten-sluice",
+      "title": "The Forgotten Sluice",
+      "sourceFile": "frontierDiscoveryBatch.ts",
+      "adventureIndex": 334,
+      "findings": [
+        {
+          "findingId": "RF331-03",
+          "severity": "MEDIUM",
+          "auditText": "Opening the sluice is erased by a later careful ending.",
+          "auditWitness": "Evidence.followEvidence -> Decision.closeCarefully -> Cautious",
+          "auditEvidence": "followEvidence says Open the sluice and test its flow; Cautious says gate stays where found and water continues without an unrecorded change. No re-closing transition occurs.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "give-me-whatcha-got",
+      "slug": "give-me-whatcha-got",
+      "title": "Give Me Whatcha Got",
+      "sourceFile": "giveMeWhatchaGot.ts",
+      "adventureIndex": 44,
+      "findings": [
+        {
+          "findingId": "RO29-22",
+          "severity": "MEDIUM",
+          "auditText": "Keeping still and refusing a search is retold as rushing toward the robber.",
+          "auditWitness": "afterCashDemand.refuseNervousSearch or refuseDisorganizedSearch failure -> shotPlayer",
+          "auditEvidence": "Choice says Keep still and refuse the search; failure says robber fires on refusal; terminal says fires before you reach them and you knowingly crossed the line of a raised revolver.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "RO29-23",
+            "RO29-24",
+            "RO29-25",
+            "RO29-27"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "RO29-23",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "RO29-24",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "RO29-25",
+          "cluster": "RC13",
+          "status": "MINOR CONCERN",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "RO29-27",
+          "cluster": "RC15",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "high-water",
+      "slug": "high-water",
+      "title": "High Water",
+      "sourceFile": "highWater.ts",
+      "adventureIndex": 11,
+      "findings": [
+        {
+          "findingId": "O01-035",
+          "severity": "HIGH",
+          "auditText": "Crew evacuation ending forgets animals already saved",
+          "auditWitness": "livestockFirst success > waterDeepens.seekOutsideHelpRising > outsideHelp.sendRunner > crewArrives.organizeFloodEvacuation > thankYouHill > highGroundEnding",
+          "auditEvidence": "livestockSafe+residentSafe+communityEvacuated set; no earlier triple-success variant matches. communityEvacuated text says animals remain behind despite animals already ridge safe. Analogous saved medicine may be described lower supplies left.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "O01-033",
+            "O01-034",
+            "O01-036",
+            "O01-037",
+            "O01-038"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-033",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "CRITICAL"
+        },
+        {
+          "findingId": "O01-034",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "CRITICAL"
+        },
+        {
+          "findingId": "O01-036",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-037",
+          "cluster": "RC03",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-038",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "horse-change-ledger",
+      "slug": "horse-change-ledger",
+      "title": "The Horse-Change Ledger",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 853,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "house-with-warm-window",
+      "slug": "house-with-warm-window",
+      "title": "The House with the Warm Window",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 258,
+      "findings": [
+        {
+          "findingId": "R125-049",
+          "severity": "MEDIUM",
+          "auditText": "After conversation ending says no stop/no knowledge",
+          "auditWitness": "road.knockWarmHouse → door.sayGoodnight → pass",
+          "auditEvidence": "door explains lamp for missing son; pass says you do not stop and meaning not learned.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "hush-now",
+      "slug": "hush-now",
+      "title": "Hush Now",
+      "sourceFile": "hushNow.ts",
+      "adventureIndex": 18,
+      "findings": [
+        {
+          "findingId": "O15-010",
+          "severity": "MEDIUM",
+          "auditText": "Returned heifer is still reported missing",
+          "auditWitness": "Any shout failure sets heiferLoose -> looseHeifer/guideHeiferBack success or letOwnerHandleHeifer sets heiferReturned -> continue rescue -> aftercare -> safeEnding",
+          "auditEvidence": "Any shout failure sets heiferLoose -> looseHeifer/guideHeiferBack success or letOwnerHandleHeifer sets heiferReturned -> continue rescue -> aftercare -> safeEnding — Return never clears heiferLoose; aftercare and safeEnding both check heiferLoose before heiferReturned. Successful return therefore selects text saying animal has not been found, overriding real recovery.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "hushNow.ts — heiferReturned state takes precedence over heiferLoose in aftercare/reward variants",
+            "hushNow.test.ts — risky failure and rescue-option coverage"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-009"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O15-011",
+          "severity": "MEDIUM",
+          "auditText": "Bandaging invents a lost heifer on a route with no loose animal",
+          "auditWitness": "farmhouseArrival/askOwner -> householdTalk/takeFarmBar -> pastureWithFarmBar/followBarTracks -> bankSearch rescue -> workerFreed/wrapWorkerScrape -> aftercare",
+          "auditEvidence": "farmhouseArrival/askOwner -> householdTalk/takeFarmBar -> pastureWithFarmBar/followBarTracks -> bankSearch rescue -> workerFreed/wrapWorkerScrape -> aftercare — With no heifer flags, scrapeWrapped variant says rain makes another search for loose heifer a poor choice, although no animal bolted and no search occurred. Bandage-specific state imports independent livestock subplot.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "hushNow.ts — scrapeWrapped-only variants do not claim an unestablished lost heifer",
+            "hushNow.test.ts — bandage only wraps explicitly superficial palm scrape"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-009"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-009",
+          "cluster": "RC03",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "initials-on-the-wire",
+      "slug": "initials-on-the-wire",
+      "title": "Initials on the Wire",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 850,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "iron-orchard",
+      "slug": "iron-orchard",
+      "title": "The Iron Orchard",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 436,
+      "findings": [
+        {
+          "findingId": "R371-012",
+          "severity": "MEDIUM",
+          "auditText": "Removed rod restored only in narration",
+          "auditWitness": "stakeGallery.removeRod > openedDeep.sealDeep > sealedOrchard",
+          "auditEvidence": "rodRemoved flag; ending says rods remain where found, with no replacement action.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "jack-o-lantern-contest",
+      "slug": "jack-o-lantern-contest",
+      "title": "The Jack-o’-Lantern Contest",
+      "sourceFile": "octoberAffinityBatch.ts",
+      "adventureIndex": 176,
+      "findings": [
+        {
+          "findingId": "R125-006",
+          "severity": "MEDIUM",
+          "auditText": "Helper aftermath remembers wrong rain method",
+          "auditWitness": "helpDisplay → rainProblem.moveBest → contestJudging.contestThanks → contestSocialAftermath",
+          "auditEvidence": "contestHelper variant says children remember you holding canvas; moveBest moved fragile carvings instead.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "lantern-vault",
+      "slug": "lantern-vault",
+      "title": "The Lantern Vault",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 442,
+      "findings": [
+        {
+          "findingId": "R371-018",
+          "severity": "MEDIUM",
+          "auditText": "Early-exit ending denies entered room",
+          "auditWitness": "innCellar.seven > vaultSeven.copyEntries > vaultLedger.closeRack > vaultEnding",
+          "auditEvidence": "vaultEnding says without opening any numbered room after door seven entered.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-017"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-017",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "last-door-briar-house",
+      "slug": "last-door-briar-house",
+      "title": "The Last Door in Briar House",
+      "sourceFile": "deepExplorationBatch.ts",
+      "adventureIndex": 435,
+      "findings": [
+        {
+          "findingId": "R371-011",
+          "severity": "MEDIUM",
+          "auditText": "Shallow route ending overstates discovered purpose",
+          "auditWitness": "briarPorch.servants > servantsPassage.pantry > pantryShift.deskFromRear > letterEnding",
+          "auditEvidence": "Only route to desk and letter recorded; ending confirms rooms concealed person, fuller account only in secondBedroom.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "last-station-keepers-route",
+      "slug": "last-station-keepers-route",
+      "title": "The Last Station Keeper’s Route",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 860,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "last-stop",
+      "slug": "last-stop",
+      "title": "All Aboard!",
+      "sourceFile": "lastStop.ts",
+      "adventureIndex": 2,
+      "findings": [
+        {
+          "findingId": "O01-004",
+          "severity": "HIGH",
+          "auditText": "Unperformed brake work becomes cause of survival",
+          "auditWitness": "stationPlatform.board > passengerCar.settle > quietJourney.checkBrake > serviceEmergency.roof > roofAccess.crossRoof(success) > locomotive.grabLever(failure) > engineBurn.brake > engineBrakeRescue",
+          "auditEvidence": "No brake action performed; rescue text credits service car earlier brake work. roofInjury.secureForImpact and escapeInjury.brace also enter messyEnding which says you hold brake, despite only bracing.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "lastStop.test.ts — keeps shared wreck ending truthful for brake, brace, and combined routes"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-006"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-005",
+          "severity": "HIGH",
+          "auditText": "Separated coaches reappear beside stopped engine",
+          "auditWitness": "emergencyHub.uncouple > couplingChoice.cutLoose > separatedFront.engine > locomotive.repair > cleanEnding",
+          "auditEvidence": "carsUncoupled remains true; cleanEnding describes whole train stopped, passengers stepping down and three-coin all-train success, leaving independent coaches/siding fate unaccounted.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "lastStop.test.ts — routes real uncoupling choice to front-section ending without inventing coach safety"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-006"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-006",
+          "cluster": "RC05",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "letter-from-ash-lot",
+      "slug": "letter-from-ash-lot",
+      "title": "The Letter from Ash Lot",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 856,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "mailbag-at-milepost-nine",
+      "slug": "mailbag-at-milepost-nine",
+      "title": "Mailbag at Milepost Nine",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 841,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "morning-the-warning-arrived",
+      "slug": "morning-the-warning-arrived",
+      "title": "The Morning the Warning Arrived",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 857,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "no-forwarding-address-for-the-founder",
+      "slug": "no-forwarding-address-for-the-founder",
+      "title": "No Forwarding Address for the Founder",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 858,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "one-horse-short",
+      "slug": "one-horse-short",
+      "title": "One Horse Short",
+      "sourceFile": "oneHorseShort.ts",
+      "adventureIndex": 31,
+      "findings": [
+        {
+          "findingId": "RO29-03",
+          "severity": "MEDIUM",
+          "auditText": "The arrival claims cargo was left behind even on full-load routes.",
+          "auditWitness": "roadsideParty.walkBesideWagon -> slowJourney.keepSlowPace -> lateMill; roadsideParty.pushFullLoad success -> lateMill",
+          "auditEvidence": "Only lighten/unload choices leave flour. slowJourney explicitly retains the full load; common terminal says Some cargo remains behind.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "one-more-round",
+      "slug": "one-more-round",
+      "title": "One More Round",
+      "sourceFile": "oneMoreRound.ts",
+      "adventureIndex": 12,
+      "findings": [
+        {
+          "findingId": "O01-039",
+          "severity": "HIGH",
+          "auditText": "Quiet mediation returns purse without finding it",
+          "auditWitness": "heardArgument.stepInBeforeAccusation > intervention.talkThemDown success > quietRewards > peacefulEnding",
+          "auditEvidence": "quietRewards Sella sets purse aside; no search or recovery occurred; immediately following ending says purse remains unaccounted.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "oneMoreRound.test.ts — separate peaceful route and quiet reward explicitly leave purse unresolved"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-042"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-040",
+          "severity": "MEDIUM",
+          "auditText": "Paid debt becomes unpaid in reward scene",
+          "auditWitness": "purseFound.payOldDebtAfterTruth > truthRewards",
+          "auditEvidence": "Two coins spent and paidRepairDebt set, yet reward says Rafe confirms repair bill can be settled tomorrow. Final ending does honor paid flag.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "oneMoreRound.test.ts — keeps paid debt paid in purse-recovery reward scene; neutral legacy fallback"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-042"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-041",
+          "severity": "MEDIUM",
+          "auditText": "Peaceful separation imports broken-glass fight and constable",
+          "auditWitness": "intervention.separateWithGear success > fightStoppedAftercare.helpCleanAfterFight > fightRewards",
+          "auditEvidence": "At intervention no weapon and bottles moved; success makes space without striking. Aftercare broken glass swept/fight stopped, then constable takes statements without being summoned.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "oneMoreRound.test.ts — successful pre-fight gear separation stays out of broken-glass/constable aftermath"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-042"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-042",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "only-one-bullet",
+      "slug": "only-one-bullet",
+      "title": "Only One Bullet",
+      "sourceFile": "onlyOneBullet.ts",
+      "adventureIndex": 40,
+      "findings": [
+        {
+          "findingId": "RO29-15",
+          "severity": "MEDIUM",
+          "auditText": "Shared endings introduce an uncalled neighbor and describe the player as absent after remaining present.",
+          "auditWitness": "firstReply.askSetDown success -> weaponLowered.stayWithPerson -> crisisSettles; tensionRises.askGroundAgain failure -> crisisLost",
+          "auditEvidence": "stayWithPerson never sends companion for help but terminal says person speaks with neighbor. askGroundAgain failure happens in front of player but crisisLost says did not know what would happen while you were away. Companion-wait failures have same away wording.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "paper-boat-at-high-water",
+      "slug": "paper-boat-at-high-water",
+      "title": "Paper Boat at High Water",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 842,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04",
+            "COU-06"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "COU-06",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "postal-road-after-the-flood",
+      "slug": "postal-road-after-the-flood",
+      "title": "The Postal Road after the Flood",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 855,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "rain-on-the-relay",
+      "slug": "rain-on-the-relay",
+      "title": "Rain on the Relay",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 838,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "red-chalk-circle",
+      "slug": "red-chalk-circle",
+      "title": "The Red Chalk Circle",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 189,
+      "findings": [
+        {
+          "findingId": "R125-016",
+          "severity": "HIGH",
+          "auditText": "Retreat rescues missing Orin without finding him",
+          "auditWitness": "chalkRoom.crossCircle → chalkDisturbed.retreatFromChalk → chalkAfter",
+          "auditEvidence": "Crossing reveals empty coat only; retreat ends with Orin out and crawlspace boarded, while finding/rescue exists in separate chalkCrawl route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "seal-that-cooled-wrong",
+      "slug": "seal-that-cooled-wrong",
+      "title": "The Seal That Cooled Wrong",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 847,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "silent-night",
+      "slug": "silent-night",
+      "title": "Silent Night?",
+      "sourceFile": "silentNight.ts",
+      "adventureIndex": 42,
+      "findings": [
+        {
+          "findingId": "RO29-18",
+          "severity": "MEDIUM",
+          "auditText": "The common cooling-off ending introduces a satchel absent from these variants.",
+          "auditWitness": "argument=drunken or threat: quietRequest.calmRequest success / commonRoom.speakFromDoor success -> argumentCools",
+          "auditEvidence": "Drunken setup concerns a song/spilled drink and threat setup a knife. argumentCools says guest leaves with the satchel—or without it; satchel is only established in propertyDispute.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "RO29-19"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "RO29-19",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "smoke-on-the-hill",
+      "slug": "smoke-on-the-hill",
+      "title": "Smoke on the Hill",
+      "sourceFile": "smokeOnTheHill.ts",
+      "adventureIndex": 14,
+      "findings": [
+        {
+          "findingId": "O01-049",
+          "severity": "HIGH",
+          "auditText": "Post-investigation withdrawal returns to distant uncertainty",
+          "auditWitness": "homesteadGate.checkBarnAtGate > barnDiscovery.retreatFromBarn > retreatFromFireEnding.leaveFromLane > walkAwayEnding",
+          "auditEvidence": "Player saw active barn fire, Eli/goats and may attempt rescue; ending cannot know whether small accident or fire needing help and says facts not clear.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "smokeOnTheHill.test.ts — preserves located fire/barn evidence after withdrawal and save/reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-051",
+            "O01-052",
+            "O01-053",
+            "O01-054"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-050",
+          "severity": "HIGH",
+          "auditText": "Known goats and rescued Eli forgotten by success endings",
+          "auditWitness": "eliRescued.takeGoatsAfterEli > goatRescueAttempt success > goatsSaved.leaveAfterGoats > animalsSavedEnding; eliRescued.protectHouseAfterEli > firebreakHolds.secureHouseAfterBreak > houseAftermath.leaveAfterHouseFire > propertyProtectedEnding",
+          "auditEvidence": "Animal ending cannot tell whether anyone reached lane despite eliSafe. Property eliSafe-only variant says never learned who/what else inside despite Eli explicitly saying goats remain; previous houseAftermath variant correctly remembers goats.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "smokeOnTheHill.test.ts — failed goat rescue distinct from Eli’s successful rescue on withdrawal; ending variants keyed to Eli/goat state"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-051",
+            "O01-052",
+            "O01-053",
+            "O01-054"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-051",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-052",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-053",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-054",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "station-mark-in-margin",
+      "slug": "station-mark-in-margin",
+      "title": "The Station Mark in the Margin",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 846,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04",
+            "COU-07"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "COU-07",
+          "cluster": "RC05",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "station-without-a-clock",
+      "slug": "station-without-a-clock",
+      "title": "The Station without a Clock",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 843,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "taking-on-water",
+      "slug": "taking-on-water",
+      "title": "Taking on Water",
+      "sourceFile": "takingOnWater.ts",
+      "adventureIndex": 19,
+      "findings": [
+        {
+          "findingId": "O15-013",
+          "severity": "MEDIUM",
+          "auditText": "Discarded cargo returns in rescue ending",
+          "auditWitness": "patchResult/patchThrowCargo or gearPrep/throwOrdinaryCargo -> lighterCanoe/lighterSignal -> signal success -> rescueResponse/acceptRescue -> rescueEnding",
+          "auditEvidence": "patchResult/patchThrowCargo or gearPrep/throwOrdinaryCargo -> lighterCanoe/lighterSignal -> signal success -> rescueResponse/acceptRescue -> rescueEnding — Food and cooking gear were explicitly thrown overboard and lighterCanoe says gone. Standard rescueEnding nonetheless says ordinary food and cooking gear are soaked, implying still recovered with canoe. cargoLightened not read by ending.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "takingOnWater.ts — rescueEnding explicitly leaves ordinary supply condition unestablished",
+            "takingOnWater.test.ts — ordinary cargo sacrifice and save-state tests"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-012"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-012",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-antlered-thing",
+      "slug": "the-antlered-thing",
+      "title": "The Antlered Thing",
+      "sourceFile": "monsterHuntSecond.ts",
+      "adventureIndex": 320,
+      "findings": [
+        {
+          "findingId": "R125-085",
+          "severity": "HIGH",
+          "auditText": "A rescued worker becomes unconfirmed in the final outcome.",
+          "auditWitness": "workerAnswer.callWorkerBack -> workerOut.abandonForestRoad -> forestEvacuated",
+          "auditEvidence": "workerOut explicitly reaches the road; abandonForestRoad grants evacuated worker history; terminal says worker fate not confirmed.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-bee-yard",
+      "slug": "the-bee-yard",
+      "title": "The Bee Yard",
+      "sourceFile": "animalsBatch.ts",
+      "adventureIndex": 93,
+      "findings": [
+        {
+          "findingId": "P33",
+          "severity": "MEDIUM",
+          "auditText": "After steadying the hive, exit restores crooked stand",
+          "auditWitness": "apiaryGate.moveGoatApiary → goatMoved.steadyApiaryStand → standSteadied.continueAfterStand → apiaryLeft",
+          "auditEvidence": "Stand is leveled and bees settle; exit says beekeeper will find crooked stand. Direct tool route also calls hive-bearing stand empty and presumes goat removed.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "animalsBatch.test.ts — preserves bee-yard stand and goat state through either steadying route"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-bell-rope-at-ferry-end",
+      "slug": "the-bell-rope-at-ferry-end",
+      "title": "The Bell Rope at Ferry End",
+      "sourceFile": "competitionGearGenreBatch.ts",
+      "adventureIndex": 603,
+      "findings": [
+        {
+          "findingId": "P10",
+          "severity": "HIGH",
+          "auditText": "Refusing the prize narrates accepting it",
+          "auditWitness": "signal.repeatRules → round.warnCrew → saved.declinePrize → whistleEnd",
+          "auditEvidence": "Decline payment and help re-moor grants Knowledge only. Ending says 'You accept the Farm Whistle.' Reproduced no acquired item.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-bridge-goes-down",
+      "slug": "the-bridge-goes-down",
+      "title": "The Bridge Goes Down",
+      "sourceFile": "disasterRescueBatch.ts",
+      "adventureIndex": 266,
+      "findings": [
+        {
+          "findingId": "R125-054",
+          "severity": "HIGH",
+          "auditText": "Rescued child teleports back onto collapsing bridge",
+          "auditWitness": "span.reachChild success → childAcross.turnForMule success → muleSaved",
+          "auditEvidence": "Child reaches west bank; successful mule rescue then muleSaved says driver and child remain on bridge. muleLeaveWagon ending can mark child unconfirmed ashore.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-broken-rail-at-crow-field",
+      "slug": "the-broken-rail-at-crow-field",
+      "title": "The Broken Rail at Crow Field",
+      "sourceFile": "agricultureRanchAnimalWorkGenreBatch.ts",
+      "adventureIndex": 734,
+      "findings": [
+        {
+          "findingId": "R616-034",
+          "severity": "MEDIUM",
+          "auditText": "Keeping herds penned receives credit for a brace never set",
+          "auditWitness": "rail/inspect -> tracks/separate -> partial",
+          "auditEvidence": "rail/inspect -> tracks/separate -> partial — separate only keeps herds penned until owners agree; partial says rail is braced and pays for setting it. Bracing exists only on the repair/leave sibling route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R616-032"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R616-032",
+          "cluster": "RC03",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-broken-wheel",
+      "slug": "the-broken-wheel",
+      "title": "The Broken Wheel",
+      "sourceFile": "brokenWheel.ts",
+      "adventureIndex": 27,
+      "findings": [
+        {
+          "findingId": "O15-034",
+          "severity": "MEDIUM",
+          "auditText": "Leaving after smith handoff reverts to abandoned unrecovered wagon",
+          "auditWitness": "roadsideWagon/walkForSmith -> smithReturns/leaveWithThanks -> wagonAbandoned",
+          "auditEvidence": "roadsideWagon/walkForSmith -> smithReturns/leaveWithThanks -> wagonAbandoned — Choice leaves once wagon safe and smith already there with spare hub. Ending instead says owner must arrange recovery and calls trip unfinished; it loses achieved professional handoff.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "brokenWheel.ts — smithSummoned variant says smith remains with wagon and recovery is in smith’s hands"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-033"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-033",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-burning-loft",
+      "slug": "the-burning-loft",
+      "title": "The Burning Loft",
+      "sourceFile": "burningLoft.ts",
+      "adventureIndex": 22,
+      "findings": [
+        {
+          "findingId": "O15-024",
+          "severity": "MEDIUM",
+          "auditText": "Failed rope rescue invents a ladder that was never fetched",
+          "auditWitness": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure",
+          "auditEvidence": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure — No ladder has been moved from orchard yard, and ladderReady flag is absent. Failure message says line slipped from sill, but ladderFailure says player/shopkeeper catch slipping ladder at window. Following choices also assume ladder rescue failed.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "O15-025"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-025",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-cache-ledger",
+      "slug": "the-cache-ledger",
+      "title": "The Cache Ledger",
+      "sourceFile": "expeditionLogisticsGenreBatch.ts",
+      "adventureIndex": 642,
+      "findings": [
+        {
+          "findingId": "R616-012",
+          "severity": "MEDIUM",
+          "auditText": "Taking supplies is rewritten as preserving them",
+          "auditWitness": "cache/takeWhatRemains -> shortage/follow -> paid or shortage/stop -> partial",
+          "auditEvidence": "cache/takeWhatRemains -> shortage/follow -> paid or shortage/stop -> partial — shortage confirms the taken cloth and tinder help the camp. paid thanks the player for preserving emergency stock, and partial asserts No cache goods are claimed, with no return of the taken goods.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-canvas-over-the-crate",
+      "slug": "the-canvas-over-the-crate",
+      "title": "Canvas Over the Crate",
+      "sourceFile": "expeditionLogisticsGenreBatch.ts",
+      "adventureIndex": 648,
+      "findings": [
+        {
+          "findingId": "R616-016",
+          "severity": "MEDIUM",
+          "auditText": "Unseen missing-fitting investigation leaks into wagon route",
+          "auditWitness": "shed/carryOut -> risk/wait -> paid; risk/carry -> partial",
+          "auditEvidence": "shed/carryOut -> risk/wait -> paid; risk/carry -> partial — The wagon route concerns keeping the load out of a wet rut. paid suddenly resolves a missing fitting only introduced on inspection; partial claims a measurement limitation never discovered on this route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-cave-with-worked-stone",
+      "slug": "the-cave-with-worked-stone",
+      "title": "The Cave with Worked Stone",
+      "sourceFile": "lostPlacesBatch.ts",
+      "adventureIndex": 297,
+      "findings": [
+        {
+          "findingId": "R125-070",
+          "severity": "MEDIUM",
+          "auditText": "Limited tool-mark conclusion becomes drill-based quarry claim",
+          "auditWitness": "mouth.inspectCut → cut.cutReturn → discovery",
+          "auditEvidence": "Choice grants honest purpose unknown; never enters niche/drill; ending invokes drill to establish quarry use.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-christmas-goose",
+      "slug": "the-christmas-goose",
+      "title": "The Christmas Goose",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 238,
+      "findings": [
+        {
+          "findingId": "R125-038",
+          "severity": "MEDIUM",
+          "auditText": "Known goose location becomes missing/unfound",
+          "auditWitness": "yard.followPrints → creek.leaveBird → kitchen.makePot → mealWithoutGoose",
+          "auditEvidence": "Goose visibly safe across creek; decline retrieval then ends remains missing / not found tonight.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-christmas-visitor",
+      "slug": "the-christmas-visitor",
+      "title": "The Christmas Visitor",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 250,
+      "findings": [
+        {
+          "findingId": "R125-046",
+          "severity": "MEDIUM",
+          "auditText": "No-visit route claims family has unread station letter",
+          "auditWitness": "door.askFromDoor → threshold.letThemGo → departure",
+          "auditEvidence": "Visitor leaves before station retrieval; departure says family has letter to consider. Supper route similarly keeps brother note without retrieval.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-clamp-beneath-the-press",
+      "slug": "the-clamp-beneath-the-press",
+      "title": "The Clamp beneath the Press",
+      "sourceFile": "equipmentTestingGenreBatch.ts",
+      "adventureIndex": 683,
+      "findings": [
+        {
+          "findingId": "R616-022",
+          "severity": "MEDIUM",
+          "auditText": "Wedge method is immediately replaced by a clamp",
+          "auditWitness": "press/useWedge -> proof",
+          "auditEvidence": "press/useWedge -> proof — Choice says use a wooden wedge and keep clamp back; proof says The clamp holds during a slow proof. This forgets the selected holding method.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-empty-coffin",
+      "slug": "the-empty-coffin",
+      "title": "The Empty Coffin",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 202,
+      "findings": [
+        {
+          "findingId": "R125-021",
+          "severity": "MEDIUM",
+          "auditText": "Immediate burial pause inherits discovered conspiracy",
+          "auditWitness": "emptyCoffin.closeCoffin → coffinAfter",
+          "auditEvidence": "No side room search occurs, but ending says empty coffin cause known and debt drove deception.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-empty-cradle",
+      "slug": "the-empty-cradle",
+      "title": "The Empty Cradle",
+      "sourceFile": "theEmptyCradle.ts",
+      "adventureIndex": 15,
+      "findings": [
+        {
+          "findingId": "O15-001",
+          "severity": "MEDIUM",
+          "auditText": "Freed child is rescued from the closed shed a second time",
+          "auditWitness": "childOut -> returnWithRope/guideNessaAcrossCarefully failure -> creekReturnSlip/waitForSearchersAfterSlip -> childOutWithHelp",
+          "auditEvidence": "childOut -> returnWithRope/guideNessaAcrossCarefully failure -> creekReturnSlip/waitForSearchersAfterSlip -> childOutWithHelp — Nessa already left shed and is on higher creek bank with player; waiting for search party leads to neighbors holding door while Tom eases her onto threshold, resetting custody/location to an earlier rescue.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "theEmptyCradle.ts — return-slip wait sets nessaAlreadyOnHighBank; childOutWithHelp has already-free variant",
+            "theEmptyCradle.test.ts — late partial rescue and route graph tests"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-002"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-002",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-empty-feed-sack",
+      "slug": "the-empty-feed-sack",
+      "title": "The Empty Feed Sack",
+      "sourceFile": "expeditionLogisticsGenreBatch.ts",
+      "adventureIndex": 652,
+      "findings": [
+        {
+          "findingId": "R616-018",
+          "severity": "MEDIUM",
+          "auditText": "Unsent resupply resolves the ration-only plan",
+          "auditWitness": "feed/divide -> move/restMule -> paid",
+          "auditEvidence": "feed/divide -> move/restMule -> paid — This route divides remaining feed and rests a mule; paid declares the farm resupply arrives with a tally and pays for managing it. Only feed/rest sends a farm runner.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-fair-weather-reading",
+      "slug": "the-fair-weather-reading",
+      "title": "The Fair-Weather Reading",
+      "sourceFile": "competitionGearGenreBatch.ts",
+      "adventureIndex": 611,
+      "findings": [
+        {
+          "findingId": "P17",
+          "severity": "MEDIUM",
+          "auditText": "Forecast prize mentions a parade route change never chosen",
+          "auditWitness": "clouds.readRidge → forecast.forecastRainWindow → score.takeCloak → prize",
+          "auditEvidence": "Warning the parade is an alternative terminal route. Prize closure nonetheless refers to 'The parade's change of route' as a separate decision. No warning or change occurs on the prize route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-frightened-team",
+      "slug": "the-frightened-team",
+      "title": "The Frightened Team",
+      "sourceFile": "animalsBatch.ts",
+      "adventureIndex": 92,
+      "findings": [
+        {
+          "findingId": "P32",
+          "severity": "MEDIUM",
+          "auditText": "Opt-out ending thanks Traveler for an unperformed inspection",
+          "auditWitness": "teamRoad.giveTeamSpace → teamPassed",
+          "auditEvidence": "Choice gives space and takes side path; ending says driver thanks you for looking before insisting. Neither inspection nor advice occurred.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-goat-wouldnt-stay-dead",
+      "slug": "the-goat-wouldnt-stay-dead",
+      "title": "The Goat That Wouldn’t Stay Dead",
+      "sourceFile": "monsterHuntSecond.ts",
+      "adventureIndex": 315,
+      "findings": [
+        {
+          "findingId": "R125-081",
+          "severity": "MEDIUM",
+          "auditText": "The unresolved ending knows a tally and empty grave never examined.",
+          "auditWitness": "goatClaim.compareNotches -> goatMarks.stopInquiry -> goatAfter unresolved variant",
+          "auditEvidence": "stopInquiry skips both goatLedger and goatBurial; variant says leave farmer with tally and empty grave unresolved.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-hall-with-the-mismatched-stone",
+      "slug": "the-hall-with-the-mismatched-stone",
+      "title": "The Hall with the Mismatched Stone",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 830,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-halloween-dare",
+      "slug": "the-halloween-dare",
+      "title": "The Halloween Dare",
+      "sourceFile": "octoberAffinityBatch.ts",
+      "adventureIndex": 179,
+      "findings": [
+        {
+          "findingId": "R125-008",
+          "severity": "MEDIUM",
+          "auditText": "Outside rescue inherits solved shadow",
+          "auditWitness": "dareInvitation.callYouthOut → dareCall.fetchRope → dareHelp.dareThank → dareAfter",
+          "auditEvidence": "Only dareRescue identifies hanging coat; external rescue never sees shadow, but dareAfter says shadow has no mystery left.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-headless-rider",
+      "slug": "the-headless-rider",
+      "title": "The Headless Rider",
+      "sourceFile": "octoberAffinityBatch.ts",
+      "adventureIndex": 186,
+      "findings": [
+        {
+          "findingId": "R125-013",
+          "severity": "MEDIUM",
+          "auditText": "Ending says motive was never learned after explaining it",
+          "auditWitness": "riderTruth.leaveRiderTruth → riderAfter → riderFinish riderLeft variant",
+          "auditEvidence": "riderTruth explains abusive employer and silhouette to avoid recognition; final variant says you do not learn why it was made.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-ice-gives-warning",
+      "slug": "the-ice-gives-warning",
+      "title": "The Ice Gives Warning",
+      "sourceFile": "survivalExpeditionBatch.ts",
+      "adventureIndex": 229,
+      "findings": [
+        {
+          "findingId": "R125-034",
+          "severity": "HIGH",
+          "auditText": "Solo ice crossing becomes cart rescue by alternate route",
+          "auditWitness": "iceWarning.crossIceAlone success → iceFarBank",
+          "auditEvidence": "Success message only you reach bank avoiding seam; ending says traveler/cart reach by gravel or careful line and you prevented disaster. Rope in death branch likewise never established on solo route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R125-033"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R125-033",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-irrigation-stone-at-south-field",
+      "slug": "the-irrigation-stone-at-south-field",
+      "title": "The Irrigation Stone at South Field",
+      "sourceFile": "agricultureRanchAnimalWorkGenreBatch.ts",
+      "adventureIndex": 726,
+      "findings": [
+        {
+          "findingId": "R616-030",
+          "severity": "MEDIUM",
+          "auditText": "Waiting changes an open divider into a closed one",
+          "auditWitness": "channel/mark -> evidence/wait -> partial",
+          "auditEvidence": "channel/mark -> evidence/wait -> partial — Player leaves the stone aside until owners arrive; water currently pours through the displaced divider. partial asserts divider remains closed despite no closure action.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R616-028"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R616-028",
+          "cluster": "RC03",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-lantern-in-the-hedge",
+      "slug": "the-lantern-in-the-hedge",
+      "title": "The Lantern in the Hedge",
+      "sourceFile": "roadDangerGenreBatch.ts",
+      "adventureIndex": 496,
+      "findings": [
+        {
+          "findingId": "R371-045",
+          "severity": "HIGH",
+          "auditText": "All endings assert surrender; actual surrendered purse never deducted",
+          "auditWitness": "threat.respond_callHouse > aftermath.ending_leaveHedge > settlement; threat.respond_leavePurse",
+          "auditEvidence": "Both closing options claim surrendered purse/coins even after thieves withdraw; surrender effect only sets response flag, no loss of money.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-044"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-044",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-lantern-in-the-marsh",
+      "slug": "the-lantern-in-the-marsh",
+      "title": "The Lantern in the Marsh",
+      "sourceFile": "strangeRoadsBatch.ts",
+      "adventureIndex": 115,
+      "findings": [
+        {
+          "findingId": "P38",
+          "severity": "MEDIUM",
+          "auditText": "Identified workers become unknowable in the ending",
+          "auditWitness": "nightWorkers branch → marshReply or nearLight → marshPassed",
+          "auditEvidence": "The route identifies the night workers, but the shared departure says the Traveler never learns whether the light belonged to a traveler, worker, or was not a lantern. Deliberate ambiguity is valid only on unconfirmed routes.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "strangeRoadsBatch.test.ts — retains marsh worker answer only on routes that called or saw them"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-last-at-the-cobbler",
+      "slug": "the-last-at-the-cobbler",
+      "title": "The Last at the Cobbler",
+      "sourceFile": "tradesApprenticeshipGenreBatch.ts",
+      "adventureIndex": 555,
+      "findings": [
+        {
+          "findingId": "R371-050",
+          "severity": "MEDIUM",
+          "auditText": "Replacement upper turns into patch",
+          "auditWitness": "fit.replace > settlement",
+          "auditEvidence": "Choice replacement upper at shop cost; settlement customer accepts patch.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-last-clean-apron",
+      "slug": "the-last-clean-apron",
+      "title": "The Last Clean Apron",
+      "sourceFile": "surpriseSocialBatch.ts",
+      "adventureIndex": 380,
+      "findings": [
+        {
+          "findingId": "R371-004",
+          "severity": "MEDIUM",
+          "auditText": "Cook-on-time route receives late-supper closure",
+          "auditWitness": "kitchen.giveCookApron > plating.checkDishwasher > thanks",
+          "auditEvidence": "plating says cook plates on time; thanks says supper reaches tables later and cook accepts delay. Sack workaround also routes to dishwasher without apron.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-last-ferry",
+      "slug": "the-last-ferry",
+      "title": "The Last Ferry",
+      "sourceFile": "lastFerry.ts",
+      "adventureIndex": 34,
+      "findings": [
+        {
+          "findingId": "RO29-05",
+          "severity": "MEDIUM",
+          "auditText": "The shared text contradicts both the rope failure and the selected crossing order.",
+          "auditWitness": "ferryLanding.inspectFerryLine -> lineDamage; ferryReset.helpFarBankTravelers -> crossedEnding",
+          "auditEvidence": "Opening says guiding rope has parted at wooden post; lineDamage says rope did not part, post split. Let far-bank travelers cross first ends with ferry taking you to far bank and waiting travelers boarding after you.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "RO29-06"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "RO29-06",
+          "cluster": "RC14",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-last-mile-pouch",
+      "slug": "the-last-mile-pouch",
+      "title": "The Last-Mile Pouch",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 845,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-last-room",
+      "slug": "the-last-room",
+      "title": "The Last Room on the Left",
+      "sourceFile": "theLastRoom.ts",
+      "adventureIndex": 5,
+      "findings": [
+        {
+          "findingId": "O01-011",
+          "severity": "HIGH",
+          "auditText": "Failed shared lift frees traveler then puts him back under shelf",
+          "auditWitness": "sharedRescue.guideTheLift failure > partialRescue > partialEnding",
+          "auditEvidence": "FailureMessage group gets Vale clear with bruised leg; next scene says shelf cannot move safely tonight and he remains below. Doctor/constable appear although only Nell/host/guests were called.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "theLastRoom.test.ts — failed shared lift distinct from authority-led partial rescue through reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-013",
+            "O01-014"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-012",
+          "severity": "MEDIUM",
+          "auditText": "Leaving after confession erases the truth already learned",
+          "auditWitness": "hostConfrontation.leaveAfterConfession > walkAwayEnding",
+          "auditEvidence": "Full accident and concealment confession already read, but ending says you do not learn what became of traveler or whether innkeeper account true.",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "theLastRoom.ts — confession route sets identifiedSilas then targets walkAwayEnding",
+            "theLastRoom.ts — walkAwayEnding unconditionally says traveler does not learn whether account was true"
+          ],
+          "reviewNotes": "Current source retains the contradiction: leaving after confession records identifiedSilas/learned truth, but shared text says the account’s truth remains unknown. The current tests do not cover this specific contrast.",
+          "crossClusterFindingIds": [
+            "O01-013",
+            "O01-014"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-013",
+          "cluster": "RC07",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        },
+        {
+          "findingId": "O01-014",
+          "cluster": "RC05",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "OPEN"
+    },
+    {
+      "adventureId": "the-last-survey",
+      "slug": "the-last-survey",
+      "title": "The Last Survey",
+      "sourceFile": "gearCorrectiveBatch.ts",
+      "adventureIndex": 459,
+      "findings": [
+        {
+          "findingId": "R371-025",
+          "severity": "MEDIUM",
+          "auditText": "Map-only-current route ends both lines recorded",
+          "auditWitness": "verified.recordOnlyCurrentRoute > settlement.takeWage > coins",
+          "auditEvidence": "Player specifically selects current route only; coins says map records old and new lines.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-lodge-wall-under-new-paint",
+      "slug": "the-lodge-wall-under-new-paint",
+      "title": "The Lodge Wall Under New Paint",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 833,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-long-way-home",
+      "slug": "the-long-way-home",
+      "title": "The Long Way Home",
+      "sourceFile": "longWayHome.ts",
+      "adventureIndex": 8,
+      "findings": [
+        {
+          "findingId": "O01-022",
+          "severity": "HIGH",
+          "auditText": "Immediate refusal reveals hidden name and recalls unheard call",
+          "auditWitness": "encounter.leaveAtMilepost > abandonedEnding",
+          "auditEvidence": "Opening only Anna Bell; ending calls her Rowan and asks why someone called her another name before pursuer ever appears. Late stormTurn38 variants also omit Rowan call while askAnnaAboutRowan assumes it.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "longWayHome.test.ts — keeps abandonment text within information established by route",
+            "longWayHome.test.ts — informed and legacy abandonment save/reload contrast"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-023",
+            "O01-025",
+            "O01-026",
+            "O01-027"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-024",
+          "severity": "MEDIUM",
+          "auditText": "Clinic handover ending uses promise despite treatment already underway",
+          "auditWitness": "townCare.returnBookToBenn > handOverEnding; pursuerAccount.handLedgerToBenn > same ending",
+          "auditEvidence": "Clinic route doctor already treating; ending only Benn promises future doctor. Trail handover invents warden record with no town/warden contact.",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "longWayHome.ts — both audited handover routes converge on handOverEnding",
+            "longWayHome.ts — handOverEnding unconditionally promises doctor visit and warden record"
+          ],
+          "reviewNotes": "Current shared ending still states a doctor visit and warden record despite route variants that do not establish those same events; no test directly contrasts both handover routes.",
+          "crossClusterFindingIds": [
+            "O01-023",
+            "O01-025",
+            "O01-026",
+            "O01-027"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-023",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "O01-025",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-026",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-027",
+          "cluster": "RC05",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "OPEN"
+    },
+    {
+      "adventureId": "the-lost-payroll",
+      "slug": "the-lost-payroll",
+      "title": "The Lost Payroll",
+      "sourceFile": "lostPlacesBatch.ts",
+      "adventureIndex": 298,
+      "findings": [
+        {
+          "findingId": "R125-071",
+          "severity": "MEDIUM",
+          "auditText": "Every search path resolves unseen duplicate records and undamaged drain",
+          "auditWitness": "notice.followCreek → siding.sidingStop → discovery; trench.trenchSearch failure → trenchSlip.slipLeave → discovery",
+          "auditEvidence": "Stopping at siding never checks pay office, yet ending record proves returned/paid and siblings get answer. Failed excavation explicitly fills drain, ending drain intact.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-man-eater-of-millers-gap",
+      "slug": "the-man-eater-of-millers-gap",
+      "title": "The Man-Eater of Miller’s Gap",
+      "sourceFile": "monsterHuntThird.ts",
+      "adventureIndex": 323,
+      "findings": [
+        {
+          "findingId": "R125-087",
+          "severity": "MEDIUM",
+          "auditText": "The ending denies the directly observed predator location.",
+          "auditWitness": "sheepMoved.watchWithFieldGlasses -> catSeenAtDistance.retreatObservedLion -> gapAfter",
+          "auditEvidence": "Field Glasses identify a mountain lion watching from the ledge; final text says The cat has not been located. Normal catSeen.retreatLion has the same contradiction.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-man-in-the-ditch",
+      "slug": "the-man-in-the-ditch",
+      "title": "The Man in the Ditch",
+      "sourceFile": "manInTheDitch.ts",
+      "adventureIndex": 21,
+      "findings": [
+        {
+          "findingId": "O15-019",
+          "severity": "MEDIUM",
+          "auditText": "No-pouch investigation still asserts proven theft in choices and ending",
+          "auditWitness": "roadsideDiscovery/inspectRoadside -> firstEvidence/followBootprints -> treeLineEvidence/returnToRowanAfterTracks -> confrontationReveal/leaveAfterReveal -> walkAwayAfterReveal",
+          "auditEvidence": "roadsideDiscovery/inspectRoadside -> firstEvidence/followBootprints -> treeLineEvidence/returnToRowanAfterTracks -> confrontationReveal/leaveAfterReveal -> walkAwayAfterReveal — Without pouch, confrontation explicitly says cannot determine whether account confused or another man acted alone. Yet keepHelpingAfterReveal label says despite theft, and walkAwayAfterReveal definitively knows he lied and partner took mill pouch. No new admission occurred.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "manInTheDitch.test.ts — no-pouch confrontation and withdrawal remain uncertain; farmer inquiry not treated as proof"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-020",
+            "O15-022",
+            "O15-023"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O15-021",
+          "severity": "MEDIUM",
+          "auditText": "Stolen coins and unrecovered evidence are erased by official endings",
+          "auditWitness": "pouchRecovered/takeTwoCoins -> confrontationReveal/takeEvidenceToWarden -> wardenAndRowan/leaveAfterWarden -> wardenEnding; or takeSignalMirrorFromWarden -> mirrorRewardEnding",
+          "auditEvidence": "pouchRecovered/takeTwoCoins -> confrontationReveal/takeEvidenceToWarden -> wardenAndRowan/leaveAfterWarden -> wardenEnding; or takeSignalMirrorFromWarden -> mirrorRewardEnding — Player keeps money2 with no reversal, yet wardenEnding says carries no money/property from scene; mirror ending says not a share of stolen money. Mirror also available without pouchRecovered, yet claims returned evidence and mill keeps pay. Endings certify honesty/recovery regardless actual state.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "manInTheDitch.test.ts — warden ending truthful without pouch/when coins taken; mirror does not claim evidence return without proof"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-020",
+            "O15-022",
+            "O15-023"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-020",
+          "cluster": "RC10",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-022",
+          "cluster": "RC10",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-023",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-man-who-came-back-wrong",
+      "slug": "the-man-who-came-back-wrong",
+      "title": "The Man Who Came Back Wrong",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 203,
+      "findings": [
+        {
+          "findingId": "R125-022",
+          "severity": "MEDIUM",
+          "auditText": "Uninvestigated route asserts sluice footprints and voice",
+          "auditWitness": "returnedWorker.giveSpace → workerAfter",
+          "auditEvidence": "Give sister privacy skips all evidence, but ending seals drain and says nobody explains second footprints or voice.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-man-who-sheds-his-skin",
+      "slug": "the-man-who-sheds-his-skin",
+      "title": "The Man Who Sheds His Skin",
+      "sourceFile": "monsterHuntSecond.ts",
+      "adventureIndex": 318,
+      "findings": [
+        {
+          "findingId": "R125-083",
+          "severity": "MEDIUM",
+          "auditText": "Returning a coat resolves the twin-brother mystery without discovering the brothers.",
+          "auditWitness": "identityEvidence.followCoachRoad -> coachTracks.returnCoat -> identityAfter",
+          "auditEvidence": "Only tailorFound establishes twin brothers and exchanged coats, but returnCoat skips it and ends with towns receiving that account.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-markers-stop",
+      "slug": "the-markers-stop",
+      "title": "The Markers Stop",
+      "sourceFile": "survivalExpeditionBatch.ts",
+      "adventureIndex": 228,
+      "findings": [
+        {
+          "findingId": "R125-032",
+          "severity": "MEDIUM",
+          "auditText": "Crew thanks player for a marker never placed",
+          "auditWitness": "markerEnd.followMarkerStones → markerWest",
+          "auditEvidence": "Only markOwnReturn uses carried foldingTrailMarker; direct west route reaches ending glad you left your own sign.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-millers-beast",
+      "slug": "the-millers-beast",
+      "title": "The Miller’s Beast",
+      "sourceFile": "monsterHuntSecond.ts",
+      "adventureIndex": 312,
+      "findings": [
+        {
+          "findingId": "R125-080",
+          "severity": "MEDIUM",
+          "auditText": "Converging scenes replace the chosen event with a different machine event.",
+          "auditWitness": "millCadence.watchOneTurn -> millVisitor; millVisitor.cornerBadger failure -> millInjury",
+          "auditEvidence": "Wait one more wheel turn immediately says With the wheel stopped; badger bite failure becomes belt tears your sleeve in terminal.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-millwheel-hand",
+      "slug": "the-millwheel-hand",
+      "title": "The Millwheel Hand",
+      "sourceFile": "competitionGearGenreBatch.ts",
+      "adventureIndex": 600,
+      "findings": [
+        {
+          "findingId": "P08",
+          "severity": "MEDIUM",
+          "auditText": "Forcing the warned-against extra turn becomes caution in the ending",
+          "auditWitness": "inspect.tightenBelt → test.forceTurn [success] → stopped",
+          "auditEvidence": "Player deliberately forces another turn after an immediate stop call. Shared stopped ending credits 'your caution' with preventing belt slip, without showing the intended unsafe action fail or change.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-mineshaft-lamp",
+      "slug": "the-mineshaft-lamp",
+      "title": "The Lamp in the Upper Cut",
+      "sourceFile": "salvageRecoveryGenreBatch.ts",
+      "adventureIndex": 589,
+      "findings": [
+        {
+          "findingId": "R371-059",
+          "severity": "MEDIUM",
+          "auditText": "Payment ending confirms two lamps although lower light remains unverified",
+          "auditWitness": "decision.takeFee > paid",
+          "auditEvidence": "Only upper lamp positively identified; lower flicker explicitly may be reflection and is not evidence of person. paid appends leave both lamps with crew.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-054"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-054",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-missing-assayer",
+      "slug": "the-missing-assayer",
+      "title": "The Missing Assayer",
+      "sourceFile": "frontierDiscoveryBatch.ts",
+      "adventureIndex": 356,
+      "findings": [
+        {
+          "findingId": "F351-003",
+          "severity": "MEDIUM",
+          "auditText": "Waiting at the door becomes a completed ridge check",
+          "auditWitness": "Evidence.callFromDoor → Wait.leaveStationNote → Cautious",
+          "auditEvidence": "The chosen route calls and waits at the station, but the shared ending records the route you checked and describes the ridge trail as passable. Only the alternative ridge route examines it.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "F351-004"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "F351-004",
+          "cluster": "RC05",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-needle-at-the-north-station",
+      "slug": "the-needle-at-the-north-station",
+      "title": "The Needle at the North Station",
+      "sourceFile": "equipmentTestingGenreBatch.ts",
+      "adventureIndex": 667,
+      "findings": [
+        {
+          "findingId": "R616-023",
+          "severity": "MEDIUM",
+          "auditText": "Reopening line acquires a rider-only delivery history",
+          "auditWitness": "office/testNear -> line/openContact -> offer/coin -> paid",
+          "auditEvidence": "office/testNear -> line/openContact -> offer/coin -> paid — openContact reopens repaired line, while only the sibling runner choice sends a rider. paid specifically records message traveled by rider during repair. No rider is dispatched on this branch.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-old-survey-stone",
+      "slug": "the-old-survey-stone",
+      "title": "The Old Survey Stone",
+      "sourceFile": "lostPlacesBatch.ts",
+      "adventureIndex": 292,
+      "findings": [
+        {
+          "findingId": "R125-067",
+          "severity": "MEDIUM",
+          "auditText": "Boundary-only route returns calf without finding it",
+          "auditWitness": "fence.askNeighbors → accounts.askSurveyCopy → survey.surveyShare → resolved",
+          "auditEvidence": "No calf search on survey route; resolved/settled say animal home and calf returned.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-old-well-house",
+      "slug": "the-old-well-house",
+      "title": "The Old Well House",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 836,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-03",
+            "CON-04",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-03",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-04",
+          "cluster": "RC05",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-outlaws-mother",
+      "slug": "the-outlaws-mother",
+      "title": "The Outlaw’s Mother",
+      "sourceFile": "westernOutlawBatch.ts",
+      "adventureIndex": 286,
+      "findings": [
+        {
+          "findingId": "R125-064",
+          "severity": "MEDIUM",
+          "auditText": "Refusing transfer still delivers family news",
+          "auditWitness": "porch.carrySealed → canyon.refuseTransfer → departure",
+          "auditEvidence": "Player keeps sealed letter and leaves; ending says family news reaches destination. Direct sealed route also asks about unknown account book.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-pageant-problem",
+      "slug": "the-pageant-problem",
+      "title": "The Pageant Problem",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 247,
+      "findings": [
+        {
+          "findingId": "R125-044",
+          "severity": "MEDIUM",
+          "auditText": "Adult substitute is praised for not replacing children with adults",
+          "auditWitness": "hall.suggestSubstitute → rehearsal → performance → applause",
+          "auditEvidence": "Traveler offers speaking part but generic scene never resolves who performs; applause explicitly thanks avoiding adult replacement.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-paper-tube",
+      "slug": "the-paper-tube",
+      "title": "The Paper Tube",
+      "sourceFile": "expeditionLogisticsGenreBatch.ts",
+      "adventureIndex": 650,
+      "findings": [
+        {
+          "findingId": "R616-017",
+          "severity": "MEDIUM",
+          "auditText": "Borrowed box is returned on a route that never borrowed it",
+          "auditWitness": "packet/wrapTube -> transfer/holdLine -> paid/wage -> coinEnd",
+          "auditEvidence": "packet/wrapTube -> transfer/holdLine -> paid/wage -> coinEnd — This route wraps a tube on deck and helps with a rope; coinEnd says return the borrowed ferry box. Only useLocker established borrowing a box.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-public-apology",
+      "slug": "the-public-apology",
+      "title": "The Public Apology",
+      "sourceFile": "surpriseSocialBatch.ts",
+      "adventureIndex": 379,
+      "findings": [
+        {
+          "findingId": "R371-003",
+          "severity": "MEDIUM",
+          "auditText": "Ending denies disclosure that already happened",
+          "auditWitness": "stall.blameOriginalSpeaker > blame.withdrawClaim > apology",
+          "auditEvidence": "Player names original complainer; ending says corrects statement without naming its source.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-quartermasters-tally",
+      "slug": "the-quartermasters-tally",
+      "title": "The Quartermaster’s Tally",
+      "sourceFile": "gearCorrectiveBatch.ts",
+      "adventureIndex": 460,
+      "findings": [
+        {
+          "findingId": "R371-024",
+          "severity": "MEDIUM",
+          "auditText": "Chosen tools load changes to chest left unsecured",
+          "auditWitness": "camp.secureTools > weather.leaveUnsecuredLoad > leftLoad",
+          "auditEvidence": "weather says chosen load secure and other shifted; leftLoad always says shifted chest.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-ramp-for-the-grain-cart",
+      "slug": "the-ramp-for-the-grain-cart",
+      "title": "The Ramp for the Grain Cart",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 828,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-riverboat-cache",
+      "slug": "the-riverboat-cache",
+      "title": "The Riverboat Cache",
+      "sourceFile": "lostPlacesBatch.ts",
+      "adventureIndex": 300,
+      "findings": [
+        {
+          "findingId": "R125-073",
+          "severity": "MEDIUM",
+          "auditText": "Rope appears without supply and left contents count as recovered",
+          "auditWitness": "bank.askFerryman → claims.claimsOpen → secured; contents.contentsKeep → resolved → salvaged",
+          "auditEvidence": "claimsOpen ungated no rope creates rope securing locker; keep all contents with hull ends ledger recovered and corrects shipment.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-road-below",
+      "slug": "the-road-below",
+      "title": "The Road Below",
+      "sourceFile": "theRoadBelow.ts",
+      "adventureIndex": 13,
+      "findings": [
+        {
+          "findingId": "O01-043",
+          "severity": "HIGH",
+          "auditText": "Early retreat ending knows unseen Neri and invents road marking",
+          "auditWitness": "roadsideDiscovery.inspectFreshTracks > freshTracks.followTracksToOpening > hazardAssessment.chooseDirectDescent > directDescent.retreatFromDirectLip > personLeftEnding",
+          "auditEvidence": "Player never enters/meets Neri or marks road; ending opening is marked and asks whether Neri found. Same unmarked low-drain retreat.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "theRoadBelow.test.ts — early retreat separate from road marking/Neri thread",
+            "theRoadBelow.test.ts — road marking only when existing run flag proves it",
+            "theRoadBelow.test.ts — neutral legacy result wording"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O01-045",
+            "O01-046",
+            "O01-047",
+            "O01-048"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "O01-044",
+          "severity": "MEDIUM",
+          "auditText": "Failure to brace safely outside becomes fall inside",
+          "auditWitness": "braceLip.braceLipWithGear failure > entrySlip",
+          "auditEvidence": "Failure message you pull clear before edge slumps; next scene loose bank slumps behind you and take hard fall below, with channel routes only.",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "theRoadBelow.ts — failed bracing result says traveler pulls clear before edge slumps then targets entrySlip",
+            "theRoadBelow.ts — entrySlip says loose bank slumps behind traveler and causes hard knock"
+          ],
+          "reviewNotes": "The failure result says the Traveler pulls clear before the edge slumps, but entrySlip narrates being struck as the bank slumps behind them; the same result does not preserve the stated position.",
+          "crossClusterFindingIds": [
+            "O01-045",
+            "O01-046",
+            "O01-047",
+            "O01-048"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O01-045",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-046",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-047",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O01-048",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "LOW"
+        }
+      ],
+      "status": "OPEN"
+    },
+    {
+      "adventureId": "the-school-bell-frame",
+      "slug": "the-school-bell-frame",
+      "title": "The School Bell Frame",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 832,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-sealed-mine-office",
+      "slug": "the-sealed-mine-office",
+      "title": "The Sealed Mine Office",
+      "sourceFile": "lostPlacesBatch.ts",
+      "adventureIndex": 293,
+      "findings": [
+        {
+          "findingId": "R125-068",
+          "severity": "MEDIUM",
+          "auditText": "Copying exterior title reveals private wage/transfer conclusion",
+          "auditWitness": "porch.lookShutter → window.windowLeave → discovery",
+          "auditEvidence": "Map title only outside; ending knows late wages and move to another claim discovered only records.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-silent-hound",
+      "slug": "the-silent-hound",
+      "title": "The Silent Hound",
+      "sourceFile": "adventurerSupportGenreBatch.ts",
+      "adventureIndex": 474,
+      "findings": [
+        {
+          "findingId": "R371-036",
+          "severity": "HIGH",
+          "auditText": "Search withdrawal ends with missing hand found",
+          "auditWitness": "complication.response_withdraw > settlement.acceptGear > gear",
+          "auditEvidence": "Response marks site for later search; gear ending asserts missing hand found and dog watered.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-033"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-033",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-silted-toolbox",
+      "slug": "the-silted-toolbox",
+      "title": "The Toolbox at Low Water",
+      "sourceFile": "salvageRecoveryGenreBatch.ts",
+      "adventureIndex": 568,
+      "findings": [
+        {
+          "findingId": "R371-060",
+          "severity": "MEDIUM",
+          "auditText": "Limited recovery pays for private chest that was left unsafe",
+          "auditWitness": "arrival.verifyFirst > evidence.secureRecovery > decision.takeFee > paid",
+          "auditEvidence": "Rod consequence private object remains beyond safe reach; secureRecovery moves only clearly authorized crew box; paid claims carpenter marked chest returned to owner.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-054"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-054",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-sound-in-the-well",
+      "slug": "the-sound-in-the-well",
+      "title": "The Sound in the Well",
+      "sourceFile": "soundInWell.ts",
+      "adventureIndex": 26,
+      "findings": [
+        {
+          "findingId": "O15-031",
+          "severity": "MEDIUM",
+          "auditText": "Failed self-escape rescues worker without placing them on rope",
+          "auditWitness": "voiceBelow/descendWell failure -> wellFall/climbFromFall failure -> playerDiesWorkerLives",
+          "auditEvidence": "voiceBelow/descendWell failure -> wellFall/climbFromFall failure -> playerDiesWorkerLives — Worker remains pinned and was never put in loop; player chooses own escape. Failure says rope tears free as wall collapses, yet ending says worker is hauled up alive. No mechanism or rescuer frees them or replaces torn rope.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "soundInWell.ts — playerDiesWorkerLives uses workerOnRope / workerRemainedBelow variants; base text preserves unknown location"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-030",
+            "O15-032"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-030",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-032",
+          "cluster": "RC11",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-squires-pack",
+      "slug": "the-squires-pack",
+      "title": "The Squire’s Pack",
+      "sourceFile": "gearCorrectiveBatch.ts",
+      "adventureIndex": 458,
+      "findings": [
+        {
+          "findingId": "R371-023",
+          "severity": "HIGH",
+          "auditText": "No-recovery route says stakes recovered",
+          "auditWitness": "pack.giveToolkit > ridge.takeLongRoute > arrival.takeTwoCoins > paid",
+          "auditEvidence": "arrival and paid credit recovered stakes, although left tin below. All ridge replacement variants suppress introduction of dropped tin and washout geometry.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-theater-that-never-opened",
+      "slug": "the-theater-that-never-opened",
+      "title": "The Theater That Never Opened",
+      "sourceFile": "constructionBuildingStructuralWorkGenreBatch.ts",
+      "adventureIndex": 835,
+      "findings": [
+        {
+          "findingId": "CON-02",
+          "severity": "HIGH",
+          "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
+          "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
+          "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "CON-01",
+            "CON-05"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "CON-01",
+          "cluster": "RC13",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "CON-05",
+          "cluster": "RC11",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-third-knock",
+      "slug": "the-third-knock",
+      "title": "The Third Knock",
+      "sourceFile": "occultInvestigationBatch.ts",
+      "adventureIndex": 205,
+      "findings": [
+        {
+          "findingId": "R125-023",
+          "severity": "MEDIUM",
+          "auditText": "Burned blank letter remembers name never revealed",
+          "auditWitness": "thirdKnockFirst.watchLetter → thirdKnockSecond.burnLetter → thirdKnockAfter",
+          "auditEvidence": "Name only appears thirdKnockMessage; burn from Second with blank page still says name it showed stays with you. Porch followPrints also jumps to name appearing where you read without any reading.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-voice-in-the-mine",
+      "slug": "the-voice-in-the-mine",
+      "title": "The Voice in the Mine",
+      "sourceFile": "strangeRoadsBatch.ts",
+      "adventureIndex": 120,
+      "findings": [
+        {
+          "findingId": "P40",
+          "severity": "MEDIUM",
+          "auditText": "Meeting the worker does not survive into the departure",
+          "auditWitness": "otherWorker branch → mineSafeExit",
+          "auditEvidence": "The worker appears and explains their need for a lantern. The shared exit still presents the voice as an unresolved worker, echo, or no one.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "strangeRoadsBatch.test.ts — does not turn encountered mine worker back into unresolved possible voice"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-washout",
+      "slug": "the-washout",
+      "title": "The Washout",
+      "sourceFile": "washout.ts",
+      "adventureIndex": 37,
+      "findings": [
+        {
+          "findingId": "RO29-10",
+          "severity": "HIGH",
+          "auditText": "A failed cart recovery becomes successful delivery at the terminal.",
+          "auditWitness": "rescueAfterRain.guideCourierRope failure -> cartRecovered",
+          "auditEvidence": "Failure says cart catches at bend and courier must go on alone; next cartRecovered says farm team brings courier and medicine cart, supplies reach village.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "RO29-11",
+            "RO29-12"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "RO29-11",
+          "cluster": "RC09",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "RO29-12",
+          "cluster": "RC15",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-weight-of-gold",
+      "slug": "the-weight-of-gold",
+      "title": "The Weight of Gold",
+      "sourceFile": "weightOfGold.ts",
+      "adventureIndex": 17,
+      "findings": [
+        {
+          "findingId": "O15-005",
+          "severity": "MEDIUM",
+          "auditText": "Shipment completion knows Pell’s role without investigating him",
+          "auditWitness": "freightWreck/treatGuardFirst -> guardTreated/secureWagonWithAda success -> securedWagon/escortShipment -> shipmentReturned -> shipmentRewardEnding (also helpRoute approaches)",
+          "auditEvidence": "freightWreck/treatGuardFirst -> guardTreated/secureWagonWithAda success -> securedWagon/escortShipment -> shipmentReturned -> shipmentRewardEnding (also helpRoute approaches) — Pell remains missing and his role unknown. shipmentReturned nevertheless says Pell’s role is reported plainly, broken axle not his work, and final says people on road safe. None of these branches locates him or learns his theft/route plan.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "weightOfGold.test.ts — recalls axle inspection without declaring Pell truthful"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "O15-006",
+            "O15-007",
+            "O15-008"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-006",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-007",
+          "cluster": "RC08",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        },
+        {
+          "findingId": "O15-008",
+          "cluster": "RC10",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "the-wheel-of-the-return-wagon",
+      "slug": "the-wheel-of-the-return-wagon",
+      "title": "The Return Wagon",
+      "sourceFile": "expeditionLogisticsGenreBatch.ts",
+      "adventureIndex": 662,
+      "findings": [
+        {
+          "findingId": "R616-020",
+          "severity": "MEDIUM",
+          "auditText": "Pump-first outcome forgets the chosen delivery",
+          "auditWitness": "return/pumpFirst -> check/handCarryPump -> paid",
+          "auditEvidence": "return/pumpFirst -> check/handCarryPump -> paid — Player chooses carrying pump to restore water station and explicitly hand-delivers it there. Shared paid scene instead prioritizes samples and says pump delivered later, matching only samples-first plan.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-whistle-and-the-wind",
+      "slug": "the-whistle-and-the-wind",
+      "title": "The Whistle and the Wind",
+      "sourceFile": "surpriseCompetitionBatch.ts",
+      "adventureIndex": 390,
+      "findings": [
+        {
+          "findingId": "R371-005",
+          "severity": "MEDIUM",
+          "auditText": "Chosen lark becomes kettle performance",
+          "auditWitness": "contest.listenToBird > listening.repeatCall > round",
+          "auditEvidence": "repeatCall says lark call; round title and prose assert kettle imitation.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-winds-other-side",
+      "slug": "the-winds-other-side",
+      "title": "The Wind’s Other Side",
+      "sourceFile": "wildernessFieldcraftGenreBatch.ts",
+      "adventureIndex": 621,
+      "findings": [
+        {
+          "findingId": "R616-003",
+          "severity": "MEDIUM",
+          "auditText": "Shared ending invents sparks on the brush-bench route",
+          "auditWitness": "shelter/chooseBrush -> bench/leaveCrate -> partial",
+          "auditEvidence": "shelter/chooseBrush -> bench/leaveCrate -> partial — The chosen route moves bedding to the sheltered brush bench and leaves an empty crate. partial instead says bedding was moved before sparks spread and the crew keeps a cold watch. Sparks exist only on the separate stone-lee route.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R616-004"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R616-004",
+          "cluster": "RC13",
+          "status": "MINOR CONCERN",
+          "severity": "LOW"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "the-wire-that-sang-twice",
+      "slug": "the-wire-that-sang-twice",
+      "title": "The Wire That Sang Twice",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 839,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "three-points-down",
+      "slug": "three-points-down",
+      "title": "Three Points Down",
+      "sourceFile": "adventurerSupportGenreBatch.ts",
+      "adventureIndex": 469,
+      "findings": [
+        {
+          "findingId": "R371-035",
+          "severity": "MEDIUM",
+          "auditText": "Recovered tin becomes unrecovered in followup",
+          "auditWitness": "complication.response_line > followup",
+          "auditEvidence": "Response retrieves tin from firm side; followup says tin still visible below and choices leave it.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "R371-033"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "R371-033",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        }
+      ],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "town-name-that-moved",
+      "slug": "town-name-that-moved",
+      "title": "The Town Name That Moved",
+      "sourceFile": "courierMailTelegraphGenreBatch.ts",
+      "adventureIndex": 851,
+      "findings": [
+        {
+          "findingId": "COU-01",
+          "severity": "HIGH",
+          "auditText": "Outright job refusal still awards the full delivery reward",
+          "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
+          "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        },
+        {
+          "findingId": "COU-05",
+          "severity": "MEDIUM",
+          "auditText": "Concealing a broken seal is replaced by an unchosen delay action",
+          "auditWitness": "handling/openSealedMessage -> opened/concealOpening -> delayed",
+          "auditEvidence": "handling/openSealedMessage -> opened/concealOpening -> delayed — Player chooses reseal and say nothing. delayed instead narrates w.delay: waiting for rail protection, returning to coach office, asking clerk to record seal, keeping archive closed, or giving family time. No bridge explains how concealment produces those distinct actions, and some say keep it closed after it was opened. Breach is stored but its immediate narrative/custody disappears.",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — keeps concealed opening distinct from each story’s unrelated delay result, including after reload"
+          ],
+          "reviewNotes": "Current route/result is route-aware; cited test or source directly exercises the audit distinction.",
+          "crossClusterFindingIds": [
+            "COU-02",
+            "COU-03",
+            "COU-04"
+          ],
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "COU-02",
+          "cluster": "RC06",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-03",
+          "cluster": "RC07",
+          "status": "CONFIRMED DEFECT",
+          "severity": "HIGH"
+        },
+        {
+          "findingId": "COU-04",
+          "cluster": "RC02",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "RECONCILED"
+    },
+    {
+      "adventureId": "toymakers-last-order",
+      "slug": "toymakers-last-order",
+      "title": "The Toymaker’s Last Order",
+      "sourceFile": "christmasAffinityBatch.ts",
+      "adventureIndex": 246,
+      "findings": [
+        {
+          "findingId": "R125-043",
+          "severity": "MEDIUM",
+          "auditText": "Simplifying route claims cracked tool repaired",
+          "auditWitness": "workshop.simplifyToy → finishToy.carveSimple → finishedHorse",
+          "auditEvidence": "No binding/glue occurs; shared finishedHorse says repaired tool set aside.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [],
+      "status": "UNREVIEWED"
+    },
+    {
+      "adventureId": "under-the-ice",
+      "slug": "under-the-ice",
+      "title": "Under the Ice",
+      "sourceFile": "underTheIce.ts",
+      "adventureIndex": 23,
+      "findings": [
+        {
+          "findingId": "O15-026",
+          "severity": "LOW",
+          "auditText": "Successful rope catch becomes a missed first throw after haul failure",
+          "auditWitness": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss",
+          "auditEvidence": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss — Victim caught rope and lost it during hauling; failure message says rope jerks free. ropeMiss instead says first throw missed, and elapsed variant says rope missed again. The current rescue progress is rewritten.",
+          "status": "UNREVIEWED",
+          "evidence": [],
+          "reviewNotes": "",
+          "crossClusterFindingIds": [
+            "O15-027"
+          ],
+          "reviewedAtMainSha": null
+        }
+      ],
+      "crossClusterFindings": [
+        {
+          "findingId": "O15-027",
+          "cluster": "RC14",
+          "status": "CONFIRMED DEFECT",
+          "severity": "MEDIUM"
+        }
+      ],
+      "status": "UNREVIEWED"
+    }
+  ],
+  "nonCanonicalHistoricalWork": [
+    {
+      "slug": "the-empty-cabin",
+      "classification": "FALSE_POSITIVE",
+      "canonical": false,
+      "excludedFromCounters": true
+    },
+    {
+      "slug": "the-pale-children-of-the-quarry",
+      "classification": "MINOR_CONCERN",
+      "canonical": false,
+      "excludedFromCounters": true
+    },
+    {
+      "slug": "the-skin-in-the-tree",
+      "classification": "MINOR_CONCERN",
+      "canonical": false,
+      "excludedFromCounters": true
+    },
+    {
+      "slug": "the-empty-wagon",
+      "classification": "MINOR_CONCERN",
+      "canonical": false,
+      "excludedFromCounters": true
+    }
+  ]
+}
