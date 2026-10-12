@@ -133,8 +133,9 @@ export const BRIDGE_OUT: Scenario = {
       ],
     },
     costlySuccess: {
-      id: 'costlySuccess', title: 'Everything Across, Not Everything Saved', tone: 'warning',
-      text: 'The lightened wagon reaches the far side with {{travelerOne}} and {{travelerTwo}}, but the medicine chest breaks loose on the last jolt and disappears into the current. {{travelerOne}} is disappointed and relieved at once. She thanks you for getting her brother across and makes no claim that the choice was simple.',
+      id: 'costlySuccess', title: 'A Lighter Crossing', tone: 'warning',
+      text: 'The lighter wagon reaches the far side with {{travelerOne}} and {{travelerTwo}}. The medicine chest is not with them; from here, no one can tell what became of it. {{travelerOne}} is relieved her brother crossed and makes no claim that the choice was simple.',
+      textVariants: [{ requirements: { flags: ['medicineSaved'] }, text: 'The medicine chest was set aside on the near bank before the crossing, out of the current. The lighter wagon reaches the far side with {{travelerOne}} and {{travelerTwo}}, but the chest has not crossed with them. {{travelerOne}} is relieved her brother crossed and makes no claim that the choice was simple.' }],
       choices: [
         { id: 'leaveCostlyCrossing', label: 'Continue downriver with them', effects: { historyFlags: ['helped_stranded_travelers', 'saved_people_over_cargo'] }, next: 'costlyEnding' },
       ],
@@ -211,7 +212,12 @@ export const BRIDGE_OUT: Scenario = {
     repairEnding: { id: 'repairEnding', title: 'A Narrow Passage', text: 'The brace holds long enough for two people, not a wagon. {{travelerOne}} and {{travelerTwo}} continue toward the nearest settlement while the damaged bridge is marked closed. The river keeps rising behind you.', choices: [], ending: 'success' },
     ropeEnding: { id: 'ropeEnding', title: 'People Across', text: '{{travelerOne}} and {{travelerTwo}} are safe on the far bank. Their wagon remains behind, but they have time to return for it when the water falls. The bridge is left to the river.', choices: [], ending: 'success' },
     cargoEnding: { id: 'cargoEnding', title: 'The Wagon Makes It', text: 'The wagon and its medicine chest reach the far bank. {{travelerOne}} and {{travelerTwo}} are safe, though they waited while the heavier load crossed. The bridge is closed before anyone else attempts it.', choices: [], ending: 'success' },
-    costlyEnding: { id: 'costlyEnding', title: 'Safe, at a Cost', text: '{{travelerOne}} and {{travelerTwo}} make it across with the lighter wagon, but the medicine chest is gone to the river. Nobody calls the choice easy. The bridge is closed, and the three of you continue by the road.', choices: [], ending: 'success' },
+    costlyEnding: {
+      id: 'costlyEnding', title: 'Safe, With Cargo Apart',
+      text: '{{travelerOne}} and {{travelerTwo}} continue by the road with the lighter wagon. The medicine chest is not with them, and its fate remains unclear. The bridge is closed.',
+      textVariants: [{ requirements: { flags: ['medicineSaved'] }, text: '{{travelerOne}} and {{travelerTwo}} continue by the road with the lighter wagon. The medicine chest was set aside on the near bank, out of the river; it is safe, but has not crossed with them. The bridge is closed.' }],
+      choices: [], ending: 'success',
+    },
     fordEnding: { id: 'fordEnding', title: 'The Downstream Crossing', text: 'The longer route gets the travelers across while the bridge continues to fail behind them. The wagon and its cargo remain, but {{travelerOne}} has her brother and the road wardens know the crossing is unsafe.', choices: [], ending: 'success' },
     helpEnding: { id: 'helpEnding', title: 'A Rescue Shared', text: 'The road wardens escort everyone away from the water. The wagon will be recovered later, if it can be. {{travelerOne}} thanks you for buying enough time for help to arrive.', choices: [], ending: 'success' },
   },

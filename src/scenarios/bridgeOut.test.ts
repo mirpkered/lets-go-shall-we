@@ -105,15 +105,47 @@ describe('Bridge Out', () => {
     expect(cargoFirst.run?.status).toBe('success');
   });
 
-  it('supports a costly success where people cross but property is lost', () => {
+  it('preserves the saved medicine chest across the costly lightened-wagon success', () => {
     let state = act(fresh(), 'speakWithTravelers');
     state = act(state, 'considerWagon');
     state = act(state, 'freeWagonLoad', 0);
     expect(state.run?.sceneId).toBe('costlySuccess');
     expect(state.run?.flags).toContain('medicineSaved');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, state)).toContain('set aside on the near bank');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, state)).toContain('has not crossed with them');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, state)).not.toContain('breaks loose');
+    let raw: string | null = null;
+    const memory = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
+    saveGame(state, memory);
+    const resumed = loadSave(memory);
+    expect(resumed.run?.flags).toContain('medicineSaved');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, resumed)).toContain('set aside on the near bank');
     state = act(state, 'leaveCostlyCrossing');
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('costlyEnding');
+    expect(sceneText(BRIDGE_OUT.scenes.costlyEnding, state)).toContain('it is safe, but has not crossed with them');
+    expect(sceneText(BRIDGE_OUT.scenes.costlyEnding, state)).not.toContain('gone to the river');
+  });
+
+  it('uses neutral medicine wording for legacy costly-crossing saves without route proof', () => {
+    let state = act(fresh(), 'speakWithTravelers');
+    state = act(state, 'considerWagon');
+    state = act(state, 'freeWagonLoad', 0);
+    state.run!.flags = state.run!.flags.filter((flag) => flag !== 'medicineSaved');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, state)).toContain('from here, no one can tell what became of it');
+    expect(sceneText(BRIDGE_OUT.scenes.costlySuccess, state)).not.toContain('set aside on the near bank');
+    state = act(state, 'leaveCostlyCrossing');
+    expect(sceneText(BRIDGE_OUT.scenes.costlyEnding, state)).toContain('its fate remains unclear');
+    expect(sceneText(BRIDGE_OUT.scenes.costlyEnding, state)).not.toContain('it is safe');
+  });
+
+  it('keeps a failed lightened crossing distinct from the saved-medicine success route', () => {
+    let state = act(fresh(), 'speakWithTravelers');
+    state = act(state, 'considerWagon');
+    state = act(state, 'freeWagonLoad', 0.999);
+    expect(state.run?.sceneId).toBe('wagonShift');
+    expect(state.run?.flags).not.toContain('medicineSaved');
+    expect(sceneText(BRIDGE_OUT.scenes.wagonShift, state)).toContain('medicine chest stays tied down');
   });
 
   it('lets carried tools improve repair time while bare-handed repair remains viable', () => {
