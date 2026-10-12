@@ -324,7 +324,7 @@ export const ONE_MORE_ROUND: Scenario = {
       textVariants: [{ requirements: { minElapsedMinutes: 16 }, text: 'The stools have shifted and people are making room around Pell. His hands are visible, but his temper is not steady. The bartender has cleared the bottles. A calm word may still work; touching either person carries real risk.' }],
       choices: [
         { id: 'talkThemDown', label: 'Speak calmly and let each person finish', timeCost: 3, chance: { probability: 0.66, bonusFlags: ['heardOldDebt', 'heardWitnessAccount', 'retractedAccusation'], bonusProbability: 0.18, successNext: 'quietRewards', failureNext: 'threatMoment', successMessage: 'The pause gives Sella and Rafe room to hear each other.', failureMessage: 'The voices rise over yours, and Pell knocks his stool back.', successEffects: { setFlags: ['fightPrevented'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { setFlags: ['escalatedTavernDispute'] } } },
-        { id: 'separateWithGear', label: 'Use your gear to create space', hint: 'Gloves, a heavy candlestick, or a rope give you a safer way to separate them.', requirements: { anyItems: SEPARATION_GEAR }, timeCost: 2, chance: { probability: 0.7, bonusItems: SEPARATION_GEAR, bonusProbability: 0.16, successNext: 'fightStoppedAftercare', failureNext: 'fightWorsens', successMessage: 'You use the gear to make space without striking anyone.', failureMessage: 'Someone shoves back; you are hit as the table tips.', successEffects: { setFlags: ['fightStopped'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -3, setFlags: ['escalatedTavernDispute'] } } },
+        { id: 'separateWithGear', label: 'Use your gear to create space', hint: 'Gloves, a heavy candlestick, or a rope give you a safer way to separate them.', requirements: { anyItems: SEPARATION_GEAR }, timeCost: 2, chance: { probability: 0.7, bonusItems: SEPARATION_GEAR, bonusProbability: 0.16, successNext: 'quietRewards', failureNext: 'fightWorsens', successMessage: 'You use the gear to make space without striking anyone.', failureMessage: 'Someone shoves back; you are hit as the table tips.', successEffects: { setFlags: ['fightPrevented', 'usedGearToPreventFight'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -3, setFlags: ['escalatedTavernDispute'] } } },
         { id: 'callTheConstable', label: 'Send for the constable', hint: 'It will take time for help to arrive.', timeCost: 9, next: 'constableArrives', effects: { historyFlags: ['called_help_at_tavern'] } },
         { id: 'walkAwayFromIntervention', label: 'Step out before it turns physical', effects: { historyFlags: ['walked_away_from_tavern_dispute'] }, next: 'walkAwayEnding' },
       ],
@@ -410,11 +410,13 @@ export const ONE_MORE_ROUND: Scenario = {
     quietRewards: {
       id: 'quietRewards', title: 'The Voices Come Down',
       text: 'Sella thanks you for calming the room, and Rafe agrees to discuss the old repair debt in daylight. You have stopped the argument without deciding what happened to the money. The keeper offers a small token of thanks.',
+      textVariants: [{ requirements: { flags: ['usedGearToPreventFight'] }, text: 'Sella thanks you for giving the room space to cool. The argument has not been decided, but the immediate tension passes without a fight. The keeper offers a small token of thanks.' }],
       choices: rewardChoices('peacefulEnding'),
     },
     truthRewards: {
       id: 'truthRewards', title: 'A Better Account',
-      text: 'With the purse returned, Sella admits she was too quick to treat an old debt as proof. Rafe confirms the repair bill can be settled tomorrow. She offers you something useful for taking the time to find out.',
+      text: 'With the purse returned, Sella admits she was too quick to treat an old debt as proof. Rafe’s old repair bill was a separate matter from the accusation. She offers you something useful for taking the time to find out.',
+      textVariants: [{ requirements: { flags: ['paidRepairDebt'] }, text: 'With the purse returned, Sella admits she was too quick to treat an old debt as proof. You have also settled Rafe’s separate two-coin repair debt. She offers you something useful for taking the time to find out.' }],
       choices: rewardChoices('truthEnding'),
     },
     fightRewards: {
@@ -440,7 +442,10 @@ export const ONE_MORE_ROUND: Scenario = {
     peacefulEnding: {
       id: 'peacefulEnding', title: 'The Room Stays Whole', ending: 'success',
       text: 'The voices settle and the chairs go back under the tables. Sella and Rafe agree to discuss the repair debt tomorrow. The purse remains unaccounted for, but no one is forced into a judgment the room cannot support.',
-      textVariants: [{ requirements: { flags: ['fightPrevented'] }, text: 'Your calm words give everyone a moment to choose something other than anger. The voices settle and the chairs go back under the tables. The purse remains unaccounted for, but the room stays whole.' }],
+      textVariants: [
+        { requirements: { flags: ['usedGearToPreventFight'] }, text: 'Your gear gives Sella and Rafe room to step apart without striking anyone. Their disagreement remains unresolved, and the purse is still unaccounted for.' },
+        { requirements: { flags: ['fightPrevented'] }, text: 'Your calm words give everyone a moment to choose something other than anger. The voices settle and the chairs go back under the tables. The purse remains unaccounted for, but the room stays whole.' },
+      ],
       choices: [],
     },
     truthEnding: {

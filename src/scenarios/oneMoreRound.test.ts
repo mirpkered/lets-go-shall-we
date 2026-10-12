@@ -147,13 +147,43 @@ describe('One More Round', () => {
     expect(ONE_MORE_ROUND.scenes.paidDebtEnding.text).toContain('purse is still missing');
   });
 
+  it('keeps a paid debt paid in the purse-recovery reward scene and uses a neutral legacy fallback', () => {
+    let paid = fresh(2);
+    for (const id of ['listenFromBar', 'questionServerEarly', 'bringServerAccountToGroup', 'searchFromDispute', 'searchBenchByHand', 'payOldDebtAfterTruth']) paid = act(paid, id);
+    expect(paid.run?.sceneId).toBe('truthRewards');
+    expect(paid.run?.flags).toContain('paidRepairDebt');
+    expect(sceneText(ONE_MORE_ROUND.scenes.truthRewards, paid)).toMatch(/settled Rafe’s separate two-coin repair debt/i);
+    expect(sceneText(ONE_MORE_ROUND.scenes.truthRewards, paid)).not.toMatch(/settled tomorrow/i);
+
+    const legacy = fresh();
+    legacy.run!.sceneId = 'truthRewards';
+    expect(sceneText(ONE_MORE_ROUND.scenes.truthRewards, legacy)).toMatch(/repair bill was a separate matter/i);
+    expect(sceneText(ONE_MORE_ROUND.scenes.truthRewards, legacy)).not.toMatch(/settled|tomorrow/i);
+  });
+
+  it('keeps a successful pre-fight gear separation out of broken-glass and constable aftermath', () => {
+    let state = act(act(fresh(0, 'heavyLeatherGloves'), 'listenFromBar'), 'stepInBeforeAccusation');
+    state = act(state, 'separateWithGear', 0);
+    expect(state.run?.sceneId).toBe('quietRewards');
+    expect(state.run?.flags).toContain('usedGearToPreventFight');
+    expect(sceneText(ONE_MORE_ROUND.scenes.quietRewards, state)).toMatch(/space to cool/i);
+    expect(sceneText(ONE_MORE_ROUND.scenes.quietRewards, state)).not.toMatch(/glass is swept|constable|statements/i);
+
+    state = act(state, 'declineTavernRewardpeacefulEnding');
+    const ending = sceneText(ONE_MORE_ROUND.scenes.peacefulEnding, state);
+    expect(ending).toMatch(/gear gives Sella and Rafe room to step apart/i);
+    expect(ending).toMatch(/disagreement remains unresolved/i);
+    expect(ending).not.toMatch(/broken glass|constable|fight stopped/i);
+  });
+
   it('supports a gear-based physical intervention and offers visible carry rewards', () => {
     let state = act(act(fresh(0, 'heavyLeatherGloves'), 'listenFromBar'), 'stepInBeforeAccusation');
     const separate = options(state).find((choice) => choice.id === 'separateWithGear');
     expect(separate).toBeDefined();
     state = act(state, 'separateWithGear');
-    state = act(state, 'leaveAfterStoppingFight');
-    expect(state.run?.sceneId).toBe('fightStoppedEnding');
+    state = act(state, 'declineTavernRewardpeacefulEnding');
+    expect(state.run?.sceneId).toBe('peacefulEnding');
+    expect(sceneText(ONE_MORE_ROUND.scenes.peacefulEnding, state)).toMatch(/gear gives Sella and Rafe room to step apart/i);
 
     state = act(act(act(act(fresh(), 'listenFromBar'), 'questionServerEarly'), 'searchAfterServer'), 'searchBenchByHand', 0);
     state = act(state, 'returnPurseNoDebt');
