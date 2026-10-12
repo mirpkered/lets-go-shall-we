@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishSuccess, meets, newCharacter, startAdventure, startRun } from '../engine';
+import { choose, finishSuccess, meets, newCharacter, sceneText, startAdventure, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { selectScenario } from '../scenarioSelection';
@@ -50,6 +50,7 @@ describe('The Last Room on the Left', () => {
     state = pick(state, 'liftWithInnkeeper');
     state = pick(state, 'guideTheLift');
     expect(state.run?.sceneId).toBe('silasFree');
+    expect(sceneText(THE_LAST_ROOM.scenes.silasFree, state)).toContain('Silas Vale is out of the cellar');
     state = pick(state, 'acceptFoldingTool');
     expect(state.run?.sceneId).toBe('quietEnding');
     expect(state.run?.status).toBe('success');
@@ -68,6 +69,71 @@ describe('The Last Room on the Left', () => {
     state = pick(state, 'assistAuthorities');
     expect(state.run?.sceneId).toBe('silasFree');
     expect(state.run?.status).toBe('active');
+  });
+
+  it('keeps the failed shared lift distinct from an authority-led partial rescue through reload', () => {
+    expect(THE_LAST_ROOM.scenes.partialRescue.title).toBe('The Rescue Is Incomplete');
+    let shared = toCellar(fresh());
+    shared = pick(shared, 'getHelpForSilas');
+    shared = pick(shared, 'guideTheLift', () => 0.99);
+    expect(shared.run?.sceneId).toBe('partialRescue');
+    expect(shared.run?.flags).toContain('sharedRescue');
+    expect(shared.run?.flags).not.toContain('outsideHelp');
+    const sharedScene = sceneText(THE_LAST_ROOM.scenes.partialRescue, shared);
+    expect(sharedScene).toContain('Silas remains pinned beneath the shelf');
+    expect(sharedScene).toContain('Nell and the guests keep the load braced');
+    expect(sharedScene).not.toContain('The doctor stays with him');
+
+    shared = pick(shared, 'declinePartialReward');
+    expect(shared.run?.sceneId).toBe('partialEnding');
+    const saved = JSON.stringify(shared);
+    const resumed = loadSave({ getItem: (key: string) => key === SAVE_KEY ? saved : null } as Pick<Storage, 'getItem'> & Partial<Pick<Storage, 'setItem'>>);
+    expect(resumed.run?.sceneId).toBe('partialEnding');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, resumed)).toContain('Nell and the guests hold the shelf steady');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, resumed)).not.toContain('The doctor stays with him');
+
+    let assisted = toCellar(fresh());
+    assisted = pick(assisted, 'getHelpForSilas');
+    assisted = pick(assisted, 'sendForDoctorFirst');
+    assisted = pick(assisted, 'leaveAuthoritiesToIt');
+    expect(assisted.run?.sceneId).toBe('partialRescue');
+    expect(assisted.run?.flags).toContain('outsideHelp');
+    expect(assisted.run?.flags).not.toContain('authoritiesStabilized');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialRescue, assisted)).toContain('The doctor and constable are below with the injured traveler');
+    assisted = pick(assisted, 'declinePartialReward');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, assisted)).toContain('leave the doctor and constable to continue the rescue');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, assisted)).not.toContain('Nell and the guests hold the shelf steady');
+
+    let failedWithAuthorities = toCellar(fresh());
+    failedWithAuthorities = pick(failedWithAuthorities, 'getHelpForSilas');
+    failedWithAuthorities = pick(failedWithAuthorities, 'sendForDoctorFirst');
+    failedWithAuthorities = pick(failedWithAuthorities, 'assistAuthorities', () => 0.99);
+    expect(failedWithAuthorities.run?.sceneId).toBe('partialRescue');
+    expect(failedWithAuthorities.run?.flags).toContain('outsideHelp');
+    expect(failedWithAuthorities.run?.flags).toContain('authoritiesStabilized');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialRescue, failedWithAuthorities)).toContain('The doctor and constable have stabilized the injured traveler');
+    failedWithAuthorities = pick(failedWithAuthorities, 'declinePartialReward');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, failedWithAuthorities)).toContain('The doctor stays with him while the constable arranges a proper rescue');
+
+    let unidentified = toCellarWithoutName(fresh());
+    unidentified = pick(unidentified, 'getHelpForSilas');
+    unidentified = pick(unidentified, 'guideTheLift', () => 0.99);
+    expect(unidentified.run?.flags).not.toContain('identifiedSilas');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialRescue, unidentified)).toContain('The injured traveler remains pinned');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialRescue, unidentified)).not.toContain('Silas');
+    unidentified = pick(unidentified, 'declinePartialReward');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, unidentified)).toContain('The injured traveler is still pinned but alive');
+    expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, unidentified)).not.toContain('Silas');
+  });
+
+  it('uses neutral truthful partial-rescue wording when a legacy save lacks route proof', () => {
+    const legacy = fresh();
+    legacy.run!.sceneId = 'partialEnding';
+    legacy.run!.flags = [];
+    const text = sceneText(THE_LAST_ROOM.scenes.partialEnding, legacy);
+    expect(text).toContain('The rescue remains unfinished when you leave');
+    expect(text).toContain('does not establish whether he was freed or who stayed with him');
+    expect(text).not.toMatch(/doctor|constable|Nell|guests|still pinned/i);
   });
 
   it('introduces the mystery without revealing the missing traveler’s name before discovery', () => {

@@ -260,7 +260,7 @@ export const THE_LAST_ROOM: Scenario = {
       id: 'sharedRescue', title: 'More Hands at the Door',
       text: 'After your call, Nell comes down from the kitchen with a lantern. The innkeeper fetches two guests and returns with a length of beam. Nell stays near the door and keeps the injured traveler talking while you guide the lift. No one can make the cellar safe, but together you can shift the shelf without putting all the weight on one person.',
       choices: [
-        { id: 'guideTheLift', label: 'Guide the shared lift', chance: { probability: 0.86, successNext: 'silasFree', failureNext: 'partialRescue', successMessage: 'The beam takes the weight and Vale pulls his leg free.', failureMessage: 'The shelf shifts, but the group gets Vale clear with a badly bruised leg.', successEffects: { setFlags: ['sharedRescue'] }, failureEffects: { health: -1, setFlags: ['sharedRescue'] } } },
+        { id: 'guideTheLift', label: 'Guide the shared lift', chance: { probability: 0.86, successNext: 'silasFree', failureNext: 'partialRescue', successMessage: 'The beam takes the weight and the injured traveler pulls his leg free.', failureMessage: 'The shelf slips before the lift is secure. You, Nell, the innkeeper, and the guests brace it; the injured traveler stays pinned, badly bruised but alive.', successEffects: { setFlags: ['sharedRescue'] }, failureEffects: { health: -1, setFlags: ['sharedRescue'] } } },
         { id: 'sendForDoctorFirst', label: 'Send for a doctor before moving him', next: 'authoritiesCalled', effects: { setFlags: ['askedForHelp'], historyFlags: ['returned_for_authorities'] } },
       ],
     },
@@ -268,7 +268,7 @@ export const THE_LAST_ROOM: Scenario = {
       id: 'authoritiesCalled', title: 'Help on the Road', tone: 'warning',
       text: 'A constable and a doctor reach the rear passage with a lantern and a jack. They descend the seven cellar steps; the injured traveler is still trapped but answering. The storm has slowed their journey. Experienced hands can work under the damaged steps, but the cellar cannot be left as it is.',
       choices: [
-        { id: 'assistAuthorities', label: 'Help the doctor and constable lift the shelf', chance: { probability: 0.9, successNext: 'silasFree', failureNext: 'partialRescue', successMessage: 'The jack takes the load and Vale is brought out safely.', failureMessage: 'They stabilize Vale and his leg, but the shelf will take longer to move.', successEffects: { setFlags: ['outsideHelp'], historyFlags: ['returned_for_authorities'] }, failureEffects: { setFlags: ['outsideHelp'], historyFlags: ['returned_for_authorities'] } } },
+        { id: 'assistAuthorities', label: 'Help the doctor and constable lift the shelf', chance: { probability: 0.9, successNext: 'silasFree', failureNext: 'partialRescue', successMessage: 'The jack takes the load and Vale is brought out safely.', failureMessage: 'They stabilize Vale and his leg, but the shelf will take longer to move.', successEffects: { setFlags: ['outsideHelp'], historyFlags: ['returned_for_authorities'] }, failureEffects: { setFlags: ['outsideHelp', 'authoritiesStabilized'], historyFlags: ['returned_for_authorities'] } } },
         { id: 'leaveAuthoritiesToIt', label: 'Leave the cellar work to them', next: 'partialRescue', effects: { setFlags: ['outsideHelp'], historyFlags: ['returned_for_authorities'] } },
       ],
     },
@@ -286,8 +286,14 @@ export const THE_LAST_ROOM: Scenario = {
       ],
     },
     partialRescue: {
-      id: 'partialRescue', title: 'Safe, but Not Yet Free', tone: 'warning',
-      text: 'The injured traveler is alive and the cellar is shored up, but the shelf cannot be moved safely tonight. The doctor stays with him while the constable arranges a proper rescue. The innkeeper must answer for delaying help, though the full story is still being pieced together.',
+      id: 'partialRescue', title: 'The Rescue Is Incomplete', tone: 'warning',
+      text: 'The rescue is not complete. The injured traveler was alive when the last attempt ended, but this account does not establish who is still with him or whether the shelf has been moved. The cellar remains dangerous, and proper help is still needed.',
+      textVariants: [
+        { requirements: { flags: ['authoritiesStabilized'] }, text: 'The doctor and constable have stabilized the injured traveler, but the shelf has not been moved and he is not yet free. The doctor stays with him while the constable arranges a proper rescue. The innkeeper must answer for delaying help, though the full story is still being pieced together.' },
+        { requirements: { flags: ['outsideHelp'] }, text: 'The doctor and constable are below with the injured traveler, who remains trapped. You leave them to continue the rescue; the shelf has not been moved, and no extraction is established.' },
+        { requirements: { flags: ['sharedRescue', 'identifiedSilas'] }, text: 'Silas remains pinned beneath the shelf, badly bruised but alive. Nell and the guests keep the load braced while the innkeeper goes for a doctor and constable; the shared lift did not free him, and the cellar is still dangerous.' },
+        { requirements: { flags: ['sharedRescue'] }, text: 'The injured traveler remains pinned beneath the shelf, badly bruised but alive. Nell and the guests keep the load braced while the innkeeper goes for a doctor and constable; the shared lift did not free him, and the cellar is still dangerous.' },
+      ],
       choices: [
         { id: 'takeWedgeAfterPartial', label: 'Accept the folding pry tool for your help', requirements: { notItems: ['foldingPryTool'] }, next: 'partialEnding', effects: { gainItems: ['foldingPryTool'], historyFlags: ['uncovered_inn_truth', 'intervened_in_inn_dispute'] } },
         { id: 'declinePartialReward', label: 'Leave without taking anything', next: 'partialEnding', effects: { historyFlags: ['uncovered_inn_truth', 'intervened_in_inn_dispute'] } },
@@ -319,7 +325,15 @@ export const THE_LAST_ROOM: Scenario = {
     },
     partialEnding: {
       id: 'partialEnding', title: 'A Light Kept Below',
-      text: 'The doctor stays with the injured traveler until the proper rescue arrives. The cellar door is marked off until the steps can be repaired. You leave before the weather clears, knowing someone is alive below, while the consequences of the innkeeper’s delay are still unfolding.', choices: [], ending: 'success',
+      text: 'The rescue remains unfinished when you leave. The injured traveler was alive at the last account, but this ending does not establish whether he was freed or who stayed with him. The cellar is still dangerous, and the final outcome is unknown.',
+      textVariants: [
+        { requirements: { flags: ['authoritiesStabilized', 'identifiedSilas'] }, text: 'Silas remains trapped but stabilized when you leave. The doctor stays with him while the constable arranges a proper rescue; the shelf has not yet been moved, and his extraction is still ahead.' },
+        { requirements: { flags: ['authoritiesStabilized'] }, text: 'The injured traveler remains trapped but stabilized when you leave. The doctor stays with him while the constable arranges a proper rescue; the shelf has not yet been moved, and his extraction is still ahead.' },
+        { requirements: { flags: ['outsideHelp', 'identifiedSilas'] }, text: 'Silas is still trapped when you leave the doctor and constable to continue the rescue. The shelf has not been moved, and it is not yet established whether they freed him afterward.' },
+        { requirements: { flags: ['outsideHelp'] }, text: 'The injured traveler is still trapped when you leave the doctor and constable to continue the rescue. The shelf has not been moved, and it is not yet established whether they freed him afterward.' },
+        { requirements: { flags: ['sharedRescue', 'identifiedSilas'] }, text: 'Silas is still pinned but alive when you leave. Nell and the guests hold the shelf steady while the innkeeper goes for a doctor and constable. No rescue is complete yet; you leave before outside help arrives.' },
+        { requirements: { flags: ['sharedRescue'] }, text: 'The injured traveler is still pinned but alive when you leave. Nell and the guests hold the shelf steady while the innkeeper goes for a doctor and constable. No rescue is complete yet; you leave before outside help arrives.' },
+      ], choices: [], ending: 'success',
     },
     cellarFatalEnding: {
       id: 'cellarFatalEnding', title: 'Under the Broken Stair', tone: 'danger',
