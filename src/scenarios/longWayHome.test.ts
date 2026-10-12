@@ -97,6 +97,11 @@ describe('The Long Way Home', () => {
     expect(refused.run?.sceneId).toBe('abandonedEnding');
     expect(refused.run?.status).toBe('success');
     expect(refused.character?.historyFlags).toContain('abandoned_injured_stranger');
+    const refusalText = sceneText(THE_LONG_WAY_HOME.scenes.abandonedEnding, refused);
+    expect(refusalText).toContain('Anna remains behind');
+    expect(refusalText).not.toContain('Rowan');
+    expect(refusalText).not.toContain('called her by another name');
+    expect(refusalText).not.toContain('shelter is within sight');
 
     const limited = act(fresh(), 'giveBasicAid');
     expect(limited.run?.sceneId).toBe('limitedAidEnding');
@@ -139,11 +144,45 @@ describe('The Long Way Home', () => {
     let state = reachStormViaDirect(fresh(), 0);
     state = act(state, 'hearLanternMansClaim');
     expect(state.run?.sceneId).toBe('pursuerAccount');
+    expect(state.run?.flags).toContain('heardOtherName');
     expect(THE_LONG_WAY_HOME.scenes.pursuerAccount.text).toContain('does not settle what happened');
     state = act(state, 'handLedgerToBenn');
     expect(state.run?.sceneId).toBe('handOverEnding');
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('abandoned_injured_stranger');
+  });
+
+  it('keeps abandonment text within the information the route established', () => {
+    const early = act(fresh(), 'leaveAtMilepost');
+    const legacyFallback = sceneText(THE_LONG_WAY_HOME.scenes.abandonedEnding, fresh());
+    expect(legacyFallback).not.toContain('Rowan');
+    expect(legacyFallback).not.toContain('call');
+
+    let informed = reachStormViaDirect(fresh(), 0);
+    informed = act(informed, 'hearLanternMansClaim');
+    informed = act(informed, 'walkAwayFromBenn');
+    expect(informed.run?.sceneId).toBe('abandonedEnding');
+    const informedText = sceneText(THE_LONG_WAY_HOME.scenes.abandonedEnding, informed);
+    expect(informedText).toContain('called Anna “Rowan”');
+    expect(informedText).toContain('claimed she took the mill payroll ledger');
+    expect(informedText).toContain('which account is true');
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.abandonedEnding, early)).not.toContain('Rowan');
+
+    const values = new Map<string, string>();
+    const storage = { setItem: (key: string, value: string) => values.set(key, value), getItem: (key: string) => values.get(key) ?? null };
+    saveGame(informed, storage);
+    const resumed = loadSave(storage);
+    expect(resumed.run?.sceneId).toBe('abandonedEnding');
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.abandonedEnding, resumed)).toContain('called Anna “Rowan”');
+  });
+
+  it('keeps the later Rowan call present in every late storm variant', () => {
+    const state = fresh();
+    const late = { ...state, run: { ...state.run!, elapsedMinutes: 38 } };
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.stormTurn, late)).toContain('Rowan, wait');
+
+    const afterShelter = { ...late, run: { ...late.run!, flags: ['waitedShelter'] } };
+    expect(sceneText(THE_LONG_WAY_HOME.scenes.stormTurn, afterShelter)).toContain('Rowan, wait');
   });
 
   it('keeps outside help available and does not require choosing a side', () => {

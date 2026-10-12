@@ -129,15 +129,15 @@ export const THE_LONG_WAY_HOME: Scenario = {
       id: 'stormTurn', title: 'A Voice Behind You', tone: 'danger',
       text: 'At the stream crossing, a man comes down the upper path with a lantern. “Rowan, wait,” he calls. Anna flinches at the name, though she told you she was Anna Bell. The stream is higher than it looked from the ridge; the upper road to Northbridge remains open, but the short crossing is faster and visibly slick.',
       textVariants: [
-        { requirements: { minElapsedMinutes: 38, flags: ['waitedShelter'] }, text: 'Night has settled along the stream. Though the shelter kept the worst rain off, the water now carries branches over the stepping stones. The lantern behind you is closer and Anna is stiff with cold. The upper road remains open; crossing here could sweep a person off their feet.' },
-        { requirements: { minElapsedMinutes: 38 }, text: 'Night has settled along the stream. The lantern behind you is closer, and the water now carries branches over the stepping stones. Anna can still walk, but each step is slower. The upper road to Northbridge is open; the short crossing is dangerous and could sweep a person off their feet.' },
+        { requirements: { minElapsedMinutes: 38, flags: ['waitedShelter'] }, text: 'Night has settled along the stream. Though the shelter kept the worst rain off, the water now carries branches over the stepping stones. A man calls, “Rowan, wait,” from the closer lantern; Anna is stiff with cold. The upper road remains open; crossing here could sweep a person off their feet.' },
+        { requirements: { minElapsedMinutes: 38 }, text: 'Night has settled along the stream. The lantern behind you is closer, and a man calls, “Rowan, wait.” The water carries branches over the stepping stones. Anna can still walk, but each step is slower. The upper road to Northbridge is open; the short crossing is dangerous and could sweep a person off their feet.' },
         { requirements: { flags: ['waitedShelter'] }, text: 'At the stream crossing, a man comes down the upper path with a lantern. “Rowan, wait,” he calls. Anna flinches at the name she did not give you. The shelter kept the worst rain off, but the stream has risen while you waited. The upper road remains open; the short crossing is slick.' },
-        { requirements: { minElapsedMinutes: 38 }, text: 'Night has settled along the stream. The lantern behind you is closer, and the water now carries branches over the stepping stones. Anna can still walk, but each step is slower. The upper road to Northbridge is open; the short crossing is dangerous and could sweep a person off their feet.' },
+        { requirements: { minElapsedMinutes: 38 }, text: 'Night has settled along the stream. The lantern behind you is closer, and a man calls, “Rowan, wait.” The water now carries branches over the stepping stones. Anna can still walk, but each step is slower. The upper road to Northbridge is open; the short crossing is dangerous and could sweep a person off their feet.' },
         { requirements: { minElapsedMinutes: 25 }, text: 'The stream has risen over the lower stones. The man with the lantern is closer now and calls, “Rowan, wait.” Anna flinches at the name she did not give you. The upper road remains open; crossing here is faster but risky.' },
       ],
       choices: [
         { id: 'askAnnaAboutRowan', label: 'Ask Anna privately why he used that name', hint: 'She may explain, or refuse.', timeCost: 2, effects: { knowledge: ['A man searching the road called Anna “Rowan”; she reacted as if she knew him.'], setFlags: ['heardOtherName'] }, next: 'revelation' },
-        { id: 'hearLanternMansClaim', label: 'Let the man explain why he is following', timeCost: 3, effects: { knowledge: ['The man says he is Benn Voss, foreman at the Northbridge mill, and claims Anna took the payroll ledger.'], setFlags: ['heardForemanClaim'] }, next: 'pursuerAccount' },
+        { id: 'hearLanternMansClaim', label: 'Let the man explain why he is following', timeCost: 3, effects: { knowledge: ['The man says he is Benn Voss, foreman at the Northbridge mill, and claims Anna took the payroll ledger.'], setFlags: ['heardOtherName', 'heardForemanClaim'] }, next: 'pursuerAccount' },
         { id: 'takeUpperRoadToTown', label: 'Keep to the upper road toward the clinic', hint: 'Longer, but avoids the flooded stream and gives everyone room.', timeCost: 14, effects: { setFlags: ['choseUpperRidge'] }, next: 'townCare' },
         { id: 'crossSwollenStream', label: 'Try the short stream crossing', hint: 'The water is carrying branches. A fall could seriously injure you.', timeCost: 5, chance: { probability: 0.48, bonusItems: DESCENT_GEAR, bonusFlags: ['waitedShelter', 'woundSupported'], bonusProbability: 0.2, successNext: 'townCare', failureNext: 'creekFall', successMessage: 'You hold each other against the current and reach the far bank.', failureMessage: 'A branch knocks your legs out from under you. You drag yourself to the bank, badly bruised.', successEffects: { historyFlags: ['risked_shortcut_with_injured_person', 'escorted_injured_stranger'] }, failureEffects: { health: -7, setFlags: ['streamFall'] } } },
       ],
@@ -178,7 +178,7 @@ export const THE_LONG_WAY_HOME: Scenario = {
         { id: 'askRowanToAnswerBenn', label: 'Ask Rowan to answer his claim', timeCost: 2, next: 'revelation' },
         { id: 'takeBothToTown', label: 'Bring both accounts to the town warden', timeCost: 8, effects: { setFlags: ['heardForemanClaim'] }, next: 'townCare' },
         { id: 'handLedgerToBenn', label: 'Give Benn the ledger and leave them to settle it', hint: 'He promises Rowan will see the doctor, but you will not witness what follows.', effects: { historyFlags: ['abandoned_injured_stranger'] }, next: 'handOverEnding' },
-        { id: 'walkAwayFromBenn', label: 'Leave them both and take the road', effects: { historyFlags: ['abandoned_injured_stranger'] }, next: 'abandonedEnding' },
+        { id: 'walkAwayFromBenn', label: 'Leave them both and take the road', effects: { historyFlags: ['abandoned_injured_stranger'], setFlags: ['heardOtherName', 'heardForemanClaim'] }, next: 'abandonedEnding' },
       ],
     },
     townCare: {
@@ -215,7 +215,12 @@ export const THE_LONG_WAY_HOME: Scenario = {
     },
     abandonedEnding: {
       id: 'abandonedEnding', title: 'The Road You Chose',
-      text: 'You continue alone. Rowan has the road directions and the shelter is within sight, but you do not learn whether she reaches Northbridge or why someone called her by another name. The storm follows both paths.', choices: [], ending: 'success',
+      text: 'You continue alone. Anna remains behind, and you do not know what she will do next. The storm follows both paths.',
+      textVariants: [
+        { requirements: { flags: ['heardOtherName', 'heardForemanClaim'] }, text: 'You continue alone, knowing the man called Anna “Rowan” and claimed she took the mill payroll ledger. You do not know whether she reaches Northbridge or which account is true. The storm follows both paths.' },
+        { requirements: { flags: ['heardOtherName'] }, text: 'You continue alone, having heard the man call Anna “Rowan.” You do not know who he is or what the name means to her. The storm follows both paths.' },
+      ],
+      choices: [], ending: 'success',
     },
     limitedAidEnding: {
       id: 'limitedAidEnding', title: 'Help Without an Escort',
