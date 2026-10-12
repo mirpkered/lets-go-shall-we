@@ -248,8 +248,15 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
       ordinaryDelay = act(ordinaryDelay, scenario, 'verifyOutside');
       ordinaryDelay = act(ordinaryDelay, scenario, 'holdOrReturn');
       const ordinaryText = sceneText(scenario.scenes.delayed, ordinaryDelay);
-      expect(ordinaryText, scenario.id).toBe(scenario.scenes.delayed.text);
+      expect(ordinaryDelay.run?.flags).toContain('courier_standard_delay');
+      expect(ordinaryText, scenario.id).not.toBe(scenario.scenes.delayed.text);
       expect(ordinaryText, scenario.id).not.toMatch(/altered seal|concealed.*breach/i);
+
+      const legacy = fresh(scenario);
+      legacy.run!.sceneId = 'delayed';
+      const fallback = sceneText(scenario.scenes.delayed, legacy);
+      expect(fallback, scenario.id).toMatch(/next disposition is not established/i);
+      expect(fallback, scenario.id).not.toMatch(/altered seal|formal return.*accounted for/i);
     }
   });
 
