@@ -144,8 +144,9 @@ describe('Bridge Out', () => {
     state = act(state, 'considerWagon');
     state = act(state, 'freeWagonLoad', 0.999);
     expect(state.run?.sceneId).toBe('wagonShift');
-    expect(state.run?.flags).not.toContain('medicineSaved');
-    expect(sceneText(BRIDGE_OUT.scenes.wagonShift, state)).toContain('medicine chest stays tied down');
+    expect(state.run?.flags).toContain('medicineSaved');
+    expect(sceneText(BRIDGE_OUT.scenes.wagonShift, state)).toContain('chest you set on high ground remains there');
+    expect(sceneText(BRIDGE_OUT.scenes.wagonShift, state)).toContain('remaining load is at risk');
   });
 
   it('lets carried tools improve repair time while bare-handed repair remains viable', () => {
