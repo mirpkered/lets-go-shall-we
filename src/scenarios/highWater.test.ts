@@ -158,6 +158,23 @@ describe('High Water', () => {
     expect(paid.run?.elapsedMinutes).toBeLessThan(broke.run?.elapsedMinutes ?? 0);
   });
 
+  it('preserves animals already rescued before the crew organizes a final evacuation', () => {
+    let state = act(fresh(), 'reachStableFirst');
+    state = act(state, 'leadAnimalsDryFirst');
+    state = act(state, 'moveOnFromlivestockFirst');
+    expect(state.run?.sceneId).toBe('waterDeepens');
+    expect(state.run?.flags).toContain('livestockSafe');
+    state = act(state, 'seekOutsideHelpRising');
+    state = act(state, 'sendRunner');
+    state = act(state, 'organizeFloodEvacuation');
+    expect(state.run?.flags).toEqual(expect.arrayContaining(['livestockSafe', 'residentSafe', 'communityEvacuated']));
+    state = act(state, 'leaveWithoutFloodGift');
+
+    const ending = sceneText(HIGH_WATER.scenes.highGroundEnding, state);
+    expect(ending).toContain('The animals you brought to the ridge remain safe');
+    expect(ending).not.toContain('The animals and lower supplies remain behind');
+  });
+
   it('allows a clean early escape before the flood crest without granting a reward', () => {
     const state = act(fresh(), 'leaveBeforeCrest');
     expect(state.run?.status).toBe('success');
