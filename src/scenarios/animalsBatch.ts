@@ -310,20 +310,30 @@ export const THE_BEE_YARD: Scenario = {
     apiaryGate: { id: 'apiaryGate', title: 'Beyond the Low Fence', tone: 'warning', text: 'A small apiary stands behind a low fence, its wooden hives set in rows. A goat has rubbed one stand crooked; bees circle the shifted lid, but there is no swarm in the air. The beekeeper is away in the orchard. The public path is outside the fence.', choices: [
       { id: 'waitBeekeeper', label: 'Wait outside for the beekeeper', timeCost: 8, next: 'beekeeperReturns' },
       { id: 'moveGoatApiary', label: 'Ask the farmhand to lead the goat away', timeCost: 4, next: 'goatMoved' },
-      { id: 'steadyStandTool', label: 'Use a small tool to steady the empty stand', requirements: { anyItems: ['pocketToolkit', 'foremanMultiTool', 'gateHook'] }, hint: 'Do not open the hive; first make the work area safe.', timeCost: 5, next: 'standSteadied' },
+      { id: 'steadyStandTool', label: 'Use a small tool to steady the stand', requirements: { anyItems: ['pocketToolkit', 'foremanMultiTool', 'gateHook'] }, hint: 'Do not open the hive; first make the work area safe.', timeCost: 5, next: 'standSteadied', effects: { setFlags: ['apiaryStandLeveled'] } },
       { id: 'leaveApiary', label: 'Stay outside the fence and continue on', next: 'apiaryLeft' },
     ] },
     goatMoved: { id: 'goatMoved', title: 'The Yard Cleared', tone: 'safe', text: 'The farmhand leads the goat behind a separate rail fence. The crooked hive stand remains inside the apiary, and the bees keep circling the lid. The beekeeper should handle the hive itself.', choices: [
-      { id: 'steadyApiaryStand', label: 'Hold the stand level while the farmhand braces it', timeCost: 5, next: 'standSteadied' },
+      { id: 'steadyApiaryStand', label: 'Hold the stand level while the farmhand braces it', timeCost: 5, next: 'standSteadied', effects: { setFlags: ['apiaryStandLeveled', 'apiaryGoatMoved'] } },
       { id: 'waitAfterGoat', label: 'Wait outside for the beekeeper', timeCost: 6, next: 'beekeeperReturns' },
       { id: 'leaveAfterGoat', label: 'Let the beekeeper finish the repair', next: 'apiaryLeft' },
     ] },
-    standSteadied: { id: 'standSteadied', title: 'The Hive Stands Level', tone: 'safe', text: 'With the goat away, you steady the wooden stand while the farmhand wedges a block beneath it. The hive stays closed. The circling bees begin to settle, and the beekeeper returns before anyone touches the lid.', choices: [
+    standSteadied: { id: 'standSteadied', title: 'The Hive Stands Level', tone: 'safe', text: 'The stand is level again. The hive stays closed, and the bees begin to settle before anyone touches the lid.', textVariants: [
+      { requirements: { flags: ['apiaryGoatMoved'] }, text: 'With the goat behind the separate rail, you steady the stand while the farmhand wedges a block beneath it. The hive stays closed as the bees begin to settle.' },
+      { requirements: { flags: ['apiaryStandLeveled'], notFlags: ['apiaryGoatMoved'] }, text: 'You use the small tool to steady the stand without opening the hive. The goat has not been led away, so the beekeeper should keep it clear of the hives.' },
+    ], choices: [
       { id: 'leaveBeesToKeeper', label: 'Let the beekeeper inspect the hive', next: 'beekeeperReturns', effects: { historyFlags: ['helped_secure_apiary_stand'] } },
       { id: 'continueAfterStand', label: 'Continue along the public path', next: 'apiaryLeft' },
     ] },
-    beekeeperReturns: ending('beekeeperReturns', 'A Steady Row of Hives', 'The beekeeper checks the closed hive and finds no lasting damage. The goat is kept away from the stands, and the bees return to their ordinary work. No one needed to handle a hive without experience.'),
-    apiaryLeft: ending('apiaryLeft', 'Outside the Fence', 'You leave the apiary closed to the public path. The beekeeper will find the crooked stand and the goat’s tracks; the hive itself has not been opened or disturbed.'),
+    beekeeperReturns: { ...ending('beekeeperReturns', 'A Steady Row of Hives', 'The beekeeper checks the closed hive and finds no lasting damage. No one needed to open or handle it without experience.'), textVariants: [
+      { requirements: { flags: ['apiaryStandLeveled', 'apiaryGoatMoved'] }, text: 'The beekeeper checks the closed hive and finds no lasting damage. The stand is level, and the goat is behind the separate rail. No one needed to open or handle the hive without experience.' },
+      { requirements: { flags: ['apiaryStandLeveled'], notFlags: ['apiaryGoatMoved'] }, text: 'The beekeeper checks the closed hive and finds no lasting damage. The stand is level; the beekeeper still needs to keep the goat clear of the hives.' },
+    ] },
+    apiaryLeft: { ...ending('apiaryLeft', 'Outside the Fence', 'You leave the apiary closed to the public path. The beekeeper can inspect the stand and closed hive; you have not opened the hive.'), textVariants: [
+      { requirements: { flags: ['apiaryGoatMoved'], notFlags: ['apiaryStandLeveled'] }, text: 'You leave the apiary with the goat behind the separate rail. The stand is still crooked, and the beekeeper should handle the closed hive.' },
+      { requirements: { flags: ['apiaryStandLeveled', 'apiaryGoatMoved'] }, text: 'You leave the apiary with the stand level and the goat behind the separate rail. The hive remains closed for the beekeeper to inspect.' },
+      { requirements: { flags: ['apiaryStandLeveled'], notFlags: ['apiaryGoatMoved'] }, text: 'You leave the apiary with the stand level. The goat has not been led away, and the closed hive remains for the beekeeper to inspect.' },
+    ] },
   },
 };
 

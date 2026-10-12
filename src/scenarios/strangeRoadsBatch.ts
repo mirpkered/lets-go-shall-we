@@ -7,9 +7,9 @@ export const THE_LANTERN_IN_THE_MARSH: Scenario = {
   runRandomSelections: [{ id: 'marshLight', values: [{ value: 'lostTraveler' }, { value: 'nightWorkers' }, { value: 'marshGlow' }, { value: 'unexplained' }] }],
   scenes: {
     marshSighting: { id: 'marshSighting', title: 'A Light Beyond the Reeds', tone: 'warning', text: 'From the raised road, you see a warm light moving across the marsh where no marked track runs. Reeds hide the ground below, and a shallow ditch cuts between you and the glow. It may be a person, a worker, or only a trick of distance.', choices: [
-      { id: 'callMarshLight', label: 'Call out from the raised road', timeCost: 2, next: 'marshReply', effects: { knowledge: ['A lantern moved across the marsh below the raised road; the ground was hidden by reeds.'] } },
+      { id: 'callMarshLight', label: 'Call out from the raised road', timeCost: 2, next: 'marshReply', effects: { setFlags: ['heardMarshWorkers'], knowledge: ['A lantern moved across the marsh below the raised road; the ground was hidden by reeds.'] } },
       { id: 'watchMarshLight', label: 'Watch from firm ground', timeCost: 4, next: 'marshObserved' },
-      { id: 'followMarshLight', label: 'Follow it through the reeds', hint: 'The ground is hidden and the ditch may be deeper than it looks.', timeCost: 8, chance: { probability: 0.72, successNext: 'marshNearLight', failureNext: 'marshWetBoots', successMessage: 'You find a careful way down and keep the light in view.', failureMessage: 'A hidden patch of soft ground gives way beneath your foot.', failureEffects: { health: -1 } } },
+      { id: 'followMarshLight', label: 'Follow it through the reeds', hint: 'The ground is hidden and the ditch may be deeper than it looks.', timeCost: 8, chance: { probability: 0.72, successNext: 'marshNearLight', failureNext: 'marshWetBoots', successMessage: 'You find a careful way down and keep the light in view.', successEffects: { setFlags: ['sawMarshWorkers'] }, failureMessage: 'A hidden patch of soft ground gives way beneath your foot.', failureEffects: { health: -1 } } },
       { id: 'leaveMarshLight', label: 'Keep to the road and continue', next: 'marshPassed' },
     ] },
     marshReply: { id: 'marshReply', title: 'An Answer in the Reeds', tone: 'safe', text: 'A voice answers from the marsh, but wind and distance blur the words. The light pauses, then moves again. You have not established who is carrying it.', textVariants: [
@@ -23,7 +23,7 @@ export const THE_LANTERN_IN_THE_MARSH: Scenario = {
     ] },
     marshObserved: { id: 'marshObserved', title: 'A Pattern, or No Pattern', tone: 'safe', text: 'The light makes one slow pass across the reeds. From here, you cannot safely tell what carries it or whether anything is trying to get your attention.', choices: [
       { id: 'lensOnMarsh', label: 'Look through the Crimson Signal Lens', requirements: { items: ['signalLens'] , usableItems: ['signalLens']}, timeCost: 3, next: 'marshLensSeen', effects: { knowledge: ['Through the Crimson Signal Lens, a faint red blink appeared once beyond the marsh reeds.'] } },
-      { id: 'watchOneMorePass', label: 'Step to the ditch and watch', timeCost: 3, next: 'marshNearLight' },
+      { id: 'watchOneMorePass', label: 'Step to the ditch and watch', timeCost: 3, next: 'marshNearLight', effects: { setFlags: ['sawMarshWorkers'] } },
       { id: 'turnFromMarsh', label: 'Turn back to the marked road', next: 'marshPassed' },
     ] },
     marshLensSeen: end('marshLensSeen', 'A Red Blink', 'Through the red glass, you catch one brief blink beyond the reeds. It could be a worker’s signal, a reflection, or a light with no visible source. The lens sharpens the sight; it does not explain it.'),
@@ -38,7 +38,10 @@ export const THE_LANTERN_IN_THE_MARSH: Scenario = {
     ] },
     marshNearReply: end('marshNearReply', 'A Voice across the Ditch', 'A distant answer reaches you from beyond the reeds, but it is too faint to understand. You return to the raised road without crossing the hidden ditch.'),
     marshWetBoots: end('marshWetBoots', 'Cold Water, No Answer', 'Your boot sinks into a hidden pocket of mud before you pull free. The light has moved beyond the reeds. You are wet and slightly bruised, but the raised road is close.'),
-    marshPassed: end('marshPassed', 'The Road Holds Its Course', 'You continue along the raised road. The light is gone from view by the next bend, and you never learn whether it belonged to a traveler, a worker, or something without a lantern.'),
+    marshPassed: { ...end('marshPassed', 'The Road Holds Its Course', 'You continue along the raised road. The light is gone from view by the next bend. No conclusion about its source is established here.'), textVariants: [
+      { requirements: { flags: ['sawMarshWorkers'], selections: { marshLight: 'nightWorkers' } }, text: 'You continue along the raised road after seeing two workers carrying lanterns toward the sluice. The light is accounted for on this route; you did not cross the ditch.' },
+      { requirements: { flags: ['heardMarshWorkers'], selections: { marshLight: 'nightWorkers' } }, text: 'You continue along the raised road after hearing two workers answer that they are checking the sluice. You did not cross the ditch or verify more than their answer.' },
+    ] },
   },
 };
 
@@ -206,7 +209,7 @@ export const THE_VOICE_IN_THE_MINE: Scenario = {
     mineCall: { id: 'mineCall', title: 'A Familiar-Sounding Call', tone: 'danger', text: 'You have entered the mine with a guide who is waiting near the main entrance. From the marked side tunnel, a voice calls, “Help me.” It sounds like the guide, but the tunnel narrows beyond the first support and has not been checked today.', choices: [
       { id: 'callMineGuide', label: 'Call back toward the entrance', timeCost: 2, next: 'mineCallAnswered' },
       { id: 'checkMineSupport', label: 'Inspect the first tunnel support', timeCost: 3, next: 'mineSupport' },
-      { id: 'followMineVoice', label: 'Go toward the voice', hint: 'The passage narrows past the first support; loose stone is visible.', timeCost: 5, chance: { probability: 0.68, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'The first support holds while you move carefully into the passage.', failureMessage: 'Loose grit rains from the roof as a stone shifts near your shoulder.', failureEffects: { health: -2 } } },
+      { id: 'followMineVoice', label: 'Go toward the voice', hint: 'The passage narrows past the first support; loose stone is visible.', timeCost: 5, chance: { probability: 0.68, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'The first support holds while you move carefully into the passage.', successEffects: { setFlags: ['encounteredMineWorker'] }, failureMessage: 'Loose grit rains from the roof as a stone shifts near your shoulder.', failureEffects: { health: -2 } } },
       { id: 'leaveMineVoice', label: 'Back out to the main entrance', next: 'mineSafeExit' },
     ] },
     mineCallAnswered: { id: 'mineCallAnswered', title: 'An Answer from Outside', tone: 'warning', text: 'The guide answers from the entrance, clearly behind you. The voice in the side tunnel does not answer again.', textVariants: [
@@ -220,7 +223,7 @@ export const THE_VOICE_IN_THE_MINE: Scenario = {
     ] },
     mineSupport: { id: 'mineSupport', title: 'The First Timber Frame', tone: 'warning', text: 'The first timber frame stands at the entrance to the side passage. Beyond it, the roof dips and the floor disappears around a bend, out of sight. The guide remains behind you at the main entrance.', choices: [
       { id: 'tapMineTimber', label: 'Tap the frame and listen', timeCost: 2, next: 'mineTimberRings' },
-      { id: 'enterMineSidePassage', label: 'Step past the frame toward the voice', hint: 'The narrowing passage has unseen ground and loose stone.', timeCost: 4, chance: { probability: 0.66, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'You pass the frame without disturbing the roof.', failureMessage: 'A loose rock drops and clips your shoulder.', failureEffects: { health: -2 } } },
+      { id: 'enterMineSidePassage', label: 'Step past the frame toward the voice', hint: 'The narrowing passage has unseen ground and loose stone.', timeCost: 4, chance: { probability: 0.66, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'You pass the frame without disturbing the roof.', successEffects: { setFlags: ['encounteredMineWorker'] }, failureMessage: 'A loose rock drops and clips your shoulder.', failureEffects: { health: -2 } } },
       { id: 'turnFromMineSupport', label: 'Return to the main entrance', next: 'mineSafeExit' },
     ] },
     mineMapChecked: { id: 'mineMapChecked', title: 'The Marked Workings', tone: 'safe', text: 'The guide checks the old mine plan at the entrance. The side tunnel is marked as a shallow drain, but the map predates the last collapse and cannot certify it is safe.', choices: [
@@ -228,7 +231,7 @@ export const THE_VOICE_IN_THE_MINE: Scenario = {
       { id: 'leaveAfterMap', label: 'Leave the mine together', next: 'mineSafeExit' },
     ] },
     mineTimberRings: { id: 'mineTimberRings', title: 'A Ring through the Rock', tone: 'warning', text: 'The frame answers with a hollow ring. From deeper inside, the call seems to come again, but the timber is sound only as far as you can see.', choices: [
-      { id: 'proceedAfterRing', label: 'Step carefully past the frame', timeCost: 3, chance: { probability: 0.66, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'The passage holds as you take the next few steps.', failureMessage: 'A stone shifts above the narrow passage.', failureEffects: { health: -2 } } },
+      { id: 'proceedAfterRing', label: 'Step carefully past the frame', timeCost: 3, chance: { probability: 0.66, successNext: 'mineVoiceReached', failureNext: 'mineDustFall', successMessage: 'The passage holds as you take the next few steps.', successEffects: { setFlags: ['encounteredMineWorker'] }, failureMessage: 'A stone shifts above the narrow passage.', failureEffects: { health: -2 } } },
       { id: 'leaveAfterRing', label: 'Return to the main entrance', next: 'mineSafeExit' },
     ] },
     mineVoiceReached: { id: 'mineVoiceReached', title: 'Around the Bend', tone: 'warning', text: 'You reach the bend without going deeper. No person is in sight, and the passage is too narrow to search safely alone.', textVariants: [
@@ -241,7 +244,9 @@ export const THE_VOICE_IN_THE_MINE: Scenario = {
       { id: 'leaveMineBend', label: 'Return to the main tunnel', next: 'mineSafeExit' },
     ] },
     mineDustFall: end('mineDustFall', 'A Warning from the Roof', 'Dust settles on your coat where the loose stone struck. You retreat to the main entrance with the guide. The call receives no answer, but the unstable roof has given you a plain reason not to continue.'),
-    mineSafeExit: end('mineSafeExit', 'Back in Daylight', 'You leave the marked side tunnel behind. The voice may have belonged to a worker, an echo, or no one you can identify. The guide agrees that the passage needs a proper inspection.'),
+    mineSafeExit: { ...end('mineSafeExit', 'Back in Daylight', 'You leave the marked side tunnel behind, and the guide agrees it needs a proper inspection. No conclusion about the earlier call is established here.'), textVariants: [
+      { requirements: { flags: ['encounteredMineWorker'], selections: { mineVoice: 'otherWorker' } }, text: 'You met the worker in the side niche and learned they called after their lantern went out. You return toward the entrance with the guide; whether the worker made it there safely is not established.' },
+    ] },
   },
 };
 

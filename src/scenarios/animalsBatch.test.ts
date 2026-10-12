@@ -205,4 +205,24 @@ describe('animals and working stock adventure batch', () => {
     expect(THE_BEE_YARD.scenes.apiaryGate.text).toContain('The public path is outside the fence');
     expect(THE_BEE_YARD.scenes.standSteadied.text).toContain('The hive stays closed');
   });
+
+  it('preserves the bee-yard stand and goat state through either steadying route', () => {
+    const direct = act(start(THE_BEE_YARD, {}, 'gateHook'), THE_BEE_YARD, 'apiaryGate', 'steadyStandTool');
+    expect(sceneText(THE_BEE_YARD.scenes.standSteadied, direct)).not.toMatch(/with the goat away/i);
+    expect(sceneText(THE_BEE_YARD.scenes.standSteadied, direct)).toMatch(/goat has not been led away/i);
+    const directExit = act(direct, THE_BEE_YARD, 'standSteadied', 'continueAfterStand');
+    const directEnd = sceneText(THE_BEE_YARD.scenes.apiaryLeft, directExit);
+    expect(directEnd).toMatch(/stand level/i);
+    expect(directEnd).toMatch(/goat has not been led away/i);
+    expect(directEnd).not.toMatch(/find the crooked stand/i);
+
+    let moved = act(start(THE_BEE_YARD), THE_BEE_YARD, 'apiaryGate', 'moveGoatApiary');
+    moved = act(moved, THE_BEE_YARD, 'goatMoved', 'steadyApiaryStand');
+    const movedExit = act(moved, THE_BEE_YARD, 'standSteadied', 'continueAfterStand');
+    expect(sceneText(THE_BEE_YARD.scenes.apiaryLeft, movedExit)).toMatch(/stand level and the goat behind the separate rail/i);
+
+    const legacy = start(THE_BEE_YARD);
+    legacy.run!.sceneId = 'apiaryLeft';
+    expect(sceneText(THE_BEE_YARD.scenes.apiaryLeft, legacy)).not.toMatch(/crooked stand|stand level|goat behind/i);
+  });
 });

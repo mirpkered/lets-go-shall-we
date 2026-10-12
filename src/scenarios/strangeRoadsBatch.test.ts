@@ -186,6 +186,39 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineVoiceReached, reached)).toContain('exact tone');
   });
 
+  it('retains the marsh worker answer only on routes that called or saw them', () => {
+    let heard = act(start(THE_LANTERN_IN_THE_MARSH, { marshLight: 'nightWorkers' }), THE_LANTERN_IN_THE_MARSH, 'marshSighting', 'callMarshLight');
+    heard = act(heard, THE_LANTERN_IN_THE_MARSH, 'marshReply', 'leaveAfterReply');
+    expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, heard)).toMatch(/hearing two workers answer/i);
+    expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, heard)).not.toMatch(/never learn whether/i);
+
+    let seen = act(start(THE_LANTERN_IN_THE_MARSH, { marshLight: 'nightWorkers' }), THE_LANTERN_IN_THE_MARSH, 'marshSighting', 'watchMarshLight');
+    seen = act(seen, THE_LANTERN_IN_THE_MARSH, 'marshObserved', 'watchOneMorePass');
+    seen = act(seen, THE_LANTERN_IN_THE_MARSH, 'marshNearLight', 'returnFromDitch');
+    expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, seen)).toMatch(/after seeing two workers/i);
+
+    const untouched = act(start(THE_LANTERN_IN_THE_MARSH, { marshLight: 'nightWorkers' }), THE_LANTERN_IN_THE_MARSH, 'marshSighting', 'leaveMarshLight');
+    expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, untouched)).not.toMatch(/workers carrying|workers answer/i);
+    const legacy = start(THE_LANTERN_IN_THE_MARSH, { marshLight: 'nightWorkers' });
+    legacy.run!.sceneId = 'marshPassed';
+    expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, legacy)).not.toMatch(/workers carrying|workers answer/i);
+  });
+
+  it('does not turn an encountered mine worker back into an unresolved possible voice', () => {
+    let met = act(start(THE_VOICE_IN_THE_MINE, { mineVoice: 'otherWorker' }), THE_VOICE_IN_THE_MINE, 'mineCall', 'followMineVoice', () => 0);
+    expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineVoiceReached, met)).toMatch(/worker emerges/i);
+    met = act(met, THE_VOICE_IN_THE_MINE, 'mineVoiceReached', 'leaveMineBend');
+    const ending = sceneText(THE_VOICE_IN_THE_MINE.scenes.mineSafeExit, met);
+    expect(ending).toMatch(/met the worker in the side niche/i);
+    expect(ending).toMatch(/whether the worker made it there safely is not established/i);
+    expect(ending).not.toMatch(/may have belonged to a worker|or no one you can identify/i);
+
+    const legacy = start(THE_VOICE_IN_THE_MINE, { mineVoice: 'otherWorker' });
+    legacy.run!.sceneId = 'mineSafeExit';
+    expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineSafeExit, legacy)).not.toMatch(/met the worker|made it there safely/i);
+    expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineSafeExit, legacy)).toMatch(/no conclusion about the earlier call/i);
+  });
+
   it('keeps the bridge and black-dog encounters grounded, with opt-in follow-up history', () => {
     expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingFigure.text).toContain('far bank');
     expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingFigure.text).toContain('near bank');
