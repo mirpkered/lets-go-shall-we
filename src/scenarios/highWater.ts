@@ -298,7 +298,7 @@ export const HIGH_WATER: Scenario = {
     },
     highGroundEnding: {
       id: 'highGroundEnding', title: 'Above the Waterline', ending: 'success',
-      text: 'You reach the hill as the river spreads across the lower road. The settlement is not untouched, and no one claims every loss could have been prevented. You saved what your remaining time allowed and found a way out.',
+      text: 'You reach the hill as the river spreads across the lower road. The settlement is not untouched, and no one claims every loss could have been prevented. You are clear of the flood.',
       textVariants: [
         { requirements: { flags: ['residentSafe', 'livestockSafe', 'medicineSafe'] }, text: 'The resident is warm, the animals are on the ridge, and the medicine reaches the shelter. The general store’s lower stock is lost. You saved what the remaining time allowed; no one calls the outcome perfect.' },
         { requirements: { flags: ['residentSafe', 'livestockSafe', 'storeSafe'] }, text: 'The resident is safe, the animals reach high ground, and the store’s upper supplies remain dry. The clinic medicine is lost to the flooded corridor. You saved what your remaining time allowed.' },

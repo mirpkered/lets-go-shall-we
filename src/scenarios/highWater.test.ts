@@ -175,6 +175,23 @@ describe('High Water', () => {
     expect(ending).not.toContain('The animals and lower supplies remain behind');
   });
 
+  it('uses neutral closure when a failed rescue is followed by personal evacuation', () => {
+    let state = act(fresh(), 'reachStableFirst');
+    state = act(state, 'leadAnimalsDryFirst', () => 0.999);
+    expect(state.run?.flags).toContain('livestockAttemptFailed');
+    expect(state.run?.flags).not.toContain('livestockSafe');
+    state = act(state, 'moveOnFromlivestockFirst');
+    state = act(state, 'seekOutsideHelpRising');
+    state = act(state, 'sendRunner');
+    state = act(state, 'boardRescueBoat');
+
+    const ending = sceneText(HIGH_WATER.scenes.highGroundEnding, state);
+    expect(state.run?.sceneId).toBe('highGroundEnding');
+    expect(ending).toContain('You are clear of the flood');
+    expect(ending).not.toContain('You saved what your remaining time allowed');
+    expect(ending).not.toContain('The animals are safe');
+  });
+
   it('allows a clean early escape before the flood crest without granting a reward', () => {
     const state = act(fresh(), 'leaveBeforeCrest');
     expect(state.run?.status).toBe('success');
