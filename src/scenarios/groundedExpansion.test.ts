@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startAdventure } from '../engine';
+import { choose, meets, newCharacter, sceneText, startAdventure } from '../engine';
 import { findScenarioGraphProblems } from '../scenarioGraph';
+import { loadSave, saveGame } from '../storage';
 import { SCENARIOS } from './index';
 import {
   A_SEAT_BY_THE_FIRE, AFTER_THE_STORM, THE_BELL_AFTER_MIDNIGHT,
@@ -131,6 +132,36 @@ describe('grounded adventure expansion batch', () => {
     expect(act(start(THE_BELL_AFTER_MIDNIGHT), THE_BELL_AFTER_MIDNIGHT, 'innAtNight', 'stayInBed').run?.sceneId).toBe('morningAfterBell');
     const keeper = act(start(THE_BELL_AFTER_MIDNIGHT), THE_BELL_AFTER_MIDNIGHT, 'innAtNight', 'wakeTheKeeper');
     expect(act(keeper, THE_BELL_AFTER_MIDNIGHT, 'keeperWakes', 'douseStraw').run?.sceneId).toBe('stableSafe');
+  });
+
+  it('does not call every valid tarp tie a strap or guess on an old save', () => {
+    for (const item of ['freightmansStrap', 'travelRope', 'waxedCanvasSheet']) {
+      const secured = act(start(THE_EMPTY_WAGON, item), THE_EMPTY_WAGON, 'wagonOnRoad', 'secureWagonLoad');
+      const text = sceneText(THE_EMPTY_WAGON.scenes.loadSecured, secured);
+      expect(text).toMatch(/tarp stays snug over the cargo/i);
+      expect(text).not.toMatch(/your strap keeps/i);
+    }
+    const legacy = start(THE_EMPTY_WAGON);
+    legacy.run!.sceneId = 'loadSecured';
+    expect(sceneText(THE_EMPTY_WAGON.scenes.loadSecured, legacy)).toMatch(/tarp stays snug over the cargo/i);
+  });
+
+  it('keeps the Last Ferry failure cause and selected boarding order consistent', () => {
+    expect(THE_LAST_FERRY.scenes.ferryLanding.text).toMatch(/guiding line has failed/i);
+    expect(THE_LAST_FERRY.scenes.ferryLanding.text).not.toMatch(/rope has parted/i);
+    const travelersFirst = act(start(THE_LAST_FERRY), THE_LAST_FERRY, 'ferryLanding', 'inspectFerryLine');
+    let assisted = act(travelersFirst, THE_LAST_FERRY, 'lineDamage', 'askFerrymanToWait');
+    assisted = act(assisted, THE_LAST_FERRY, 'ferryReset', 'helpFarBankTravelers');
+    expect(sceneText(THE_LAST_FERRY.scenes.crossedEnding, assisted)).toMatch(/travelers board first, as you chose/i);
+    expect(sceneText(THE_LAST_FERRY.scenes.crossedEnding, assisted)).not.toMatch(/board after you/i);
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    saveGame(assisted, storage as unknown as Storage);
+    expect(sceneText(THE_LAST_FERRY.scenes.crossedEnding, loadSave(storage as unknown as Storage))).toMatch(/travelers board first, as you chose/i);
+
+    const legacy = start(THE_LAST_FERRY);
+    legacy.run!.sceneId = 'crossedEnding';
+    expect(sceneText(THE_LAST_FERRY.scenes.crossedEnding, legacy)).toMatch(/boarding order is not recorded/i);
   });
 
   it('covers rescue, waiting, risk, and death branches in the higher-risk stories', () => {

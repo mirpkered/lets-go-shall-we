@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { choose, newCharacter, startRun } from '../engine';
-import { EMPTY_SAVE } from '../storage';
+import { choose, newCharacter, sceneText, startRun } from '../engine';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER } from './westernOutlawBatch';
+import { THE_BOUNTY_POSTER, THE_OUTLAWS_MOTHER } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -50,5 +50,37 @@ describe('The Bounty Poster route/evidence integrity',()=>{
     expect(closure).toContain('No bounty changes hands');
     expect(closure).toContain('withdraws the theft claim');
     expect(closure).not.toMatch(/Tomas agrees|mend the stable fence|horse returns to the ranch|child.s family keeps its privacy/i);
+  });
+});
+
+describe('The Outlaw’s Mother message-state continuity',()=>{
+  const startMother=():SaveData=>{
+    const character=newCharacter('Message Tester');
+    return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_OUTLAWS_MOTHER,()=>0)};
+  };
+  const actMother=(state:SaveData,choiceId:string):SaveData=>{
+    const scene=THE_OUTLAWS_MOTHER.scenes[state.run!.sceneId];
+    const choice=scene.choices.find(({id})=>id===choiceId);
+    expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+    return choose(state,THE_OUTLAWS_MOTHER,choice!);
+  };
+
+  it('does not report delivery after the Traveler refuses the transfer',()=>{
+    let refused=actMother(startMother(),'carrySealed');
+    refused=actMother(refused,'refuseTransfer');
+    expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,refused)).toMatch(/without proof that the family message reached its destination/i);
+    expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,refused)).not.toMatch(/family news reaches the son/i);
+
+    let delivered=actMother(startMother(),'carrySealed');
+    delivered=actMother(delivered,'handLetter');
+    delivered=actMother(delivered,'leaveMan');
+    expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,delivered)).toMatch(/family news reaches the son/i);
+    const memory=new Map<string,string>();
+    const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value)};
+    saveGame(delivered,storage as unknown as Storage);
+    expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,loadSave(storage as unknown as Storage))).toMatch(/family news reaches the son/i);
+    const legacy=startMother();
+    legacy.run!.sceneId='departure';
+    expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,legacy)).toMatch(/without proof/i);
   });
 });

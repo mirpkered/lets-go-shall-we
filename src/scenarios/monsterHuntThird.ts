@@ -210,18 +210,18 @@ export const THE_SKIN_IN_THE_TREE: Scenario = {
   diversity: meta({ hook: 'Hides hung high are bait for a scavenger and a signal in a poacher’s route; the empty ground is part of the evidence.', activity: 'investigation/mystery', role: 'investigator/explorer', tone: 'mysterious/eerie', risk: 'MODERATE', setting: 'forest road', fantasy: 'EERIE', combat: 'AVOIDABLE', structure: 'vertical evidence and bait recognition' }),
   scenes: {
     treeHide: scene('treeHide', 'A Hide above the Trail', 'A fresh animal hide hangs in a fork high above the forest road. No carcass lies beneath it. Another hide is visible farther uphill. A tree line borders the safe road, and the ground below the first branch is undisturbed.', [
-      { id: 'inspectTreeBase', label: 'Inspect the ground below the hide', next: 'hideEvidence', effects: { knowledge: ['Fresh hides hung high above a forest trail were placed as bait, not left by a fallen carcass.'] } },
-      { id: 'askRoadCrew', label: 'Ask the road crew who works this stretch', next: 'hideAccount' },
+      { id: 'inspectTreeBase', label: 'Inspect the ground below the hide', next: 'hideEvidence', effects: { setFlags: ['examinedTreeHideEvidence'], knowledge: ['Fresh hides hung high above a forest trail were placed as bait, not left by a fallen carcass.'] } },
+      { id: 'askRoadCrew', label: 'Ask the road crew who works this stretch', next: 'hideAccount', effects: { setFlags: ['heardHideExplanation'] } },
       { id: 'leaveHides', label: 'Leave the trees and continue on the road', next: 'hideLeft' },
     ]),
     hideEvidence: scene('hideEvidence', 'A Clean Patch of Ground', 'The hide is tied with a fresh cord. A narrow ladder track leads to the trunk, but no blood marks the roots. Under a nearby bush are drag marks pointing toward a shallow ravine.', [
       { id: 'followDragMarks', label: 'Follow the drag marks from the road', next: 'poacherCamp' },
-      { id: 'lookAtSecondHide', label: 'Inspect the second hide from below', next: 'hideAccount' },
+      { id: 'lookAtSecondHide', label: 'Inspect the second hide from below', next: 'hideAccount', effects: { setFlags: ['heardHideExplanation'] } },
       { id: 'avoidRavine', label: 'Mark the ravine and stay on the road', next: 'hideLeft' },
     ]),
     hideAccount: scene('hideAccount', 'A Hunter’s Signal', 'A local hunter says a hide hung high attracts scavengers away from a snare line. The snare line is on private land, but the hunter did not set it and asks you not to cut anything before the owner is found.', [
       { id: 'askLandholder', label: 'Ask the landholder to inspect the snare line', next: 'poacherCamp' },
-      { id: 'leavePrivateLand', label: 'Keep to the public road', next: 'hideLeft' },
+      { id: 'leavePrivateLand', label: 'Keep to the public road', next: 'hideLeft', effects: { setFlags: ['heardHideExplanation'] } },
       { id: 'followSecondHide', label: 'Follow the second hide from the road', next: 'poacherCamp' },
     ]),
     poacherCamp: scene('poacherCamp', 'The Ravine Camp', 'A poacher has hidden two snares and used the hides as a signal to retrieve them after dark. One snared animal is alive but exhausted. The poacher is not present; the landholder has arrived with a lantern.', [
@@ -230,7 +230,11 @@ export const THE_SKIN_IN_THE_TREE: Scenario = {
       { id: 'cutSnare', label: 'Cut the taut snare yourself', hint: 'The animal is alive and the wire is under tension.', chance: { probability: 0.48, successNext: 'hideResolved', failureNext: 'hideInjury', successMessage: 'The snare slackens and the animal pulls free.', failureMessage: 'The wire snaps back and cuts your hand.', failureEffects: { health: -3 } } },
     ], 'warning'),
     hideResolved: end('hideResolved', 'The Trees Cleared', 'The landholder calls a warden and removes the snares with help. The animal is released without a trophy; the hides are taken down, and the route is no longer marked for poaching.'),
-    hideLeft: end('hideLeft', 'A Sign Not Followed', 'You stay on the public road and leave the hides in place. The trail remains unexplained, and you do not enter private ground without permission.'),
+    hideLeft: { ...end('hideLeft', 'A Sign Not Followed', 'You stay on the public road and leave the hides in place. What the trail means remains unestablished on this route; you do not enter private ground without permission.'), textVariants: [
+      { requirements: { flags: ['examinedTreeHideEvidence', 'heardHideExplanation'] }, text: 'You stay on the public road after examining the tied hide, ladder track, and drag marks, and hearing the hunter’s explanation of the snare-line signal. You leave the private land and snares for the owner and warden.' },
+      { requirements: { flags: ['heardHideExplanation'] }, text: 'You stay on the public road after hearing the hunter explain how a hide can signal a snare line. You leave the private land and snares for the owner and warden.' },
+      { requirements: { flags: ['examinedTreeHideEvidence'] }, text: 'You stay on the public road after examining the tied hide and the drag marks toward the ravine. Their purpose remains uncertain because you do not follow them onto private land.' },
+    ] },
     hideInjury: end('hideInjury', 'A Snare under Tension', 'The wire cuts your hand before the landholder can secure it. The animal is freed by the time a warden arrives; the snares and hides are removed.'),
   },
 };

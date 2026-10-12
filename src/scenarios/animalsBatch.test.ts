@@ -206,6 +206,24 @@ describe('animals and working stock adventure batch', () => {
     expect(THE_BEE_YARD.scenes.standSteadied.text).toContain('The hive stays closed');
   });
 
+  it('does not claim the Traveler inspected the bend on the give-space or leave-it routes', () => {
+    const sidePath = act(start(THE_FRIGHTENED_TEAM), THE_FRIGHTENED_TEAM, 'teamRoad', 'giveTeamSpace');
+    expect(sidePath.run?.sceneId).toBe('teamUnresolvedAfterSidePath');
+    expect(sceneText(THE_FRIGHTENED_TEAM.scenes.teamUnresolvedAfterSidePath, sidePath)).toMatch(/do not see whether they continue or turn back/i);
+
+    let inspected = act(start(THE_FRIGHTENED_TEAM), THE_FRIGHTENED_TEAM, 'teamRoad', 'inspectRoadTeam');
+    inspected = act(inspected, THE_FRIGHTENED_TEAM, 'teamCauseSeen', 'clearCauseTeam');
+    inspected = act(inspected, THE_FRIGHTENED_TEAM, 'teamSettles', 'walkTeamPast');
+    expect(inspected.run?.sceneId).toBe('teamPassed');
+    expect(sceneText(THE_FRIGHTENED_TEAM.scenes.teamPassed, inspected)).toMatch(/horses move past the bend at a walk/i);
+    expect(sceneText(THE_FRIGHTENED_TEAM.scenes.teamPassed, inspected)).not.toMatch(/thanks you for looking/i);
+
+    let leftToDriver = act(start(THE_FRIGHTENED_TEAM), THE_FRIGHTENED_TEAM, 'teamRoad', 'askDriverTeam');
+    leftToDriver = act(leftToDriver, THE_FRIGHTENED_TEAM, 'teamExplained', 'leaveTeamDriver');
+    expect(leftToDriver.run?.sceneId).toBe('teamUnresolvedAfterLeaving');
+    expect(sceneText(THE_FRIGHTENED_TEAM.scenes.teamUnresolvedAfterLeaving, leftToDriver)).toMatch(/do not see whether they cross or turn back/i);
+  });
+
   it('preserves the bee-yard stand and goat state through either steadying route', () => {
     const direct = act(start(THE_BEE_YARD, {}, 'gateHook'), THE_BEE_YARD, 'apiaryGate', 'steadyStandTool');
     expect(sceneText(THE_BEE_YARD.scenes.standSteadied, direct)).not.toMatch(/with the goat away/i);

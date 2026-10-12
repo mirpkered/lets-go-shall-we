@@ -316,7 +316,9 @@ export const THE_EMPTY_CABIN: Scenario = {
       { id: 'thankTrapper', label: 'Return to the cabin and wait', next: 'cabinNight' },
     ] },
     cabinNight: end('cabinNight', 'A Dry Bench', 'The rain passes without another sign. You leave the folded blanket, note, and shutters as you found them; shelter was enough, and the empty bed remains the owner’s business.'),
-    cabinRoad: end('cabinRoad', 'The Higher Track', 'You take the track back to the road. The cabin remains unforced and dry, and whatever brought its keeper to the stream is left uncertain rather than turned into a danger without evidence.'),
+    cabinRoad: { ...end('cabinRoad', 'The Higher Track', 'You take the track back to the road. The cabin remains unforced and dry, and whatever brought its keeper to the stream is left uncertain rather than turned into a danger without evidence.'), textVariants: [
+      { requirements: { historyFlags: ['met_trapper_at_empty_cabin'] }, text: 'You take the track back to the road after meeting the trapper upstream. They left the cabin open for a neighbor expected after the storm; you leave the room unforced and the blanket behind.' },
+    ] },
   },
 };
 

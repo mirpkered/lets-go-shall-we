@@ -211,6 +211,39 @@ describe('witness and intervention scenario batch', () => {
     expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.gunshotInBank, shot)).toContain('They fall and do not move');
   });
 
+  it('keeps refusal distinct from rushing and explains warning-shot injury without changing risk', () => {
+    let refused = start(GIVE_ME_WHATCHA_GOT, { crewStyle: 'nervous' }, 'pocketToolkit', 5);
+    refused = act(refused, GIVE_ME_WHATCHA_GOT, 'bankRobbery', 'complyWithRobbers');
+    refused = act(refused, GIVE_ME_WHATCHA_GOT, 'cashTaken', 'handOverMoney');
+    refused = act(refused, GIVE_ME_WHATCHA_GOT, 'afterCashDemand', 'refuseNervousSearch', () => 0.999999);
+    expect(refused.run?.sceneId).toBe('shotPlayer');
+    expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.shotPlayer, refused)).toMatch(/kept still and refused/i);
+    expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.shotPlayer, refused)).not.toMatch(/rushed the nearest robber/i);
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    saveGame(refused, storage as unknown as Storage);
+    expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.shotPlayer, loadSave(storage as unknown as Storage))).toMatch(/kept still and refused/i);
+
+    let rushed = start(GIVE_ME_WHATCHA_GOT, { crewStyle: 'nervous', patronMove: 'bolts' });
+    rushed = act(rushed, GIVE_ME_WHATCHA_GOT, 'bankRobbery', 'steadyPatron', () => 0.999999);
+    rushed = act(rushed, GIVE_ME_WHATCHA_GOT, 'patronPanics', 'pullPatronDown', () => 0);
+    rushed = act(rushed, GIVE_ME_WHATCHA_GOT, 'briefOpening', 'rushArmedRobber', () => 0.999999);
+    expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.shotPlayer, rushed)).toMatch(/rushed the nearest robber/i);
+
+    for (const choice of ['callPatronBack', 'pullPatronDown']) {
+      let warning = start(GIVE_ME_WHATCHA_GOT, { crewStyle: 'nervous', patronMove: 'bolts', gunOutcome: 'warningShot' });
+      warning = act(warning, GIVE_ME_WHATCHA_GOT, 'bankRobbery', 'steadyPatron', () => 0.999999);
+      warning = act(warning, GIVE_ME_WHATCHA_GOT, 'patronPanics', choice, () => 0.999999);
+      expect(warning.run?.sceneId).toBe('gunshotInBank');
+      expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.gunshotInBank, warning)).toMatch(/splinters catch you/i);
+      expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.gunshotInBank, warning)).toMatch(/nobody is struck by the bullet/i);
+    }
+
+    const legacy = start(GIVE_ME_WHATCHA_GOT);
+    legacy.run!.sceneId = 'shotPlayer';
+    expect(sceneText(GIVE_ME_WHATCHA_GOT.scenes.shotPlayer, legacy)).not.toMatch(/knowingly crossed|refused the search|rushed the nearest/i);
+  });
+
   it('persists selected people, incident conditions, and robbery behavior through save/resume', () => {
     const memory = new Map<string, string>();
     const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };

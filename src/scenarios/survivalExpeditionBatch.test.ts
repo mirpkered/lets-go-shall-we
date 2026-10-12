@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { analyzeScenarioLibrary, validateScenarioMetadata } from '../scenarioDiversity';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -164,6 +164,18 @@ describe('survival and expedition adventure batch', () => {
     expect(wait.run?.sceneId).toBe('morningSignal');
     expect(HOLD_UNTIL_MORNING.scenes.morningSignal.text).toContain('No one was in danger');
     expect(THE_ABANDONED_CAMP.scenes.campAnswer.text).toContain('no evidence to turn an empty site into a rescue emergency');
+  });
+
+  it('remembers meeting the Empty Cabin trapper without inventing that encounter on other exits', () => {
+    let met = act(start(THE_EMPTY_CABIN), THE_EMPTY_CABIN, 'cabinDoor', 'readCabinNote');
+    met = act(met, THE_EMPTY_CABIN, 'cabinSigns', 'followCabinPrints');
+    met = act(met, THE_EMPTY_CABIN, 'cabinStream', 'callCabinStream');
+    met = act(met, THE_EMPTY_CABIN, 'cabinAnswer', 'walkWithTrapper');
+    expect(sceneText(THE_EMPTY_CABIN.scenes.cabinRoad, met)).toMatch(/after meeting the trapper upstream/i);
+    expect(sceneText(THE_EMPTY_CABIN.scenes.cabinRoad, met)).toMatch(/left the cabin open for a neighbor/i);
+
+    const uninvestigated = act(start(THE_EMPTY_CABIN), THE_EMPTY_CABIN, 'cabinDoor', 'leaveCabinDoor');
+    expect(sceneText(THE_EMPTY_CABIN.scenes.cabinRoad, uninvestigated)).not.toMatch(/meeting the trapper|neighbor expected/i);
   });
 
   it('keeps the shared ridge ending neutral across injured and uninjured routes', () => {

@@ -4,6 +4,8 @@ import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
+import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
+import { THE_SKIN_IN_THE_TREE } from './monsterHuntThird';
 
 function fresh(scenario: Scenario): SaveData {
   const character = newCharacter('RC12 Monster Hunt Tester');
@@ -74,5 +76,46 @@ describe('RC12 Monster Hunt converged endings', () => {
     const legacyFallback = sceneText(THE_MAN_EATER_OF_MILLERS_GAP.scenes.gapAfter, fresh(THE_MAN_EATER_OF_MILLERS_GAP));
     expect(legacyFallback).toMatch(/present whereabouts are uncertain/i);
     expect(legacyFallback).not.toMatch(/never saw|has not been located/i);
+  });
+
+  it('keeps the quarry shelter disclosure attached to the route that made it', () => {
+    const seenFromRim = take(fresh(THE_PALE_CHILDREN_OF_THE_QUARRY), THE_PALE_CHILDREN_OF_THE_QUARRY, 'askQuarryCrew');
+    const calledAcross = take(seenFromRim, THE_PALE_CHILDREN_OF_THE_QUARRY, 'callAcross');
+    const told = take(calledAcross, THE_PALE_CHILDREN_OF_THE_QUARRY, 'tellForeman');
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, told)).toMatch(/told the foreman where the workers sheltered/i);
+    const resumedTold = loadSave({ getItem: () => JSON.stringify(told) });
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, resumedTold)).toMatch(/told the foreman where the workers sheltered/i);
+
+    const privateAtRim = take(take(fresh(THE_PALE_CHILDREN_OF_THE_QUARRY), THE_PALE_CHILDREN_OF_THE_QUARRY, 'askQuarryCrew'), THE_PALE_CHILDREN_OF_THE_QUARRY, 'callAcross');
+    const keptPrivate = take(privateAtRim, THE_PALE_CHILDREN_OF_THE_QUARRY, 'leaveThemPrivate');
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, keptPrivate)).toMatch(/what the foreman learned/i);
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, keptPrivate)).not.toMatch(/you told the foreman/i);
+    const legacy = fresh(THE_PALE_CHILDREN_OF_THE_QUARRY);
+    legacy.run!.sceneId = 'quarryAfter';
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, legacy)).toMatch(/what the foreman learned/i);
+
+    let reportedRope = take(fresh(THE_PALE_CHILDREN_OF_THE_QUARRY), THE_PALE_CHILDREN_OF_THE_QUARRY, 'askQuarryCrew');
+    reportedRope = take(reportedRope, THE_PALE_CHILDREN_OF_THE_QUARRY, 'dimLantern');
+    reportedRope = take(reportedRope, THE_PALE_CHILDREN_OF_THE_QUARRY, 'announceYourself');
+    reportedRope = take(reportedRope, THE_PALE_CHILDREN_OF_THE_QUARRY, 'reportRope');
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, reportedRope)).toMatch(/reported the moved warning rope/i);
+    expect(sceneText(THE_PALE_CHILDREN_OF_THE_QUARRY.scenes.quarryAfter, reportedRope)).not.toMatch(/warning rope restored|cut closed/i);
+  });
+
+  it('preserves learned hide explanations on withdrawal and keeps older saves neutral', () => {
+    let clueOnly = take(fresh(THE_SKIN_IN_THE_TREE), THE_SKIN_IN_THE_TREE, 'inspectTreeBase');
+    clueOnly = take(clueOnly, THE_SKIN_IN_THE_TREE, 'avoidRavine');
+    expect(sceneText(THE_SKIN_IN_THE_TREE.scenes.hideLeft, clueOnly)).toMatch(/examining the tied hide and the drag marks/i);
+    expect(sceneText(THE_SKIN_IN_THE_TREE.scenes.hideLeft, clueOnly)).toMatch(/purpose remains uncertain/i);
+
+    let informed = take(fresh(THE_SKIN_IN_THE_TREE), THE_SKIN_IN_THE_TREE, 'askRoadCrew');
+    informed = take(informed, THE_SKIN_IN_THE_TREE, 'leavePrivateLand');
+    const resumed = loadSave({ getItem: () => JSON.stringify(informed) });
+    expect(sceneText(THE_SKIN_IN_THE_TREE.scenes.hideLeft, resumed)).toMatch(/hearing the hunter explain/i);
+    expect(sceneText(THE_SKIN_IN_THE_TREE.scenes.hideLeft, resumed)).not.toMatch(/what the trail means remains unestablished/i);
+
+    const legacy = fresh(THE_SKIN_IN_THE_TREE);
+    legacy.run!.sceneId = 'hideLeft';
+    expect(sceneText(THE_SKIN_IN_THE_TREE.scenes.hideLeft, legacy)).toMatch(/remains unestablished on this route/i);
   });
 });

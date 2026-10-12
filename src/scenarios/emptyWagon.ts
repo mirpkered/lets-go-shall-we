@@ -20,7 +20,7 @@ export const THE_EMPTY_WAGON: Scenario = {
       { id: 'walkBackDriver', label: 'Walk back with {{driver}}', timeCost: 8, next: 'wagonRecovered', effects: { historyFlags: ['helped_recover_stranded_wagon'] } },
       { id: 'leaveDriverToSmith', label: 'Leave the recovery to the wheelwright', next: 'wagonLeftEnding' },
     ] },
-    loadSecured: { id: 'loadSecured', title: 'The Load Tied Down', tone: 'safe', text: 'Your strap keeps the tarp snug over the cargo. The horse remains tied in the clear beside the road. The driver has not returned yet; the farm lane is visible beyond the field.', choices: [
+    loadSecured: { id: 'loadSecured', title: 'The Load Tied Down', tone: 'safe', text: 'The tarp stays snug over the cargo. The horse remains tied in the clear beside the road. The driver has not returned yet; the farm lane is visible beyond the field.', choices: [
       { id: 'waitWithWagon', label: 'Wait with the wagon for its owner', timeCost: 8, next: 'wagonRecovered' },
       { id: 'goFindOwner', label: 'Walk to the farmhouse and find the driver', timeCost: 8, next: 'driverFound' },
       { id: 'leaveSecure', label: 'Leave once the cargo is protected', next: 'wagonLeftEnding' },

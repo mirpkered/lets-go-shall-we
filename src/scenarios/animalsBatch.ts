@@ -276,13 +276,13 @@ export const THE_FRIGHTENED_TEAM: Scenario = {
     teamRoad: { id: 'teamRoad', title: 'The Horses Will Not Step On', tone: 'warning', text: 'Two harnessed horses stand before a narrow stretch of road, ears forward and hooves planted. Their driver holds the reins without striking them. You can see the road ahead, but not what lies around the bend. The team is frightened, not out of control.', choices: [
       { id: 'askDriverTeam', label: 'Ask the driver what happened', timeCost: 2, next: 'teamExplained', effects: { knowledge: ['A two-horse team balked before a narrow road bend; its driver chose not to force them.'] } },
       { id: 'inspectRoadTeam', label: 'Inspect the road from the safe shoulder', timeCost: 4, next: 'teamCauseSeen' },
-      { id: 'giveTeamSpace', label: 'Give the team room and take a side path', next: 'teamPassed' },
+      { id: 'giveTeamSpace', label: 'Give the team room and take a side path', next: 'teamUnresolvedAfterSidePath' },
       { id: 'quietTeam', label: 'Speak calmly from beyond the harness', timeCost: 3, chance: { probability: 0.56, bonusItems: ['farmWhistle'], bonusProbability: 0.15, successNext: 'teamSettles', failureNext: 'teamExplained', successMessage: 'The horses lower their heads but stay where they are, breathing more evenly.', failureMessage: 'The horses remain tense; the driver asks you to inspect the road instead.' } },
     ] },
     teamExplained: { id: 'teamExplained', title: 'The Driver Waits', tone: 'safe', text: 'The driver says the horses have balked at this bend before, though never for long. The path is firm and there is room to turn the cart around. A quick look ahead may explain what they see or smell.', choices: [
       { id: 'inspectAfterDriver', label: 'Look around the bend from the shoulder', timeCost: 4, next: 'teamCauseSeen' },
       { id: 'leadWideDetour', label: 'Help guide the cart around the wide verge', timeCost: 8, next: 'teamDetour' },
-      { id: 'leaveTeamDriver', label: 'Leave the driver to choose his route', next: 'teamPassed' },
+      { id: 'leaveTeamDriver', label: 'Leave the driver to choose his route', next: 'teamUnresolvedAfterLeaving' },
     ] },
     teamCauseSeen: { id: 'teamCauseSeen', title: 'Something Unfamiliar', tone: 'safe', text: 'You have found a possible reason for their refusal. The horses are still held safely, and no one needs to force them forward.', textVariants: [
       { requirements: { selections: { teamCause: 'canvas' } }, text: 'A pale canvas sheet has blown against the fence and lifts in the breeze. The road beneath it is sound; the moving shape is unfamiliar to the horses.' },
@@ -299,7 +299,9 @@ export const THE_FRIGHTENED_TEAM: Scenario = {
       { id: 'turnTeamDetour', label: 'Take the wider route instead', timeCost: 8, next: 'teamDetour' },
     ] },
     teamDetour: ending('teamDetour', 'Room to Turn', 'The driver guides the cart around by the broad verge. It takes longer, but the horses pass the unfamiliar place without being forced. Their caution has cost time, not safety.'),
-    teamPassed: ending('teamPassed', 'A Calm Pace', 'The team moves on at a walk once the bend is no longer a surprise. The driver thanks you for looking before insisting; animals often notice a change before people do.'),
+    teamUnresolvedAfterSidePath: ending('teamUnresolvedAfterSidePath', 'A Side Path Taken', 'You take the side path and leave the horses with their driver at the bend. You do not see whether they continue or turn back.'),
+    teamUnresolvedAfterLeaving: ending('teamUnresolvedAfterLeaving', 'The Driver Decides', 'You leave the driver to choose how to proceed. The horses are still at the bend when you move on; you do not see whether they cross or turn back.'),
+    teamPassed: ending('teamPassed', 'A Calm Pace', 'The horses move past the bend at a walk after the driver gives them time to settle. No one forces them forward; animals often notice a change before people do.'),
   },
 };
 

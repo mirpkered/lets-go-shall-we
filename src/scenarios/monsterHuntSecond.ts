@@ -270,14 +270,17 @@ export const THE_PALE_CHILDREN_OF_THE_QUARRY: Scenario = {
     quarryAnswer: scene('quarryAnswer', 'A Worker Answers', 'A person calls back from below and asks you not to alert the foreman. Three quarry hands sleep near the lower bench between shifts; their dust masks made them look small from the rim. They are hiding because their shift was not entered in the company book.', [
       { id: 'askAboutSafety', label: 'Ask whether the lower bench is safe', next: 'quarryWorkers' },
       { id: 'leaveThemPrivate', label: 'Leave without naming the workers', next: 'quarryAfter', effects: { historyFlags: ['respected quarry workers’ privacy after verifying the pale figures'] } },
-      { id: 'tellForeman', label: 'Tell the foreman where they are', next: 'quarryAfter' },
+      { id: 'tellForeman', label: 'Tell the foreman where they are', next: 'quarryAfter', effects: { setFlags: ['foremanToldWorkersShelter'] } },
     ]),
     quarryWorkers: scene('quarryWorkers', 'Three Workers at Rest', 'The workers explain the false child-shapes and show you the stable lower road they use. One cut is unsafe because a warning rope was moved, not because anything lives there. They ask you to tell the foreman about the rope without naming who slept below.', [
-      { id: 'reportRope', label: 'Report the moved warning rope', next: 'quarryAfter', effects: { knowledge: ['Pale quarry figures were workers in dust masks; the real hazard was a moved warning rope above an unsafe cut.'] } },
+      { id: 'reportRope', label: 'Report the moved warning rope', next: 'quarryAfter', effects: { setFlags: ['reportedMovedQuarryRope'], knowledge: ['Pale quarry figures were workers in dust masks; the real hazard was a moved warning rope above an unsafe cut.'] } },
       { id: 'keepSecret', label: 'Keep their shelter location private', next: 'quarryAfter', effects: { historyFlags: ['protected quarry workers’ shelter while reporting an unsafe cut'] } },
       { id: 'returnToRim', label: 'Return to the safe road', next: 'quarryAfter' },
     ]),
-    quarryAfter: end('quarryAfter', 'The Cut Closed', 'The unsafe cut is closed and the warning rope restored. The foreman does not learn who used the lower bench; the pale watchers were people, and the quarry’s danger remains ordinary but serious.'),
+    quarryAfter: { ...end('quarryAfter', 'After the Quarry Report', 'The pale watchers were people, and the quarry’s danger is ordinary but serious. What the foreman learned and whether the moved warning rope is addressed depend on what you reported.'), textVariants: [
+      { requirements: { flags: ['foremanToldWorkersShelter'] }, text: 'You told the foreman where the workers sheltered. The pale watchers were people; the warning rope and unsafe cut remain a separate concern.' },
+      { requirements: { flags: ['reportedMovedQuarryRope'] }, text: 'You reported the moved warning rope so the foreman can address the unsafe cut. The pale watchers were people, and their shelter was not part of that report.' },
+    ] },
     quarryClosed: end('quarryClosed', 'The Rim Kept Clear', 'The foreman closes the upper path until daylight. No children are missing, and no one enters the quarry after dark.'),
     quarryInjury: end('quarryInjury', 'Stone underfoot', 'A loose stone bruises your ankle. The workers help you back to the service road, and the foreman closes the lower cut until the footing is cleared.'),
   },

@@ -297,7 +297,7 @@ export const THE_OUTLAWS_MOTHER = W('the-outlaws-mother', 'The Outlaw’s Mother
     { id: 'tellDeputy', label: 'Ask the deputy to deliver it safely', next: 'deputy' },
   ]),
   canyon: scene('canyon', 'A Man by the Dry Wash', 'The wanted man meets you in the open beside the waystation. He is unarmed in view, but a horse is saddled nearby. He asks if the deputy followed you; the letter remains sealed unless you opened it.', [
-    { id: 'handLetter', label: 'Hand him the letter and step away', next: 'readLetter' },
+    { id: 'handLetter', label: 'Hand him the letter and step away', next: 'readLetter', effects: { setFlags: ['familyNewsDeliveredToSon'] } },
     { id: 'askReturnBook', label: 'Ask about returning the account book', next: 'choice' },
     { id: 'refuseTransfer', label: 'Keep the letter and leave', next: 'departure' },
   ]),
@@ -317,7 +317,9 @@ export const THE_OUTLAWS_MOTHER = W('the-outlaws-mother', 'The Outlaw’s Mother
   ]),
   bookReturned: scene('bookReturned', 'The Account Book at the Desk', 'The waystation keeper takes the freight account book and writes down who returned it. The wanted man is gone before the deputy arrives; the book may help identify what was stolen, but it does not settle his guilt.', [{ id: 'bookFinish', label: 'Leave the record with the keeper', next: 'departure', effects: { historyFlags: ['returned a freight account book through a waystation'] } }]),
   surrendered: scene('surrendered', 'A Choice Made after Reading', 'He asks for one night to reach the county seat and says he will meet the deputy there. You have no guarantee he will keep his word. The patrol can be told what he promised without calling it a surrender already completed.', [{ id: 'surrenderReport', label: 'Carry his stated intention to the deputy', next: 'departure', effects: { knowledge: ['The wanted man said he intended to meet the deputy at the county seat tomorrow; it had not happened yet.'] } }]),
-  departure: end('departure', 'A Message Delivered', 'The family news reaches its destination, but the robbery remains a public matter. The man’s later choice is not yours to claim; your account records only what you carried or heard.'),
+  departure: { ...end('departure', 'The Errand Ends', 'You leave without proof that the family message reached its destination. The man’s later choice is not yours to claim; your account records only what you carried or heard.'), textVariants: [
+    { requirements: { flags: ['familyNewsDeliveredToSon'] }, text: 'The family news reaches the son, but the robbery remains a public matter. His later choice is not yours to claim; you delivered the letter and stepped away.' },
+  ] },
   decline: end('decline', 'A Letter Kept at Home', 'You decline the errand. The mother keeps the letter and may send it through the post. You have not helped the fugitive evade the law or accused him yourself.'),
 }, 'porch');
 
