@@ -233,7 +233,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
         { requirements: { flags: ['pouchRecovered'] }, text: 'With the pay list and pouch in view, Rowan stops denying the wagon. He admits he and a partner tried to divert the mill payroll. The harness broke under load and threw him into the ditch; his partner fled with the pouch and left him hurt. The injury is real, though his first account was not.' },
       ],
       choices: [
-        { id: 'keepHelpingAfterReveal', label: 'Keep helping Rowan despite the theft', hint: 'He is still hurt; help does not excuse what happened.', timeCost: 6, next: 'resolutionChoice', effects: { setFlags: ['protectedManAfterReveal'], historyFlags: ['protected_man_despite_suspicion'] } },
+        { id: 'keepHelpingAfterReveal', label: 'Keep helping Rowan while he is still hurt', hint: 'He needs care whether or not his account is complete.', timeCost: 6, next: 'resolutionChoice', effects: { setFlags: ['protectedManAfterReveal'], historyFlags: ['protected_man_despite_suspicion'] } },
         { id: 'takeEvidenceToWarden', label: 'Bring Rowan and the evidence to the warden', timeCost: 8, next: 'wardenAndRowan', effects: { setFlags: ['helpSummoned', 'evidenceSearched'], historyFlags: ['turned_man_over_to_authorities'] } },
         { id: 'followPartnerTracks', label: 'Follow the partner’s tracks toward the mill', hint: 'The pay list and recovered pouch point to someone fleeing with the payroll.', requirements: { flags: ['pouchRecovered'] }, timeCost: 10, next: 'partnerTrail', effects: { setFlags: ['followedPartner'] } },
         { id: 'leaveAfterReveal', label: 'Leave Rowan and the evidence here', timeCost: 1, next: 'walkAwayAfterReveal', effects: { historyFlags: ['left_injured_man_behind'] } },
@@ -325,7 +325,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
       choices: [
         { id: 'returnPouchToOwner', label: 'Return the pouch to the mill owner', requirements: { flags: ['pouchRecovered'] }, hint: 'The owner can count and seal the payroll openly.', timeCost: 2, next: 'propertyReturnedEnding', effects: { historyFlags: ['recovered_stolen_property'] } },
         { id: 'holdPouchForWarden', label: 'Keep the pouch sealed for the warden', requirements: { flags: ['pouchRecovered'] }, timeCost: 5, next: 'wardenResolution', effects: { historyFlags: ['recovered_stolen_property', 'turned_man_over_to_authorities'] } },
-        { id: 'acceptSignalMirror', label: 'Return the pouch and accept a signal mirror', requirements: { flags: ['pouchRecovered'], notItems: ['roadsideSignalMirror'] }, timeCost: 1, next: 'mirrorRewardEnding', effects: { gainItems: ['roadsideSignalMirror'], historyFlags: ['recovered_stolen_property'] } },
+        { id: 'acceptSignalMirror', label: 'Return the pouch and accept a signal mirror', requirements: { flags: ['pouchRecovered'], notItems: ['roadsideSignalMirror'] }, timeCost: 1, next: 'mirrorRewardEnding', effects: { gainItems: ['roadsideSignalMirror'], setFlags: ['pouchReturnedToOwner'], historyFlags: ['recovered_stolen_property'] } },
         { id: 'waitWithoutPouch', label: 'Wait for the warden to investigate the lane', requirements: { notFlags: ['pouchRecovered'] }, timeCost: 5, next: 'wardenResolution', effects: { historyFlags: ['turned_man_over_to_authorities'] } },
       ],
     },
@@ -351,7 +351,11 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
     },
     wardenEnding: {
       id: 'wardenEnding', title: 'The Road Is Quieter', tone: 'safe', ending: 'success',
-      text: 'The warden has Rowan, the mill has been notified, and you carry no money or property from the scene. You leave knowing the story was more complicated than the first account—and that the injury was real.' ,
+      text: 'The warden takes Rowan’s statement and will investigate the missing payroll. You leave without knowing what can be recovered.',
+      textVariants: [
+        { requirements: { flags: ['pouchRecovered', 'tookCoinsFromPouch'] }, text: 'The recovered pouch and Rowan’s statement give the warden a lead. The two coins you took remain with you; the owner and warden must determine what can be restored.' },
+        { requirements: { flags: ['pouchRecovered'] }, text: 'The recovered pouch and Rowan’s statement give the warden a lead. The owner and warden will determine what can be restored.' },
+      ],
       choices: [],
     },
     wardenRewardEnding: {
@@ -361,13 +365,20 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
       choices: [],
     },
     propertyReturnedEnding: {
-      id: 'propertyReturnedEnding', title: 'The Pay List Reconciled', tone: 'safe', ending: 'success',
-      text: 'The mill owner counts the coins and seals the pouch. Rowan is taken to the farmhouse under guard, where his injury can be treated. The warden will hear both accounts in daylight.' ,
+      id: 'propertyReturnedEnding', title: 'The Pouch Changes Hands', tone: 'safe', ending: 'success',
+      text: 'The mill owner counts the coins and seals the returned pouch. Rowan is taken to the farmhouse under guard, where his injury can be treated. The warden will hear both accounts in daylight.',
+      textVariants: [{ requirements: { flags: ['tookCoinsFromPouch'] }, text: 'The mill owner counts what remains and seals the returned pouch. The two coins you took stay with you, so the payroll has not been fully restored. Rowan is taken to the farmhouse under guard, where his injury can be treated.' }],
       choices: [],
     },
     mirrorRewardEnding: {
       id: 'mirrorRewardEnding', title: 'A Signal for the Long Road', tone: 'safe', ending: 'success',
-      text: 'The roadside mirror is offered openly as thanks for returning the evidence and waiting for help. The mill keeps its pay; Rowan is treated and held for the warden. You leave with one useful object, not a share of stolen money.' ,
+      text: 'The warden offers a roadside mirror in thanks for helping. Rowan is in the warden’s care; the missing payroll remains for the owner and warden to settle.',
+      textVariants: [
+        { requirements: { flags: ['pouchReturnedToOwner', 'tookCoinsFromPouch'] }, text: 'You return the pouch and accept the roadside mirror. The two coins you took remain with you, so the payroll has not been fully restored.' },
+        { requirements: { flags: ['pouchReturnedToOwner'] }, text: 'You return the recovered pouch and accept the roadside mirror. The mill owner can count what was returned.' },
+        { requirements: { flags: ['pouchRecovered', 'tookCoinsFromPouch'] }, text: 'The recovered pouch gives the warden a lead, and the roadside mirror is offered in thanks. The two coins you took remain with you; what can be restored is still to be settled.' },
+        { requirements: { flags: ['pouchRecovered'] }, text: 'The recovered pouch gives the warden a lead, and the roadside mirror is offered in thanks. The owner and warden will determine what can be restored.' },
+      ],
       choices: [],
     },
     helpReturns: {
@@ -376,7 +387,7 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
       textVariants: [{ requirements: { flags: ['helpedFirst'] }, text: 'The farmer arrives with a handcart. Rowan’s cut is still controlled because you treated it before leaving. The farmer recognizes the harness marks from the mill road and mentions a missing pay pouch.' }, { requirements: { minElapsedMinutes: 20 }, text: 'The farmer arrives after a long wait. Rowan is pale and shivering; the delay has made the trip harder, but the clean cloth stops the bleeding. The farmer says the mill is missing its pay pouch.' }],
       choices: [
         { id: 'letFarmerTakeRowan', label: 'Let the farmer take Rowan for treatment', timeCost: 3, next: 'helpedByFarmerEnding', effects: { historyFlags: ['sought_help_for_injured_stranger', 'helped_injured_stranger'] } },
-        { id: 'tellFarmerAboutEvidence', label: 'Show the farmer what you found', requirements: { anyItems: ['fieldBandageRoll', 'roadsideSignalMirror'] }, timeCost: 3, next: 'farmerEvidenceEnding', effects: { historyFlags: ['sought_help_for_injured_stranger'] } },
+        { id: 'tellFarmerAboutEvidence', label: 'Show the farmer what you found', requirements: { anyItems: ['fieldBandageRoll', 'roadsideSignalMirror'] }, timeCost: 3, next: 'farmerEvidenceEnding', effects: { setFlags: ['showedFarmerEvidence'], historyFlags: ['sought_help_for_injured_stranger'] } },
         { id: 'askFarmerAboutMill', label: 'Ask about the missing pay pouch', timeCost: 2, next: 'farmerEvidenceEnding', effects: { historyFlags: ['sought_help_for_injured_stranger'] } },
         { id: 'walkAwayFromHelp', label: 'Leave once help has arrived', timeCost: 1, next: 'walkAwayAfterHelp', effects: { historyFlags: ['left_injured_man_behind'] } },
       ],
@@ -393,8 +404,9 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
       choices: [],
     },
     farmerEvidenceEnding: {
-      id: 'farmerEvidenceEnding', title: 'A Familiar Harness Mark', tone: 'warning', ending: 'success',
-      text: 'The farmer recognizes the bent harness as belonging to the mill wagon. The pay pouch was taken during a failed theft, and Rowan was involved; his partner left him hurt. The farmer takes Rowan and the evidence to the warden. No one asks you to pretend the first story was true.' ,
+      id: 'farmerEvidenceEnding', title: 'A Question for the Warden', tone: 'warning', ending: 'success',
+      text: 'The farmer reports the missing mill pay pouch to the warden and takes Rowan for treatment. With the pouch still unfound, Rowan’s role and what happened to the payroll remain for the warden to investigate.',
+      textVariants: [{ requirements: { flags: ['pouchRecovered', 'showedFarmerEvidence'] }, text: 'You show the farmer the recovered pouch and pay list. The farmer takes Rowan and the evidence to the warden; the owner can confirm what can be restored.' }],
       choices: [],
     },
     outsideHelpEnding: {
@@ -409,7 +421,8 @@ export const THE_MAN_IN_THE_DITCH: Scenario = {
     },
     walkAwayAfterReveal: {
       id: 'walkAwayAfterReveal', title: 'The Road Goes On', tone: 'warning', ending: 'success',
-      text: 'You leave Rowan where he fell. You know he lied about the robbery and that his partner took the mill pouch, but you do not know if the warden found either of them. His injury remains real, and your choice remains yours.' ,
+      text: 'You leave Rowan where he fell. Without the pouch or a witness, you cannot tell whether pain confused his account, he withheld something, or the other man acted alone. His injury remains real; you do not know whether help reaches him.',
+      textVariants: [{ requirements: { flags: ['pouchRecovered'] }, text: 'You leave Rowan after learning he and a partner tried to divert the mill payroll. The recovered pouch is evidence of the attempt; his injury remains real. You do not know whether the warden found the escaped partner.' }],
       choices: [],
     },
     walkAwayAfterHelp: {

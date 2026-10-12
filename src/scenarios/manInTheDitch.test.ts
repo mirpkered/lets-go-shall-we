@@ -36,6 +36,25 @@ function reachPouch(state = fresh()): SaveData {
   return state;
 }
 
+function reachNoPouchReveal(state = fresh()): SaveData {
+  state = act(state, 'inspectRoadside');
+  state = act(state, 'followBootprints');
+  state = act(state, 'returnToRowanAfterTracks');
+  expect(state.run?.sceneId).toBe('confrontationReveal');
+  expect(state.run?.flags).not.toContain('pouchRecovered');
+  return state;
+}
+
+function reachNoPouchWarden(state = fresh()): SaveData {
+  state = act(state, 'inspectRoadside');
+  state = act(state, 'inspectWagonRuts');
+  state = act(state, 'inspectBuckleAtWagon');
+  state = act(state, 'getWardenWithEvidence');
+  expect(state.run?.sceneId).toBe('wardenAndRowan');
+  expect(state.run?.flags).not.toContain('pouchRecovered');
+  return state;
+}
+
 function explore(initial: SaveData): { states: SaveData[]; scenes: Set<string> } {
   const pending = [initial];
   const states: SaveData[] = [];
@@ -143,6 +162,62 @@ describe('The Man in the Ditch', () => {
     expect(options(withPouch).map((choice) => choice.id)).toContain('followPartnerTracks');
     expect(THE_MAN_IN_THE_DITCH.scenes.roadsideDiscovery.text).toMatch(/brief shower|ground is soft|orchard trees/i);
     expect(THE_MAN_IN_THE_DITCH.scenes.firstEvidence.text).toMatch(/gap in the orchard trees/i);
+  });
+
+  it('keeps no-pouch confrontation and withdrawal uncertain, while preserving the informed route', () => {
+    let uninformed = reachNoPouchReveal();
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, uninformed)).toMatch(/cannot tell whether pain has confused his account/i);
+    expect(options(uninformed).find((choice) => choice.id === 'keepHelpingAfterReveal')?.label).not.toMatch(/theft|lied/i);
+    uninformed = act(uninformed, 'leaveAfterReveal');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.walkAwayAfterReveal, uninformed)).toMatch(/cannot tell whether pain confused his account/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.walkAwayAfterReveal, uninformed)).not.toMatch(/he lied|partner took|failed theft/i);
+
+    let informed = act(reachPouch(), 'keepPouchForWarden');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.confrontationReveal, informed)).toMatch(/admits he and a partner tried to divert the mill payroll/i);
+    informed = act(informed, 'leaveAfterReveal');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.walkAwayAfterReveal, informed)).toMatch(/tried to divert the mill payroll/i);
+  });
+
+  it('does not turn an inquiry to the farmer into proof of theft or transfer of missing evidence', () => {
+    let state = fresh('fieldBandageRoll');
+    state = act(state, 'askWhatHappened');
+    state = act(state, 'fetchHelpBeforeQuestions');
+    state = act(state, 'tellFarmerAboutEvidence');
+    expect(state.run?.sceneId).toBe('farmerEvidenceEnding');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.farmerEvidenceEnding, state)).toMatch(/pouch still unfound/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.farmerEvidenceEnding, state)).not.toMatch(/failed theft|Rowan was involved|takes Rowan and the evidence/i);
+  });
+
+  it('keeps the warden ending truthful when no pouch was found or two coins were taken', () => {
+    let noPouch = reachNoPouchWarden();
+    noPouch = act(noPouch, 'leaveAfterWarden');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.wardenEnding, noPouch)).not.toMatch(/carry no money|recovered pouch/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.wardenEnding, noPouch)).toMatch(/without knowing what can be recovered/i);
+
+    let tookCoins = act(reachPouch(), 'takeTwoCoins');
+    tookCoins = act(tookCoins, 'takeEvidenceToWarden');
+    tookCoins = act(tookCoins, 'leaveAfterWarden');
+    expect(tookCoins.character?.money).toBe(2);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.wardenEnding, tookCoins)).toMatch(/two coins you took remain with you/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.wardenEnding, tookCoins)).not.toMatch(/carry no money or property/i);
+  });
+
+  it('does not claim the mirror returned evidence on the no-pouch route and preserves explicit return state', () => {
+    let noPouch = act(reachNoPouchWarden(), 'takeSignalMirrorFromWarden');
+    expect(noPouch.run?.sceneId).toBe('mirrorRewardEnding');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.mirrorRewardEnding, noPouch)).not.toMatch(/returning the evidence|mill keeps its pay|not a share of stolen money/i);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.mirrorRewardEnding, noPouch)).toMatch(/missing payroll remains/i);
+
+    let returned = act(reachPouch(), 'takeTwoCoins');
+    returned = act(returned, 'keepHelpingAfterReveal');
+    returned = act(returned, 'waitForOwner');
+    returned = act(returned, 'acceptSignalMirror');
+    expect(returned.run?.flags).toContain('pouchReturnedToOwner');
+    expect(returned.character?.money).toBe(2);
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.mirrorRewardEnding, returned)).toMatch(/two coins you took remain with you/i);
+    const reloaded = JSON.parse(JSON.stringify(returned)) as SaveData;
+    expect(reloaded.run?.flags).toContain('pouchReturnedToOwner');
+    expect(sceneText(THE_MAN_IN_THE_DITCH.scenes.mirrorRewardEnding, reloaded)).toMatch(/payroll has not been fully restored/i);
   });
 
   it('supports a wrong accusation that causes distrust but advances toward a safe outcome', () => {
@@ -309,11 +384,7 @@ describe('The Man in the Ditch', () => {
     const hiddenTruth = /partner fled|failed theft|tried to divert the mill payroll|his part in the theft/i;
     for (const state of allStates) {
       const run = state.run!;
-      const authorizedReveal = run.flags.includes('confrontedStory')
-        || ['confrontationReveal', 'farmerEvidenceEnding', 'walkAwayAfterReveal'].includes(run.sceneId)
-        || (run.flags.includes('pouchRecovered') && run.sceneId === 'resolutionChoice')
-        || (run.flags.includes('pouchRecovered') && ['wardenResolution', 'wardenRewardEnding'].includes(run.sceneId));
-      if (!authorizedReveal) expect(sceneText(THE_MAN_IN_THE_DITCH.scenes[run.sceneId], state), `${run.sceneId} does not leak hidden truth`).not.toMatch(hiddenTruth);
+      if (!run.flags.includes('pouchRecovered')) expect(sceneText(THE_MAN_IN_THE_DITCH.scenes[run.sceneId], state), `${run.sceneId} does not leak hidden truth without the pouch`).not.toMatch(hiddenTruth);
     }
     for (const scene of Object.values(THE_MAN_IN_THE_DITCH.scenes)) {
       const rewardedIds = scene.choices.flatMap((choice) => choice.effects?.gainItems ?? []);
