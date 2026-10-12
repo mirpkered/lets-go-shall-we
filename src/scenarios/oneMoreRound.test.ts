@@ -50,6 +50,9 @@ describe('One More Round', () => {
     for (const id of ['listenFromBar', 'questionServerEarly', 'bringServerAccountToGroup', 'searchFromDispute', 'searchBenchByHand', 'returnPurseNoDebt', 'declineTavernRewardtruthEnding']) state = act(state, id);
     expect(state.run?.sceneId).toBe('truthEnding');
     expect(state.run?.status).toBe('success');
+    expect(state.run?.flags).toContain('purseRecovered');
+    expect(state.run?.flags).toContain('purseReturned');
+    expect(sceneText(ONE_MORE_ROUND.scenes.truthEnding, state)).toContain('Sella has her three silver back');
     expect(state.character?.historyFlags).toContain('exposed_tavern_truth');
   });
 
@@ -57,8 +60,16 @@ describe('One More Round', () => {
     let state = act(act(fresh(), 'listenFromBar'), 'stepInBeforeAccusation');
     state = act(state, 'talkThemDown');
     expect(state.run?.sceneId).toBe('quietRewards');
+    const quietRewardText = sceneText(ONE_MORE_ROUND.scenes.quietRewards, state);
+    expect(quietRewardText).toContain('Sella thanks you for calming the room');
+    expect(quietRewardText).not.toMatch(/sets? (?:the )?purse|returns? (?:the )?purse|recover(?:s|ed)? (?:the )?purse/i);
+    expect(state.run?.flags).not.toContain('purseRecovered');
+    expect(state.run?.flags).not.toContain('purseReturned');
     state = act(state, 'declineTavernRewardpeacefulEnding');
     expect(state.run?.sceneId).toBe('peacefulEnding');
+    expect(sceneText(ONE_MORE_ROUND.scenes.peacefulEnding, state)).toContain('The purse remains unaccounted for');
+    expect(state.run?.flags).not.toContain('purseRecovered');
+    expect(state.run?.flags).not.toContain('purseReturned');
     expect(state.character?.historyFlags).toContain('broke_up_tavern_fight');
   });
 

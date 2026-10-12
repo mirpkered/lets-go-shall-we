@@ -409,7 +409,7 @@ export const ONE_MORE_ROUND: Scenario = {
     }, {
     quietRewards: {
       id: 'quietRewards', title: 'The Voices Come Down',
-      text: 'Sella sets the purse aside, and Rafe agrees to discuss the old repair debt in daylight. You have stopped the argument without deciding what happened to the money. The keeper offers a small token of thanks.',
+      text: 'Sella thanks you for calming the room, and Rafe agrees to discuss the old repair debt in daylight. You have stopped the argument without deciding what happened to the money. The keeper offers a small token of thanks.',
       choices: rewardChoices('peacefulEnding'),
     },
     truthRewards: {
