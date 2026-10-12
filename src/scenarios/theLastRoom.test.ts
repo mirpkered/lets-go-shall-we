@@ -124,6 +124,14 @@ describe('The Last Room on the Left', () => {
     unidentified = pick(unidentified, 'declinePartialReward');
     expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, unidentified)).toContain('The injured traveler is still pinned but alive');
     expect(sceneText(THE_LAST_ROOM.scenes.partialEnding, unidentified)).not.toContain('Silas');
+
+    let withdrew = toCellar(fresh(0, 'pocketToolkit'));
+    withdrew = pick(withdrew, 'pryShelf', () => 0.999);
+    expect(withdrew.run?.sceneId).toBe('cellarSlip');
+    withdrew = pick(withdrew, 'climbOutAlone');
+    expect(withdrew.run?.sceneId).toBe('leftSilasEnding');
+    expect(sceneText(THE_LAST_ROOM.scenes.leftSilasEnding, withdrew)).toContain('a traveler is pinned below');
+    expect(sceneText(THE_LAST_ROOM.scenes.leftSilasEnding, withdrew)).toContain('do not stay to learn how the rescue ends');
   });
 
   it('uses neutral truthful partial-rescue wording when a legacy save lacks route proof', () => {
