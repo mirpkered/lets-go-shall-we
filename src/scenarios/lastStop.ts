@@ -276,8 +276,8 @@ export const LAST_STOP: Scenario = {
     },
     engineBrakeRescue: {
       id: 'engineBrakeRescue', title: 'Manual Brake Pressure', tone: 'warning',
-      text: 'You pull the manual valve and hold it open. The train will not stop, but the service car’s earlier brake work gives it enough drag to leave the rails before the gorge.',
-      choices: [{ id: 'holdManualBrake', label: 'Hold the valve and brace', effects: { gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' }],
+      text: 'The manual valve is within reach. Pulling and holding it may add drag for a survivable run-off, but the train cannot stop before the gorge.',
+      choices: [{ id: 'holdManualBrake', label: 'Pull and hold the valve while you brace', effects: { setFlags: ['manualBrakeHeld'], gainItems: ['signalLens'], money: 2 }, next: 'messyEnding' }],
     },
     couplingChoice: {
       id: 'couplingChoice', title: 'Who Keeps the Weight?', tone: 'warning',
@@ -345,7 +345,12 @@ export const LAST_STOP: Scenario = {
     },
     messyEnding: {
       id: 'messyEnding', title: 'A Survivable Wreck',
-      text: 'You hold the brake until the iron glows. The train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.',
+      text: 'You brace as the train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.',
+      textVariants: [
+        { requirements: { flags: ['brakesApplied', 'manualBrakeHeld'] }, text: 'Your service-car brake work has bought drag, and you keep pressure on the manual valve as the train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.' },
+        { requirements: { flags: ['brakesApplied'], notFlags: ['manualBrakeHeld'] }, text: 'Your service-car brake work has bought drag as the train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.' },
+        { requirements: { flags: ['manualBrakeHeld'], notFlags: ['brakesApplied'] }, text: 'You pull and hold the manual valve as the train leaves the rails in a shower of stone before the bridge, tearing through brush instead of empty air. There are broken windows and broken bones—but voices answer when the conductor calls. In the wreckage, you spot an intact crimson lens from a trackside signal and take it with you. Passengers press two coins into your hand for keeping them together.' },
+      ],
       choices: [], ending: 'success',
     },
     uncoupledEnding: {

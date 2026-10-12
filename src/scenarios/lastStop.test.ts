@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
 import { BROKEN_BELL } from './brokenBell';
 import { LAST_STOP } from './lastStop';
@@ -39,6 +39,50 @@ describe('All Aboard!', () => {
     for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('messyEnding');
+    expect(sceneText(LAST_STOP.scenes.messyEnding, state)).toContain('service-car brake work');
+  });
+
+  it('keeps the shared wreck ending truthful for brake, brace, and combined routes', () => {
+    let braceOnly = fresh();
+    braceOnly.run!.sceneId = 'roofInjury';
+    braceOnly = act(braceOnly, 'secureForImpact');
+    const braceText = sceneText(LAST_STOP.scenes.messyEnding, braceOnly);
+    expect(braceText).toContain('You brace as the train leaves the rails');
+    expect(braceText).not.toMatch(/hold(?:ing)? (?:the )?(?:manual )?brake|service-car brake work/i);
+
+    let manualBrake = fresh();
+    manualBrake.run!.sceneId = 'engineBrakeRescue';
+    manualBrake = act(manualBrake, 'holdManualBrake');
+    manualBrake = JSON.parse(JSON.stringify(manualBrake)) as SaveData;
+    const manualText = sceneText(LAST_STOP.scenes.messyEnding, manualBrake);
+    expect(manualBrake.run?.flags).toContain('manualBrakeHeld');
+    expect(manualText).toContain('You pull and hold the manual valve');
+    expect(manualText).not.toContain('service-car brake work');
+
+    let combined = fresh();
+    for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'front', 'crossRoof']) combined = act(combined, id, 0);
+    combined = act(combined, 'grabLever', 0.99);
+    combined = act(combined, 'brake');
+    combined = act(combined, 'holdManualBrake');
+    const combinedText = sceneText(LAST_STOP.scenes.messyEnding, combined);
+    expect(combined.run?.flags).toContain('brakesApplied');
+    expect(combined.run?.flags).toContain('manualBrakeHeld');
+    expect(combinedText).toContain('Your service-car brake work has bought drag');
+    expect(combinedText).toContain('you keep pressure on the manual valve');
+  });
+
+  it('uses a neutral legacy fallback when method flags are absent', () => {
+    const legacy = fresh();
+    legacy.run!.sceneId = 'messyEnding';
+    const text = sceneText(LAST_STOP.scenes.messyEnding, legacy);
+    expect(text).toContain('You brace as the train leaves the rails');
+    expect(text).not.toMatch(/hold(?:ing)? (?:the )?(?:manual )?brake|service-car brake work/i);
+  });
+
+  it('offers manual brake work explicitly instead of assuming earlier service-car work', () => {
+    expect(LAST_STOP.scenes.engineBrakeRescue.text).toContain('Pulling and holding it may add drag');
+    expect(LAST_STOP.scenes.engineBrakeRescue.text).not.toContain('service car’s earlier brake work');
+    expect(LAST_STOP.scenes.engineBrakeRescue.choices[0].label).toContain('Pull and hold the valve');
   });
 
   it('supports a distinct clean locomotive route using a purchased toolkit', () => {
