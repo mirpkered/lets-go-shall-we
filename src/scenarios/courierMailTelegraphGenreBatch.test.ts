@@ -221,6 +221,38 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     }
   });
 
+  it('keeps concealed opening distinct from each story’s unrelated delay result, including after reload', () => {
+    const affected = new Set([
+      'mailbag-at-milepost-nine', 'the-last-mile-pouch', 'seal-that-cooled-wrong', 'town-name-that-moved',
+      'first-words-over-the-wire', 'letter-from-ash-lot', 'no-forwarding-address-for-the-founder', 'envelope-returned-five-times',
+    ]);
+    const sealedStories = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({ id }) => affected.has(id));
+    expect(sealedStories).toHaveLength(8);
+
+    for (const scenario of sealedStories) {
+      let concealed = act(fresh(scenario), scenario, 'acceptDelivery');
+      concealed = act(concealed, scenario, 'openSealedMessage');
+      concealed = act(concealed, scenario, 'concealOpening');
+      expect(concealed.run?.sceneId).toBe('delayed');
+      expect(concealed.run?.flags).toContain('courier_concealed_opening');
+
+      const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+      saveGame(concealed, storage as never);
+      const resumed = loadSave(storage as never);
+      const ending = sceneText(scenario.scenes.delayed, resumed);
+      expect(ending, scenario.id).toMatch(/opened correspondence back under its altered seal/i);
+      expect(ending, scenario.id).toMatch(/neither delivery nor formal return/i);
+      expect(ending, scenario.id).not.toBe(scenario.scenes.delayed.text);
+
+      let ordinaryDelay = act(fresh(scenario), scenario, 'acceptDelivery');
+      ordinaryDelay = act(ordinaryDelay, scenario, 'verifyOutside');
+      ordinaryDelay = act(ordinaryDelay, scenario, 'holdOrReturn');
+      const ordinaryText = sceneText(scenario.scenes.delayed, ordinaryDelay);
+      expect(ordinaryText, scenario.id).toBe(scenario.scenes.delayed.text);
+      expect(ordinaryText, scenario.id).not.toMatch(/altered seal|concealed.*breach/i);
+    }
+  });
+
   it('makes the signposted physical and informational hazards produce proportionate consequences', () => {
     const exposed = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'mailbag-at-milepost-nine')!;
     let state = fresh(exposed);
