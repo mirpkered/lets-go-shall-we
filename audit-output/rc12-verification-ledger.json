@@ -1,8 +1,8 @@
 {
   "schema": "lgsw.rc12-verification.v1",
   "baselineMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
-  "lastReviewedMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
-  "verificationBatch": 1,
+  "lastReviewedMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48",
+  "verificationBatch": 2,
   "confirmedFindingRecords": 109,
   "findingAdventureAssignments": 144,
   "canonicalAdventureCount": 124,
@@ -69,15 +69,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -100,7 +103,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "below-the-old-fort",
@@ -115,15 +118,17 @@
           "auditText": "Shared endings contradict removal and grant unacquired map",
           "auditWitness": "fortEntrance.openPowderRoom → fortPowder.takeToolFort → fortExit; fortBarracks.takeScabbard → fortGuardian.fightGuard success → fortAfter",
           "auditEvidence": "Take chest grants money2, yet fortExit says rooms undisturbed. Guard-only victory ends with copied route plan; plan is established only powder squeeze success.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — preserves Below the Old Fort route facts at the two converged closures"
+          ],
+          "reviewNotes": "Current shared closure assertions preserve what was removed and do not grant the unacquired map.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "blue-chalk-milepost",
@@ -138,14 +143,17 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -162,7 +170,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "blue-room-dispatch",
@@ -177,15 +185,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -208,7 +219,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "book-without-a-title",
@@ -223,15 +234,17 @@
           "auditText": "Refusal ending obtains printer and mark evidence never examined",
           "auditWitness": "untitledBook.closeBook → bookAfter",
           "auditEvidence": "Close immediately still says printer takes repeated mark copy and discusses fresh ink, introduced only bookMarks.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — does not give The Book Without a Title printer knowledge before examining the mark"
+          ],
+          "reviewNotes": "Refusal closure is checked against the unopened route; printer/mark evidence stays gated on examination.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "bridge-out",
@@ -315,15 +328,17 @@
           "auditText": "Already fallen tree becomes not lowered",
           "auditWitness": "haul.pullTreeNow failure → roughFall.callForHelp → delay → treeDelayEnd",
           "auditEvidence": "roughFall has tree on slope with split branches; delay says tomorrow lowering safer and final no tree brought down tonight.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — keeps the fallen-tree delay distinct from postponing the felling"
+          ],
+          "reviewNotes": "The test exercises a failed pull after the tree has fallen and keeps that result distinct from choosing to delay felling.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "copy-that-came-back",
@@ -338,15 +353,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -369,7 +387,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "copyists-pencil",
@@ -384,14 +402,17 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -408,7 +429,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "dead-mans-hand",
@@ -739,15 +760,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -770,7 +794,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "floorboard-that-was-replaced",
@@ -953,15 +977,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -984,7 +1011,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "house-with-warm-window",
@@ -999,15 +1026,17 @@
           "auditText": "After conversation ending says no stop/no knowledge",
           "auditWitness": "road.knockWarmHouse → door.sayGoodnight → pass",
           "auditEvidence": "door explains lamp for missing son; pass says you do not stop and meaning not learned.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — distinguishes passing the warm-window house from speaking with its resident"
+          ],
+          "reviewNotes": "The passing route and resident-conversation route produce distinct knowledge/stop acknowledgements.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "hush-now",
@@ -1074,15 +1103,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1105,7 +1137,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "iron-orchard",
@@ -1221,15 +1253,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1252,7 +1287,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "last-stop",
@@ -1441,14 +1476,17 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1465,7 +1503,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "no-forwarding-address-for-the-founder",
@@ -1658,15 +1696,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04",
             "COU-06"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1689,7 +1730,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "postal-road-after-the-flood",
@@ -1704,15 +1745,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1735,7 +1779,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "rain-on-the-relay",
@@ -1750,14 +1794,17 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -1774,7 +1821,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "red-chalk-circle",
@@ -1789,15 +1836,17 @@
           "auditText": "Retreat rescues missing Orin without finding him",
           "auditWitness": "chalkRoom.crossCircle → chalkDisturbed.retreatFromChalk → chalkAfter",
           "auditEvidence": "Crossing reveals empty coat only; retreat ends with Orin out and crawlspace boarded, while finding/rescue exists in separate chalkCrawl route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — keeps the Red Chalk Circle aftermath conditional on whether Orin was found"
+          ],
+          "reviewNotes": "Aftermath text is conditional on Orin actually being recovered; retreat does not imply rescue.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "seal-that-cooled-wrong",
@@ -1984,16 +2033,19 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04",
             "COU-07"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -2022,7 +2074,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "station-without-a-clock",
@@ -2037,14 +2089,17 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -2061,7 +2116,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "taking-on-water",
@@ -2159,15 +2214,17 @@
           "auditText": "Refusing the prize narrates accepting it",
           "auditWitness": "signal.repeatRules → round.warnCrew → saved.declinePrize → whistleEnd",
           "auditEvidence": "Decline payment and help re-moor grants Knowledge only. Ending says 'You accept the Farm Whistle.' Reproduced no acquired item.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/competitionGearGenreBatch.test.ts — keeps Bell Rope refusal and prize endings distinct while retaining the learned signal lesson"
+          ],
+          "reviewNotes": "The refusal result is kept distinct from accepted whistle prize while learned signaling remains attributable to the route.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-bridge-goes-down",
@@ -2372,15 +2429,17 @@
           "auditText": "Known goose location becomes missing/unfound",
           "auditWitness": "yard.followPrints → creek.leaveBird → kitchen.makePot → mealWithoutGoose",
           "auditEvidence": "Goose visibly safe across creek; decline retrieval then ends remains missing / not found tonight.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — distinguishes a goose seen across the creek from one recovered"
+          ],
+          "reviewNotes": "Current route/test preserves the distinction between seeing the goose across the creek and recovering it.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-christmas-visitor",
@@ -2395,15 +2454,17 @@
           "auditText": "No-visit route claims family has unread station letter",
           "auditWitness": "door.askFromDoor → threshold.letThemGo → departure",
           "auditEvidence": "Visitor leaves before station retrieval; departure says family has letter to consider. Supper route similarly keeps brother note without retrieval.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — states whether the Christmas visitor letter reached the family"
+          ],
+          "reviewNotes": "No-visit route does not state the letter reached the family; delivery evidence and receipt remain distinct.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-clamp-beneath-the-press",
@@ -2441,15 +2502,17 @@
           "auditText": "Immediate burial pause inherits discovered conspiracy",
           "auditWitness": "emptyCoffin.closeCoffin → coffinAfter",
           "auditEvidence": "No side room search occurs, but ending says empty coffin cause known and debt drove deception.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — keeps the Empty Coffin cause unknown unless the cooper is found"
+          ],
+          "reviewNotes": "Immediate burial pause does not inherit the cooper-discovery explanation.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-empty-cradle",
@@ -2522,15 +2585,17 @@
           "auditText": "Forecast prize mentions a parade route change never chosen",
           "auditWitness": "clouds.readRidge → forecast.forecastRainWindow → score.takeCloak → prize",
           "auditEvidence": "Warning the parade is an alternative terminal route. Prize closure nonetheless refers to 'The parade's change of route' as a separate decision. No warning or change occurs on the prize route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/competitionGearGenreBatch.test.ts — keeps the Fair-Weather prize closure limited to the qualifying forecast; legacy result fallback test"
+          ],
+          "reviewNotes": "Prize closure is limited to the qualifying forecast; legacy saves receive non-inventive fallback text.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-frightened-team",
@@ -3242,15 +3307,17 @@
           "auditText": "Uninvestigated route asserts sluice footprints and voice",
           "auditWitness": "returnedWorker.giveSpace → workerAfter",
           "auditEvidence": "Give sister privacy skips all evidence, but ending seals drain and says nobody explains second footprints or voice.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — keeps The Man Who Came Back Wrong aftermath neutral until the sluice is inspected"
+          ],
+          "reviewNotes": "Uninvestigated aftermath stays neutral until the sluice is inspected.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-man-who-sheds-his-skin",
@@ -3543,15 +3610,17 @@
           "auditText": "Adult substitute is praised for not replacing children with adults",
           "auditWitness": "hall.suggestSubstitute → rehearsal → performance → applause",
           "auditEvidence": "Traveler offers speaking part but generic scene never resolves who performs; applause explicitly thanks avoiding adult replacement.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — matches pageant performer acknowledgements to the selected route"
+          ],
+          "reviewNotes": "Applause/thanks acknowledge the selected child or adult performance route accurately.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-paper-tube",
@@ -3941,15 +4010,17 @@
           "auditText": "No-recovery route says stakes recovered",
           "auditWitness": "pack.giveToolkit > ridge.takeLongRoute > arrival.takeTwoCoins > paid",
           "auditEvidence": "arrival and paid credit recovered stakes, although left tin below. All ridge replacement variants suppress introduction of dropped tin and washout geometry.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/gearCorrectiveBatch.test.ts — settles The Squire’s Pack against the actual recovery result"
+          ],
+          "reviewNotes": "Ending is conditioned on whether the stakes were recovered; no-recovery route does not claim they were.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-theater-that-never-opened",
@@ -4003,15 +4074,17 @@
           "auditText": "Burned blank letter remembers name never revealed",
           "auditWitness": "thirdKnockFirst.watchLetter → thirdKnockSecond.burnLetter → thirdKnockAfter",
           "auditEvidence": "Name only appears thirdKnockMessage; burn from Second with blank page still says name it showed stays with you. Porch followPrints also jumps to name appearing where you read without any reading.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/occultInvestigationBatch.test.ts — does not give The Third Knock reader a name on the burned or unread-letter routes"
+          ],
+          "reviewNotes": "Burned/unread-letter routes do not learn the name; name-bearing text requires reading the letter.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-voice-in-the-mine",
@@ -4216,15 +4289,18 @@
           "auditText": "Outright job refusal still awards the full delivery reward",
           "auditWitness": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear",
           "auditEvidence": "start/declineDelivery -> declined/settleDeclined -> settle/takeFee or takeGear — No message is accepted, handled or delivered: office explicitly retains responsibility and needs another courier. Yet identical settlement offers full delivery fee and every reward. Gear examples further certify actions never done: Station whistle provenance says after private handoff; Blue Chalk marker after detour confirmed; Last-Mile rope after gate owner confirms public handoff. No separate refusal/inspection fee is established.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — offers Courier settlement rewards only after a completed handoff",
+            "src/scenarios/courierMailTelegraphGenreBatch.test.ts — loops through every registered courier story, proving refusal and delay expose only the no-handoff closure"
+          ],
+          "reviewNotes": "The shared test executes refusal, delayed/no-handoff, and completed delivery for every Courier scenario; only completed handoff enables reward choices.",
           "crossClusterFindingIds": [
             "COU-02",
             "COU-03",
             "COU-04"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48"
         }
       ],
       "crossClusterFindings": [
@@ -4247,7 +4323,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "three-points-down",
@@ -4428,5 +4504,45 @@
       "canonical": false,
       "excludedFromCounters": true
     }
-  ]
+  ],
+  "lastBatch": {
+    "batchNumber": 2,
+    "mainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48",
+    "startingUnreviewed": 98,
+    "assignmentsReviewed": 30,
+    "assignmentsMarkedAmbiguous": 0,
+    "selection": "16 COU-01 assignments across the remaining courier stories, plus 14 single-finding Adventures with direct mechanism-specific regression coverage.",
+    "assignmentIds": [
+      "bell-before-the-wire/COU-01",
+      "blue-chalk-milepost/COU-01",
+      "blue-room-dispatch/COU-01",
+      "copy-that-came-back/COU-01",
+      "copyists-pencil/COU-01",
+      "flooded-relay-book/COU-01",
+      "horse-change-ledger/COU-01",
+      "initials-on-the-wire/COU-01",
+      "last-station-keepers-route/COU-01",
+      "morning-the-warning-arrived/COU-01",
+      "paper-boat-at-high-water/COU-01",
+      "postal-road-after-the-flood/COU-01",
+      "rain-on-the-relay/COU-01",
+      "station-mark-in-margin/COU-01",
+      "station-without-a-clock/COU-01",
+      "the-wire-that-sang-twice/COU-01",
+      "below-the-old-fort/R125-025",
+      "book-without-a-title/R125-020",
+      "christmas-tree-millers-hill/R125-040",
+      "house-with-warm-window/R125-049",
+      "red-chalk-circle/R125-016",
+      "the-bell-rope-at-ferry-end/P10",
+      "the-christmas-goose/R125-038",
+      "the-christmas-visitor/R125-046",
+      "the-empty-coffin/R125-021",
+      "the-fair-weather-reading/P17",
+      "the-man-who-came-back-wrong/R125-022",
+      "the-pageant-problem/R125-044",
+      "the-squires-pack/R371-023",
+      "the-third-knock/R125-023"
+    ]
+  }
 }
