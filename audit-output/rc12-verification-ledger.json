@@ -1,8 +1,8 @@
 {
   "schema": "lgsw.rc12-verification.v1",
   "baselineMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
-  "lastReviewedMainSha": "2d988d892be715d5e844cf64ab2a48368552570d",
-  "verificationBatch": 3,
+  "lastReviewedMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+  "verificationBatch": 4,
   "confirmedFindingRecords": 109,
   "findingAdventureAssignments": 144,
   "canonicalAdventureCount": 124,
@@ -446,14 +446,16 @@
           "auditText": "Gunshot outcome changes hit and invents a shot on tackle branch",
           "auditWitness": "gunDrawn.diveForDoor failure > gunshotAftermath; weaponDown.retrievePistol failure > gunshotAftermath",
           "auditEvidence": "Door failure shot catches side, next scene floor shot and bleeding leg. Retrieve failure only tackle, next scene a gunshot and leg injury despite no shot in result/effect.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/deadMansHand.ts — failures converge on gunshotAftermath without shot-vs-tackle proof."
+          ],
+          "reviewNotes": "src/scenarios/deadMansHand.ts — failures converge on gunshotAftermath without shot-vs-tackle proof.",
           "crossClusterFindingIds": [
             "O01-015",
             "O01-016"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -470,7 +472,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "deep-room-at-harker-mine",
@@ -1606,15 +1608,17 @@
           "auditText": "The arrival claims cargo was left behind even on full-load routes.",
           "auditWitness": "roadsideParty.walkBesideWagon -> slowJourney.keepSlowPace -> lateMill; roadsideParty.pushFullLoad success -> lateMill",
           "auditEvidence": "Only lighten/unload choices leave flour. slowJourney explicitly retains the full load; common terminal says Some cargo remains behind.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/oneHorseShort.ts — full load via slow walk reaches lateMill saying cargo remains behind."
+          ],
+          "reviewNotes": "src/scenarios/oneHorseShort.ts — full load via slow walk reaches lateMill saying cargo remains behind.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "one-more-round",
@@ -1949,13 +1953,15 @@
           "auditText": "The common cooling-off ending introduces a satchel absent from these variants.",
           "auditWitness": "argument=drunken or threat: quietRequest.calmRequest success / commonRoom.speakFromDoor success -> argumentCools",
           "auditEvidence": "Drunken setup concerns a song/spilled drink and threat setup a knife. argumentCools says guest leaves with the satchel—or without it; satchel is only established in propertyDispute.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/silentNight.ts — calm drunken/threat routes lack satchel, but ending asserts disposition."
+          ],
+          "reviewNotes": "src/scenarios/silentNight.ts — calm drunken/threat routes lack satchel, but ending asserts disposition.",
           "crossClusterFindingIds": [
             "RO29-19"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -1966,7 +1972,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "smoke-on-the-hill",
@@ -2288,13 +2294,15 @@
           "auditText": "Keeping herds penned receives credit for a brace never set",
           "auditWitness": "rail/inspect -> tracks/separate -> partial",
           "auditEvidence": "rail/inspect -> tracks/separate -> partial — separate only keeps herds penned until owners agree; partial says rail is braced and pays for setting it. Bracing exists only on the repair/leave sibling route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — pens-only route reaches partial claiming rail braced/set."
+          ],
+          "reviewNotes": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — pens-only route reaches partial claiming rail braced/set.",
           "crossClusterFindingIds": [
             "R616-032"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -2305,7 +2313,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-broken-wheel",
@@ -2354,13 +2362,15 @@
           "auditText": "Failed rope rescue invents a ladder that was never fetched",
           "auditWitness": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure",
           "auditEvidence": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure — No ladder has been moved from orchard yard, and ladderReady flag is absent. Failure message says line slipped from sill, but ladderFailure says player/shopkeeper catch slipping ladder at window. Following choices also assume ladder rescue failed.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/burningLoft.ts — rope failure without fetched ladder reaches ladderFailure asserting ladder slips."
+          ],
+          "reviewNotes": "src/scenarios/burningLoft.ts — rope failure without fetched ladder reaches ladderFailure asserting ladder slips.",
           "crossClusterFindingIds": [
             "O15-025"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -2371,7 +2381,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-cache-ledger",
@@ -2511,15 +2521,17 @@
           "auditText": "Wedge method is immediately replaced by a clamp",
           "auditWitness": "press/useWedge -> proof",
           "auditEvidence": "press/useWedge -> proof — Choice says use a wooden wedge and keep clamp back; proof says The clamp holds during a slow proof. This forgets the selected holding method.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/equipmentTestingGenreBatch.ts — useWedge → proof still says clamp holds; method replaced."
+          ],
+          "reviewNotes": "src/scenarios/equipmentTestingGenreBatch.ts — useWedge → proof still says clamp holds; method replaced.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-empty-coffin",
@@ -2644,15 +2656,17 @@
           "auditText": "Opt-out ending thanks Traveler for an unperformed inspection",
           "auditWitness": "teamRoad.giveTeamSpace → teamPassed",
           "auditEvidence": "Choice gives space and takes side path; ending says driver thanks you for looking before insisting. Neither inspection nor advice occurred.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+          "evidence": [
+            "src/scenarios/animalsBatch.ts — side-path remains unresolved; passed ending requires settling/walking and makes no inspection claim."
+          ],
+          "reviewNotes": "src/scenarios/animalsBatch.ts — side-path remains unresolved; passed ending requires settling/walking and makes no inspection claim.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-goat-wouldnt-stay-dead",
@@ -2667,15 +2681,17 @@
           "auditText": "The unresolved ending knows a tally and empty grave never examined.",
           "auditWitness": "goatClaim.compareNotches -> goatMarks.stopInquiry -> goatAfter unresolved variant",
           "auditEvidence": "stopInquiry skips both goatLedger and goatBurial; variant says leave farmer with tally and empty grave unresolved.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/finalChoiceConsequenceAudit.test.ts — declined inquiry reflects only evidence reached."
+          ],
+          "reviewNotes": "src/scenarios/finalChoiceConsequenceAudit.test.ts — declined inquiry reflects only evidence reached.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-hall-with-the-mismatched-stone",
@@ -2731,15 +2747,17 @@
           "auditText": "Outside rescue inherits solved shadow",
           "auditWitness": "dareInvitation.callYouthOut → dareCall.fetchRope → dareHelp.dareThank → dareAfter",
           "auditEvidence": "Only dareRescue identifies hanging coat; external rescue never sees shadow, but dareAfter says shadow has no mystery left.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/octoberAffinityBatch.test.ts — outside rescue remains unknown; entered rescue identifies coat."
+          ],
+          "reviewNotes": "src/scenarios/octoberAffinityBatch.test.ts — outside rescue remains unknown; entered rescue identifies coat.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-headless-rider",
@@ -2754,15 +2772,17 @@
           "auditText": "Ending says motive was never learned after explaining it",
           "auditWitness": "riderTruth.leaveRiderTruth → riderAfter → riderFinish riderLeft variant",
           "auditEvidence": "riderTruth explains abusive employer and silhouette to avoid recognition; final variant says you do not learn why it was made.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/octoberAffinityBatch.test.ts — learned motive retained after leaving; old tale remains unresolved."
+          ],
+          "reviewNotes": "src/scenarios/octoberAffinityBatch.test.ts — learned motive retained after leaving; old tale remains unresolved.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-ice-gives-warning",
@@ -2811,13 +2831,15 @@
           "auditText": "Waiting changes an open divider into a closed one",
           "auditWitness": "channel/mark -> evidence/wait -> partial",
           "auditEvidence": "channel/mark -> evidence/wait -> partial — Player leaves the stone aside until owners arrive; water currently pours through the displaced divider. partial asserts divider remains closed despite no closure action.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — wait leaves divider displaced/flowing; partial says closed."
+          ],
+          "reviewNotes": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — wait leaves divider displaced/flowing; partial says closed.",
           "crossClusterFindingIds": [
             "R616-028"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -2828,7 +2850,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-lantern-in-the-hedge",
@@ -2902,15 +2924,17 @@
           "auditText": "Replacement upper turns into patch",
           "auditWitness": "fit.replace > settlement",
           "auditEvidence": "Choice replacement upper at shop cost; settlement customer accepts patch.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/tradesApprenticeshipGenreBatch.ts — replacement-upper route settles with patch accepted."
+          ],
+          "reviewNotes": "src/scenarios/tradesApprenticeshipGenreBatch.ts — replacement-upper route settles with patch accepted.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-last-clean-apron",
@@ -2925,15 +2949,17 @@
           "auditText": "Cook-on-time route receives late-supper closure",
           "auditWitness": "kitchen.giveCookApron > plating.checkDishwasher > thanks",
           "auditEvidence": "plating says cook plates on time; thanks says supper reaches tables later and cook accepts delay. Sack workaround also routes to dishwasher without apron.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/surpriseSocialBatch.ts — cook-on-time route can reach thanks text claiming late supper."
+          ],
+          "reviewNotes": "src/scenarios/surpriseSocialBatch.ts — cook-on-time route can reach thanks text claiming late supper.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-last-ferry",
@@ -2948,13 +2974,15 @@
           "auditText": "The shared text contradicts both the rope failure and the selected crossing order.",
           "auditWitness": "ferryLanding.inspectFerryLine -> lineDamage; ferryReset.helpFarBankTravelers -> crossedEnding",
           "auditEvidence": "Opening says guiding rope has parted at wooden post; lineDamage says rope did not part, post split. Let far-bank travelers cross first ends with ferry taking you to far bank and waiting travelers boarding after you.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/groundedExpansion.test.ts — failure cause, boarding order, reload, and legacy fallback asserted."
+          ],
+          "reviewNotes": "src/scenarios/groundedExpansion.test.ts — failure cause, boarding order, reload, and legacy fallback asserted.",
           "crossClusterFindingIds": [
             "RO29-06"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -2965,7 +2993,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-last-mile-pouch",
@@ -3097,15 +3125,17 @@
           "auditText": "Map-only-current route ends both lines recorded",
           "auditWitness": "verified.recordOnlyCurrentRoute > settlement.takeWage > coins",
           "auditEvidence": "Player specifically selects current route only; coins says map records old and new lines.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/gearCorrectiveBatch.ts — current-only route reaches coin ending saying old/new lines recorded."
+          ],
+          "reviewNotes": "src/scenarios/gearCorrectiveBatch.ts — current-only route reaches coin ending saying old/new lines recorded.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-lodge-wall-under-new-paint",
@@ -3262,15 +3292,17 @@
           "auditText": "The ending denies the directly observed predator location.",
           "auditWitness": "sheepMoved.watchWithFieldGlasses -> catSeenAtDistance.retreatObservedLion -> gapAfter",
           "auditEvidence": "Field Glasses identify a mountain lion watching from the ledge; final text says The cat has not been located. Normal catSeen.retreatLion has the same contradiction.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/monsterHuntBatch.test.ts — direct sighting retained; present whereabouts remain unknown."
+          ],
+          "reviewNotes": "src/scenarios/monsterHuntBatch.test.ts — direct sighting retained; present whereabouts remain unknown.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-man-in-the-ditch",
@@ -3376,15 +3408,17 @@
           "auditText": "Returning a coat resolves the twin-brother mystery without discovering the brothers.",
           "auditWitness": "identityEvidence.followCoachRoad -> coachTracks.returnCoat -> identityAfter",
           "auditEvidence": "Only tailorFound establishes twin brothers and exchanged coats, but returnCoat skips it and ends with towns receiving that account.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/monsterHuntSecond.ts — returnCoat skips tailorFound; identityAfter still asserts twin brothers."
+          ],
+          "reviewNotes": "src/scenarios/monsterHuntSecond.ts — returnCoat skips tailorFound; identityAfter still asserts twin brothers.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-markers-stop",
@@ -3422,15 +3456,17 @@
           "auditText": "Converging scenes replace the chosen event with a different machine event.",
           "auditWitness": "millCadence.watchOneTurn -> millVisitor; millVisitor.cornerBadger failure -> millInjury",
           "auditEvidence": "Wait one more wheel turn immediately says With the wheel stopped; badger bite failure becomes belt tears your sleeve in terminal.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+          "evidence": [
+            "src/scenarios/monsterHuntSecond.ts — millVisitor no longer says wheel stopped; injury variants distinguish causes."
+          ],
+          "reviewNotes": "src/scenarios/monsterHuntSecond.ts — millVisitor no longer says wheel stopped; injury variants distinguish causes.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-millwheel-hand",
@@ -3445,15 +3481,17 @@
           "auditText": "Forcing the warned-against extra turn becomes caution in the ending",
           "auditWitness": "inspect.tightenBelt → test.forceTurn [success] → stopped",
           "auditEvidence": "Player deliberately forces another turn after an immediate stop call. Shared stopped ending credits 'your caution' with preventing belt slip, without showing the intended unsafe action fail or change.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/competitionGearGenreBatch.test.ts — forced-turn test verifies ending no longer credits caution."
+          ],
+          "reviewNotes": "src/scenarios/competitionGearGenreBatch.test.ts — forced-turn test verifies ending no longer credits caution.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-mineshaft-lamp",
@@ -3468,13 +3506,15 @@
           "auditText": "Payment ending confirms two lamps although lower light remains unverified",
           "auditWitness": "decision.takeFee > paid",
           "auditEvidence": "Only upper lamp positively identified; lower flicker explicitly may be reflection and is not evidence of person. paid appends leave both lamps with crew.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/salvageRecoveryGenreBatch.ts — settlement says both lamps left with crew; lower light remains uncertain."
+          ],
+          "reviewNotes": "src/scenarios/salvageRecoveryGenreBatch.ts — settlement says both lamps left with crew; lower light remains uncertain.",
           "crossClusterFindingIds": [
             "R371-054"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -3485,7 +3525,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-missing-assayer",
@@ -3534,15 +3574,17 @@
           "auditText": "Reopening line acquires a rider-only delivery history",
           "auditWitness": "office/testNear -> line/openContact -> offer/coin -> paid",
           "auditEvidence": "office/testNear -> line/openContact -> offer/coin -> paid — openContact reopens repaired line, while only the sibling runner choice sends a rider. paid specifically records message traveled by rider during repair. No rider is dispatched on this branch.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/equipmentTestingGenreBatch.ts — openContact → paid still says message traveled by rider though none sent."
+          ],
+          "reviewNotes": "src/scenarios/equipmentTestingGenreBatch.ts — openContact → paid still says message traveled by rider though none sent.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-old-survey-stone",
@@ -3557,15 +3599,17 @@
           "auditText": "Boundary-only route returns calf without finding it",
           "auditWitness": "fence.askNeighbors → accounts.askSurveyCopy → survey.surveyShare → resolved",
           "auditEvidence": "No calf search on survey route; resolved/settled say animal home and calf returned.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/lostPlacesBatch.test.ts — boundary-only calf stays unresolved; searched route proves return."
+          ],
+          "reviewNotes": "src/scenarios/lostPlacesBatch.test.ts — boundary-only calf stays unresolved; searched route proves return.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-old-well-house",
@@ -3635,15 +3679,17 @@
           "auditText": "Refusing transfer still delivers family news",
           "auditWitness": "porch.carrySealed → canyon.refuseTransfer → departure",
           "auditEvidence": "Player keeps sealed letter and leaves; ending says family news reaches destination. Direct sealed route also asks about unknown account book.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/westernOutlawBatch.test.ts — refusal/delivery and neutral legacy behavior tested."
+          ],
+          "reviewNotes": "src/scenarios/westernOutlawBatch.test.ts — refusal/delivery and neutral legacy behavior tested.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-pageant-problem",
@@ -3708,15 +3754,17 @@
           "auditText": "Ending denies disclosure that already happened",
           "auditWitness": "stall.blameOriginalSpeaker > blame.withdrawClaim > apology",
           "auditEvidence": "Player names original complainer; ending says corrects statement without naming its source.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/surpriseSocialBatch.ts — named-source route ends saying correction without naming source."
+          ],
+          "reviewNotes": "src/scenarios/surpriseSocialBatch.ts — named-source route ends saying correction without naming source.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-quartermasters-tally",
@@ -3795,15 +3843,17 @@
           "auditText": "Rope appears without supply and left contents count as recovered",
           "auditWitness": "bank.askFerryman → claims.claimsOpen → secured; contents.contentsKeep → resolved → salvaged",
           "auditEvidence": "claimsOpen ungated no rope creates rope securing locker; keep all contents with hull ends ledger recovered and corrects shipment.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/lostPlacesBatch.test.ts — left, recovered, and weights routes assert distinct custody/recovery."
+          ],
+          "reviewNotes": "src/scenarios/lostPlacesBatch.test.ts — left, recovered, and weights routes assert distinct custody/recovery.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-road-below",
@@ -3936,15 +3986,17 @@
           "auditText": "Copying exterior title reveals private wage/transfer conclusion",
           "auditWitness": "porch.lookShutter → window.windowLeave → discovery",
           "auditEvidence": "Map title only outside; ending knows late wages and move to another claim discovered only records.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/lostPlacesBatch.test.ts — exterior title does not reveal private wage findings; drawer route does."
+          ],
+          "reviewNotes": "src/scenarios/lostPlacesBatch.test.ts — exterior title does not reveal private wage findings; drawer route does.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-silent-hound",
@@ -3993,13 +4045,15 @@
           "auditText": "Limited recovery pays for private chest that was left unsafe",
           "auditWitness": "arrival.verifyFirst > evidence.secureRecovery > decision.takeFee > paid",
           "auditEvidence": "Rod consequence private object remains beyond safe reach; secureRecovery moves only clearly authorized crew box; paid claims carpenter marked chest returned to owner.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/salvageRecoveryGenreBatch.ts — limited-recovery payment still claims private chest returned."
+          ],
+          "reviewNotes": "src/scenarios/salvageRecoveryGenreBatch.ts — limited-recovery payment still claims private chest returned.",
           "crossClusterFindingIds": [
             "R371-054"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -4010,7 +4064,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-sound-in-the-well",
@@ -4294,15 +4348,17 @@
           "auditText": "Chosen lark becomes kettle performance",
           "auditWitness": "contest.listenToBird > listening.repeatCall > round",
           "auditEvidence": "repeatCall says lark call; round title and prose assert kettle imitation.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/surpriseCompetitionBatch.ts — lark choice enters Kettle Call text asserting kettle imitation."
+          ],
+          "reviewNotes": "src/scenarios/surpriseCompetitionBatch.ts — lark choice enters Kettle Call text asserting kettle imitation.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-winds-other-side",
@@ -4496,15 +4552,17 @@
           "auditText": "Simplifying route claims cracked tool repaired",
           "auditWitness": "workshop.simplifyToy → finishToy.carveSimple → finishedHorse",
           "auditEvidence": "No binding/glue occurs; shared finishedHorse says repaired tool set aside.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/christmasAffinityBatch.test.ts — simplified route lacks repaired-tool claim; binding route has it."
+          ],
+          "reviewNotes": "src/scenarios/christmasAffinityBatch.test.ts — simplified route lacks repaired-tool claim; binding route has it.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "under-the-ice",
@@ -4519,13 +4577,15 @@
           "auditText": "Successful rope catch becomes a missed first throw after haul failure",
           "auditWitness": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss",
           "auditEvidence": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss — Victim caught rope and lost it during hauling; failure message says rope jerks free. ropeMiss instead says first throw missed, and elapsed variant says rope missed again. The current rescue progress is rewritten.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/underTheIce.ts — successful catch then failed haul reaches text saying first throw missed."
+          ],
+          "reviewNotes": "src/scenarios/underTheIce.ts — successful catch then failed haul reaches text saying first throw missed.",
           "crossClusterFindingIds": [
             "O15-027"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
         }
       ],
       "crossClusterFindings": [
@@ -4536,7 +4596,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     }
   ],
   "nonCanonicalHistoricalWork": [
@@ -4566,43 +4626,43 @@
     }
   ],
   "lastBatch": {
-    "batchNumber": 2,
-    "mainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48",
-    "startingUnreviewed": 98,
+    "batchNumber": 4,
+    "mainSha": "fe943130a570b33c57e632a91021781d3373311e",
+    "startingUnreviewed": 38,
     "assignmentsReviewed": 30,
     "assignmentsMarkedAmbiguous": 0,
-    "selection": "16 COU-01 assignments across the remaining courier stories, plus 14 single-finding Adventures with direct mechanism-specific regression coverage.",
+    "selection": "30 medium/low assignments: same-mechanism regression families followed by focused source traces.",
     "assignmentIds": [
-      "bell-before-the-wire/COU-01",
-      "blue-chalk-milepost/COU-01",
-      "blue-room-dispatch/COU-01",
-      "copy-that-came-back/COU-01",
-      "copyists-pencil/COU-01",
-      "flooded-relay-book/COU-01",
-      "horse-change-ledger/COU-01",
-      "initials-on-the-wire/COU-01",
-      "last-station-keepers-route/COU-01",
-      "morning-the-warning-arrived/COU-01",
-      "paper-boat-at-high-water/COU-01",
-      "postal-road-after-the-flood/COU-01",
-      "rain-on-the-relay/COU-01",
-      "station-mark-in-margin/COU-01",
-      "station-without-a-clock/COU-01",
-      "the-wire-that-sang-twice/COU-01",
-      "below-the-old-fort/R125-025",
-      "book-without-a-title/R125-020",
-      "christmas-tree-millers-hill/R125-040",
-      "house-with-warm-window/R125-049",
-      "red-chalk-circle/R125-016",
-      "the-bell-rope-at-ferry-end/P10",
-      "the-christmas-goose/R125-038",
-      "the-christmas-visitor/R125-046",
-      "the-empty-coffin/R125-021",
-      "the-fair-weather-reading/P17",
-      "the-man-who-came-back-wrong/R125-022",
-      "the-pageant-problem/R125-044",
-      "the-squires-pack/R371-023",
-      "the-third-knock/R125-023"
+      "the-old-survey-stone/R125-067",
+      "the-sealed-mine-office/R125-068",
+      "the-riverboat-cache/R125-073",
+      "the-halloween-dare/R125-008",
+      "the-headless-rider/R125-013",
+      "the-clamp-beneath-the-press/R616-022",
+      "the-needle-at-the-north-station/R616-023",
+      "the-mineshaft-lamp/R371-059",
+      "the-silted-toolbox/R371-060",
+      "the-goat-wouldnt-stay-dead/R125-081",
+      "the-man-eater-of-millers-gap/R125-087",
+      "the-man-who-sheds-his-skin/R125-083",
+      "the-millers-beast/R125-080",
+      "dead-mans-hand/O01-017",
+      "toymakers-last-order/R125-043",
+      "the-broken-rail-at-crow-field/R616-034",
+      "the-irrigation-stone-at-south-field/R616-030",
+      "the-burning-loft/O15-024",
+      "the-frightened-team/P32",
+      "one-horse-short/RO29-03",
+      "the-whistle-and-the-wind/R371-005",
+      "the-millwheel-hand/P08",
+      "the-last-ferry/RO29-05",
+      "the-last-survey/R371-025",
+      "the-last-at-the-cobbler/R371-050",
+      "the-last-clean-apron/R371-004",
+      "the-public-apology/R371-003",
+      "the-outlaws-mother/R125-064",
+      "silent-night/RO29-18",
+      "under-the-ice/O15-026"
     ]
   }
 }
