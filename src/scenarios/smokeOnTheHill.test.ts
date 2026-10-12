@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, damageItem, meets, newCharacter, sceneText, startAdventure, startRun, timeStatus } from '../engine';
+import { loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { renderQaPanel } from '../qaPanel';
@@ -85,6 +86,86 @@ describe('Smoke on the Hill', () => {
     expect(SMOKE_ON_THE_HILL.scenes.animalsSavedEnding.text).toContain('cannot tell whether anyone reached the lane');
   });
 
+  it('keeps distant withdrawal neutral before the fire is located', () => {
+    const state = act(fresh(), 'continuePastSmoke');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.walkAwayEnding, state);
+    expect(state.run?.flags).not.toContain('fireLocated');
+    expect(text).toMatch(/what is happening there remains beyond the route you took/i);
+    expect(text).not.toMatch(/cannot know whether it was a small accident or a fire that needed help/i);
+    expect(text).not.toMatch(/Eli|goats|brush fire reached/i);
+  });
+
+  it('uses the neutral walk-away fallback for a legacy ending save without route proof', () => {
+    const state = fresh();
+    state.run!.sceneId = 'walkAwayEnding';
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.walkAwayEnding, state);
+    expect(text).toMatch(/what is happening there remains beyond the route you took/i);
+    expect(text).not.toMatch(/Eli|goats|fire remains unresolved|brush fire/i);
+  });
+
+  it('keeps an early slope retreat from claiming a structure was seen or shifting', () => {
+    let state = act(fresh(), 'approachQuickly', 0.999);
+    expect(state.run?.sceneId).toBe('roughArrival');
+    state = act(state, 'retreatFromSlope');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.personalEscapeEnding, state);
+    expect(state.run?.sceneId).toBe('personalEscapeEnding');
+    expect(text).not.toMatch(/structure|shifting|no worse injury/i);
+    expect(text).toMatch(/get clear of the smoke and reach the road/i);
+  });
+
+  it('preserves located fire and barn evidence after withdrawal and save/reload', () => {
+    let state = act(reachBarn(), 'retreatFromBarn');
+    state = act(state, 'leaveFromLane');
+    expect(state.run?.flags).toContain('fireLocated');
+    expect(state.run?.flags).toContain('sawBarnOccupants');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem() { return this.value; } };
+    saveGame(state, storage);
+    state = loadSave(storage);
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.walkAwayEnding, state);
+    expect(text).toMatch(/brush fire reached the hay barn/i);
+    expect(text).toMatch(/Eli was calling from the loft and goats were in the lower stall/i);
+    expect(text).toMatch(/fates remain unknown/i);
+    expect(text).toMatch(/fire remains unresolved/i);
+    expect(text).not.toMatch(/small accident|facts were clear/i);
+  });
+
+  it('does not deny Eli safety when both Eli and the goats were brought out', () => {
+    let state = act(reachBarn(), 'rescueEliBare');
+    state = act(state, 'takeGoatsAfterEli');
+    state = act(state, 'openGoatGateByHand');
+    expect(state.run?.sceneId).toBe('goatsSaved');
+    state = act(state, 'leaveAfterGoats');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.animalsSavedEnding, state);
+    expect(text).toMatch(/goats are safe.*Eli is safe/i);
+    expect(text).not.toMatch(/cannot tell whether anyone reached the lane/i);
+    expect(text).toMatch(/fire has not been put out/i);
+  });
+
+  it('keeps a failed goat rescue distinct from Eli’s successful rescue on withdrawal', () => {
+    let state = act(reachBarn(), 'rescueEliBare');
+    state = act(state, 'takeGoatsAfterEli');
+    state = act(state, 'openGoatGateByHand', 0.999);
+    expect(state.run?.sceneId).toBe('goatsLost');
+    state = act(state, 'retreatAfterGoatsLost');
+    state = act(state, 'leaveFromLane');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.walkAwayEnding, state);
+    expect(text).toMatch(/Eli is safe/i);
+    expect(text).toMatch(/goats did not get out/i);
+    expect(text).not.toMatch(/their fates remain unknown/i);
+  });
+
+  it('retains goat knowledge when protecting the house after Eli is rescued', () => {
+    let state = act(reachBarn(), 'rescueEliBare');
+    state = act(state, 'protectHouseAfterEli');
+    state = act(state, 'clearFirebreakByHand');
+    state = act(state, 'secureHouseAfterBreak');
+    state = act(state, 'leaveAfterHouseFire');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.propertyProtectedEnding, state);
+    expect(text).toMatch(/Eli is safe/i);
+    expect(text).toMatch(/knew the goats were in the lower stall/i);
+    expect(text).not.toMatch(/never learned who or what else/i);
+  });
+
   it('supports a property-first firebreak outcome without requiring gear', () => {
     let state = reachBarn();
     state = act(state, 'protectHouseBeforeRescue');
@@ -98,6 +179,17 @@ describe('Smoke on the Hill', () => {
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('stopped_fire_spread');
     expect(state.character?.historyFlags).toContain('protected_property_from_fire');
+  });
+
+  it('states only the limited fire result when the firebreak holds and the Traveler withdraws', () => {
+    let state = act(reachBarn(), 'protectHouseBeforeRescue');
+    state = act(state, 'clearFirebreakByHand');
+    expect(state.run?.sceneId).toBe('firebreakHolds');
+    state = act(state, 'leaveAfterBreak');
+    expect(state.run?.sceneId).toBe('fireContainedEnding');
+    expect(SMOKE_ON_THE_HILL.scenes.fireContainedEnding.text).toMatch(/held to the barn and the scorched grass/i);
+    expect(SMOKE_ON_THE_HILL.scenes.fireContainedEnding.text).toMatch(/safe for now/i);
+    expect(SMOKE_ON_THE_HILL.scenes.fireContainedEnding.text).not.toMatch(/fully extinguished|everyone is safe/i);
   });
 
   it('makes a failed firebreak check advance with injury and a visibly spreading fire', () => {

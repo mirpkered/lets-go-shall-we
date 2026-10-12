@@ -78,9 +78,9 @@ export const SMOKE_ON_THE_HILL: Scenario = {
         { requirements: { historyFlags: ['left_for_outside_help'] }, text: 'Smoke rises beyond the far ridge. You have gone for help before; still, this could be a chimney, a controlled burn, or a call for assistance. No flame or person is visible, and the wind is carrying the plume toward dry grass.' },
       ],
       choices: [
-        { id: 'approachQuickly', label: 'Take the direct slope toward the smoke', hint: 'Fastest route, but the loose hillside and uncertain source make it harder going.', timeCost: 2, chance: { probability: 0.78, bonusItems: ['trailCompass', 'weatherproofCloak'], bonusProbability: 0.08, successNext: 'homesteadGate', failureNext: 'roughArrival', successMessage: 'You find a firm line down the slope and reach the lower road quickly.', failureMessage: 'Loose stones skid underfoot. You make it down, shaken and scraped, but lose time.', failureEffects: { health: -1 } } },
+        { id: 'approachQuickly', label: 'Take the direct slope toward the smoke', hint: 'Fastest route, but the loose hillside and uncertain source make it harder going.', timeCost: 2, chance: { probability: 0.78, bonusItems: ['trailCompass', 'weatherproofCloak'], bonusProbability: 0.08, successNext: 'homesteadGate', failureNext: 'roughArrival', successMessage: 'You find a firm line down the slope and reach the lower road quickly.', failureMessage: 'Loose stones skid underfoot. You make it down, shaken and scraped, but lose time.', successEffects: { setFlags: ['fireLocated'] }, failureEffects: { health: -1 } } },
         { id: 'observeFromRoad', label: 'Climb to a rise and watch the plume', hint: 'A higher view costs a few minutes but may clarify the wind and direction.', timeCost: 3, next: 'ridgeObservation', effects: { knowledge: ['The smoke from the hill shifts low toward the eastern grass when the wind gusts.'] } },
-        { id: 'goWarnNeighbors', label: 'Find the nearest neighbors and ask them to come', timeCost: 14, next: 'neighborsArrive', effects: { historyFlags: ['left_for_outside_help'] } },
+        { id: 'goWarnNeighbors', label: 'Find the nearest neighbors and ask them to come', timeCost: 14, next: 'neighborsArrive', effects: { setFlags: ['fireLocated'], historyFlags: ['left_for_outside_help'] } },
         { id: 'continuePastSmoke', label: 'Keep to your road and move on', next: 'walkAwayEnding', effects: { historyFlags: ['left_possible_fire_uninvestigated'] } },
       ],
     },
@@ -89,9 +89,9 @@ export const SMOKE_ON_THE_HILL: Scenario = {
       text: 'From a rise in the road, the plume separates into two parts: a narrow column above the house and a lower smear drifting across the slope. That might be a cooking fire plus a brush burn. It might also be wind carrying smoke downhill. A short observation clarified the wind, not the source.',
       textVariants: [{ requirements: { minElapsedMinutes: 18 }, text: 'The wind has strengthened. The lower smoke now trails across the dry grass instead of lifting cleanly; what began as a distant question is becoming an active risk.' }],
       choices: [
-        { id: 'takeFarmLane', label: 'Approach by the longer farm lane', hint: 'Safer footing; it costs several minutes.', timeCost: 6, next: 'homesteadGate' },
-        { id: 'takeSteepCut', label: 'Use the steep cut to reach the property sooner', hint: 'The slope is loose; a stumble could cost time or health.', timeCost: 2, chance: { probability: 0.69, bonusItems: ['trailCompass', 'weatherproofCloak'], bonusProbability: 0.1, successNext: 'homesteadGate', failureNext: 'roughArrival', successMessage: 'You keep your footing and reach the property.', failureMessage: 'A patch of loose shale slides beneath you. You reach the lane with a bruised shoulder.', failureEffects: { health: -1 } } },
-        { id: 'rideForNeighborsFromRidge', label: 'Ride to the nearest neighbors for help', timeCost: 13, next: 'neighborsArrive', effects: { historyFlags: ['left_for_outside_help'] } },
+        { id: 'takeFarmLane', label: 'Approach by the longer farm lane', hint: 'Safer footing; it costs several minutes.', timeCost: 6, next: 'homesteadGate', effects: { setFlags: ['fireLocated'] } },
+        { id: 'takeSteepCut', label: 'Use the steep cut to reach the property sooner', hint: 'The slope is loose; a stumble could cost time or health.', timeCost: 2, chance: { probability: 0.69, bonusItems: ['trailCompass', 'weatherproofCloak'], bonusProbability: 0.1, successNext: 'homesteadGate', failureNext: 'roughArrival', successMessage: 'You keep your footing and reach the property.', failureMessage: 'A patch of loose shale slides beneath you. You reach the lane with a bruised shoulder.', successEffects: { setFlags: ['fireLocated'] }, failureEffects: { health: -1 } } },
+        { id: 'rideForNeighborsFromRidge', label: 'Ride to the nearest neighbors for help', timeCost: 13, next: 'neighborsArrive', effects: { setFlags: ['fireLocated'], historyFlags: ['left_for_outside_help'] } },
         { id: 'leaveAfterWatching', label: 'Leave after checking from a distance', next: 'walkAwayEnding', effects: { historyFlags: ['left_possible_fire_uninvestigated'] } },
       ],
     },
@@ -99,7 +99,7 @@ export const SMOKE_ON_THE_HILL: Scenario = {
       id: 'roughArrival', title: 'A Scrape on the Slope', tone: 'warning',
       text: 'You catch yourself against a fence post. The slope has cost a little skin and a few minutes; smoke continues to move toward the grass. The property entrance is just ahead, or you can turn back without going closer.',
       choices: [
-        { id: 'continueFromRoughArrival', label: 'Continue to the homestead gate', timeCost: 2, next: 'homesteadGate' },
+        { id: 'continueFromRoughArrival', label: 'Continue to the homestead gate', timeCost: 2, next: 'homesteadGate', effects: { setFlags: ['fireLocated'] } },
         { id: 'retreatFromSlope', label: 'Turn back to the road', next: 'personalEscapeEnding' },
       ],
     },
@@ -108,10 +108,10 @@ export const SMOKE_ON_THE_HILL: Scenario = {
       text: 'This is no longer just a distant plume. A brush pile has burned through its ring of stones and lit the grass beside a small hay barn. The farmhouse chimney is cold. No one is in sight; a pump stands by the yard, and a loose gate knocks in the wind.',
       textVariants: [{ requirements: { minElapsedMinutes: 18 }, text: 'The brush fire has reached the grass beside the hay barn. Sparks catch in the weeds and the wind keeps pushing them uphill toward the house. The farmhouse chimney is cold; no one is visible. A pump stands by the yard.' }],
       choices: [
-        { id: 'checkBarnAtGate', label: 'Go to the barn and call inside', timeCost: 2, next: 'barnDiscovery', effects: { setFlags: ['sawBarnOccupants'], knowledge: ['A voice and frightened goats are inside the smoky hay barn.'] } },
-        { id: 'inspectYardPump', label: 'Check the yard pump and water trough', timeCost: 2, next: 'pumpDiscovery' },
-        { id: 'fetchNeighborsFromGate', label: 'Get help from the nearest neighbors', hint: 'A rider may be faster, but costs 2 coins if you can spare it.', timeCost: 12, next: 'neighborsArrive', effects: { historyFlags: ['left_for_outside_help'] } },
-        { id: 'hireRiderFromGate', label: 'Pay 2 coins to send a rider for help', requirements: { minMoney: 2 }, timeCost: 5, effects: { money: -2, historyFlags: ['left_for_outside_help'] }, next: 'neighborsArrive' },
+        { id: 'checkBarnAtGate', label: 'Go to the barn and call inside', timeCost: 2, next: 'barnDiscovery', effects: { setFlags: ['fireLocated', 'sawBarnOccupants'], knowledge: ['A voice and frightened goats are inside the smoky hay barn.'] } },
+        { id: 'inspectYardPump', label: 'Check the yard pump and water trough', timeCost: 2, next: 'pumpDiscovery', effects: { setFlags: ['fireLocated'] } },
+        { id: 'fetchNeighborsFromGate', label: 'Get help from the nearest neighbors', hint: 'A rider may be faster, but costs 2 coins if you can spare it.', timeCost: 12, next: 'neighborsArrive', effects: { setFlags: ['fireLocated'], historyFlags: ['left_for_outside_help'] } },
+        { id: 'hireRiderFromGate', label: 'Pay 2 coins to send a rider for help', requirements: { minMoney: 2 }, timeCost: 5, effects: { money: -2, setFlags: ['fireLocated'], historyFlags: ['left_for_outside_help'] }, next: 'neighborsArrive' },
       ],
     },
     barnDiscovery: {
@@ -246,7 +246,7 @@ export const SMOKE_ON_THE_HILL: Scenario = {
       text: 'The neighbors reach the property with a handcart and wet sacks. The smoke has spread from the brush pile to the barn; from the lane they cannot tell whether anyone or any animals remain inside. They can help with one task, not every task at once.',
       textVariants: [{ requirements: { minElapsedMinutes: 30 }, text: 'The neighbors arrive as the barn roof begins to sag. They can hold a line and guide someone out, or keep sparks from the farmhouse. The goats are still unseen; there is time for one coordinated effort.' }],
       choices: [
-        { id: 'neighborsCheckBarn', label: 'Ask them to search the barn with you', timeCost: 3, next: 'barnWithNeighbors', effects: { setFlags: ['sawBarnOccupants'] } },
+        { id: 'neighborsCheckBarn', label: 'Ask them to search the barn with you', timeCost: 3, next: 'barnWithNeighbors', effects: { setFlags: ['fireLocated', 'sawBarnOccupants'] } },
         { id: 'neighborsMakeFirebreak', label: 'Have them widen the firebreak', timeCost: 3, next: 'firebreakWithNeighbors' },
         { id: 'neighborsBringWater', label: 'Set up the pump and carry water', timeCost: 3, next: 'pumpReady' },
         { id: 'neighborsEscortedAway', label: 'Ask them to watch the lane while you withdraw', next: 'outsideHelpEnding' },
@@ -288,6 +288,10 @@ export const SMOKE_ON_THE_HILL: Scenario = {
     animalsSavedEnding: {
       id: 'animalsSavedEnding', title: 'The Goats Reach High Ground', tone: 'safe', ending: 'success',
       text: 'The goats are safe above the yard. The barn is damaged, and you cannot tell whether anyone reached the lane before the smoke thickened. You chose the lives you could reach.',
+      textVariants: [
+        { requirements: { flags: ['eliSafe'] }, text: 'The goats are safe above the yard, and Eli is safe on the lane. The barn is still burning behind you; the people and animals you reached are out, but the fire has not been put out.' },
+        { requirements: { flags: ['sawBarnOccupants'] }, text: 'The goats are safe above the yard. Eli was calling from the loft when you left; you did not establish whether he got out. The barn is still burning, and the people you could not reach remain unaccounted for.' },
+      ],
       choices: [],
     },
     houseAftermath: {
@@ -297,7 +301,7 @@ export const SMOKE_ON_THE_HILL: Scenario = {
         { requirements: { flags: ['sawBarnOccupants', 'eliSafe', 'goatsSafe'] }, text: 'The wet strip holds while the barn burns down to its frame. Eli and the goats are outside, coughing and shaken, as the neighbors check the farmhouse. The house is safe; the barn is gone.' },
         { requirements: { flags: ['sawBarnOccupants', 'eliSafe', 'goatsLost'] }, text: 'The wet strip holds while the barn burns down to its frame. Eli is outside with the neighbors, but you saw the goats behind the lower stall when you left it. The house is safe; the barn and the animals still inside are lost.' },
         { requirements: { flags: ['sawBarnOccupants', 'goatsLost'] }, text: 'The wet strip holds while the barn burns down to its frame. The goats you saw behind the lower stall did not get out; Eli’s fate is still unknown. The house is safe, but the fire has taken the barn.' },
-        { requirements: { flags: ['sawBarnOccupants', 'eliSafe'] }, text: 'The wet strip holds while the barn burns down to its frame. Eli is outside with the neighbors. You had heard the goats in the lower stall, but smoke hid their fate when you withdrew. The house is safe; the barn is gone.' },
+        { requirements: { flags: ['sawBarnOccupants', 'eliSafe'] }, text: 'The wet strip holds while the barn burns down to its frame. Eli is outside with the neighbors. You knew the goats were in the lower stall, but did not establish whether they got out. The house is safe; the barn is gone.' },
         { requirements: { flags: ['sawBarnOccupants', 'goatsSafe'] }, text: 'The wet strip holds while the barn burns down to its frame. The goats are safe above the yard. You had heard Eli calling from the loft, but do not know whether he escaped before the roof fell. The house is safe; the barn is gone.' },
         { requirements: { flags: ['sawBarnOccupants'] }, text: 'The wet strip holds while the barn burns down to its frame. You had heard Eli calling from the loft and goats in the lower stall, but smoke hid what happened to those still inside when you chose the house. The house is safe; the barn is gone.' },
         { requirements: { flags: ['eliSafe'] }, text: 'The wet strip holds while the barn burns down to its frame. Eli is safe outside the yard, but you never learned who or what else was in the barn. The house is safe; the barn is gone.' },
@@ -310,6 +314,7 @@ export const SMOKE_ON_THE_HILL: Scenario = {
       textVariants: [
         { requirements: { flags: ['eliSafe', 'goatsSafe'] }, text: 'The farmhouse stands, and Eli and the goats are safe outside. The barn is gone. You leave with them as the neighbors begin counting what can be salvaged.' },
         { requirements: { flags: ['eliSafe', 'goatsLost'] }, text: 'The farmhouse stands and Eli is safe. The goats you knew were behind the stall did not get out before the barn fell. You leave with the neighbors in the quiet after the fire.' },
+        { requirements: { flags: ['sawBarnOccupants', 'eliSafe'] }, text: 'The farmhouse stands and Eli is safe. You knew the goats were in the lower stall, but did not establish whether they got out. You leave with the neighbors after the fire.' },
         { requirements: { flags: ['eliSafe'] }, text: 'The farmhouse stands and Eli is safe. You never learned who or what else was in the barn. You leave with the neighbors as the fire settles.' },
       ],
       choices: [],
@@ -326,12 +331,21 @@ export const SMOKE_ON_THE_HILL: Scenario = {
     },
     personalEscapeEnding: {
       id: 'personalEscapeEnding', title: 'Clear of the Smoke', tone: 'safe', ending: 'success',
-      text: 'You reach the road with a cough and a scrape, but no worse injury. Smoke keeps rising behind you. You chose not to go farther into a structure already shifting in the heat.',
+      text: 'You get clear of the smoke and reach the road. You do not continue farther into the danger.',
       choices: [],
     },
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Continues', tone: 'safe', ending: 'success',
-      text: 'You continue along the road. The smoke remains behind the ridge. From where you are, you cannot know whether it was a small accident or a fire that needed help. You chose to leave before the facts were clear.',
+      text: 'You continue along the road, leaving the hill behind. What is happening there remains beyond the route you took.',
+      textVariants: [
+        { requirements: { flags: ['sawBarnOccupants', 'eliSafe', 'goatsSafe'] }, text: 'You leave the homestead after seeing the brush fire reach the hay barn and helping Eli and the goats out. Both are safe; the barn fire remains unresolved as you continue down the road.' },
+        { requirements: { flags: ['sawBarnOccupants', 'eliSafe', 'goatsLost'] }, text: 'You leave knowing the brush fire reached the hay barn. Eli is safe, but the goats did not get out before the stall became unreachable. The fire remains unresolved behind you.' },
+        { requirements: { flags: ['sawBarnOccupants', 'eliSafe'] }, text: 'You leave knowing the brush fire reached the hay barn. Eli is safe; the goats were inside when you last knew their position, but their fate was not established. The fire remains unresolved behind you.' },
+        { requirements: { flags: ['sawBarnOccupants', 'goatsSafe'] }, text: 'You leave knowing the brush fire reached the hay barn. The goats are safe; Eli was calling from the loft when you last saw him, and his fate remains unknown. The fire remains unresolved behind you.' },
+        { requirements: { flags: ['sawBarnOccupants', 'goatsLost'] }, text: 'You leave knowing the brush fire reached the hay barn. The goats did not get out; Eli’s fate remains unknown. The fire remains unresolved behind you.' },
+        { requirements: { flags: ['sawBarnOccupants'] }, text: 'You leave knowing the brush fire reached the hay barn. Eli was calling from the loft and goats were in the lower stall; their fates remain unknown, and the fire remains unresolved behind you.' },
+        { requirements: { flags: ['fireLocated'] }, text: 'You leave knowing the brush fire reached the grass beside the hay barn. The fire remains unresolved as you continue down the road; the people and animals at the property were not established on your route.' },
+      ],
       choices: [],
     },
   },
