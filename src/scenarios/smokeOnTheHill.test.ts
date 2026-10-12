@@ -129,6 +129,16 @@ describe('Smoke on the Hill', () => {
     expect(text).not.toMatch(/small accident|facts were clear/i);
   });
 
+  it('does not invent Eli or goats after locating the fire but leaving from the pump', () => {
+    let state = act(act(fresh(), 'approachQuickly'), 'inspectYardPump');
+    state = act(state, 'leavePump');
+    state = act(state, 'leaveFromLane');
+    const text = sceneText(SMOKE_ON_THE_HILL.scenes.walkAwayEnding, state);
+    expect(text).toMatch(/brush fire reached the grass beside the hay barn/i);
+    expect(text).toMatch(/people and animals at the property were not established on your route/i);
+    expect(text).not.toMatch(/Eli|goats/i);
+  });
+
   it('does not deny Eli safety when both Eli and the goats were brought out', () => {
     let state = act(reachBarn(), 'rescueEliBare');
     state = act(state, 'takeGoatsAfterEli');
