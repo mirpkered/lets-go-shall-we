@@ -20,7 +20,7 @@ export const LAST_STOP: Scenario = {
         { id: 'helpPorter', label: 'Help the porter', hint: 'A few trunks remain on the platform.', timeCost: 5, effects: { money: 4, setFlags: ['earnedTip'] }, next: 'platformAfterHelp' },
         { id: 'studyRoute', label: 'Study the route board', hint: 'The map shows grades and sidings.', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding], setFlags: ['studiedRoute'] }, next: 'platformAfterStudy' },
         { id: 'visitKiosk', label: 'Visit the platform kiosk', timeCost: 3, next: 'stationKiosk' },
-        { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
+        { id: 'board', label: 'Board the train', timeCost: 1, effects: { setFlags: ['trainIntactAtDeparture'] }, next: 'passengerCar' },
       ],
     },
     platformAfterHelp: {
@@ -28,7 +28,7 @@ export const LAST_STOP: Scenario = {
       text: 'The porter presses four coins into your palm. The platform kiosk has modest travel goods; the train waits beneath its veil of steam.',
       choices: [
         { id: 'kioskAfterHelp', label: 'Visit the platform kiosk', next: 'stationKiosk' },
-        { id: 'boardAfterHelp', label: 'Board the train', next: 'passengerCar' },
+        { id: 'boardAfterHelp', label: 'Board the train', effects: { setFlags: ['trainIntactAtDeparture'] }, next: 'passengerCar' },
       ],
     },
     platformAfterStudy: {
@@ -36,7 +36,7 @@ export const LAST_STOP: Scenario = {
       text: 'The timetable looks ordinary, but the line descends sharply after Milepost 47. A maintenance siding climbs away before Blackstone Bridge.',
       choices: [
         { id: 'kioskAfterStudy', label: 'Visit the platform kiosk', next: 'stationKiosk' },
-        { id: 'boardAfterStudy', label: 'Board the train', next: 'passengerCar' },
+        { id: 'boardAfterStudy', label: 'Board the train', effects: { setFlags: ['trainIntactAtDeparture'] }, next: 'passengerCar' },
       ],
     },
     stationKiosk: {
@@ -46,13 +46,13 @@ export const LAST_STOP: Scenario = {
         { id: 'buyTools', label: 'Toolkit — 4 coins', timeCost: 2, requirements: { minMoney: 4, notOwnedItems: ['pocketToolkit'] }, effects: { money: -4, gainItems: ['pocketToolkit'] }, next: 'kioskPurchase' },
         { id: 'buyRope', label: 'Travel rope — 3 coins', timeCost: 2, requirements: { minMoney: 3, notOwnedItems: ['travelRope'] }, effects: { money: -3, gainItems: ['travelRope'] }, next: 'kioskPurchase' },
         { id: 'buyMap', label: 'Railway map — 2 coins', timeCost: 2, requirements: { minMoney: 2, notOwnedItems: ['railwayMap'] }, effects: { money: -2, gainItems: ['railwayMap'], knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding] }, next: 'kioskPurchase' },
-        { id: 'board', label: 'Board the train', timeCost: 1, next: 'passengerCar' },
+        { id: 'board', label: 'Board the train', timeCost: 1, effects: { setFlags: ['trainIntactAtDeparture'] }, next: 'passengerCar' },
       ],
     },
     kioskPurchase: {
       id: 'kioskPurchase', title: 'Ready for the Journey',
       text: 'Your purchase is packed away. The porter calls the final boarding warning as steam rolls across the platform.',
-      choices: [{ id: 'boardAfterPurchase', label: 'Board the train', next: 'passengerCar' }],
+      choices: [{ id: 'boardAfterPurchase', label: 'Board the train', effects: { setFlags: ['trainIntactAtDeparture'] }, next: 'passengerCar' }],
     },
     passengerCar: {
       id: 'passengerCar', title: 'The Evening Local',
@@ -340,7 +340,11 @@ export const LAST_STOP: Scenario = {
     },
     cleanEnding: {
       id: 'cleanEnding', title: 'Stopped at Milepost Forty-Seven',
-      text: 'The regulator closes. Brake pressure builds, wheel by wheel, until the train stops with its lamps shining across the broken rails. The passengers step down trembling but alive. A trackside signal has lost its crimson glass lens in the storm; you find it intact in the ballast and pocket it. The engineer presses three coins into your hand as thanks.',
+      text: 'The locomotive grinds to a stop short of the broken rails. From here, the rest of the consist and every passenger’s final position are not clear. A trackside signal has lost its crimson glass lens in the storm; you find it intact in the ballast and pocket it. The engineer presses three coins into your hand as thanks.',
+      textVariants: [
+        { requirements: { flags: ['carsUncoupled'] }, text: 'The regulator closes and the locomotive with the service car grinds to a stop short of the broken rails. The three passenger coaches are already detached and continue toward the maintenance siding. From the front section, you cannot see whether they reached it or whether everyone aboard made it off safely. A trackside signal has lost its crimson glass lens in the storm; you find it intact in the ballast and pocket it. The engineer presses three coins into your hand as thanks.' },
+        { requirements: { flags: ['trainIntactAtDeparture'], notFlags: ['carsUncoupled'] }, text: 'The regulator closes. Brake pressure builds, wheel by wheel, until the whole train stops with its lamps shining across the broken rails. The passengers step down trembling but alive. A trackside signal has lost its crimson glass lens in the storm; you find it intact in the ballast and pocket it. The engineer presses three coins into your hand as thanks.' },
+      ],
       choices: [], ending: 'success',
     },
     messyEnding: {

@@ -20,6 +20,16 @@ function act(state: SaveData, id: string, random = 0): SaveData {
   return choose(state, LAST_STOP, choice!, () => random);
 }
 
+function reachCleanEnding(choiceId: string, uncoupled: boolean): SaveData {
+  let state = fresh(0, 'pocketToolkit');
+  state = act(state, 'board');
+  state.run!.sceneId = choiceId === 'retry' ? 'engineBurn' : 'locomotive';
+  if (uncoupled) state.run!.flags.push('carsUncoupled');
+  if (choiceId === 'brakeSequence') state.run!.flags.push('brakesApplied');
+  if (choiceId === 'glovedLever') state.run!.inventory.push('workGloves');
+  return act(state, choiceId, 0);
+}
+
 function reachEmergency(state = fresh()): SaveData {
   state = act(state, 'board');
   state = act(state, 'settle');
@@ -101,6 +111,46 @@ describe('All Aboard!', () => {
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('cleanEnding');
     expect(state.run?.inventory).toContain('signalLens');
+    expect(state.run?.flags).toContain('trainIntactAtDeparture');
+    expect(sceneText(LAST_STOP.scenes.cleanEnding, state)).toContain('the whole train stops');
+  });
+
+  it.each(['repair', 'glovedLever', 'brakeSequence', 'grabLever', 'retry'])('keeps %s closure route-aware for both consist states', (choiceId) => {
+    const intact = reachCleanEnding(choiceId, false);
+    expect(intact.run?.sceneId).toBe('cleanEnding');
+    expect(sceneText(LAST_STOP.scenes.cleanEnding, intact)).toContain('the whole train stops');
+
+    const uncoupled = reachCleanEnding(choiceId, true);
+    const text = sceneText(LAST_STOP.scenes.cleanEnding, uncoupled);
+    expect(uncoupled.run?.flags).toContain('carsUncoupled');
+    expect(text).toContain('The three passenger coaches are already detached');
+    expect(text).toContain('cannot see whether they reached it');
+    expect(text).not.toContain('the whole train stops');
+    expect(text).not.toContain('The passengers step down');
+  });
+
+  it('routes a real uncoupling choice to a front-section ending without inventing coach safety', () => {
+    let state = reachEmergency(fresh(0, 'pocketToolkit'));
+    state = act(state, 'uncouple');
+    state = act(state, 'cutLoose');
+    state = act(state, 'engine');
+    state = act(state, 'repair');
+    const text = sceneText(LAST_STOP.scenes.cleanEnding, state);
+    expect(state.run?.sceneId).toBe('cleanEnding');
+    expect(text).toContain('the locomotive with the service car');
+    expect(text).toContain('continue toward the maintenance siding');
+    expect(text).not.toContain('The passengers step down trembling but alive');
+  });
+
+  it('uses neutral clean-stop text for a legacy save with no consist proof', () => {
+    const legacy = fresh();
+    legacy.run!.sceneId = 'cleanEnding';
+    legacy.run!.flags = [];
+    const text = sceneText(LAST_STOP.scenes.cleanEnding, legacy);
+    expect(text).toContain('The locomotive grinds to a stop');
+    expect(text).toContain('the rest of the consist and every passenger’s final position are not clear');
+    expect(text).not.toContain('The three passenger coaches are already detached');
+    expect(text).not.toContain('The passengers step down trembling but alive');
   });
 
   it('makes a failed roof crossing harmful without making failure arbitrary', () => {
