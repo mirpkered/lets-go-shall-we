@@ -1,67 +1,70 @@
 # RC12 Verification Status
 
-Checkpoint batch 2 — current-source verification only; gameplay is unchanged.
+Batch 3 — current-source verification only. Gameplay and gameplay tests are unchanged.
 
 - Schema: `lgsw.rc12-verification.v1`
-- Current main reviewed: `0a700af2cc71ea27e82e3b8a318b4b091425ad48`
+- Source main reviewed: `2d988d892be715d5e844cf64ab2a48368552570d`
 - Canonical matrix: 109 confirmed finding records, 144 finding–Adventure assignments, 124 Adventures (106 single-finding, 18 multi-finding, maximum 3 findings per Adventure).
-- Batch 2: **30/30 reviewed**; ambiguous: **0**; prior assignments rechecked: **0**.
-- Cumulative assignment review: **76/144 (52.8%)**; unreviewed: **68**.
-- Adventure review: **52 reconciled**, **4 open**, **68 with unreviewed assignments** (45.2% reviewed).
-- Assignment statuses: `VERIFIED_HEALTHY_REPAIRED` 71; `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES` 0; `VERIFIED_FALSE_POSITIVE` 0; `VERIFIED_REASSIGNED_NOT_INDEPENDENT_RC12` 0; `OPEN_REPRODUCIBLE` 5; `OPEN_AMBIGUOUS` 0; `UNREVIEWED` 68.
+- Batch 3: **30/30 reviewed**; ambiguous: **0**; prior assignments rechecked: **0**.
+- Assignment review: **106/144 (73.6%)**; unreviewed: **38**.
+- Adventure review: **79 reconciled**, **7 open**, **38 with unreviewed assignments**; 86/124 have no unreviewed child assignment (**69.4%**).
+- Assignment statuses: `VERIFIED_HEALTHY_REPAIRED` 98; `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES` 0; `VERIFIED_FALSE_POSITIVE` 0; `VERIFIED_REASSIGNED_NOT_INDEPENDENT_RC12` 0; `OPEN_REPRODUCIBLE` 8; `OPEN_AMBIGUOUS` 0; `UNREVIEWED` 38.
 
-## Batch 2
+## Batch 3
 
-Reviewed all 16 remaining `COU-01` assignments; the current Courier regression iterates every registered courier story and distinguishes completed handoff from refusal/delay. Also reviewed 14 single-finding cases in the Occult Investigation, Christmas Affinity, Competition Gear, and Gear Corrective families using focused tests for the exact audited route distinction.
+Reviewed all 14 unreviewed HIGH assignments first. Eleven are verified healthy: The Bridge Goes Down, The Washout, High Water, all six canonical CON-02 construction stories, Ferry Beneath the Ferry, and The Antlered Thing. Three remain reproducible: The Ice Gives Warning (solo route inherits cart-crossing result), The Lantern in the Hedge (non-surrender routes inherit “poorer by the coins surrendered”), and The Silent Hound (withdrawal inherits “missing hand is found”).
 
-### Assignments reviewed this batch
+The remaining 16 reviewed assignments were supported by focused current tests in the Deep Exploration, Frontier Discovery, October Affinity, Expedition Logistics, and Lost Places suites. The detailed per-assignment evidence is in the JSON checkpoint.
 
-- `bell-before-the-wire` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `blue-chalk-milepost` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `blue-room-dispatch` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `copy-that-came-back` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `copyists-pencil` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `flooded-relay-book` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `horse-change-ledger` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `initials-on-the-wire` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `last-station-keepers-route` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `morning-the-warning-arrived` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `paper-boat-at-high-water` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `postal-road-after-the-flood` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `rain-on-the-relay` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `station-mark-in-margin` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `station-without-a-clock` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `the-wire-that-sang-twice` — COU-01: VERIFIED_HEALTHY_REPAIRED
-- `below-the-old-fort` — R125-025: VERIFIED_HEALTHY_REPAIRED
-- `book-without-a-title` — R125-020: VERIFIED_HEALTHY_REPAIRED
-- `christmas-tree-millers-hill` — R125-040: VERIFIED_HEALTHY_REPAIRED
-- `house-with-warm-window` — R125-049: VERIFIED_HEALTHY_REPAIRED
-- `red-chalk-circle` — R125-016: VERIFIED_HEALTHY_REPAIRED
-- `the-bell-rope-at-ferry-end` — P10: VERIFIED_HEALTHY_REPAIRED
-- `the-christmas-goose` — R125-038: VERIFIED_HEALTHY_REPAIRED
-- `the-christmas-visitor` — R125-046: VERIFIED_HEALTHY_REPAIRED
-- `the-empty-coffin` — R125-021: VERIFIED_HEALTHY_REPAIRED
-- `the-fair-weather-reading` — P17: VERIFIED_HEALTHY_REPAIRED
-- `the-man-who-came-back-wrong` — R125-022: VERIFIED_HEALTHY_REPAIRED
-- `the-pageant-problem` — R125-044: VERIFIED_HEALTHY_REPAIRED
-- `the-squires-pack` — R371-023: VERIFIED_HEALTHY_REPAIRED
-- `the-third-knock` — R125-023: VERIFIED_HEALTHY_REPAIRED
+### Assignments reviewed
 
-### Open reproducible assignments
+- `the-bridge-goes-down` — R125-054: VERIFIED_HEALTHY_REPAIRED
+- `the-washout` — RO29-10: VERIFIED_HEALTHY_REPAIRED
+- `high-water` — O01-035: VERIFIED_HEALTHY_REPAIRED
+- `ferry-beneath-the-ferry` — R371-016: VERIFIED_HEALTHY_REPAIRED
+- `the-antlered-thing` — R125-085: VERIFIED_HEALTHY_REPAIRED
+- `the-ice-gives-warning` — R125-034: OPEN_REPRODUCIBLE
+- `the-lantern-in-the-hedge` — R371-045: OPEN_REPRODUCIBLE
+- `the-silent-hound` — R371-036: OPEN_REPRODUCIBLE
+- `the-hall-with-the-mismatched-stone` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `the-lodge-wall-under-new-paint` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `the-old-well-house` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `the-ramp-for-the-grain-cart` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `the-school-bell-frame` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `the-theater-that-never-opened` — CON-02: VERIFIED_HEALTHY_REPAIRED
+- `all-hallows-boarding-house` — R125-007: VERIFIED_HEALTHY_REPAIRED
+- `deep-room-at-harker-mine` — R371-015: VERIFIED_HEALTHY_REPAIRED
+- `door-beneath-the-road` — R371-013: VERIFIED_HEALTHY_REPAIRED
+- `floorboard-that-was-replaced` — RF331-02: VERIFIED_HEALTHY_REPAIRED
+- `forgotten-sluice` — RF331-03: VERIFIED_HEALTHY_REPAIRED
+- `iron-orchard` — R371-012: VERIFIED_HEALTHY_REPAIRED
+- `jack-o-lantern-contest` — R125-006: VERIFIED_HEALTHY_REPAIRED
+- `lantern-vault` — R371-018: VERIFIED_HEALTHY_REPAIRED
+- `last-door-briar-house` — R371-011: VERIFIED_HEALTHY_REPAIRED
+- `the-cache-ledger` — R616-012: VERIFIED_HEALTHY_REPAIRED
+- `the-canvas-over-the-crate` — R616-016: VERIFIED_HEALTHY_REPAIRED
+- `the-empty-feed-sack` — R616-018: VERIFIED_HEALTHY_REPAIRED
+- `the-paper-tube` — R616-017: VERIFIED_HEALTHY_REPAIRED
+- `the-cave-with-worked-stone` — R125-070: VERIFIED_HEALTHY_REPAIRED
+- `the-lost-payroll` — R125-071: VERIFIED_HEALTHY_REPAIRED
+- `the-missing-assayer` — F351-003: VERIFIED_HEALTHY_REPAIRED
 
-- **bridge-out / O01-020 (MEDIUM)** — A non-rope hand-crossing route converges on text claiming a rope was used and frayed; current tests do not assert the hand-crossing ending.
-- **bridge-out / O01-021 (MEDIUM)** — The failed-repair route worsens the bridge, then shares text saying it was not made more dangerous.
-- **the-last-room / O01-012 (MEDIUM)** — Current source retains the contradiction: leaving after confession records identifiedSilas/learned truth, but shared text says the account’s truth remains unknown. The current tests do not cover this specific contrast.
-- **the-long-way-home / O01-024 (MEDIUM)** — Current shared ending still states a doctor visit and warden record despite route variants that do not establish those same events; no test directly contrasts both handover routes.
-- **the-road-below / O01-044 (MEDIUM)** — The failure result says the Traveler pulls clear before the edge slumps, but entrySlip narrates being struck as the bank slumps behind them; the same result does not preserve the stated position.
+## Current open reproducible assignments
 
-### Open ambiguous assignments
+- **bridge-out / O01-020 (MEDIUM)** — Non-rope hand-crossing still converges on rope-used/frayed wording.
+- **bridge-out / O01-021 (MEDIUM)** — Failed repair worsens the bridge, but shared text says it was not made more dangerous.
+- **the-last-room / O01-012 (MEDIUM)** — Learned truth is followed by shared wording that the account remains unknown.
+- **the-long-way-home / O01-024 (MEDIUM)** — Shared closure asserts doctor/warden events not established on every route.
+- **the-road-below / O01-044 (MEDIUM)** — Failure-position statements conflict at the shared result.
+- **the-ice-gives-warning / R125-034 (HIGH)** — Solo crossing receives the cart’s gravel-bar/handline arrival claim.
+- **the-lantern-in-the-hedge / R371-045 (HIGH)** — Call-house/hold-gate routes inherit the purse-surrender result.
+- **the-silent-hound / R371-036 (HIGH)** — Search withdrawal inherits a found-person settlement.
 
-None.
+No open ambiguous assignments.
 
-### Next batch priority
+## Next verification priority
 
-Continue with the next 25–35 unreviewed single-finding assignments, prioritizing remaining high-severity cases with exact current regression coverage, then group medium findings by shared mechanism. The JSON ledger remains the authoritative queue.
+No unreviewed HIGH assignments remain. Review the next 25–35 unreviewed assignments, favoring same-mechanism groups with direct regression coverage, then isolated MEDIUM findings. Continue treating the eight open assignments as verification findings only; implementation is outside this program.
 
 ## Supplemental noncanonical historical work
 
@@ -70,4 +73,4 @@ Continue with the next 25–35 unreviewed single-finding assignments, prioritizi
 - `the-skin-in-the-tree` — minor concern; excluded from the canonical denominator.
 - `the-empty-wagon` — minor concern; excluded from the canonical denominator.
 
-Review completion is not repair completion. The five open assignments remain reserved for a separately authorized implementation pass. Gameplay source and gameplay tests were not changed; no Pages deployment occurred; Weekly Scenario Batch remains paused.
+Review completion is not repair completion. No gameplay or gameplay-test changes were made, no Pages deployment occurred, and Weekly Scenario Batch remains paused.

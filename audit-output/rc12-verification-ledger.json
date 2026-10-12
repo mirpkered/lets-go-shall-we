@@ -1,8 +1,8 @@
 {
   "schema": "lgsw.rc12-verification.v1",
   "baselineMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
-  "lastReviewedMainSha": "0a700af2cc71ea27e82e3b8a318b4b091425ad48",
-  "verificationBatch": 2,
+  "lastReviewedMainSha": "2d988d892be715d5e844cf64ab2a48368552570d",
+  "verificationBatch": 3,
   "confirmedFindingRecords": 109,
   "findingAdventureAssignments": 144,
   "canonicalAdventureCount": 124,
@@ -46,15 +46,17 @@
           "auditText": "Uninvestigated route assumes paper recovery and ordinary explanation",
           "auditWitness": "boardingStories.askKeeper → keeperAccount.leaveKeyAlone → boardingAfter → boardingEnd",
           "auditEvidence": "No board is lifted or Venn source discovered, yet aftermath returns paper to ledger and ending claims ordinary explanation for story.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/octoberAffinityBatch.test.ts — keeps All Hallows aftermath route-true when the key story is left unexplored"
+          ],
+          "reviewNotes": "Paper/key recovery and explanation are gated by investigation; withdrawal remains neutral across save/reload.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "bell-before-the-wire",
@@ -483,15 +485,17 @@
           "auditText": "Shared rescue ending erases exploration and method",
           "auditWitness": "harkerDoor.retreatDoor > harkerRescueEnd; minerOutside.leaveHarker > harkerRescueEnd",
           "auditEvidence": "Ending says old worked-stone door remains unexplored after player stood within worked room, and repeats crew rescue after direct rescue.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — varies Harker Mine closure for direct rescue, crew rescue, and entered lower room"
+          ],
+          "reviewNotes": "Direct rescue, crew rescue, and lower-room entry produce distinct closure claims.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "door-beneath-the-road",
@@ -506,15 +510,17 @@
           "auditText": "Unrecovered damaged wagon declared able to use detour",
           "auditWitness": "roadCollapse.askDriver > driverAccount.reportHole > roadReport",
           "auditEvidence": "Wheel fell through ceiling and axle broken; only shallowRoad recovers wagon. roadReport says wagon can use detour.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — does not tell the road crew an unrecovered wagon can take the detour"
+          ],
+          "reviewNotes": "Report route says the wagon still needs recovery; detour capability is reserved for recovered route.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "down-to-the-last-match",
@@ -663,15 +669,17 @@
           "auditText": "Cache-only route claims repaired ferry and unpaid coin",
           "auditWitness": "ferryLanding.drainAccess > drainTunnel.turnGate > lowerWater.upperRoom > ferryCache.copyToll > ferryHistory",
           "auditEvidence": "Cache route never reaches oldRoad/freeTimber; ending says timber freed and pays three coins, but no money grant.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — ferry cause and settlement only after timber freed"
+          ],
+          "reviewNotes": "Cache-only slate route earns no coins and does not claim the strike cause is settled; payment/cause follow timber clearance.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "first-words-over-the-wire",
@@ -809,13 +817,15 @@
           "auditText": "The careful route returns a paper never removed, and the failed route returns an object said to be beyond reach.",
           "auditWitness": "Evidence.readEvidence -> Decision.takeCareful -> Cautious; Decision.takeRisk failure -> Mishap",
           "auditEvidence": "Both careful labels explicitly read the paper edge without lifting the board; closure says The paper is put back beneath the board. Failure says object slips beyond safe reach, then same closure restores paper.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/frontierDiscoveryRc12.test.ts — distinguishes untouched, recovered-to-view, and failed-retrieval floorboard routes"
+          ],
+          "reviewNotes": "Untouched, opened, and failed-retrieval endings preserve distinct object states.",
           "crossClusterFindingIds": [
             "RF331-13"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -826,7 +836,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "forgotten-sluice",
@@ -841,15 +851,17 @@
           "auditText": "Opening the sluice is erased by a later careful ending.",
           "auditWitness": "Evidence.followEvidence -> Decision.closeCarefully -> Cautious",
           "auditEvidence": "followEvidence says Open the sluice and test its flow; Cautious says gate stays where found and water continues without an unrecorded change. No re-closing transition occurs.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/frontierDiscoveryRc12.test.ts — states that the sluice gate was opened and tested on the route that does so"
+          ],
+          "reviewNotes": "The opened-gate claim appears only on the route that opens and tests the gate.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "give-me-whatcha-got",
@@ -917,9 +929,11 @@
           "auditText": "Crew evacuation ending forgets animals already saved",
           "auditWitness": "livestockFirst success > waterDeepens.seekOutsideHelpRising > outsideHelp.sendRunner > crewArrives.organizeFloodEvacuation > thankYouHill > highGroundEnding",
           "auditEvidence": "livestockSafe+residentSafe+communityEvacuated set; no earlier triple-success variant matches. communityEvacuated text says animals remain behind despite animals already ridge safe. Analogous saved medicine may be described lower supplies left.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/highWater.test.ts — preserves animals already rescued before the crew organizes a final evacuation"
+          ],
+          "reviewNotes": "livestockSafe plus communityEvacuated selects route-aware text affirming previously rescued animals remain safe.",
           "crossClusterFindingIds": [
             "O01-033",
             "O01-034",
@@ -927,7 +941,7 @@
             "O01-037",
             "O01-038"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -962,7 +976,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "horse-change-ledger",
@@ -1152,15 +1166,17 @@
           "auditText": "Removed rod restored only in narration",
           "auditWitness": "stakeGallery.removeRod > openedDeep.sealDeep > sealedOrchard",
           "auditEvidence": "rodRemoved flag; ending says rods remain where found, with no replacement action.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — rod removal remains explicit at shared closure"
+          ],
+          "reviewNotes": "Removed rod is recorded separately from rods left in place; retreat keeps all rods in place.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "jack-o-lantern-contest",
@@ -1175,15 +1191,17 @@
           "auditText": "Helper aftermath remembers wrong rain method",
           "auditWitness": "helpDisplay → rainProblem.moveBest → contestJudging.contestThanks → contestSocialAftermath",
           "auditEvidence": "contestHelper variant says children remember you holding canvas; moveBest moved fragile carvings instead.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/octoberAffinityBatch.test.ts — contest aftermath varies by selected helper and rain-method route"
+          ],
+          "reviewNotes": "Aftermath is conditioned on display help and method flags; prioritized route does not inherit canvas-holder claim.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "lantern-vault",
@@ -1198,13 +1216,15 @@
           "auditText": "Early-exit ending denies entered room",
           "auditWitness": "innCellar.seven > vaultSeven.copyEntries > vaultLedger.closeRack > vaultEnding",
           "auditEvidence": "vaultEnding says without opening any numbered room after door seven entered.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — keeps Lantern Vault closure neutral unless room seven was entered"
+          ],
+          "reviewNotes": "Exit without entering room seven does not claim it was opened; room-entry route retains the finding.",
           "crossClusterFindingIds": [
             "R371-017"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -1215,7 +1235,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "last-door-briar-house",
@@ -1230,15 +1250,17 @@
           "auditText": "Shallow route ending overstates discovered purpose",
           "auditWitness": "briarPorch.servants > servantsPassage.pantry > pantryShift.deskFromRear > letterEnding",
           "auditEvidence": "Only route to desk and letter recorded; ending confirms rooms concealed person, fuller account only in secondBedroom.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/deepExplorationBatch.test.ts — route graph/source flags; key route preserves discovered purpose at libraryShift"
+          ],
+          "reviewNotes": "Current source gates discovered purpose on the route that establishes it; tested key route reaches the keyed library path.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "last-station-keepers-route",
@@ -2166,15 +2188,17 @@
           "auditText": "A rescued worker becomes unconfirmed in the final outcome.",
           "auditWitness": "workerAnswer.callWorkerBack -> workerOut.abandonForestRoad -> forestEvacuated",
           "auditEvidence": "workerOut explicitly reaches the road; abandonForestRoad grants evacuated worker history; terminal says worker fate not confirmed.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/monsterHuntSecond.ts — workerReachedRoad conditional forestEvacuated variant"
+          ],
+          "reviewNotes": "Calling the worker back then abandoning the road sets workerReachedRoad; closure says the worker reached the road safely.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-bee-yard",
@@ -2239,15 +2263,17 @@
           "auditText": "Rescued child teleports back onto collapsing bridge",
           "auditWitness": "span.reachChild success → childAcross.turnForMule success → muleSaved",
           "auditEvidence": "Child reaches west bank; successful mule rescue then muleSaved says driver and child remain on bridge. muleLeaveWagon ending can mark child unconfirmed ashore.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/theBridgeGoesDownRc12.test.ts — shore state through mule rescue; save/reload; neutral legacy wording"
+          ],
+          "reviewNotes": "Child shore proof survives mule-rescue convergence; the old teleporting text is absent.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-broken-rail-at-crow-field",
@@ -2360,15 +2386,17 @@
           "auditText": "Taking supplies is rewritten as preserving them",
           "auditWitness": "cache/takeWhatRemains -> shortage/follow -> paid or shortage/stop -> partial",
           "auditEvidence": "cache/takeWhatRemains -> shortage/follow -> paid or shortage/stop -> partial — shortage confirms the taken cloth and tinder help the camp. paid thanks the player for preserving emergency stock, and partial asserts No cache goods are claimed, with no return of the taken goods.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/expeditionLogisticsGenreBatch.test.ts — keeps Cache Ledger rewards and outcomes truthful when supplies were taken"
+          ],
+          "reviewNotes": "Taking stock persists through reload and cannot receive preserve-stock reward or preservation claim.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-canvas-over-the-crate",
@@ -2383,15 +2411,17 @@
           "auditText": "Unseen missing-fitting investigation leaks into wagon route",
           "auditWitness": "shed/carryOut -> risk/wait -> paid; risk/carry -> partial",
           "auditEvidence": "shed/carryOut -> risk/wait -> paid; risk/carry -> partial — The wagon route concerns keeping the load out of a wet rut. paid suddenly resolves a missing fitting only introduced on inspection; partial claims a measurement limitation never discovered on this route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/expeditionLogisticsGenreBatch.test.ts — limits Canvas Over the Crate findings to routes that inspected the packing"
+          ],
+          "reviewNotes": "Missing-fitting discovery appears only after inspection; transported case routes do not inherit the discovery.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-cave-with-worked-stone",
@@ -2406,15 +2436,17 @@
           "auditText": "Limited tool-mark conclusion becomes drill-based quarry claim",
           "auditWitness": "mouth.inspectCut → cut.cutReturn → discovery",
           "auditEvidence": "Choice grants honest purpose unknown; never enters niche/drill; ending invokes drill to establish quarry use.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/lostPlacesBatch.test.ts — reserves quarry-use inference for routes that inspect the cave niche"
+          ],
+          "reviewNotes": "Quarry/drill inference is absent from limited exterior cut inspection and present after niche examination.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-christmas-goose",
@@ -2562,15 +2594,17 @@
           "auditText": "Unsent resupply resolves the ration-only plan",
           "auditWitness": "feed/divide -> move/restMule -> paid",
           "auditEvidence": "feed/divide -> move/restMule -> paid — This route divides remaining feed and rests a mule; paid declares the farm resupply arrives with a tally and pays for managing it. Only feed/rest sends a farm runner.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/expeditionLogisticsGenreBatch.test.ts — limits resupply rewards to runner route"
+          ],
+          "reviewNotes": "Measured feed delivery and related rewards are gated on sent runner; ration-only route lacks runner proof.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-fair-weather-reading",
@@ -2656,14 +2690,16 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -2680,7 +2716,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-halloween-dare",
@@ -2741,13 +2777,15 @@
           "auditText": "Solo ice crossing becomes cart rescue by alternate route",
           "auditWitness": "iceWarning.crossIceAlone success → iceFarBank",
           "auditEvidence": "Success message only you reach bank avoiding seam; ending says traveler/cart reach by gravel or careful line and you prevented disaster. Rope in death branch likewise never established on solo route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/survivalExpeditionBatch.ts — iceWarning.crossIceAlone → iceFarBank"
+          ],
+          "reviewNotes": "Solo crossing reaches an unconditional ending that says the traveler reaches the far bank with the cart by the gravel bar or a careful line; neither cart route was taken.",
           "crossClusterFindingIds": [
             "R125-033"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -2758,7 +2796,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-irrigation-stone-at-south-field",
@@ -2805,13 +2843,15 @@
           "auditText": "All endings assert surrender; actual surrendered purse never deducted",
           "auditWitness": "threat.respond_callHouse > aftermath.ending_leaveHedge > settlement; threat.respond_leavePurse",
           "auditEvidence": "Both closing options claim surrendered purse/coins even after thieves withdraw; surrender effect only sets response flag, no loss of money.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/roadDangerGenreBatch.ts — build() composes response-specific settlement text with ending-specific result"
+          ],
+          "reviewNotes": "callHouse and holdGate routes share leaveHedge result 'poorer by the coins surrendered'; only leavePurse surrenders the purse. The purse deduction concern is separate; this is an independent RC12 ending-state leak.",
           "crossClusterFindingIds": [
             "R371-044"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -2822,7 +2862,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-lantern-in-the-marsh",
@@ -3080,14 +3120,16 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3104,7 +3146,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-long-way-home",
@@ -3195,15 +3237,17 @@
           "auditText": "Every search path resolves unseen duplicate records and undamaged drain",
           "auditWitness": "notice.followCreek → siding.sidingStop → discovery; trench.trenchSearch failure → trenchSlip.slipLeave → discovery",
           "auditEvidence": "Stopping at siding never checks pay office, yet ending record proves returned/paid and siblings get answer. Failed excavation explicitly fills drain, ending drain intact.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/lostPlacesBatch.test.ts — distinguishes office, intact search, disturbed drain, unreconciled search"
+          ],
+          "reviewNotes": "Different search outcomes preserve return/accounting and drain states without converging to one unsupported result.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-man-eater-of-millers-gap",
@@ -3456,13 +3500,15 @@
           "auditText": "Waiting at the door becomes a completed ridge check",
           "auditWitness": "Evidence.callFromDoor → Wait.leaveStationNote → Cautious",
           "auditEvidence": "The chosen route calls and waits at the station, but the shared ending records the route you checked and describes the ridge trail as passable. Only the alternative ridge route examines it.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/frontierDiscoveryRc12.test.ts — does not claim ridge check after only waiting, including reload"
+          ],
+          "reviewNotes": "Door-wait route remains neutral after reload; ridge-check statement requires assayer_checked_ridge.",
           "crossClusterFindingIds": [
             "F351-004"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3473,7 +3519,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-needle-at-the-north-station",
@@ -3534,16 +3580,18 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-03",
             "CON-04",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3572,7 +3620,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-outlaws-mother",
@@ -3635,15 +3683,17 @@
           "auditText": "Borrowed box is returned on a route that never borrowed it",
           "auditWitness": "packet/wrapTube -> transfer/holdLine -> paid/wage -> coinEnd",
           "auditEvidence": "packet/wrapTube -> transfer/holdLine -> paid/wage -> coinEnd — This route wraps a tube on deck and helps with a rope; coinEnd says return the borrowed ferry box. Only useLocker established borrowing a box.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/expeditionLogisticsGenreBatch.test.ts — does not claim the ferry box was borrowed on routes that never used it"
+          ],
+          "reviewNotes": "Only the locker route returns the borrowed box; wrap-tube route does not claim borrowing or return.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-public-apology",
@@ -3704,14 +3754,16 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3728,7 +3780,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-riverboat-cache",
@@ -3843,14 +3895,16 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3867,7 +3921,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-sealed-mine-office",
@@ -3905,13 +3959,15 @@
           "auditText": "Search withdrawal ends with missing hand found",
           "auditWitness": "complication.response_withdraw > settlement.acceptGear > gear",
           "auditEvidence": "Response marks site for later search; gear ending asserts missing hand found and dog watered.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/adventurerSupportGenreBatch.ts — withdrawal response → settlement"
+          ],
+          "reviewNotes": "withdraw reports the missing scent for a future search, but unconditional settlement says the missing hand is found.",
           "crossClusterFindingIds": [
             "R371-033"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -3922,7 +3978,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-silted-toolbox",
@@ -4035,14 +4091,16 @@
           "auditText": "Selected alternate resolution is replaced by incompatible standard resolution",
           "auditWitness": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward",
           "auditEvidence": "start/inspect -> work/shore -> reveal/alternate -> settle -> any reward — choseAlternateSequence is never read. Ramp schedules repair for next dry day then settlement says ramp already leveled/tested. Hall stores marked block in town store then installs it inside hall. Lodge restores partition then keeps expanded room. School rehanges bell then says bell remains on ground. Well removes marked stone to county store then repairs without removing stone. Theater postpones opening then opens ground-floor market.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/constructionBuildingStructuralWorkGenreBatch.test.ts — preserves alternate outcomes in settlement for the six audited construction routes"
+          ],
+          "reviewNotes": "Alternate resolution is asserted in settlement and incompatible standard-resolution text is absent.",
           "crossClusterFindingIds": [
             "CON-01",
             "CON-05"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -4059,7 +4117,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-third-knock",
@@ -4124,14 +4182,16 @@
           "auditText": "A failed cart recovery becomes successful delivery at the terminal.",
           "auditWitness": "rescueAfterRain.guideCourierRope failure -> cartRecovered",
           "auditEvidence": "Failure says cart catches at bend and courier must go on alone; next cartRecovered says farm team brings courier and medicine cart, supplies reach village.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/washoutRc12F18.test.ts — failed courier-rope route excluded from cart-recovered ending; recovery proof variants"
+          ],
+          "reviewNotes": "Failure routes to courierSafe with cart-caught proof and no delivery claim; successful recoveries retain recovery text.",
           "crossClusterFindingIds": [
             "RO29-11",
             "RO29-12"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
         }
       ],
       "crossClusterFindings": [
@@ -4148,7 +4208,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-weight-of-gold",
