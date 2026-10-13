@@ -1,8 +1,8 @@
 {
   "schema": "lgsw.rc12-verification.v1",
   "baselineMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
-  "lastReviewedMainSha": "fe943130a570b33c57e632a91021781d3373311e",
-  "verificationBatch": 4,
+  "lastReviewedMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+  "verificationBatch": 5,
   "confirmedFindingRecords": 109,
   "findingAdventureAssignments": 144,
   "canonicalAdventureCount": 124,
@@ -23,15 +23,17 @@
           "auditText": "Disarming shortcut inherits unread repayment ledger",
           "auditWitness": "room.grabGun success → weaponSafe",
           "auditEvidence": "Direct grab only moves weapon; weaponSafe asserts old book supports eight payment and four balance, discovered only book.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/westernOutlawBatch.ts: room.grabGun success routes directly to weaponSafe; weaponSafe asserts the old book supports an eight-coin payment and four-coin balance."
+          ],
+          "reviewNotes": "The direct disarm route does not visit book, but the shared weaponSafe scene states the book's findings. The audit's information leak remains present.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "all-hallows-boarding-house",
@@ -878,16 +880,18 @@
           "auditText": "Keeping still and refusing a search is retold as rushing toward the robber.",
           "auditWitness": "afterCashDemand.refuseNervousSearch or refuseDisorganizedSearch failure -> shotPlayer",
           "auditEvidence": "Choice says Keep still and refuse the search; failure says robber fires on refusal; terminal says fires before you reach them and you knowingly crossed the line of a raised revolver.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/giveMeWhatchaGot.ts: refuseNervousSearch/refuseDisorganizedSearch set refusedSearchShot; shotPlayer has a matching still/refused text variant, distinct from the rushedArmedRobber variant."
+          ],
+          "reviewNotes": "The refusal route remains still and its failure narration says the robber fired on refusal; only the distinct rushedArmedRobber state receives the rush-toward-robber claim. The injury narration is route-specific.",
           "crossClusterFindingIds": [
             "RO29-23",
             "RO29-24",
             "RO29-25",
             "RO29-27"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [
@@ -916,7 +920,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "high-water",
@@ -1699,15 +1703,18 @@
           "auditText": "Shared endings introduce an uncalled neighbor and describe the player as absent after remaining present.",
           "auditWitness": "firstReply.askSetDown success -> weaponLowered.stayWithPerson -> crisisSettles; tensionRises.askGroundAgain failure -> crisisLost",
           "auditEvidence": "stayWithPerson never sends companion for help but terminal says person speaks with neighbor. askGroundAgain failure happens in front of player but crisisLost says did not know what would happen while you were away. Companion-wait failures have same away wording.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/onlyOneBullet.ts: weaponLowered.stayWithPerson reaches crisisSettles, which introduces a neighbor without that route sending for help.",
+            "src/scenarios/onlyOneBullet.ts: tensionRises.askGroundAgain failure reaches crisisLost while the Traveler stays at the fence; crisisLost says the Traveler was away."
+          ],
+          "reviewNotes": "Both person/support and Traveler-presence contradictions remain on current source. Existing groundedConsequenceBatch coverage traverses the failure route but does not assert these claims are absent.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "paper-boat-at-high-water",
@@ -3433,15 +3440,17 @@
           "auditText": "Crew thanks player for a marker never placed",
           "auditWitness": "markerEnd.followMarkerStones → markerWest",
           "auditEvidence": "Only markOwnReturn uses carried foldingTrailMarker; direct west route reaches ending glad you left your own sign.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/survivalExpeditionBatch.ts: markerEnd.followMarkerStones routes directly to markerWest, whose ending thanks the Traveler for leaving a sign."
+          ],
+          "reviewNotes": "The direct west route does not place a marker; the existing survivalExpeditionBatch test confirms this route reaches markerWest but does not correct or gate the unsupported thanks.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-millers-beast",
@@ -3779,15 +3788,17 @@
           "auditText": "Chosen tools load changes to chest left unsecured",
           "auditWitness": "camp.secureTools > weather.leaveUnsecuredLoad > leftLoad",
           "auditEvidence": "weather says chosen load secure and other shifted; leftLoad always says shifted chest.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/gearCorrectiveBatch.ts: secureTools sets strap_on_tools; weather says the chosen load stays and the other shifts; leaveUnsecuredLoad reaches leftLoad, which unconditionally says the shifted chest is secured."
+          ],
+          "reviewNotes": "When tools are secured, the flour is the shifted load, not the chest. Current ending still assumes the chest shifted; no route-aware variant is present.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-ramp-for-the-grain-cart",
@@ -4325,15 +4336,18 @@
           "auditText": "Pump-first outcome forgets the chosen delivery",
           "auditWitness": "return/pumpFirst -> check/handCarryPump -> paid",
           "auditEvidence": "return/pumpFirst -> check/handCarryPump -> paid — Player chooses carrying pump to restore water station and explicitly hand-delivers it there. Shared paid scene instead prioritizes samples and says pump delivered later, matching only samples-first plan.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
+          "evidence": [
+            "src/scenarios/expeditionLogisticsGenreBatch.ts: paid has return_pump_prioritised text variant stating the Traveler hand-carries the pump first.",
+            "src/scenarios/expeditionLogisticsGenreBatch.test.ts: renders Return Wagon delivery order from the route actually chosen; asserts pump-first text and excludes 'pump is delivered later', with neutral legacy fallback."
+          ],
+          "reviewNotes": "The route flag distinguishes samples-first, pump-first, and split-load outcomes; the regression directly covers both the contrast and missing-proof fallback.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [],
-      "status": "UNREVIEWED"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-whistle-and-the-wind",
@@ -4373,13 +4387,15 @@
           "auditText": "Shared ending invents sparks on the brush-bench route",
           "auditWitness": "shelter/chooseBrush -> bench/leaveCrate -> partial",
           "auditEvidence": "shelter/chooseBrush -> bench/leaveCrate -> partial — The chosen route moves bedding to the sheltered brush bench and leaves an empty crate. partial instead says bedding was moved before sparks spread and the crew keeps a cold watch. Sparks exist only on the separate stone-lee route.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/wildernessFieldcraftGenreBatch.ts: chooseBrush routes to bench; leaveCrate reaches partial, whose shared ending claims bedding moved before sparks spread although sparks are introduced only in gust."
+          ],
+          "reviewNotes": "The brush-bench route never enters gust and establishes no sparks, but its partial ending retains the stone-lee fire event. R616-004 is a separate RC13 minor concern and is not implemented here.",
           "crossClusterFindingIds": [
             "R616-004"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [
@@ -4390,7 +4406,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "the-wire-that-sang-twice",
@@ -4454,13 +4470,15 @@
           "auditText": "Recovered tin becomes unrecovered in followup",
           "auditWitness": "complication.response_line > followup",
           "auditEvidence": "Response retrieves tin from firm side; followup says tin still visible below and choices leave it.",
-          "status": "UNREVIEWED",
-          "evidence": [],
-          "reviewNotes": "",
+          "status": "OPEN_REPRODUCIBLE",
+          "evidence": [
+            "src/scenarios/adventurerSupportGenreBatch.ts: line response consequence says the tin comes up; generated followup text unconditionally appends the Three Points Down followup claiming the tin is still visible below and asks what to leave."
+          ],
+          "reviewNotes": "The line response establishes recovery before the shared followup, which reverses object state. R371-033 is an attached RC02 finding; no RC02 change is made.",
           "crossClusterFindingIds": [
             "R371-033"
           ],
-          "reviewedAtMainSha": null
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
         }
       ],
       "crossClusterFindings": [
@@ -4471,7 +4489,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "UNREVIEWED"
+      "status": "OPEN"
     },
     {
       "adventureId": "town-name-that-moved",
@@ -4626,43 +4644,22 @@
     }
   ],
   "lastBatch": {
-    "batchNumber": 4,
-    "mainSha": "fe943130a570b33c57e632a91021781d3373311e",
-    "startingUnreviewed": 38,
-    "assignmentsReviewed": 30,
+    "batchNumber": 5,
+    "mainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+    "startingUnreviewed": 8,
+    "assignmentsReviewed": 8,
     "assignmentsMarkedAmbiguous": 0,
-    "selection": "30 medium/low assignments: same-mechanism regression families followed by focused source traces.",
+    "selection": "Final verification sweep: reviewed all eight remaining MEDIUM assignments; verification complete.",
     "assignmentIds": [
-      "the-old-survey-stone/R125-067",
-      "the-sealed-mine-office/R125-068",
-      "the-riverboat-cache/R125-073",
-      "the-halloween-dare/R125-008",
-      "the-headless-rider/R125-013",
-      "the-clamp-beneath-the-press/R616-022",
-      "the-needle-at-the-north-station/R616-023",
-      "the-mineshaft-lamp/R371-059",
-      "the-silted-toolbox/R371-060",
-      "the-goat-wouldnt-stay-dead/R125-081",
-      "the-man-eater-of-millers-gap/R125-087",
-      "the-man-who-sheds-his-skin/R125-083",
-      "the-millers-beast/R125-080",
-      "dead-mans-hand/O01-017",
-      "toymakers-last-order/R125-043",
-      "the-broken-rail-at-crow-field/R616-034",
-      "the-irrigation-stone-at-south-field/R616-030",
-      "the-burning-loft/O15-024",
-      "the-frightened-team/P32",
-      "one-horse-short/RO29-03",
-      "the-whistle-and-the-wind/R371-005",
-      "the-millwheel-hand/P08",
-      "the-last-ferry/RO29-05",
-      "the-last-survey/R371-025",
-      "the-last-at-the-cobbler/R371-050",
-      "the-last-clean-apron/R371-004",
-      "the-public-apology/R371-003",
-      "the-outlaws-mother/R125-064",
-      "silent-night/RO29-18",
-      "under-the-ice/O15-026"
+      "a-gun-on-the-table/R125-063",
+      "give-me-whatcha-got/RO29-22",
+      "only-one-bullet/RO29-15",
+      "the-markers-stop/R125-032",
+      "the-quartermasters-tally/R371-024",
+      "the-wheel-of-the-return-wagon/R616-020",
+      "the-winds-other-side/R616-003",
+      "three-points-down/R371-035"
     ]
-  }
+  },
+  "verificationStatus": "COMPLETE"
 }
