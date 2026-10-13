@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–290 reviewed; 571 of 861 remain.
-Next: position 291; next finding ID `CRA-F0096`.
+Checkpoint: registry positions 1–300 reviewed; 561 of 861 remain.
+Next: position 301; next finding ID `CRA-F0105`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–290 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–300 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 186 |
+| HEALTHY | 190 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 89 |
+| CONFIRMED DEFECT | 95 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 290 |
+| Total reviewed | 300 |
 
-There are 95 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, CRA-F0089, CRA-F0092–CRA-F0094 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, CRA-F0090–CRA-F0091, and CRA-F0095 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, and CRA-F0083 are HIGH. The current batch added two MEDIUM and three LOW findings.
+There are 104 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, CRA-F0089, CRA-F0092–CRA-F0094, CRA-F0096–CRA-F0097, CRA-F0099, and CRA-F0104 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, CRA-F0090–CRA-F0091, CRA-F0095, CRA-F0098, and CRA-F0100–CRA-F0102 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, CRA-F0083, and CRA-F0103 are HIGH. The current batch added one HIGH, four MEDIUM, and four LOW findings.
 
 ## Positions 21–30
 
@@ -535,3 +535,22 @@ Batch 271–280 added five findings to CRA-C0001; no new cluster was needed. Tot
 In A Gun on the Table, `distanceTalk` and the innkeeper’s `hallCall` both reach `book` without retrieving the harvest book, but that scene presents its eight-coin repayment entry as known. A successful grab-and-secure route bypasses the book yet reaches a settled ending that states the conditional four-coin balance and accepted date (CRA-F0091). The Outlaw’s Mother correctly gates delivery wording on `familyNewsDeliveredToSon`, but the separate `deputyLetter` choice grants History claiming family news was carried to the wanted son even though the letter was given to the deputy (CRA-F0092). In The Last Shot, `coverLeave` reaches retreat without signaling the rancher; the retreat scene says their safety depends on following a signal, but `retreatReport` still grants History credit for helping them leave (CRA-F0093). In The Map in the Ledger, copying the map or returning from the creek before reading the stone reaches an ending that identifies the mark as a water gate; that interpretation is established only by `stoneRecord` (CRA-F0094). The Room Behind the Chimney’s shared discovery claims both the purpose was learned and both objects were returned, although braced withdrawal learns no letter contents and retrieves nothing, while box and letter routes can return only one object (CRA-F0095). One Horse, Two Riders’ foot-follow branch permits the explicit `trackDoctor` action to take the stranger to the ranch house before the doctor-ending claim; other routes preserve the pouch/posse distinctions. The False Deputy preserves the distinction between reporting and escort, The Town That Moved’s discovery is supported by its visited marker/record routes, the Old Survey Stone’s calf-return claims remain correctly gated by `oldSurveyCalfReturned`, and the Sealed Mine Office uses route-specific variants to avoid importing private wage, notice, map, or drainage facts. Western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed.
 
 Batch 281–290 added five findings to existing CRA-C0001/C0002 patterns; no new cluster was required. Totals are now 186 HEALTHY, 15 MINOR CONCERN, and 89 CONFIRMED DEFECT across 290 reviewed Adventures; 571 remain. CRA-F0091–CRA-F0095 comprise two MEDIUM and three LOW findings. The western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 291, The Island When the Water Falls, and the next finding ID is CRA-F0096.
+
+## Positions 291–300
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 291 | The Island When the Water Falls | CONFIRMED DEFECT | CRA-F0096 (LOW) — safe-bank/retreat routes conclude the island was a freight landing without visiting it. |
+| 292 | The Forgotten Station | CONFIRMED DEFECT | CRA-F0097 (LOW) — discovery cites the book and chalk when the route did not inspect them. |
+| 293 | The Cave with Worked Stone | HEALTHY | — |
+| 294 | The Lost Payroll | HEALTHY | — |
+| 295 | The House under the Hill | CONFIRMED DEFECT | CRA-F0098 (MEDIUM) — the ending supplies flood history and landholder closure after routes with no deed or landholder contact. |
+| 296 | The Riverboat Cache | HEALTHY | — |
+| 297 | The Last Room in the Fort | CONFIRMED DEFECT | CRA-F0099 (LOW) — a blankets-only inventory route still refers unidentified letters to the surgeon’s family. |
+| 298 | The Thing at Black Creek | CONFIRMED DEFECT | CRA-F0100 (MEDIUM), CRA-F0101 (MEDIUM) — premature bear Knowledge; closure/participation attributed without sufficient route proof. |
+| 299 | Teeth in the Mine | CONFIRMED DEFECT | CRA-F0102 (MEDIUM), CRA-F0103 (HIGH), CRA-F0104 (LOW) — a located miner becomes “not found,” a broken rope can complete rescue, and a trapped miner is implied to help carry the Traveler. |
+| 300 | Something in the Corn | HEALTHY | — |
+
+The Island When the Water Falls can end directly from waiting on the safe bank or reading the post without reaching the island, yet the ending definitively calls it a former freight landing (CRA-F0096). The Forgotten Station’s worker/account/crate routes converge on text crediting the book and chalk even when the player did not inspect both (CRA-F0097). The House under the Hill’s room-only retreat and upper-room exit assert a flood cause and landholder closure that those routes never establish (CRA-F0098). In The Last Room in the Fort, choosing to record blankets/cot only still leads to a county disposition of unidentified private letters (CRA-F0099). The Thing at Black Creek grants Knowledge before the keeper provides the claimed explanation (CRA-F0100), and multiple endings/history assert weir closure and farm protection without the necessary call or completed action (CRA-F0101). Teeth in the Mine resets one located miner to “not found” on withdrawal (CRA-F0102), accepts an owned-but-BROKEN rope for the rescue and related History (CRA-F0103), and after the brace failure says “the miners” drag the Traveler although the second miner remains trapped (CRA-F0104). The Cave with Worked Stone, Lost Payroll, Riverboat Cache, and Something in the Corn preserve their uncertainty, evidence, object custody, and outcome distinctions across the reviewed routes. Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files; graph/metadata tests support but do not replace source review. No gameplay source or tests were changed.
+
+Batch 291–300 added nine findings to existing CRA-C0001/C0002/C0004 patterns; no new cluster was required. Totals are now 190 HEALTHY, 15 MINOR CONCERN, and 95 CONFIRMED DEFECT across 300 reviewed Adventures; 561 remain. CRA-F0096–CRA-F0104 comprise one HIGH, four MEDIUM, and four LOW findings. The Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 301, The Barrow Hound, and the next finding ID is CRA-F0105.
