@@ -11,13 +11,13 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 202 |
-| MINOR CONCERN | 21 |
-| CONFIRMED DEFECT | 117 |
+| HEALTHY | 205 |
+| MINOR CONCERN | 25 |
+| CONFIRMED DEFECT | 120 |
 | NEEDS MANUAL REVIEW | 0 |
 | Total reviewed | 340 |
 
-There are 130 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings.
+There are 133 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings; batch 341–350 added three MEDIUM findings.
 
 ## Positions 21–30
 
@@ -629,4 +629,23 @@ That batch added four findings to CRA-C0001 and one to CRA-C0004; no new cluster
 
 The Old Hoist tests the mechanism with loose timber, then both cautious closure and mishap text say it was left untouched (CRA-F0127). The Camp Below the Slide offers taking a loose tool or reaching for a chest, but successful routes never resolve whether either object is acquired or left (CRA-F0128). The Hidden Tailings Pile and The Claim with No Name inherit a generic “give both sides the same account” option without introducing or contacting the other party (CRA-F0129–CRA-F0130). The Old Claim Cabin preserves uncertainty about who worked the claim and what the find means; no contradiction was found. The Mule Trail, Prospector’s Map, Empty Assay Office, Cabin with Two Locks, and Gold Dust in the Floorboards have limited or repeated generic route payoffs, but their text does not assert a route-unsupported fact, so they remain minor concerns.
 
-The batch added CRA-F0127 to the established route-state/convergence cluster CRA-C0001 and created CRA-C0006 for generic Frontier Discovery archetypes that promise unsupported actors or unresolved action outcomes (CRA-F0128–CRA-F0130). Frontier Discovery, registry, and diversity suites passed 31 tests across three files as supporting evidence; card-by-card route review remains authoritative. No gameplay source or tests were changed. Totals are now 202 HEALTHY, 21 MINOR CONCERN, and 117 CONFIRMED DEFECT across 340 reviewed Adventures; 521 remain. All four new findings are MEDIUM. The next canonical registry entry is position 341, The Broken Rocker Box, and the next finding ID is CRA-F0131.
+The batch added CRA-F0127 to the established route-state/convergence cluster CRA-C0001 and created CRA-C0006 for generic Frontier Discovery archetypes that promise unsupported actors or unresolved action outcomes (CRA-F0128–CRA-F0130). Frontier Discovery, registry, and diversity suites passed 31 tests across three files as supporting evidence; card-by-card route review remains authoritative. No gameplay source or tests were changed. At that checkpoint totals were 202 HEALTHY, 21 MINOR CONCERN, and 117 CONFIRMED DEFECT across 340 reviewed Adventures; 521 remained. All four new findings were MEDIUM.
+
+## Positions 341–350
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 341 | The Broken Rocker Box | MINOR CONCERN | — |
+| 342 | The Rusted Safe | MINOR CONCERN | — |
+| 343 | The Cache Under the Stove | HEALTHY | — |
+| 344 | The Washed-Out Claim | CONFIRMED DEFECT | CRA-F0131 (MEDIUM) — the promised shovel-taking action has no resolved acquisition outcome. |
+| 345 | The Old Dredge | CONFIRMED DEFECT | CRA-F0132 (MEDIUM) — the ledger-markings investigation produces no reading/result. |
+| 346 | The Derelict Stamp Mill | MINOR CONCERN | — |
+| 347 | The Survey Stakes Are Wrong | HEALTHY | — |
+| 348 | The Claim at Dry Creek | HEALTHY | — |
+| 349 | Claim Jumpers at Sundown | CONFIRMED DEFECT | CRA-F0133 (MEDIUM) — evidence is “shared” with an absent employer who is never contacted. |
+| 350 | The Man in the Abandoned Camp | MINOR CONCERN | — |
+
+The Washed-Out Claim’s cautious action says to take the loose shovel, but it grants only general site insight; no item or route state records whether the shovel was taken, and later endings do not resolve its disposition (CRA-F0131). The Old Dredge offers reading the ledger-box markings from the bank, but neither the success route nor its ending supplies any marking or information result (CRA-F0132). Claim Jumpers at Sundown places visitors at the gate but represents the employer only through a posted map; its generic “give both sides the same account” choice claims bilateral sharing without a route to the absent employer (CRA-F0133). The Cache Under the Stove explicitly resolves coins/items and their effects; Survey Stakes Are Wrong has a card-specific route specialization that keeps observations separate; and Claim at Dry Creek has both groups physically present. The Broken Rocker Box, Rusted Safe, Derelict Stamp Mill, and Man in the Abandoned Camp contain repeated or under-resolved action prompts, but no definite unsupported fact, so they remain minor concerns.
+
+The three confirmed findings join CRA-C0006, the generic Frontier archetype mismatch pattern. Supporting Frontier Discovery, registry, and diversity suites passed 31 tests across three files; route-level source inspection determined the classifications. No gameplay source or tests were changed. Totals are now 205 HEALTHY, 25 MINOR CONCERN, and 120 CONFIRMED DEFECT across 350 reviewed Adventures; 511 remain. All three findings are MEDIUM. The next canonical registry entry is position 351, The Timber Claim, and the next finding ID is CRA-F0134.
