@@ -2,20 +2,20 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–100 reviewed; 761 of 861 remain.
-Next: position 101; next finding ID `CRA-F0033`.
+Checkpoint: registry positions 1–110 reviewed; 751 of 861 remain.
+Next: position 111; next finding ID `CRA-F0033`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–100 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–110 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 64 |
+| HEALTHY | 74 |
 | MINOR CONCERN | 5 |
 | CONFIRMED DEFECT | 31 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 100 |
+| Total reviewed | 110 |
 
 There are 32 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032 are LOW; CRA-F0027 is MEDIUM. Batch 51–60 found no additional confirmed defects.
 
@@ -155,6 +155,23 @@ CRA-F0024–CRA-F0027 extend CRA-C0004: physical Gear use is sometimes guarded b
 
 The Old Horse wording is retained as a minor concern: the terms scene says the horse “will still cost three coins” immediately before presenting work in exchange, while that route takes time and no money. CRA-F0030 is another use-versus-ownership Gear gate in CRA-C0004. CRA-F0031 joins CRA-C0002 because an explicit Knowledge claim is more specific than what the route’s visible dialogue supplies. CRA-F0032 joins CRA-C0001 because the selected “nothing” state does not constrain the available object-taking action or its shared result/history.
 
+## Positions 101–110
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 101 | The Music Outside | HEALTHY | — |
+| 102 | The Old Man’s Story | HEALTHY | — |
+| 103 | A Good Night’s Sleep | HEALTHY | — |
+| 104 | Skipping Stones | HEALTHY | — |
+| 105 | The Injured Traveler | HEALTHY | — |
+| 106 | That’s My Horse | HEALTHY | — |
+| 107 | The Empty Purse | HEALTHY | — |
+| 108 | A Very Good Deal | HEALTHY | — |
+| 109 | The Broken Promise | HEALTHY | — |
+| 110 | The Landlord’s Story | HEALTHY | — |
+
+The dispute routes preserve evidentiary limits: suspected theft stays unproven, a horse ownership claim stays unresolved, loupe condition is distinct from seller authority, and partial testimony does not become a ruling on the full agreement. Payment, purchase, and meal effects are gated and applied on their corresponding routes. Listening/memory and withdrawal paths do not gain facts that were not heard.
+
 ## Finding clusters
 
 - **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028, CRA-F0029, CRA-F0032.
@@ -166,6 +183,6 @@ The detailed findings, witnesses, source provenance, and carry-forward limitatio
 
 ## Validation and process notes
 
-The focused existing suites for The Man in the Ditch, The Burning Loft, and Under the Ice passed: 56 tests across 3 files. The After the Storm and Washout-focused suites passed: 11 tests across 3 files. Inventory and scenario-registry validation passed: 16 tests across 2 files, including the 861-Adventure registry assertion. The Honest Work shared-builder suite passed: 12 tests. Batch 51–60 suites (`honestWorkBatch.test.ts` and `commerceBatch.test.ts`) passed: 27 tests across 2 files. Batch 61–70 Commerce and Community suites passed: 29 tests across 2 files. Batch 71–80 Community/Wilderness plus Gear-condition suites passed: 37 tests across 3 files. Batch 81–90 Wilderness, Animals, and Gear-condition suites passed: 35 tests across 3 files. Batch 91–100 animal and pleasant-day suites passed: 19 tests across 2 files. These tests support, but do not substitute for, source route review. No gameplay repairs, test changes, deployment, or scheduler changes were made. Checkpoints are committed locally; remote fetch/push is unavailable in this environment. Weekly Scenario Batch remains paused.
+The focused existing suites for The Man in the Ditch, The Burning Loft, and Under the Ice passed: 56 tests across 3 files. The After the Storm and Washout-focused suites passed: 11 tests across 3 files. Inventory and scenario-registry validation passed: 16 tests across 2 files, including the 861-Adventure registry assertion. The Honest Work shared-builder suite passed: 12 tests. Batch 51–60 suites (`honestWorkBatch.test.ts` and `commerceBatch.test.ts`) passed: 27 tests across 2 files. Batch 61–70 Commerce and Community suites passed: 29 tests across 2 files. Batch 71–80 Community/Wilderness plus Gear-condition suites passed: 37 tests across 3 files. Batch 81–90 Wilderness, Animals, and Gear-condition suites passed: 35 tests across 3 files. Batch 91–100 animal and pleasant-day suites passed: 19 tests across 2 files. Batch 101–110 pleasant-day and dispute suites passed: 15 tests across 2 files. These tests support, but do not substitute for, source route review. No gameplay repairs, test changes, deployment, or scheduler changes were made. Checkpoints are committed locally; remote fetch/push is unavailable in this environment. Weekly Scenario Batch remains paused.
 
 The persistent ledger did not exist in this checkout before this run. The carry-forward limitation above is preserved so later batches can resume without pretending that chat-only prior evidence was re-examined or fully recovered. Future batches should append in registry order and retain this qualification unless the missing detail is recoverable from the original audit conversation/artifact.
