@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–180 reviewed; 681 of 861 remain.
-Next: position 181; next finding ID `CRA-F0040`.
+Checkpoint: registry positions 1–190 reviewed; 671 of 861 remain.
+Next: position 191; next finding ID `CRA-F0046`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 131 |
-| MINOR CONCERN | 11 |
-| CONFIRMED DEFECT | 38 |
+| HEALTHY | 134 |
+| MINOR CONCERN | 12 |
+| CONFIRMED DEFECT | 44 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 180 |
+| Total reviewed | 190 |
 
-There are 39 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036 are LOW; CRA-F0027, CRA-F0033, CRA-F0037, and CRA-F0038 are MEDIUM; CRA-F0039 is HIGH. Batch 51–60 found no additional confirmed defects.
+There are 45 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, and CRA-F0044 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, and CRA-F0045 are MEDIUM; CRA-F0039 and CRA-F0043 are HIGH. Batch 51–60 found no additional confirmed defects.
 
 ## Positions 21–30
 
@@ -293,12 +293,33 @@ In The Scarecrow Changes Fields, `watchAfterDark -> inspectPeg -> scarecrowChoic
 
 In The Coffin Maker’s Extra Order, returning payment or bringing the maker together reaches closure that says the tailor must answer, without establishing the tailor’s involvement. Preserving the order proves handwriting/delivery and a prior business connection only; the route that confronts the tailor and reaches the former partner establishes the measurements-for-intimidation explanation. Shared closure also records that culpability as Knowledge. The unproved attribution is CRA-F0039 (HIGH). October affinity, second-wave, and content-depth supporting suites passed (28 tests across three files); these tests do not replace the route traces.
 
+## Positions 181–190
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 181 | The Skeleton in the Wagon | CONFIRMED DEFECT | CRA-F0040 (MEDIUM) — convergence invents a lot-number handoff and written shipment account on routes that did not inspect or record them. |
+| 182 | The Headless Rider | MINOR CONCERN | Keeper-fetch/turn flags are written but not reflected in later route outcomes. |
+| 183 | The Last House before the Woods | CONFIRMED DEFECT | CRA-F0041 (LOW) — common Knowledge identifies the caller as a stranger even when unseen. |
+| 184 | The Séance at Bellweather House | CONFIRMED DEFECT | CRA-F0042 (MEDIUM) — shared ending claims a written answer, witnessed voice, and fee recovery across incompatible routes. |
+| 185 | The Red Chalk Circle | CONFIRMED DEFECT | CRA-F0043 (HIGH) — boundary-escape route claims Orin is out without finding or rescuing him. |
+| 186 | The Man Who Sleeps in the Graveyard | HEALTHY | — |
+| 187 | The Widow’s Mirror | CONFIRMED DEFECT | CRA-F0044 (LOW) — shared ending asserts the glazier dismantles the mirror without that service being selected. |
+| 188 | The Bone Box | HEALTHY | — |
+| 189 | The Lantern at the Crossing | CONFIRMED DEFECT | CRA-F0045 (MEDIUM) — Spirit Glass reveal is available with a BROKEN Lantern. |
+| 190 | The Quiet Room | HEALTHY | — |
+
+The Skeleton in the Wagon’s shared settlement says the teacher takes the lot number back to school and gives the passerby a written shipment account even when the player only covers the crate or braces the axle without inspecting or recording the tag (CRA-F0040, MEDIUM). In The Headless Rider, the hood/lantern explanation and injury/horse/brother outcomes remain route-specific; the unused keeper-fetch and turn flags leave a minor action-feedback concern.
+
+The Last House before the Woods unconditionally grants Knowledge that a stranger called from beyond the fence. On barred-door/shutter routes, the caller remains unidentified; only the caller-seen/fled variants establish a stranger (CRA-F0041, LOW). The Séance at Bellweather House funnels routes that never heard the voice or wrote down its answer into an ending that says the family keeps a written answer, the voice remains a shared account, and part of the fee is recovered. Those are route-specific discoveries/actions (CRA-F0042, MEDIUM).
+
+In The Red Chalk Circle, a retreat or successful struggle at the disturbed boundary reaches `chalkAfter` without visiting the crawlspace, but the shared text says Orin is out (CRA-F0043, HIGH). The Widow’s Mirror uses a common ending claiming the glazier dismantles the mirror even after a simple carry-out or cover route that never requests the service (CRA-F0044, LOW). The Bone Box’s current post-definition variants truthfully distinguish burning and keeping the map; leaving the closed box to the broker leaves later custody to the broker. The Lantern at the Crossing checks that the Lantern owns Spirit Glass but not that the item is usable; engine requirements treat `itemUpgrades` separately from condition, so a BROKEN Lantern still exposes the clue (CRA-F0045, MEDIUM). The Quiet Room’s current post-definition patch correctly separates sealing the hatch from leaving before dawn.
+
 ## Finding clusters
 
-- **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0039.
-- **CRA-C0002 — Knowledge/History without route proof:** CRA-F0001, CRA-F0004, CRA-F0031, CRA-F0034.
+- **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0040, CRA-F0042–CRA-F0044.
+- **CRA-C0002 — Knowledge/History without route proof:** CRA-F0001, CRA-F0004, CRA-F0031, CRA-F0034, CRA-F0041.
 - **CRA-C0003 — Elapsed-time proxy used as event proof:** CRA-F0011.
-- **CRA-C0004 — Gear ownership treated as Gear usability:** CRA-F0020, CRA-F0021, CRA-F0023–CRA-F0027, CRA-F0030.
+- **CRA-C0004 — Gear ownership treated as Gear usability:** CRA-F0020, CRA-F0021, CRA-F0023–CRA-F0027, CRA-F0030, CRA-F0045.
 
 The detailed findings, witnesses, source provenance, and carry-forward limitations are in [current-semantic-audit-ledger.json](current-semantic-audit-ledger.json).
 
@@ -313,5 +334,7 @@ Batch 141–150 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test
 Batch 151–160 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, `compensationAccountingC2.test.ts`, and `qaContentCorrections.test.ts`) passed: 36 tests across 4 files. No gameplay source or tests were changed.
 
 Batch 171–180 supporting suites (`octoberAffinityBatch.test.ts`, `secondWaveBatch.test.ts`, and `contentDepth.test.ts`) passed: 28 tests across 3 files. These support, but do not replace, the route-level source review. No gameplay source or tests were changed.
+
+Batch 181–190 supporting suites (`octoberAffinityBatch.test.ts`, `occultInvestigationBatch.test.ts`, `finalChoiceConsequenceAudit.test.ts`, and `scenarioRegistryValidation.test.ts`) passed: 57 tests across 4 files. They support, but do not replace, the route-level source review. No gameplay source or tests were changed.
 
 Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
