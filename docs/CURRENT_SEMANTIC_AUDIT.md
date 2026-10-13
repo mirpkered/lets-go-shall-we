@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–300 reviewed; 561 of 861 remain.
-Next: position 301; next finding ID `CRA-F0105`.
+Checkpoint: registry positions 1–310 reviewed; 551 of 861 remain.
+Next: position 311; next finding ID `CRA-F0114`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–300 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–310 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 190 |
+| HEALTHY | 192 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 95 |
+| CONFIRMED DEFECT | 103 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 300 |
+| Total reviewed | 310 |
 
-There are 104 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, CRA-F0089, CRA-F0092–CRA-F0094, CRA-F0096–CRA-F0097, CRA-F0099, and CRA-F0104 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, CRA-F0090–CRA-F0091, CRA-F0095, CRA-F0098, and CRA-F0100–CRA-F0102 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, CRA-F0083, and CRA-F0103 are HIGH. The current batch added one HIGH, four MEDIUM, and four LOW findings.
+There are 113 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; prior batch summaries below retain their own severity breakdowns.
 
 ## Positions 21–30
 
@@ -554,3 +554,22 @@ Batch 281–290 added five findings to existing CRA-C0001/C0002 patterns; no new
 The Island When the Water Falls can end directly from waiting on the safe bank or reading the post without reaching the island, yet the ending definitively calls it a former freight landing (CRA-F0096). The Forgotten Station’s worker/account/crate routes converge on text crediting the book and chalk even when the player did not inspect both (CRA-F0097). The House under the Hill’s room-only retreat and upper-room exit assert a flood cause and landholder closure that those routes never establish (CRA-F0098). In The Last Room in the Fort, choosing to record blankets/cot only still leads to a county disposition of unidentified private letters (CRA-F0099). The Thing at Black Creek grants Knowledge before the keeper provides the claimed explanation (CRA-F0100), and multiple endings/history assert weir closure and farm protection without the necessary call or completed action (CRA-F0101). Teeth in the Mine resets one located miner to “not found” on withdrawal (CRA-F0102), accepts an owned-but-BROKEN rope for the rescue and related History (CRA-F0103), and after the brace failure says “the miners” drag the Traveler although the second miner remains trapped (CRA-F0104). The Cave with Worked Stone, Lost Payroll, Riverboat Cache, and Something in the Corn preserve their uncertainty, evidence, object custody, and outcome distinctions across the reviewed routes. Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files; graph/metadata tests support but do not replace source review. No gameplay source or tests were changed.
 
 Batch 291–300 added nine findings to existing CRA-C0001/C0002/C0004 patterns; no new cluster was required. Totals are now 190 HEALTHY, 15 MINOR CONCERN, and 95 CONFIRMED DEFECT across 300 reviewed Adventures; 561 remain. CRA-F0096–CRA-F0104 comprise one HIGH, four MEDIUM, and four LOW findings. The Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 301, The Barrow Hound, and the next finding ID is CRA-F0105.
+
+## Positions 301–310
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 301 | The Barrow Hound | CONFIRMED DEFECT | CRA-F0105 (LOW) — the marked-rim ending also claims the flock was moved to higher pasture. |
+| 302 | The White Stag | CONFIRMED DEFECT | CRA-F0106 (MEDIUM) — shared closure says the farmer postponed the hunt and livestock caused crop loss on unresolved routes. |
+| 303 | The Red-Eyed Boar | HEALTHY | — |
+| 304 | The Bone-Eater | HEALTHY | — |
+| 305 | The Lantern-Eater | CONFIRMED DEFECT | CRA-F0107 (LOW) — a route damages an exposed lantern, but successful-combat closure says it remains untouched while covered. |
+| 306 | The Mire Horse | CONFIRMED DEFECT | CRA-F0108 (MEDIUM) — a mark-and-retreat route claims an unseen helper guides the Traveler and removes the false light. |
+| 307 | The River Devil | CONFIRMED DEFECT | CRA-F0109 (MEDIUM) — Knowledge identifies a submerged log before the route probes beneath the dark water. |
+| 308 | The Miller’s Beast | CONFIRMED DEFECT | CRA-F0110 (MEDIUM), CRA-F0111 (LOW) — Knowledge credits an unperformed wheel-stop; yard-guiding route says the badger exits via the culvert. |
+| 309 | The Ashen Man | CONFIRMED DEFECT | CRA-F0112 (MEDIUM) — ember-only containment reaches text claiming the trapped worker is with family. |
+| 310 | The Thing Beneath the Ice | CONFIRMED DEFECT | CRA-F0113 (MEDIUM) — a direct retreat route gains a sound-response conclusion without testing sound behavior. |
+
+The Barrow Hound’s `markMound` route reaches an ending that also claims pasture relocation, which is only the separate `closePasture` outcome (CRA-F0105). The White Stag’s orchard-release and unresolved-hunter routes reach text that settles both farmer intent and the cause of crop damage without establishing either (CRA-F0106). In the Lantern-Eater, raising the lantern damages it before a successful strike reaches `campDawn`, whose text says it remained untouched while covered (CRA-F0107). The Mire Horse’s `markSkiff` route goes directly from evidence to `marshDeception` without meeting the helper, while the ending credits him with removing the light and guiding the Traveler (CRA-F0108). River Devil’s `inspectWater` grants the submerged-log conclusion before the later probe identifies the object (CRA-F0109). The Miller’s Beast grants stopping-wheel Knowledge on routes that leave the wheel turning, and its yard-guiding route shares an ending that says the badger exits by the culvert (CRA-F0110–F0111). In the Ashen Man, smothering the ember from the kiln interior does not free the worker, though the shared ending says the worker is safe with family (CRA-F0112). The Thing Beneath the Ice grants a specific sound-response conclusion on the direct retreat route that bypasses the sound-comparison scene (CRA-F0113).
+
+The Red-Eyed Boar distinguishes opening the corridor from trap/charge outcomes; the Bone-Eater preserves observation, boundary, containment, and withdrawal variants. The current batch added six MEDIUM and three LOW findings to existing CRA-C0001 and CRA-C0002 patterns; no new cluster was required. Supporting Monster Hunt, Miller’s Beast F6, provenance, and registry tests passed (27 tests across four files); these support but do not replace the route review. No gameplay source or tests were changed. Totals are 192 HEALTHY, 15 MINOR CONCERN, and 103 CONFIRMED DEFECT across 310 reviewed Adventures; 551 remain. Next canonical registry entry: position 311, The Goat That Wouldn’t Stay Dead; next finding ID `CRA-F0114`.
