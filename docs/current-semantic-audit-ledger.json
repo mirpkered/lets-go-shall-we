@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 630,
-  "reviewedCount": 630,
-  "remainingCount": 231,
-  "nextPosition": 631,
-  "nextFindingId": "CRA-F0238",
+  "reviewedThroughPosition": 640,
+  "reviewedCount": 640,
+  "remainingCount": 221,
+  "nextPosition": 641,
+  "nextFindingId": "CRA-F0240",
   "nextClusterId": "CRA-C0010",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -644,7 +644,17 @@
     {"position":627,"adventureId":"the-broken-cairn","slug":"the-broken-cairn","title":"The Broken Cairn","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0237"],"reviewProvenance":"current-source route review; frost-shifted socket, usable-chain measurement, drover’s uncertain gate, route-book check, north reset, deferral and chain/coin compensation traced","notes":"Only book.checkBook establishes that the northern path reaches public water and that the southern gate is a landowner’s crossing. base.setNorth relies on a socket that may have shifted; measure.markPublic is reached after the chain expressly fails to show the pasture boundary; drover.markNorth follows a statement that the south gate is sometimes open, not proof the north path is public. All three bypasses enter north, whose shared result states the cairn points toward the public path and authorizes it for water access. The deferred/book-confirmed routes are distinct and truthful."},
     {"position":628,"adventureId":"one-dry-match","slug":"one-dry-match","title":"One Dry Match","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; usable Match Case, dry-bark recovery, stove relocation, attended small flame, canvas clearance, match-case/coin/Knowledge and refusal outcomes traced","notes":"The match case must be owned and usable; the alternate fuel route distinguishes moving the stove onto bare gravel from lighting a small attended cooking flame. Compensation/Knowledge choices are confined to the stove-cleared result, while the small-meal ending makes no claim that the wet woodpile or camp fuel stock was restored."},
     {"position":629,"adventureId":"rain-on-the-return-path","slug":"rain-on-the-return-path","title":"Rain on the Return Path","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sheltered valley, wait/reclosing cloud, usable-cloak gate, exposed contour chance, reached-marker and retreat/sample outcomes, coin/cloak compensation traced; C3 compensation regression inspected","notes":"The known valley preserves dry samples and reaches town later; its Knowledge follows selecting the sheltered road. Waiting does not guarantee clear weather, and a Weatherproof Cloak is owned-and-usable gated but never treated as a map or proof of the hidden marker. The contour route has distinct reached and retreat outcomes; compensation is confined to the valley return."},
-    {"position":630,"adventureId":"the-salt-lick-trail","slug":"the-salt-lick-trail","title":"The Salt Lick Trail","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; creek sign and muddy crossing, herd observation, salt-lick hair/hoof trail, farmer call/lead, calf approach, fence-gap/hold-back and whistle/coin outcomes traced","notes":"The muddy-bend crossing fails without relocating the calf; bank-following, fresh uphill sign, or the farmer’s repeated call lead to an explicitly found yearling before return choices. Asking the farmer to bring a lead lets them recover the calf; the farm whistle follows a spare call-set gift after finding, not a claimed purchase or route-provenance shortcut."}
+    {"position":630,"adventureId":"the-salt-lick-trail","slug":"the-salt-lick-trail","title":"The Salt Lick Trail","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; creek sign and muddy crossing, herd observation, salt-lick hair/hoof trail, farmer call/lead, calf approach, fence-gap/hold-back and whistle/coin outcomes traced","notes":"The muddy-bend crossing fails without relocating the calf; bank-following, fresh uphill sign, or the farmer’s repeated call lead to an explicitly found yearling before return choices. Asking the farmer to bring a lead lets them recover the calf; the farm whistle follows a spare call-set gift after finding, not a claimed purchase or route-provenance shortcut."},
+    {"position":631,"adventureId":"the-leaning-pine","slug":"the-leaning-pine","title":"The Leaning Pine","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; trunk tension, loose-brush-only saw use, direct pull/shift and retreat, bypass, crew clearance and spare-saw/coin outcomes traced","notes":"The loaded trunk remains explicitly dangerous after brush clearing; the direct pull route ends with a small shift and retreat rather than claiming the trail is clear. The safe bypass leaves the load to trained crew, and the saw is owned-and-usable gated for loose twigs. Gear/coin rewards follow crew arrival and trail-watch service."},
+    {"position":632,"adventureId":"the-spring-run","slug":"the-spring-run","title":"The Spring Run","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0238"],"reviewProvenance":"current-source route review; people-first ridge evacuation, flock/gate, wagon-call/high-mark, unsafe drive/rope attempts, shared partial result and whistle/coin rewards traced","notes":"The shared partial result is reached from paths that do not establish all facts it asserts. flood.movePeople -> ridge.signalWagon/raiseCloth moves only the workers to the ridge; it does not move the flock uphill. flood.reachWagon -> call.showHighMark only signals the far crew to wait and moves neither local workers nor sheep to high ground. Both converge on partial, which says workers stay on the ridge and the flock is gathered above the flood. The sheep.holdGate branch may keep the flock out of the ditch, but does not repair the unsupported claims on the other incoming paths. Loss routes correctly retreat without crossing."},
+    {"position":633,"adventureId":"the-ridge-listener","slug":"the-ridge-listener","title":"The Ridge Listener","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; known ridge/whistle reply, usable-glasses visual confirmation, gully echo/retreat, repeat-call, wait, worker location/rescue and whistle/coin outcomes traced","notes":"The initial bell is not treated as a bearing. A reply narrows the sound to the west; the follow-up call keeps the group together before the worker is found, while the glasses route directly sees the worker by the marker. The gully route explicitly recognizes echo uncertainty and returns to the marked road; waiting lets the worker reach the west markers. Stretcher/support and reward choices follow finding the injured worker."},
+    {"position":634,"adventureId":"the-water-at-the-high-bench","slug":"the-water-at-the-high-bench","title":"The Water at the High Bench","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; seep source, upper-channel protection, small boiled supply, higher-slope search, known-creek return, small-camp fallback and pail/coin outcomes traced","notes":"Boiling is described as a limited quantity, not a sustainable source. Source inspection, ration/search and small-camp routes reach the safe result only with an explicit channel-protection action; the alternate creek return does not claim the seep is safe. The pail reward is tied to identifying and protecting the source and is explicitly not certification of water quality."},
+    {"position":635,"adventureId":"the-knife-in-the-grass","slug":"the-knife-in-the-grass","title":"The Knife in the Grass","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; withdrawal, wire/anchor inspection, report, threat negotiation, combat win/loss, retreat, landowner removal and fee/Knowledge outcomes traced","notes":"The unmarked snare and fresh peg are reportable evidence but are not used to identify its setter before the person appears. Withdrawal avoids confrontation; fighting has distinct injury/escape results. Reporting payment and Knowledge follow the explicit report choice, while the post-fight mark/report choice receives the fee. The loss ending does not award the report fee."},
+    {"position":636,"adventureId":"the-blue-shadow-at-the-creek","slug":"the-blue-shadow-at-the-creek","title":"The Blue Shadow at the Creek","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; fresh-track inspection, upstream relocation, open-bank guide check, usable-pail and watch variants, wait, force-drink spook, known-source retreat and glove reward traced","notes":"Tracks establish recent animal use, not current presence; the guide checks the open bank before the mule drinks. Forcing the willow-bank drink causes a separate spook ending without claiming water or the glove reward. The open bend and known spring remain alternatives; the pail is usable-gated and compensation follows the safe open-bank outcome."},
+    {"position":637,"adventureId":"the-rope-on-the-high-shelf","slug":"the-rope-on-the-high-shelf","title":"The Rope on the High Shelf","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; loose-face climb/retreat, stable-ridge inspection, sound-tree anchor and adverse line angle, second guide line, defer, case retrieval and rope/coin reward outcomes traced","notes":"The loose climb retreats with the case still on the shelf. Ridge inspection and anchor review distinguish a reachable line from an angle that would drag the case across loose stone; a second guide line is required on that branch, while the ridge approach has its own lower-line choice. Recovery text confirms the case and does not claim a person entered the slide; deferral and compensation remain distinct."},
+    {"position":638,"adventureId":"the-night-bird-turn","slug":"the-night-bird-turn","title":"The Night Bird’s Turn","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0239"],"reviewProvenance":"current-source route review; east-road, whistle reply, wrong-direction moor cut, reorientation/mark, home reunion and whistle/coin outcomes traced; engine requirement semantics and Gear condition behavior inspected","notes":"call.answerCall is labeled as physically answering with the Trail Whistle but requires only items:['trailWhistle'] and omits usableItems. Engine requirement semantics treat items as inventory ownership; BROKEN Gear is rejected only when usableItems is required. A carried BROKEN whistle therefore still exposes the action that establishes the human reply and reunion route. Other branches correctly preserve the owl’s uncertain direction and retreat from the hidden cut."},
+    {"position":639,"adventureId":"the-storm-cut-camp","slug":"the-storm-cut-camp","title":"The Storm-Cut Camp","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; tilted bridge inspection/crossing failure, bootprint ambiguity, flood-line knowledge, usable-spade diversion, ridge/cache recovery, worker identification and fee/refusal outcomes traced","notes":"The tilted bridge route retreats without crossing; wet prints do not prove the worker reached the cache, and the return-to-camp branch asks who made them. The ridge path explicitly reaches the cache from above; a record-only route leaves tools for crew retrieval, and cache retrieval alone grants the search fee. The spade is owned-and-usable gated for near-bank outlet clearing."},
+    {"position":640,"adventureId":"the-fox-at-the-egg-box","slug":"the-fox-at-the-egg-box","title":"The Fox at the Egg Box","sourceFile":"src/scenarios/wildernessFieldcraftGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; loose-board/latch inspection, uncertain fox-sized prints, secure-shed route, hedge search, brace/wait repair and whistle/coin rewards traced","notes":"Prints identify only a fox-sized animal and end at the wall; the missing hens may be carried or scattered and no route claims a fox is found. Searching returns no animal and does not set a trap. Remaining birds are secured, delayed repair keeps them inside, and the spare whistle/coin follows bracing the board and securing the flock."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -885,7 +895,9 @@
     {"findingId":"CRA-F0234","position":604,"adventureId":"the-iron-squares","severity":"MEDIUM","defect":"An appearance-based wrong hinge choice reaches the prize-bearing load-test result without performing the test or selecting the fitting hinge.","routeWitness":"hinges.askSmith -> history.chooseNew -> result -> acceptSquare. history states the new hinge’s post hole is oval and the older hinge fits better, yet chooseNew proceeds directly to result; result claims the gate’s normal load revealed the older hinge fits and offers the diagnosis prize. The separate swing.chooseNewHinge route goes to wrong, so the history route skips both the test action and correct diagnosis.","violatedRule":"A result and diagnosis reward must depend on the selected test/action and correct conclusion; a wrong guess cannot inherit the successful test result from a distinct route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0235","position":608,"adventureId":"the-rigging-on-the-roof","severity":"HIGH","defect":"The direct sling-start route can receive the safe-anchor finish and prize without establishing that the cracked nearest ring was avoided in favor of the sound beam.","routeWitness":"rig.tieSling -> lift.lowerAndReset -> finish -> takeMirror/prize. The opening offers tieSling without an anchor-selection or inspection effect. Only anchor.useBeam and weather.secureLine establish use of the sound beam; finish nevertheless says Mina judges the work on a sound anchor and offers the safe-lift prize. No route state records that the cracked ring was avoided on the direct-start path.","violatedRule":"A safety-sensitive completion and reward must be supported by route-established safe equipment/setup; a shared finish cannot assert an inspected-safe anchor when a reachable path never establishes it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
     ,{"findingId":"CRA-F0236","position":617,"adventureId":"the-alder-crossing","severity":"MEDIUM","defect":"The shallow-shelf-only survey route converges on an outcome claiming the mail carrier has a safer route to the road bridge, despite the route establishing only a bank-side shelf and warning against crossing loaded.","routeWitness":"ford.probeNearBank -> read.testRope -> edge.markShallow -> partial. The rope bows downstream and the deeper bend is expressly unsafe; the choice marks only the shallow shelf and warns against crossing loaded. The shared partial ending records the water untested but then states that the carrier gets a safer route to the road bridge. By contrast, the alternate.sendOnFoot route is the branch that clears the upper approach, establishes the firm shelf and sends the carrier on foot while leaving the cart on the road.","violatedRule":"A shared route result cannot assert that an NPC receives a usable crossing/bridge route when the incoming branch established only a limited bank-side survey and explicitly warned against loaded crossing.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0237","position":627,"adventureId":"the-broken-cairn","severity":"MEDIUM","defect":"The shared north-cairn result treats the northern track as public water access on routes that did not verify the pasture boundary or route-book authorization.","routeWitness":"base.setNorth -> north; measure.measure -> markPublic -> north; drover.drover -> markNorth -> north. The socket may have shifted with frost; the Survey Chain locates the old cairn but explicitly cannot show the private-pasture boundary; and the drover says only that the southern gate is sometimes open, not that the northern path is public. Only drover.checkBook -> book.resetPublic establishes the northern public-water route. Nevertheless, north states that the cairn points toward the public path and that the tender records its water-access status on every incoming route.","violatedRule":"Public access and route authorization cannot be asserted from a tentative physical marker or a measurement that explicitly does not resolve the boundary; the shared result must retain whether authoritative route-book verification occurred.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0237","position":627,"adventureId":"the-broken-cairn","severity":"MEDIUM","defect":"The shared north-cairn result treats the northern track as public water access on routes that did not verify the pasture boundary or route-book authorization.","routeWitness":"base.setNorth -> north; measure.measure -> markPublic -> north; drover.drover -> markNorth -> north. The socket may have shifted with frost; the Survey Chain locates the old cairn but explicitly cannot show the private-pasture boundary; and the drover says only that the southern gate is sometimes open, not that the northern path is public. Only drover.checkBook -> book.resetPublic establishes the northern public-water route. Nevertheless, north states that the cairn points toward the public path and that the tender records its water-access status on every incoming route.","violatedRule":"Public access and route authorization cannot be asserted from a tentative physical marker or a measurement that explicitly does not resolve the boundary; the shared result must retain whether authoritative route-book verification occurred.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0238","position":632,"adventureId":"the-spring-run","severity":"HIGH","defect":"The shared flood-safe partial outcome claims that workers are on the ridge and the flock is gathered above flood when several incoming routes establish neither or only one of those outcomes.","routeWitness":"flood.movePeople -> ridge.signalWagon/raiseCloth -> partial establishes only workers on the ridge, not sheep evacuation; flood.reachWagon -> call.showHighMark -> partial only signals the far crew to wait and moves neither local workers nor flock. Both enter partial, whose text says workers stay on the ridge and the flock is gathered above flood. The separate sheep.holdGate -> partial route keeps the flock from pressing across the ditch but does not establish worker evacuation to the ridge.","violatedRule":"A shared outcome may not claim evacuation or safe placement of people/livestock unless every incoming route establishes those route-specific outcomes; a warning/signal is not the same as completed relocation.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0239","position":638,"adventureId":"the-night-bird-turn","severity":"MEDIUM","defect":"A BROKEN Trail Whistle can satisfy a choice that physically uses it to answer the owl call, allowing the route to establish a reply and reunion without functioning signal Gear.","routeWitness":"call.answerCall requires items:['trailWhistle'] but omits usableItems. In engine requirement checks, items means inventory membership; only usableItems rejects BROKEN Gear. Trail Whistle is carryable condition-tracked Gear. The answerCall action states ‘Answer with the Trail Whistle and wait’ and routes to reply, where a faint human whistle from the east becomes the basis for the party reuniting or marking the signal point.","violatedRule":"Possession is not usability; a physically used Gear item that can be BROKEN must be gated on usable condition before its action/result is available.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -1056,7 +1068,8 @@
         "CRA-F0234",
         "CRA-F0235",
         "CRA-F0236",
-        "CRA-F0237"
+        "CRA-F0237",
+        "CRA-F0238"
       ]
     },
     {
@@ -1118,7 +1131,8 @@
         "CRA-F0181",
         "CRA-F0213",
         "CRA-F0214",
-        "CRA-F0220"
+        "CRA-F0220",
+        "CRA-F0239"
       ]
     },
     {
@@ -1178,9 +1192,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 376,
+    "HEALTHY": 384,
     "MINOR CONCERN": 39,
-    "CONFIRMED DEFECT": 215,
+    "CONFIRMED DEFECT": 217,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1654,14 +1668,18 @@
     {
       "positions": "621-630",
       "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0237 records the north-cairn/public-water result reached without boundary or route-book verification and extends CRA-C0001. Eight Adventures are healthy; one has a wording-level minor concern about the already-fractured ice outcome. The wilderness graph, route, Gear, compensation, and prior C3/C12 tests were inspected as supporting evidence; tests were not run because this checkout has no local package binaries. No gameplay source or tests changed."
+    },
+    {
+      "positions": "631-640",
+      "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0238 records the spring-flood partial ending claiming workers/flock are safely placed on routes that establish only a signal or move only one group; it extends CRA-C0001. CRA-F0239 records the broken Trail Whistle passing an ownership-only physical-use gate and extends CRA-C0004. Eight Adventures are healthy; no distinct minor concern or new root-cause cluster was established. Wilderness source routes, Gear requirement semantics, and supporting tests were inspected; tests were not run because this checkout has no local package binaries. No gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 630,
-  "maxReviewedRegistryPosition": 630,
+  "highestContiguousReviewedPosition": 640,
+  "maxReviewedRegistryPosition": 640,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 631,
-  "firstUnreviewedStableId": "the-leaning-pine",
-  "nextStableId": "the-leaning-pine",
+  "firstUnreviewedPosition": 641,
+  "firstUnreviewedStableId": "the-ravine-bedroll",
+  "nextStableId": "the-ravine-bedroll",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -2292,7 +2310,17 @@
     "the-broken-cairn",
     "one-dry-match",
     "rain-on-the-return-path",
-    "the-salt-lick-trail"
+    "the-salt-lick-trail",
+    "the-leaning-pine",
+    "the-spring-run",
+    "the-ridge-listener",
+    "the-water-at-the-high-bench",
+    "the-knife-in-the-grass",
+    "the-blue-shadow-at-the-creek",
+    "the-rope-on-the-high-shelf",
+    "the-night-bird-turn",
+    "the-storm-cut-camp",
+    "the-fox-at-the-egg-box"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2335,9 +2363,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 630,
+    "highestContiguousReviewedPosition": 640,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 630,
+    "maxReviewedLivePosition": 640,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2355,6 +2383,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–591, Competition/Gear challenge Adventures at positions 592–615, and Wilderness Fieldcraft Adventures at positions 616–630 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 631, The Leaning Pine (stable ID the-leaning-pine), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–591, Competition/Gear challenge Adventures at positions 592–615, and Wilderness Fieldcraft Adventures at positions 616–640 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 641, The Ravine Bedroll (stable ID the-ravine-bedroll), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
