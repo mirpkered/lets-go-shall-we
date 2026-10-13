@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 520 current registered Adventures reviewed; 341 of 861 remain.
-Next: position 521, The Courier Relay Box (`the-courier-relay-box`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0209`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 530 current registered Adventures reviewed; 331 of 861 remain.
+Next: position 531, The Glass-Plate Box (`the-glass-plate-box`; `src/scenarios/escortProtectionGenreBatch.ts`); next finding ID `CRA-F0211`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
-The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 510 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
+The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 530 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 296 |
+| HEALTHY | 304 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 186 |
+| CONFIRMED DEFECT | 188 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 510 |
+| Total reviewed current registered Adventures | 530 |
 
-There are 208 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy.
+There are 210 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 520. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–520 were then reviewed in live-registry order. There are no gaps through position 520. The next unreviewed Adventure is position 521, The Courier Relay Box (`the-courier-relay-box`); 341 current registered Adventures remain.
+The highest contiguous reviewed position is now 530. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–530 were then reviewed in live-registry order. There are no gaps through position 530. The next unreviewed Adventure is position 531, The Glass-Plate Box (`the-glass-plate-box`); 331 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -980,7 +980,7 @@ CRA-F0196–CRA-F0205 extend CRA-C0001 (route-specific object, location, authori
 
 ## Audit continuation (live positions 511–520)
 
-Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced shed-note/ownership/loan evidence, wrench custody after retreat and combat, carried-case/handline alternatives at the ford, payroll preparation and false-toll branches, crate bracing and glass-damage alternatives, sealed-statement custody and escort consent, flock/cart/partial-herding outcomes, ferry-line inspection and distinct crossing methods, and trackside lamp/tool/whistle responses. The focused Road Danger, registry, and equipment suites passed 23 tests across three files as supporting evidence; the route-level source traces remain authoritative.
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced shed-note/ownership/loan evidence, wrench custody after retreat and combat, carried-case/handline alternatives at the ford, payroll preparation and false-toll branches, crate bracing and glass-damage alternatives, sealed-statement custody and escort consent, flock/cart/partial-herding outcomes, ferry-line inspection and distinct crossing methods, and trackside lamp/tool/whistle responses. A source-module correction assigns positions 511–520 to `src/scenarios/escortProtectionGenreBatch.ts`. The corresponding Escort/Protection, registry, and equipment suites passed 21 tests across three files; route-level source traces remain authoritative.
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -995,4 +995,23 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced sh
 | 519 | The Ferry for the Midwife | MINOR CONCERN | — the skiff relay shares an ending that says “by cart”; an onward cart transfer is plausible but not stated. |
 | 520 | The Lanterns at Camp Four | HEALTHY | — signal, identify, warn and rush outcomes distinguish the worker, tool-board and injury results. |
 
-CRA-F0206–CRA-F0208 extend CRA-C0001 (route-specific information, object custody, and physical aid lost or assumed at convergence); no new cluster was needed. No gameplay source or tests changed. The ledger is contiguous through position 520; next is position 521, The Courier Relay Box (`the-courier-relay-box`), with 341 remaining and next finding CRA-F0209.
+CRA-F0206–CRA-F0208 extend CRA-C0001 (route-specific information, object custody, and physical aid lost or assumed at convergence); no new cluster was needed. The source-module metadata correction for positions 511–520 is reflected in the ledger; the audit source itself did not change. No gameplay source or tests changed. The ledger is contiguous through position 520; next is position 521, The Courier Relay Box (`the-courier-relay-box`), with 341 remaining and next finding CRA-F0209.
+
+## Audit continuation (live positions 521–530)
+
+Reviewed the next ten stable IDs in live `SCENARIOS` order. Traced courier custody and receipt/signature alternatives; load and hub management; herd, telegraph-pole and safe-delay routes; ledger/deed priority and water exposure; icehouse watch, evacuation and shipment loss; horse-hoof inspection, prior stone removal and farrier arrival; survey crew evacuation versus instrument-case movement; sealed medical-letter custody and privacy; ice-road/hand-carried feed outcomes; and public-verge authority, crew withdrawal, combat and wage outcomes. The focused Escort/Protection, registry, and equipment suites passed 21 tests across three files as supporting evidence; source-route review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 521 | The Courier Relay Box | HEALTHY | — keeper verification, Amos’s signed transfer, refusal, seal confidentiality and combat outcomes preserve custody. |
+| 522 | The Wagon with the Lame Wheel | HEALTHY | — Gear-gated repair, load handling, doctor arrival, split delivery and waiting preserve people and wagon states. |
+| 523 | The Quiet Cattle Drive | HEALTHY | — usable-whistle/rope, herd split, back-fence, pole-lowering and late-animal outcomes are distinct. |
+| 524 | The Archive through the Rain | HEALTHY | — ledger/deed priority, dry-sill custody, protected transfer and rain damage follow the selected route. |
+| 525 | The Night Guard at the Icehouse | HEALTHY | — watch, lamp inspection, evacuation, entry and ice-loss states preserve worker safety and shipment outcomes. |
+| 526 | The Horse for the Farrier | CONFIRMED DEFECT | CRA-F0209 (MEDIUM) — the shared farrier arrival says the farrier removes a stone already eased out by the Traveler. |
+| 527 | The Missing Survey Case | CONFIRMED DEFECT | CRA-F0210 (MEDIUM) — the case reaches the track after a crew-first evacuation route that never moves it. |
+| 528 | The Smallpox Letter | HEALTHY | — sealed-letter privacy, custody receipt, refusal, witnessed handoff and delivery remain consistent. |
+| 529 | The Winter Feed Sled | HEALTHY | — long road, tested ice, partial hand-carried feed and deliberate unsafe crossing yield distinct outcomes. |
+| 530 | The Fence at Crow Road | HEALTHY | — authority inquiry, withdrawal, commissioner verification, combat and injured withdrawal preserve crew/wage outcomes. |
+
+CRA-F0209–CRA-F0210 extend CRA-C0001 (prior action and object-location facts lost at a shared outcome); no new cluster was needed. No gameplay source or tests changed. The ledger is contiguous through position 530; next is position 531, The Glass-Plate Box (`the-glass-plate-box`), with 331 remaining and next finding CRA-F0211.
