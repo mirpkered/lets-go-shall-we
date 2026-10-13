@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–340 reviewed; 521 of 861 remain.
-Next: position 341, The Broken Rocker Box; next finding ID `CRA-F0131`.
+Checkpoint: registry positions 1–360 reviewed; 501 of 861 remain.
+Next: position 361, One Umbrella, Three Walkers; next finding ID `CRA-F0140`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–330 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–360 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
 | HEALTHY | 205 |
-| MINOR CONCERN | 25 |
-| CONFIRMED DEFECT | 120 |
+| MINOR CONCERN | 29 |
+| CONFIRMED DEFECT | 126 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 340 |
+| Total reviewed | 360 |
 
-There are 133 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings; batch 341–350 added three MEDIUM findings.
+There are 139 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings; batch 341–350 added three MEDIUM findings; batch 351–360 added six MEDIUM findings.
 
 ## Positions 21–30
 
@@ -648,4 +648,23 @@ The batch added CRA-F0127 to the established route-state/convergence cluster CRA
 
 The Washed-Out Claim’s cautious action says to take the loose shovel, but it grants only general site insight; no item or route state records whether the shovel was taken, and later endings do not resolve its disposition (CRA-F0131). The Old Dredge offers reading the ledger-box markings from the bank, but neither the success route nor its ending supplies any marking or information result (CRA-F0132). Claim Jumpers at Sundown places visitors at the gate but represents the employer only through a posted map; its generic “give both sides the same account” choice claims bilateral sharing without a route to the absent employer (CRA-F0133). The Cache Under the Stove explicitly resolves coins/items and their effects; Survey Stakes Are Wrong has a card-specific route specialization that keeps observations separate; and Claim at Dry Creek has both groups physically present. The Broken Rocker Box, Rusted Safe, Derelict Stamp Mill, and Man in the Abandoned Camp contain repeated or under-resolved action prompts, but no definite unsupported fact, so they remain minor concerns.
 
-The three confirmed findings join CRA-C0006, the generic Frontier archetype mismatch pattern. Supporting Frontier Discovery, registry, and diversity suites passed 31 tests across three files; route-level source inspection determined the classifications. No gameplay source or tests were changed. Totals are now 205 HEALTHY, 25 MINOR CONCERN, and 120 CONFIRMED DEFECT across 350 reviewed Adventures; 511 remain. All three findings are MEDIUM. The next canonical registry entry is position 351, The Timber Claim, and the next finding ID is CRA-F0134.
+The three confirmed findings join CRA-C0006, the generic Frontier archetype mismatch pattern. Supporting Frontier Discovery, registry, and diversity suites passed 31 tests across three files; route-level source inspection determined the classifications. No gameplay source or tests were changed. At the position-350 checkpoint the totals were 205 HEALTHY, 25 MINOR CONCERN, and 120 CONFIRMED DEFECT; 511 remained. All three findings were MEDIUM.
+
+## Positions 351–360
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 351 | The Timber Claim | CONFIRMED DEFECT | CRA-F0134 (MEDIUM) — a generic bilateral account is offered without any claimant present. |
+| 352 | The Second Claim Marker | CONFIRMED DEFECT | CRA-F0135 (MEDIUM) — the same bilateral-sharing choice has no recipient. |
+| 353 | The Claim That Pays Too Well | CONFIRMED DEFECT | CRA-F0136 (MEDIUM) — no second claimant/recipient is established for the shared account. |
+| 354 | The Camp with Fresh-Cut Wood | CONFIRMED DEFECT | CRA-F0137 (MEDIUM) — the selected note-marker action is not resolved. |
+| 355 | The Shaft Behind the Trees | MINOR CONCERN | — |
+| 356 | The Old Ferry Landing | MINOR CONCERN | — |
+| 357 | The Collapsed Storehouse | MINOR CONCERN | — |
+| 358 | The Trail That Ends at Stone | MINOR CONCERN | — |
+| 359 | The Toast Nobody Ordered | CONFIRMED DEFECT | CRA-F0138 (MEDIUM) — an unvisited couple-preference branch grants Knowledge. |
+| 360 | An Invitation for Someone Else | CONFIRMED DEFECT | CRA-F0139 (MEDIUM) — “supper, then explain” ends before the explanation. |
+
+The Timber Claim, Second Claim Marker, and Claim That Pays Too Well use a generic claim-sharing choice without a present or established second recipient; each is independently witnessed in its scenario-specific setup and routed through `shareRecord` (CRA-F0134–CRA-F0136). Camp with Fresh-Cut Wood offers leaving a note-like marker twice, but neither the route effect nor terminal text records that intervention (CRA-F0137). The Shaft Behind the Trees, Old Ferry Landing, Collapsed Storehouse, and Trail That Ends at Stone retain uncertainty and warned boundaries; their repeated or generic actions lack payoff detail but do not establish a concrete false state, so they remain minor concerns. In The Toast Nobody Ordered, the best-man aside does not reveal the couple’s preference, yet the offer-words route grants that exact Knowledge (CRA-F0138). An Invitation for Someone Else sends “Accept supper, then explain” directly to the meal ending without correcting the host’s mistaken identity (CRA-F0139).
+
+The batch added four findings to CRA-C0006’s generic Frontier action/participant mismatch and one to CRA-C0002’s Knowledge-without-route-proof pattern; the missed explanation remains a standalone route-follow-through defect and is not forced into a cluster. Frontier Discovery, social anthology, registry, and diversity suites were supporting checks; they do not replace route review. No gameplay source or test files were changed. Totals are now 205 HEALTHY, 29 MINOR CONCERN, and 126 CONFIRMED DEFECT across 360 reviewed Adventures; 501 remain. All six new findings are MEDIUM. The next canonical registry entry is position 361, One Umbrella, Three Walkers, and the next finding ID is CRA-F0140.
