@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 470 current registered Adventures reviewed; 391 of 861 remain.
-Next: position 471, The Pilot Hole (`pilot-hole`; `src/scenarios/adventurerSupportGenreBatch.ts`); next finding ID `CRA-F0186`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 480 current registered Adventures reviewed; 381 of 861 remain.
+Next: position 481, A Dry Place for the Powder (`the-wet-powder`; `src/scenarios/adventurerSupportGenreBatch.ts`); next finding ID `CRA-F0189`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
@@ -11,21 +11,21 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 273 |
+| HEALTHY | 280 |
 | MINOR CONCERN | 34 |
-| CONFIRMED DEFECT | 163 |
+| CONFIRMED DEFECT | 166 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 470 |
+| Total reviewed current registered Adventures | 480 |
 
-There are 185 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern.
+There are 188 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001.
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 470 recorded entries, 468 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 480 recorded entries, 478 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 470. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–470 were then reviewed in live-registry order. There are no gaps through position 470. The next unreviewed Adventure is position 471, The Pilot Hole (`pilot-hole`); 391 current registered Adventures remain.
+The highest contiguous reviewed position is now 480. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–480 were then reviewed in live-registry order. There are no gaps through position 480. The next unreviewed Adventure is position 481, A Dry Place for the Powder (`the-wet-powder`); 381 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -901,3 +901,22 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order, spanning 
 | 470 | The Mule Load | HEALTHY | — equipment limits, animal state, second-mule follow-up and reward remain route-consistent. |
 
 CRA-F0184 and CRA-F0185 extend CRA-C0001 (route-specific load/object-condition state lost at a shared result); no new cluster was created. The ledger is contiguous through position 470; next is position 471, The Pilot Hole (`pilot-hole`), with 391 remaining and next finding CRA-F0186.
+
+## Audit continuation (live positions 471–480)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced bridge repair and diagnosis versus completion; flag/whistle/mirror communication; salvage-anchor and owner-paperwork routes; hound scent/person/watering outcomes; disputed tool custody and combat withdrawals; changed-current chest/collar outcomes; rain/roof safety; uncertain ambush evidence and combat; mine-lift test-load versus person safety; and rail-gate diagnosis, repair, sign-off, and Gear handoff. Supporting Adventurer Support, registry, and equipment suites passed 31 tests across three files; route-level source review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 471 | The Pilot Hole | HEALTHY | — |
+| 472 | Flags at the Cut | CONFIRMED DEFECT | CRA-F0186 (MEDIUM) — waiting for the clerk to move to the lookout does not establish that a subsequent flag signal was sent and understood. |
+| 473 | The Unseated Winch | HEALTHY | — |
+| 474 | The Silent Hound | HEALTHY | — recovery, scent report, and watering remain distinct; direct route regression covers the person-found contrast. |
+| 475 | The Iron Claim | HEALTHY | — disputed-tool custody, clerk evidence, and injury withdrawals do not award the disputed auger. |
+| 476 | The Flooded Chest | CONFIRMED DEFECT | CRA-F0187 (MEDIUM) — combat victory reaches a generic result claiming recovered property although no recovery path ran. |
+| 477 | The Roofline | HEALTHY | — unsafe roof work is postponed and each response protects a different route-established priority. |
+| 478 | The Blind Cut | HEALTHY | — suspected ambush remains uncertainty; combat and report routes retain separate outcomes. |
+| 479 | The Old Pulley | HEALTHY | — a test bucket is not treated as proof that the cable can carry a person. |
+| 480 | The Rail Shed at Noon | CONFIRMED DEFECT | CRA-F0188 (MEDIUM) — diagnosis-only counterweight testing can reach an ending claiming the gate was repaired and signed off. |
+
+CRA-F0186–CRA-F0188 extend CRA-C0001 (route-specific communication, recovery, and repair-completion states lost at shared results); no new cluster was created. The ledger is contiguous through position 480; next is position 481, A Dry Place for the Powder (`the-wet-powder`), with 381 remaining and next finding CRA-F0189.

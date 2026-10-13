@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 470,
-  "reviewedCount": 470,
-  "remainingCount": 391,
-  "nextPosition": 471,
-  "nextFindingId": "CRA-F0186",
+  "reviewedThroughPosition": 480,
+  "reviewedCount": 480,
+  "remainingCount": 381,
+  "nextPosition": 481,
+  "nextFindingId": "CRA-F0189",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -482,7 +482,17 @@
     {"position":467,"adventureId":"saw-before-sunrise","slug":"saw-before-sunrise","title":"Saw Before Sunrise","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0185"],"reviewProvenance":"current-source route review; saw/axe/rope preparation, three handler/branch responses, settlement variants and spare-tool/wage/refusal outcomes traced","notes":"On axe or rope preparation routes the Traveler does not use Marr’s saw; even the saw route only says it clears smaller limbs. Yet the acceptGear ending unconditionally says the damaged saw stays with Marr for repair. No route records or narrates a tooth loss, so the Gear ending asserts unestablished damage across incoming routes. Route-specific response variants correctly distinguish the handler and branch outcomes; this finding is confined to the unsupported tool-condition claim.","preReconciliationPosition":467,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":468,"adventureId":"chain-of-sight","slug":"chain-of-sight","title":"A Chain of Sight","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; old/reset stones, culvert rule, road flags, both-line measurement, witness and deferred-survey responses, settlement and transfer traced","notes":"Each response-specific settlement variant limits itself to the line/witness/defer result. The farmer’s hinge evidence supports but does not establish ownership; deferred markers do not declare a boundary. The Survey Chain is explicitly Bell’s spare, not county equipment, and payment/refusal/Knowledge choices are distinguished.","preReconciliationPosition":468,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":469,"adventureId":"three-points-down","slug":"three-points-down","title":"Three Points Down","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; piton/rope/brace preparation, leave/line/withdraw responses, direct recovery settlement, leave-behind follow-up variants, Knowledge and compensation traced","notes":"The line response routes directly to settlement and its selected text says the tin comes up; leave/withdraw route through follow-up and retain the tin-below statement. A targeted regression proves the recovered-versus-left distinction. The action specifies a tested line from sound rock for the short reach; no reward implies the tin was delivered or payment earned.","preReconciliationPosition":469,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":470,"adventureId":"the-mule-load","slug":"the-mule-load","title":"The Mule Load","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; frame/strap/canvas and usable owned saddle, animal pressure, redistribution/unload/reroute, second-animal follow-up and compensation outcomes traced","notes":"The pad is gated on a carried usable Padded Pack Saddle and text states it cannot fix shifting/unsuitable weight. Each response resolves the first mule before the separate follow-up reports a second animal’s harness rub; moving cargo, resting, or dividing weight remain distinct. The offered Pack Frame is Noll’s unused spare, distinct from route equipment, and ownership/reward language is consistent.","preReconciliationPosition":470,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":470,"adventureId":"the-mule-load","slug":"the-mule-load","title":"The Mule Load","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; frame/strap/canvas and usable owned saddle, animal pressure, redistribution/unload/reroute, second-animal follow-up and compensation outcomes traced","notes":"The pad is gated on a carried usable Padded Pack Saddle and text states it cannot fix shifting/unsuitable weight. Each response resolves the first mule before the separate follow-up reports a second animal’s harness rub; moving cargo, resting, or dividing weight remain distinct. The offered Pack Frame is Noll’s unused spare, distinct from route equipment, and ownership/reward language is consistent.","preReconciliationPosition":470,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":471,"adventureId":"pilot-hole","slug":"pilot-hole","title":"The Pilot Hole","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; tool preparation variants, sound-edge pilot hole, old-brace crack, bore/replace/expanded-inspection responses and hand-auger/wage/refusal endings traced","notes":"The auger, hammer and wedge preparation variants accurately limit what each test establishes; the cracked load-bearing beam remains closed and is not proven safe by a pilot hole. Each response either tests new timber, rejects the beam, or expands inspection. The personal spare auger, repair closure and compensation outcomes remain separated from county/crew tools.","preReconciliationPosition":471,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":472,"adventureId":"daylight-flags","slug":"daylight-flags","title":"Flags at the Cut","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0186"],"reviewProvenance":"current-source route review; flags/whistle/mirror first-signal variants, response choices, clerk positions, wagon/rail timing and spare-flag/fee/refusal outcomes traced","notes":"The wait response moves the clerk to the lookout and then claims ‘the next flag signal is understood,’ but the route has no subsequent signal action or receipt state; the selected outcome is waiting, not sending the next message. The other response paths explicitly show the clerk repeating a pattern, a courier confirming the message, or a signal after relocation. Compensation and the rail closure boundary were checked.","preReconciliationPosition":472,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":473,"adventureId":"the-unseated-winch","slug":"the-unseated-winch","title":"The Unseated Winch","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; piling/tackle/clamp/winch setup, barge/deckhand responses, owner salvage-paper follow-up, combat success/loss and separate personal Gear/reward outcomes traced","notes":"The rusty winch is never trusted under hull load; the three responses distinguish hauling clear, pausing at fenders, and clearing the deckhand. Owner paperwork separates hull salvage from barge fittings, while the offered reward is Dey’s personal spare and the owner’s hardware remains aboard. Combat victory enters the owner follow-up; loss outcomes separately preserve line/deckhand consequences without loot claims.","preReconciliationPosition":473,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":474,"adventureId":"the-silent-hound","slug":"the-silent-hound","title":"The Silent Hound","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; glasses/whistle/lead setup, scent-loss discovery, person-found/water/withdraw responses, route-specific settlement, combat-free rewards and follow-up claims traced","notes":"Only follow response finds the survey hand; watering the hound does not claim a person found, and withdrawal reports a lead rather than finding the missing person. Settlement variants preserve each result and the spare-glasses ending explicitly says no missing person is claimed found. Existing direct regression coverage exercises those distinctions.","preReconciliationPosition":474,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":475,"adventureId":"the-iron-claim","slug":"the-iron-claim","title":"The Iron Claim","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; measurement/flags/watching setup, worker hazard, witnessed recovery/mediation, clerk custody, separate fee tool, combat success and loss routes traced","notes":"No route awards or transfers the disputed auger to the Traveler. Each response records location under both owners, closes the cut pending review, or takes the tool to the clerk under signatures. Combat success preserves clerk custody; injury withdrawal records either clerk custody or a moved marker without deciding title. Public-works auger/fee rewards are distinct and provenance-specific.","preReconciliationPosition":475,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":476,"adventureId":"the-flooded-chest","slug":"the-flooded-chest","title":"The Flooded Chest","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0187"],"reviewProvenance":"current-source route review; rod/pail/rope preparation, wait/collar-only/family-choice responses, combat win/loss, crossing closure and pail/coin/refusal outcomes traced","notes":"The direct response variants correctly keep the chest in place on wait/collar-only routes. But standGround -> combat win -> afterFight -> settlement has no response flag and therefore uses the base settlement text ‘The family keeps its recovered property,’ although winText says the chest remains with its owners and no chest or collar was recovered. Loss narration likewise makes no recovery claim.","preReconciliationPosition":476,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":477,"adventureId":"the-roofline","slug":"the-roofline","title":"The Roofline","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; ladder rope/slate cloak/frame allocation, rain onset, descend/ground cover/household-protection responses, postponed roof work and personal-frame/fee/refusal outcomes traced","notes":"The rope, cloak and frame variants describe their tradeoffs without implying roof completion. Each response keeps Bell off the unsafe wet pitch and protects either worker, leak or household goods; endings preserve that work is postponed and transfer Bell’s personal spare frame rather than household/roof kit.","preReconciliationPosition":477,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":478,"adventureId":"the-blind-cut","slug":"the-blind-cut","title":"The Blind Cut","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; uncertain ambush evidence, glasses/chain/flag preparation, warn/call/withdraw responses, combat victory/loss and station fee/flag transfer traced","notes":"The suspected trail is never treated as proof of an ambush. The three responses distinguish upper-ledge inspection, men leaving without a fight, and withdrawal/reporting. Combat victory states robbers withdraw and the toll clerk takes a description; injury loss preserves the wagon escape and robbers’ escape. The spare flag set is a separate station kit and no route promises a fight outcome without the combat path.","preReconciliationPosition":478,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":479,"adventureId":"the-old-pulley","slug":"the-old-pulley","title":"The Old Pulley","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; test-load, clamp, platform-edge probe, cable sound, stop/reach/brace responses and owner responsibility/Gear/fee/refusal outcomes traced","notes":"The light test bucket is explicitly not proof that a person can ride the uninspected cable; the clamp is not a brake. Reaching/drawing the case from solid ground avoids claiming the lift was used, and stopping leaves the case behind pending a new cable. The personal spare clamp and owner’s replacement responsibility are separate.","preReconciliationPosition":479,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":480,"adventureId":"the-rail-shed","slug":"the-rail-shed","title":"The Rail Shed at Noon","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0188"],"reviewProvenance":"current-source route review; hinge/post/pry tests, pin/pulley evidence, repair/defer choices, settlement variants, tool/wage/refusal rewards traced","notes":"The response_test branch only unhooks the gate and tests the counterweight, confirming it moves freely and that the pulley pin is at fault; it does not replace the pin or repair the gate. Yet accepting the Pocket Toolkit routes to an ending saying the foreman signed off the repaired gate. The open and defer responses explicitly replace/repair or obtain measured repair approval; this is isolated to diagnosis-only test plus Gear handoff.","preReconciliationPosition":480,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -669,7 +679,10 @@
     {"findingId":"CRA-F0182","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"A no-rope/no-chalk route can reach the deep chamber, whose text unconditionally claims the return rope remains taut.","routeWitness":"whiteCaveMouth.askForChalk -> whiteChalkReady.saveChalkForLater -> whiteFirstRoom.followDraft -> whiteDraftRoom.downDraft -> whiteMechanism.followMapped -> whitePackRoom.inspectSeal -> whiteSeal.openSeal -> whiteDeep; no whiteLineSet or whiteChalkSet is established, but whiteDeep says the rope remains taut behind the Traveler.","violatedRule":"A route-specific safety resource cannot be asserted unless that route established it; absent proof must not be filled in from another path.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0183","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"Inspecting the seal is narrated as pack recovery, and the tracing exit later claims delivery/payment although no recovery/return choice occurred.","routeWitness":"whitePackRoom.inspectSeal -> whiteSeal; inspectSeal has no recovery effect, but whiteSeal says the pack is already recovered. whiteSeal.openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives the recovered pack and pays four coins, with no takePack or retreatPack action/effect on that route.","violatedRule":"Object recovery, delivery, and compensation must follow route-established actions, not inspection-only convergence.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0184","position":463,"adventureId":"the-wheel-before-dawn","severity":"MEDIUM","defect":"A shared repair scene says the freight load was lightened on routes that never unload or shift it before replacing the washer.","routeWitness":"hub.askDriverForTime -> schedule.chooseSafeDelay -> inspection (only wheel_delay_accepted is set); and hub.checkPinWithWrench -> pin.coolAndInspect -> inspection (only wheel_waited is set). Neither route passes through load or sets wheel_load_moved/wheel_light_load, but inspection asserts ‘With the load lightened, the washer can be replaced and the pin seated.’ The separate moveFreight/leaveLightCrates branches do establish lightening.","violatedRule":"A consequential load state may be claimed only when the selected route establishes the action; inspection or elapsed delay is not proof of unloading.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0185","position":467,"adventureId":"saw-before-sunrise","severity":"MEDIUM","defect":"Accepting the spare-saw reward unconditionally says Marr’s damaged saw is left for repair although the route does not establish damage to that saw.","routeWitness":"preparation.kit_axe or preparation.kit_rope -> complication.response_* -> settlement.acceptGear -> gear; neither kit route uses Marr’s saw, while gearSource says ‘the damaged one stays with her for repair.’ Even kit_saw only records that it cleared smaller limbs; no route records or narrates a tooth loss. The settlement base text about a lost tooth is replaced by response-specific textVariants.","violatedRule":"An ending may not assert an object’s changed condition unless the route establishes the damage or the player performed the damaging action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0185","position":467,"adventureId":"saw-before-sunrise","severity":"MEDIUM","defect":"Accepting the spare-saw reward unconditionally says Marr’s damaged saw is left for repair although the route does not establish damage to that saw.","routeWitness":"preparation.kit_axe or preparation.kit_rope -> complication.response_* -> settlement.acceptGear -> gear; neither kit route uses Marr’s saw, while gearSource says ‘the damaged one stays with her for repair.’ Even kit_saw only records that it cleared smaller limbs; no route records or narrates a tooth loss. The settlement base text about a lost tooth is replaced by response-specific textVariants.","violatedRule":"An ending may not assert an object’s changed condition unless the route establishes the damage or the player performed the damaging action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0186","position":472,"adventureId":"daylight-flags","severity":"MEDIUM","defect":"Waiting for the clerk to take the lookout position is narrated as though a subsequent flag signal was sent and understood.","routeWitness":"preparation.kit_flags/kit_whistle/kit_mirror -> complication.response_wait -> settlement; response_wait only records support_response_wait and its route text says the clerk moves to the posted position ‘and the next flag signal is understood.’ No next signal choice, send action, or receipt state follows the wait response. Other responses explicitly show a repeated pattern or a courier confirming the message.","violatedRule":"Communication receipt must be established by a sent message and recipient response; waiting for a better position does not prove a later signal was sent or understood.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0187","position":476,"adventureId":"the-flooded-chest","severity":"MEDIUM","defect":"The combat-victory route reaches settlement text claiming the family keeps recovered property despite no recovery occurring.","routeWitness":"turn.standGround -> combat win -> afterFight -> settlement; the combat win text says the thieves leave, the chest remains with its owners, and the crossing is closed. No wait/mark/guide response is selected and neither chest nor collar is recovered, but the settlement base text claims ‘The family keeps its recovered property.’ This base is the combat path because it sets no support_response_* flag; ordinary response paths have route-specific text variants.","violatedRule":"Recovery and possession outcomes must not be asserted unless a route action establishes that the object was recovered.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0188","position":480,"adventureId":"the-rail-shed","severity":"MEDIUM","defect":"A diagnosis-only counterweight test can receive the Gear reward through an ending that claims the gate was repaired and signed off.","routeWitness":"preparation.kit_* -> complication.response_test -> settlement.acceptGear -> gear; response_test only unhooks the gate and tests the counterweight, confirming it moves freely and locating the pulley-pin fault. It never replaces the pin or repairs the gate, but the Pocket Toolkit ending says the foreman signs off the repaired gate. response_open replaces the pin; response_defer obtains a measured repair approval, and those distinct paths do establish remediation.","violatedRule":"A diagnostic result is not a completed repair or approval; endings must preserve diagnosis, intervention, and sign-off as separate states.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -795,7 +808,10 @@
         "CRA-F0182",
         "CRA-F0183",
         "CRA-F0184",
-        "CRA-F0185"
+        "CRA-F0185",
+        "CRA-F0186",
+        "CRA-F0187",
+        "CRA-F0188"
       ]
     },
     {
@@ -902,9 +918,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 273,
+    "HEALTHY": 280,
     "MINOR CONCERN": 34,
-    "CONFIRMED DEFECT": 163,
+    "CONFIRMED DEFECT": 166,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1087,6 +1103,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/gearCorrectiveBatch.test.ts src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "44 tests passed across 4 files; supporting corrective Gear and all-year support-story variants/reward/save paths, 861-entry registry validation, and equipment condition semantics; source-route semantic review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "31 tests passed across 3 files; supporting support-story response/combat/save/reward variants, registry integrity, and equipment condition semantics; current route traces remain authoritative"
     }
   ],
   "reviewBatches": [
@@ -1273,14 +1293,18 @@
     {
       "positions": "461-470",
       "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0184 records the unlightened-load claim at Wheel Before Dawn’s shared repair convergence; CRA-F0185 records the unsupported damaged-saw claim on Saw Before Sunrise’s spare-tool ending; both extend CRA-C0001. The Bridge Crew’s Wedge has one minor route-text concern (no-tool path says tool choice affected the beam). The other seven Adventures are healthy. Corrective-Gear, Adventurer-Support, registry, and equipment suites passed 44 tests across four files as supporting evidence; no gameplay source or test files changed."
+    },
+    {
+      "positions": "471-480",
+      "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0186 records the unsent/unreceived future flag claim on Flags at the Cut; F0187 records unrecovered property claimed as recovered after Flooded Chest combat victory; F0188 records diagnosis-only railway gate testing routed into a repaired/signed-off Gear ending. All three extend CRA-C0001. The other seven Adventures are healthy. Adventurer Support, registry, and equipment suites passed 31 tests across three files as supporting evidence; no gameplay source or test files changed."
     }
   ],
-  "highestContiguousReviewedPosition": 470,
-  "maxReviewedRegistryPosition": 470,
+  "highestContiguousReviewedPosition": 480,
+  "maxReviewedRegistryPosition": 480,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 471,
-  "firstUnreviewedStableId": "pilot-hole",
-  "nextStableId": "pilot-hole",
+  "firstUnreviewedPosition": 481,
+  "firstUnreviewedStableId": "the-wet-powder",
+  "nextStableId": "the-wet-powder",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1751,7 +1775,17 @@
     "saw-before-sunrise",
     "chain-of-sight",
     "three-points-down",
-    "the-mule-load"
+    "the-mule-load",
+    "pilot-hole",
+    "daylight-flags",
+    "the-unseated-winch",
+    "the-silent-hound",
+    "the-iron-claim",
+    "the-flooded-chest",
+    "the-roofline",
+    "the-blind-cut",
+    "the-old-pulley",
+    "the-rail-shed"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1760,9 +1794,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 470,
-    "uniqueCurrentRegisteredAdventuresReviewed": 470,
-    "directStableIdMatches": 468,
+    "recordedEntriesInspected": 480,
+    "uniqueCurrentRegisteredAdventuresReviewed": 480,
+    "directStableIdMatches": 478,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1794,9 +1828,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 470,
+    "highestContiguousReviewedPosition": 480,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 470,
+    "maxReviewedLivePosition": 480,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1814,6 +1848,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, and Adventurer Support Adventures at positions 466–470 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 471, The Pilot Hole (stable ID pilot-hole), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, and Adventurer Support Adventures at positions 466–480 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 481, A Dry Place for the Powder (stable ID the-wet-powder), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
