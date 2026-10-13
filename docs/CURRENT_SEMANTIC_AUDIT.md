@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 560 current registered Adventures reviewed; 301 of 861 remain.
-Next: position 561, The Clock above the Market (`the-clock-above-the-market`; `src/scenarios/tradesApprenticeshipGenreBatch.ts`); next finding ID `CRA-F0218`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 570 current registered Adventures reviewed; 291 of 861 remain.
+Next: position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`; `src/scenarios/salvageRecoveryGenreBatch.ts`); next finding ID `CRA-F0223`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 327 |
+| HEALTHY | 332 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 195 |
+| CONFIRMED DEFECT | 200 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 560 |
+| Total reviewed current registered Adventures | 570 |
 
-There are 217 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy.
+There are 222 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 540. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–540 were then reviewed in live-registry order. There are no gaps through position 540. The next unreviewed Adventure is position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`); 321 current registered Adventures remain.
+The highest contiguous reviewed position is now 570. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–570 were then reviewed in live-registry order. There are no gaps through position 570. The next unreviewed Adventure is position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`); 291 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1074,3 +1074,24 @@ Four current contradictions were recorded. A broken Folding Rule can satisfy the
 | 560 | The Horse that Wore One Strap | CONFIRMED DEFECT | CRA-F0217 (MEDIUM) — teach-only reaches a settlement claiming the collar was refitted and traces balanced. |
 
 CRA-F0214 extends CRA-C0004; CRA-F0215–CRA-F0217 extend CRA-C0001. No new cluster was established. The ledger is contiguous through position 560; next is position 561, The Clock above the Market (`the-clock-above-the-market`), with 301 current registered Adventures remaining and next finding CRA-F0218.
+
+## Audit continuation (live positions 561–570)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced timing and wrong-regulator failure; usable glove/bit gates, fixing-point and shoring variants; chain measurement, stop-block marking, siding closure and empty-car testing; telephone-office diagnosis, explanation-only versus hinge/lock refit and premature replacement; pump joint inspection, usable tools, drain failure, cup reseating/replacement and trough test; ladder/rope safety, lath diagnosis and tie failure; lantern airflow record versus cap/air-hole repair and outdoor test; toolbox ownership/provenance, limited recovery, authorized release and deferral; roof access, owner authorization and distinct intact, bent and apprentice-stock guards; and siding evidence, stabilization/support, limited recovery, defer and combat outcomes.
+
+Five current contradictions were recorded. At the long-measure settlement, marking a stop block or closing the siding is described as though a stop block had been installed and an empty-car test passed. The telephone-office explanation-only route reaches text claiming a hinge/lock refit. The slate ladder-tie choice accepts a BROKEN Travel Rope through an ownership-only item gate. The glasshouse airflow-record route reaches text claiming both lamps were repaired and tested. The siding-spill result asserts return of listed equipment and release of a duplicate rod without route proof of retrieval/return or duplicate authorization. Other examined routes preserved their relevant action, custody, location, safety and outcome distinctions; no distinct minor concerns were established. Focused Trades/Apprenticeship, registry, and equipment suites passed 21 tests across three files as supporting evidence; route-level source tracing remains authoritative. No gameplay source or tests changed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 561 | The Clock above the Market | HEALTHY | — silence, repair, wrong-regulator failure and payment/decline outcomes preserve what was done. |
+| 562 | The Drill at Old Number Seven | HEALTHY | — usable-glove gate, fixing-point diagnosis, shoring and force-failure routes remain distinct. |
+| 563 | The Long Measure at Milepost Nine | CONFIRMED DEFECT | CRA-F0218 (MEDIUM) — marking/closing the siding reaches a result claiming a stop block caught an empty test car. |
+| 564 | The Door at the Telephone Office | CONFIRMED DEFECT | CRA-F0219 (MEDIUM) — explanation-only reaches a shared result claiming an unperformed hinge/lock refit. |
+| 565 | The Pump between Fields | HEALTHY | — usable-tool gate, both safe cup repairs, trough test and early-drain failure align. |
+| 566 | The Slate on the Schoolhouse | CONFIRMED DEFECT | CRA-F0220 (MEDIUM) — a BROKEN Travel Rope passes the ownership-only ladder-tie gate. |
+| 567 | The Glasshouse Lanterns | CONFIRMED DEFECT | CRA-F0221 (MEDIUM) — airflow recording alone reaches a successful repair/test result. |
+| 568 | The Toolbox at Low Water | HEALTHY | — crew/private ownership, limited recovery, release authorization and deferral are distinguished. |
+| 569 | The Roof Under Ash | HEALTHY | — owner transfer, intact/bent stock, apprentice property, recovery and deferral remain distinct. |
+| 570 | The Siding Spill | CONFIRMED DEFECT | CRA-F0222 (MEDIUM) — the result asserts unproved equipment return and duplicate-rod release. |
+
+CRA-F0218, CRA-F0219, CRA-F0221 and CRA-F0222 extend CRA-C0001; CRA-F0220 extends CRA-C0004. No new cluster was established. The ledger is contiguous through position 570; next is position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`), with 291 current registered Adventures remaining and next finding CRA-F0223.
