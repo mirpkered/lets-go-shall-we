@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–150 reviewed; 711 of 861 remain.
-Next: position 151; next finding ID `CRA-F0038`.
+Checkpoint: registry positions 1–160 reviewed; 701 of 861 remain.
+Next: position 161; next finding ID `CRA-F0038`.
 
 ## Current checkpoint
 
@@ -11,11 +11,11 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 106 |
+| HEALTHY | 116 |
 | MINOR CONCERN | 8 |
 | CONFIRMED DEFECT | 36 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 150 |
+| Total reviewed | 160 |
 
 There are 37 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036 are LOW; CRA-F0027, CRA-F0033, and CRA-F0037 are MEDIUM. Batch 51–60 found no additional confirmed defects.
 
@@ -240,6 +240,23 @@ The Back Door’s `privacy` branch establishes the trusted aunt as a destination
 
 The specialized-trade routes preserve the editor’s authority over publication, distinguish an exposed/covered plate from a finished print, keep family decisions with the sister, and separate the watch’s maker from its owner and repair status. River-commerce outcomes keep counts, cargo identity, boarding decisions, and paid work tied to evidence or the actor with authority; the steamer baggage flow distinguishes verification, owner identification, and deferred checking. The two seasonal routes limit claims to what the traveler or farmer actually does: the boards support only foot/handcart travel, the cloak changes the traveler’s exposure rather than creek conditions, and the light snow remains a manageable inconvenience. No additional confirmed defects were identified.
 
+## Positions 151–160
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 151 | Before the Frost | HEALTHY | — |
+| 152 | New Year’s Eve | HEALTHY | — |
+| 153 | The Traveling Players | HEALTHY | — |
+| 154 | The Miracle Tonic | HEALTHY | — |
+| 155 | Three Rounds | HEALTHY | — |
+| 156 | Dance Until Midnight | HEALTHY | — |
+| 157 | The Speaker | HEALTHY | — |
+| 158 | You Must Be the New Man | HEALTHY | — |
+| 159 | That’s Him | HEALTHY | — |
+| 160 | We Were Expecting Someone Else | HEALTHY | — |
+
+The remaining seasonal stories preserve partial work and choice-specific rewards. The entertainment routes keep performer arrival, audience expectations, medical claims, consent, and the limits of the wind instrument explicit; The Speaker’s second demonstration gives the Traveler a direct explanatory/comparison choice. The first three mistaken-identity stories do not convert an assumption into a job, payment obligation, accusation, or repair; the actual clerk, repairer, or account check is only stated on the corresponding route. No additional confirmed defects were identified.
+
 ## Finding clusters
 
 - **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0037.
@@ -256,3 +273,5 @@ The focused existing suites for The Man in the Ditch, The Burning Loft, and Unde
 The persistent ledger did not exist in this checkout before this run. The carry-forward limitation above is preserved so later batches can resume without pretending that chat-only prior evidence was re-examined or fully recovered. Future batches should append in registry order and retain this qualification unless the missing detail is recoverable from the original audit conversation/artifact.
 
 Batch 141–150 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, and `riverWaterWorkGenreBatch.test.ts`) passed: 24 tests across 3 files. These graph/reachability and related content checks support, but do not replace the route-level source review.
+
+Batch 151–160 supporting suites (`secondWaveBatch.test.ts` and `contentDepth.test.ts`) passed: 15 tests across 2 files. No gameplay source or tests were changed.
