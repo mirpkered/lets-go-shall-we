@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 570 current registered Adventures reviewed; 291 of 861 remain.
-Next: position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`; `src/scenarios/salvageRecoveryGenreBatch.ts`); next finding ID `CRA-F0223`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 580 current registered Adventures reviewed; 281 of 861 remain.
+Next: position 581, The Bell Creek Drift (`the-bell-creek-drift`; source in `src/scenarios/salvageRecoveryGenreBatch.ts`); next finding ID `CRA-F0226`; next available cluster ID `CRA-C0010`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 332 |
+| HEALTHY | 339 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 200 |
+| CONFIRMED DEFECT | 203 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 570 |
+| Total reviewed current registered Adventures | 580 |
 
-There are 222 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy.
+There are 225 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 add CRA-F0223 on default Gear condition, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge abandonment/authorization, with seven healthy Adventures.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 570. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–570 were then reviewed in live-registry order. There are no gaps through position 570. The next unreviewed Adventure is position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`); 291 current registered Adventures remain.
+The highest contiguous reviewed position is now 580. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–580 were then reviewed in live-registry order. There are no gaps through position 580. The next unreviewed Adventure is position 581, The Bell Creek Drift (`the-bell-creek-drift`); 281 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1095,3 +1095,24 @@ Five current contradictions were recorded. At the long-measure settlement, marki
 | 570 | The Siding Spill | CONFIRMED DEFECT | CRA-F0222 (MEDIUM) — the result asserts unproved equipment return and duplicate-rod release. |
 
 CRA-F0218, CRA-F0219, CRA-F0221 and CRA-F0222 extend CRA-C0001; CRA-F0220 extends CRA-C0004. No new cluster was established. The ledger is contiguous through position 570; next is position 571, The Camp That Wasn’t Empty (`the-camp-that-wasnt-empty`), with 291 current registered Adventures remaining and next finding CRA-F0223.
+
+## Audit continuation (live positions 571–580)
+
+Reviewed the next ten stable IDs in live `SCENARIOS` order. Traced camp call/tracks/glasses and the survey hand’s return; barn-list, brace and two competing tool claims; quarry access from the staged upper beam, frayed-line limit, safe notes, and optional combat win/loss; ferry depth/landing/claimant variants and later deckhand authorization; cellar ledger protection, tenant boundary and return; signal mirror board/inventory/maker evidence and serial verification; mule/handler safety, frame lift and sealed medicine parcel; washout wedge/light/ownership routes and the unstable bank limit; bank-side ledger recovery, sealed clasp and worker-copy issue; and milepost county stamp/record/second-mark evidence plus wedge ownership and clearance.
+
+Three current contradictions were recorded. The camp reward releases a rope explicitly described as frayed/written off but omits a condition override; the engine defaults a newly granted item without a recorded condition to NORMAL. The washout’s only recovery step can advance despite all access variants preserving the explicit unstable-bank/no-entry boundary, then claims the serviceable lanterns were returned and offers the damaged lamp. At the milepost, the routes identify the stamped pry tool and/or inspect a date but do not establish abandonment or county clearance for the separate unmarked wedge, while the reward settlement asserts that clearance. The other seven Adventures’ action, safety, ownership, location, deferred, fee, refusal and reward distinctions were consistent on the traced paths. No gameplay test runner was available in this checkout (`node_modules/.bin` is absent); source-route review and direct engine semantics were used, and no tests were modified.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 571 | The Camp That Wasn’t Empty | CONFIRMED DEFECT | CRA-F0223 (MEDIUM) — a written-off frayed Travel Rope is granted with default NORMAL/usable condition. |
+| 572 | The List Behind the Barn Wall | HEALTHY | — old mark/sale history and the separate Gate Hook owner are distinguished; bracing does not authorize entry. |
+| 573 | The Quarry’s Last Lift | HEALTHY | — staged upper-beam access, frayed-line limit, sealed notes, company/foreman ownership and optional combat remain distinct. |
+| 574 | The Ferry Chest Below the Landing | HEALTHY | — contents clue supports but does not transfer the chest; the absent owner authorizes it before return/reward. |
+| 575 | What the Storm Left in the Cellar | HEALTHY | — public ledger recovery is separated from the tenant’s sealed private case. |
+| 576 | The Charred Signal Post | HEALTHY | — inventory loss report is not treated as identity proof; serial verification precedes the spare reward. |
+| 577 | The Pack Frame in the Ravine | HEALTHY | — replacement is gated to the rope-lift and limited-recovery route; medicine remains separate. |
+| 578 | The Lantern Crate in the Washout | CONFIRMED DEFECT | CRA-F0224 (MEDIUM) — the outcome claims recovered/returned lamps despite the route’s explicit unsafe-bank boundary. |
+| 579 | The Ledger at the Weir | HEALTHY | — sealed recovery, worker-copy request and duplicate-tool wage remain distinct. |
+| 580 | Iron at Milepost Nine | CONFIRMED DEFECT | CRA-F0225 (MEDIUM) — the reward asserts county clearance/abandonment for an unmarked wedge not established by any route. |
+
+CRA-F0223 establishes CRA-C0009 (an explicitly damaged/frayed Gear reward defaulting to healthy condition). CRA-F0224 and CRA-F0225 extend CRA-C0001 for unsupported recovery/location and ownership facts at settlement. The ledger is contiguous through position 580; next is position 581, The Bell Creek Drift (`the-bell-creek-drift`), with 281 current registered Adventures remaining and next finding CRA-F0226.

@@ -4,12 +4,12 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 570,
-  "reviewedCount": 570,
-  "remainingCount": 291,
-  "nextPosition": 571,
-  "nextFindingId": "CRA-F0223",
-  "nextClusterId": "CRA-C0009",
+  "reviewedThroughPosition": 580,
+  "reviewedCount": 580,
+  "remainingCount": 281,
+  "nextPosition": 581,
+  "nextFindingId": "CRA-F0226",
+  "nextClusterId": "CRA-C0010",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
   "adventures": [
@@ -584,7 +584,17 @@
     {"position":567,"adventureId":"the-glasshouse-lanterns","slug":"the-glasshouse-lanterns","title":"The Glasshouse Lanterns","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0221"],"reviewProvenance":"current-source route review; draft inspection, usable-glove access, cap/air-hole repair, record-only choice, warm-pane failure and shares traced","notes":"The record choice records the airflow pattern and grants the lesson but performs no cap turn, air-hole cleaning, or outdoor test. It reaches shared settlement text claiming both lamps burn steadily in open air. The explicit test choice is the route that performs the repair/test; replacing warm glass reaches a separate break-and-cool result."},
     {"position":568,"adventureId":"the-silted-toolbox","slug":"the-silted-toolbox","title":"The Toolbox at Low Water","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; rope/rod/foreman access, ownership evidence, limited recovery/defer, compensation alternatives and provenance traced","notes":"Rope and sounding rod require usability. The foreman or inventory evidence identifies crew property separately from the private chest; limited-recovery wording expressly leaves unauthorized goods, and the bridge crew signs release of its duplicate kit after its numbered kit is accounted for. Fee, accepted kit, refusal and deferral are distinct."},
     {"position":569,"adventureId":"the-roof-under-ash","slug":"the-roof-under-ash","title":"The Roof Under Ash","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; glove boundary, owner line, hook reach, ownership trace, limited recovery, compensation and deferral traced","notes":"The usable glove route handles only cooler near-side fittings; owner authorization excludes apprentice stock, and the hook route stops the roll at the brick sill. The owner explicitly transfers an intact Lantern Guard from closed stock, distinct from the bent guard/scrap and the apprentice’s roll; recovery fee/refusal/defer are separate."},
-    {"position":570,"adventureId":"the-siding-spill","slug":"the-siding-spill","title":"The Siding Spill","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0222"],"reviewProvenance":"current-source route review; waybill, usable-wrench stabilization, worker support, limited recovery/defer, combat/resume and compensation traced","notes":"The usable wrench route explicitly leaves the marked case below the bank. The decision/transfer result nevertheless claims the listed equipment has been returned and a separate unlisted rod is released as the county surveyor’s duplicate, while no route after that evidence recovers/returns the marked equipment or establishes the duplicate’s release. Limited recovery and owner-trace variants do not supply that missing transfer witness."}
+    {"position":570,"adventureId":"the-siding-spill","slug":"the-siding-spill","title":"The Siding Spill","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0222"],"reviewProvenance":"current-source route review; waybill, usable-wrench stabilization, worker support, limited recovery/defer, combat/resume and compensation traced","notes":"The usable wrench route explicitly leaves the marked case below the bank. The decision/transfer result nevertheless claims the listed equipment has been returned and a separate unlisted rod is released as the county surveyor’s duplicate, while no route after that evidence recovers/returns the marked equipment or establishes the duplicate’s release. Limited recovery and owner-trace variants do not supply that missing transfer witness."},
+    {"position":571,"adventureId":"the-camp-that-wasnt-empty","slug":"the-camp-that-wasnt-empty","title":"The Camp That Wasn’t Empty","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0223"],"reviewProvenance":"current-source route review; call/tracks/glasses, returning survey hand, ownership/recovery, fee/refusal/reward paths inspected","notes":"The released spare Travel Rope is explicitly described as written off as frayed, but the reward adds it without gainItemConditions. engine.ts itemState/itemCondition default missing item state to NORMAL, so the carried reward is represented as sound and usable rather than frayed. Call, tracks, and glasses routes preserve their distinct observations; defer avoids transfer."},
+    {"position":572,"adventureId":"the-barn-wall-list","slug":"the-barn-wall-list","title":"The List Behind the Barn Wall","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; list comparison, wedge brace, repair-history witness, square/hook ownership, compensation and defer routes traced","notes":"The square’s old mark is separated from its later sale; the Gate Hook is separately verified as the farmer’s spare before release. Wedge bracing explicitly does not make the wall safe to enter. The fee/refusal and deferred claim retain disputed property."},
+    {"position":573,"adventureId":"the-quarry-winch","slug":"the-quarry-winch","title":"The Quarry’s Last Lift","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; staged upper-beam block, rod/foreman evidence, frayed-line limit, safe notes recovery, combat win/loss, fee/reward/defer traced","notes":"The opening explicitly stages the block on a stable upper beam, so the first action needs no carried block-and-tackle. The frayed line prevents moving the block; rod and foreman routes establish the ledge/company-property boundary. The sealed notes are recoverable from a safe shelf, and the combat routes do not loot or resolve ownership; win returns to the decision and loss withdraws without transfer."},
+    {"position":574,"adventureId":"the-ferry-chest","slug":"the-ferry-chest","title":"The Ferry Chest Below the Landing","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; bank-side sounding, rope stabilization, claim detail, owner contact, sealed return, fee/reward/defer traced","notes":"The claimant’s contents detail supports but does not itself transfer the chest; the ferryman contacts the absent deckhand before authorization. The paid route leaves the chest sealed, and the reward route explicitly returns it intact and gifts the deckhand’s spare Farm Whistle after authorization."},
+    {"position":575,"adventureId":"the-storm-cellar","slug":"the-storm-cellar","title":"What the Storm Left in the Cellar","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; ledger cover, hook access, contract boundary, tenant case custody, future retrieval and compensation paths traced","notes":"The canvas/hook routes protect or expose the public ledger while marking the tenant’s recently occupied room and named tin case as private. The landlord’s salvage share is his own sheet after the tenant returns and retrieves her case; the fee route takes only the public ledger and explicitly leaves the case sealed."},
+    {"position":576,"adventureId":"the-charred-signal-post","slug":"the-charred-signal-post","title":"The Charred Signal Post","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; board lift, inventory, maker/repair mark, serial verification, county return and fee paths traced","notes":"The initial county loss record is not treated as identity proof; the serial is verified by the foreman before the spare mirror reward. The found mirror’s county/private marks and the glass worker’s prior sale account are kept distinct; fee returns the found mirror to the crew."},
+    {"position":577,"adventureId":"the-missing-pack-frame","slug":"the-missing-pack-frame","title":"The Pack Frame in the Ravine","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; mule/handler stabilization, rope lift, parcel seal, qualifying recovery gate, fee/refusal/defer traced","notes":"The outfitter replacement is gated on both the rope-lift access flag and limited recovery; the rope route explicitly raises the rented frame while leaving the snagged medicine parcel lower. The other access routes cannot qualify for the replacement. The fee makes no extra recovery claim, and deferral leaves all property with its owner."},
+    {"position":578,"adventureId":"the-lost-lantern-crate","slug":"the-lost-lantern-crate","title":"The Lantern Crate in the Washout","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0224"],"reviewProvenance":"current-source route review; wedge/light/foreman routes, explicit unstable-bank warning, limited recovery, repair/reward/fee/defer traced","notes":"The wedge route says the larger shelf still shifts and must not be entered; the stable-road light route only inspects, and the foreman route marks ownership. Nevertheless, the generic secureRecovery choice advances directly to a decision whose property text says all three serviceable lamps were returned and releases the damaged Roadman’s Lantern, with no stabilization/entry/retrieval step. The damaged-lantern repair/reward and fee/defer paths do not establish safe access to the buried crate."},
+    {"position":579,"adventureId":"the-ledger-in-the-weir","slug":"the-ledger-in-the-weir","title":"The Ledger at the Weir","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; bank-side hook, worker-copy issue, clasp/seal, sealed return, duplicate tool, fee/defer traced","notes":"The hook reaches the book from the stone walk; the worker states that copies of names/sums matter, and the outcome asks the clerk to make those copies while keeping the ledger sealed during recovery. The duplicate hook is a separate miller’s crew reward after ledger return; fee and defer remain alternatives."},
+    {"position":580,"adventureId":"the-iron-at-milepost-nine","slug":"the-iron-at-milepost-nine","title":"Iron at Milepost Nine","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0225"],"reviewProvenance":"current-source route review; current inventory/stamp, old records, second-mark inspection, farmhand account, county pry return and wedge release traced","notes":"The county confirms the stamped pry tool should be returned, but the three route variants do not establish abandonment or signed county clearance for the unmarked Steel Wedge: the stamp identifies only the pry tool, the old-record route authorizes transfer of that pry tool after inspection, and the underside date explicitly does not settle wedge ownership. The shared property settlement nevertheless says the county authorizes the wedge as abandoned and offers it as the reward."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -810,7 +820,10 @@
     {"findingId":"CRA-F0219","position":564,"adventureId":"the-door-at-the-telephone-office","severity":"MEDIUM","defect":"An explanation-only route reaches a settlement claiming the hinge was refitted and the door now closes without lifting.","routeWitness":"lock.lift/tool -> hinge.explain -> settlement. explain only shows the clerk why the lock is not faulty and grants latch-alignment Knowledge; it does not move the hinge plate or test the door. hinge.refit is the only explicit physical repair route.","violatedRule":"A completed physical repair/result cannot be asserted on a branch that only explains or schedules the repair.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0220","position":566,"adventureId":"the-slate-on-the-schoolhouse","severity":"MEDIUM","defect":"A BROKEN Travel Rope can satisfy the ladder-tie choice and establish the ladder as tied to a sound porch post.","routeWitness":"slate.rope -> lath. The choice says to tie the ladder with Travel Rope but requires only items:['travelRope']; engine rejects BROKEN Gear only through usableItems. The rope-tie choice is distinct from clear/hold, and broken rope ownership can still pass the current gate.","violatedRule":"A physical Gear-use choice must require that Gear to be usable, not merely present in inventory.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0221","position":567,"adventureId":"the-glasshouse-lanterns","severity":"MEDIUM","defect":"The airflow-recording route reaches a result claiming both lamps burn steadily even though it performs no cap or draft repair/test.","routeWitness":"glass.chimney/gloves -> draft.record -> settlement. record only logs the airflow pattern and grants Knowledge; it does not turn the cap, clear holes, or test outside. settlement unconditionally says both lamps burn steadily in open air. draft.test is the explicit repair-and-test route.","violatedRule":"A shared outcome may not claim a completed repair or successful test when the selected route records/observes only and performs no corrective action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0222","position":570,"adventureId":"the-siding-spill","severity":"MEDIUM","defect":"The owner/recovery result claims listed equipment returned and releases a duplicate rod after routes that do not establish that return or duplicate release.","routeWitness":"arrival.verifyFirst -> evidence (variant explicitly says the marked case remains below the bank) -> decision.secureRecovery/traceOwnership -> decision outcome. The shared outcome says the listed equipment is returned and the surveyor releases the unlisted rod as a duplicate; neither verifyFirst nor the recovery choices establish retrieval/return of the marked case or confirmation of the rod’s duplicate status. Defer is a separate no-transfer terminal and combat win only returns to the same decision.","violatedRule":"Object recovery, return, and ownership release require route-established custody and authorization before a shared settlement claims them.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0222","position":570,"adventureId":"the-siding-spill","severity":"MEDIUM","defect":"The owner/recovery result claims listed equipment returned and releases a duplicate rod after routes that do not establish that return or duplicate release.","routeWitness":"arrival.verifyFirst -> evidence (variant explicitly says the marked case remains below the bank) -> decision.secureRecovery/traceOwnership -> decision outcome. The shared outcome says the listed equipment is returned and the surveyor releases the unlisted rod as a duplicate; neither verifyFirst nor the recovery choices establish retrieval/return of the marked case or confirmation of the rod’s duplicate status. Defer is a separate no-transfer terminal and combat win only returns to the same decision.","violatedRule":"Object recovery, return, and ownership release require route-established custody and authorization before a shared settlement claims them.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0223","position":571,"adventureId":"the-camp-that-wasnt-empty","severity":"MEDIUM","defect":"A Travel Rope explicitly described as frayed and written off is granted with no damaged/broken condition, so the engine represents it as NORMAL and usable.","routeWitness":"decision.acceptReleasedGear -> gear reward. The story’s property/gearSource says the surveyor releases a spare written off as frayed, but the choice applies gainItems and provenance without gainItemConditions; engine.ts itemState/itemCondition default absent condition records to NORMAL. The Gear reward therefore contradicts the represented condition of the rope.","violatedRule":"A granted item’s mechanical condition must preserve an explicitly established damaged or unusable state; provenance alone cannot encode item condition.","clusterId":"CRA-C0009","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0224","position":578,"adventureId":"the-lost-lantern-crate","severity":"MEDIUM","defect":"The generic limited-recovery path reaches a result claiming the usable lamps were returned and damaged lamp recovered/released despite the route explicitly forbidding entry to the unstable bank.","routeWitness":"arrival.carefulAccess (wedge) -> evidence.secureRecovery -> decision/acceptReleasedGear. The access variant says the larger shelf still shifts and must not be entered; the light route only counts/reveals contents from stable road, and the foreman route marks ownership. No stabilization, entry, or retrieval scene occurs before the shared property text says three serviceable lamps returned and offers the damaged Roadman’s Lantern.","violatedRule":"A location expressly established as unsafe to enter cannot yield recovered objects or a completed return without a route establishing safe access and retrieval.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0225","position":580,"adventureId":"the-iron-at-milepost-nine","severity":"MEDIUM","defect":"The shared reward claims county authorization and abandonment of the unmarked Steel Wedge although no incoming route establishes its ownership clearance.","routeWitness":"arrival.compareStamp/oldRecords/inspectBase -> evidence.traceOwnership or secureRecovery -> decision.acceptReleasedGear. The stamp and county confirmation concern return of the marked pry tool; old records authorize transfer of that pry tool only; inspecting the post date expressly does not settle wedge ownership. The farmhand says a prior crew left it, but no selected choice establishes signed county clearance, yet the property text says the county authorized it as abandoned.","violatedRule":"Ownership transfer and abandonment require route-established evidence/authorization for the specific object being released.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -969,7 +982,9 @@
         "CRA-F0218",
         "CRA-F0219",
         "CRA-F0221",
-        "CRA-F0222"
+        "CRA-F0222",
+        "CRA-F0224",
+        "CRA-F0225"
       ]
     },
     {
@@ -1082,12 +1097,18 @@
       "name": "Equipment-specific action without availability gate",
       "description": "A route offers a concrete action whose authored method names carryable Gear without checking that the Traveler possesses and can use that Gear, and without establishing another in-scene source.",
       "findingIds": ["CRA-F0194"]
+    },
+    {
+      "clusterId": "CRA-C0009",
+      "name": "Explicitly damaged Gear granted with default healthy condition",
+      "description": "A reward’s provenance or source text establishes that the item is frayed, damaged, or otherwise unusable, but its gain effect omits a condition override, so the engine defaults the newly acquired Gear to NORMAL.",
+      "findingIds": ["CRA-F0223"]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 332,
+    "HEALTHY": 339,
     "MINOR CONCERN": 38,
-    "CONFIRMED DEFECT": 200,
+    "CONFIRMED DEFECT": 203,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1537,14 +1558,18 @@
     {
       "positions": "561-570",
       "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0218–CRA-F0219 record an uninstalled stop-block/test claim and an explanation-only door route reaching an unperformed hinge repair; CRA-F0221 and CRA-F0222 record a record-only lamp route reaching a successful test result and a salvage route asserting unproved return/release. These findings extend CRA-C0001. CRA-F0220 records a BROKEN Travel Rope passing an ownership-only ladder-tie gate and extends CRA-C0004. Five Adventures are healthy; no new cluster was established. Trades/Apprenticeship, registry, and equipment suites passed 21 tests across three files as supporting evidence; source-route review remains authoritative. No gameplay source or tests changed."
+    },
+    {
+      "positions": "571-580",
+      "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0223 identifies a frayed Travel Rope reward defaulting to NORMAL condition and establishes CRA-C0009. CRA-F0224 records recovery/reward claims from the washout crate despite the route’s explicit unsafe-bank boundary; CRA-F0225 records unproved abandonment/clearance for the milepost wedge. CRA-F0224–CRA-F0225 extend CRA-C0001. Seven Adventures are healthy; no distinct minor concern was found. Route-level source review is authoritative; focused test execution was unavailable because this checkout has no local package binaries installed. No gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 570,
-  "maxReviewedRegistryPosition": 570,
+  "highestContiguousReviewedPosition": 580,
+  "maxReviewedRegistryPosition": 580,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 571,
-  "firstUnreviewedStableId": "the-camp-that-wasnt-empty",
-  "nextStableId": "the-camp-that-wasnt-empty",
+  "firstUnreviewedPosition": 581,
+  "firstUnreviewedStableId": "the-bell-creek-drift",
+  "nextStableId": "the-bell-creek-drift",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -2115,7 +2140,17 @@
     "the-glasshouse-lanterns",
     "the-silted-toolbox",
     "the-roof-under-ash",
-    "the-siding-spill"
+    "the-siding-spill",
+    "the-camp-that-wasnt-empty",
+    "the-barn-wall-list",
+    "the-quarry-winch",
+    "the-ferry-chest",
+    "the-storm-cellar",
+    "the-charred-signal-post",
+    "the-missing-pack-frame",
+    "the-lost-lantern-crate",
+    "the-ledger-in-the-weir",
+    "the-iron-at-milepost-nine"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2158,9 +2193,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 570,
+    "highestContiguousReviewedPosition": 580,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 570,
+    "maxReviewedLivePosition": 580,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2178,6 +2213,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, and Trades/Apprenticeship Adventures at positions 544–570 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 571, The Camp That Wasn’t Empty (stable ID the-camp-that-wasnt-empty), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, and Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–580 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 581, The Bell Creek Drift (stable ID the-bell-creek-drift), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
