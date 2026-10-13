@@ -11,8 +11,8 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 116 |
-| MINOR CONCERN | 8 |
+| HEALTHY | 115 |
+| MINOR CONCERN | 9 |
 | CONFIRMED DEFECT | 36 |
 | NEEDS MANUAL REVIEW | 0 |
 | Total reviewed | 160 |
@@ -244,7 +244,7 @@ The specialized-trade routes preserve the editor’s authority over publication,
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 151 | Before the Frost | HEALTHY | — |
+| 151 | Before the Frost | MINOR CONCERN | Work-to-dusk outcome tracks only 20 minutes and remains pre-dusk; exact timing is unspecified. |
 | 152 | New Year’s Eve | HEALTHY | — |
 | 153 | The Traveling Players | HEALTHY | — |
 | 154 | The Miracle Tonic | HEALTHY | — |
@@ -255,7 +255,7 @@ The specialized-trade routes preserve the editor’s authority over publication,
 | 159 | That’s Him | HEALTHY | — |
 | 160 | We Were Expecting Someone Else | HEALTHY | — |
 
-The remaining seasonal stories preserve partial work and choice-specific rewards. The entertainment routes keep performer arrival, audience expectations, medical claims, consent, and the limits of the wind instrument explicit; The Speaker’s second demonstration gives the Traveler a direct explanatory/comparison choice. The first three mistaken-identity stories do not convert an assumption into a job, payment obligation, accusation, or repair; the actual clerk, repairer, or account check is only stated on the corresponding route. No additional confirmed defects were identified.
+The remaining seasonal stories preserve partial work and choice-specific rewards. Before the Frost has a minor timing-model concern: its gather action advances 20 minutes, but the full-harvest result says the work continues until light fades; the phase remains pre-dusk, and the source does not establish an exact sunset interval. The entertainment routes keep performer arrival, audience expectations, medical claims, consent, and the limits of the wind instrument explicit; The Speaker’s second demonstration gives the Traveler a direct explanatory/comparison choice. The first three mistaken-identity stories do not convert an assumption into a job, payment obligation, accusation, or repair; the actual clerk, repairer, or account check is only stated on the corresponding route. No additional confirmed defects were identified.
 
 ## Finding clusters
 
@@ -274,4 +274,4 @@ The persistent ledger did not exist in this checkout before this run. The carry-
 
 Batch 141–150 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, and `riverWaterWorkGenreBatch.test.ts`) passed: 24 tests across 3 files. These graph/reachability and related content checks support, but do not replace the route-level source review.
 
-Batch 151–160 supporting suites (`secondWaveBatch.test.ts` and `contentDepth.test.ts`) passed: 15 tests across 2 files. No gameplay source or tests were changed.
+Batch 151–160 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, `compensationAccountingC2.test.ts`, and `qaContentCorrections.test.ts`) passed: 36 tests across 4 files. No gameplay source or tests were changed.
