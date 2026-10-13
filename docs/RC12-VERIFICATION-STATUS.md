@@ -108,7 +108,7 @@ The pre-I1 recommendation above is retained as verification history only. The te
 
 **RC12 — CLOSED**, mechanically derived from the finding-level ledger after current-source repairs.
 
-- Starting queue: 10 `OPEN_REPRODUCIBLE` assignments across 10 Adventures; 3 HIGH, 6 MEDIUM, 1 LOW. No ambiguous or unreviewed assignments.
+- Starting queue: 10 `OPEN_REPRODUCIBLE` assignments across 10 Adventures; 2 HIGH, 7 MEDIUM, 1 LOW. No ambiguous or unreviewed assignments.
 - Implementation source commit: `1eca1a7` (`Repair final RC12 route convergence defects`).
 - Disposition: 10 repaired independently in RC12; 0 reassigned; 0 blocked. Attached non-RC12 findings remain with their owning clusters.
 - Final assignment totals: `VERIFIED_HEALTHY_REPAIRED` 142; `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES` 2; `VERIFIED_FALSE_POSITIVE` 0; `VERIFIED_REASSIGNED_NOT_INDEPENDENT_RC12` 0; `OPEN_REPRODUCIBLE` 0; `OPEN_AMBIGUOUS` 0; `UNREVIEWED` 0 (144 total).
