@@ -150,6 +150,22 @@ describe('The Long Way Home', () => {
     expect(state.run?.sceneId).toBe('handOverEnding');
     expect(state.run?.status).toBe('success');
     expect(state.character?.historyFlags).toContain('abandoned_injured_stranger');
+    expect(THE_LONG_WAY_HOME.scenes.handOverEnding.text).toContain('no clinic treatment or warden review happened on this route');
+  });
+
+  it('keeps clinic treatment and prior warden custody truthful when Benn takes the ledger', () => {
+    let state = act(fresh(), 'askAboutJourney');
+    state = act(state, 'takeHerAtHerWord');
+    state = act(state, 'reachStoneShelter');
+    state = act(state, 'signalShepherd');
+    state = act(state, 'bringBothToClinic');
+    expect(state.run?.sceneId).toBe('townCare');
+    state = act(state, 'returnBookToBenn');
+    expect(state.run?.sceneId).toBe('clinicHandoverEnding');
+    const ending = THE_LONG_WAY_HOME.scenes.clinicHandoverEnding.text;
+    expect(ending).toMatch(/doctor is already treating Rowan/i);
+    expect(ending).toMatch(/takes the ledger from the warden/i);
+    expect(ending).toMatch(/what happens there is beyond your route/i);
   });
 
   it('keeps abandonment text within the information the route established', () => {

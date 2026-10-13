@@ -56,9 +56,9 @@ export const UNDER_THE_ICE: Scenario = {
       ],
     },
     ropeMiss: {
-      id: 'ropeMiss', title: 'The Rope Falls Short', tone: 'danger',
-      text: 'You remain on firm ground. The first throw missed, and {{victim}} has lost some strength keeping hold of the ice. The line is still in your hands; you can try again, but every pull and throw takes time.',
-      textVariants: [{ requirements: { minElapsedMinutes: 8 }, text: 'You are safe on shore, but {{victim}} can barely keep their chin above the water. The rope missed again; the next attempt may be the last.' }],
+      id: 'ropeMiss', title: 'The Rope Loses Its Hold', tone: 'danger',
+      text: 'You remain on firm ground. The rope has not brought {{victim}} onto shore; they are still at the hole, and you can try again, though every pull takes time.',
+      textVariants: [{ requirements: { minElapsedMinutes: 8 }, text: 'You are safe on shore, but {{victim}} can barely keep their chin above the water. The rope has not secured them on the bank; the next attempt may be the last.' }],
       choices: [
         { id: 'retryRope', label: 'Throw the rope again from shore', requirements: { items: ['travelRope'] }, timeCost: 1, chance: { probability: 0.64, lateProbability: 0.36, lateAfterMinutes: 8, bonusItems: ['ironRopeClamp', 'freightmansStrap', 'heavyLeatherGloves'], bonusProbability: 0.12, successNext: 'afterExtraction', failureNext: 'ropeMissAgain', successMessage: 'The hook catches near {{victim}}. You keep hold of the line and draw them onto shore.', failureMessage: 'The hook skips away across the wet ice.', successEffects: { setFlags: ['victimExtracted'], historyFlags: ['rescued_person_from_ice'] } } },
         { id: 'crawlAfterRopeMiss', label: 'Crawl toward them despite the cracks', hint: 'The shelf is thinner near the hole; it can break under you.', timeCost: 2, chance: { probability: 0.42, lateProbability: 0.22, lateAfterMinutes: 4, bonusItems: ['heavyLeatherGloves', 'icehouseTongs', 'drainageHook'], bonusProbability: 0.1, penaltySelections: { iceCondition: 'weakShelf' }, penaltyProbability: 0.15, successNext: 'atTheHole', failureNext: 'throughTheIce', successMessage: 'You inch to the hole. The shelf cracks beneath your weight.', failureMessage: 'The ice gives way before you reach {{victim}}.', failureEffects: { health: -2, historyFlags: ['risked_life_on_thin_ice'] } } },

@@ -162,6 +162,34 @@ describe('Dead Man’s Hand', () => {
     expect(state.run?.status).toBe('success');
   });
 
+  it('keeps a failed tackle distinct from the two routes where a shot is fired', () => {
+    let tackled = act(fresh(), 'takeOpenSeat');
+    tackled = act(tackled, 'sitWithoutBet');
+    tackled = act(tackled, 'foldAndWatch');
+    tackled = act(tackled, 'watchMercersThumb');
+    tackled = act(tackled, 'speakPrivatelyToBoone');
+    tackled = act(tackled, 'askBooneToShowMarker');
+    tackled = act(tackled, 'stepBetweenThem', 0.99);
+    tackled = act(tackled, 'knockPistolAside', 0);
+    tackled = act(tackled, 'retrievePistol', 0.99);
+    expect(tackled.run?.sceneId).toBe('tackleAftermath');
+    expect(tackled.run?.health).toBe(8);
+    expect(sceneText(DEAD_MANS_HAND.scenes.tackleAftermath, tackled)).toMatch(/before you reach the pistol.*no shot is fired/i);
+    expect(DEAD_MANS_HAND.scenes.tackleAftermath.choices.some(({ id }) => id === 'secureDroppedPistol')).toBe(false);
+
+    let shot = act(fresh(), 'takeOpenSeat');
+    shot = act(shot, 'sitWithoutBet');
+    shot = act(shot, 'foldAndWatch');
+    shot = act(shot, 'watchMercersThumb');
+    shot = act(shot, 'speakPrivatelyToBoone');
+    shot = act(shot, 'askBooneToShowMarker');
+    shot = act(shot, 'stepBetweenThem', 0.99);
+    shot = act(shot, 'keepHandsVisible', 0.99);
+    expect(shot.run?.sceneId).toBe('gunshotAftermath');
+    expect(shot.run?.health).toBe(6);
+    expect(sceneText(DEAD_MANS_HAND.scenes.gunshotAftermath, shot)).toContain('Boone still has the pistol');
+  });
+
   it('allows death only after the pistol is visibly raised and an explicitly lethal rush fails', () => {
     const state = fresh();
     state.run!.sceneId = 'gunDrawn';

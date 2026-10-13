@@ -223,4 +223,34 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     const threatText = sceneText(secondGunhand.scenes.complication, flagged);
     expect(threatText.match(/Two armed robbers leave the trees/g)).toHaveLength(1);
   });
+
+  it('does not report the tin still below after the line route recovers it', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'three-points-down')!;
+    let recovered = act(start(story), story, 'kit_pitons');
+    recovered = act(recovered, story, 'response_line');
+    expect(recovered.run?.sceneId).toBe('settlement');
+    expect(sceneText(story.scenes.settlement, recovered)).toMatch(/tin comes up/);
+    expect(sceneText(story.scenes.settlement, recovered)).not.toMatch(/tin is still visible|tin remains below/i);
+
+    let left = act(start(story), story, 'kit_pitons');
+    left = act(left, story, 'response_leave');
+    expect(left.run?.sceneId).toBe('followup');
+    left = act(left, story, 'followup_markFissure');
+    expect(sceneText(story.scenes.followup, left)).toContain('The tin is still visible');
+  });
+
+  it('does not condition the hound’s gear handoff on finding a person or watering the dog', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-silent-hound')!;
+    expect(story.scenes.gear.text).toMatch(/no missing person is claimed found/i);
+    expect(story.scenes.gear.text).toMatch(/privately owned spare/i);
+    for (const response of ['follow', 'water', 'withdraw']) {
+      let state = act(start(story), story, 'kit_glasses');
+      state = act(state, story, `response_${response}`);
+      expect(state.run?.sceneId).toBe('settlement');
+      const text = sceneText(story.scenes.settlement, state);
+      if (response === 'follow') expect(text).toContain('You find a lost survey hand');
+      if (response === 'water') expect(text).toContain('The animal drinks');
+      if (response === 'withdraw') expect(text).toContain('instead of forcing the hound across');
+    }
+  });
 });

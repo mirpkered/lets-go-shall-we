@@ -191,7 +191,7 @@ export const THE_LONG_WAY_HOME: Scenario = {
       choices: [
         { id: 'standWithRowan', label: 'Stay as Rowan’s witness', hint: 'You can support her without claiming to know what the ledger proves.', timeCost: 3, effects: { historyFlags: ['escorted_injured_stranger', 'protected_stranger_from_pursuer', 'uncovered_strangers_truth'] }, next: 'rewardOffer' },
         { id: 'letWardenReview', label: 'Leave the decision to the town warden', hint: 'Both accounts and the ledger will be heard; you need not choose a side.', timeCost: 2, effects: { historyFlags: ['escorted_injured_stranger', 'uncovered_strangers_truth'] }, next: 'rewardOffer' },
-        { id: 'returnBookToBenn', label: 'Let Benn take the ledger back to the mill', hint: 'Rowan will be treated, but the book leaves the warden’s hands.', effects: { historyFlags: ['uncovered_strangers_truth'] }, next: 'handOverEnding' },
+        { id: 'returnBookToBenn', label: 'Let Benn take the ledger back to the mill', hint: 'Rowan will be treated, but the book leaves the warden’s hands.', effects: { historyFlags: ['uncovered_strangers_truth'] }, next: 'clinicHandoverEnding' },
         { id: 'leaveFromClinic', label: 'Leave Rowan in the doctor’s care', hint: 'She has medical help; you can end the escort here.', effects: { historyFlags: ['uncovered_strangers_truth'] }, next: 'partialHelpEnding' },
       ],
     },
@@ -236,7 +236,11 @@ export const THE_LONG_WAY_HOME: Scenario = {
     },
     handOverEnding: {
       id: 'handOverEnding', title: 'The Ledger Returned',
-      text: 'Benn takes the ledger back to the mill and says Rowan will see the doctor. The warden records what happened, but cannot force the book to stay in town. Rowan’s account may be true; you have chosen not to test it here.', choices: [], ending: 'success',
+      text: 'Benn takes the ledger back to the mill and says Rowan will see a doctor. You leave before you can verify that promise; no clinic treatment or warden review happened on this route. The mill dispute remains unresolved.', choices: [], ending: 'success',
+    },
+    clinicHandoverEnding: {
+      id: 'clinicHandoverEnding', title: 'The Ledger Leaves the Clinic',
+      text: 'The doctor is already treating Rowan when Benn takes the ledger from the warden. The book returns to the mill before the warden reaches a decision; what happens there is beyond your route.', choices: [], ending: 'success',
     },
     safeArrivalEnding: {
       id: 'safeArrivalEnding', title: 'A Place to Rest',

@@ -185,11 +185,17 @@ export const DEAD_MANS_HAND: Scenario = {
     },
     gunshotAftermath: {
       id: 'gunshotAftermath', title: 'The Room Breaks Apart', tone: 'danger',
-      text: 'The shot hits the floor, and the saloon empties toward the back exit. Your leg is bleeding, but you can still move. Boone is looking at the pistol, not at you. Staying in reach risks another shot.',
+      text: 'A shot cracks through the saloon, and patrons scramble toward the back exit. You are hurt but can still move; Boone still has the pistol. Staying in reach risks another shot.',
       choices: [
         { id: 'crawlToBackExit', label: 'Crawl out through the back door', effects: { historyFlags: ['walked_away_from_saloon_dispute'] }, next: 'walkAwayEnding' },
-        { id: 'secureDroppedPistol', label: 'Use your travel rope to secure the dropped pistol', requirements: { items: ['travelRope'] , usableItems: ['travelRope']}, effects: { historyFlags: ['intervened_in_saloon_dispute', 'prevented_saloon_violence'] }, next: 'violentSurvivalEnding' },
         { id: 'getEveryoneClear', label: 'Keep low and help the others escape', effects: { health: -1, historyFlags: ['prevented_saloon_violence'] }, next: 'partialEnding' },
+      ],
+    },
+    tackleAftermath: {
+      id: 'tackleAftermath', title: 'The Struggle Breaks Apart', tone: 'danger',
+      text: 'Boone tackles you before you reach the pistol. He still has it, and no shot is fired. The room breaks apart around the struggle; you can crawl out before either of you tries again.',
+      choices: [
+        { id: 'crawlOutAfterTackle', label: 'Crawl away through the open doorway', effects: { historyFlags: ['walked_away_from_saloon_dispute'] }, next: 'walkAwayEnding' },
       ],
     },
     weaponDown: {
@@ -198,7 +204,7 @@ export const DEAD_MANS_HAND: Scenario = {
       choices: [
         { id: 'tieBooneWithRope', label: 'Use your rope to keep the pistol away', requirements: { items: ['travelRope'] }, effects: { historyFlags: ['prevented_saloon_violence', 'intervened_in_saloon_dispute'] }, next: 'violentSurvivalEnding' },
         { id: 'letBooneGo', label: 'Let Boone back away from the table', effects: { historyFlags: ['prevented_saloon_violence'] }, next: 'violentSurvivalEnding' },
-        { id: 'retrievePistol', label: 'Move the pistol out of reach', timeCost: 1, chance: { probability: 0.76, successNext: 'violentSurvivalEnding', failureNext: 'gunshotAftermath', successMessage: 'You kick the pistol through the open doorway.', failureMessage: 'Boone tackles you before you can reach the gun.' } },
+        { id: 'retrievePistol', label: 'Move the pistol out of reach', timeCost: 1, chance: { probability: 0.76, successNext: 'violentSurvivalEnding', failureNext: 'tackleAftermath', successMessage: 'You kick the pistol through the open doorway.', failureMessage: 'Boone tackles you before you can reach the gun.' } },
       ],
     },
     violentSurvivalEnding: {

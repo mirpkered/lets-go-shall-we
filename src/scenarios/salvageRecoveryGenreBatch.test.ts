@@ -192,4 +192,25 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       }
     }
   });
+
+  it('keeps the limited toolbox recovery from claiming the private chest was returned', () => {
+    const story = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-silted-toolbox')!;
+    let state = beginFresh(story, initial(story, 'collapsibleSoundingRod'));
+    state = act(state, story, 'secureRecovery');
+    state = act(state, story, 'takeFee');
+    expect(state.run?.sceneId).toBe('paid');
+    expect(state.run?.status).toBe('success');
+    expect(sceneText(story.scenes.paid, state)).toMatch(/private carpenter’s chest is not part of this handover/i);
+    expect(sceneText(story.scenes.paid, state)).not.toMatch(/return the carpenter’s marked chest/i);
+  });
+
+  it('keeps the mineshaft fee route from claiming the unidentified lower light was recovered', () => {
+    const story = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-mineshaft-lamp')!;
+    let state = beginFresh(story, initial(story, 'roadmansLantern'));
+    state = act(state, story, 'secureRecovery');
+    state = act(state, story, 'takeFee');
+    expect(state.run?.sceneId).toBe('paid');
+    expect(sceneText(story.scenes.paid, state)).toMatch(/lower light remains unidentified and untouched/i);
+    expect(sceneText(story.scenes.paid, state)).not.toMatch(/leave both lamps/i);
+  });
 });

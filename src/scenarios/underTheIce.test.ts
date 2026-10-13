@@ -115,6 +115,21 @@ describe('Under the Ice', () => {
     expect(state.run?.sceneId).toBe('bothSurvive');
   });
 
+  it('uses the same truthful rope fallback after an initial miss and a failed haul', () => {
+    let hauled = act(fresh('travelRope'), 'throwTravelRope', 0);
+    expect(hauled.run?.sceneId).toBe('ropeTaut');
+    hauled = act(hauled, 'haulFromShore', 0.99);
+    expect(hauled.run?.sceneId).toBe('ropeMiss');
+    expect(hauled.run?.flags).toContain('ropeFailed');
+    const hauledText = sceneText(UNDER_THE_ICE.scenes.ropeMiss, hauled);
+    expect(hauledText).toContain('has not brought');
+    expect(hauledText).not.toMatch(/first throw missed|missed again/i);
+
+    const initialMiss = act(fresh('travelRope'), 'throwTravelRope', 0.99);
+    expect(initialMiss.run?.sceneId).toBe('ropeMiss');
+    expect(sceneText(UNDER_THE_ICE.scenes.ropeMiss, initialMiss)).toBe(hauledText);
+  });
+
   it('recognizes the carried cloak after extracting Calder and cannot narrate a drowning afterward', () => {
     let state = fresh('weatherproofCloak');
     state.run!.randomSelections!.victim = 'Calder';

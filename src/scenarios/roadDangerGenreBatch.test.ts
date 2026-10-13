@@ -159,4 +159,21 @@ describe('Road Danger / Highwaymen genre batch', () => {
       }
     }
   });
+
+  it('does not say a purse was surrendered on the lantern routes that keep it', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-lantern-in-the-hedge')!;
+    for (const response of ['callHouse', 'leavePurse', 'holdGate']) {
+      let state = initial(story);
+      state = act(state, story, story.scenes.approach.choices.find((choice) => meets(choice.requirements, state))!.id);
+      state = act(state, story, `respond_${response}`);
+      const aftermath = sceneText(story.scenes.aftermath, state);
+      expect(state.run?.flags).toContain(`road_response_${response}`);
+      expect(aftermath).not.toMatch(/purse you surrendered|poorer by the coins surrendered/i);
+      for (const ending of ['reportNight', 'leaveHedge']) {
+        const ended = act(state, story, `ending_${ending}`);
+        const text = sceneText(story.scenes.settlement, ended);
+        expect(text).not.toMatch(/purse you surrendered|poorer by the coins surrendered/i);
+      }
+    }
+  });
 });

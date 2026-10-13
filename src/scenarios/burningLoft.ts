@@ -95,9 +95,9 @@ export const BURNING_LOFT: Scenario = {
       ],
     },
     ladderFailure: {
-      id: 'ladderFailure', title: 'The Ladder Shifts', tone: 'danger',
-      text: 'The ladder slips away from the loft window. You and the shopkeeper catch it before it falls. {{trappedPerson}} remains above the smoke, and you are still on safe ground.',
-      textVariants: [{ requirements: { minElapsedMinutes: 14 }, text: 'The ladder slips as the roof groans. The window is gone behind smoke, and no answer comes from {{trappedPerson}}. You are still safe in the yard.' }],
+      id: 'ladderFailure', title: 'The Rescue Falters', tone: 'danger',
+      text: 'The attempt does not bring {{trappedPerson}} down. They remain above the smoke, while you and the shopkeeper stay in the clear yard.',
+      textVariants: [{ requirements: { minElapsedMinutes: 14 }, text: 'The failed attempt costs time. Smoke hides the loft window, and no answer comes from {{trappedPerson}}. You and the shopkeeper remain in the yard.' }],
       choices: [
         entryAttempt('enterAfterLadderFailure', 'Go through the south doors now', 'insideAfterLadder'),
         { id: 'sendForHelpAfterLadder', label: 'Send for help and hold the lane', hint: 'You stay out of danger; the delay may cost the rescue.', timeCost: 9, next: 'neighborsArrive', effects: { setFlags: ['helpSummoned'] } },

@@ -53,6 +53,18 @@ describe('The Road Below', () => {
     expect(state.character?.historyFlags).toContain('stabilized_road_collapse');
   });
 
+  it('keeps a failed outside brace above ground instead of sending it into the culvert', () => {
+    let state = fresh(0, 'steelWedge');
+    for (const id of ['inspectFreshTracks', 'followTracksToOpening', 'chooseBraceFirst']) state = act(state, id);
+    state = act(state, 'braceLipWithGear', 0.99);
+    expect(state.run?.sceneId).toBe('braceFailureOutside');
+    expect(state.run?.flags).toContain('entranceCompromised');
+    expect(state.run?.flags).not.toContain('neriEncountered');
+    expect(state.run?.health).toBe(9);
+    expect(sceneText(THE_ROAD_BELOW.scenes.braceFailureOutside, state)).toMatch(/remain above ground.*not taken you into the culvert/i);
+    expect(act(state, 'scoutOutletAfterBraceFailure').run?.sceneId).toBe('outletApproach');
+  });
+
   it('supports a fast direct descent with a costly rescue ending', () => {
     let state = act(reachDirectRescue(), 'pullNeriFreeNow');
     expect(state.run?.sceneId).toBe('rescuedNeri');

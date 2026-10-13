@@ -168,8 +168,8 @@ export const THE_ROAD_BELOW: Scenario = {
       id: 'braceLip', title: 'Hold the Road Edge', tone: 'warning',
       text: 'A split beam from the roadworks lies near the ditch. Bracing the lip may keep the road from shedding more soil, but setting it takes time beside the runoff. A passing cart makes the surface tremble overhead.',
       choices: [
-        { id: 'braceLipWithGear', label: 'Set a brace with your carried tool', hint: 'A pry tool, wedge, hammer, or clamp gives a steadier seat.', requirements: { anyItems: ENTRY_TOOLS }, timeCost: 5, chance: { probability: 0.85, bonusItems: ENTRY_TOOLS, bonusProbability: 0.08, successNext: 'stabilizedEntry', failureNext: 'entrySlip', successMessage: 'Your tool seats the brace against solid stone; the lip stops shedding soil.', failureMessage: 'The prop skews as the road flexes. You pull clear before the edge slumps.', successEffects: { setFlags: ['roadBraced', 'stabilizedEntry'], historyFlags: ['stabilized_road_collapse'] }, failureEffects: { health: -1, setFlags: ['entranceCompromised'] } } },
-        { id: 'braceLipByHand', label: 'Pack loose timber under the edge', hint: 'Possible without tools, but slower and less certain.', requirements: { notItems: ENTRY_TOOLS }, timeCost: 9, chance: { probability: 0.64, successNext: 'stabilizedEntry', failureNext: 'entrySlip', successMessage: 'The rough timber holds the lip long enough to make a careful descent.', failureMessage: 'The timber twists under the load and mud slides around your boots.', successEffects: { setFlags: ['roadBraced', 'stabilizedEntry'], historyFlags: ['stabilized_road_collapse'] }, failureEffects: { health: -1, setFlags: ['entranceCompromised'] } } },
+        { id: 'braceLipWithGear', label: 'Set a brace with your carried tool', hint: 'A pry tool, wedge, hammer, or clamp gives a steadier seat.', requirements: { anyItems: ENTRY_TOOLS }, timeCost: 5, chance: { probability: 0.85, bonusItems: ENTRY_TOOLS, bonusProbability: 0.08, successNext: 'stabilizedEntry', failureNext: 'braceFailureOutside', successMessage: 'Your tool seats the brace against solid stone; the lip stops shedding soil.', failureMessage: 'The prop skews as the road flexes. You pull clear before the edge slumps.', successEffects: { setFlags: ['roadBraced', 'stabilizedEntry'], historyFlags: ['stabilized_road_collapse'] }, failureEffects: { health: -1, setFlags: ['entranceCompromised'] } } },
+        { id: 'braceLipByHand', label: 'Pack loose timber under the edge', hint: 'Possible without tools, but slower and less certain.', requirements: { notItems: ENTRY_TOOLS }, timeCost: 9, chance: { probability: 0.64, successNext: 'stabilizedEntry', failureNext: 'braceFailureOutside', successMessage: 'The rough timber holds the lip long enough to make a careful descent.', failureMessage: 'The timber twists under the load and mud slides around your boots.', successEffects: { setFlags: ['roadBraced', 'stabilizedEntry'], historyFlags: ['stabilized_road_collapse'] }, failureEffects: { health: -1, setFlags: ['entranceCompromised'] } } },
         { id: 'leaveBraceUnfinished', label: 'Stop bracing and go for the outlet instead', timeCost: 2, next: 'outletApproach' },
       ],
     },
@@ -180,6 +180,15 @@ export const THE_ROAD_BELOW: Scenario = {
         { id: 'descendAfterBracing', label: 'Climb down into the first chamber', timeCost: 4, effects: { historyFlags: ['entered_collapsed_passage'] }, next: 'firstChamber' },
         { id: 'getHelpAfterBracing', label: 'Leave the brace and fetch the crew', timeCost: 14, effects: { historyFlags: ['left_for_outside_help'] }, next: 'outsideHelp' },
         { id: 'markAndWithdrawAfterBracing', label: 'Mark the road and leave the culvert', timeCost: 2, effects: { setFlags: ['roadWarned'], historyFlags: ['protected_road_users', 'left_collapsed_road'] }, next: 'warningEnding' },
+      ],
+    },
+    braceFailureOutside: {
+      id: 'braceFailureOutside', title: 'Clear of the Shifting Lip', tone: 'danger',
+      text: 'The prop twists, and you pull clear before the road edge slumps. You remain above ground; the failed brace has not taken you into the culvert. The direct opening is now too unstable to descend safely.',
+      choices: [
+        { id: 'scoutOutletAfterBraceFailure', label: 'Search downhill for the culvert outlet', timeCost: 2, next: 'outletApproach' },
+        { id: 'fetchCrewAfterBraceFailure', label: 'Leave and bring the road crew', timeCost: 14, next: 'outsideHelp', effects: { historyFlags: ['left_for_outside_help'] } },
+        { id: 'leaveAfterFailedBrace', label: 'Retreat to firm ground', effects: { historyFlags: ['left_collapsed_road'] }, next: 'personLeftEnding' },
       ],
     },
     outletApproach: {

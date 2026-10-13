@@ -155,6 +155,17 @@ describe('The Burning Loft', () => {
     expect(hurt.run?.inventory).not.toContain('fieldBandageRoll');
   });
 
+  it('does not turn a failed rope rescue into a ladder failure', () => {
+    const state = act(act(fresh('travelRope'), 'callUp'), 'anchorRopeAtPost', 0.99);
+    expect(state.run?.sceneId).toBe('ladderFailure');
+    expect(state.run?.flags).toContain('ropeSlipped');
+    const text = sceneText(BURNING_LOFT.scenes.ladderFailure, state);
+    expect(text).toContain('attempt does not bring');
+    expect(text).not.toMatch(/ladder (?:slips|jerks|shifts)/i);
+    expect(text).not.toMatch(/rope (?:slips|shifts)/i);
+    expect(text).toContain('remain above the smoke');
+  });
+
   it('advances fictional time through the published fire phases', () => {
     let state = act(fresh(), 'callUp');
     expect(state.run?.elapsedMinutes).toBe(2);
