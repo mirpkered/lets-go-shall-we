@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–310 reviewed; 551 of 861 remain.
-Next: position 311; next finding ID `CRA-F0114`.
+Checkpoint: registry positions 1–320 reviewed; 541 of 861 remain.
+Next: position 321, The Three-Toed Track; next finding ID `CRA-F0122`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–310 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–320 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 192 |
+| HEALTHY | 196 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 103 |
+| CONFIRMED DEFECT | 111 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 310 |
+| Total reviewed | 320 |
 
-There are 113 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; prior batch summaries below retain their own severity breakdowns.
+There are 121 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW finding.
 
 ## Positions 21–30
 
@@ -573,3 +573,22 @@ Batch 291–300 added nine findings to existing CRA-C0001/C0002/C0004 patterns; 
 The Barrow Hound’s `markMound` route reaches an ending that also claims pasture relocation, which is only the separate `closePasture` outcome (CRA-F0105). The White Stag’s orchard-release and unresolved-hunter routes reach text that settles both farmer intent and the cause of crop damage without establishing either (CRA-F0106). In the Lantern-Eater, raising the lantern damages it before a successful strike reaches `campDawn`, whose text says it remained untouched while covered (CRA-F0107). The Mire Horse’s `markSkiff` route goes directly from evidence to `marshDeception` without meeting the helper, while the ending credits him with removing the light and guiding the Traveler (CRA-F0108). River Devil’s `inspectWater` grants the submerged-log conclusion before the later probe identifies the object (CRA-F0109). The Miller’s Beast grants stopping-wheel Knowledge on routes that leave the wheel turning, and its yard-guiding route shares an ending that says the badger exits by the culvert (CRA-F0110–F0111). In the Ashen Man, smothering the ember from the kiln interior does not free the worker, though the shared ending says the worker is safe with family (CRA-F0112). The Thing Beneath the Ice grants a specific sound-response conclusion on the direct retreat route that bypasses the sound-comparison scene (CRA-F0113).
 
 The Red-Eyed Boar distinguishes opening the corridor from trap/charge outcomes; the Bone-Eater preserves observation, boundary, containment, and withdrawal variants. The current batch added six MEDIUM and three LOW findings to existing CRA-C0001 and CRA-C0002 patterns; no new cluster was required. Supporting Monster Hunt, Miller’s Beast F6, provenance, and registry tests passed (27 tests across four files); these support but do not replace the route review. No gameplay source or tests were changed. Totals are 192 HEALTHY, 15 MINOR CONCERN, and 103 CONFIRMED DEFECT across 310 reviewed Adventures; 551 remain. Next canonical registry entry: position 311, The Goat That Wouldn’t Stay Dead; next finding ID `CRA-F0114`.
+
+## Positions 311–320
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 311 | The Goat That Wouldn’t Stay Dead | CONFIRMED DEFECT | CRA-F0114 (MEDIUM) — grave closure can credit the feed-tally explanation without visiting the ledger. |
+| 312 | The Widow’s Beast | CONFIRMED DEFECT | CRA-F0115 (MEDIUM) — shared closure combines fence repair and stopping food even when routes establish only one or neither. |
+| 313 | The Cellar Thing | CONFIRMED DEFECT | CRA-F0116 (HIGH) — fetching the keeper bypasses the seller rescue route but claims the seller reached the yard and the opening was boarded. |
+| 314 | The Man Who Sheds His Skin | CONFIRMED DEFECT | CRA-F0117 (MEDIUM) — cousin contact is treated as proof of the tailor’s two-brother explanation. |
+| 315 | The Pale Children of the Quarry | HEALTHY | — |
+| 316 | The Antlered Thing | HEALTHY | — |
+| 317 | The Last Trap | CONFIRMED DEFECT | CRA-F0118 (MEDIUM), CRA-F0119 (MEDIUM), CRA-F0120 (LOW) — shared results overstate dog recovery, trap disarming, and bedroll chronology. |
+| 318 | The Broken Antler | CONFIRMED DEFECT | CRA-F0121 (MEDIUM) — a BROKEN knife can satisfy the physical wire-cut action. |
+| 319 | The Man-Eater of Miller’s Gap | HEALTHY | — |
+| 320 | The Cinder Hound | HEALTHY | — |
+
+The Goat That Wouldn’t Stay Dead’s gravedigger route can bypass the feed ledger but still grant History for resolving the goat identities through its tally (CRA-F0114). The Widow’s Beast’s shared `widowAfter` result claims both repaired fencing and stopped feeding across independent or non-intervention routes (CRA-F0115). In The Cellar Thing, fetching the keeper from outside the cellar goes directly to rescue closure, whose text says the seller reached the yard and the keeper boarded the service opening although those events are established only through the voice/passage route (CRA-F0116). In The Man Who Sheds His Skin, asking for the cousin reaches the identity ending without meeting the tailor, yet the ending circulates the two-brother/exchanged-coat explanation (CRA-F0117). The Last Trap has three distinct mismatches: dogs are said to return when still unrecovered (CRA-F0118); wire/dog resolution is asserted after back-away routes that do not establish either (CRA-F0119); and a route that first sees the bedroll placed says the Traveler left before it was set (CRA-F0120). The Broken Antler requires a knife in inventory but not a usable knife for cutting wire, so BROKEN gear can complete the action (CRA-F0121).
+
+The Pale Children of the Quarry, Antlered Thing, Man-Eater of Miller’s Gap, and Cinder Hound were reviewed across their materially distinct discovery, intervention, withdrawal, danger, and closure variants and retained uncertainty/outcome distinctions. The current batch added six findings to CRA-C0001, one to CRA-C0002, and one to CRA-C0004; no new cluster was needed. Focused route/choice, persistence, Monster Hunt, Gear-usability, I1 regression, and registry suites passed 48 tests across six files. These checks support but do not replace semantic source review. No gameplay source or tests were changed. Totals are now 196 HEALTHY, 15 MINOR CONCERN, and 111 CONFIRMED DEFECT across 320 reviewed Adventures; 541 remain. CRA-F0114–CRA-F0121 comprise one HIGH, six MEDIUM, and one LOW finding. The next canonical registry entry is position 321, The Three-Toed Track, and the next finding ID is CRA-F0122.
