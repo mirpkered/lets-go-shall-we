@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 590,
-  "reviewedCount": 590,
-  "remainingCount": 271,
-  "nextPosition": 591,
-  "nextFindingId": "CRA-F0229",
+  "reviewedThroughPosition": 600,
+  "reviewedCount": 600,
+  "remainingCount": 261,
+  "nextPosition": 601,
+  "nextFindingId": "CRA-F0233",
   "nextClusterId": "CRA-C0010",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -604,7 +604,17 @@
     {"position":587,"adventureId":"the-fence-line-find","slug":"the-fence-line-find","title":"The Find Along the Fence Line","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; repair history, maker stamp/work order, boundary-safe mark, custodian and joint permission routes traced","notes":"The disputed boundary does not determine tool ownership; the work order and saddler identify the custodian. The mark-and-avoid route leaves the roll untouched until the saddler arrives, while the later sale follows his abandonment record and both landholders’ access permission. Fee leaves the item with its custodian."},
     {"position":588,"adventureId":"the-glasshouse-gutter","slug":"the-glasshouse-gutter","title":"Glass from the Gutter","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0228"],"reviewProvenance":"current-source route review; gloves, estate-sheet cover, drainage-hook movement, overhead-frame boundary, cloak ownership and compensation variants traced","notes":"The shared evidence setup says the seed trays are covered before the three route-specific consequences. Only spreading the estate sheet establishes that cover; gloves merely protect hands and the hook only moves loose fragments. Those other routes therefore receive the false covered-tray state and can reach the shared reward text thanking the Traveler for preserving the seed beds."},
     {"position":589,"adventureId":"the-mineshaft-lamp","slug":"the-mineshaft-lamp","title":"The Lamp in the Upper Cut","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; safe-line lantern, echo/closed-lower-cut, upper-beam lowering, serial check, loan return, personal spare and fee traced","notes":"The upper lamp can be lowered from the safe ledge; the lower glimmer remains unidentified. The numbered loan lamp is distinguished from the foreman’s personal lantern and return/transfer follows the stated recovery agreement. The fee route explicitly leaves the lower light untouched."},
-    {"position":590,"adventureId":"the-old-bridge-chest","slug":"the-old-bridge-chest","title":"The Chest in the Old Bridge","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; stone-loosening, family contents detail, position record, sealed lift, owner identification and reward/fee traced","notes":"The toolkit loosens surrounding stone only, the chest remains sealed, and the family’s dated description supports identification without opening it. Once lifted, the family opens it with its original key and returns the heirloom square to the county before gifting a duplicate; the fee route delivers the sealed case to family."}
+    {"position":590,"adventureId":"the-old-bridge-chest","slug":"the-old-bridge-chest","title":"The Chest in the Old Bridge","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; stone-loosening, family contents detail, position record, sealed lift, owner identification and reward/fee traced","notes":"The toolkit loosens surrounding stone only, the chest remains sealed, and the family’s dated description supports identification without opening it. Once lifted, the family opens it with its original key and returns the heirloom square to the county before gifting a duplicate; the fee route delivers the sealed case to family."},
+    {"position":591,"adventureId":"the-warehouse-after-rain","slug":"the-warehouse-after-rain","title":"The Warehouse After Rain","sourceFile":"src/scenarios/salvageRecoveryGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sealed-crate movement, signed return-list/tool ownership, waxed-sheet paper protection, contractor sale, tenant trunk, fee/refusal/defer and cost-gated Gear traced","notes":"Each opening action receives its matching evidence variant. The tool’s contractor mark is followed by the property scene’s explicit former-owner confirmation and one-coin sale; the sealed crates remain sealed and the tenant’s trunk is held unopened. The generated reward requires the coin cost and presents the fee as an alternative; defer/refusal do not transfer Gear."},
+    {"position":592,"adventureId":"the-match-at-the-brace","slug":"the-match-at-the-brace","title":"The Match at the Brace","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0229"],"reviewProvenance":"current-source route review; gradual/full-load test, grain explanation, crack/hold result, award/void/fee variants traced","notes":"The gradual test supports Nell’s safe brace. The full-load route explicitly says both braces crack, yet shares the strain scene where the player can award Nell for the ‘stronger safe brace’; the ending unconditionally gives her the ribbon and says the hammer rewards a safe result. No result flag/text variant preserves the harsh-test outcome."},
+    {"position":593,"adventureId":"the-knot-before-the-bell","slug":"the-knot-before-the-bell","title":"The Knot before the Bell","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; bowline/clamp methods, load, timed win/late result, assisting rival, stop/reset, prize/coin/refusal/withdrawal traced; existing targeted regressions inspected","notes":"Only a successful safe finish reaches the winner result; the failed timed lift reaches the runner-up scene and offers only the small purse, while helping the rival, stopping for line safety, or withdrawing awards no prize. The result flags and current tests distinguish winner from runner-up, and method-specific Knowledge follows the bowline route only."},
+    {"position":594,"adventureId":"the-chain-at-twenty-paces","slug":"the-chain-at-twenty-paces","title":"The Chain at Twenty Paces","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0232"],"reviewProvenance":"current-source route review; inspect/repeat, trust/dispute, folding-rule comparison, correction, chain/coin/refusal outcomes and Gear condition default traced","notes":"The only Survey Chain described is the measuring chain whose flattened link shortens the span; the comparison route explicitly says it is due for repair. Correcting/submitting the measurement reaches the announced chain prize without any repair action or gainItemConditions. The engine defaults an acquired item with no recorded condition to NORMAL, contradicting the route-established bent condition."},
+    {"position":595,"adventureId":"the-dry-crossing-race","slug":"the-dry-crossing-race","title":"The Dry Crossing Race","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; strap/split carry, current observation, safe/quick crossing, shifting stone, partial/wet/dry outcomes, blanket/coin/refusal traced; existing targeted regressions inspected","notes":"Both successful branches explicitly place the flour dry and permit the blanket or winner’s coin; both failure branches distinguish damp/partial completion and withhold the blanket. Reset/decline routes award no blanket. Existing tests exercise wet and damp variants against the dry reward gate."},
+    {"position":596,"adventureId":"the-quarry-step","slug":"the-quarry-step","title":"The Quarry Step","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0230"],"reviewProvenance":"current-source route review; rapid climb, inspected cracked shelf, lower ledge test, moving-hold traverse, slip, retreat, withdrawal, prize and wage paths traced","notes":"The direct ‘climb to the bell at the top’ success edge enters bell without establishing use of the sound lower ledge or avoidance of the excluded cracked shelf. Bell unconditionally says the Traveler rang the lower bell from the sound ledge without touching the cracked shelf and unlocks the completion prize. The explicit inspected/ledge route and moveToLedge success do establish that safe endpoint."},
+    {"position":597,"adventureId":"the-lookout-at-dusk","slug":"the-lookout-at-dusk","title":"The Lookout at Dusk","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0231"],"reviewProvenance":"current-source route review; glass/chart/wind observation, signal-call, extra-worker rescue, pause/continue, score, glasses/coin/refusal paths traced; current focused test inspected","notes":"The scoring scene is reachable from chart.stayContest and seen.completeCall without identifying a signal or recording a correctness result. It nevertheless exposes claimGlass, whose only gate is that the Traveler does not already own Field Glasses, while the scene/prize source say glasses require a correct signal reading. The test verifies rescue Knowledge/compensation separation but not contest-score proof."},
+    {"position":598,"adventureId":"the-long-carry","slug":"the-long-carry","title":"The Long Carry","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; balanced/drag methods, unsafe rut, rebalance, firm-course revision, push/race win and late result, rival assistance, purse/frame/lesson traced; existing targeted regression inspected","notes":"The shared safe-finish scene preserves whether carrier changes were learned through text variants; winner-only Pack Frame is in a separate confirmed-win scene, while safe non-winning finishes offer only the stated purse. Push success and failure route to win/late and help/close paths do not claim an unearned frame. Tests cover method-specific Knowledge, save persistence and frame qualification."},
+    {"position":599,"adventureId":"five-marks-on-the-board","slug":"five-marks-on-the-board","title":"Five Marks on the Board","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; first aim, observed stance, wind shift, adjusted/unchanged throws, close/low/high score, tie-break/share, prize/coin/withdrawal traced","notes":"Chance outcomes separate high, narrow, and low scores before offering winner, runner-up, or no-prize routes. The calm-air tie-break reaches the winner prize only on success; the agreed share is a distinct negotiated one-coin split. Withdrawal exits without payment or Gear."},
+    {"position":600,"adventureId":"the-millwheel-hand","slug":"the-millwheel-hand","title":"The Millwheel Hand","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; peg inspection, repair/test, belt-first/hand-turn methods, stop/report, forced-turn success/failure, toolkit/fee traced; existing targeted regression inspected","notes":"The toolkit result is reachable only after finding/refitting the loose peg and checking a clean slow hand-turn; the report-wear route explicitly stops without prize. Tightening first leads to the sideways belt warning; forced continuation can only stop with fault/damage outcomes, never reach the safe prize. Existing tests distinguish forced-turn consequence from cautious stop."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -836,7 +846,11 @@
     {"findingId":"CRA-F0225","position":580,"adventureId":"the-iron-at-milepost-nine","severity":"MEDIUM","defect":"The shared reward claims county authorization and abandonment of the unmarked Steel Wedge although no incoming route establishes its ownership clearance.","routeWitness":"arrival.compareStamp/oldRecords/inspectBase -> evidence.traceOwnership or secureRecovery -> decision.acceptReleasedGear. The stamp and county confirmation concern return of the marked pry tool; old records authorize transfer of that pry tool only; inspecting the post date expressly does not settle wedge ownership. The farmhand says a prior crew left it, but no selected choice establishes signed county clearance, yet the property text says the county authorized it as abandoned.","violatedRule":"Ownership transfer and abandonment require route-established evidence/authorization for the specific object being released.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0226","position":581,"adventureId":"the-bell-creek-drift","severity":"MEDIUM","defect":"A Freightman’s Strap explicitly described as a sound spare is granted with DAMAGED condition because the reward’s repair flag is applied to the spare as well.","routeWitness":"decision.acceptReleasedGear -> gear reward. The second driver’s spare is explicitly sound and separately marked; the reward sets repair:true, and the builder maps that flag to gainItemConditions:{freightmansStrap:'DAMAGED'}. engine.ts itemState/itemCondition reads this stored condition, so the newly granted sound spare is mechanically damaged. The flood-recovered strap’s separate repair/return path does not justify damaging the spare.","violatedRule":"Granted Gear condition must match the condition established by the source narrative; repair state for another item or route must not corrupt the reward item’s condition.","clusterId":"CRA-C0009","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0227","position":585,"adventureId":"the-station-yard-heap","severity":"MEDIUM","defect":"The shared decision offers the marked Compact Wheel Wrench despite the stated release prerequisite that the borrowed track gauge beneath it be returned, which no route establishes on the owner-trace path.","routeWitness":"arrival.separateMarked/ledger/inspectInitials -> evidence.traceOwnership -> decision.acceptReleasedGear. The route can establish the wrench as missing and identify its former borrower, but traceOwnership only records evidence; it does not recover or return the borrowed track gauge. The property text conditions railway release on that gauge being returned, yet the gear offer is not gated on a return flag or a limited-recovery path that can satisfy it.","violatedRule":"A conditional ownership transfer must remain gated on the specific prerequisite action that authorizes it; evidence of identity alone is not return of the prerequisite property.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0228","position":588,"adventureId":"the-glasshouse-gutter","severity":"MEDIUM","defect":"The shared evidence scene claims the seed trays are covered on routes that only use gloves or move glass with a hook, neither of which covers the trays.","routeWitness":"arrival.gloves or arrival.hook -> evidence. The evidence setup unconditionally begins that the seed trays are covered. Only arrival.sheet establishes the estate-sheet cover; the gloves protect hands and the drainage hook moves fragments at a distance. Those branches inherit a false physical-state claim and can proceed to a reward described as thanks for preserving the seed beds.","violatedRule":"Shared scene setup and rewards must preserve route-specific protection/actions and may not assert an object was covered absent that route’s action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0228","position":588,"adventureId":"the-glasshouse-gutter","severity":"MEDIUM","defect":"The shared evidence scene claims the seed trays are covered on routes that only use gloves or move glass with a hook, neither of which covers the trays.","routeWitness":"arrival.gloves or arrival.hook -> evidence. The evidence setup unconditionally begins that the seed trays are covered. Only arrival.sheet establishes the estate-sheet cover; the gloves protect hands and the drainage hook moves fragments at a distance. Those branches inherit a false physical-state claim and can proceed to a reward described as thanks for preserving the seed beds.","violatedRule":"Shared scene setup and rewards must preserve route-specific protection/actions and may not assert an object was covered absent that route’s action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0229","position":592,"adventureId":"the-match-at-the-brace","severity":"MEDIUM","defect":"The full-load test can award Nell the ribbon and hammer as the stronger safe brace even though that test explicitly cracks both braces and establishes no safe winner.","routeWitness":"trial.testFast -> strain -> awardNell -> winner. testFast records brace_harsh_test but strain has no variant using that flag; the scene says both braces crack under the sudden load, yet awardNell is enabled and winner says Nell receives the ribbon and the hammer rewards a safe result. The gradual test is the only route where the text establishes Nell’s brace holds.","violatedRule":"A prize and winner claim must be supported by the actual route’s recorded trial result; a failed/damaging test cannot inherit the safe winner outcome from another method.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0230","position":596,"adventureId":"the-quarry-step","severity":"HIGH","defect":"A direct climb-to-top success can reach the safe lower-ledge result and prize without establishing avoidance of the expressly excluded cracked upper shelf.","routeWitness":"climb.climbQuick successNext=bell -> bell -> acceptMarker/markerPrize. The choice climbs directly to the bell at the top; unlike inspection.askSafeRule and hold.moveToLedge success, it establishes no use of the lower sound ledge. bell asserts the Traveler rang the lower bell from that ledge without touching the cracked shelf and grants the completed-trial prize.","violatedRule":"A safety-sensitive location/result claim and completion reward require route proof that the excluded hazard was avoided; a branch directly to the endpoint cannot inherit a safe-path assertion without establishing it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0231","position":597,"adventureId":"the-lookout-at-dusk","severity":"MEDIUM","defect":"The Field Glasses signal prize is claimable after routes that never establish which signal was called or whether that call was correct.","routeWitness":"chart.stayContest -> scoring -> claimGlass/prize; and seen.completeCall -> scoring -> claimGlass/prize. Neither path records a selected signal/correctness result. scoring says the judge checks whether the signal call was correct, but claimGlass is gated only by notOwnedItems, so an unproved call receives the winner’s glasses.","violatedRule":"A contest reward conditioned on a correct result must be gated by route-established result state; merely continuing to or reporting an unrecorded call cannot prove a win.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0232","position":594,"adventureId":"the-chain-at-twenty-paces","severity":"MEDIUM","defect":"The bent Survey Chain identified as due for repair is granted without a damaged condition, so the engine records it as NORMAL.","routeWitness":"start -> inspectChain/repeat/reportFault or borrowRule/comparison -> submitCorrected -> award -> acceptChain/chainPrize. The story offers the Survey Chain as the prize, identifies its flattened link as shortening the measure, and says it is due for repair; no route repairs it before award. item('surveyChain',...) grants gainItems without gainItemConditions, and engine itemState/itemCondition defaults missing condition to NORMAL.","violatedRule":"Granted Gear condition must match the condition established for that same item; a known bent tool must not enter inventory as mechanically NORMAL without repair.","clusterId":"CRA-C0009","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -999,7 +1013,10 @@
         "CRA-F0224",
         "CRA-F0225",
         "CRA-F0227",
-        "CRA-F0228"
+        "CRA-F0228",
+        "CRA-F0229",
+        "CRA-F0230",
+        "CRA-F0231"
       ]
     },
     {
@@ -1117,13 +1134,13 @@
       "clusterId": "CRA-C0009",
       "name": "Granted Gear condition disagrees with route-established condition",
       "description": "A Gear reward’s authored condition is not preserved mechanically: an explicitly frayed/damaged item may default to NORMAL, or a sound spare may be granted as DAMAGED because an unrelated repair marker is applied to it.",
-      "findingIds": ["CRA-F0223", "CRA-F0226"]
+      "findingIds": ["CRA-F0223", "CRA-F0226", "CRA-F0232"]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 346,
+    "HEALTHY": 352,
     "MINOR CONCERN": 38,
-    "CONFIRMED DEFECT": 206,
+    "CONFIRMED DEFECT": 210,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1581,14 +1598,18 @@
     {
       "positions": "581-590",
       "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0226 records a sound strap spare granted as DAMAGED and extends the Gear-condition mismatch pattern CRA-C0009. CRA-F0227 records a wrench reward offered without the stated borrowed-gauge return prerequisite, and CRA-F0228 records a covered-tray assertion inherited by routes that did not cover the trays; both extend CRA-C0001. Seven Adventures are healthy and no distinct minor concern was found. Route-level source review is authoritative; focused test execution was unavailable because this checkout has no local package binaries installed. No gameplay source or tests changed."
+    },
+    {
+      "positions": "591-600",
+      "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0229 records the sudden-load brace contest awarding a safe winner despite both braces cracking; CRA-F0230 records the direct quarry climb inheriting the lower-ledge safe completion and prize; CRA-F0231 records the signal contest exposing the glasses prize without a recorded call/result. These extend CRA-C0001. CRA-F0232 records a bent Survey Chain granted at default NORMAL condition and extends CRA-C0009. Six Adventures are healthy; no distinct minor concern was found. Route-level source review is authoritative; focused test execution was unavailable because this checkout has no local package binaries installed. No gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 590,
-  "maxReviewedRegistryPosition": 590,
+  "highestContiguousReviewedPosition": 600,
+  "maxReviewedRegistryPosition": 600,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 591,
-  "firstUnreviewedStableId": "the-warehouse-after-rain",
-  "nextStableId": "the-warehouse-after-rain",
+  "firstUnreviewedPosition": 601,
+  "firstUnreviewedStableId": "the-blind-trail-marker",
+  "nextStableId": "the-blind-trail-marker",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -2179,7 +2200,17 @@
     "the-fence-line-find",
     "the-glasshouse-gutter",
     "the-mineshaft-lamp",
-    "the-old-bridge-chest"
+    "the-old-bridge-chest",
+    "the-warehouse-after-rain",
+    "the-match-at-the-brace",
+    "the-knot-before-the-bell",
+    "the-chain-at-twenty-paces",
+    "the-dry-crossing-race",
+    "the-quarry-step",
+    "the-lookout-at-dusk",
+    "the-long-carry",
+    "five-marks-on-the-board",
+    "the-millwheel-hand"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2222,9 +2253,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 590,
+    "highestContiguousReviewedPosition": 600,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 590,
+    "maxReviewedLivePosition": 600,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2242,6 +2273,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, and Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–590 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 591, The Warehouse After Rain (stable ID the-warehouse-after-rain), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–591, and Competition/Gear challenge Adventures at positions 592–600 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 601, The Blind Trail Marker (stable ID the-blind-trail-marker), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
