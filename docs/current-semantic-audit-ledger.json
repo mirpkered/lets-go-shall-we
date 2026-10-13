@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 460,
-  "reviewedCount": 460,
-  "remainingCount": 401,
-  "nextPosition": 461,
-  "nextFindingId": "CRA-F0184",
+  "reviewedThroughPosition": 470,
+  "reviewedCount": 470,
+  "remainingCount": 391,
+  "nextPosition": 471,
+  "nextFindingId": "CRA-F0186",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -472,7 +472,17 @@
     {"position":457,"adventureId":"the-chapel-restoration-shelf","slug":"the-chapel-restoration-shelf","title":"The Chapel Restoration Shelf","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; prepared chalk/salt/nail quantities, prices, inventory-capacity and money gates, per-choice purchase provenance, lockup and no-purchase route traced","notes":"Each named supply’s finite quantity and coin cost match the purchase effects; capacity and funds are checked before the chosen supply leaves the shelf, with history recording acquisition. The items are explicitly context-specific, and the chapel remains open without purchase. No broad protection, use, blessing effect, or obligation is claimed.","preReconciliationPosition":457,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":458,"adventureId":"the-squires-pack","slug":"the-squires-pack","title":"The Squire’s Pack","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; initial kit allocation, rope/toolkit/marker variants, manual/long-path recovery, recovered/left-behind stakes, replacement payment/tool/Knowledge outcomes and save-persistent rewards traced","notes":"The selected Mara-held tool gates only its matching action; rope retrieval, marker security, return marking, by-hand retrieval, long route and leaving stakes remain distinguishable. Arrival variants derive from retrieved-versus-left flags; wage, spare-rope, Knowledge and no-reward endings match each choice. The spare rope is distinct from the line used on route, and persisted outcomes use run flags.","preReconciliationPosition":458,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":459,"adventureId":"the-last-survey","slug":"the-last-survey","title":"The Last Survey","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; folding-rule/chain/pace/notebook/bypass routes, date/order evidence, protected notes, map settlement, rule-versus-wage-versus-refusal outcomes and tool ownership traced","notes":"The chain path is usable-Gear gated; the map-case protection option requires a usable case. The dated notebook, changed culvert edge and bypass evidence lead into settlement with the necessary route facts; the paced route explicitly establishes the bypass developed after the first measurement. Tool handoff is distinct from wages/refusal and blocked for a duplicate rule. No route promises more detail than its observations or prior measurement context establish.","preReconciliationPosition":459,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":460,"adventureId":"the-quartermasters-tally","slug":"the-quartermasters-tally","title":"The Quartermaster’s Tally","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sound/cracked strap allocation, mended-buckle warning and load selection, storm shift, restack/stagger/owner handling, spare-strap/wage/refusal outcomes traced","notes":"The storm outcome identifies the unstrapped bundle as the shifted load without falsely naming it; the direct regression exercises that distinction. The mended buckle remains explicitly uncertain and heavier-chest use is warned, while restack/stagger choices state how the team mitigates the load. Spare gear, one-coin payment, owner responsibility and refusal remain consistent with the chosen route.","preReconciliationPosition":460,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":460,"adventureId":"the-quartermasters-tally","slug":"the-quartermasters-tally","title":"The Quartermaster’s Tally","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sound/cracked strap allocation, mended-buckle warning and load selection, storm shift, restack/stagger/owner handling, spare-strap/wage/refusal outcomes traced","notes":"The storm outcome identifies the unstrapped bundle as the shifted load without falsely naming it; the direct regression exercises that distinction. The mended buckle remains explicitly uncertain and heavier-chest use is warned, while restack/stagger choices state how the team mitigates the load. Spare gear, one-coin payment, owner responsibility and refusal remain consistent with the chosen route.","preReconciliationPosition":460,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":461,"adventureId":"the-claimed-salvage","slug":"the-claimed-salvage","title":"The Claimed Salvage","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; untouched chest, broken-tool salvage, uncertain tracks, post-office report, location marking and Knowledge outcome traced","notes":"The chest remains closed and its ownership unresolved on every branch. Only the explicitly selected location-marking route grants the fact that the covered, initialed chest was left at camp; broken shovel/pan are described as unusable and no route silently acquires the chest.","preReconciliationPosition":461,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":462,"adventureId":"the-sounding-line","slug":"the-sounding-line","title":"The Sounding Line","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; old-mark history, firm-edge/silt readings, downstream snag limits, longer-probe map, wait, warning and compensation outcomes traced","notes":"The old board is explicitly historical. The downstream response reports a wider but snagged approach and its settlement variant replaces the generic text; the paid ending preserves limits rather than claiming a safe-depth measurement. The longer rod is available only after its retrieval route, and wages, refusal, or spare-rod transfer remain distinct.","preReconciliationPosition":462,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":463,"adventureId":"the-wheel-before-dawn","slug":"the-wheel-before-dawn","title":"The Wheel Before Dawn","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0184"],"reviewProvenance":"current-source route review; wrench inspection, unload/light-load, delay, cool-and-inspect, compensation and refusal paths traced","notes":"The coolAndInspect route and the chooseSafeDelay route both enter inspection without any unloading choice/effect, yet the shared inspection scene asserts ‘With the load lightened’ and proceeds to replace the washer; this route claim obscures the heavy-load safety distinction. The explicit unload-and-restack/light-parcel routes do establish reduced load. Gear, wages and unpaid endings were checked against their transfer/payment effects.","preReconciliationPosition":463,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":464,"adventureId":"the-apprentices-light","slug":"the-apprentices-light","title":"The Apprentice’s Light","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; case seam, airflow orientation, wick inspection, windbreak/rotation, procession practice and reward/Knowledge variants traced","notes":"The case only keeps matches dry; wick and oil are explicitly sound; the airflow issue is isolated to opening orientation. Windbreak and rotation variants preserve their different limits. Each compensation choice independently records the lesson and grants only its selected spare case, wages, or no reward.","preReconciliationPosition":464,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":465,"adventureId":"the-bridge-crews-wedge","slug":"the-bridge-crews-wedge","title":"The Bridge Crew’s Wedge","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"MINOR CONCERN","findingIds":[],"reviewProvenance":"current-source route review; wedge, rope-line, crew-lead inspection, split timber, reset and closure/reward outcomes traced","notes":"On askCrewLead the Traveler chooses no tool, but the shared inspection text says ‘Your tool choice affected how the beam was held.’ The line is a small route-specific narration mismatch; the span remains closed, split timber is not trusted, and no unsafe crossing or false repair outcome is claimed. Other held-line/wedge branches are described consistently.","preReconciliationPosition":465,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":466,"adventureId":"glass-road","slug":"glass-road","title":"The Glass Road","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; glasses/compass/marker kit, call/circle/signal responses, route-specific settlement text and Gear/coin/refusal outcomes traced","notes":"All three responses set distinct flags and the settlement text variant replaces the generic settlement claim. The circle route says only that boot prints leave east; it does not claim the assistant answered or apologized. Call and signal routes explicitly establish an answer. The compass requirement distinguishes carried usable Gear from fresh inventory; rewards remain explicit.","preReconciliationPosition":466,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":467,"adventureId":"saw-before-sunrise","slug":"saw-before-sunrise","title":"Saw Before Sunrise","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0185"],"reviewProvenance":"current-source route review; saw/axe/rope preparation, three handler/branch responses, settlement variants and spare-tool/wage/refusal outcomes traced","notes":"On axe or rope preparation routes the Traveler does not use Marr’s saw; even the saw route only says it clears smaller limbs. Yet the acceptGear ending unconditionally says the damaged saw stays with Marr for repair. No route records or narrates a tooth loss, so the Gear ending asserts unestablished damage across incoming routes. Route-specific response variants correctly distinguish the handler and branch outcomes; this finding is confined to the unsupported tool-condition claim.","preReconciliationPosition":467,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":468,"adventureId":"chain-of-sight","slug":"chain-of-sight","title":"A Chain of Sight","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; old/reset stones, culvert rule, road flags, both-line measurement, witness and deferred-survey responses, settlement and transfer traced","notes":"Each response-specific settlement variant limits itself to the line/witness/defer result. The farmer’s hinge evidence supports but does not establish ownership; deferred markers do not declare a boundary. The Survey Chain is explicitly Bell’s spare, not county equipment, and payment/refusal/Knowledge choices are distinguished.","preReconciliationPosition":468,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":469,"adventureId":"three-points-down","slug":"three-points-down","title":"Three Points Down","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; piton/rope/brace preparation, leave/line/withdraw responses, direct recovery settlement, leave-behind follow-up variants, Knowledge and compensation traced","notes":"The line response routes directly to settlement and its selected text says the tin comes up; leave/withdraw route through follow-up and retain the tin-below statement. A targeted regression proves the recovered-versus-left distinction. The action specifies a tested line from sound rock for the short reach; no reward implies the tin was delivered or payment earned.","preReconciliationPosition":469,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":470,"adventureId":"the-mule-load","slug":"the-mule-load","title":"The Mule Load","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; frame/strap/canvas and usable owned saddle, animal pressure, redistribution/unload/reroute, second-animal follow-up and compensation outcomes traced","notes":"The pad is gated on a carried usable Padded Pack Saddle and text states it cannot fix shifting/unsuitable weight. Each response resolves the first mule before the separate follow-up reports a second animal’s harness rub; moving cargo, resting, or dividing weight remain distinct. The offered Pack Frame is Noll’s unused spare, distinct from route equipment, and ownership/reward language is consistent.","preReconciliationPosition":470,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -657,7 +667,9 @@
     {"findingId":"CRA-F0180","position":446,"adventureId":"forgotten-platform","severity":"MEDIUM","defect":"The report ending claims the worker receives both map and ledger copies even when the route has not obtained either or only obtained one record.","routeWitness":"railCurve.walkPlatform -> platform.luggage -> luggageRoom.leaveBags -> platformHub.tellWorker -> platformResolved; no ledger is copied and no map is visited. Other entries to platformHub can carry only one record, while tellWorker has no requirements/effects recording both. platformResolved always says the worker receives map and ledger copies and restores the station record.","violatedRule":"A shared result may not claim possession/transfer of records that the route did not acquire or copy.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0181","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"A broken Travel Rope satisfies the choice to tie a return line and sets route proof as though the line were secured.","routeWitness":"whiteCaveMouth.ropeCave requires items:['travelRope'] but omits usableItems; the effect sets whiteLineSet. BROKEN gear remains owned and satisfies items, while useRule in the same cave correctly requires usableItems.","violatedRule":"Possession is not usability: a physical action using Gear must require the item in usable condition.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0182","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"A no-rope/no-chalk route can reach the deep chamber, whose text unconditionally claims the return rope remains taut.","routeWitness":"whiteCaveMouth.askForChalk -> whiteChalkReady.saveChalkForLater -> whiteFirstRoom.followDraft -> whiteDraftRoom.downDraft -> whiteMechanism.followMapped -> whitePackRoom.inspectSeal -> whiteSeal.openSeal -> whiteDeep; no whiteLineSet or whiteChalkSet is established, but whiteDeep says the rope remains taut behind the Traveler.","violatedRule":"A route-specific safety resource cannot be asserted unless that route established it; absent proof must not be filled in from another path.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0183","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"Inspecting the seal is narrated as pack recovery, and the tracing exit later claims delivery/payment although no recovery/return choice occurred.","routeWitness":"whitePackRoom.inspectSeal -> whiteSeal; inspectSeal has no recovery effect, but whiteSeal says the pack is already recovered. whiteSeal.openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives the recovered pack and pays four coins, with no takePack or retreatPack action/effect on that route.","violatedRule":"Object recovery, delivery, and compensation must follow route-established actions, not inspection-only convergence.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0183","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"Inspecting the seal is narrated as pack recovery, and the tracing exit later claims delivery/payment although no recovery/return choice occurred.","routeWitness":"whitePackRoom.inspectSeal -> whiteSeal; inspectSeal has no recovery effect, but whiteSeal says the pack is already recovered. whiteSeal.openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives the recovered pack and pays four coins, with no takePack or retreatPack action/effect on that route.","violatedRule":"Object recovery, delivery, and compensation must follow route-established actions, not inspection-only convergence.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0184","position":463,"adventureId":"the-wheel-before-dawn","severity":"MEDIUM","defect":"A shared repair scene says the freight load was lightened on routes that never unload or shift it before replacing the washer.","routeWitness":"hub.askDriverForTime -> schedule.chooseSafeDelay -> inspection (only wheel_delay_accepted is set); and hub.checkPinWithWrench -> pin.coolAndInspect -> inspection (only wheel_waited is set). Neither route passes through load or sets wheel_load_moved/wheel_light_load, but inspection asserts ‘With the load lightened, the washer can be replaced and the pin seated.’ The separate moveFreight/leaveLightCrates branches do establish lightening.","violatedRule":"A consequential load state may be claimed only when the selected route establishes the action; inspection or elapsed delay is not proof of unloading.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0185","position":467,"adventureId":"saw-before-sunrise","severity":"MEDIUM","defect":"Accepting the spare-saw reward unconditionally says Marr’s damaged saw is left for repair although the route does not establish damage to that saw.","routeWitness":"preparation.kit_axe or preparation.kit_rope -> complication.response_* -> settlement.acceptGear -> gear; neither kit route uses Marr’s saw, while gearSource says ‘the damaged one stays with her for repair.’ Even kit_saw only records that it cleared smaller limbs; no route records or narrates a tooth loss. The settlement base text about a lost tooth is replaced by response-specific textVariants.","violatedRule":"An ending may not assert an object’s changed condition unless the route establishes the damage or the player performed the damaging action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -781,7 +793,9 @@
         "CRA-F0178",
         "CRA-F0180",
         "CRA-F0182",
-        "CRA-F0183"
+        "CRA-F0183",
+        "CRA-F0184",
+        "CRA-F0185"
       ]
     },
     {
@@ -888,9 +902,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 266,
-    "MINOR CONCERN": 33,
-    "CONFIRMED DEFECT": 161,
+    "HEALTHY": 273,
+    "MINOR CONCERN": 34,
+    "CONFIRMED DEFECT": 163,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1069,6 +1083,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/merchantEcologyBatch.test.ts src/scenarios/gearCorrectiveBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "34 tests passed across 4 files; supporting fixed-stock merchant purchase/sale graphs, corrective Gear scenarios and state outcomes, 861-entry registry validation, and equipment condition semantics; route-level semantic review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/gearCorrectiveBatch.test.ts src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "44 tests passed across 4 files; supporting corrective Gear and all-year support-story variants/reward/save paths, 861-entry registry validation, and equipment condition semantics; source-route semantic review remains authoritative"
     }
   ],
   "reviewBatches": [
@@ -1251,14 +1269,18 @@
     {
       "positions": "451-460",
       "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order: the remaining seven fixed-stock merchants and the first three corrective-Gear Adventures. All ten were healthy; no new findings or clusters. Merchant, Gear-corrective, registry and equipment suites passed 34 tests across four files as supporting evidence; source-route review remains authoritative. No gameplay source or tests changed."
+    },
+    {
+      "positions": "461-470",
+      "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0184 records the unlightened-load claim at Wheel Before Dawn’s shared repair convergence; CRA-F0185 records the unsupported damaged-saw claim on Saw Before Sunrise’s spare-tool ending; both extend CRA-C0001. The Bridge Crew’s Wedge has one minor route-text concern (no-tool path says tool choice affected the beam). The other seven Adventures are healthy. Corrective-Gear, Adventurer-Support, registry, and equipment suites passed 44 tests across four files as supporting evidence; no gameplay source or test files changed."
     }
   ],
-  "highestContiguousReviewedPosition": 450,
-  "maxReviewedRegistryPosition": 450,
+  "highestContiguousReviewedPosition": 470,
+  "maxReviewedRegistryPosition": 470,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 461,
-  "firstUnreviewedStableId": "the-claimed-salvage",
-  "nextStableId": "the-claimed-salvage",
+  "firstUnreviewedPosition": 471,
+  "firstUnreviewedStableId": "pilot-hole",
+  "nextStableId": "pilot-hole",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1719,7 +1741,17 @@
     "the-chapel-restoration-shelf",
     "the-squires-pack",
     "the-last-survey",
-    "the-quartermasters-tally"
+    "the-quartermasters-tally",
+    "the-claimed-salvage",
+    "the-sounding-line",
+    "the-wheel-before-dawn",
+    "the-apprentices-light",
+    "the-bridge-crews-wedge",
+    "glass-road",
+    "saw-before-sunrise",
+    "chain-of-sight",
+    "three-points-down",
+    "the-mule-load"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1728,9 +1760,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 460,
-    "uniqueCurrentRegisteredAdventuresReviewed": 460,
-    "directStableIdMatches": 458,
+    "recordedEntriesInspected": 470,
+    "uniqueCurrentRegisteredAdventuresReviewed": 470,
+    "directStableIdMatches": 468,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1762,9 +1794,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 460,
+    "highestContiguousReviewedPosition": 470,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 460,
+    "maxReviewedLivePosition": 470,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1782,6 +1814,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, and the first three Gear corrective Adventures at positions 458–460 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 461, The Claimed Salvage (stable ID the-claimed-salvage), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, and Adventurer Support Adventures at positions 466–470 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 471, The Pilot Hole (stable ID pilot-hole), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 460 current registered Adventures reviewed; 401 of 861 remain.
-Next: position 461, The Claimed Salvage (`the-claimed-salvage`; `src/scenarios/gearCorrectiveBatch.ts`); next finding ID `CRA-F0184`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 470 current registered Adventures reviewed; 391 of 861 remain.
+Next: position 471, The Pilot Hole (`pilot-hole`; `src/scenarios/adventurerSupportGenreBatch.ts`); next finding ID `CRA-F0186`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
@@ -11,21 +11,21 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 266 |
-| MINOR CONCERN | 33 |
-| CONFIRMED DEFECT | 161 |
+| HEALTHY | 273 |
+| MINOR CONCERN | 34 |
+| CONFIRMED DEFECT | 163 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 460 |
+| Total reviewed current registered Adventures | 470 |
 
-There are 183 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; positions 441–450 added eight findings (all MEDIUM), while the latest batch 451–460 was healthy throughout and added no findings.
+There are 185 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern.
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 460 recorded entries, 458 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 470 recorded entries, 468 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 460. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–460 were then reviewed in live-registry order. There are no gaps through position 460. The next unreviewed Adventure is position 461, The Claimed Salvage (`the-claimed-salvage`); 401 current registered Adventures remain.
+The highest contiguous reviewed position is now 470. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–470 were then reviewed in live-registry order. There are no gaps through position 470. The next unreviewed Adventure is position 471, The Pilot Hole (`pilot-hole`); 391 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -882,3 +882,22 @@ Reviewed the next ten stable IDs in live `SCENARIOS` order: the remaining fixed-
 | 460 | The Quartermaster’s Tally | HEALTHY | — |
 
 No additional findings or clusters were added. The last survey’s paced route itself establishes that the bypass developed after the first road measurement; the date/order statement is therefore supported alongside the dated-notebook path. The gear-state, recovery/stakes, inventory reward and caravan shifted-load variants remain route-specific. The ledger is contiguous through position 460; next is position 461, The Claimed Salvage (`the-claimed-salvage`), with 401 remaining and next finding CRA-F0184.
+
+## Audit continuation (live positions 461–470)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order, spanning the remaining Gear Corrective entries and first five Adventurer Support entries. Traced salvage ownership/reporting, old versus fresh depth measurements, load/axle routes and delayed inspection, airflow diagnosis, bridge stabilization and closure, distant-person responses, tool-specific trail clearing, disputed boundary evidence, recovery versus leaving the cave tin, and animal load/harness outcomes. Supporting Gear Corrective, Adventurer Support, registry, and equipment suites passed 44 tests across four files; tests support but do not replace the route review.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 461 | The Claimed Salvage | HEALTHY | — |
+| 462 | The Sounding Line | HEALTHY | — |
+| 463 | The Wheel Before Dawn | CONFIRMED DEFECT | CRA-F0184 (MEDIUM) — inspection claims a lightened load on routes that never unload or shift the freight. |
+| 464 | The Apprentice’s Light | HEALTHY | — |
+| 465 | The Bridge Crew’s Wedge | MINOR CONCERN | — the no-tool inspection route still says the Traveler’s tool choice affected how the beam was held. |
+| 466 | The Glass Road | HEALTHY | — response variants distinguish hearing the missing assistant from finding only tracks. |
+| 467 | Saw Before Sunrise | CONFIRMED DEFECT | CRA-F0185 (MEDIUM) — the spare-saw ending calls Marr’s saw damaged without any route establishing tooth loss. |
+| 468 | A Chain of Sight | HEALTHY | — both survey lines, supporting testimony and unresolved ownership remain separate. |
+| 469 | Three Points Down | HEALTHY | — recovered tin goes directly to a recovery-specific result; leave/withdraw paths retain the tin-below follow-up. |
+| 470 | The Mule Load | HEALTHY | — equipment limits, animal state, second-mule follow-up and reward remain route-consistent. |
+
+CRA-F0184 and CRA-F0185 extend CRA-C0001 (route-specific load/object-condition state lost at a shared result); no new cluster was created. The ledger is contiguous through position 470; next is position 471, The Pilot Hole (`pilot-hole`), with 391 remaining and next finding CRA-F0186.
