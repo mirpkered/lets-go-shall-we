@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–270 reviewed; 591 of 861 remain.
-Next: position 271; next finding ID `CRA-F0086`.
+Checkpoint: registry positions 1–280 reviewed; 581 of 861 remain.
+Next: position 281; next finding ID `CRA-F0091`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 176 |
+| HEALTHY | 181 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 79 |
+| CONFIRMED DEFECT | 84 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 270 |
+| Total reviewed | 280 |
 
-There are 85 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, and CRA-F0084 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, and CRA-F0085 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, and CRA-F0083 are HIGH. Batch 51–60 found no additional confirmed defects.
+There are 90 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, and CRA-F0089 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, and CRA-F0090 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, and CRA-F0083 are HIGH. Batch 51–60 found no additional confirmed defects.
 
 ## Positions 21–30
 
@@ -497,3 +497,22 @@ Batch 251–260 added three MEDIUM findings to existing clusters; no new cluster
 The Visitor at Midnight retains the uncertainty about identity and the missing tracks, but the `offerSafeShelter` route explicitly places the visitor in the outer room until the watch arrives; `midnightEnd` nevertheless questions whether anyone stood at the door (CRA-F0080). In The Bridge Goes Down, `childAcross.callFather` only calls the driver to abandon the wagon but sets `bridgePeopleSaved`, enabling the finale to say the driver reached shore; `muleSaved.muleCallDriver` repeats the unsupported proof (CRA-F0081). In The Train That Didn’t Stop, the `runAlongside` option enters `platformClear` without warning or clearing effects, yet the shared scene and later History/ending credit track clearance and collision prevention (CRA-F0082). The Boiler Room’s `tellForeman`/`inspectValve` routes bypass worker evacuation, while the foreman scene explicitly conditions workers being outside on the player having warned them; the shared aftermath/end still says workers are counted outside (CRA-F0083). The Crowd Breaks’ failed stand-call followed by `fallStayWall` only waits for stewards to act, but the later report grants History for helping guide the crowd (CRA-F0084). The Roof Comes In’s direct `braceNorth` branch reaches `wallBraced`, which unconditionally claims the visible pair are already outside even though only `eastPair` performs that evacuation (CRA-F0085). The other four Adventures preserve their rescue, object, and outcome distinctions across the reviewed routes.
 
 Batch 261–270 added six findings to existing CRA-C0001/C0002 patterns; no new cluster was needed. Totals are now 176 HEALTHY, 15 MINOR CONCERN, and 79 CONFIRMED DEFECT across 270 reviewed Adventures; 591 remain. CRA-F0080–CRA-F0085 comprise two HIGH, three MEDIUM, and one LOW finding. The Christmas affinity, disaster state-aware, and registry suites passed 25 tests across 3 files; these checks support but do not replace the source review. No gameplay source or tests were changed. The next registry entry is position 271, The Powder Wagon, and the next finding ID is CRA-F0086.
+
+## Positions 271–280
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 271 | The Powder Wagon | HEALTHY | — |
+| 272 | After the Tornado | CONFIRMED DEFECT | CRA-F0086 (MEDIUM) — checking the cow’s gate sets the “moved” proof and makes the ending say it is safe. |
+| 273 | The Second Wave | HEALTHY | — |
+| 274 | Wanted in Red Creek | HEALTHY | — |
+| 275 | The Man at the End of the Bar | CONFIRMED DEFECT | CRA-F0087 (MEDIUM) — exit routes that never hear from a clerk still say the clerk corrected the accusation. |
+| 276 | The Stage Was Hit | CONFIRMED DEFECT | CRA-F0088 (MEDIUM) — the coach party is said to travel under escort even when no town help was summoned. |
+| 277 | The Bounty Poster | HEALTHY | — |
+| 278 | The Empty Jail | CONFIRMED DEFECT | CRA-F0089 (LOW) — waiting without contacting anyone reaches text asserting a clerk reviewed the charge book. |
+| 279 | Three Men at the Water Trough | HEALTHY | — |
+| 280 | The Rustled Herd | CONFIRMED DEFECT | CRA-F0090 (MEDIUM) — settlement combines market and holding-pasture counts when either source was not visited. |
+
+After the stove is made safe in After the Tornado, the cow remains unresolved; choosing only to check its gate sets `tornadoCowMoved` and later counts it safe (CRA-F0086). The Man at the End of the Bar routes directly through the kitchen exit or a successful weapon diversion to `safeEnd` without contacting the clerk, but the ending says the clerk corrected the accusation (CRA-F0087). The Stage Was Hit permits waiting with survivors without warning town; the doctor/escort is conditional in the survivor scene but the ending makes escort unconditional (CRA-F0088). The Empty Jail’s wait-only route neither calls nor finds the clerk, yet `jailerBack` reports the clerk’s review and the wait scene refers to an unanswered call (CRA-F0089). The Rustled Herd can reach settlement from the brands alone, from market, or from the holding pasture, but settlement always combines the buyer’s twelve-calf receipt and the eighteen-cattle holding count (CRA-F0090). The other five Adventures preserve their route-specific knowledge, hazard control, rescue, suspicion, and animal/property outcomes.
+
+Batch 271–280 added five findings to CRA-C0001; no new cluster was needed. Totals are now 181 HEALTHY, 15 MINOR CONCERN, and 84 CONFIRMED DEFECT across 280 reviewed Adventures; 581 remain. CRA-F0086–CRA-F0090 comprise four MEDIUM and one LOW finding. The disaster/western/registry suites passed 12 tests across 3 files; these checks support but do not replace source review. No gameplay source or tests were changed. The next registry entry is position 281, A Gun on the Table, and the next finding ID is CRA-F0091.
