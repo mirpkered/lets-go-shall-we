@@ -4,12 +4,12 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 490,
-  "reviewedCount": 490,
-  "remainingCount": 371,
-  "nextPosition": 491,
-  "nextFindingId": "CRA-F0191",
-  "nextClusterId": "CRA-C0008",
+  "reviewedThroughPosition": 500,
+  "reviewedCount": 500,
+  "remainingCount": 361,
+  "nextPosition": 501,
+  "nextFindingId": "CRA-F0196",
+  "nextClusterId": "CRA-C0009",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
   "adventures": [
@@ -502,7 +502,17 @@
     {"position":487,"adventureId":"the-storm-marker","slug":"the-storm-marker","title":"The Storm Marker","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; measuring/temporary-marker/glasses variants, washed-out bridge, detour/meeting/closure responses, hiker safety and duplicate-marker transfer traced","notes":"Old path distance is not treated as current bank safety; a visible marker is not assumed unmoved. The response variants distinguish detour, confirmed ridge meeting, and waiting with both-end closure. Each ending preserves that the creek path is closed and the hiker remains on a safe route; spare duplicate marker is distinguished from active public signs.","preReconciliationPosition":487,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":488,"adventureId":"the-lamp-in-the-cut","slug":"the-lamp-in-the-cut","title":"The Lamp in the Cut","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; mirror/matches/lantern airflow tests, signal/leave/inspect responses, partner location, retreat path, mirror transfer and Knowledge limits traced","notes":"All kit variants keep the lamp diagnosis distinct from match storage, wick state, and airflow; each response either gets a partner confirmation, postpones the stone check, or inspects from the entrance. The spare mirror transfer occurs after return to the entrance and does not claim the stone was moved or the cave cleared.","preReconciliationPosition":488,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":489,"adventureId":"the-second-gunhand","slug":"the-second-gunhand","title":"The Second Gunhand","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; whistle/flag/rope approaches, visible armed threat, patrol/negotiation/fight outcomes, combat victory, injury-loss follow-up, payroll safety and separately owned rope compensation traced","notes":"Each noncombat response distinguishes patrol response, voluntary retreat, or fight participation. Victory routes through the toll-patrol statement follow-up; injury loss offers a second meaningful choice and separately describes payroll protection/delay. The separately purchased spare rope is distinguished from Vane’s working line; no refusal/withdrawal path claims the payroll was lost.","preReconciliationPosition":489,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":490,"adventureId":"the-glass-at-milepost-nine","slug":"the-glass-at-milepost-nine","title":"The Glass at Milepost Nine","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0190"],"reviewProvenance":"current-source route review; usable-glasses/warn/circle approaches, station/cover/description responses, aftermath case discovery, restitution, witness and combat branches traced","notes":"On respond_coverDriver, the lookout leaves first and the second figure follows; on respond_recordFace the driver backs toward the staffed road. Neither response calls the station or establishes an answer. The shared aftermath variant appends the selected response result to text claiming the lookout abandoned the glasses when the station answered. That causal signal event is supported only by respond_signalStation, not the two other responses.","preReconciliationPosition":490,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":490,"adventureId":"the-glass-at-milepost-nine","slug":"the-glass-at-milepost-nine","title":"The Glass at Milepost Nine","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0190"],"reviewProvenance":"current-source route review; usable-glasses/warn/circle approaches, station/cover/description responses, aftermath case discovery, restitution, witness and combat branches traced","notes":"On respond_coverDriver, the lookout leaves first and the second figure follows; on respond_recordFace the driver backs toward the staffed road. Neither response calls the station or establishes an answer. The shared aftermath variant appends the selected response result to text claiming the lookout abandoned the glasses when the station answered. That causal signal event is supported only by respond_signalStation, not the two other responses.","preReconciliationPosition":490,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":491,"adventureId":"the-screw-jack-road","slug":"the-screw-jack-road","title":"The Screw Jack Road","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"MINOR CONCERN","findingIds":[],"reviewProvenance":"current-source route review; all three approaches, three noncombat responses, combat victory/loss, axle/wheel aftermath, repair endings, Gear/coin/refusal rewards traced","notes":"The offerExit and keepHorse paths do not explicitly narrate the thieves leaving the jack or lowering/stabilizing the axle before the common aftermath and jack offer; the jack is physically under the axle and the thieves retreat without the wheel, so the transition is plausible but compressed rather than a firm contradiction. callFarm explicitly establishes tool abandonment. Retained as a minor continuity concern, not a confirmed defect.","preReconciliationPosition":491,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":492,"adventureId":"the-paper-road","slug":"the-paper-road","title":"The Paper Road","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0191"],"reviewProvenance":"current-source route review; Pike departure/retention approaches, seal/witness/stay-back responses, sealed return/escort endings, duplicate Gear, coins, refusal and Knowledge traced","notes":"The eastOffice approach explicitly sends Pike east to report the theft. The shared response menu still offers stayBack, whose result asks Pike to confirm the stamp, and the aftermath unconditionally says Pike checks the ribbon. Neither return of Pike to the toll shed nor a later office confirmation is established on that branch; the other approaches keep her available. The case remains sealed and custody/reward handling is otherwise consistent.","preReconciliationPosition":492,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":493,"adventureId":"the-stones-in-the-rut","slug":"the-stones-in-the-rut","title":"The Stones in the Rut","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0192"],"reviewProvenance":"current-source route review; cord inspection/farm warning/stone-moving approaches, whistle/ditch/witness responses, combat win/loss, road reopening and separate whistle compensation traced","notes":"Only moveStones says the obstruction is moved and the road opens. inspectCord and warnFarm do not clear it; openDitch only turns the wagon through the ditch, while useWhistle/nameWitness make the robbers withdraw. The shared aftermath nevertheless says the obstruction is cleared on every response path. Combat loss ends in withdrawal; combat victory enters that same aftermath without a clearing action.","preReconciliationPosition":493,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":494,"adventureId":"the-ledger-under-canvas","slug":"the-ledger-under-canvas","title":"The Ledger Under Canvas","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0193"],"reviewProvenance":"current-source route review; cargo-seal/night-watch/track approaches, copied-number/secure-book/witness responses, corrected-waybill/custody endings, surplus Gear, coins, refusal and Knowledge traced","notes":"Only askNumber reveals which freight number was copied and that it belongs to the county tool shipment. secureBook explicitly avoids opening cargo or accusing anyone; callWitness only witnesses the book’s return and intact seals. The shared aftermath still asserts that the number identifies a misplaced public-works crate and that the railway will trace it via the signed waybill. traceCrate likewise remains selectable after responses that never establish the number or correction.","preReconciliationPosition":494,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":495,"adventureId":"the-horse-with-the-blue-rope","slug":"the-horse-with-the-blue-rope","title":"The Horse with the Blue Rope","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; note/book/follow approaches, tack identification/payment record/separate-claims responses, telegraph confirmation, horse custody, owner wait/leave, wage/Gear alternatives and Knowledge traced","notes":"The telegraph reply resolves the conditional release: the final fee was not paid, so the stable keeps the horse and disputed tack until the owner arrives. No response transfers the animal or treats tack identification as ownership. The gloves are separately owned stable work gear; payment, Gear alternative and refusal remain distinct.","preReconciliationPosition":495,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":496,"adventureId":"the-lantern-in-the-hedge","slug":"the-lantern-in-the-hedge","title":"The Lantern in the Hedge","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; dark/raised-lamp/gate approaches, farmhouse/purse/gate responses, account/leave endings, fight win/loss, recovered guard ownership, payment/refusal and Knowledge traced; focused regression covers purse outcome","notes":"The response distinction is preserved: leavePurse says the robber takes the purse; callHouse and holdGate drive the figures away without that loss. Current aftermath/reward wording does not say a purse was surrendered on the latter routes, and the regression checks that distinction. The robber’s damaged lantern/guard is distinguished from the farmer’s returned lamp; combat loss retains the farmer’s rescue and thieves’ retreat.","preReconciliationPosition":496,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":497,"adventureId":"the-bridge-keeper-isnt-home","slug":"the-bridge-keeper-isnt-home","title":"The Bridge Keeper Isn’t Home","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; posted-notice/wagoner/keeper-location approaches, receipt/turnback/date responses, combat win/loss, bridge closure/reopening endings, spare-strap compensation, refusal and Knowledge traced","notes":"The current county fee is established in setup; the false collector’s refusal, retreat, or combat withdrawal remains distinct. Aftermath records the keeper’s return and keeps the bridge closed pending notice/rope work; the escort ending waits for reopening before crossing. The strap is the keeper’s separate private spare, not the county barrier rope.","preReconciliationPosition":497,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":498,"adventureId":"the-punctured-tireless-wheel","slug":"the-punctured-tireless-wheel","title":"The Wheel with the Clean Cut","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0194"],"reviewProvenance":"current-source route review; team/shelter/tracks approaches, tool-roll return/team movement/witness responses, two trace endings, fee/duplicate-toolkit/refusal and missing Gear gate traced","notes":"The aftermath states that the trace can be spliced with the Freightman’s Strap; ending_spliceTrace then offers to splice it, but the generated choice has no item or usable-item requirement. A fresh Traveler without the carryable strap can select a route whose stated method depends on that specific tool. The alternative reportTrace path leaves the repair to the smith. This is a missing equipment-availability gate, distinct from C0004’s broken-Gear-as-usable pattern.","preReconciliationPosition":498,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":499,"adventureId":"the-inn-yard-watch","slug":"the-inn-yard-watch","title":"The Inn-Yard Watch","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; horse/tack/latch/watch approaches, cousin/cracked-strap/owner-witness responses, both stable endings, key-ledger removal, compensation alternatives and Knowledge traced","notes":"The return is explicit on askCousin and is presupposed by the other responses’ ‘accepting the return’ / ‘witness the return’ wording; guests identify their own tack, after which the host sorts sound bridles from the inn’s damaged strap. The stable boy is not blamed, no horse is claimed stolen, and the key ledger is removed before the duplicate case is transferred.","preReconciliationPosition":499,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":500,"adventureId":"the-mill-road-pursuit","slug":"the-mill-road-pursuit","title":"The Mill-Road Pursuit","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0195"],"reviewProvenance":"current-source route review; ownership/traffic/follow approaches, pin recovery/driver aid/miller responses, combat win/loss, return/escort endings, personal jack reward and Knowledge traced","notes":"On helpDriver, the player helps lift the cart before anyone reaches the pin; the driver only admits the older partner promised payment for a pin they did not own. The shared aftermath nevertheless says the pin is returned to the miller, and the escortDriver ending and Carriage Jack offer rely on that return. securePin, callMiller, and combat victory explicitly establish pin recovery; combat loss says the miller recovers it.","preReconciliationPosition":500,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -694,7 +704,12 @@
     {"findingId":"CRA-F0187","position":476,"adventureId":"the-flooded-chest","severity":"MEDIUM","defect":"The combat-victory route reaches settlement text claiming the family keeps recovered property despite no recovery occurring.","routeWitness":"turn.standGround -> combat win -> afterFight -> settlement; the combat win text says the thieves leave, the chest remains with its owners, and the crossing is closed. No wait/mark/guide response is selected and neither chest nor collar is recovered, but the settlement base text claims ‘The family keeps its recovered property.’ This base is the combat path because it sets no support_response_* flag; ordinary response paths have route-specific text variants.","violatedRule":"Recovery and possession outcomes must not be asserted unless a route action establishes that the object was recovered.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0188","position":480,"adventureId":"the-rail-shed","severity":"MEDIUM","defect":"A diagnosis-only counterweight test can receive the Gear reward through an ending that claims the gate was repaired and signed off.","routeWitness":"preparation.kit_* -> complication.response_test -> settlement.acceptGear -> gear; response_test only unhooks the gate and tests the counterweight, confirming it moves freely and locating the pulley-pin fault. It never replaces the pin or repairs the gate, but the Pocket Toolkit ending says the foreman signs off the repaired gate. response_open replaces the pin; response_defer obtains a measured repair approval, and those distinct paths do establish remediation.","violatedRule":"A diagnostic result is not a completed repair or approval; endings must preserve diagnosis, intervention, and sign-off as separate states.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0189","position":484,"adventureId":"the-wrong-cache","severity":"MEDIUM","defect":"A statement-only ending can receive the pry-tool reward whose provenance claims the clerk took custody of a case that remains at the site.","routeWitness":"threat.response_wait or response_document -> aftermath.ending_stayForStatement -> settlement.acceptGear -> gear; response_wait leaves the sealed case at the cellar for a witness and response_document leaves it for an owner-arranged crew; stayForStatement only records testimony. Neither route transfers custody, while gear provenance says the clerk has taken the freight case. The separate returnCase ending and response_return explicitly establish the receipt/custody path.","violatedRule":"Custody and ownership transfer must be tied to a route-established handoff; recording a statement is not delivery of the object.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0190","position":490,"adventureId":"the-glass-at-milepost-nine","severity":"MEDIUM","defect":"Shared aftermath says the lookout abandoned the glasses when the station answered on response routes that never called or received the station.","routeWitness":"threat.respond_coverDriver or respond_recordFace -> aftermath; these responses state the lookout leaves/follows or the driver backs toward the staffed road, without a station call/answer. The response-specific aftermath variant appends that result to the base aftermath claim that the lookout left the field-glass case when the station answered. Only respond_signalStation establishes that exchange.","violatedRule":"A shared outcome must not import a communication event or its causal result from a sibling response route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0190","position":490,"adventureId":"the-glass-at-milepost-nine","severity":"MEDIUM","defect":"Shared aftermath says the lookout abandoned the glasses when the station answered on response routes that never called or received the station.","routeWitness":"threat.respond_coverDriver or respond_recordFace -> aftermath; these responses state the lookout leaves/follows or the driver backs toward the staffed road, without a station call/answer. The response-specific aftermath variant appends that result to the base aftermath claim that the lookout left the field-glass case when the station answered. Only respond_signalStation establishes that exchange.","violatedRule":"A shared outcome must not import a communication event or its causal result from a sibling response route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0191","position":492,"adventureId":"the-paper-road","severity":"MEDIUM","defect":"After Pike is sent east, a shared response and aftermath still claim she is present at the toll shed to identify and check the sealed case.","routeWitness":"approach_eastOffice explicitly sends Pike to report at the county office; threat.respond_stayBack says Pike confirms the stamp from the road, and the common aftermath says Pike checks the ribbon. No return-to-toll-shed or later office confirmation is represented. The checkTracks/seekWitness approaches keep Pike available, so the mismatch is route-specific.","violatedRule":"Shared route outcomes must preserve NPC presence and location established by prior choices.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0192","position":493,"adventureId":"the-stones-in-the-rut","severity":"MEDIUM","defect":"The shared aftermath claims the road obstruction is cleared on routes that never move the stones.","routeWitness":"approach_inspectCord or approach_warnFarm -> threat.respond_useWhistle/respond_openDitch/respond_nameWitness -> aftermath; neither approach moves the rocks and none of those response outcomes clears them. Only approach_moveStones establishes that the road opens slowly. The aftermath base nevertheless says the obstruction is cleared across every response variant; combat victory also converges there without a clearing action.","violatedRule":"A location/obstacle state may change only when an incoming route establishes the physical intervention.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0193","position":494,"adventureId":"the-ledger-under-canvas","severity":"MEDIUM","defect":"Shared aftermath discloses the meaning of a copied freight number on routes that never learn the number or identify the shipment.","routeWitness":"threat.respond_secureBook or respond_callWitness -> aftermath; these responses secure the returned ledger or witness its return and intact cargo seals, without revealing the copied number. Only respond_askNumber establishes that it is a county tool shipment. The common aftermath says the number points to a misplaced public-works crate and the railway will trace it by signed waybill; traceCrate is also offered after those non-discovery routes.","violatedRule":"Information learned on one response branch must not leak into sibling routes or support an unearned resolution action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0194","position":498,"adventureId":"the-punctured-tireless-wheel","severity":"MEDIUM","defect":"The trace-splicing action is available to a Traveler who does not have the specific Freightman’s Strap named as its method.","routeWitness":"aftermath -> ending_spliceTrace; the scene says the trace can be spliced with the Freightman’s Strap, but the generated ending_spliceTrace choice has no item/usableItems requirement. A fresh Traveler without freightmansStrap can therefore select the method-specific repair. ending_reportTrace instead leaves the trace to the smith.","violatedRule":"An equipment-specific action must be gated by possession and usability of the tool it names, or state a route-established source for that tool.","clusterId":"CRA-C0008","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0195","position":500,"adventureId":"the-mill-road-pursuit","severity":"MEDIUM","defect":"The help-the-driver response reaches aftermath and reward text asserting that the stolen axle pin was returned although the route only assists with the cart.","routeWitness":"threat.respond_helpDriver -> aftermath; the response says the Traveler helps lift the cart before anyone reaches the pin, and the driver admits the older companion promised payment for it. It never says the pin was recovered. The common aftermath claims it is returned to the miller, and settlement/escortDriver relies on the return. securePin/callMiller and combat win/loss separately establish recovery.","violatedRule":"Recovery and custody claims must be supported by an action on every route reaching the shared result or reward.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -825,7 +840,11 @@
         "CRA-F0187",
         "CRA-F0188",
         "CRA-F0189",
-        "CRA-F0190"
+        "CRA-F0190",
+        "CRA-F0191",
+        "CRA-F0192",
+        "CRA-F0193",
+        "CRA-F0195"
       ]
     },
     {
@@ -929,12 +948,18 @@
         "CRA-F0166",
         "CRA-F0179"
       ]
+    },
+    {
+      "clusterId": "CRA-C0008",
+      "name": "Equipment-specific action without availability gate",
+      "description": "A route offers a concrete action whose authored method names carryable Gear without checking that the Traveler possesses and can use that Gear, and without establishing another in-scene source.",
+      "findingIds": ["CRA-F0194"]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 287,
-    "MINOR CONCERN": 35,
-    "CONFIRMED DEFECT": 168,
+    "HEALTHY": 291,
+    "MINOR CONCERN": 36,
+    "CONFIRMED DEFECT": 173,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1125,6 +1150,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarios/roadDangerGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "40 tests passed across 4 files; supporting all-year support and road-danger scenario route/combat/reward variants, registry integrity, and equipment condition semantics; route-level review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/roadDangerGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "23 tests passed across 3 files; supporting Road Danger route/combat/reward variants, registry integrity, and Gear action usability semantics for positions 491-500; semantic conclusions are from per-route source traces"
     }
   ],
   "reviewBatches": [
@@ -1319,14 +1348,18 @@
     {
       "positions": "481-490",
       "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0189 records statement-only custody leakage on The Wrong Cache’s pry-tool reward; CRA-F0190 records station-answer causality leaked into Glass at Milepost Nine aftermath variants. Both extend CRA-C0001. The Missing Brace has a minor shared-flag setup wording concern; the other seven Adventures are healthy. Adventurer Support, Road Danger, registry, and equipment suites passed 40 tests across four files as supporting evidence; no gameplay source or tests changed."
+    },
+    {
+      "positions": "491-500",
+      "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0191 records the absent-Pike response on The Paper Road; CRA-F0192 records uncleared road stones claimed cleared; CRA-F0193 records freight-number information leaking from the askNumber route; CRA-F0195 records an axle pin claimed returned after helpDriver only lifts the cart. Those four extend CRA-C0001. CRA-F0194 records an ungated Freightman’s Strap repair action in The Wheel with the Clean Cut and establishes CRA-C0008. The Screw Jack Road retains one minor compression concern; the other four Adventures are healthy. Road Danger, registry and equipment suites passed 23 tests across three files as supporting evidence; no gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 490,
-  "maxReviewedRegistryPosition": 490,
+  "highestContiguousReviewedPosition": 500,
+  "maxReviewedRegistryPosition": 500,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 491,
-  "firstUnreviewedStableId": "the-screw-jack-road",
-  "nextStableId": "the-screw-jack-road",
+  "firstUnreviewedPosition": 501,
+  "firstUnreviewedStableId": "the-letter-under-the-seat",
+  "nextStableId": "the-letter-under-the-seat",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1817,7 +1850,17 @@
     "the-storm-marker",
     "the-lamp-in-the-cut",
     "the-second-gunhand",
-    "the-glass-at-milepost-nine"
+    "the-glass-at-milepost-nine",
+    "the-screw-jack-road",
+    "the-paper-road",
+    "the-stones-in-the-rut",
+    "the-ledger-under-canvas",
+    "the-horse-with-the-blue-rope",
+    "the-lantern-in-the-hedge",
+    "the-bridge-keeper-isnt-home",
+    "the-punctured-tireless-wheel",
+    "the-inn-yard-watch",
+    "the-mill-road-pursuit"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1826,9 +1869,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 490,
-    "uniqueCurrentRegisteredAdventuresReviewed": 490,
-    "directStableIdMatches": 488,
+    "recordedEntriesInspected": 500,
+    "uniqueCurrentRegisteredAdventuresReviewed": 500,
+    "directStableIdMatches": 498,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1860,9 +1903,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 490,
+    "highestContiguousReviewedPosition": 500,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 490,
+    "maxReviewedLivePosition": 500,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1880,6 +1923,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, and the first Road Danger Adventure at position 490 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 491, The Screw Jack Road (stable ID the-screw-jack-road), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, and Road Danger Adventures at positions 490–500 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 501, The Letter Under the Seat (stable ID the-letter-under-the-seat), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

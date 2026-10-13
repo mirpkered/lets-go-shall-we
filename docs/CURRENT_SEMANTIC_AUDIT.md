@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 490 current registered Adventures reviewed; 371 of 861 remain.
-Next: position 491, The Screw Jack Road (`the-screw-jack-road`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0191`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 500 current registered Adventures reviewed; 361 of 861 remain.
+Next: position 501, The Letter Under the Seat (`the-letter-under-the-seat`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0196`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,21 +11,21 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 287 |
-| MINOR CONCERN | 35 |
-| CONFIRMED DEFECT | 168 |
+| HEALTHY | 291 |
+| MINOR CONCERN | 36 |
+| CONFIRMED DEFECT | 173 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 490 |
+| Total reviewed current registered Adventures | 500 |
 
-There are 190 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern.
+There are 195 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern.
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 490 recorded entries, 488 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 500 recorded entries, 498 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 490. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–490 were then reviewed in live-registry order. There are no gaps through position 490. The next unreviewed Adventure is position 491, The Screw Jack Road (`the-screw-jack-road`); 371 current registered Adventures remain.
+The highest contiguous reviewed position is now 500. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–500 were then reviewed in live-registry order. There are no gaps through position 500. The next unreviewed Adventure is position 501, The Letter Under the Seat (`the-letter-under-the-seat`); 361 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -939,3 +939,22 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced po
 | 490 | The Glass at Milepost Nine | CONFIRMED DEFECT | CRA-F0190 (MEDIUM) — aftermath imports “station answered” causality on cover/description routes that never contact it. |
 
 CRA-F0189–CRA-F0190 extend CRA-C0001 (route-specific custody and communication outcomes lost at shared results); no new cluster was created. The ledger is contiguous through position 490; next is position 491, The Screw Jack Road (`the-screw-jack-road`), with 371 remaining and next finding CRA-F0191.
+
+## Audit continuation (live positions 491–500)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order within the Road Danger genre batch. Traced approach flags and shared threat text, response-specific aftermath variants, physical recovery/obstacle changes, end states, combat win/loss and withdrawal, optional Gear/coin/refusal rewards, Knowledge grants, and custody/provenance. The focused Road Danger, registry, and equipment suites passed 23 tests across three files as supporting evidence; route-level source review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 491 | The Screw Jack Road | MINOR CONCERN | — non-combat exits do not explicitly narrate jack abandonment or axle stabilization before the common aftermath/reward; the jack’s presence under the axle makes the transition plausible, so this remains compressed rather than a confirmed contradiction. |
+| 492 | The Paper Road | CONFIRMED DEFECT | CRA-F0191 (MEDIUM) — after Pike is sent east, the shared response and aftermath still require her presence at the toll shed to identify/check the case. |
+| 493 | The Stones in the Rut | CONFIRMED DEFECT | CRA-F0192 (MEDIUM) — shared aftermath claims the obstruction is cleared on routes that never move the stones. |
+| 494 | The Ledger Under Canvas | CONFIRMED DEFECT | CRA-F0193 (MEDIUM) — the shared result reveals what the copied freight number means on branches that never learn it. |
+| 495 | The Horse with the Blue Rope | HEALTHY | — the unpaid balance is verified before release; horse/tack stay in stable custody and the gloves are separate compensation. |
+| 496 | The Lantern in the Hedge | HEALTHY | — current response and aftermath text preserve purse loss versus safe retreat; focused regression covers the distinction. |
+| 497 | The Bridge Keeper Isn’t Home | HEALTHY | — false-fee response/combat outcomes, closure/reopening, and the privately owned spare strap remain route-consistent. |
+| 498 | The Wheel with the Clean Cut | CONFIRMED DEFECT | CRA-F0194 (MEDIUM) — the trace-splicing ending names Freightman’s Strap as the method but has no possession/usability gate. |
+| 499 | The Inn-Yard Watch | HEALTHY | — all outcomes represent the return and owner identification; damaged inn tack and separate key-case transfer stay distinguished. |
+| 500 | The Mill-Road Pursuit | CONFIRMED DEFECT | CRA-F0195 (MEDIUM) — helpDriver only lifts the cart, but shared aftermath and reward claim the axle pin was returned. |
+
+CRA-F0191–CRA-F0193 and CRA-F0195 extend CRA-C0001 (route-specific person, obstacle, information, and recovery state lost at convergence). CRA-F0194 establishes CRA-C0008, a distinct missing availability gate for a named Gear-dependent action; CRA-C0004 remains specifically about broken Gear being treated as usable. No gameplay source or tests changed. The ledger is contiguous through position 500; next is position 501, The Letter Under the Seat (`the-letter-under-the-seat`), with 361 remaining and next finding CRA-F0196.
