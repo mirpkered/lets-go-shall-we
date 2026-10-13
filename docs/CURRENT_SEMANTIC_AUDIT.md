@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–140 reviewed; 721 of 861 remain.
-Next: position 141; next finding ID `CRA-F0038`.
+Checkpoint: registry positions 1–150 reviewed; 711 of 861 remain.
+Next: position 151; next finding ID `CRA-F0038`.
 
 ## Current checkpoint
 
@@ -11,11 +11,11 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 96 |
+| HEALTHY | 106 |
 | MINOR CONCERN | 8 |
 | CONFIRMED DEFECT | 36 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 140 |
+| Total reviewed | 150 |
 
 There are 37 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036 are LOW; CRA-F0027, CRA-F0033, and CRA-F0037 are MEDIUM. Batch 51–60 found no additional confirmed defects.
 
@@ -223,6 +223,23 @@ The medical routes keep company/support separate from clinical treatment. In The
 
 The Back Door’s `privacy` branch establishes the trusted aunt as a destination. The separate `shelter` branch establishes only a private room and the resident’s choice to leave by the rear lane or wait until dawn, yet `shelter.leave` sends them to the aunt’s home. That route-specific, safety-sensitive destination leak is CRA-F0037 (MEDIUM, CRA-C0001). The legal, family, religious/community and craft routes otherwise keep decisions, payments, privacy, authority and work outcomes bounded by their selected paths.
 
+## Positions 141–150
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 141 | The Morning Edition | HEALTHY | — |
+| 142 | Hold Still | HEALTHY | — |
+| 143 | The Undertaker’s Request | HEALTHY | — |
+| 144 | The Watchmaker | HEALTHY | — |
+| 145 | Before the Steamer Leaves | HEALTHY | — |
+| 146 | The Missing Crate | HEALTHY | — |
+| 147 | Locked Through | HEALTHY | — |
+| 148 | At the Landing | HEALTHY | — |
+| 149 | First Snow | HEALTHY | — |
+| 150 | The Thaw | HEALTHY | — |
+
+The specialized-trade routes preserve the editor’s authority over publication, distinguish an exposed/covered plate from a finished print, keep family decisions with the sister, and separate the watch’s maker from its owner and repair status. River-commerce outcomes keep counts, cargo identity, boarding decisions, and paid work tied to evidence or the actor with authority; the steamer baggage flow distinguishes verification, owner identification, and deferred checking. The two seasonal routes limit claims to what the traveler or farmer actually does: the boards support only foot/handcart travel, the cloak changes the traveler’s exposure rather than creek conditions, and the light snow remains a manageable inconvenience. No additional confirmed defects were identified.
+
 ## Finding clusters
 
 - **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0037.
@@ -237,3 +254,5 @@ The detailed findings, witnesses, source provenance, and carry-forward limitatio
 The focused existing suites for The Man in the Ditch, The Burning Loft, and Under the Ice passed: 56 tests across 3 files. The After the Storm and Washout-focused suites passed: 11 tests across 3 files. Inventory and scenario-registry validation passed: 16 tests across 2 files, including the 861-Adventure registry assertion. The Honest Work shared-builder suite passed: 12 tests. Batch 51–60 suites (`honestWorkBatch.test.ts` and `commerceBatch.test.ts`) passed: 27 tests across 2 files. Batch 61–70 Commerce and Community suites passed: 29 tests across 2 files. Batch 71–80 Community/Wilderness plus Gear-condition suites passed: 37 tests across 3 files. Batch 81–90 Wilderness, Animals, and Gear-condition suites passed: 35 tests across 3 files. Batch 91–100 animal and pleasant-day suites passed: 19 tests across 2 files. Batch 101–110 pleasant-day and dispute suites passed: 15 tests across 2 files. Batch 111–120 Disputes and Strange Roads suites passed: 23 tests across 2 files. Batch 121–130 second-wave, registry, and diversity suites passed: 20 tests across 3 files. Batch 131–140 second-wave, domestic payoff, and content-depth suites passed: 16 tests across 3 files. These tests support, but do not substitute for, source route review. No gameplay repairs, test changes, deployment, or scheduler changes were made. Checkpoints are committed locally; remote fetch/push is unavailable in this environment. Weekly Scenario Batch remains paused.
 
 The persistent ledger did not exist in this checkout before this run. The carry-forward limitation above is preserved so later batches can resume without pretending that chat-only prior evidence was re-examined or fully recovered. Future batches should append in registry order and retain this qualification unless the missing detail is recoverable from the original audit conversation/artifact.
+
+Batch 141–150 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, and `riverWaterWorkGenreBatch.test.ts`) passed: 24 tests across 3 files. These graph/reachability and related content checks support, but do not replace the route-level source review.
