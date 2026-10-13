@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–280 reviewed; 581 of 861 remain.
-Next: position 281; next finding ID `CRA-F0091`.
+Checkpoint: registry positions 1–290 reviewed; 571 of 861 remain.
+Next: position 291; next finding ID `CRA-F0097`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–270 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–290 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 181 |
+| HEALTHY | 186 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 84 |
+| CONFIRMED DEFECT | 89 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 280 |
+| Total reviewed | 290 |
 
-There are 90 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, and CRA-F0089 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, and CRA-F0090 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, and CRA-F0083 are HIGH. Batch 51–60 found no additional confirmed defects.
+There are 95 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, CRA-F0076, CRA-F0084, CRA-F0089, CRA-F0092–CRA-F0094 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, CRA-F0077–CRA-F0080, CRA-F0082, CRA-F0085–CRA-F0088, CRA-F0090–CRA-F0091, and CRA-F0095 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, CRA-F0051, CRA-F0081, and CRA-F0083 are HIGH. The current batch added two MEDIUM and three LOW findings.
 
 ## Positions 21–30
 
@@ -516,3 +516,22 @@ Batch 261–270 added six findings to existing CRA-C0001/C0002 patterns; no new 
 After the stove is made safe in After the Tornado, the cow remains unresolved; choosing only to check its gate sets `tornadoCowMoved` and later counts it safe (CRA-F0086). The Man at the End of the Bar routes directly through the kitchen exit or a successful weapon diversion to `safeEnd` without contacting the clerk, but the ending says the clerk corrected the accusation (CRA-F0087). The Stage Was Hit permits waiting with survivors without warning town; the doctor/escort is conditional in the survivor scene but the ending makes escort unconditional (CRA-F0088). The Empty Jail’s wait-only route neither calls nor finds the clerk, yet `jailerBack` reports the clerk’s review and the wait scene refers to an unanswered call (CRA-F0089). The Rustled Herd can reach settlement from the brands alone, from market, or from the holding pasture, but settlement always combines the buyer’s twelve-calf receipt and the eighteen-cattle holding count (CRA-F0090). The other five Adventures preserve their route-specific knowledge, hazard control, rescue, suspicion, and animal/property outcomes.
 
 Batch 271–280 added five findings to CRA-C0001; no new cluster was needed. Totals are now 181 HEALTHY, 15 MINOR CONCERN, and 84 CONFIRMED DEFECT across 280 reviewed Adventures; 581 remain. CRA-F0086–CRA-F0090 comprise four MEDIUM and one LOW finding. The disaster/western/registry suites passed 12 tests across 3 files; these checks support but do not replace source review. No gameplay source or tests were changed. The next registry entry is position 281, A Gun on the Table, and the next finding ID is CRA-F0091.
+
+## Positions 281–290
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 281 | A Gun on the Table | CONFIRMED DEFECT | CRA-F0091 (MEDIUM) — routes that do not fetch the harvest book reach text asserting its repayment entry and a negotiated balance/date. |
+| 282 | The Outlaw’s Mother | CONFIRMED DEFECT | CRA-F0092 (LOW) — handing the letter to the deputy grants History that family news was carried to the wanted son. |
+| 283 | The False Deputy | HEALTHY | — |
+| 284 | One Horse, Two Riders | HEALTHY | — |
+| 285 | The Last Shot | CONFIRMED DEFECT | CRA-F0093 (LOW) — a retreat without signaling the rancher grants History credit for helping them leave. |
+| 286 | The Map in the Ledger | CONFIRMED DEFECT | CRA-F0094 (LOW) — copying an unexplained map can end by naming its mark as a water gate. |
+| 287 | The Town That Moved | HEALTHY | — |
+| 288 | The Old Survey Stone | HEALTHY | — |
+| 289 | The Sealed Mine Office | HEALTHY | — |
+| 290 | The Room Behind the Chimney | CONFIRMED DEFECT | CRA-F0095 (MEDIUM) — partial or unexamined routes converge on claims that the family learned the room’s purpose and returned both objects. |
+
+In A Gun on the Table, `distanceTalk` and the innkeeper’s `hallCall` both reach `book` without retrieving the harvest book, but that scene presents its eight-coin repayment entry as known. A successful grab-and-secure route bypasses the book yet reaches a settled ending that states the conditional four-coin balance and accepted date (CRA-F0091). The Outlaw’s Mother correctly gates delivery wording on `familyNewsDeliveredToSon`, but the separate `deputyLetter` choice grants History claiming family news was carried to the wanted son even though the letter was given to the deputy (CRA-F0092). In The Last Shot, `coverLeave` reaches retreat without signaling the rancher; the retreat scene says their safety depends on following a signal, but `retreatReport` still grants History credit for helping them leave (CRA-F0093). In The Map in the Ledger, copying the map or returning from the creek before reading the stone reaches an ending that identifies the mark as a water gate; that interpretation is established only by `stoneRecord` (CRA-F0094). The Room Behind the Chimney’s shared discovery claims both the purpose was learned and both objects were returned, although braced withdrawal learns no letter contents and retrieves nothing, while box and letter routes can return only one object (CRA-F0095). One Horse, Two Riders’ foot-follow branch permits the explicit `trackDoctor` action to take the stranger to the ranch house before the doctor-ending claim; other routes preserve the pouch/posse distinctions. The False Deputy preserves the distinction between reporting and escort, The Town That Moved’s discovery is supported by its visited marker/record routes, the Old Survey Stone’s calf-return claims remain correctly gated by `oldSurveyCalfReturned`, and the Sealed Mine Office uses route-specific variants to avoid importing private wage, notice, map, or drainage facts. Western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed.
+
+Batch 281–290 added five findings to existing CRA-C0001/C0002 patterns; no new cluster was required. Totals are now 186 HEALTHY, 15 MINOR CONCERN, and 89 CONFIRMED DEFECT across 290 reviewed Adventures; 571 remain. CRA-F0091–CRA-F0095 comprise two MEDIUM and three LOW findings. The western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 291, The Island When the Water Falls, and the next finding ID is CRA-F0096.
