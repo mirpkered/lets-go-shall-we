@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 540,
-  "reviewedCount": 540,
-  "remainingCount": 321,
-  "nextPosition": 541,
-  "nextFindingId": "CRA-F0211",
+  "reviewedThroughPosition": 550,
+  "reviewedCount": 550,
+  "remainingCount": 311,
+  "nextPosition": 551,
+  "nextFindingId": "CRA-F0214",
   "nextClusterId": "CRA-C0009",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -554,7 +554,17 @@
     {"position":537,"adventureId":"the-fence-at-the-fog-line","slug":"the-fence-at-the-fog-line","title":"The Fence at the Fog Line","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; usable marker/rope, long/short boardwalk, wait, porter-slip and jar-movement outcomes traced","notes":"Marker and rope actions are possession-and-usability gated. The intact long boardwalk is late but safe; the missing-plank crossing has a shaken porter. Helping the slipping porter before moving the jar remains distinct from asking Kersey to move it while the Traveler helps."},
     {"position":538,"adventureId":"the-lumber-crew-at-the-gully","slug":"the-lumber-crew-at-the-gully","title":"The Lumber Crew at the Gully","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; owned stretcher, crew loan, line rescue, saw-first, slow/alone lift and item transfer traced","notes":"The crew-loan route is the only rescue path that begins without the Traveler’s own stretcher and permits accepting the retired spare; the owned-stretcher route excludes that grant. Rope rescue and saw-first preserve the worker/saw priority distinction. The conditional ownership sentence is supported only when the acceptance effect occurs; strain and delay remain explicit."},
     {"position":539,"adventureId":"the-quiet-coffin-cart","slug":"the-quiet-coffin-cart","title":"The Quiet Coffin Cart","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; usable rope/wedge brake methods, turnback, family steadying, unload/carry and fee traced","notes":"Both named Gear methods require usable equipment. Turning back delays the service without risking the coffin; after braking, the family either steadies the cart or unloads and carries it uphill. Only the narrated arrival route pays the stated two-coin fee."},
-    {"position":540,"adventureId":"the-silent-warehouse-shift","slug":"the-silent-warehouse-shift","title":"The Silent Warehouse Shift","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; list/lantern/watch, crate-first, worker-first, combat success/loss, ember and pursuit outcomes traced","notes":"The two evacuation actions set distinct history flags and the ending chooses the corresponding order-specific text; both keep oil sealed and people clear. Combat success stops the attempted theft before the figure leaves and reaches evacuation; loss takes the figure out the river door while goods remain safe and no pursuit bonus is paid. Watch/help and fight outcomes preserve the different crate-handling claims."}
+    {"position":540,"adventureId":"the-silent-warehouse-shift","slug":"the-silent-warehouse-shift","title":"The Silent Warehouse Shift","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; list/lantern/watch, crate-first, worker-first, combat success/loss, ember and pursuit outcomes traced","notes":"The two evacuation actions set distinct history flags and the ending chooses the corresponding order-specific text; both keep oil sealed and people clear. Combat success stops the attempted theft before the figure leaves and reaches evacuation; loss takes the figure out the river door while goods remain safe and no pursuit bonus is paid. Watch/help and fight outcomes preserve the different crate-handling claims."},
+    {"position":541,"adventureId":"the-last-mile-of-the-medicine-wagon","slug":"the-last-mile-of-the-medicine-wagon","title":"The Last Mile of the Medicine Wagon","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0211"],"reviewProvenance":"current-source route review; bridge/side-path/load/test branches traced","notes":"The sounding-rod route ends by saying a farm cart takes the medicine by the lower road, but only the separate wagon -> load branch introduces a farm cart and its transfer choice. The worker-first side path can send medicine by another cart, but the rod-test branch contains no cart contact or transfer. Other routes distinguish worker rescue, delayed medicine, transfer, driver custody, and delivery wage."},
+    {"position":542,"adventureId":"the-watch-at-the-sheepfold","slug":"the-watch-at-the-sheepfold","title":"The Watch at the Sheepfold","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0212"],"reviewProvenance":"current-source route review; fold/approach/response/creek/dawn branches traced","notes":"The stay/lamp -> approach.lamb route reaches safe without hearing the answering whistle or meeting the neighbor, yet safe says the neighbor secures a loose ewe. The answer -> response branch establishes the neighbor and loose ewe; creek and dawn outcomes retain their separate animal/waiting results. Named Gear requirements include usability."},
+    {"position":543,"adventureId":"the-broken-axle-relay","slug":"the-broken-axle-relay","title":"The Broken Axle Relay","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; driver-care, axle-load, delegation, split-arrival and wait outcomes traced","notes":"The Folding Carriage Jack choice is produced with both items and usableItems requirements by the source choice helper, so BROKEN Gear cannot satisfy it. Driver-first care, loaded axle/teamster assistance, delegation, and second-cart delay outcomes distinguish axle delivery, driver care, and wage effects."},
+    {"position":544,"adventureId":"the-second-brace","slug":"the-second-brace","title":"The Second Brace","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0213"],"reviewProvenance":"current-source route review; measuring, plumb, square, unsafe-fit, repair and share outcomes traced","notes":"The measure choice checks only inventory ownership of the Joiner’s Folding Rule, sets checked_diagonals, and proceeds as if both diagonals were measured. BROKEN Gear remains in inventory and passes items-only requirements; the parallel Brass Plumb Bob use explicitly requires usableItems. Repair variants, unsafe brace, and wage/tool/Knowledge/declined shares are route-specific."},
+    {"position":545,"adventureId":"a-rim-before-rain","slug":"a-rim-before-rain","title":"A Rim before Rain","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; spoke inspection, wrench-assisted inspection, replacement, delay and unsafe-wedge outcomes traced","notes":"The Compact Wheel Wrench option requires usability. Replacing the split spoke or explicitly delaying for a proper spoke both converge only after the crack is demonstrated and wheel work is completed or deferred; driving the wedge early reaches the separate failure result. Wage/tool/Knowledge choices remain distinct."},
+    {"position":546,"adventureId":"the-iron-that-went-blue","slug":"the-iron-that-went-blue","title":"The Iron That Went Blue","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; inspect/bellows, redraw, pin-and-return, unsafe-strike and share outcomes traced","notes":"The temporary wooden pin route explicitly says Miriam cuts away weakened iron and draws a new eye before the Traveler returns; the shared hinge-settlement claim is established by NPC follow-through rather than falsely attributed to the Traveler. Early-strike failure remains separate."},
+    {"position":547,"adventureId":"the-harness-stitch","slug":"the-harness-stitch","title":"The Harness Stitch","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; flex/punch, replace/reinforce and unsafe-reuse outcomes traced","notes":"Both diagnostic routes reveal separated inner plies. Replacement explicitly reduces the load; reinforcement explicitly sends one wagon at a time, so the shared slower-trip settlement is supported. Unsafe surface-oiling reaches a separate strap-failure outcome; the reusable lesson is limited to the reinforce action."},
+    {"position":548,"adventureId":"the-lantern-on-the-lower-hook","slug":"the-lantern-on-the-lower-hook","title":"The Lantern on the Lower Hook","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; carry-test, replacement/reshaping, shipment refusal and share outcomes traced","notes":"Both reshape and spare-guard replacement routes reach a tested guard that clears the chimney and no longer taps the glass; the ship-first route returns separately and delays handoff before repair. The Lantern Guard field-test choice requires a usable item; share choices remain explicit."},
+    {"position":549,"adventureId":"the-roofline-in-wind","slug":"the-roofline-in-wind","title":"The Roofline in Wind","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; rope/yard-clear, brace/wait, climb/fall and share outcomes traced","notes":"The Travel Rope climb support requires usability. Both safe branches retain ladder/yard precautions; the wait route explicitly waits for calmer weather before Tamsin’s sound-rafter repair and reopening. Climbing to hold the failing gutter reaches a distinct fall/stop-work ending."},
+    {"position":550,"adventureId":"the-line-that-would-not-hold","slug":"the-line-that-would-not-hold","title":"The Line That Would Not Hold","sourceFile":"src/scenarios/tradesApprenticeshipGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; splice inspection/tool/tester, repair/relay, climb hazard and share outcomes traced","notes":"Toolkit and Line Tester actions require usable Gear; the initial climb has a separate shock/call-off outcome. Dry-wrap testing restores the station; the rider relay grants Knowledge and sets the lesson flag so the same method is not duplicated at settlement. Reward/wage/decline choices are distinct."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -768,7 +778,10 @@
     {"findingId":"CRA-F0208","position":514,"adventureId":"the-doctor-before-the-ford","severity":"MEDIUM","defect":"A response claims the doctor is clinging to a handline on a route where no handline was established.","routeWitness":"departure.case -> crossing.casefirst -> caseFirst. departure.case only sets doctor_case_protected and contains no rope/handline action. The alternative departure.rope sets doctor_rope_line, but casefirst is available from the shared crossing without checking that flag. caseFirst then says the doctor is clinging to the handline.","violatedRule":"A physical aid or route method must not appear in later narration unless it was established on the incoming route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
     ,
     {"findingId":"CRA-F0209","position":526,"adventureId":"the-horse-for-the-farrier","severity":"MEDIUM","defect":"The converged farrier-arrival ending says the farrier removes a hoof stone even after the Traveler already removed it on the gloves route.","routeWitness":"street.gloves -> hoof.ease -> arrived. hoof establishes the stone is wedged beside the shoe; ease explicitly removes it and lets the mare rest. The shared arrived ending then says the farrier removes the stone, while lead/lane/ask and crowd routes reach the same ending without that earlier removal.","violatedRule":"A converged ending must preserve completed route actions and must not narrate a resolved action as still pending on every branch.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0210","position":527,"adventureId":"the-missing-survey-case","severity":"MEDIUM","defect":"A people-first evacuation branch claims the survey instrument case reaches the track despite no route moving it from the table below the threatened cut.","routeWitness":"cut.workers -> evacuate.call -> partial. The initial case is on a plank table below the crack; call asks the chainman to wait while the crew circles and contains no case movement. The partial ending says the crew and case are accounted for and that the case reaches the track. The distinct cut.case -> cart.roll branch explicitly moves the case; the leave/go branches state it is lost.","violatedRule":"An object’s location and recovery must be established by the selected route before a shared ending claims it was moved to safety.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0210","position":527,"adventureId":"the-missing-survey-case","severity":"MEDIUM","defect":"A people-first evacuation branch claims the survey instrument case reaches the track despite no route moving it from the table below the threatened cut.","routeWitness":"cut.workers -> evacuate.call -> partial. The initial case is on a plank table below the crack; call asks the chainman to wait while the crew circles and contains no case movement. The partial ending says the crew and case are accounted for and that the case reaches the track. The distinct cut.case -> cart.roll branch explicitly moves the case; the leave/go branches state it is lost.","violatedRule":"An object’s location and recovery must be established by the selected route before a shared ending claims it was moved to safety.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0211","position":541,"adventureId":"the-last-mile-of-the-medicine-wagon","severity":"MEDIUM","defect":"The sounding-rod test route claims the medicine is taken by a farm cart although that route never establishes a cart or transfers the medicine.","routeWitness":"bridge.cross -> test. The terminal text says a farm cart takes the medicine by the lower road. Only bridge.wagon -> load introduces the farm cart; load.transfer explicitly transfers the medicine. The worker-first side route can send medicine by another cart but is not entered from test.","violatedRule":"Transport, handoff, and object-location changes must be established by the selected route before the ending claims delivery.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0212","position":542,"adventureId":"the-watch-at-the-sheepfold","severity":"MEDIUM","defect":"The non-whistle lamb-check route reaches an ending that says the neighbor secures a loose ewe although no neighbor or loose ewe has been established on that route.","routeWitness":"fold.stay or fold.lamp -> approach.lamb -> safe. This route never enters response, where the answering whistle identifies the neighbor and loose ewe. The creek and dawn routes have distinct endings; response.open is the supported route into safe.","violatedRule":"A shared ending must not assert an optional participant’s presence or action unless the incoming route established it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0213","position":544,"adventureId":"the-second-brace","severity":"MEDIUM","defect":"A BROKEN Joiner’s Folding Rule can satisfy the diagonal-measurement choice and set route proof as though both diagonals were measured.","routeWitness":"frame.measure -> hiddenRot. The choice labels physical measurement, gates only on items:['joinersFoldingRule'], and sets checked_diagonals. Engine meets checks inventory membership for items; BROKEN condition is rejected only by usableItems. The parallel frame.plumb choice correctly requires usableItems for the Brass Plumb Bob.","violatedRule":"Physical Gear use requires the named tool to be usable; possession alone cannot establish a measurement or grant the resulting route proof.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -918,7 +931,9 @@
         "CRA-F0207",
         "CRA-F0208",
         "CRA-F0209",
-        "CRA-F0210"
+        "CRA-F0210",
+        "CRA-F0211",
+        "CRA-F0212"
       ]
     },
     {
@@ -977,7 +992,8 @@
         "CRA-F0169",
         "CRA-F0174",
         "CRA-F0176",
-        "CRA-F0181"
+        "CRA-F0181",
+        "CRA-F0213"
       ]
     },
     {
@@ -1031,9 +1047,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 314,
+    "HEALTHY": 321,
     "MINOR CONCERN": 38,
-    "CONFIRMED DEFECT": 188,
+    "CONFIRMED DEFECT": 191,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1245,6 +1261,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/escortProtectionGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "21 tests passed across 3 files; supporting Escort/Protection item-availability, route/reward behavior, registry integrity, and Gear-usability semantics for positions 531-540; conclusions are based on per-route source traces"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/escortProtectionGenreBatch.test.ts src/scenarios/tradesApprenticeshipGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "28 tests passed across 4 files; supporting Escort/Protection and Trades/Apprenticeship route/reward behavior, registry integrity, and Gear-usability semantics for positions 541-550; conclusions are based on per-route source traces"
     }
   ],
   "reviewBatches": [
@@ -1459,14 +1479,18 @@
     {
       "positions": "531-540",
       "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. All route networks were traced, including glass/camera custody, mail-sack and passenger handling, chest securing before bridge evacuation, both child-recovery routes, telegraph safety/relay methods, food/horse outcomes, fog/porter/jar state, stretcher ownership and transfer, coffin-cart methods, and warehouse fire/theft outcomes. Apparent convergence compression is supported by explicit intervening scene state or plausible NPC follow-through; no confirmed defect or distinct minor concern was established. All ten are HEALTHY. No finding or cluster ID was consumed; next finding remains CRA-F0211 and next cluster CRA-C0009. Escort/Protection, registry, and equipment suites passed 21 tests across three files as supporting evidence; gameplay source/tests unchanged."
+    },
+    {
+      "positions": "541-550",
+      "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0211 and CRA-F0212 extend CRA-C0001 for an unsupported medicine-cart transfer and optional neighbor/ewe action; CRA-F0213 extends CRA-C0004 for a broken Folding Rule passing an ownership-only measurement gate. Seven Adventures are healthy and no distinct minor concern was found. Escort/Protection, Trades/Apprenticeship, registry, and equipment suites passed 28 tests across four files as supporting evidence; route-level source traces remain authoritative. No gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 540,
-  "maxReviewedRegistryPosition": 540,
+  "highestContiguousReviewedPosition": 550,
+  "maxReviewedRegistryPosition": 550,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 541,
-  "firstUnreviewedStableId": "the-last-mile-of-the-medicine-wagon",
-  "nextStableId": "the-last-mile-of-the-medicine-wagon",
+  "firstUnreviewedPosition": 551,
+  "firstUnreviewedStableId": "the-press-before-noon",
+  "nextStableId": "the-press-before-noon",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -2007,7 +2031,17 @@
     "the-fence-at-the-fog-line",
     "the-lumber-crew-at-the-gully",
     "the-quiet-coffin-cart",
-    "the-silent-warehouse-shift"
+    "the-silent-warehouse-shift",
+    "the-last-mile-of-the-medicine-wagon",
+    "the-watch-at-the-sheepfold",
+    "the-broken-axle-relay",
+    "the-second-brace",
+    "a-rim-before-rain",
+    "the-iron-that-went-blue",
+    "the-harness-stitch",
+    "the-lantern-on-the-lower-hook",
+    "the-roofline-in-wind",
+    "the-line-that-would-not-hold"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2050,9 +2084,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 540,
+    "highestContiguousReviewedPosition": 550,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 540,
+    "maxReviewedLivePosition": 550,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2070,6 +2104,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, and Escort/Protection Adventures at positions 521–540 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 541, The Last Mile of the Medicine Wagon (stable ID the-last-mile-of-the-medicine-wagon), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, and Trades/Apprenticeship Adventures at positions 544–550 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 551, The Press before Noon (stable ID the-press-before-noon), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

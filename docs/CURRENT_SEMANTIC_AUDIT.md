@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 540 current registered Adventures reviewed; 321 of 861 remain.
-Next: position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`; `src/scenarios/escortProtectionGenreBatch.ts`); next finding ID `CRA-F0211`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 550 current registered Adventures reviewed; 311 of 861 remain.
+Next: position 551, The Press before Noon (`the-press-before-noon`; `src/scenarios/tradesApprenticeshipGenreBatch.ts`); next finding ID `CRA-F0214`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 314 |
+| HEALTHY | 321 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 188 |
+| CONFIRMED DEFECT | 191 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 540 |
+| Total reviewed current registered Adventures | 550 |
 
-There are 210 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added.
+There are 213 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -1034,3 +1034,22 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced gl
 | 540 | The Silent Warehouse Shift | HEALTHY | — order-specific evacuation variants preserve crate/worker sequencing; combat win/loss and watch outcomes do not claim an unchosen evacuation method. |
 
 No finding or cluster ID was consumed; next finding remains CRA-F0211 and next available cluster remains CRA-C0009. The ledger is contiguous through position 540; next is position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`), with 321 current registered Adventures remaining. No gameplay source or tests changed; Weekly Scenario Batch remains paused.
+
+## Audit continuation (live positions 541–550)
+
+Reviewed ten previously unreviewed Adventures in live `SCENARIOS` order. Traced the medicine-wagon side path, load/transfer, delay and sounding-rod test; sheepfold watch, lamp, whistle response, lamb, creek and dawn branches; broken-axle care/load/delegation and driver/axle outcomes; brace measurement, plumb, square, unsafe fit, repair and share branches; wheel inspection/replacement/delay; blue iron inspection, redraw, pin-and-return and failed strike; harness inspection/replacement/reinforcement; lantern walk/fit, reshape/replace and shipment refusal; roof rope/yard-clear, brace/wait and climb/fall; telegraph splice inspection, usable toolkit/tester, repair/relay and shock routes. Three current contradictions were recorded. The helper-generated axle choice includes both ownership and usability gates, so it was not misclassified as a defect. Seven Adventures are healthy. Focused Escort/Protection, Trades/Apprenticeship, registry and equipment suites passed 28 tests across four files as supporting evidence; source route review remains authoritative. No gameplay source or tests changed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 541 | The Last Mile of the Medicine Wagon | CONFIRMED DEFECT | CRA-F0211 (MEDIUM) — the sounding-rod route claims a farm cart takes the medicine despite no cart or transfer being established on that route. |
+| 542 | The Watch at the Sheepfold | CONFIRMED DEFECT | CRA-F0212 (MEDIUM) — the non-whistle lamb-check route reaches shared text saying the neighbor secures a loose ewe without establishing the neighbor or ewe. |
+| 543 | The Broken Axle Relay | HEALTHY | — the generated Folding Carriage Jack choice includes a usable-item gate; care, axle, delegation and delay outcomes remain distinct. |
+| 544 | The Second Brace | CONFIRMED DEFECT | CRA-F0213 (MEDIUM) — a BROKEN Joiner’s Folding Rule passes an items-only diagonal-measurement gate and sets measurement proof. |
+| 545 | A Rim before Rain | HEALTHY | — the wheel wrench requires usability; replacement, accepted delay and premature-wedge failure remain distinct. |
+| 546 | The Iron That Went Blue | HEALTHY | — Miriam’s NPC repair between pin-setting and return establishes the settled hinge result. |
+| 547 | The Harness Stitch | HEALTHY | — replacement reduces load, reinforcement sends one wagon at a time, and unsafe reuse fails separately. |
+| 548 | The Lantern on the Lower Hook | HEALTHY | — reshaping/replacement produce a tested guard; sending it back delays handoff before repair. |
+| 549 | The Roofline in Wind | HEALTHY | — rope/yard safety routes lead to the sound-rafter repair after bracing or waiting; climbing reaches a separate fall outcome. |
+| 550 | The Line That Would Not Hold | HEALTHY | — usable-tool gates, dry-wrap/relay outcomes and the climb hazard remain distinct; the lesson flag prevents duplicate teaching. |
+
+CRA-F0211 and CRA-F0212 extend CRA-C0001; CRA-F0213 extends CRA-C0004. No new cluster was established. The ledger is contiguous through position 550; next is position 551, The Press before Noon (`the-press-before-noon`), with 311 current registered Adventures remaining and next finding CRA-F0214.
