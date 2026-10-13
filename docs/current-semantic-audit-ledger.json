@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 480,
-  "reviewedCount": 480,
-  "remainingCount": 381,
-  "nextPosition": 481,
-  "nextFindingId": "CRA-F0189",
+  "reviewedThroughPosition": 490,
+  "reviewedCount": 490,
+  "remainingCount": 371,
+  "nextPosition": 491,
+  "nextFindingId": "CRA-F0191",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -492,7 +492,17 @@
     {"position":477,"adventureId":"the-roofline","slug":"the-roofline","title":"The Roofline","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; ladder rope/slate cloak/frame allocation, rain onset, descend/ground cover/household-protection responses, postponed roof work and personal-frame/fee/refusal outcomes traced","notes":"The rope, cloak and frame variants describe their tradeoffs without implying roof completion. Each response keeps Bell off the unsafe wet pitch and protects either worker, leak or household goods; endings preserve that work is postponed and transfer Bell’s personal spare frame rather than household/roof kit.","preReconciliationPosition":477,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":478,"adventureId":"the-blind-cut","slug":"the-blind-cut","title":"The Blind Cut","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; uncertain ambush evidence, glasses/chain/flag preparation, warn/call/withdraw responses, combat victory/loss and station fee/flag transfer traced","notes":"The suspected trail is never treated as proof of an ambush. The three responses distinguish upper-ledge inspection, men leaving without a fight, and withdrawal/reporting. Combat victory states robbers withdraw and the toll clerk takes a description; injury loss preserves the wagon escape and robbers’ escape. The spare flag set is a separate station kit and no route promises a fight outcome without the combat path.","preReconciliationPosition":478,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":479,"adventureId":"the-old-pulley","slug":"the-old-pulley","title":"The Old Pulley","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; test-load, clamp, platform-edge probe, cable sound, stop/reach/brace responses and owner responsibility/Gear/fee/refusal outcomes traced","notes":"The light test bucket is explicitly not proof that a person can ride the uninspected cable; the clamp is not a brake. Reaching/drawing the case from solid ground avoids claiming the lift was used, and stopping leaves the case behind pending a new cable. The personal spare clamp and owner’s replacement responsibility are separate.","preReconciliationPosition":479,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":480,"adventureId":"the-rail-shed","slug":"the-rail-shed","title":"The Rail Shed at Noon","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0188"],"reviewProvenance":"current-source route review; hinge/post/pry tests, pin/pulley evidence, repair/defer choices, settlement variants, tool/wage/refusal rewards traced","notes":"The response_test branch only unhooks the gate and tests the counterweight, confirming it moves freely and that the pulley pin is at fault; it does not replace the pin or repair the gate. Yet accepting the Pocket Toolkit routes to an ending saying the foreman signed off the repaired gate. The open and defer responses explicitly replace/repair or obtain measured repair approval; this is isolated to diagnosis-only test plus Gear handoff.","preReconciliationPosition":480,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":480,"adventureId":"the-rail-shed","slug":"the-rail-shed","title":"The Rail Shed at Noon","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0188"],"reviewProvenance":"current-source route review; hinge/post/pry tests, pin/pulley evidence, repair/defer choices, settlement variants, tool/wage/refusal rewards traced","notes":"The response_test branch only unhooks the gate and tests the counterweight, confirming it moves freely and that the pulley pin is at fault; it does not replace the pin or repair the gate. Yet accepting the Pocket Toolkit routes to an ending saying the foreman signed off the repaired gate. The open and defer responses explicitly replace/repair or obtain measured repair approval; this is isolated to diagnosis-only test plus Gear handoff.","preReconciliationPosition":480,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":481,"adventureId":"the-wet-powder","slug":"the-wet-powder","title":"A Dry Place for the Powder","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; closed shed, canvas/pail/cart setup, boundary leak, licensed keeper, exterior cover, wait, ordinary-store pail transfer and no-handling Knowledge/reward outcomes traced","notes":"Every route keeps the powder shed closed and the blasting material untouched; the three responses remain outside the boundary and either involve the licensed keeper, slow the leak from outside, or wait. The spare Water Pail is expressly separately inventoried at the wash station, not powder-room equipment; no blast/fire or unsafe handling is claimed.","preReconciliationPosition":481,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":482,"adventureId":"the-brush-line","slug":"the-brush-line","title":"The Brush Line","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; saw/marker/cloak kit limits, old-stone/public-boundary evidence, farmhand authorization, turnback, owner-fence separation and spare-saw compensation traced","notes":"The three preparation variants do not overstate what saw, markers or cloak accomplish. The old-stone route keeps the group on the public side; the ask route defers boundary authority to the owner; the mark route turns back. The guide’s personally owned spare saw is distinguished from landowner fence tools, and Knowledge does not claim ownership was legally settled.","preReconciliationPosition":482,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":483,"adventureId":"the-missing-brace","slug":"the-missing-brace","title":"The Missing Brace","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"MINOR CONCERN","findingIds":[],"reviewProvenance":"current-source route review; bridge closure, brace-location/flags/hollow-note kit, visible-crowd barrier, signal/detour/whistle responses, closure and spare-flag transfer traced","notes":"The response wording ‘Use the agreed flags’ assumes a shared flag pattern not introduced in the setup; the response consequence does show the far-end attendant repeating it and the cart stopping, so receipt and safety outcome are immediately established. This is a minor setup/wording ambiguity rather than an unresolved bridge-state claim. The span remains closed pending inspection.","preReconciliationPosition":483,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":484,"adventureId":"the-wrong-cache","slug":"the-wrong-cache","title":"The Wrong Cache","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0189"],"reviewProvenance":"current-source route review; seal/mark/notes approaches, clerk confirmation, return/witness/document responses, return-case versus statement endings and personal Gear reward/provenance traced","notes":"The stayForStatement ending records only the Traveler’s account and does not transfer the case. If it follows response_wait or response_document, those routes expressly leave the sealed case at the cellar for a witness or recovery crew. Yet accepting Rell’s spare pry tool reaches gear text claiming the clerk took custody of the case. The explicit returnCase ending does establish receipt/custody; statement-only paths do not.","preReconciliationPosition":484,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":485,"adventureId":"the-rough-water-watch","slug":"the-rough-water-watch","title":"The Rough-Water Watch","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; glasses/flag/line readiness, passenger stop/eddy communication, rope use after safe arrival, alternate shelter response, combat win/loss, passenger safety and personal-glasses transfer traced","notes":"The opening line is held until the skiff reaches the safe eddy; flag and tow responses separately move passengers to slower/sheltered water. Combat victory states passengers call from the eddy and crew secures its own line, while loss states Bell moves passengers away and raiders leave. The offered glasses are Bell’s personal spare rather than operating ferry equipment.","preReconciliationPosition":485,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":486,"adventureId":"the-ash-frame","slug":"the-ash-frame","title":"The Ash Frame","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; frame/strap/cover limits, seed/fitting priority, rest and two-trip plan, temporary repair and retirement gift/Knowledge outcomes traced","notes":"Frame placement does not imply reduced load; strap does not reduce weight; cover protects contents only. Each response delivers the school samples while either leaving fittings for another team, resting and splitting loads, or making a temporary repair Orr will replace later. The Pack Frame is Orr’s personal retirement gift after sample delivery, consistent across paths.","preReconciliationPosition":486,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":487,"adventureId":"the-storm-marker","slug":"the-storm-marker","title":"The Storm Marker","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; measuring/temporary-marker/glasses variants, washed-out bridge, detour/meeting/closure responses, hiker safety and duplicate-marker transfer traced","notes":"Old path distance is not treated as current bank safety; a visible marker is not assumed unmoved. The response variants distinguish detour, confirmed ridge meeting, and waiting with both-end closure. Each ending preserves that the creek path is closed and the hiker remains on a safe route; spare duplicate marker is distinguished from active public signs.","preReconciliationPosition":487,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":488,"adventureId":"the-lamp-in-the-cut","slug":"the-lamp-in-the-cut","title":"The Lamp in the Cut","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; mirror/matches/lantern airflow tests, signal/leave/inspect responses, partner location, retreat path, mirror transfer and Knowledge limits traced","notes":"All kit variants keep the lamp diagnosis distinct from match storage, wick state, and airflow; each response either gets a partner confirmation, postpones the stone check, or inspects from the entrance. The spare mirror transfer occurs after return to the entrance and does not claim the stone was moved or the cave cleared.","preReconciliationPosition":488,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":489,"adventureId":"the-second-gunhand","slug":"the-second-gunhand","title":"The Second Gunhand","sourceFile":"src/scenarios/adventurerSupportGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; whistle/flag/rope approaches, visible armed threat, patrol/negotiation/fight outcomes, combat victory, injury-loss follow-up, payroll safety and separately owned rope compensation traced","notes":"Each noncombat response distinguishes patrol response, voluntary retreat, or fight participation. Victory routes through the toll-patrol statement follow-up; injury loss offers a second meaningful choice and separately describes payroll protection/delay. The separately purchased spare rope is distinguished from Vane’s working line; no refusal/withdrawal path claims the payroll was lost.","preReconciliationPosition":489,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":490,"adventureId":"the-glass-at-milepost-nine","slug":"the-glass-at-milepost-nine","title":"The Glass at Milepost Nine","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0190"],"reviewProvenance":"current-source route review; usable-glasses/warn/circle approaches, station/cover/description responses, aftermath case discovery, restitution, witness and combat branches traced","notes":"On respond_coverDriver, the lookout leaves first and the second figure follows; on respond_recordFace the driver backs toward the staffed road. Neither response calls the station or establishes an answer. The shared aftermath variant appends the selected response result to text claiming the lookout abandoned the glasses when the station answered. That causal signal event is supported only by respond_signalStation, not the two other responses.","preReconciliationPosition":490,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -682,7 +692,9 @@
     {"findingId":"CRA-F0185","position":467,"adventureId":"saw-before-sunrise","severity":"MEDIUM","defect":"Accepting the spare-saw reward unconditionally says Marr’s damaged saw is left for repair although the route does not establish damage to that saw.","routeWitness":"preparation.kit_axe or preparation.kit_rope -> complication.response_* -> settlement.acceptGear -> gear; neither kit route uses Marr’s saw, while gearSource says ‘the damaged one stays with her for repair.’ Even kit_saw only records that it cleared smaller limbs; no route records or narrates a tooth loss. The settlement base text about a lost tooth is replaced by response-specific textVariants.","violatedRule":"An ending may not assert an object’s changed condition unless the route establishes the damage or the player performed the damaging action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0186","position":472,"adventureId":"daylight-flags","severity":"MEDIUM","defect":"Waiting for the clerk to take the lookout position is narrated as though a subsequent flag signal was sent and understood.","routeWitness":"preparation.kit_flags/kit_whistle/kit_mirror -> complication.response_wait -> settlement; response_wait only records support_response_wait and its route text says the clerk moves to the posted position ‘and the next flag signal is understood.’ No next signal choice, send action, or receipt state follows the wait response. Other responses explicitly show a repeated pattern or a courier confirming the message.","violatedRule":"Communication receipt must be established by a sent message and recipient response; waiting for a better position does not prove a later signal was sent or understood.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0187","position":476,"adventureId":"the-flooded-chest","severity":"MEDIUM","defect":"The combat-victory route reaches settlement text claiming the family keeps recovered property despite no recovery occurring.","routeWitness":"turn.standGround -> combat win -> afterFight -> settlement; the combat win text says the thieves leave, the chest remains with its owners, and the crossing is closed. No wait/mark/guide response is selected and neither chest nor collar is recovered, but the settlement base text claims ‘The family keeps its recovered property.’ This base is the combat path because it sets no support_response_* flag; ordinary response paths have route-specific text variants.","violatedRule":"Recovery and possession outcomes must not be asserted unless a route action establishes that the object was recovered.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0188","position":480,"adventureId":"the-rail-shed","severity":"MEDIUM","defect":"A diagnosis-only counterweight test can receive the Gear reward through an ending that claims the gate was repaired and signed off.","routeWitness":"preparation.kit_* -> complication.response_test -> settlement.acceptGear -> gear; response_test only unhooks the gate and tests the counterweight, confirming it moves freely and locating the pulley-pin fault. It never replaces the pin or repairs the gate, but the Pocket Toolkit ending says the foreman signs off the repaired gate. response_open replaces the pin; response_defer obtains a measured repair approval, and those distinct paths do establish remediation.","violatedRule":"A diagnostic result is not a completed repair or approval; endings must preserve diagnosis, intervention, and sign-off as separate states.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0188","position":480,"adventureId":"the-rail-shed","severity":"MEDIUM","defect":"A diagnosis-only counterweight test can receive the Gear reward through an ending that claims the gate was repaired and signed off.","routeWitness":"preparation.kit_* -> complication.response_test -> settlement.acceptGear -> gear; response_test only unhooks the gate and tests the counterweight, confirming it moves freely and locating the pulley-pin fault. It never replaces the pin or repairs the gate, but the Pocket Toolkit ending says the foreman signs off the repaired gate. response_open replaces the pin; response_defer obtains a measured repair approval, and those distinct paths do establish remediation.","violatedRule":"A diagnostic result is not a completed repair or approval; endings must preserve diagnosis, intervention, and sign-off as separate states.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0189","position":484,"adventureId":"the-wrong-cache","severity":"MEDIUM","defect":"A statement-only ending can receive the pry-tool reward whose provenance claims the clerk took custody of a case that remains at the site.","routeWitness":"threat.response_wait or response_document -> aftermath.ending_stayForStatement -> settlement.acceptGear -> gear; response_wait leaves the sealed case at the cellar for a witness and response_document leaves it for an owner-arranged crew; stayForStatement only records testimony. Neither route transfers custody, while gear provenance says the clerk has taken the freight case. The separate returnCase ending and response_return explicitly establish the receipt/custody path.","violatedRule":"Custody and ownership transfer must be tied to a route-established handoff; recording a statement is not delivery of the object.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0190","position":490,"adventureId":"the-glass-at-milepost-nine","severity":"MEDIUM","defect":"Shared aftermath says the lookout abandoned the glasses when the station answered on response routes that never called or received the station.","routeWitness":"threat.respond_coverDriver or respond_recordFace -> aftermath; these responses state the lookout leaves/follows or the driver backs toward the staffed road, without a station call/answer. The response-specific aftermath variant appends that result to the base aftermath claim that the lookout left the field-glass case when the station answered. Only respond_signalStation establishes that exchange.","violatedRule":"A shared outcome must not import a communication event or its causal result from a sibling response route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -811,7 +823,9 @@
         "CRA-F0185",
         "CRA-F0186",
         "CRA-F0187",
-        "CRA-F0188"
+        "CRA-F0188",
+        "CRA-F0189",
+        "CRA-F0190"
       ]
     },
     {
@@ -918,9 +932,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 280,
-    "MINOR CONCERN": 34,
-    "CONFIRMED DEFECT": 166,
+    "HEALTHY": 287,
+    "MINOR CONCERN": 35,
+    "CONFIRMED DEFECT": 168,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1107,6 +1121,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "31 tests passed across 3 files; supporting support-story response/combat/save/reward variants, registry integrity, and equipment condition semantics; current route traces remain authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/adventurerSupportGenreBatch.test.ts src/scenarios/roadDangerGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "40 tests passed across 4 files; supporting all-year support and road-danger scenario route/combat/reward variants, registry integrity, and equipment condition semantics; route-level review remains authoritative"
     }
   ],
   "reviewBatches": [
@@ -1297,14 +1315,18 @@
     {
       "positions": "471-480",
       "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0186 records the unsent/unreceived future flag claim on Flags at the Cut; F0187 records unrecovered property claimed as recovered after Flooded Chest combat victory; F0188 records diagnosis-only railway gate testing routed into a repaired/signed-off Gear ending. All three extend CRA-C0001. The other seven Adventures are healthy. Adventurer Support, registry, and equipment suites passed 31 tests across three files as supporting evidence; no gameplay source or test files changed."
+    },
+    {
+      "positions": "481-490",
+      "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0189 records statement-only custody leakage on The Wrong Cache’s pry-tool reward; CRA-F0190 records station-answer causality leaked into Glass at Milepost Nine aftermath variants. Both extend CRA-C0001. The Missing Brace has a minor shared-flag setup wording concern; the other seven Adventures are healthy. Adventurer Support, Road Danger, registry, and equipment suites passed 40 tests across four files as supporting evidence; no gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 480,
-  "maxReviewedRegistryPosition": 480,
+  "highestContiguousReviewedPosition": 490,
+  "maxReviewedRegistryPosition": 490,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 481,
-  "firstUnreviewedStableId": "the-wet-powder",
-  "nextStableId": "the-wet-powder",
+  "firstUnreviewedPosition": 491,
+  "firstUnreviewedStableId": "the-screw-jack-road",
+  "nextStableId": "the-screw-jack-road",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1785,7 +1807,17 @@
     "the-roofline",
     "the-blind-cut",
     "the-old-pulley",
-    "the-rail-shed"
+    "the-rail-shed",
+    "the-wet-powder",
+    "the-brush-line",
+    "the-missing-brace",
+    "the-wrong-cache",
+    "the-rough-water-watch",
+    "the-ash-frame",
+    "the-storm-marker",
+    "the-lamp-in-the-cut",
+    "the-second-gunhand",
+    "the-glass-at-milepost-nine"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1794,9 +1826,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 480,
-    "uniqueCurrentRegisteredAdventuresReviewed": 480,
-    "directStableIdMatches": 478,
+    "recordedEntriesInspected": 490,
+    "uniqueCurrentRegisteredAdventuresReviewed": 490,
+    "directStableIdMatches": 488,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1828,9 +1860,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 480,
+    "highestContiguousReviewedPosition": 490,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 480,
+    "maxReviewedLivePosition": 490,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1848,6 +1880,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, and Adventurer Support Adventures at positions 466–480 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 481, A Dry Place for the Powder (stable ID the-wet-powder), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, and the first Road Danger Adventure at position 490 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 491, The Screw Jack Road (stable ID the-screw-jack-road), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

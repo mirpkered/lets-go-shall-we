@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 480 current registered Adventures reviewed; 381 of 861 remain.
-Next: position 481, A Dry Place for the Powder (`the-wet-powder`; `src/scenarios/adventurerSupportGenreBatch.ts`); next finding ID `CRA-F0189`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 490 current registered Adventures reviewed; 371 of 861 remain.
+Next: position 491, The Screw Jack Road (`the-screw-jack-road`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0191`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
@@ -11,21 +11,21 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 280 |
-| MINOR CONCERN | 34 |
-| CONFIRMED DEFECT | 166 |
+| HEALTHY | 287 |
+| MINOR CONCERN | 35 |
+| CONFIRMED DEFECT | 168 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 480 |
+| Total reviewed current registered Adventures | 490 |
 
-There are 188 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001.
+There are 190 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern.
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 480 recorded entries, 478 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 490 recorded entries, 488 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 480. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–480 were then reviewed in live-registry order. There are no gaps through position 480. The next unreviewed Adventure is position 481, A Dry Place for the Powder (`the-wet-powder`); 381 current registered Adventures remain.
+The highest contiguous reviewed position is now 490. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–490 were then reviewed in live-registry order. There are no gaps through position 490. The next unreviewed Adventure is position 491, The Screw Jack Road (`the-screw-jack-road`); 371 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -920,3 +920,22 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced br
 | 480 | The Rail Shed at Noon | CONFIRMED DEFECT | CRA-F0188 (MEDIUM) — diagnosis-only counterweight testing can reach an ending claiming the gate was repaired and signed off. |
 
 CRA-F0186–CRA-F0188 extend CRA-C0001 (route-specific communication, recovery, and repair-completion states lost at shared results); no new cluster was created. The ledger is contiguous through position 480; next is position 481, A Dry Place for the Powder (`the-wet-powder`), with 381 remaining and next finding CRA-F0189.
+
+## Audit continuation (live positions 481–490)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced powder-shed boundary isolation and licensed handling; brush/marker routes versus property boundaries; bridge-closure signals and far-end response; sealed freight custody versus statement/documentation; rough-water passenger safety and mooring; expedition load/sample delivery; washed-out trail detour and both-end closure; cave airflow and partner retreat; payroll escort, fight/withdrawal consequences; and the milepost lookout, station response, evidence recovery, restitution and consent. Supporting Adventurer Support, Road Danger, registry, and equipment suites were used as supporting evidence; route-level review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 481 | A Dry Place for the Powder | HEALTHY | — the shed stays closed and explosive material is never handled. |
+| 482 | The Brush Line | HEALTHY | — old property markers, public route, and owner authority remain distinct. |
+| 483 | The Missing Brace | MINOR CONCERN | — flags are described as “agreed” without setup; the response immediately confirms receipt and safe closure. |
+| 484 | The Wrong Cache | CONFIRMED DEFECT | CRA-F0189 (MEDIUM) — a statement-only ending can reach a Gear reward that claims clerk custody of a case left at the site. |
+| 485 | The Rough-Water Watch | HEALTHY | — passenger movement, delayed line use, and combat outcomes preserve the safe-water state. |
+| 486 | The Ash Frame | HEALTHY | — sample delivery, fitting recovery, rest and temporary repair outcomes remain distinct. |
+| 487 | The Storm Marker | HEALTHY | — detour, meeting and both-end closure routes preserve the hiker’s location and creek-path status. |
+| 488 | The Lamp in the Cut | HEALTHY | — airflow diagnosis does not claim the stone moved or cave was cleared. |
+| 489 | The Second Gunhand | HEALTHY | — patrol, negotiation, combat, injury and withdrawal preserve payroll/road outcomes. |
+| 490 | The Glass at Milepost Nine | CONFIRMED DEFECT | CRA-F0190 (MEDIUM) — aftermath imports “station answered” causality on cover/description routes that never contact it. |
+
+CRA-F0189–CRA-F0190 extend CRA-C0001 (route-specific custody and communication outcomes lost at shared results); no new cluster was created. The ledger is contiguous through position 490; next is position 491, The Screw Jack Road (`the-screw-jack-road`), with 371 remaining and next finding CRA-F0191.
