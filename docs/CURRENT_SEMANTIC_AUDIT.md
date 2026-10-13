@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–330 reviewed; 531 of 861 remain.
-Next: position 331, The Mule Trail; next finding ID `CRA-F0127`.
+Checkpoint: registry positions 1–340 reviewed; 521 of 861 remain.
+Next: position 341, The Broken Rocker Box; next finding ID `CRA-F0131`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 201 |
-| MINOR CONCERN | 16 |
-| CONFIRMED DEFECT | 113 |
+| HEALTHY | 202 |
+| MINOR CONCERN | 21 |
+| CONFIRMED DEFECT | 117 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 330 |
+| Total reviewed | 340 |
 
-There are 126 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding).
+There are 130 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings.
 
 ## Positions 21–30
 
@@ -610,4 +610,23 @@ The Pale Children of the Quarry, Antlered Thing, Man-Eater of Miller’s Gap, an
 
 The Three-Toed Track’s return-plate and payment routes reach `trackResolved` without comparing the sale note, though the shared ending says the terms were compared (CRA-F0122). In The Beast at the Toll Road, exposing or interrupting the staged attack reaches text claiming grain recovery and horse release without those outcomes being recorded (CRA-F0123); the control-rope action also accepts a broken small knife (CRA-F0124). The Skin in the Tree’s direct drag-mark route reaches the camp without asking the landholder, and mark-and-withdraw / solo snare-cut routes still claim warden removal and animal release (CRA-F0125). In The Stoneback, securing one loose stack with rope enters an ending that says the crew rerouted the cart and the creature stopped shifting stacks, outcomes established by separate upper-bench choices (CRA-F0126). The Red Maw, Thing That Mimics the Whistle, Roof Through the Trees, Floorboard That Was Replaced, and Forgotten Sluice preserved route-specific uncertainty and outcomes, including the sluice’s targeted override. Camp with Fresh Ashes is a minor wording concern: its cautious closure calls the unidentified person an absent worker and says only the Traveler’s tracks are new, without defining the watch interval.
 
-The batch added four findings to CRA-C0001 and one to CRA-C0004; no new cluster was needed. Focused Monster Hunt, Frontier Discovery, Frontier RC12, final-choice, and registry suites passed 42 tests across five files. These checks support but do not replace semantic review. No source or test files were changed. Totals are now 201 HEALTHY, 16 MINOR CONCERN, and 113 CONFIRMED DEFECT across 330 reviewed Adventures; 531 remain. CRA-F0122–CRA-F0126 are all MEDIUM. The next canonical registry entry is position 331, The Mule Trail, and the next finding ID is CRA-F0127.
+That batch added four findings to CRA-C0001 and one to CRA-C0004; no new cluster was needed. Focused Monster Hunt, Frontier Discovery, Frontier RC12, final-choice, and registry suites passed 42 tests across five files. These checks support but do not replace semantic review. No source or test files were changed. At that checkpoint, totals were 201 HEALTHY, 16 MINOR CONCERN, and 113 CONFIRMED DEFECT across 330 reviewed Adventures; 531 remained. CRA-F0122–CRA-F0126 were all MEDIUM.
+
+## Positions 331–340
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 331 | The Mule Trail | MINOR CONCERN | — |
+| 332 | The Prospector’s Map | MINOR CONCERN | — |
+| 333 | The Empty Assay Office | MINOR CONCERN | — |
+| 334 | The Cabin with Two Locks | MINOR CONCERN | — |
+| 335 | The Gold Dust in the Floorboards | MINOR CONCERN | — |
+| 336 | The Old Hoist | CONFIRMED DEFECT | CRA-F0127 (MEDIUM) — tested hoist is later described as untouched. |
+| 337 | The Camp Below the Slide | CONFIRMED DEFECT | CRA-F0128 (MEDIUM) — object-action choices do not resolve tool/chest acquisition. |
+| 338 | The Hidden Tailings Pile | CONFIRMED DEFECT | CRA-F0129 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
+| 339 | The Old Claim Cabin | HEALTHY | — |
+| 340 | The Claim with No Name | CONFIRMED DEFECT | CRA-F0130 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
+
+The Old Hoist tests the mechanism with loose timber, then both cautious closure and mishap text say it was left untouched (CRA-F0127). The Camp Below the Slide offers taking a loose tool or reaching for a chest, but successful routes never resolve whether either object is acquired or left (CRA-F0128). The Hidden Tailings Pile and The Claim with No Name inherit a generic “give both sides the same account” option without introducing or contacting the other party (CRA-F0129–CRA-F0130). The Old Claim Cabin preserves uncertainty about who worked the claim and what the find means; no contradiction was found. The Mule Trail, Prospector’s Map, Empty Assay Office, Cabin with Two Locks, and Gold Dust in the Floorboards have limited or repeated generic route payoffs, but their text does not assert a route-unsupported fact, so they remain minor concerns.
+
+The batch added CRA-F0127 to the established route-state/convergence cluster CRA-C0001 and created CRA-C0006 for generic Frontier Discovery archetypes that promise unsupported actors or unresolved action outcomes (CRA-F0128–CRA-F0130). Frontier Discovery, registry, and diversity suites passed 31 tests across three files as supporting evidence; card-by-card route review remains authoritative. No gameplay source or tests were changed. Totals are now 202 HEALTHY, 21 MINOR CONCERN, and 117 CONFIRMED DEFECT across 340 reviewed Adventures; 521 remain. All four new findings are MEDIUM. The next canonical registry entry is position 341, The Broken Rocker Box, and the next finding ID is CRA-F0131.
