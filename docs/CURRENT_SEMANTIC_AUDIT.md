@@ -1,31 +1,40 @@
 # Current-Library Semantic Audit
 
-Status: **IN PROGRESS**
+Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 650 current registered Adventures reviewed; 211 of 861 remain.
-Next: position 651, The Lost Line of Stakes (`the-lost-line-of-stakes`; `src/scenarios/wildernessFieldcraftGenreBatch.ts`); next finding ID `CRA-F0243`; next available cluster ID `CRA-C0010`.
+Current live registry: 861 Adventures; 639 live Adventures reviewed; 222 remain.
+Next: position 640, Weighed Before Dawn (`weighed-before-dawn`; `src/scenarios/expeditionLogisticsGenreBatch.ts`); next finding ID `CRA-F0243`; next available cluster ID `CRA-C0010`.
 
 ## Current checkpoint
 
-The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 530 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
+The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. A reconciliation found 11 reviewed records for Adventures that are present in a raw editorial-draft source file but are not exported in the live registry. Their full review history remains in the JSON under `adventures` and the explicit `unregisteredReviewedAdventures` history section, but they do not count as live coverage. Four attached findings (CRA-F0239–CRA-F0242) remain preserved and are marked `UNREGISTERED_SOURCE`. Two live position shifts were corrected by stable-ID lookup. Historical batch text below is retained as history and must not be read as live-coverage accounting. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 391 |
+| HEALTHY | 384 |
 | MINOR CONCERN | 39 |
-| CONFIRMED DEFECT | 220 |
+| CONFIRMED DEFECT | 216 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 650 |
+| Total reviewed live Adventures | 639 |
+| Live Adventures remaining | 222 |
 
-There are 242 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 added CRA-F0223 on reward-condition mismatch, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge authorization. Positions 581–590 added CRA-F0226 on reward-condition mismatch and CRA-F0227–CRA-F0228 on missing action/state proof; seven Adventures were healthy. Positions 591–600 added CRA-F0229–CRA-F0231 for an unsupported brace-test winner, unsafe quarry-route convergence, and an unproved signal-contest prize; CRA-F0232 records a bent Survey Chain granted as NORMAL. Six Adventures were healthy. Positions 601–610 added CRA-F0233–CRA-F0235 for a split-log award without correction, a hinge diagnosis prize after a wrong untested choice, and a safe roof-anchor result without anchor proof; seven Adventures were healthy. Positions 611–620 added CRA-F0236 for shallow-shelf-only crossing survey language claiming a safer road-bridge route, extending CRA-C0001. Positions 621–630 added CRA-F0237 for unsupported public-water access at the north cairn, also extending CRA-C0001; eight were healthy and one minor concern was recorded. Positions 631–640 added CRA-F0238 for a flood-safety partial result asserting worker/flock evacuation on routes that do not establish it (CRA-C0001) and CRA-F0239 for an ownership-only Trail Whistle use gate (CRA-C0004); the other eight Adventures were healthy. Positions 641–650 added CRA-F0240–CRA-F0242 for BROKEN Travel Rope, Signal Flag Set, and blanket items passing ownership-only physical-use gates, all extending CRA-C0004; seven Adventures were healthy.
+There are 242 finding records in the preserved audit history: 238 attached to live registered Adventures and four attached to unregistered draft records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Live severity totals are HIGH 13, MEDIUM 176, LOW 39, plus 10 unrecovered values. The final historical review batches (recorded positions 631–650) included the 11 unregistered draft records listed below; their findings and route notes are retained but excluded from all live coverage and live-cluster counts.
 
-## Registry position reconciliation
+### Live-registry reconciliation correction
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 510 recorded entries, 508 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The 11 unregistered reviewed Adventures are `the-night-bird-turn`, `the-fox-at-the-egg-box`, `the-ravine-bedroll`, `the-cloud-shadow-count`, `the-cold-shelf`, `the-cut-branch-marker`, `the-pack-that-shifted`, `the-snow-line-on-the-stump`, `the-spring-box-in-the-mud`, `the-cairn-below-the-cloud`, and `the-hollow-log-shelter`. Their source file, `src/scenarios/wildernessFieldcraftGenreBatch.ts`, still exists, but the records are not members of exported `SCENARIOS`. In particular, the editorial draft export is sliced and filters `the-night-bird-turn`; other draft records remain outside the exported slice. This points to draft/unregistered content mistakenly counted as live review, not source removal or duplicate-ID replacement.
+
+These 11 records comprise 7 HEALTHY, 0 MINOR CONCERN, and 4 CONFIRMED DEFECT classifications. Findings CRA-F0239–CRA-F0242 are all MEDIUM and assigned to CRA-C0004. They remain in audit history with `registrationStatus: UNREGISTERED_SOURCE`; CRA-C0004 retains them historically while its live count is 22. Current live cluster counts are CRA-C0001 165, C0002 18, C0003 1, C0004 22, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (232 clustered live findings); six live findings are currently unclustered. The four unregistered historical cluster memberships are CRA-C0004; they are excluded from live counts.
+
+The corrected live totals are 861 registered = 639 reviewed + 222 remaining. The true first unreviewed entry is position 640, `weighed-before-dawn` — Weighed Before Dawn — `src/scenarios/expeditionLogisticsGenreBatch.ts`. No semantic review of this Adventure has been performed as part of this reconciliation.
+
+## Registry position reconciliation (historical note; superseded by live-registry correction above)
+
+The earlier reconciliation paragraph below reflects a stale checkpoint and is superseded by the correction above. The current ledger is stable-ID-first; 639 records count as live reviews, while 11 reviewed records are segregated as unregistered history. Two live position shifts are corrected by stable ID; unregistered draft records do not have live positions.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 650. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–650 were then reviewed in live-registry order. There are no gaps through position 650. The next unreviewed Adventure is position 651, The Lost Line of Stakes (`the-lost-line-of-stakes`); 211 current registered Adventures remain.
+The earlier position-650 statement is historical only and is not live coverage. The highest contiguous live-reviewed position is 639, with no gaps. The next unreviewed live Adventure is position 640, Weighed Before Dawn (`weighed-before-dawn`); 222 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1264,4 +1273,4 @@ Three current contradictions were confirmed, each extending CRA-C0004. In The Ra
 | 649 | The Cairn below the Cloud | CONFIRMED DEFECT | CRA-F0241 (MEDIUM) — a BROKEN Signal Flag Set can establish a visible return flag. |
 | 650 | The Hollow Log Shelter | CONFIRMED DEFECT | CRA-F0242 (MEDIUM) — a BROKEN blanket passes the windbreak gate and is credited with blocking wind. |
 
-The ledger now covers positions 1–650 without gaps (650 reviewed, 211 remaining), with 391 HEALTHY, 39 MINOR CONCERN, 220 CONFIRMED DEFECT, and zero NEEDS MANUAL REVIEW. There are 242 findings. Next is position 651, The Lost Line of Stakes (`the-lost-line-of-stakes`), next finding ID CRA-F0243; CRA-C0010 remains the next available cluster ID.
+Historical batch-end report, superseded by the live-registry reconciliation above: the old checkpoint treated 11 draft/unregistered records as live. Do not use its 650/211 coverage or classification totals for current coverage. The corrected live state is 639 reviewed / 222 remaining; next is position 640, Weighed Before Dawn (`weighed-before-dawn`). Finding and cluster sequence remains CRA-F0243 / CRA-C0010.
