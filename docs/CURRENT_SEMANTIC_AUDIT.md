@@ -2,30 +2,30 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 450 current registered Adventures reviewed; 411 of 861 remain.
-Next: position 451, The Roadside Tinker (`the-roadside-tinker`; `src/scenarios/merchantEcologyBatch.ts`); next finding ID `CRA-F0184`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 460 current registered Adventures reviewed; 401 of 861 remain.
+Next: position 461, The Claimed Salvage (`the-claimed-salvage`; `src/scenarios/gearCorrectiveBatch.ts`); next finding ID `CRA-F0184`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
-The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 430 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
+The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 460 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 256 |
+| HEALTHY | 266 |
 | MINOR CONCERN | 33 |
 | CONFIRMED DEFECT | 161 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 450 |
+| Total reviewed current registered Adventures | 460 |
 
-There are 183 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 441–450 and added eight findings (all MEDIUM).
+There are 183 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; positions 441–450 added eight findings (all MEDIUM), while the latest batch 451–460 was healthy throughout and added no findings.
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 430 recorded entries, 428 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 460 recorded entries, 458 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 440. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–440 were then reviewed in live-registry order. There are no gaps through position 440. The next unreviewed Adventure is position 441, The Ferry Beneath the Ferry; the checkpoint review count is 440, so 421 current registered Adventures remain.
+The highest contiguous reviewed position is now 460. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–460 were then reviewed in live-registry order. There are no gaps through position 460. The next unreviewed Adventure is position 461, The Claimed Salvage (`the-claimed-salvage`); 401 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -843,7 +843,7 @@ Continued with the next ten stable IDs in `SCENARIOS` order, then crossed from t
 
 CRA-F0165, CRA-F0167–CRA-F0168, CRA-F0170–CRA-F0173, and CRA-F0175 extend existing CRA-C0001 (route-specific state/outcome at convergence). CRA-F0166 extends existing CRA-C0007 (NPC consensus inferred from a unilateral route). CRA-F0169 and CRA-F0174 extend existing CRA-C0004 (Gear ownership treated as Gear usability). No new cluster was needed; CRA-C0007 already exists, and the next unused cluster remains CRA-C0008.
 
-The ledger now covers 450/861 Adventures: 256 HEALTHY, 33 MINOR CONCERN, 161 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. It contains 183 findings. The reviewed frontier is contiguous through position 450. Position 441, The Ferry Beneath the Ferry (`ferry-beneath-the-ferry`), was verified from the live scenario ID; the first unreviewed entry is position 451, The Roadside Tinker (`the-roadside-tinker`), with 411 Adventures remaining and next finding ID CRA-F0184. No new cluster was needed: CRA-F0176 and F0181 extend CRA-C0004, CRA-F0179 extends CRA-C0007, and the other five findings extend CRA-C0001. No gameplay source, gameplay tests, design documents, deployment, or scheduler state changed; Weekly Scenario Batch remains paused.
+The ledger now covers 460/861 Adventures: 266 HEALTHY, 33 MINOR CONCERN, 161 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. It contains 183 findings. The reviewed frontier is contiguous through position 460. Position 461, The Claimed Salvage (`the-claimed-salvage`), is next; 401 Adventures remain and the next finding ID is CRA-F0184. No gameplay source, gameplay tests, design documents, deployment, or scheduler state changed; Weekly Scenario Batch remains paused.
 
 ## Audit continuation (live positions 441–450)
 
@@ -863,3 +863,22 @@ Reviewed the next ten stable IDs in live `SCENARIOS` order, crossing from deep-e
 | 450 | The Doctor’s Road Cart | HEALTHY | — |
 
 The findings extend existing clusters: CRA-F0176 and CRA-F0181 use CRA-C0004 (Gear ownership/usability); CRA-F0179 uses CRA-C0007 (NPC consensus); CRA-F0177–CRA-F0178, CRA-F0180, and CRA-F0182–CRA-F0183 use CRA-C0001 (route-specific state/evidence lost at convergence). No new cluster was created. The ledger is contiguous through position 450; next is position 451, The Roadside Tinker (`the-roadside-tinker`), with 411 remaining and next finding CRA-F0184.
+
+## Audit continuation (live positions 451–460)
+
+Reviewed the next ten stable IDs in live `SCENARIOS` order: the remaining fixed-stock merchants followed by the first three Gear corrective Adventures. Merchant sales/purchases, item ownership and sale limits, prices, finite supplies, Knowledge-gated consultation, Gear allocation, tool-usability gates, route-result variants, wages/rewards/refusal, and outcome flags were traced. Supporting merchant, Gear-corrective, registry, and equipment suites passed 34 tests across four files.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 451 | The Roadside Tinker | HEALTHY | — |
+| 452 | The Farm Gate Auction | HEALTHY | — |
+| 453 | The Hill Outfitter | HEALTHY | — |
+| 454 | The Winter Inn Clearance | HEALTHY | — |
+| 455 | The Quarry Survey Table | HEALTHY | — |
+| 456 | The Retired Lampwright | HEALTHY | — |
+| 457 | The Chapel Restoration Shelf | HEALTHY | — |
+| 458 | The Squire’s Pack | HEALTHY | — |
+| 459 | The Last Survey | HEALTHY | — |
+| 460 | The Quartermaster’s Tally | HEALTHY | — |
+
+No additional findings or clusters were added. The last survey’s paced route itself establishes that the bypass developed after the first road measurement; the date/order statement is therefore supported alongside the dated-notebook path. The gear-state, recovery/stakes, inventory reward and caravan shifted-load variants remain route-specific. The ledger is contiguous through position 460; next is position 461, The Claimed Salvage (`the-claimed-salvage`), with 401 remaining and next finding CRA-F0184.

@@ -4,10 +4,10 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 450,
-  "reviewedCount": 450,
-  "remainingCount": 411,
-  "nextPosition": 451,
+  "reviewedThroughPosition": 460,
+  "reviewedCount": 460,
+  "remainingCount": 401,
+  "nextPosition": 461,
   "nextFindingId": "CRA-F0184",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
@@ -462,7 +462,17 @@
     {"position":447,"adventureId":"white-chamber","slug":"white-chamber","title":"The White Chamber","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0181","CRA-F0182","CRA-F0183"],"reviewProvenance":"current-source route review; rope/chalk/no-marker entry, draft/wear/echo/cut mapping, reversible wheel, pack recovery/retreat, sealed-door inspection/opening, tracing, four-coin outcomes and fatal dark passage traced","notes":"F0181: ropeCave requires only item presence, so BROKEN Travel Rope satisfies tying a return line and sets whiteLineSet; engine distinguishes owned from usable gear. F0182: a route with no rope/chalk can enter via whiteChalkReady.saveChalkForLater, navigate by draft/marks, open the seal, and reach whiteDeep, whose scene unconditionally says the rope remains taut. F0183: whitePackRoom.inspectSeal has no recovery effect, yet whiteSeal says the pack is already recovered; openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives it and pays the fee without any take/return choice. The line-proof, gear-usability and pack-recovery contradictions are separately witnessed. The valid usable Folding Rule gate, chalk consumption, wheel state, explicit pack recovery/return alternatives and fatal no-air route were also checked.","preReconciliationPosition":447,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":448,"adventureId":"the-siding-tool-board","slug":"the-siding-tool-board","title":"The Siding Tool Board","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; each priced purchase, duplicate ownership, capacity, optional carried-gear sale/reconditioning, receipt, departure and equipment persistence traced","notes":"Stock IDs, labels, hints and prices align; purchases deduct exact coins and grant the named item with purchase history, and duplicate ownership is blocked. Sale choices remove only carried eligible tools and pay the stated buy-back price; the seller explicitly inspects/reconditions them. No bank sale, refund, ownership or repair claim leaks into departure.","preReconciliationPosition":448,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":449,"adventureId":"the-ferrymans-locker","slug":"the-ferrymans-locker","title":"The Ferryman’s Locker","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; checked-stock purchase gates, money/gear effects, carried rope/clamp buy-back, duplicate/capacity restrictions and dusk departure traced","notes":"The finite posted stock and coin costs match the purchase effects, bought Gear is individually added and recorded, and buy-back only accepts carried rope hardware/clamp at the stated reconditioning prices. The Freightman’s Strap is not falsely bought back, and leaving preserves the player’s actual carried choices without creating an obligation or implying a crossing action.","preReconciliationPosition":449,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":450,"adventureId":"the-doctors-road-cart","slug":"the-doctors-road-cart","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; medical-worker entry, stock prices/hints, item and finite-supply purchase effects, capacity/duplicate/money gates, receipts and departure traced","notes":"Each of the three items costs two coins as posted; bandages, gloves, and the finite match-case supply are granted by the matching purchase and availability gates, and the receipt does not claim treatment or care. Departing closes the case without inventing an obligation or medical outcome.","preReconciliationPosition":450,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":450,"adventureId":"the-doctors-road-cart","slug":"the-doctors-road-cart","title":"The Doctor’s Road Cart","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; medical-worker entry, stock prices/hints, item and finite-supply purchase effects, capacity/duplicate/money gates, receipts and departure traced","notes":"Each of the three items costs two coins as posted; bandages, gloves, and the finite match-case supply are granted by the matching purchase and availability gates, and the receipt does not claim treatment or care. Departing closes the case without inventing an obligation or medical outcome.","preReconciliationPosition":450,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":451,"adventureId":"the-roadside-tinker","slug":"the-roadside-tinker","title":"The Roadside Tinker","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; each purchase/receipt, exact price, ownership restriction, eligible tool buy-back/reconditioning, and departure outcome traced","notes":"Wrench, wedge and opener costs/hints match the fixed stock; purchases deduct exact coin, add the selected tool and record its provenance. The tinker buys back only wrench/wedge, explicitly checks cracks/bent jaws and reuses them; the opener is not falsely offered for sale. Departure claims only that the axle pin was straightened by the tinker.","preReconciliationPosition":451,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":452,"adventureId":"the-farm-gate-auction","slug":"the-farm-gate-auction","title":"The Farm Gate Auction","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; one-at-a-time stock purchases, posted prices, duplicate and funds gates, limited hook/whistle buy-back, history, and auction close traced","notes":"Each lot is accurately described and priced; sales are restricted to one carried hook or whistle, with the remaining kit unaffected. Gloves are not offered for buy-back. Stock returns to the shed rather than becoming unowned, and leaving makes no purchase or farm obligation claim.","preReconciliationPosition":452,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":453,"adventureId":"the-hill-outfitter","slug":"the-hill-outfitter","title":"The Hill Outfitter","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; fixed navigation stock, purchase gates, marker/visibility limitations, eligible compass/mirror/pitons buy-back, route departure and persistent ownership traced","notes":"Prices and item limits are explicit; the seller buys only the listed compass, mirror, or pitons and declines the site-specific trail marker. Purchases grant only the selected equipment and history; the ridge remains passable without buying, and departure does not claim the gear guarantees navigation or rescue.","preReconciliationPosition":453,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":454,"adventureId":"the-winter-inn-clearance","slug":"the-winter-inn-clearance","title":"The Winter Inn Clearance","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; surplus stock/prices, emergency reserve boundary, blanket buy-back, duplicate/funds checks, match quantity and departure traced","notes":"The inn sells only posted duplicate goods and explicitly leaves the emergency reserve untouched. Purchases and finite match supply follow exact price/capacity/history effects; blanket buy-back does not imply restoration of reserve stock, and the seller’s stated cleaning/reuse is consistent with a later purchase. Departure makes no weather-safety or guest-care claim.","preReconciliationPosition":454,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":455,"adventureId":"the-quarry-survey-table","slug":"the-quarry-survey-table","title":"The Quarry Survey Table","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; demonstrated personal tools and limits, posted prices, loupe/hammer reconditioning buy-back, sounding-rod exclusion, purchase provenance and closeout traced","notes":"The surveyor distinguishes personal instruments from quarry property/plans, states each tool’s limits and exact price, and buys only loupe/hammer they can reuse after checking. The specialized sounding rod is explicitly excluded from buy-back; the closed ledger/ongoing quarry work do not imply site ownership or survey results beyond purchases.","preReconciliationPosition":455,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":456,"adventureId":"the-retired-lampwright","slug":"the-retired-lampwright","title":"The Retired Lampwright","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; ordinary light stock, stated limitations, lantern/match-case buy-back, numbered-wick gated consultation, Knowledge grant, and shed closure traced","notes":"Lamp, headlamp and finite matches are ordinary goods with stated limits. The lampwright’s buy-back list matches the one reusable carried item and described cleaning; the separate numbered-wick explanation is gated by possession and only grants the refuge-system Knowledge after the explanation is heard. Purchases and departure claim no occult protection or unearned lesson.","preReconciliationPosition":456,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":457,"adventureId":"the-chapel-restoration-shelf","slug":"the-chapel-restoration-shelf","title":"The Chapel Restoration Shelf","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; prepared chalk/salt/nail quantities, prices, inventory-capacity and money gates, per-choice purchase provenance, lockup and no-purchase route traced","notes":"Each named supply’s finite quantity and coin cost match the purchase effects; capacity and funds are checked before the chosen supply leaves the shelf, with history recording acquisition. The items are explicitly context-specific, and the chapel remains open without purchase. No broad protection, use, blessing effect, or obligation is claimed.","preReconciliationPosition":457,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":458,"adventureId":"the-squires-pack","slug":"the-squires-pack","title":"The Squire’s Pack","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; initial kit allocation, rope/toolkit/marker variants, manual/long-path recovery, recovered/left-behind stakes, replacement payment/tool/Knowledge outcomes and save-persistent rewards traced","notes":"The selected Mara-held tool gates only its matching action; rope retrieval, marker security, return marking, by-hand retrieval, long route and leaving stakes remain distinguishable. Arrival variants derive from retrieved-versus-left flags; wage, spare-rope, Knowledge and no-reward endings match each choice. The spare rope is distinct from the line used on route, and persisted outcomes use run flags.","preReconciliationPosition":458,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":459,"adventureId":"the-last-survey","slug":"the-last-survey","title":"The Last Survey","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; folding-rule/chain/pace/notebook/bypass routes, date/order evidence, protected notes, map settlement, rule-versus-wage-versus-refusal outcomes and tool ownership traced","notes":"The chain path is usable-Gear gated; the map-case protection option requires a usable case. The dated notebook, changed culvert edge and bypass evidence lead into settlement with the necessary route facts; the paced route explicitly establishes the bypass developed after the first measurement. Tool handoff is distinct from wages/refusal and blocked for a duplicate rule. No route promises more detail than its observations or prior measurement context establish.","preReconciliationPosition":459,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":460,"adventureId":"the-quartermasters-tally","slug":"the-quartermasters-tally","title":"The Quartermaster’s Tally","sourceFile":"src/scenarios/gearCorrectiveBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sound/cracked strap allocation, mended-buckle warning and load selection, storm shift, restack/stagger/owner handling, spare-strap/wage/refusal outcomes traced","notes":"The storm outcome identifies the unstrapped bundle as the shifted load without falsely naming it; the direct regression exercises that distinction. The mended buckle remains explicitly uncertain and heavier-chest use is warned, while restack/stagger choices state how the team mitigates the load. Spare gear, one-coin payment, owner responsibility and refusal remain consistent with the chosen route.","preReconciliationPosition":460,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -878,7 +888,7 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 256,
+    "HEALTHY": 266,
     "MINOR CONCERN": 33,
     "CONFIRMED DEFECT": 161,
     "NEEDS MANUAL REVIEW": 0
@@ -1055,6 +1065,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/deepExplorationBatch.test.ts src/scenarios/merchantEcologyBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "43 tests passed across 4 files; supporting deep-exploration graph/ending checks, fixed-stock merchant validation, 861-entry registry validation, and broken-Gear usability semantics; current-source route review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/merchantEcologyBatch.test.ts src/scenarios/gearCorrectiveBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "34 tests passed across 4 files; supporting fixed-stock merchant purchase/sale graphs, corrective Gear scenarios and state outcomes, 861-entry registry validation, and equipment condition semantics; route-level semantic review remains authoritative"
     }
   ],
   "reviewBatches": [
@@ -1233,14 +1247,18 @@
     {
       "positions": "441-450",
       "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. Six Adventures have confirmed defects and four are healthy; eight witnessed findings extend CRA-C0001, CRA-C0004, and CRA-C0007, with no new cluster. Deep-exploration, merchant, registry, and equipment suites passed 43 tests across four files as supporting evidence; current-source route review remains authoritative. No gameplay source or test files changed."
+    },
+    {
+      "positions": "451-460",
+      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order: the remaining seven fixed-stock merchants and the first three corrective-Gear Adventures. All ten were healthy; no new findings or clusters. Merchant, Gear-corrective, registry and equipment suites passed 34 tests across four files as supporting evidence; source-route review remains authoritative. No gameplay source or tests changed."
     }
   ],
   "highestContiguousReviewedPosition": 450,
   "maxReviewedRegistryPosition": 450,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 451,
-  "firstUnreviewedStableId": "the-roadside-tinker",
-  "nextStableId": "the-roadside-tinker",
+  "firstUnreviewedPosition": 461,
+  "firstUnreviewedStableId": "the-claimed-salvage",
+  "nextStableId": "the-claimed-salvage",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1691,7 +1709,17 @@
     "white-chamber",
     "the-siding-tool-board",
     "the-ferrymans-locker",
-    "the-doctors-road-cart"
+    "the-doctors-road-cart",
+    "the-roadside-tinker",
+    "the-farm-gate-auction",
+    "the-hill-outfitter",
+    "the-winter-inn-clearance",
+    "the-quarry-survey-table",
+    "the-retired-lampwright",
+    "the-chapel-restoration-shelf",
+    "the-squires-pack",
+    "the-last-survey",
+    "the-quartermasters-tally"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1700,9 +1728,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 450,
-    "uniqueCurrentRegisteredAdventuresReviewed": 450,
-    "directStableIdMatches": 448,
+    "recordedEntriesInspected": 460,
+    "uniqueCurrentRegisteredAdventuresReviewed": 460,
+    "directStableIdMatches": 458,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1734,9 +1762,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 450,
+    "highestContiguousReviewedPosition": 460,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 450,
+    "maxReviewedLivePosition": 460,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1754,6 +1782,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, and deep-exploration Adventures at positions 434–447 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Fixed-stock merchants at positions 448–450 were reviewed in registry order. Position 451, The Roadside Tinker (stable ID the-roadside-tinker), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, and the first three Gear corrective Adventures at positions 458–460 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 461, The Claimed Salvage (stable ID the-claimed-salvage), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
