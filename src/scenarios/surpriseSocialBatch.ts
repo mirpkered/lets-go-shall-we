@@ -206,7 +206,7 @@ export const THE_PUBLIC_APOLOGY = story('the-public-apology', 'The Public Apolog
   ]),
   silence: end('silence', 'The Market Moves On', 'The conversation turns elsewhere, but the painter and merchant stop speaking to each other. Your attempt to avoid embarrassment left the original friction untouched.'),
   repair: end('repair', 'A Sign Held Straight', 'You hold the board while the painter resets it. The merchant pays for the work, and your apology does not settle who was late; it does stop your retelling from standing as proof.'),
-  apology: end('apology', 'A Smaller Audience', 'You correct the statement without naming its source. The neighbors still disagree about the sign, but your part in making the dispute public is clear.'),
+  apology: end('apology', 'A Smaller Audience', 'You correct your part in making the dispute public. The neighbors still disagree about the sign, and your correction does not decide whose account is right.'),
 });
 
 export const THE_LAST_CLEAN_APRON = story('the-last-clean-apron', 'The Last Clean Apron', 'A kitchen has one dry apron and two people who need it for different reasons.', T('A traveler helping at a crowded inn kitchen must choose who gets the sole clean apron before a public supper begins.', ['social interaction', 'labor/repair'], 'helper/rescuer', 'tense/dangerous', 'inn kitchen', ['resource allocation', 'two-stage work choice', 'performance feedback'], 'hired/posted work', ['money/item/knowledge/history possible', 'relationship/referral']), 'kitchen', {
@@ -228,7 +228,7 @@ export const THE_LAST_CLEAN_APRON = story('the-last-clean-apron', 'The Last Clea
     { id: 'offerMoreWork', label: 'Help carry the finished plates', next: 'paid', effects: { money: 1 } },
   ]),
   paid: end('paid', 'A Supper Served', 'The innkeeper pays the promised coin for your extra help. One table had to wait, but every pan was handled safely; the cook remembers that you stayed useful without taking over.'),
-  thanks: end('thanks', 'A Hot Meal, A Fair Pace', 'The supper reaches the tables a little later than planned. The dishwasher thanks you for treating safety as a real constraint, and the cook accepts the delay without blaming them.'),
+  thanks: end('thanks', 'A Hot Meal, A Fair Pace', 'The kitchen finishes the work with the safety choice intact. The dishwasher thanks you for treating hot pans as a real constraint, and the cook accepts the arrangement without blame.'),
 });
 
 export const THE_QUIET_APPLAUSE = story('the-quiet-applause', 'The Quiet Applause', 'A tired performer finishes to a room unsure whether the show is over.', T('The traveler must read a room after a tired singer ends a modest performance, deciding whether to join, redirect, or respect the silence.', ['social interaction', 'competition/game'], 'participant', 'warm/hopeful', 'boarding house parlor', ['audience interpretation', 'performer agency', 'quiet payoff'], 'accidental encounter'), 'parlor', {

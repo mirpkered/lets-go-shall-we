@@ -67,7 +67,7 @@ export const SILENT_NIGHT: Scenario = {
         { id: 'letInnkeeperHandle', label: 'Give the innkeeper room to handle it', effects: { historyFlags: ['sought_help_in_inn_dispute', 'left_innkeeper_to_handle_dispute'] }, next: 'hostSettlesIt' },
         { id: 'stayAsWitness', label: 'Stay in the lit doorway as a witness', effects: { historyFlags: ['sought_help_in_inn_dispute', 'witnessed_innkeeper_separate_guests'] }, next: 'hostSettlesIt' },
       ] },
-    argumentCools: { id: 'argumentCools', title: 'The Voices Fade', tone: 'safe', text: 'The guests lower their voices. {{guest}} leaves the common room with the satchel—or without it—and no one asks you to decide whose account was right. You return to bed without knowing whether your words made the difference.', ending: 'success', choices: [] },
+    argumentCools: { id: 'argumentCools', title: 'The Voices Fade', tone: 'safe', text: 'The guests lower their voices. No one asks you to decide whose account was right. You return to bed without knowing whether your words made the difference.', ending: 'success', choices: [] },
     guestsSeparated: { id: 'guestsSeparated', title: 'Space Between Them', tone: 'warning', text: 'The guests move apart. The knife is laid on the floor and stays there while the innkeeper is called. You have prevented an immediate blow, but the dispute itself is not yours to settle.', ending: 'success', choices: [] },
     knifeInjury: { id: 'knifeInjury', title: 'A Costly Step In', tone: 'danger', text: 'The knife wounds you before the innkeeper can reach the room. The guests scatter in opposite directions. Your injury is serious, but you are still able to call for help. A bandage can slow the bleeding; it cannot repair the wound.',
       choices: [

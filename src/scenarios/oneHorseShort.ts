@@ -35,6 +35,6 @@ export const ONE_HORSE_SHORT: Scenario = {
       { requirements: { flags: ['turnedBackForHorse'] }, text: '{{driver}} gives the lame horse one last look and says the right choice was to stop before the hoof worsened. The note was never delivered and the fee is gone. You leave the stable knowing both horses can rest.' },
       { requirements: { flags: ['wagonLeftBehind'] }, text: 'You leave the wagon and its covered load for {{driver}} to arrange later. Both horses are safe at the farm; the delivery and its fee are lost, but no animal was pushed past its limit.' },
     ] },
-    lateMill: { id: 'lateMill', title: 'A Lighter Arrival', tone: 'safe', ending: 'success', choices: [], text: '{{driver}} reaches the mill late with the sound horse still willing to walk. Some cargo remains behind, but the animal is rested before the road continues.' },
+    lateMill: { id: 'lateMill', title: 'A Lighter Arrival', tone: 'safe', ending: 'success', choices: [], text: '{{driver}} reaches the mill after its receiving window has closed. The sound horse is rested before the road continues; what can still be delivered must be decided with the miller.' },
   },
 };

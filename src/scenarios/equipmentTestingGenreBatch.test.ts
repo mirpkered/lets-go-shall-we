@@ -15,6 +15,17 @@ import { EXPEDITION_LOGISTICS_GENRE_BATCH } from './expeditionLogisticsGenreBatc
 const memoryStorage = () => ({ value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } });
 
 describe('Equipment Testing / Inventors / Field Trials batch', () => {
+  it('does not narrate a clamp when the printer chose the wooden wedge', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-clamp-beneath-the-press')!;
+    const character = newCharacter('Press Test');
+    const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    state.run!.sceneId = 'press';
+    const wedge = scenario.scenes.press.choices.find(({ id }) => id === 'useWedge')!;
+    const result = choose(state, scenario, wedge, () => 0);
+    expect(result.run?.sceneId).toBe('proof');
+    expect(scenario.scenes.proof.text).not.toMatch(/clamp holds/i);
+  });
+
   it('registers 24 unique, all-year Adventures with a valid reachable graph', () => {
     expect(BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);

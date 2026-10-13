@@ -204,6 +204,8 @@ describe('grounded consequence scenario batch', () => {
     lost = act(lost, ONLY_ONE_BULLET, 'tensionRises', 'askGroundAgain', () => 0.999999);
     expect(lost.run?.sceneId).toBe('crisisLost');
     expect(lost.character?.historyFlags).toContain('armed_person_died');
+    expect(ONLY_ONE_BULLET.scenes.crisisLost.text).not.toMatch(/neighbor arrives|while you were away/i);
+    expect(ONLY_ONE_BULLET.scenes.crisisSettles.text).not.toMatch(/neighbor/i);
 
     const shot = act(start(ONLY_ONE_BULLET), ONLY_ONE_BULLET, 'roadsideCrisis', 'rushWeapon', () => 0.999999);
     expect(shot.run?.status).toBe('death');

@@ -93,7 +93,7 @@ export const THE_LAST_SURVEY: Scenario = largeAdventure('the-last-survey', 'The 
     { id: 'declineBoth', label: 'Decline the payment and leave the map with Crowe', next: 'declined' },
   ]),
   rule: e('rule', 'A Tool with Its Dates', 'Crowe folds the rule into your hand and points to a small date cut inside the joint. The instrument did not fail; the road changed. You leave with a tool and a better habit of checking what a measurement refers to.'),
-  coins: e('coins', 'The Map Is Settled', 'Crowe pays two coins for the day’s work. He keeps the rule for the county shed, and the map records both the old line and the newer bypass.'),
+  coins: e('coins', 'The Map Is Settled', 'Crowe pays two coins for the day’s work. He keeps the rule for the county shed, and the map records the route established by the measurements you completed.'),
   declined: e('declined', 'Crowe’s Last Map', 'You take neither coin nor tool. Crowe files the corrected map with the county papers and keeps his rule in the shed for whoever measures the road next.'),
 });
 
@@ -122,7 +122,7 @@ export const THE_QUARTERMASTERS_TALLY: Scenario = largeAdventure('the-quartermas
     { id: 'coinsAfterStagger', label: 'Take one coin for the delayed work', next: 'paid', effects: { money: 1 } },
     { id: 'declineAfterStagger', label: 'Decline both and move on', next: 'declined' },
   ]),
-  leftLoad: e('leftLoad', 'Not Your Load to Leave', 'The quartermaster and farrier secure the shifted chest themselves. You leave without pay or equipment; the owners keep responsibility for their cargo, and the storm passes without loss.'),
+  leftLoad: e('leftLoad', 'Not Your Load to Leave', 'The quartermaster and farrier secure the shifted load themselves. You leave without pay or equipment; the owners keep responsibility for their cargo, and the storm passes without loss.'),
   strapGift: e('strapGift', 'A Strap Released from Service', 'The quartermaster removes a sound spare strap from the caravan stores and signs it over to you. It is no longer needed after the new loading plan; the load that shifted remains the owner’s responsibility.'),
   paid: e('paid', 'A Coin for the Extra Hour', 'The quartermaster pays one coin for the extra loading work. The caravan leaves later, with its weight secured more carefully.'),
   declined: e('declined', 'The Wagons Move', 'You take no payment. The quartermaster keeps the spare strap in the stores and makes sure the next crew sees the revised loading order.'),

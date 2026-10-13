@@ -420,7 +420,7 @@ export const THE_MARKERS_STOP: Scenario = {
       { id: 'inspectMarkerEnd', label: 'Compare the painted stone with the ground', next: 'markerPattern', effects: { knowledge: ['Trail markers stop at a dry streambed; pale stones continue west and the old path may resume east.'] } },
       { id: 'followMarkerStones', label: 'Follow the pale stones west', next: 'markerWest' },
       { id: 'findMarkerTrees', label: 'Look for the path where birdsong rises', next: 'markerEast' },
-      { id: 'markOwnReturn', label: 'Leave a marker for your return', requirements: { usableItems: ['foldingTrailMarker'] }, next: 'markerMarked' },
+      { id: 'markOwnReturn', label: 'Leave a marker for your return', requirements: { usableItems: ['foldingTrailMarker'] }, next: 'markerMarked', effects: { setFlags: ['ownMarkerPlaced'] } },
     ] },
     markerPattern: { id: 'markerPattern', title: 'Marks for a Work Crew', tone: 'safe', text: 'The paint is old, and the streambed has shifted. The pale stones were placed recently to keep pack animals on dry footing; the path probably resumes through the trees, but you cannot know whether it meets the same road.', choices: [
       { id: 'followCrewStones', label: 'Follow the pack stones west', next: 'markerWest' },
@@ -431,7 +431,7 @@ export const THE_MARKERS_STOP: Scenario = {
       { id: 'markerMarkedWest', label: 'Follow the stones west', next: 'markerWest' },
       { id: 'markerMarkedEast', label: 'Search the eastern tree line', next: 'markerEast' },
     ] },
-    markerWest: end('markerWest', 'A Pack Track', 'The stones lead to a work crew’s supply track. The markers were removed when the old stream crossing dried; the crew is glad you left your own sign for travelers coming behind.'),
+    markerWest: { ...end('markerWest', 'A Pack Track', 'The stones lead to a work crew’s supply track. The markers were removed when the old stream crossing dried; the track itself shows where the crew travels.'), textVariants: [{ requirements: { flags: ['ownMarkerPlaced'] }, text: 'The stones lead to a work crew’s supply track. The markers were removed when the old stream crossing dried; the crew is glad you left your own sign for travelers coming behind.' }] },
     markerEast: end('markerEast', 'The Old Path Returns', 'The path resumes among the trees and joins the same trail a mile later. The gap in markers was only a gap, but you now know where the older route runs.'),
     markerReturn: end('markerReturn', 'Back to the Painted Trail', 'You return to the last painted stone and continue along the familiar trail. The unmarked ground can wait for a map or a companion who knows it.'),
   },
@@ -457,12 +457,12 @@ export const THE_ICE_GIVES_WARNING: Scenario = {
       { id: 'leaveIceCart', label: 'Leave the cart and seek a mill road', next: 'iceSafeWait' },
     ] },
     iceGravelRoute: { id: 'iceGravelRoute', title: 'The Gravel Bend', tone: 'warning', text: 'The bar narrows the creek but exposes shallow water. The cart can be carried across in pieces, though the stones are slick and the current is cold. The mill road is farther upstream and remains dry.', choices: [
-      { id: 'carryCartIceBend', label: 'Carry the cart across in pieces', chance: { probability: 0.72, successNext: 'iceFarBank', failureNext: 'iceColdFall', successMessage: 'The cart and traveler reach the far bank on foot.', failureMessage: 'A wheel slips in the shallows and you fall against the stones.', failureEffects: { health: -2 } } },
+      { id: 'carryCartIceBend', label: 'Carry the cart across in pieces', chance: { probability: 0.72, successNext: 'iceFarBank', failureNext: 'iceColdFall', successMessage: 'The cart and traveler reach the far bank on foot.', failureMessage: 'A wheel slips in the shallows and you fall against the stones.', successEffects: { setFlags: ['cartAndTravelerAcross'] }, failureEffects: { health: -2 } } },
       { id: 'takeIceMillRoad', label: 'Use the longer dry mill road', next: 'iceSafeWait' },
     ] },
     iceBreak: end('iceBreak', 'The Creek Opens', 'The ice breaks under you. The traveler reaches for the rope from shore, but the current carries you under the sheet before they can pull you free.', 'death'),
     iceColdFall: end('iceColdFall', 'A Wet Crossing', 'You reach the far bank with a bruised leg and cold water in your clothes. The traveler and cart are safe; the mill’s warm room is now the first stop, not the town beyond.'),
-    iceFarBank: end('iceFarBank', 'Across without the Thin Ice', 'The traveler reaches the far bank with the cart by the gravel bar or a careful line. The cracked seam remains undisturbed; you have prevented a crossing disaster rather than rescued someone already in the water.'),
+    iceFarBank: { ...end('iceFarBank', 'Across without the Thin Ice', 'You reach the far bank without stepping on the cracked seam. The traveler and cart’s locations are not established by this route record; no one is described as being pulled from the water.'), textVariants: [{ requirements: { flags: ['cartAndTravelerAcross'] }, text: 'The traveler reaches the far bank with the cart by the gravel bar. The cracked seam remains undisturbed; no one was pulled from the water.' }] },
     iceSafeWait: end('iceSafeWait', 'A Road That Holds', 'You take the longer mill road and report the thin crossing. The cart arrives later, but no one is asked to trust ice that has already shown water beneath it.'),
   },
 };

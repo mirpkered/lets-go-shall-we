@@ -119,6 +119,7 @@ describe('grounded adventure expansion batch', () => {
 
     expect(act(start(ONE_HORSE_SHORT), ONE_HORSE_SHORT, 'roadsideParty', 'lightenLoad').run?.sceneId).toBe('lightenedWagon');
     expect(act(start(ONE_HORSE_SHORT), ONE_HORSE_SHORT, 'roadsideParty', 'returnForHorse').run?.sceneId).toBe('farmStable');
+    expect(ONE_HORSE_SHORT.scenes.lateMill.text).not.toMatch(/some cargo remains behind/i);
   });
 
   it('supports distinct shelter and weather choices without requiring carried gear', () => {

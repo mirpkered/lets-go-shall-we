@@ -301,11 +301,11 @@ export const THE_LAST_ROOM: Scenario = {
     },
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Beyond the Inn',
-      text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not learn what became of the traveler or whether the innkeeper’s account was true, and no one asks you to stay.', choices: [], ending: 'success',
+      text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not stay to learn what happens next.', choices: [], ending: 'success',
     },
     walkAwayAtArrival: {
       id: 'walkAwayAtArrival', title: 'The Road Beyond the Inn',
-      text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not learn what became of the traveler or whether the innkeeper’s account was true, and no one asks you to stay.', choices: [], ending: 'success', completionQualification: 'nonSubstantive',
+      text: 'You leave the Lantern House and take the road while it is still passable. Behind you, the inn’s windows glow through the rain. You do not stay to learn what happens next.', choices: [], ending: 'success', completionQualification: 'nonSubstantive',
     },
     wrongAccusationEnding: {
       id: 'wrongAccusationEnding', title: 'The Door Left Shut',

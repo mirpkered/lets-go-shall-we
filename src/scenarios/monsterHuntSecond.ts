@@ -234,7 +234,7 @@ export const THE_MAN_WHO_SHEDS_HIS_SKIN: Scenario = {
     ]),
     coachTracks: scene('coachTracks', 'A Coat in the Luggage Rack', 'A coach driver remembers one passenger changing coats at a roadside stop after rain. A damp gray coat remains in the rack, its cuff missing the same brass button. The passenger walked toward a repair shed.', [
       { id: 'goRepairShed', label: 'Go to the repair shed in daylight', next: 'tailorFound' },
-      { id: 'returnCoat', label: 'Return the coat to the driver', next: 'identityAfter' },
+      { id: 'returnCoat', label: 'Return the coat to the driver', next: 'identityAfter', effects: { setFlags: ['returnedCoachCoat'] } },
       { id: 'chaseAtDusk', label: 'Chase the passenger into the brush', hint: 'You have no clear view of who is ahead.', chance: { probability: 0.43, successNext: 'tailorFound', failureNext: 'identityInjury', successMessage: 'You reach the shed and find the passenger there.', failureMessage: 'You fall on the wet roadside while the passenger escapes.', failureEffects: { health: -2 } } },
     ]),
     tailorFound: scene('tailorFound', 'Two Brothers, Two Coats', 'The tailor admits the missing-button coats belong to twin brothers who travel separately. One wore a scarf over a burn scar; the other had no scar. They changed coats after one was mistaken for a debtor. Neither transformed, though both let the rumor grow.', [
@@ -242,7 +242,7 @@ export const THE_MAN_WHO_SHEDS_HIS_SKIN: Scenario = {
       { id: 'exposeRumor', label: 'Tell the innkeeper what the coats show', next: 'identityAfter', effects: { historyFlags: ['resolved a shapeshifter rumor by tracing two matching coats'] } },
       { id: 'letRumorStand', label: 'Keep the brothers’ reason private', next: 'identityAfter' },
     ]),
-    identityAfter: end('identityAfter', 'No Change of Skin', 'The towns receive an account of two brothers and their exchanged coats. The debt dispute is not settled, but the shapeshifter rumor has a human explanation; the brothers’ reasons remain theirs.'),
+    identityAfter: { ...end('identityAfter', 'No Change of Skin', 'The towns receive an account of two brothers and their exchanged coats. The debt dispute is not settled, but the shapeshifter rumor has a human explanation; the brothers’ reasons remain theirs.'), textVariants: [{ requirements: { flags: ['returnedCoachCoat'] }, text: 'The coat is returned to the driver. The matching button and separate accounts remain clues, but without the tailor’s account the identity claim is still unresolved.' }] },
     identityLeft: end('identityLeft', 'A Story Between Towns', 'You leave the claim unresolved. The residents keep their separate accounts, and no one is accused without proof.'),
     identityInjury: end('identityInjury', 'The Roadside Fall', 'You bruise your knee in the wet brush and lose the passenger’s trail. The coat and the two accounts remain at the coach stop.'),
   },

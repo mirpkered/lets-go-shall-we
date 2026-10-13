@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { analyzeScenarioLibrary, validateScenarioMetadata } from '../scenarioDiversity';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { scenarioRiskTier } from '../riskClassification';
 import type { SaveData, Scenario } from '../types';
@@ -160,10 +160,32 @@ describe('survival and expedition adventure batch', () => {
     const marker = act(start(THE_MARKERS_STOP), THE_MARKERS_STOP, 'markerEnd', 'followMarkerStones');
     expect(marker.run?.sceneId).toBe('markerWest');
     expect(THE_MARKERS_STOP.scenes.markerWest.text).toContain('work crew’s supply track');
+    expect(THE_MARKERS_STOP.scenes.markerWest.text).not.toMatch(/glad you left your own sign/i);
+    let marked = act(start(THE_MARKERS_STOP, ['foldingTrailMarker']), THE_MARKERS_STOP, 'markerEnd', 'markOwnReturn');
+    marked = act(marked, THE_MARKERS_STOP, 'markerMarked', 'markerMarkedWest');
+    expect(sceneText(THE_MARKERS_STOP.scenes.markerWest, marked)).toMatch(/glad you left your own sign/i);
+    const markerStorage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(marked, markerStorage);
+    expect(sceneText(THE_MARKERS_STOP.scenes.markerWest, loadSave(markerStorage))).toMatch(/glad you left your own sign/i);
     const wait = act(start(HOLD_UNTIL_MORNING), HOLD_UNTIL_MORNING, 'nightShelter', 'stayShelterNight');
     expect(wait.run?.sceneId).toBe('morningSignal');
     expect(HOLD_UNTIL_MORNING.scenes.morningSignal.text).toContain('No one was in danger');
     expect(THE_ABANDONED_CAMP.scenes.campAnswer.text).toContain('no evidence to turn an empty site into a rescue emergency');
+  });
+
+  it('keeps the solo thin-ice crossing separate from moving the traveler and cart', () => {
+    let solo = act(start(THE_ICE_GIVES_WARNING), THE_ICE_GIVES_WARNING, 'iceWarning', 'crossIceAlone', 0);
+    expect(solo.run?.sceneId).toBe('iceFarBank');
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceFarBank, solo)).not.toMatch(/traveler reaches the far bank with the cart/i);
+    let cart = act(start(THE_ICE_GIVES_WARNING), THE_ICE_GIVES_WARNING, 'iceWarning', 'callIceWarning');
+    cart = act(cart, THE_ICE_GIVES_WARNING, 'iceTravelerStops', 'leadIceUpstream');
+    cart = act(cart, THE_ICE_GIVES_WARNING, 'iceGravelRoute', 'carryCartIceBend', 0);
+    expect(cart.run?.sceneId).toBe('iceFarBank');
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceFarBank, cart)).toMatch(/traveler reaches the far bank with the cart/i);
+    const storage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(cart, storage);
+    const restored = loadSave(storage);
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceFarBank, restored)).toMatch(/traveler reaches the far bank with the cart/i);
   });
 
   it('remembers meeting the Empty Cabin trapper without inventing that encounter on other exits', () => {

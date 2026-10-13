@@ -223,6 +223,7 @@ describe('The Last Room on the Left', () => {
     expect(state.run?.acquiredThisRun).toEqual([]);
     expect(state.character?.historyFlags).toContain('walked_away_from_inn_problem');
     expect(THE_LAST_ROOM.scenes.walkAwayEnding.text).not.toMatch(/coward|selfish|shame/i);
+    expect(THE_LAST_ROOM.scenes.walkAwayEnding.text).not.toMatch(/do not learn what became|whether the innkeeper.s account was true/i);
   });
 
   it('lets careful investigation uncover contradictions and the cellar truth', () => {

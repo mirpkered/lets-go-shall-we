@@ -64,6 +64,7 @@ describe('Bridge Out', () => {
     state = act(state, 'speakWithTravelers');
     state = act(state, 'useTravelRope', 0);
     expect(state.run?.sceneId).toBe('ropeSuccess');
+    expect(BRIDGE_OUT.scenes.ropeSuccess.text).not.toMatch(/rope is frayed/i);
     state = act(state, 'acceptIronClamp');
     expect(state.run?.inventory).toContain('ironRopeClamp');
     expect(state.run?.status).toBe('success');
@@ -87,6 +88,7 @@ describe('Bridge Out', () => {
     expect(state.run?.sceneId).toBe('turnBackEnding');
     expect(state.character?.historyFlags).toContain('walked_away_from_bridge_rescue');
     expect(state.run?.elapsedMinutes).toBe(1);
+    expect(BRIDGE_OUT.scenes.turnBackEnding.text).not.toMatch(/without making it more dangerous/i);
   });
 
   it('makes the people-versus-cargo choice consequential without framing either as evil', () => {

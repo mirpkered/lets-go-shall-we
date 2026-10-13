@@ -198,7 +198,7 @@ export const BRIDGE_OUT: Scenario = {
     },
     ropeSuccess: {
       id: 'ropeSuccess', title: 'A Line Held Firm', tone: 'safe',
-      text: '{{travelerOne}} and {{travelerTwo}} reach the far bank one at a time. The wagon remains on the near bank, and the rope is frayed where it scraped the stone. Once everyone is safe, {{travelerOne}} offers you the sturdy iron clamp from her wagon gear, useful for securing a line without trusting a wet knot.',
+      text: '{{travelerOne}} and {{travelerTwo}} reach the far bank one at a time. The wagon remains on the near bank. Once everyone is safe, {{travelerOne}} offers you the sturdy iron clamp from her wagon gear, useful for securing a line without trusting a wet knot.',
       choices: [
         { id: 'acceptIronClamp', label: 'Accept the iron rope clamp', hint: '{{travelerOne}} hands it over after the rescue; it is yours to keep.', requirements: { notItems: ['ironRopeClamp'] }, effects: { gainItems: ['ironRopeClamp'], historyFlags: ['helped_stranded_travelers', 'saved_people_over_cargo'] }, next: 'ropeEnding' },
         { id: 'leaveIronClamp', label: 'Leave the clamp with {{travelerOne}}', effects: { historyFlags: ['helped_stranded_travelers', 'saved_people_over_cargo'] }, next: 'ropeEnding' },
@@ -206,7 +206,7 @@ export const BRIDGE_OUT: Scenario = {
     },
     turnBackEnding: {
       id: 'turnBackEnding', title: 'The Long Road',
-      text: 'You take the road back before the crossing becomes worse. The travelers remain on high ground with shelter nearby and a clear warning not to approach the bridge. You have not solved their problem, but you have left without making it more dangerous.', choices: [], ending: 'success',
+      text: 'You take the road back from the crossing. The travelers remain on high ground with shelter nearby and a clear warning not to approach the bridge. You have not solved their problem; what happens at the damaged crossing remains uncertain.', choices: [], ending: 'success',
     },
     shelterEnding: { id: 'shelterEnding', title: 'A Dry Place to Wait', text: 'You lead {{travelerOne}} and {{travelerTwo}} back up the near-bank road to the wayside shelter. They are safe from the river, though the wagon and its supplies remain at risk. The crossing can wait for the wardens and lower water.', choices: [], ending: 'success' },
     waitEnding: { id: 'waitEnding', title: 'When the Water Falls', text: 'You keep the travelers on high ground and wait. By morning, the river has eased enough for wardens to guide them across. The wagon’s supplies are soaked; some may be lost. You chose caution, and the crossing was not yours to command.', choices: [], ending: 'success' },

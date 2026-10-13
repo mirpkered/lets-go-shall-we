@@ -35,6 +35,15 @@ function acquire(scenario: Scenario, route: string[], itemId: string): SaveData 
 }
 
 describe('corrective Gear Adventure batch', () => {
+  it('keeps the shifted object tied to the strap allocation choice', () => {
+    let state = start(THE_QUARTERMASTERS_TALLY);
+    state = act(state, THE_QUARTERMASTERS_TALLY, 'secureTools');
+    state = act(state, THE_QUARTERMASTERS_TALLY, 'leaveUnsecuredLoad');
+    expect(state.run?.sceneId).toBe('leftLoad');
+    expect(THE_QUARTERMASTERS_TALLY.scenes.leftLoad.text).toContain('shifted load');
+    expect(THE_QUARTERMASTERS_TALLY.scenes.leftLoad.text).not.toMatch(/shifted chest/i);
+  });
+
   it('registers eight unique all-year Adventures with seven legitimate persistent Gear paths', () => {
     expect(GEAR_CORRECTIVE_ADVENTURES).toHaveLength(8);
     expect(SCENARIOS).toHaveLength(861);

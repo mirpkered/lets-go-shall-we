@@ -258,7 +258,7 @@ export const THE_WHISTLE_AND_THE_WIND = story('the-whistle-and-the-wind', 'The W
     { id: 'moveJudges', label: 'Move the judges closer to the line', next: 'round' },
     { id: 'pauseContest', label: 'Pause until the gusts ease', next: 'scoring' },
   ]),
-  round: scene('round', 'The Kettle Call', 'Your kettle imitation makes the children laugh, then the bird answers from the hedge. The judges ask whether to score the imitation alone or the whole exchange.', [
+  round: scene('round', 'A Call from the Line', 'Your call makes the children laugh, then the bird answers from the hedge. The judges ask whether to score the imitation alone or the whole exchange.', [
     { id: 'scoreImitation', label: 'Ask to score the imitation alone', next: 'fairScore' },
     { id: 'countExchange', label: 'Count the bird’s reply as part of the act', next: 'crowdChoice' },
   ]),
