@@ -4,10 +4,10 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 50,
-  "reviewedCount": 50,
-  "remainingCount": 811,
-  "nextPosition": 51,
+  "reviewedThroughPosition": 60,
+  "reviewedCount": 60,
+  "remainingCount": 801,
+  "nextPosition": 61,
   "nextFindingId": "CRA-F0019",
   "nextClusterId": "CRA-C0004",
   "status": "IN_PROGRESS",
@@ -62,7 +62,17 @@
     {"position":47,"adventureId":"harvest-hand","slug":"harvest-hand","title":"Harvest Hand","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure builder and harvest tally variants examined"},
     {"position":48,"adventureId":"freight-to-millers-fork","slug":"freight-to-millers-fork","title":"Freight to Miller’s Fork","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure builder examined"},
     {"position":49,"adventureId":"a-roof-before-rain","slug":"a-roof-before-rain","title":"A Roof Before Rain","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure builder examined"},
-    {"position":50,"adventureId":"night-watch","slug":"night-watch","title":"Night Watch","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure builder examined"}
+    {"position":50,"adventureId":"night-watch","slug":"night-watch","title":"Night Watch","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure builder examined"},
+    {"position":51,"adventureId":"unload-before-dark","slug":"unload-before-dark","title":"Unload Before Dark","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared workAdventure states and all task/outcome branches examined"},
+    {"position":52,"adventureId":"the-mill-job","slug":"the-mill-job","title":"The Mill Job","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; machinery stopped/locked, carried-tool, help, failure, rushed, and early-stop outcomes examined"},
+    {"position":53,"adventureId":"cutting-timber","slug":"cutting-timber","title":"Cutting Timber","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; shared job branches plus timber tally, bonus, setback, and crew outcomes examined"},
+    {"position":54,"adventureId":"the-delivery-run","slug":"the-delivery-run","title":"The Delivery Run","sourceFile":"src/scenarios/honestWorkBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; delivery, short-road, early-return, cloak, keeper-help, and damaged-wrapper outcomes examined"},
+    {"position":55,"adventureId":"payment-in-kind","slug":"payment-in-kind","title":"Payment in Kind","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; flour/tool/deferred-wage/decline choices checked against money, item, Knowledge, and History effects"},
+    {"position":56,"adventureId":"short-on-the-wages","slug":"short-on-the-wages","title":"Short on the Wages","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; all four randomized explanations, witness/account branches, negotiation success/failure, acceptance, and refusal checked against settlement effects"},
+    {"position":57,"adventureId":"market-day","slug":"market-day","title":"Market Day","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; browse/leave, five purchases, and conditional watch sale checked against prices, inventory, and effects"},
+    {"position":58,"adventureId":"the-horse-trade","slug":"the-horse-trade","title":"The Horse Trade","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; stiff/sound horse variants, tack, price, limited opinion, referral, conditions, and declined judgment checked"},
+    {"position":59,"adventureId":"the-broken-crate","slug":"the-broken-crate","title":"The Broken Crate","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; all three damage-witness variants, inspection, packing note, witnessed statement, securing goods, shared loss, carrier account, and refusal checked"},
+    {"position":60,"adventureId":"half-now","slug":"half-now","title":"Half Now","sourceFile":"src/scenarios/commerceBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; advance/written terms, renegotiation success/failure, original-scope completion, goods payment, and paid withdrawal checked against cumulative money and work scope"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE"},
@@ -89,10 +99,18 @@
     {"clusterId":"CRA-C0002","name":"Knowledge/History without route proof","description":"Knowledge and/or History is granted without sufficient route proof that the Traveler actually learned or established it.","findingIds":["CRA-F0001","CRA-F0004"]},
     {"clusterId":"CRA-C0003","name":"Elapsed-time proxy used as event proof","description":"Elapsed time is used as a proxy for a specific event/consequence, making later narration claim that event on routes where it did not occur.","findingIds":["CRA-F0011"]}
   ],
-  "classificationTotals": {"HEALTHY":30,"MINOR CONCERN":3,"CONFIRMED DEFECT":17,"NEEDS MANUAL REVIEW":0},
+  "classificationTotals": {"HEALTHY":40,"MINOR CONCERN":3,"CONFIRMED DEFECT":17,"NEEDS MANUAL REVIEW":0},
   "testEvidence": [
     {"command":"npm test -- --run src/scenarios/manInTheDitch.test.ts src/scenarios/burningLoft.test.ts src/scenarios/underTheIce.test.ts","result":"56 tests passed across 3 files"},
     {"command":"npm test -- --run src/scenarios/afterTheStorm.test.ts src/scenarios/washoutRisk.test.ts src/scenarios/washoutRc12F18.test.ts","result":"11 tests passed across 3 files"},
-    {"command":"npm test -- --run src/scenarios/honestWorkBatch.test.ts","result":"12 tests passed"}
+    {"command":"npm test -- --run src/scenarios/honestWorkBatch.test.ts","result":"12 tests passed"},
+    {"command":"npm test -- --run src/scenarios/honestWorkBatch.test.ts src/scenarios/commerceBatch.test.ts","result":"27 tests passed across 2 files (Batch 51-60)"}
+  ],
+  "reviewBatches": [
+    {"positions":"1-20","status":"carried forward from prior conversation summaries"},
+    {"positions":"21-30","status":"reviewed from current source"},
+    {"positions":"31-40","status":"reviewed from current source"},
+    {"positions":"41-50","status":"reviewed from current source"},
+    {"positions":"51-60","status":"reviewed from current source; 27 focused tests passed across Honest Work and Commerce suites"}
   ]
 }
