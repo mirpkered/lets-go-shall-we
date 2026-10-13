@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 550 current registered Adventures reviewed; 311 of 861 remain.
-Next: position 551, The Press before Noon (`the-press-before-noon`; `src/scenarios/tradesApprenticeshipGenreBatch.ts`); next finding ID `CRA-F0214`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 560 current registered Adventures reviewed; 301 of 861 remain.
+Next: position 561, The Clock above the Market (`the-clock-above-the-market`; `src/scenarios/tradesApprenticeshipGenreBatch.ts`); next finding ID `CRA-F0218`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 321 |
+| HEALTHY | 327 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 191 |
+| CONFIRMED DEFECT | 195 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 550 |
+| Total reviewed current registered Adventures | 560 |
 
-There are 213 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy.
+There are 217 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -1053,3 +1053,24 @@ Reviewed ten previously unreviewed Adventures in live `SCENARIOS` order. Traced 
 | 550 | The Line That Would Not Hold | HEALTHY | — usable-tool gates, dry-wrap/relay outcomes and the climb hazard remain distinct; the lesson flag prevents duplicate teaching. |
 
 CRA-F0211 and CRA-F0212 extend CRA-C0001; CRA-F0213 extends CRA-C0004. No new cluster was established. The ledger is contiguous through position 550; next is position 551, The Press before Noon (`the-press-before-noon`), with 311 current registered Adventures remaining and next finding CRA-F0214.
+
+## Audit continuation (live positions 551–560)
+
+Reviewed ten Adventures in live `SCENARIOS` order. Traced the press’s margin comparison/clean-and-retest/corrected-short-notice outcomes; ferry gate inspection, usable-tool, replacement-pin wait, and force-failure routes; mill alignment, bearing diagnosis, safe cleaning/diversion, and overload spill; lane closure, usable rod, shoring, second-mason delay, and unsafe mortar; cobbler comparison, patch/replacement, and no-charge dispute; rope splice marking, clamp/load methods, relay/delay, repair/upgrade of the Traveler’s own rope, and failure; door-gap/usable-pry diagnosis, hinge reset versus explain/schedule and unsafe planing; supported/canvas book opening, transcription versus waiting, and press failure; boat level/cover/early launch, safe cure/cargo transfer and bucket test; and horse collar fit, gloves, unsuitable trace replacement, refit versus teach-only, and settlement.
+
+Four current contradictions were recorded. A broken Folding Rule can satisfy the press margin-measurement choice because it has an ownership-only gate. On the swollen-door explain/schedule branch, the shared result claims an unperformed hinge reset. The damp-book wait branch refuses to copy entries but reaches a result claiming they were copied. The harness teach-only branch reaches a result claiming the collar was refitted and load balanced. The ferry pin wait is explicitly a wait for replacement; the mill divert says repair safely, the quoin route waits for a second mason, and the ropewalk clamp is usable, so those are not defects. Focused Trades/Apprenticeship, registry, and equipment suites passed 21 tests across three files as supporting evidence; current route tracing remains authoritative. No gameplay source or tests changed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 551 | The Press before Noon | CONFIRMED DEFECT | CRA-F0214 (MEDIUM) — a BROKEN Joiner’s Folding Rule passes an ownership-only physical measurement gate. |
+| 552 | The Ferry Gate Pin | HEALTHY | — inspection/support, replacement-pin delay, force failure, and settlement distinguish the repair paths. |
+| 553 | The Belt at the Mill | HEALTHY | — safe cleaning or flour diversion precedes the repair/test result; overload reaches a separate spill outcome. |
+| 554 | The Stone Quoin | HEALTHY | — the alternative waits for a second mason before reset; premature mortar reaches a separate failure result. |
+| 555 | The Last at the Cobbler | HEALTHY | — accepted repair remedies and a no-charge daylight dispute remain distinct. |
+| 556 | The Ropewalk Splice | HEALTHY | — clamp usability, gradual resplice test, own-rope condition repairs/upgrades and the failed load are route-specific. |
+| 557 | The Door that Swelled | CONFIRMED DEFECT | CRA-F0215 (MEDIUM) — explain/schedule reaches a shared ending that claims a hinge reset never performed on that branch. |
+| 558 | Paper under the Press | CONFIRMED DEFECT | CRA-F0216 (MEDIUM) — a wait/refusal route reaches settlement text claiming intact entries were copied. |
+| 559 | The Boat Seam in the Yard | HEALTHY | — the leak diagnosis leads to an ashore cure/bucket-test path or explicit cargo transfer to a sound ferry. |
+| 560 | The Horse that Wore One Strap | CONFIRMED DEFECT | CRA-F0217 (MEDIUM) — teach-only reaches a settlement claiming the collar was refitted and traces balanced. |
+
+CRA-F0214 extends CRA-C0004; CRA-F0215–CRA-F0217 extend CRA-C0001. No new cluster was established. The ledger is contiguous through position 560; next is position 561, The Clock above the Market (`the-clock-above-the-market`), with 301 current registered Adventures remaining and next finding CRA-F0218.
