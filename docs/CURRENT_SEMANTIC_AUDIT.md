@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–160 reviewed; 701 of 861 remain.
-Next: position 161; next finding ID `CRA-F0038`.
+Checkpoint: registry positions 1–170 reviewed; 691 of 861 remain.
+Next: position 171; next finding ID `CRA-F0038`.
 
 ## Current checkpoint
 
@@ -11,11 +11,11 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 115 |
-| MINOR CONCERN | 9 |
+| HEALTHY | 123 |
+| MINOR CONCERN | 11 |
 | CONFIRMED DEFECT | 36 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 160 |
+| Total reviewed | 170 |
 
 There are 37 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036 are LOW; CRA-F0027, CRA-F0033, and CRA-F0037 are MEDIUM. Batch 51–60 found no additional confirmed defects.
 
@@ -257,6 +257,23 @@ The specialized-trade routes preserve the editor’s authority over publication,
 
 The remaining seasonal stories preserve partial work and choice-specific rewards. Before the Frost has a minor timing-model concern: its gather action advances 20 minutes, but the full-harvest result says the work continues until light fades; the phase remains pre-dusk, and the source does not establish an exact sunset interval. The entertainment routes keep performer arrival, audience expectations, medical claims, consent, and the limits of the wind instrument explicit; The Speaker’s second demonstration gives the Traveler a direct explanatory/comparison choice. The first three mistaken-identity stories do not convert an assumption into a job, payment obligation, accusation, or repair; the actual clerk, repairer, or account check is only stated on the corresponding route. No additional confirmed defects were identified.
 
+## Positions 161–170
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 161 | The Package | HEALTHY | — |
+| 162 | Collection Day | HEALTHY | — |
+| 163 | Out by Sundown | HEALTHY | — |
+| 164 | The Mule Is Mine | MINOR CONCERN | `muleCareAgreed` is set but not consumed beyond the resulting scene. |
+| 165 | The Sealed Crate | HEALTHY | — |
+| 166 | Find Her | MINOR CONCERN | Search/errand reward terms are unclear on routes that return no address. |
+| 167 | Dear Mary | HEALTHY | — |
+| 168 | The Locket | HEALTHY | — |
+| 169 | Supper for Two | HEALTHY | — |
+| 170 | The Children’s Court | HEALTHY | — |
+
+The parcel, employment, and small human stories keep custody, authority, privacy, and consent tied to their selected routes. Collection Day’s incoming coin is carried back to the shopkeeper while the one-coin effect corresponds to the stated errand wage; the mule stays in its pen while the debt is disputed. The Mule Is Mine has a redundant route flag, and Find Her leaves compensation unclear on unsuccessful/no-address routes; both are minor concerns, not confirmed semantic defects. The sealed-crate payment follows delivery. The Locket records a return only after recognition of its distinctive flower, while a single initial remains inconclusive. No additional confirmed defects were identified.
+
 ## Finding clusters
 
 - **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0037.
@@ -275,3 +292,5 @@ The persistent ledger did not exist in this checkout before this run. The carry-
 Batch 141–150 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, and `riverWaterWorkGenreBatch.test.ts`) passed: 24 tests across 3 files. These graph/reachability and related content checks support, but do not replace the route-level source review.
 
 Batch 151–160 supporting suites (`secondWaveBatch.test.ts`, `contentDepth.test.ts`, `compensationAccountingC2.test.ts`, and `qaContentCorrections.test.ts`) passed: 36 tests across 4 files. No gameplay source or tests were changed.
+
+Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
