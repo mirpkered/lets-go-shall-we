@@ -3,7 +3,7 @@
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Checkpoint: registry positions 1–290 reviewed; 571 of 861 remain.
-Next: position 291; next finding ID `CRA-F0097`.
+Next: position 291; next finding ID `CRA-F0096`.
 
 ## Current checkpoint
 
