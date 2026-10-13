@@ -2,22 +2,22 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–250 reviewed; 611 of 861 remain.
-Next: position 251; next finding ID `CRA-F0077`.
+Checkpoint: registry positions 1–260 reviewed; 601 of 861 remain.
+Next: position 261; next finding ID `CRA-F0080`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–250 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–260 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 165 |
+| HEALTHY | 172 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 70 |
+| CONFIRMED DEFECT | 73 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 250 |
+| Total reviewed | 260 |
 
-There are 76 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, and CRA-F0076 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, and CRA-F0074 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, and CRA-F0051 are HIGH. Batch 51–60 found no additional confirmed defects.
+There are 79 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, CRA-F0069, CRA-F0073, CRA-F0075, and CRA-F0076 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068, CRA-F0070–CRA-F0072, CRA-F0074, and CRA-F0077–CRA-F0079 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, and CRA-F0051 are HIGH. Batch 51–60 found no additional confirmed defects.
 
 ## Positions 21–30
 
@@ -459,3 +459,22 @@ In The Missing Stocking, `quietReturn` from the stable sets `stockingFound` and 
 Batch 241–250 added two LOW-severity findings to CRA-C0001; no new cluster was required. Totals are now 165 HEALTHY, 15 MINOR CONCERN, and 70 CONFIRMED DEFECT across 250 reviewed Adventures; 611 remain. The next registry entry is position 251, Footprints around the House, and the next finding ID is CRA-F0077.
 
 Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
+
+## Positions 251–260
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 251 | Footprints around the House | HEALTHY | — |
+| 252 | The Red Scarf in the Snow | HEALTHY | — |
+| 253 | The Empty Sleigh | HEALTHY | — |
+| 254 | The House with the Warm Window | HEALTHY | — |
+| 255 | The Frozen Letter | CONFIRMED DEFECT | CRA-F0077 (MEDIUM) — the sealed-letter route grants Knowledge that the letter is not urgent without learning its contents. |
+| 256 | The Longest Night | HEALTHY | — |
+| 257 | The Ice Lanterns | HEALTHY | — |
+| 258 | The Widow’s Firewood | CONFIRMED DEFECT | CRA-F0078 (MEDIUM) — accepting only the neighbor’s own wood still claims the miller’s logs were returned. |
+| 259 | The Road under Snow | HEALTHY | — |
+| 260 | The Frozen Millwheel | CONFIRMED DEFECT | CRA-F0079 (MEDIUM) — a gate-bracing success reaches the repaired-wheel outcome without route proof that the bearing was warmed. |
+
+The Frozen Letter’s `mill.secureLetter` branch keeps the letter sealed but grants Knowledge that it is not an emergency warning. That conclusion appears only on the separate `askMiller` → `letterContext` route (CRA-F0077). In The Widow’s Firewood, `acceptOwnWood` joins the same settlement as `correctTheft`; only the latter separates and returns the miller’s logs, yet both settlement and ending claim they were returned (CRA-F0078). The Frozen Millwheel’s failed sluice-handle route can succeed by bracing the gate and having the miller close it, then reach `wheelFreed` without establishing bearing heat; the result, History, and payoff describe the full warmed-bearing/pressure-eased repair (CRA-F0079). The other seven Adventures keep route evidence and consequence distinctions coherent across their search, travel, rescue, refusal, object, and persistence paths. The Christmas affinity and registry suites passed 21 tests across 2 files; these checks support but do not replace the route-level review. No gameplay source or tests were changed.
+
+Batch 251–260 added three MEDIUM findings to existing clusters; no new cluster was required. Totals are now 172 HEALTHY, 15 MINOR CONCERN, and 73 CONFIRMED DEFECT across 260 reviewed Adventures; 601 remain. The next registry entry is position 261, The Visitor at Midnight, and the next finding ID is CRA-F0080.
