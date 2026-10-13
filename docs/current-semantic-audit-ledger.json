@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 510,
-  "reviewedCount": 510,
-  "remainingCount": 351,
-  "nextPosition": 511,
-  "nextFindingId": "CRA-F0206",
+  "reviewedThroughPosition": 520,
+  "reviewedCount": 520,
+  "remainingCount": 341,
+  "nextPosition": 521,
+  "nextFindingId": "CRA-F0209",
   "nextClusterId": "CRA-C0009",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -523,6 +523,17 @@
     {"position":508,"adventureId":"the-blue-thread","slug":"the-blue-thread","title":"The Blue Thread","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0203"],"reviewProvenance":"current-source route review; ditch/witness/fiber approaches, coin-identification/finder-question/witness responses, purse custody and reporting endings, separate fee/refusal and Knowledge traced","notes":"Only askFinder says the traveler admits taking two coins, and even that response does not say the remaining coins are returned. countCoins only has Vale identify the number/ticket; callWoodcutter only reports when the purse was on the bench. The shared aftermath nevertheless says the finder admits taking two and returns the remaining coins on all three branches.","preReconciliationPosition":508,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":509,"adventureId":"the-axle-without-a-mark","slug":"the-axle-without-a-mark","title":"The Axle without a Mark","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0204"],"reviewProvenance":"current-source route review; unload/book/smith approaches, stamp/claim/refusal responses, smith custody, wagon repair, crew-fee/refusal and tool-ownership outcomes traced","notes":"The aftermath says the public-works axle is returned to its crew. On callForeman, the response instead says the smith keeps the axle inside after the foreman signs the claim; on refusePurchase, the stranger leaves without the axle and the smith is told to hold it. The giveStatement ending explicitly says the axle remains in smith custody until the county crew collects, contradicting the shared returned-to-crew statement.","preReconciliationPosition":509,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":510,"adventureId":"the-rain-on-the-waybill","slug":"the-rain-on-the-waybill","title":"The Rain on the Waybill","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0205"],"reviewProvenance":"current-source route review; carryable-case/shelter/station approaches, dry/issue-number/driver responses, combat win/loss, original-case/coat custody, office/wait endings, duplicate case reward and Knowledge traced","notes":"Setup says the waybill case is missing. shelterDriver and askStation do not retrieve it; checkSeal only protects the wet paper in the Traveler’s own usable Lockable Map Case. Nevertheless the shared threat has a rider reaching for a wet case, and the aftermath says the clerk recovers and verifies it, even on standWithDriver where the false worker retreats without the case. The borrowed coat is also said returned without a route-specific handoff; the case/custody contradiction is the registered primary witness.","preReconciliationPosition":510,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    ,
+    {"position":511,"adventureId":"the-cold-iron-latch","slug":"the-cold-iron-latch","title":"The Cold Latch","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0206"],"reviewProvenance":"current-source route review; work-note/rope-trace/neighbor approaches, mark/miller/family responses, loan and recovery endings, compensation alternatives and Knowledge traced","notes":"Only checkWorkNotes finds a recorded loan. followRope merely finds red thread toward the mill road; askNeighbor reports the tools were left by the public well. The response choices compare marks, identify the cart, or call the family, but do not establish the neighbor’s permissioned loan. Shared aftermath nevertheless says the neighbor admits borrowing one spade with permission on every route. It also claims the second spade and rope are already returned before the later walkToolsHome option performs a return. The route-specific loan admission is the primary finding; ownership marks, separate nail reward, coin/refusal, and Knowledge remain distinct.","preReconciliationPosition":511,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":512,"adventureId":"the-forked-shadow","slug":"the-forked-shadow","title":"The Forked Shadow","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; open-road/farm-witness/pace approaches, clerk/details/decline responses, inn-owner confirmation, purse disposition, witness-fee/refusal and Knowledge traced","notes":"The rider’s purse claim is explicitly tentative in the threat. The clerk can record the purse, the rider can identify the inn and stitched initials, or the Traveler can leave it with the clerk; subsequent time allows the inn-register confirmation. Both courier/record endings preserve custody and do not accuse the rider of robbery. Fee, refusal, and Knowledge are consistent."},
+    {"position":513,"adventureId":"the-axle-grease-mark","slug":"the-axle-grease-mark","title":"The Grease Mark","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0207"],"reviewProvenance":"current-source route review; stop/check-tool-board/signal approaches, ask-return/protect-driver/check-wheel responses, combat win/loss, wheel examination endings, retired-jack transfer, coin/refusal and Knowledge traced","notes":"Only askReturn explicitly says the stranger drops the crew wrench; fight victory also says he leaves it. protectDriver says he leaves before anyone closes in, and checkWheel only says the crew checks the nuts with its own tool after he leaves. Shared aftermath says the road crew recovers its wrench across those response routes, without a drop or handoff. Driver safety, wheel stabilization, attack attribution, retired-jack provenance and compensation remain otherwise consistent.","preReconciliationPosition":513,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":514,"adventureId":"the-doctor-before-the-ford","slug":"the-doctor-before-the-ford","title":"The Doctor Before the Ford","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0208"],"reviewProvenance":"current-source route review; case-protection/rope/wait departures, support/case-first/withdraw responses, ferryman retrieval/help, patient delivery and safe-delay outcomes traced","notes":"Only the departure.rope choice establishes a handline. departure.case reaches the same crossing without one, but crossing.casefirst is still available and its result says the doctor is clinging to the handline. The route offers no rope requirement or alternate result; the missing proof is the witnessed defect. caseLeftHigh, doctorSlipped, ferryman-rescue/retrieval, doctorSafe, and late outcomes otherwise distinguish case and person location and timing."},
+    {"position":515,"adventureId":"the-pay-carriage-at-dusk","slug":"the-pay-carriage-at-dusk","title":"The Pay Carriage at Dusk","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; chain/lantern/ridge preparations, false-toll examination, signal/turn/combat win-loss, payroll custody, wage and danger-bonus outcomes traced","notes":"The ridge route avoids the false toll and arrives late with the box untouched. On the east road, the lantern signal or farm-track turn brings the box to the mill; combat win and withdrawal preserve driver/box arrival while differentiating the danger bonus. The chain/lantern preparation flags do not assert a conflicting result, and no route loses or misstates the payroll."},
+    {"position":516,"adventureId":"the-crate-of-window-glass","slug":"the-crate-of-window-glass","title":"The Crate of Window Glass","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"MINOR CONCERN","findingIds":[],"reviewProvenance":"current-source route review; strap/blanket/detour preparations, unload/jack/cross rut choices, intact/cracked/delayed deliveries and partial wages traced","notes":"The brace/wrap preparation flags have no visible downstream distinction at the rut; even after either preparation, the player may explicitly choose to cross accepting that a pane may crack. Since the source does not promise those preparations guarantee intact glass and all end states remain possible, this is an ineffectual-preparation concern rather than a confirmed contradiction. Jack usability and retained-tool text are consistent."},
+    {"position":517,"adventureId":"the-witness-under-escort","slug":"the-witness-under-escort","title":"The Witness under Escort","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sealed-statement/map-case/question approaches, consent/refusal planning, public-road/office/church/confront/combat outcomes traced","notes":"The statement stays sealed whether Nell carries it or places it in the offered case. Escort consent/refusal remains explicit; arrival, church refuge, nonviolent confrontation, and combat win/loss preserve Nell’s agency and destination without claiming the Traveler read her account. No attached issue surfaced in the current source trace."},
+    {"position":518,"adventureId":"the-shepherds-return","slug":"the-shepherds-return","title":"The Shepherd’s Return","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; toolkit-gate/dog/whistle approaches, flock/cart/split/neighbor outcomes, accounting, wage and partial success traced","notes":"The toolkit opens the stone lane; the dog route preserves the creek split and either gathers the pair or leaves neighbors to retrieve them; the usable-whistle route recruits the neighboring pasture. Flock, cart, animal accounting, timing, and reduced/agreed wage claims match each ending. No unsupported recovery or full-success claim was found."},
+    {"position":519,"adventureId":"the-ferry-for-the-midwife","slug":"the-ferry-for-the-midwife","title":"The Ferry for the Midwife","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"MINOR CONCERN","findingIds":[],"reviewProvenance":"current-source route review; glove-gated inspection, relay routes, empty-ferry/skiff choice, risky crossing failure, line replacement and escort-fee outcome traced","notes":"The inspection route explicitly offers an empty-ferry/skiff relay, but converges with the runner-to-upper-bridge route on an ending that says the midwife reaches the upper bridge by cart. A later cart transfer is plausible but not stated; the mode/transition is compressed rather than a definite contradiction. The dangerous shared crossing is only selected after inspecting the weak splice; replacement and delayed safe routes remain distinct."},
+    {"position":520,"adventureId":"the-lanterns-at-camp-four","slug":"the-lanterns-at-camp-four","title":"The Lanterns at Camp Four","sourceFile":"src/scenarios/roadDangerGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; lantern-guard/tool-board/whistle approaches, identify/warn/rush responses, worker identity, signal and injury-free outcomes traced","notes":"The usable-whistle path brings down the forewoman before the figure approaches. Other routes preserve the distinction between identification, warning the crew, and rushing across the track; all identify the stranger as the night brakeman and keep tools/lamp safe or defer work. No unsupported theft, injury, or work-completion claim was found."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -730,6 +741,10 @@
     {"findingId":"CRA-F0203","position":508,"adventureId":"the-blue-thread","severity":"MEDIUM","defect":"Shared aftermath attributes a two-coin admission and repayment on response routes that establish neither, and even the confession route never narrates repayment.","routeWitness":"threat.respond_countCoins or respond_callWoodcutter -> aftermath; Vale identifies contents on countCoins, while the woodcutter only gives a timeline on callWoodcutter. Neither response establishes that the finder took or returns coins. respond_askFinder alone has the traveler admit taking two for food, but does not say the remaining coins are returned. The base aftermath claims both admission and repayment across all three.","violatedRule":"Confession, restitution, and recovered amount are separate outcomes and must be established by the selected route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0204","position":509,"adventureId":"the-axle-without-a-mark","severity":"MEDIUM","defect":"Shared aftermath says the public axle has been returned to its crew while response/ending text keeps it in the smith’s custody.","routeWitness":"threat.respond_callForeman -> aftermath. The response says the foreman signs the claim and the smith keeps the axle inside; aftermath then says it is returned to the crew, while ending_giveStatement says it remains in the smith’s custody until collection. respond_refusePurchase also tells the smith to hold it, yet converges on the same returned-to-crew claim.","violatedRule":"Ownership adjudication and physical custody are distinct; a claim signed by an owner does not itself transfer the object from its custodian.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0205","position":510,"adventureId":"the-rain-on-the-waybill","severity":"MEDIUM","defect":"The shared threat/aftermath makes the missing waybill case present and recovered without an incoming route establishing its recovery.","routeWitness":"approach_shelterDriver or approach_askStation -> threat.respond_standWithDriver -> aftermath; setup says the cargo’s waybill case is missing, these approaches do not find it, and standWithDriver explicitly says the false worker retreats without the case. Only approach_checkSeal protects the Traveler’s own carried Lockable Map Case; it does not recover the missing cargo case. The common aftermath still says the clerk recovers and verifies the case.","violatedRule":"A shared scene may not restore object presence or custody unless an incoming route establishes the recovery or handoff.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    ,
+    {"findingId":"CRA-F0206","position":511,"adventureId":"the-cold-iron-latch","severity":"MEDIUM","defect":"Shared aftermath attributes a permissioned spade loan to the neighbor even on routes that do not establish that loan.","routeWitness":"approach_followRope or approach_askNeighbor -> any threat response -> aftermath. followRope finds red thread toward the mill road; askNeighbor only says the tools were left at the public well. Unlike checkWorkNotes, neither records a loan. The later compareMarks/askMill/callFamily responses also do not establish permission, yet shared aftermath says the neighbor admits borrowing a spade with permission.","violatedRule":"A shared factual assertion about permission, ownership, or prior action must be supported by the selected information route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0207","position":513,"adventureId":"the-axle-grease-mark","severity":"MEDIUM","defect":"Shared aftermath claims the road crew recovered its wrench when the selected response did not establish a drop or handoff.","routeWitness":"approach_stopWagon or approach_signalWorkers -> threat.respond_protectDriver or respond_checkWheel -> aftermath. protectDriver says the stranger leaves before anyone closes in; checkWheel says only that the crew checks the nuts with its own tool. Neither says the stranger drops the crew wrench. The base aftermath nevertheless says the crew recovers it. askReturn and combat victory explicitly leave the wrench, showing the outcome distinction is route-specific.","violatedRule":"Object recovery/custody must be established by the route before shared aftermath claims possession or return.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0208","position":514,"adventureId":"the-doctor-before-the-ford","severity":"MEDIUM","defect":"A response claims the doctor is clinging to a handline on a route where no handline was established.","routeWitness":"departure.case -> crossing.casefirst -> caseFirst. departure.case only sets doctor_case_protected and contains no rope/handline action. The alternative departure.rope sets doctor_rope_line, but casefirst is available from the shared crossing without checking that flag. caseFirst then says the doctor is clinging to the handline.","violatedRule":"A physical aid or route method must not appear in later narration unless it was established on the incoming route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -874,7 +889,10 @@
         "CRA-F0202",
         "CRA-F0203",
         "CRA-F0204",
-        "CRA-F0205"
+        "CRA-F0205",
+        "CRA-F0206",
+        "CRA-F0207",
+        "CRA-F0208"
       ]
     },
     {
@@ -987,9 +1005,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 291,
-    "MINOR CONCERN": 36,
-    "CONFIRMED DEFECT": 183,
+    "HEALTHY": 296,
+    "MINOR CONCERN": 38,
+    "CONFIRMED DEFECT": 186,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1188,6 +1206,11 @@
     {
       "command": "pnpm exec vitest run src/scenarios/roadDangerGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "23 tests passed across 3 files; supporting Road Danger route/combat/reward variants, registry integrity, and Gear action usability semantics for positions 501-510; semantic conclusions are from per-route source traces"
+    }
+    ,
+    {
+      "command": "pnpm exec vitest run src/scenarios/roadDangerGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "23 tests passed across 3 files; supporting Road Danger route/combat/reward variants, registry integrity, and Gear action usability semantics for positions 511-520; semantic conclusions are from per-route source traces"
     }
   ],
   "reviewBatches": [
@@ -1390,14 +1413,18 @@
     {
       "positions": "501-510",
       "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. CRA-F0196–CRA-F0205 record unlocated private-note custody, an unmarked retreat route, unsupported authority/ferryman confirmations, unproved courier-papers status, imported back-lane movement, an unavailable dropped tool, route-unspecific coin confession/repayment, contradictory axle custody, and recovery of a case absent from setup. All ten extend CRA-C0001 (route-specific fact, object, location, or outcome lost at convergence); no new cluster was needed. Road Danger, registry and equipment suites passed 23 tests across three files as supporting evidence; no gameplay source or tests changed."
+    },
+    {
+      "positions": "511-520",
+      "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0206 records an unsupported neighbor-loan admission; CRA-F0207 records crew-wrench recovery not established on protective/check-wheel routes; CRA-F0208 records a handline assumed on the no-rope departure. All three extend CRA-C0001. The Crate of Window Glass and Ferry for the Midwife retain minor concerns about preparations/method transitions; five Adventures are healthy. Road Danger, registry and equipment suites passed 23 tests across three files as supporting evidence; no gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 510,
-  "maxReviewedRegistryPosition": 510,
+  "highestContiguousReviewedPosition": 520,
+  "maxReviewedRegistryPosition": 520,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 511,
-  "firstUnreviewedStableId": "the-cold-iron-latch",
-  "nextStableId": "the-cold-iron-latch",
+  "firstUnreviewedPosition": 521,
+  "firstUnreviewedStableId": "the-courier-relay-box",
+  "nextStableId": "the-courier-relay-box",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1908,7 +1935,17 @@
     "the-camp-with-two-fires",
     "the-blue-thread",
     "the-axle-without-a-mark",
-    "the-rain-on-the-waybill"
+    "the-rain-on-the-waybill",
+    "the-cold-iron-latch",
+    "the-forked-shadow",
+    "the-axle-grease-mark",
+    "the-doctor-before-the-ford",
+    "the-pay-carriage-at-dusk",
+    "the-crate-of-window-glass",
+    "the-witness-under-escort",
+    "the-shepherds-return",
+    "the-ferry-for-the-midwife",
+    "the-lanterns-at-camp-four"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1917,8 +1954,8 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 510,
-    "uniqueCurrentRegisteredAdventuresReviewed": 510,
+    "recordedEntriesInspected": 520,
+    "uniqueCurrentRegisteredAdventuresReviewed": 520,
     "directStableIdMatches": 508,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
@@ -1951,9 +1988,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 510,
+    "highestContiguousReviewedPosition": 520,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 510,
+    "maxReviewedLivePosition": 520,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1971,6 +2008,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, and Road Danger Adventures at positions 490–510 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 511, The Cold Latch (stable ID the-cold-iron-latch), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, and Road Danger Adventures at positions 490–520 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 521, The Courier Relay Box (stable ID the-courier-relay-box), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

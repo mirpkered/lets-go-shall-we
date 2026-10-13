@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 510 current registered Adventures reviewed; 351 of 861 remain.
-Next: position 511, The Cold Latch (`the-cold-iron-latch`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0206`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 520 current registered Adventures reviewed; 341 of 861 remain.
+Next: position 521, The Courier Relay Box (`the-courier-relay-box`; `src/scenarios/roadDangerGenreBatch.ts`); next finding ID `CRA-F0209`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 291 |
-| MINOR CONCERN | 36 |
-| CONFIRMED DEFECT | 183 |
+| HEALTHY | 296 |
+| MINOR CONCERN | 38 |
+| CONFIRMED DEFECT | 186 |
 | NEEDS MANUAL REVIEW | 0 |
 | Total reviewed current registered Adventures | 510 |
 
-There are 205 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed.
+There are 208 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 510. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–510 were then reviewed in live-registry order. There are no gaps through position 510. The next unreviewed Adventure is position 511, The Cold Latch (`the-cold-iron-latch`); 351 current registered Adventures remain.
+The highest contiguous reviewed position is now 520. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–520 were then reviewed in live-registry order. There are no gaps through position 520. The next unreviewed Adventure is position 521, The Courier Relay Box (`the-courier-relay-box`); 341 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -977,3 +977,22 @@ Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced mi
 | 510 | The Rain on the Waybill | CONFIRMED DEFECT | CRA-F0205 (MEDIUM) — shared threat/aftermath makes the missing case present and recovered without a recovery route. |
 
 CRA-F0196–CRA-F0205 extend CRA-C0001 (route-specific object, location, authority, information, custody, and outcome facts lost at convergence); no new cluster was needed. No gameplay source or tests changed. The ledger is contiguous through position 510; next is position 511, The Cold Latch (`the-cold-iron-latch`), with 351 remaining and next finding CRA-F0206.
+
+## Audit continuation (live positions 511–520)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced shed-note/ownership/loan evidence, wrench custody after retreat and combat, carried-case/handline alternatives at the ford, payroll preparation and false-toll branches, crate bracing and glass-damage alternatives, sealed-statement custody and escort consent, flock/cart/partial-herding outcomes, ferry-line inspection and distinct crossing methods, and trackside lamp/tool/whistle responses. The focused Road Danger, registry, and equipment suites passed 23 tests across three files as supporting evidence; the route-level source traces remain authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 511 | The Cold Latch | CONFIRMED DEFECT | CRA-F0206 (MEDIUM) — shared aftermath claims a permissioned neighbor loan on routes that establish no loan. |
+| 512 | The Forked Shadow | HEALTHY | — tentative purse claim, clerk/inn confirmation, custody and witness compensation remain consistent. |
+| 513 | The Grease Mark | CONFIRMED DEFECT | CRA-F0207 (MEDIUM) — aftermath claims crew-wrench recovery after protective/check-wheel responses that establish no drop or handoff. |
+| 514 | The Doctor Before the Ford | CONFIRMED DEFECT | CRA-F0208 (MEDIUM) — case-first response claims the doctor clings to a handline even after the no-rope departure. |
+| 515 | The Pay Carriage at Dusk | HEALTHY | — ridge, signal, farm-track, combat-win and withdrawal outcomes preserve payroll custody and wage differences. |
+| 516 | The Crate of Window Glass | MINOR CONCERN | — brace/wrap flags have no visible downstream effect; intact glass is not explicitly guaranteed, so no definite contradiction is established. |
+| 517 | The Witness under Escort | HEALTHY | — statement remains sealed; consent, refusal, office, refuge and confrontation outcomes preserve Nell’s agency. |
+| 518 | The Shepherd’s Return | HEALTHY | — flock, cart, split-herd, neighbor, timing and wage outcomes match the selected route. |
+| 519 | The Ferry for the Midwife | MINOR CONCERN | — the skiff relay shares an ending that says “by cart”; an onward cart transfer is plausible but not stated. |
+| 520 | The Lanterns at Camp Four | HEALTHY | — signal, identify, warn and rush outcomes distinguish the worker, tool-board and injury results. |
+
+CRA-F0206–CRA-F0208 extend CRA-C0001 (route-specific information, object custody, and physical aid lost or assumed at convergence); no new cluster was needed. No gameplay source or tests changed. The ledger is contiguous through position 520; next is position 521, The Courier Relay Box (`the-courier-relay-box`), with 341 remaining and next finding CRA-F0209.
