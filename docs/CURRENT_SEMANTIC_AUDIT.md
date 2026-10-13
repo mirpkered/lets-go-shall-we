@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 430 current registered Adventures reviewed; 431 of 861 remain.
-Next: position 431, The Misplaced Pigeonhole (`the-misplaced-pigeonhole`; `src/scenarios/comedyAbsurdityBatch.ts`); next finding ID `CRA-F0165`; next cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 440 current registered Adventures reviewed; 421 of 861 remain.
+Next: position 441, The Ferry Beneath the Ferry (`the-ferry-beneath-the-ferry`; `src/scenarios/deepExplorationBatch.ts`); next finding ID `CRA-F0176`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 251 |
+| HEALTHY | 252 |
 | MINOR CONCERN | 33 |
-| CONFIRMED DEFECT | 146 |
+| CONFIRMED DEFECT | 155 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 430 |
+| Total reviewed current registered Adventures | 440 |
 
-There are 164 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 421–430 and added five findings (four MEDIUM, one LOW).
+There are 175 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 431–440 and added eleven findings (ten MEDIUM, one HIGH).
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 430. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–430 were then reviewed in live-registry order. There are no gaps through position 430. The next unreviewed Adventure is position 431, The Misplaced Pigeonhole; the checkpoint review count is 430, so 431 current registered Adventures remain.
+The highest contiguous reviewed position is now 440. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–440 were then reviewed in live-registry order. There are no gaps through position 440. The next unreviewed Adventure is position 441, The Ferry Beneath the Ferry; the checkpoint review count is 440, so 421 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -823,3 +823,24 @@ Continued in live registry order across the procedural-comedy set. The clerk-cer
 CRA-F0158–CRA-F0159 extend CRA-C0001’s action/result and route-specific source continuity pattern. The Clerk’s correct-line route alone records the Traveler’s declaration; the shared scrape/initial route says the usable certificate is ready before signing. The Pigeon Postscript’s explicit `callOwner` path is distinct and supported; the defect is only the no-contact `leaveSecond` path into the farm-reply ending. The doorbell suggestions are treated as accepted social outcomes because the endings explicitly narrate the neighbors’ agreement; no additional defect was inferred. No gameplay source or tests changed.
 
 The checkpoint now covers 420/861 Adventures: 245 HEALTHY, 33 MINOR CONCERN, 142 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 159 finding records. The contiguous reviewed frontier reaches position 420 with no gaps through it. Position 421, The Paper Mill Parade (`the-paper-mill-parade`), is next; 441 current registered Adventures remain. Next finding ID is CRA-F0160; next cluster ID remains CRA-C0008.
+
+## Audit continuation (live positions 431–440)
+
+Continued with the next ten stable IDs in `SCENARIOS` order, then crossed from the procedural-comedy set into the first seven deep-exploration scenarios. Review traced all meaningful choice routes, requirements, current/run state, Knowledge/History effects, reward and withdrawal paths, partial outcomes, and reachable endings. The deep-exploration graph/state, comedy, registry, and Gear-usability suites passed 43 tests across four files; these checks support, but do not replace, route-level review. Source files still match the recorded `cba101f0feba09c67543f942331ca38f765ebe14` snapshot.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 431 | The Misplaced Pigeonhole | CONFIRMED DEFECT | CRA-F0165 (MEDIUM) — resident pickup reaches an ending that claims the pigeonhole labels were corrected. |
+| 432 | The Salute from the Wrong Porch | CONFIRMED DEFECT | CRA-F0166 (MEDIUM) — one captain’s account is treated as mutual understanding and continuing agreement. |
+| 433 | The Candle Ends | HEALTHY | — |
+| 434 | The Black Stair at Wren’s Mill | CONFIRMED DEFECT | CRA-F0167 (MEDIUM) — the no-bracing route reaches text claiming the lower wheel stopped. |
+| 435 | The Last Door in Briar House | CONFIRMED DEFECT | CRA-F0168 (MEDIUM) — a window route reaches the second bedroom without establishing the stated closed-door condition. |
+| 436 | The Iron Orchard | CONFIRMED DEFECT | CRA-F0169 (MEDIUM) — a BROKEN lantern/headlamp satisfies an action requiring a working flame to test mine air. |
+| 437 | The Door Beneath the Road | CONFIRMED DEFECT | CRA-F0170 (MEDIUM) — shallow wagon recovery claims road-crew notification without a reporting route. |
+| 438 | Beneath Saint Orra’s | CONFIRMED DEFECT | CRA-F0171 (MEDIUM), CRA-F0172 (MEDIUM) — shared exits claim unperformed damage marking and caretaker closure/acceptance. |
+| 439 | The House at Mile Marker Nine | CONFIRMED DEFECT | CRA-F0173 (MEDIUM) — a stopped-clock route promises a reliable trigger for the disappeared earlier view. |
+| 440 | The Deep Room at Harker Mine | CONFIRMED DEFECT | CRA-F0174 (MEDIUM), CRA-F0175 (HIGH) — broken-light usability leaks into mine actions; comparing the token after opening the seal claims an unperformed reseal. |
+
+CRA-F0165, CRA-F0167–CRA-F0168, CRA-F0170–CRA-F0173, and CRA-F0175 extend existing CRA-C0001 (route-specific state/outcome at convergence). CRA-F0166 extends existing CRA-C0007 (NPC consensus inferred from a unilateral route). CRA-F0169 and CRA-F0174 extend existing CRA-C0004 (Gear ownership treated as Gear usability). No new cluster was needed; CRA-C0007 already exists, and the next unused cluster remains CRA-C0008.
+
+The ledger now covers 440/861 Adventures: 252 HEALTHY, 33 MINOR CONCERN, 155 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. It contains 175 findings. The reviewed frontier is contiguous through position 440. The next stable ID is position 441, The Ferry Beneath the Ferry (`the-ferry-beneath-the-ferry`), with 421 Adventures remaining and next finding ID CRA-F0176. No gameplay source, gameplay tests, design documents, deployment, or scheduler state changed; Weekly Scenario Batch remains paused.

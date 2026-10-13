@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 430,
-  "reviewedCount": 430,
-  "remainingCount": 431,
-  "nextPosition": 431,
-  "nextFindingId": "CRA-F0165",
+  "reviewedThroughPosition": 440,
+  "reviewedCount": 440,
+  "remainingCount": 421,
+  "nextPosition": 441,
+  "nextFindingId": "CRA-F0176",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -442,7 +442,17 @@
     {"position":427,"adventureId":"the-pearl-button","slug":"the-pearl-button","title":"The Pearl Button","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; customer expectation, button comparison, horn selection, pearl disclosure/temporary use, tailor follow-up, and leave-before-choice outcomes traced","notes":"The chosen route charges for one repair and selects the better-fitting horn button; the disclosure route lets the customer knowingly keep the pearl button for the night and promises a matching horn button tomorrow without a second charge. Leaving preserves the customer's undecided choice and coat on the counter. No route presumes ownership or payment beyond the stated repair.","preReconciliationPosition":415,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":428,"adventureId":"the-wagon-wheel-meeting","slug":"the-wagon-wheel-meeting","title":"The Wagon-Wheel Meeting","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0162"],"reviewProvenance":"current-source route review; speaker movement, cart-lane choice, spoke turns, marker placement, estimates, clerk notes, foreman inspection plan, offer-to-walk, committee follow-through, and leave outcomes traced","notes":"circle.keepLaneOpen enters plan without the marker action from spokes.markStart and without visiting notes, where the foreman agrees to inspect the first hundred yards. The shared ending nevertheless says residents agree where to inspect first. Other plan routes either mark the first damaged stone or carry the foreman's explicit inspection agreement; the location-specific plan claim is not established on keepLaneOpen. The meeting does not claim repair or payment occurred."},
     {"position":429,"adventureId":"the-ferrymans-sign","slug":"the-ferrymans-sign","title":"The Ferryman’s Sign","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0163","CRA-F0164"],"reviewProvenance":"current-source route review; traveler warning, safety explanation, offered escort, river/ferry explanation, sign turning, towpath marking request, old-landing exploration, and all endings traced","notes":"redirect.explainSafety reaches signFixed without changing the sign, yet signFixed says it points upstream (reason.turnBoard is the distinct route that turns it). Separately, reason.markPath reaches walked after only asking the ferryman to mark the towpath; walked says the Traveler walks the travelers to the landing and marks the turn with pale cloth. redirect.offerWalk establishes the escort but not the cloth marker. Old-landing exploration returns to the upstream rope and reports the misleading sign. No reward or persistent state is involved."},
-    {"position":430,"adventureId":"the-backwards-courtroom","slug":"the-backwards-courtroom","title":"The Backwards Courtroom","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; permission to move chair, doorway clearance/layout inspection, bench arrangements, hearing/leave-after-setup, clerk-led setup, and boundary-evidence outcomes traced","notes":"Both setup paths establish a usable hearing layout before the hearing; leaving after setup still allows the hearing to proceed and does not claim the Traveler stays. The magistrate asks for a boundary marker before deciding the fence line, so no verdict or property result is invented. No persistent effects, rewards, or save-resume route appears.","preReconciliationPosition":418,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":430,"adventureId":"the-backwards-courtroom","slug":"the-backwards-courtroom","title":"The Backwards Courtroom","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; permission to move chair, doorway clearance/layout inspection, bench arrangements, hearing/leave-after-setup, clerk-led setup, and boundary-evidence outcomes traced","notes":"Both setup paths establish a usable hearing layout before the hearing; leaving after setup still allows the hearing to proceed and does not claim the Traveler stays. The magistrate asks for a boundary marker before deciding the fence line, so no verdict or property result is invented. No persistent effects, rewards, or save-resume route appears.","preReconciliationPosition":418,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":431,"adventureId":"the-misplaced-pigeonhole","slug":"the-misplaced-pigeonhole","title":"The Misplaced Pigeonhole","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0165"],"reviewProvenance":"current-source route review; register sort, unreadable-letter hold, resident identification, owner pickup, corrected labels, privacy, and all endings traced","notes":"residents.letEachTake reaches sorted without a label-correction action or state. The shared ending says the keeper turns the labels and the next post can now be sorted without repeating the error. register.sortByRoom and residents.correctLabels are distinct paths that do establish correction; the owner-pickup route establishes letter retrieval, not system repair. No persistent effect or reward.","preReconciliationPosition":431,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":432,"adventureId":"the-salute-from-the-wrong-porch","slug":"the-salute-from-the-wrong-porch","title":"The Salute from the Wrong Porch","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0166"],"reviewProvenance":"current-source route review; first-captain account, relayed account, direct question, joint meeting, mutual account, voluntary waving, and traveler participation traced","notes":"first.shareAccount relays one captain’s explanation to the other and ends immediately at understood. The shared ending says both captains now know neither owes an origin story and keep waving; the second captain has not answered, agreed, or confirmed that the custom continues. both.leaveCourtesy and meeting routes do establish each side’s view. No persistent effects or reward.","preReconciliationPosition":432,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":433,"adventureId":"the-candle-ends","slug":"the-candle-ends","title":"The Candle Ends","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; inspection-only uncertainty, fresh-candle test, half-price and goodwill replacement, batch check, customer admission, and withdrawal traced","notes":"The inspection route preserves uncertainty about the returned candle’s cause; replacement is half price and no blame is assigned. The fresh-candle test establishes only that a replacement burns steadily while both parties acknowledge plausible causes; goodwill replacement checks the batch, and leaving leaves the dispute unresolved. No extra Knowledge, persistent state, or unsupported payment is claimed." ,"preReconciliationPosition":433,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":434,"adventureId":"black-stair-wrens-mill","slug":"black-stair-wrens-mill","title":"The Black Stair at Wren’s Mill","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0167"],"reviewProvenance":"current-source route review; machinery, cellar, dry race, owner account, stair, lower wheel, flood/drain, chalk, root/coffer, beyond-wall, listening, sealing, retreat, Knowledge, and all death/safe endings traced","notes":"A no-pin route can go cellarSteps.lift -> blackStair.waterBelow -> floodGallery.followWater -> chalkDoor.rootRoom -> rootChamber.leaveCoffer -> beyondWall. lowerRoom initially says the wheel moves; this path never chooses pinWheel, but beyondWall asserts the lower wheel no longer moves and sealedMill repeats that it stays still. Bracing is recorded only by lowerRoom.pinWheel (wheelPinned). Money/wafer/coffer outcomes and supplied usable toolkit/rope gates otherwise match their routes.","preReconciliationPosition":434,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":435,"adventureId":"last-door-briar-house","slug":"last-door-briar-house","title":"The Last Door in Briar House","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0168"],"reviewProvenance":"current-source route review; dining/service/library/pantry/key/bedroom/wardrobe/porch routes, door flags, relic key access, Knowledge/History, and each ending variant traced","notes":"bedroomShift.searchWindow enters secondBedroom without setting bedroomDoorClosed, although bedroomShift states the second room is reachable through the window when its old door is shut; only closeBedroom sets that proof. That route can then reach letterEnding or houseUnderstood variants as though the second-bedroom facts were established. Pantry key and house-specific Skeleton Key are distinct, with the key text variant and Knowledge gated/attributed correctly; exit and storm routes do not claim resolution.","preReconciliationPosition":435,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":436,"adventureId":"iron-orchard","slug":"iron-orchard","title":"The Iron Orchard","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0169"],"reviewProvenance":"current-source route review; east/central/west/camp entrances, rope/pry routes, air warning, prospector rescue/wait/crew, all rod/map/seal/withdraw/death variants, conditional endings, Gear state, History, and Knowledge traced","notes":"centralShaft.testAir offers “Use a flame to test the stale air” when anyItems contains lantern or minerHeadlamp, but does not require anyUsableItems. Engine meets() lets a BROKEN item satisfy anyItems while only anyUsableItems excludes BROKEN; the resulting airWarning and Knowledge therefore claim a flame test that a broken light cannot perform. Rescue and rod outcomes otherwise remain conditional; west prying and east rope explicitly require usable Gear.","preReconciliationPosition":436,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":437,"adventureId":"door-beneath-the-road","slug":"door-beneath-the-road","title":"The Door Beneath the Road","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0170"],"reviewProvenance":"current-source route review; wagon recovery/report, Copper lift disabled/retained, Green drain/restoration, White seal, underpass plate/avoidance, Red mapping/token/death, all exits and Knowledge/History traced","notes":"roadCollapse.saveWagon and driverAccount.recoverFirst reach shallowRoad after lifting/recovering the wagon and leaving the hole covered. Neither path marks/reports the void or contacts a road crew, yet shallowRoad says the road crew was told about it. Explicit report routes go to roadReport and carry their own report/map actions. The token branch’s surface-warning narration was checked separately; the finding is anchored to the unreported recovery route. No wagon/cargo reward is recorded beyond the selected recovery.","preReconciliationPosition":437,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":438,"adventureId":"beneath-saint-orras","slug":"beneath-saint-orras","title":"Beneath Saint Orra’s","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0171","CRA-F0172"],"reviewProvenance":"current-source route review; caretaker denial/record copy/mark comparison, chalk supply, landing retreat, hidden-room description, counterweight opening, respectful closure, copied-name/archive, bone removal, and all effects/endings traced","notes":"F0171: orraNiches.copyNiches -> orraExit (and the partial-account/describe routes) reaches an ending that says the wall damage is marked, although those actions only copy/record evidence and do not mark the damage; only orraYard.leaveOrra states that action. F0172: orraOssuary.copyName -> orraName.keepCopy -> orraResolved carries the name to the parish archive but does not select closure or tell the caretaker, while the shared ending says the caretaker accepts the account and closes the counterweight room. Close/tell and restore/share alternatives explicitly establish those results. The bone-removal route records a trust breach and return, not a treasure reward.","preReconciliationPosition":438,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":439,"adventureId":"house-at-mile-marker-nine","slug":"house-at-mile-marker-nine","title":"The House at Mile Marker Nine","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0173"],"reviewProvenance":"current-source route review; road/barn/cellar entry, initial view, manual wind, clock notch, reflected porch/trunk, fixed corridor, letters/ledger, stop/reset, and all endings traced","notes":"clockLetters.stopNow sets clockStopped and enters clockStopped, whose text says the windows go dark; clockStopped.leaveStopped nevertheless enters routeEnding, which says the Traveler leaves with a reliable way to trigger the earlier view. That ending is false on the stopped-clock route. A separate direct cellar.service route also reaches routeEnding without setting clockNotched; the clock/door distinction and fixed corridor Knowledge otherwise remain route-bounded.","preReconciliationPosition":439,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":440,"adventureId":"deep-room-at-harker-mine","slug":"deep-room-at-harker-mine","title":"The Deep Room at Harker Mine","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0174","CRA-F0175"],"reviewProvenance":"current-source route review; side-drift rescue/failure, voice-vs-knock air check, map/crew/wait routes, wage vs multi-tool settlement, optional descent, lower door, cross-adventure relic checks, reseal/token/death endings, and save-persisted local flags traced","notes":"F0174: airShaftHarker.testDraft checks anyItems lantern/headlamp and harkerOutside.descendHarker checks only items minerHeadlamp. A BROKEN light therefore permits a claimed flame/draft test or a descent whose harkerDeep scene says the headlamp beam falls across the channels; engine distinguishes possession from usable state. The supplied-lantern route and correctly usable Travel Rope comparisons remain distinct. F0175: harkerDeep.compareToken compares the Red Door Token and grants matching-pattern Knowledge, then exits directly to harkerResealed without closing/wedging the opened lower door; the shared ending falsely says the lower seal is restored. harkerDeep.resealHarker explicitly closes/wedges it, while copyEvidence records the channels and closes from the outer room. Rescue wages/tool substitution, prospector/miner rescue state, and Iron Orchard fragment comparison remain separately gated.","preReconciliationPosition":440,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -608,7 +618,18 @@
     {"findingId":"CRA-F0161","position":422,"adventureId":"the-mayors-missing-gavel","severity":"MEDIUM","defect":"The labor ending claims the missing gavel was returned to its drawer on routes that never locate or return it.","routeWitness":"hall.askPurpose -> purpose.useBell -> meeting.offerLabor -> work and hall.findObject -> search.keepBell -> meeting.offerLabor -> work; the first path never locates the gavel, while the second explicitly leaves it in the kindling basket. Both reach work, which says the gavel is returned to its drawer. Only search.returnGavel reaches found and returns it to the table.","violatedRule":"An ending may not assert an object relocation or resolution absent from the selected route’s actions and state.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0162","position":428,"adventureId":"the-wagon-wheel-meeting","severity":"LOW","defect":"The clear-cart-lane route ends by claiming the residents agreed where to inspect first without establishing an inspection location or plan on that route.","routeWitness":"green.moveSpeakers -> circle.keepLaneOpen -> plan; this path only leaves a clear lane for the cart. The shared plan ending says residents agree where to inspect first. Alternative plan entries either mark the first damaged stone (spokes.markStart) or pass through notes, where the foreman agrees to inspect the first hundred yards.","violatedRule":"A shared ending may claim a route-specific plan/result only when every incoming route establishes that result.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0163","position":429,"adventureId":"the-ferrymans-sign","severity":"MEDIUM","defect":"The safety-explanation route is described as having changed the ferry sign even though it only points out the new rope and landing.","routeWitness":"landing.callTravelers -> redirect.explainSafety -> signFixed; the action explains the safe landing but changes no sign state. The ending says the sign points upstream. The separate reason.turnBoard route is the one that turns the sign toward the new path.","violatedRule":"A result may not claim completion of a concrete action that the chosen route did not perform.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0164","position":429,"adventureId":"the-ferrymans-sign","severity":"MEDIUM","defect":"The request for the ferryman to mark the towpath converges on an ending claiming the Traveler escorts the travelers and marks the turn with cloth.","routeWitness":"landing.askFerryman -> reason.markPath -> walked; the selected action asks the ferryman to mark the towpath, but the ending says the Traveler walks the travelers to the landing and marks the turn with pale cloth. The alternate redirect.offerWalk route establishes the escort but not the cloth marker.","violatedRule":"A converged ending must not substitute a different actor or unselected action for the route’s requested intervention.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0164","position":429,"adventureId":"the-ferrymans-sign","severity":"MEDIUM","defect":"The request for the ferryman to mark the towpath converges on an ending claiming the Traveler escorts the travelers and marks the turn with cloth.","routeWitness":"landing.askFerryman -> reason.markPath -> walked; the selected action asks the ferryman to mark the towpath, but the ending says the Traveler walks the travelers to the landing and marks the turn with pale cloth. The alternate redirect.offerWalk route establishes the escort but not the cloth marker.","violatedRule":"A converged ending must not substitute a different actor or unselected action for the route’s requested intervention.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0165","position":431,"adventureId":"the-misplaced-pigeonhole","severity":"MEDIUM","defect":"The owner-pickup route converges on a completed mail-system correction that it did not perform.","routeWitness":"desk.askGuests -> residents.letEachTake -> sorted; residents collect their own letters, but no choice/effect turns the reversed room-six/room-nine labels. The shared ending says the keeper turns the labels and the next post can be sorted without repeating the error. register.sortByRoom and residents.correctLabels are separate routes that do establish correction.","violatedRule":"A converged ending may claim a repaired process only when the selected route established the repair, not merely the immediate individual outcome.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0166","position":432,"adventureId":"the-salute-from-the-wrong-porch","severity":"MEDIUM","defect":"A one-sided account is treated as mutual understanding and continued agreement between both captains.","routeWitness":"street.askFirstCaptain -> first.shareAccount -> understood; one captain’s account is relayed, then the ending says both captains now know neither owes an origin story and keep waving. The second captain never answers, confirms the retelling, or chooses to continue. The joint meeting and ask-both routes establish mutual views separately.","violatedRule":"Group understanding, consent, or continued participation requires a response from each affected participant or an explicitly witnessed mutual action.","clusterId":"CRA-C0007","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0167","position":434,"adventureId":"black-stair-wrens-mill","severity":"MEDIUM","defect":"The no-bracing route is narrated as though the lower wheel has stopped.","routeWitness":"cellarSteps.lift -> blackStair.waterBelow -> floodGallery.followWater -> chalkDoor.rootRoom -> rootChamber.leaveCoffer -> beyondWall; no route step visits lowerRoom.pinWheel or sets wheelPinned, but beyondWall says the lower wheel no longer moves and sealedMill says it stays still. lowerRoom establishes that it continues moving until the timber block is placed.","violatedRule":"An outcome or state change must not be claimed unless the route performed or otherwise established it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0168","position":435,"adventureId":"last-door-briar-house","severity":"MEDIUM","defect":"The second-bedroom window route bypasses the stated closed-door condition that makes the room reachable.","routeWitness":"hallOne.closeHallDoor -> bedroomShift.searchWindow -> secondBedroom; the inspection choice directly enters the room and sets only briarSecondBedroomReached, while only bedroomShift.closeBedroom sets bedroomDoorClosed. bedroomShift states that the second room is reachable through its window when its old door is shut; the resulting letter/arrangement endings then treat the room as visited.","violatedRule":"A route may not enter a location through a connection whose stated prerequisite was not established on that route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0169","position":436,"adventureId":"iron-orchard","severity":"MEDIUM","defect":"An air-test action accepts a BROKEN light as though it can produce a flame.","routeWitness":"centralShaft.testAir requires anyItems lantern/minerHeadlamp, then awards the air-warning result and Knowledge. engine.meets checks presence for anyItems but checks condition only for anyUsableItems; BROKEN gear remains in inventory and satisfies the current gate. East-shaft rope and west-shaft pry options correctly require usable Gear.","violatedRule":"A choice that physically uses Gear must require that Gear to be usable, not merely owned.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0170","position":437,"adventureId":"door-beneath-the-road","severity":"MEDIUM","defect":"The shallow wagon-recovery route claims road-crew notification without establishing that anyone reported the void.","routeWitness":"roadCollapse.saveWagon -> shallowRoad and driverAccount.recoverFirst -> shallowRoad; both choices lift/recover the wagon and leave the hole covered, but neither marks/reports the void or contacts the crew. shallowRoad says the road crew was told. driverAccount.reportHole and other explicit roadReport routes carry report/map actions and end separately.","violatedRule":"Communication and recipient knowledge must be established by a route action or explicitly narrated contact, not inherited from an unrelated recovery result.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0171","position":438,"adventureId":"beneath-saint-orras","severity":"MEDIUM","defect":"Shared departure text says chapel damage was marked on evidence routes that do not mark or report the damage.","routeWitness":"orraYard.inspectMarks -> orraNiches.copyNiches -> orraExit (also orraLanding.retreatLanding and orraHiddenRoom.describeChamber -> orraExit); the selected actions copy/record marks or a partial account, but do not mark/report the collapsed outer wall. orraExit nonetheless says the damage is marked. The direct orraYard.leaveOrra choice explicitly does mark it.","violatedRule":"A completed intervention must be route-established before a shared ending claims it happened.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0172","position":438,"adventureId":"beneath-saint-orras","severity":"MEDIUM","defect":"Archiving the copied name converges on a claim that the caretaker accepted the account and closed the room without that outcome being selected or recorded.","routeWitness":"orraOssuary.copyName -> orraName.keepCopy -> orraResolved; the action carries the copy to the parish archive and only records preservation history, while orraResolved says the caretaker accepts the account and closes the counterweight room. The restoreStone route expressly closes and shares the name; closeOssuary expressly closes and tells the caretaker.","violatedRule":"Shared endings must not import a distinct participant response or closure action from a sibling route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0173","position":439,"adventureId":"house-at-mile-marker-nine","severity":"MEDIUM","defect":"The stopped-clock route exits through an ending that promises a reliable way to trigger the earlier view.","routeWitness":"clockLetters.stopNow -> clockStopped.leaveStopped -> routeEnding; clockStopped says the windows go dark and the clock is left stopped, while routeEnding claims the Traveler leaves with a reliable way to trigger the earlier view. Direct houseCellar.followService -> serviceRooms.leaveService also reaches that claim without ever setting clockNotched.","violatedRule":"A shared ending must preserve route-specific mechanism state and must not promise an unavailable or untested trigger.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0174","position":440,"adventureId":"deep-room-at-harker-mine","severity":"MEDIUM","defect":"Broken lantern/headlamp ownership satisfies route choices that claim to test stale air or illuminate a deep chamber.","routeWitness":"airShaftHarker.testDraft gates with anyItems lantern/minerHeadlamp; harkerOutside.descendHarker gates with items minerHeadlamp only. BROKEN items still satisfy these gates (engine.meets filters condition only through anyUsableItems/usableItems), but the draft test awards Knowledge and the deep route reaches harkerDeep, whose text says a headlamp beam falls across the channels. Other item-use gates in the anthology use usability conditions.","violatedRule":"Physical use of Gear requires a usable item; possession alone cannot establish light, flame, or a successful test.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0175","position":440,"adventureId":"deep-room-at-harker-mine","severity":"HIGH","defect":"Comparing the Red Door Token after opening the lower seal exits through text falsely claiming the door was restored.","routeWitness":"harkerDoor.openDoor -> harkerDeep.compareToken -> harkerResealed; openDoor leaves the lower seal open and compareToken only records the matching three-cut pattern/Knowledge. It neither closes the door nor wedges it, while harkerResealed says the lower seal is restored. The separate resealHarker choice explicitly closes and wedges it.","violatedRule":"Containment, closure, and restoration may be claimed only after the route performs the corresponding physical action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -719,7 +740,15 @@
         "CRA-F0161",
         "CRA-F0162",
         "CRA-F0163",
-        "CRA-F0164"
+        "CRA-F0164",
+        "CRA-F0165",
+        "CRA-F0167",
+        "CRA-F0168",
+        "CRA-F0170",
+        "CRA-F0171",
+        "CRA-F0172",
+        "CRA-F0173",
+        "CRA-F0175"
       ]
     },
     {
@@ -774,7 +803,9 @@
         "CRA-F0057",
         "CRA-F0103",
         "CRA-F0121",
-        "CRA-F0124"
+        "CRA-F0124",
+        "CRA-F0169",
+        "CRA-F0174"
       ]
     },
     {
@@ -815,14 +846,15 @@
       "description": "A player-selected record or action is persisted as a group agreement or collective authorship even though the affected NPCs were not asked to participate or consent.",
       "findingIds": [
         "CRA-F0151",
-        "CRA-F0155"
+        "CRA-F0155",
+        "CRA-F0166"
       ]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 251,
+    "HEALTHY": 252,
     "MINOR CONCERN": 33,
-    "CONFIRMED DEFECT": 146,
+    "CONFIRMED DEFECT": 155,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -989,6 +1021,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/comedyAbsurdityBatch.test.ts src/scenarios/surpriseAnthologyBatch.test.ts src/scenarios/playtestRewardCorrections.test.ts src/scenarioRegistryValidation.test.ts",
       "result": "29 tests passed across 4 files; supporting procedural-comedy graph checks, anthology route/save behavior, property/reward corrections, and registry validation; current-source route review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/comedyAbsurdityBatch.test.ts src/scenarios/deepExplorationBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "43 tests passed across 4 files; supporting comedy/deep-exploration graph and ending checks, 861-entry registry validation, and broken-Gear usability semantics; current-source route review remains authoritative"
     }
   ],
   "reviewBatches": [
@@ -1159,14 +1195,18 @@
     {
       "positions": "421-430",
       "status": "reviewed next ten previously unreviewed stable IDs in live SCENARIOS order; CRA-F0160–CRA-F0164 record route-specific privacy, object relocation, plan, sign, and escort/marker claims extending CRA-C0001; six Adventures healthy and four confirmed-defect Adventures; procedural-comedy, anthology, reward-correction, and registry suites passed 29 tests across four files as supporting evidence; cluster index reconciliation moved CRA-F0152, F0153, F0154, F0156, F0157, F0158, and F0159 from the C0006 index list to C0001 to match their unchanged finding records; no gameplay source/tests changed"
+    },
+    {
+      "positions": "431-440",
+      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. CRA-F0165, F0167-F0168, F0170-F0173, and F0175 extend CRA-C0001; CRA-F0166 extends existing CRA-C0007; CRA-F0169 and CRA-F0174 extend CRA-C0004. Nine Adventures are confirmed defects and one is healthy; Saint Orra and Harker each have two independent witnessed findings. Comedy/deep-exploration/registry/equipment suites passed 43 tests across four files as supporting evidence. No gameplay source or test files changed."
     }
   ],
-  "highestContiguousReviewedPosition": 430,
-  "maxReviewedRegistryPosition": 430,
+  "highestContiguousReviewedPosition": 440,
+  "maxReviewedRegistryPosition": 440,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 431,
-  "firstUnreviewedStableId": "the-misplaced-pigeonhole",
-  "nextStableId": "the-misplaced-pigeonhole",
+  "firstUnreviewedPosition": 441,
+  "firstUnreviewedStableId": "the-ferry-beneath-the-ferry",
+  "nextStableId": "the-ferry-beneath-the-ferry",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1597,7 +1637,17 @@
     "the-pearl-button",
     "the-wagon-wheel-meeting",
     "the-ferrymans-sign",
-    "the-backwards-courtroom"
+    "the-backwards-courtroom",
+    "the-misplaced-pigeonhole",
+    "the-salute-from-the-wrong-porch",
+    "the-candle-ends",
+    "black-stair-wrens-mill",
+    "last-door-briar-house",
+    "iron-orchard",
+    "door-beneath-the-road",
+    "beneath-saint-orras",
+    "house-at-mile-marker-nine",
+    "deep-room-at-harker-mine"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1606,9 +1656,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 430,
-    "uniqueCurrentRegisteredAdventuresReviewed": 430,
-    "directStableIdMatches": 428,
+    "recordedEntriesInspected": 440,
+    "uniqueCurrentRegisteredAdventuresReviewed": 440,
+    "directStableIdMatches": 438,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1640,9 +1690,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 430,
+    "highestContiguousReviewedPosition": 440,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 430,
+    "maxReviewedLivePosition": 440,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1660,6 +1710,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, and procedural-comedy Adventures at positions 409–430 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 431 is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, and the first seven deep-exploration Adventures at positions 434–440 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 441, The Ferry Beneath the Ferry, is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
