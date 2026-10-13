@@ -23,17 +23,18 @@
           "auditText": "Disarming shortcut inherits unread repayment ledger",
           "auditWitness": "room.grabGun success → weaponSafe",
           "auditEvidence": "Direct grab only moves weapon; weaponSafe asserts old book supports eight payment and four balance, discovered only book.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/westernOutlawBatch.ts: room.grabGun success routes directly to weaponSafe; weaponSafe asserts the old book supports an eight-coin payment and four-coin balance."
+            "weaponSafe no longer includes harvest-book findings on the direct-disarm route. rc12I1Regression.test.ts drives room.grabGun."
           ],
-          "reviewNotes": "The direct disarm route does not visit book, but the shared weaponSafe scene states the book's findings. The audit's information leak remains present.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "all-hallows-boarding-house",
@@ -280,16 +281,16 @@
           "auditText": "Hand crossing produces nonexistent frayed rope",
           "auditWitness": "repairFailure.helpAfterRepair > peopleFirst.guideByHand success > ropeSuccess; travelerAssessment.improviseGuideLine success > ropeSuccess",
           "auditEvidence": "Both routes require no usable rope; generic success says rope frayed on stone. Strap route used wagon leather strap, hand route no line at all.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "bridgeOut.ts — hand crossing and improviseGuideLine routes target ropeSuccess",
-            "bridgeOut.ts — ropeSuccess unconditionally claims the rope is frayed"
+            "The route-neutral crossing ending no longer claims a frayed rope. BridgeOut tests cover rope and non-rope crossing convergence."
           ],
-          "reviewNotes": "A non-rope hand-crossing route converges on text claiming a rope was used and frayed; current tests do not assert the hand-crossing ending.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "O01-019"
           ],
-          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
+          "implementationPass": "I1"
         },
         {
           "findingId": "O01-021",
@@ -297,16 +298,16 @@
           "auditText": "Failed repair walkaway claims crossing not worsened",
           "auditWitness": "supportAssessment brace failure > repairFailure.leaveAfterRepair > turnBackEnding",
           "auditEvidence": "Failure explicitly shifts support/worsens bridge; ending claims left without making more dangerous.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "bridgeOut.ts — failed brace path reaches turnBackEnding",
-            "bridgeOut.ts — turnBackEnding says departure did not make bridge more dangerous"
+            "The walkaway ending no longer claims the failed brace did not worsen danger; BridgeOut regression checks the ending."
           ],
-          "reviewNotes": "The failed-repair route worsens the bridge, then shares text saying it was not made more dangerous.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "O01-019"
           ],
-          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -317,7 +318,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "christmas-tree-millers-hill",
@@ -1612,17 +1613,18 @@
           "auditText": "The arrival claims cargo was left behind even on full-load routes.",
           "auditWitness": "roadsideParty.walkBesideWagon -> slowJourney.keepSlowPace -> lateMill; roadsideParty.pushFullLoad success -> lateMill",
           "auditEvidence": "Only lighten/unload choices leave flour. slowJourney explicitly retains the full load; common terminal says Some cargo remains behind.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/oneHorseShort.ts — full load via slow walk reaches lateMill saying cargo remains behind."
+            "lateMill no longer says cargo remains behind; groundedExpansion.test.ts guards the obsolete claim."
           ],
-          "reviewNotes": "src/scenarios/oneHorseShort.ts — full load via slow walk reaches lateMill saying cargo remains behind.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "one-more-round",
@@ -1703,18 +1705,18 @@
           "auditText": "Shared endings introduce an uncalled neighbor and describe the player as absent after remaining present.",
           "auditWitness": "firstReply.askSetDown success -> weaponLowered.stayWithPerson -> crisisSettles; tensionRises.askGroundAgain failure -> crisisLost",
           "auditEvidence": "stayWithPerson never sends companion for help but terminal says person speaks with neighbor. askGroundAgain failure happens in front of player but crisisLost says did not know what would happen while you were away. Companion-wait failures have same away wording.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/onlyOneBullet.ts: weaponLowered.stayWithPerson reaches crisisSettles, which introduces a neighbor without that route sending for help.",
-            "src/scenarios/onlyOneBullet.ts: tensionRises.askGroundAgain failure reaches crisisLost while the Traveler stays at the fence; crisisLost says the Traveler was away."
+            "crisisSettles and crisisLost no longer invent neighbor support or player absence. groundedConsequenceBatch.test.ts covers the present failure route."
           ],
-          "reviewNotes": "Both person/support and Traveler-presence contradictions remain on current source. Existing groundedConsequenceBatch coverage traverses the failure route but does not assert these claims are absent.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "paper-boat-at-high-water",
@@ -1960,15 +1962,16 @@
           "auditText": "The common cooling-off ending introduces a satchel absent from these variants.",
           "auditWitness": "argument=drunken or threat: quietRequest.calmRequest success / commonRoom.speakFromDoor success -> argumentCools",
           "auditEvidence": "Drunken setup concerns a song/spilled drink and threat setup a knife. argumentCools says guest leaves with the satchel—or without it; satchel is only established in propertyDispute.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/silentNight.ts — calm drunken/threat routes lack satchel, but ending asserts disposition."
+            "argumentCools no longer asserts a satchel disposition; rc12I1Regression.test.ts exercises calm route."
           ],
-          "reviewNotes": "src/scenarios/silentNight.ts — calm drunken/threat routes lack satchel, but ending asserts disposition.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "RO29-19"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -1979,7 +1982,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "smoke-on-the-hill",
@@ -2301,15 +2304,16 @@
           "auditText": "Keeping herds penned receives credit for a brace never set",
           "auditWitness": "rail/inspect -> tracks/separate -> partial",
           "auditEvidence": "rail/inspect -> tracks/separate -> partial — separate only keeps herds penned until owners agree; partial says rail is braced and pays for setting it. Bracing exists only on the repair/leave sibling route.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — pens-only route reaches partial claiming rail braced/set."
+            "The shared partial ending reports controlled herds and pending permanent repair, not a brace performed. rc12I1Regression.test.ts traces inspect/separate."
           ],
-          "reviewNotes": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — pens-only route reaches partial claiming rail braced/set.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "R616-032"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -2320,7 +2324,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-broken-wheel",
@@ -2528,17 +2532,18 @@
           "auditText": "Wedge method is immediately replaced by a clamp",
           "auditWitness": "press/useWedge -> proof",
           "auditEvidence": "press/useWedge -> proof — Choice says use a wooden wedge and keep clamp back; proof says The clamp holds during a slow proof. This forgets the selected holding method.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/equipmentTestingGenreBatch.ts — useWedge → proof still says clamp holds; method replaced."
+            "The proof scene says the guide stays in place without asserting which fixture held it. equipmentTestingGenreBatch.test.ts drives useWedge."
           ],
-          "reviewNotes": "src/scenarios/equipmentTestingGenreBatch.ts — useWedge → proof still says clamp holds; method replaced.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-empty-coffin",
@@ -2804,15 +2809,16 @@
           "auditText": "Solo ice crossing becomes cart rescue by alternate route",
           "auditWitness": "iceWarning.crossIceAlone success → iceFarBank",
           "auditEvidence": "Success message only you reach bank avoiding seam; ending says traveler/cart reach by gravel or careful line and you prevented disaster. Rope in death branch likewise never established on solo route.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/survivalExpeditionBatch.ts — iceWarning.crossIceAlone → iceFarBank"
+            "A run-local cartAndTravelerAcross flag gates the cart-crossing claim; solo crossing has a neutral truthful fallback. survivalExpeditionBatch.test.ts contrasts solo and cart routes."
           ],
-          "reviewNotes": "Solo crossing reaches an unconditional ending that says the traveler reaches the far bank with the cart by the gravel bar or a careful line; neither cart route was taken.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "R125-033"
           ],
-          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
+          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -2823,7 +2829,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-irrigation-stone-at-south-field",
@@ -2838,15 +2844,16 @@
           "auditText": "Waiting changes an open divider into a closed one",
           "auditWitness": "channel/mark -> evidence/wait -> partial",
           "auditEvidence": "channel/mark -> evidence/wait -> partial — Player leaves the stone aside until owners arrive; water currently pours through the displaced divider. partial asserts divider remains closed despite no closure action.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — wait leaves divider displaced/flowing; partial says closed."
+            "The partial ending no longer asserts the divider is closed. rc12I1Regression.test.ts traces mark/wait."
           ],
-          "reviewNotes": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts — wait leaves divider displaced/flowing; partial says closed.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "R616-028"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -2857,7 +2864,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-lantern-in-the-hedge",
@@ -2931,17 +2938,18 @@
           "auditText": "Replacement upper turns into patch",
           "auditWitness": "fit.replace > settlement",
           "auditEvidence": "Choice replacement upper at shop cost; settlement customer accepts patch.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/tradesApprenticeshipGenreBatch.ts — replacement-upper route settles with patch accepted."
+            "Shared settlement refers to the agreed remedy rather than asserting the patch was accepted. rc12I1Regression.test.ts exercises replacement-upper route."
           ],
-          "reviewNotes": "src/scenarios/tradesApprenticeshipGenreBatch.ts — replacement-upper route settles with patch accepted.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-last-clean-apron",
@@ -2956,17 +2964,18 @@
           "auditText": "Cook-on-time route receives late-supper closure",
           "auditWitness": "kitchen.giveCookApron > plating.checkDishwasher > thanks",
           "auditEvidence": "plating says cook plates on time; thanks says supper reaches tables later and cook accepts delay. Sack workaround also routes to dishwasher without apron.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/surpriseSocialBatch.ts — cook-on-time route can reach thanks text claiming late supper."
+            "The thanks ending no longer claims late service; rc12I1Regression.test.ts drives the cook-on-time route."
           ],
-          "reviewNotes": "src/scenarios/surpriseSocialBatch.ts — cook-on-time route can reach thanks text claiming late supper.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-last-ferry",
@@ -3090,17 +3099,17 @@
           "auditText": "Leaving after confession erases the truth already learned",
           "auditWitness": "hostConfrontation.leaveAfterConfession > walkAwayEnding",
           "auditEvidence": "Full accident and concealment confession already read, but ending says you do not learn what became of traveler or whether innkeeper account true.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "theLastRoom.ts — confession route sets identifiedSilas then targets walkAwayEnding",
-            "theLastRoom.ts — walkAwayEnding unconditionally says traveler does not learn whether account was true"
+            "Walk-away text no longer says the confession remains unknown; the ending is neutral about what happens next. theLastRoom.test.ts checks the revised claim."
           ],
-          "reviewNotes": "Current source retains the contradiction: leaving after confession records identifiedSilas/learned truth, but shared text says the account’s truth remains unknown. The current tests do not cover this specific contrast.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "O01-013",
             "O01-014"
           ],
-          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -3117,7 +3126,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-last-survey",
@@ -3132,17 +3141,18 @@
           "auditText": "Map-only-current route ends both lines recorded",
           "auditWitness": "verified.recordOnlyCurrentRoute > settlement.takeWage > coins",
           "auditEvidence": "Player specifically selects current route only; coins says map records old and new lines.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/gearCorrectiveBatch.ts — current-only route reaches coin ending saying old/new lines recorded."
+            "Coin ending refers only to route established by completed measurements; historic route claim is absent."
           ],
-          "reviewNotes": "src/scenarios/gearCorrectiveBatch.ts — current-only route reaches coin ending saying old/new lines recorded.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-lodge-wall-under-new-paint",
@@ -3415,17 +3425,18 @@
           "auditText": "Returning a coat resolves the twin-brother mystery without discovering the brothers.",
           "auditWitness": "identityEvidence.followCoachRoad -> coachTracks.returnCoat -> identityAfter",
           "auditEvidence": "Only tailorFound establishes twin brothers and exchanged coats, but returnCoat skips it and ends with towns receiving that account.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/monsterHuntSecond.ts — returnCoat skips tailorFound; identityAfter still asserts twin brothers."
+            "returnCoat sets a run-local proof flag and receives a route-specific unresolved identity variant; tailor discovery retains its original account. rc12I1Regression.test.ts contrasts route."
           ],
-          "reviewNotes": "src/scenarios/monsterHuntSecond.ts — returnCoat skips tailorFound; identityAfter still asserts twin brothers.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-markers-stop",
@@ -3440,17 +3451,18 @@
           "auditText": "Crew thanks player for a marker never placed",
           "auditWitness": "markerEnd.followMarkerStones → markerWest",
           "auditEvidence": "Only markOwnReturn uses carried foldingTrailMarker; direct west route reaches ending glad you left your own sign.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/survivalExpeditionBatch.ts: markerEnd.followMarkerStones routes directly to markerWest, whose ending thanks the Traveler for leaving a sign."
+            "markerWest thanks only when ownMarkerPlaced is present; direct west route has neutral text. survivalExpeditionBatch.test.ts covers the no-marker route."
           ],
-          "reviewNotes": "The direct west route does not place a marker; the existing survivalExpeditionBatch test confirms this route reaches markerWest but does not correct or gate the unsupported thanks.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-millers-beast",
@@ -3583,17 +3595,18 @@
           "auditText": "Reopening line acquires a rider-only delivery history",
           "auditWitness": "office/testNear -> line/openContact -> offer/coin -> paid",
           "auditEvidence": "office/testNear -> line/openContact -> offer/coin -> paid — openContact reopens repaired line, while only the sibling runner choice sends a rider. paid specifically records message traveled by rider during repair. No rider is dispatched on this branch.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/equipmentTestingGenreBatch.ts — openContact → paid still says message traveled by rider though none sent."
+            "Coin endpoint no longer claims the message traveled by rider; source endpoint is route-neutral."
           ],
-          "reviewNotes": "src/scenarios/equipmentTestingGenreBatch.ts — openContact → paid still says message traveled by rider though none sent.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-old-survey-stone",
@@ -3763,17 +3776,18 @@
           "auditText": "Ending denies disclosure that already happened",
           "auditWitness": "stall.blameOriginalSpeaker > blame.withdrawClaim > apology",
           "auditEvidence": "Player names original complainer; ending says corrects statement without naming its source.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/surpriseSocialBatch.ts — named-source route ends saying correction without naming source."
+            "Apology ending no longer denies source disclosure; rc12I1Regression.test.ts follows name/withdraw route."
           ],
-          "reviewNotes": "src/scenarios/surpriseSocialBatch.ts — named-source route ends saying correction without naming source.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-quartermasters-tally",
@@ -3788,17 +3802,18 @@
           "auditText": "Chosen tools load changes to chest left unsecured",
           "auditWitness": "camp.secureTools > weather.leaveUnsecuredLoad > leftLoad",
           "auditEvidence": "weather says chosen load secure and other shifted; leftLoad always says shifted chest.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/gearCorrectiveBatch.ts: secureTools sets strap_on_tools; weather says the chosen load stays and the other shifts; leaveUnsecuredLoad reaches leftLoad, which unconditionally says the shifted chest is secured."
+            "leftLoad names the shifted load instead of the chest; gearCorrectiveBatch.test.ts drives secureTools/leaveUnsecuredLoad."
           ],
-          "reviewNotes": "When tools are secured, the flour is the shifted load, not the chest. Current ending still assumes the chest shifted; no route-aware variant is present.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-ramp-for-the-grain-cart",
@@ -4362,17 +4377,18 @@
           "auditText": "Chosen lark becomes kettle performance",
           "auditWitness": "contest.listenToBird > listening.repeatCall > round",
           "auditEvidence": "repeatCall says lark call; round title and prose assert kettle imitation.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/surpriseCompetitionBatch.ts — lark choice enters Kettle Call text asserting kettle imitation."
+            "Shared round title/text no longer converts the lark response into a kettle imitation; rc12I1Regression.test.ts follows repeatCall."
           ],
-          "reviewNotes": "src/scenarios/surpriseCompetitionBatch.ts — lark choice enters Kettle Call text asserting kettle imitation.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-winds-other-side",
@@ -4387,15 +4403,16 @@
           "auditText": "Shared ending invents sparks on the brush-bench route",
           "auditWitness": "shelter/chooseBrush -> bench/leaveCrate -> partial",
           "auditEvidence": "shelter/chooseBrush -> bench/leaveCrate -> partial — The chosen route moves bedding to the sheltered brush bench and leaves an empty crate. partial instead says bedding was moved before sparks spread and the crew keeps a cold watch. Sparks exist only on the separate stone-lee route.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/wildernessFieldcraftGenreBatch.ts: chooseBrush routes to bench; leaveCrate reaches partial, whose shared ending claims bedding moved before sparks spread although sparks are introduced only in gust."
+            "partial text no longer imports sparks from the stone-lee route; rc12I1Regression.test.ts follows chooseBrush/leaveCrate. RC13 finding left unchanged."
           ],
-          "reviewNotes": "The brush-bench route never enters gust and establishes no sparks, but its partial ending retains the stone-lee fire event. R616-004 is a separate RC13 minor concern and is not implemented here.",
+          "reviewNotes": "Pass I1 route-aware source repair is covered by the cited focused regression test(s); unrelated attached root-cause findings remain unchanged.",
           "crossClusterFindingIds": [
             "R616-004"
           ],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40",
+          "implementationPass": "I1"
         }
       ],
       "crossClusterFindings": [
@@ -4406,7 +4423,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-wire-that-sang-twice",
@@ -4661,5 +4678,12 @@
       "three-points-down/R371-035"
     ]
   },
-  "verificationStatus": "COMPLETE"
+  "verificationStatus": "COMPLETE",
+  "lastImplementationPass": {
+    "pass": "I1",
+    "sourceMainSha": "036e1212adbe191089d6985a1fec9d252b8872d4",
+    "assignmentsRepaired": 21,
+    "adventuresRepaired": 20,
+    "implementationBranch": "codex/rc12-implementation-i1-20261012"
+  }
 }
