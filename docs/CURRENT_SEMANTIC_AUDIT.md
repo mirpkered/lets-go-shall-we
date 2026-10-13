@@ -2,30 +2,30 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 360 current registered Adventures reviewed; 501 of 861 remain.
-Next: position 121, The Woman at the Crossing (`the-woman-at-the-crossing`; `src/scenarios/strangeRoadsBatch.ts`); next finding ID `CRA-F0140`.
+Checkpoint reconciled by stable Adventure ID: 420 current registered Adventures reviewed; 441 of 861 remain.
+Next: position 421, The Paper Mill Parade (`the-paper-mill-parade`; `src/scenarios/comedyAbsurdityBatch.ts`); next finding ID `CRA-F0160`; next cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
-The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. The 360 completed semantic reviews remain preserved; their recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables now show current live positions. Focused suites were supporting evidence only. No source or test files were changed.
+The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 420 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 205 |
-| MINOR CONCERN | 29 |
-| CONFIRMED DEFECT | 126 |
+| HEALTHY | 245 |
+| MINOR CONCERN | 33 |
+| CONFIRMED DEFECT | 142 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 360 |
+| Total reviewed current registered Adventures | 420 |
 
-There are 139 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings; batch 341–350 added three MEDIUM findings; batch 351–360 added six MEDIUM findings.
+There are 159 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 411–420 and added two MEDIUM findings.
 
 ## Registry position reconciliation
 
-The JSON ledger is now stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 360 recorded entries, 358 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 420 recorded entries, 418 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
-Position drift is nonuniform. Positions 1–120 matched directly. The first gap is current position 121; after it, recorded positions 121–347 map +4 to live positions, while recorded positions 348–360 map +12. The latter change reflects eight omitted live Adventures before the resumed Frontier Discovery entries. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
+Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–408 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is 120. Another 240 reviewed Adventures occur beyond that first gap, through live position 372. The 12 currently unreviewed positions through 372 are 121–124 and 352–359. The first is The Woman at the Crossing; the remaining entries are retained in `registryReconciliation.unreviewedPositions` in the machine ledger. The checkpoint review count remains 360, so 501 current registered Adventures remain.
+The highest contiguous reviewed position is now 420. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–420 were then reviewed in live-registry order. There are no gaps through position 420. The next unreviewed Adventure is position 421, The Paper Mill Parade; the checkpoint review count is 420, so 441 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -676,3 +676,129 @@ The three confirmed findings join CRA-C0006, the generic Frontier archetype mism
 The Timber Claim, Second Claim Marker, and Claim That Pays Too Well use a generic claim-sharing choice without a present or established second recipient; each is independently witnessed in its scenario-specific setup and routed through `shareRecord` (CRA-F0134–CRA-F0136). Camp with Fresh-Cut Wood offers leaving a note-like marker twice, but neither the route effect nor terminal text records that intervention (CRA-F0137). The Shaft Behind the Trees, Old Ferry Landing, Collapsed Storehouse, and Trail That Ends at Stone retain uncertainty and warned boundaries; their repeated or generic actions lack payoff detail but do not establish a concrete false state, so they remain minor concerns. In The Toast Nobody Ordered, the best-man aside does not reveal the couple’s preference, yet the offer-words route grants that exact Knowledge (CRA-F0138). An Invitation for Someone Else sends “Accept supper, then explain” directly to the meal ending without correcting the host’s mistaken identity (CRA-F0139).
 
 The batch added four findings to CRA-C0006’s generic Frontier action/participant mismatch and one to CRA-C0002’s Knowledge-without-route-proof pattern; the missed explanation remains a standalone route-follow-through defect and is not forced into a cluster. Frontier Discovery, social anthology, registry, and diversity suites were supporting checks; they do not replace route review. No gameplay source or test files were changed. Totals are now 205 HEALTHY, 29 MINOR CONCERN, and 126 CONFIRMED DEFECT across 360 reviewed Adventures; 501 remain. All six new findings are MEDIUM. The next canonical registry entry is position 361, One Umbrella, Three Walkers, and the next finding ID is CRA-F0140.
+
+## Audit continuation (live positions 121–124 and 352–357)
+
+This continuation resumed at the first live-registry gap and reviewed the next ten unreviewed stable IDs in canonical order. Strange Roads and Frontier Discovery route graphs, outcomes, effects, History/Knowledge writes, relevant save/resume behavior, and available scenario-specific tests were traced. The focused suites passed 20 tests across three files; tests were supporting evidence, not the basis for route classifications.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 121 | The Woman at the Crossing | CONFIRMED DEFECT | CRA-F0140 (MEDIUM) — shared ending claims bridge inspection on detour/dawn routes; CRA-F0141 (MEDIUM) — dawn crossing failure is described as occurring in darkness. |
+| 122 | The Black Dog | CONFIRMED DEFECT | CRA-F0142 (MEDIUM) — passing-help route claims an unestablished farmhand arrival. |
+| 123 | The Room with No Door | HEALTHY | — |
+| 124 | The Bell Beneath the Water | MINOR CONCERN | — |
+| 352 | The Forgotten Powder Shed | MINOR CONCERN | — |
+| 353 | The Creek Diversion | HEALTHY | — |
+| 354 | The Locked Strongbox in the Ruins | CONFIRMED DEFECT | CRA-F0143 (MEDIUM) — successful pry action has no resolved opening/result. |
+| 355 | The Broken Gate | CONFIRMED DEFECT | CRA-F0144 (MEDIUM) — cabin-help action has no cabin/occupant result; CRA-F0145 (MEDIUM) — bilateral report has no established recipient. |
+| 356 | The Missing Assayer | HEALTHY | — |
+| 357 | The Claim Jumper’s Story | CONFIRMED DEFECT | CRA-F0146 (MEDIUM) — generic bilateral report claims the absent owner receives the account. |
+
+CRA-F0140–CRA-F0142 extend CRA-C0001’s route-specific outcome/participant continuity pattern. CRA-F0143–CRA-F0146 extend CRA-C0006’s generic Frontier archetype action/participant mismatch. No new cluster was necessary. The Bell Beneath the Water retains a minor concern for its innkeeper-sourced text variant on a direct shore-listening route; the nearby inn context makes this insufficiently clear to classify as a confirmed defect. The powder shed’s safe override avoids handling/explosion outcomes but leaves a repeated mark/warn action lightly resolved. The worker question in Claim Jumper’s Story is summarized rather than answered, but the existing accounts are compared without a proven false assertion.
+
+The checkpoint now covers 370/861 Adventures: 208 HEALTHY, 31 MINOR CONCERN, 131 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 146 confirmed finding records. The contiguous reviewed frontier reaches position 357; 13 reviewed Adventures remain beyond the next gap, and only positions 358–359 remain unreviewed through the current maximum reviewed position 372. The next registry position is 358, The Forgotten Supply Cache (`the-forgotten-supply-cache`); next finding ID is CRA-F0147. Gameplay source and tests were unchanged.
+
+## Audit continuation (live positions 358–359 and 373–380)
+
+Resume used the stable-ID checkpoint rather than reviewed-count arithmetic. Positions 358–359 were the next unreviewed IDs. Positions 360–372 were already reviewed and skipped; review then continued with the next eight live-registry entries, positions 373–380. Frontier Discovery’s item/marking/risk/success paths and the eight social anthology graphs were traced through their distinct choices, state/effects, endings, refusals, rewards, and save/reload-relevant behavior. Supporting Frontier, anthology, I1-regression and registry suites passed 35 tests across four files.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 358 | The Forgotten Supply Cache | CONFIRMED DEFECT | CRA-F0147 (MEDIUM) — take-item endings claim the cache was marked without a marking action; the entry mark-and-leave route is also unresolved. |
+| 359 | The Old Hydraulic Cut | CONFIRMED DEFECT | CRA-F0148 (MEDIUM) — entry mark-and-leave route does not establish a marker; CRA-F0149 (MEDIUM) — successful descent repeats the undecided prompt without resolving what the fitting showed. |
+| 373 | One Umbrella, Three Walkers | HEALTHY | — |
+| 374 | The Wrong Name at the Door | HEALTHY | — |
+| 375 | The Empty Place Setting | HEALTHY | — |
+| 376 | The Barber’s Quiet Customer | MINOR CONCERN | — |
+| 377 | The Schoolroom Door | HEALTHY | — |
+| 378 | The Farewell Quilt | HEALTHY | — |
+| 379 | The Public Apology | CONFIRMED DEFECT | CRA-F0150 (MEDIUM) — the shared silence ending assigns an avoidance motive to a route that insists the sign is crooked. |
+| 380 | The Last Clean Apron | HEALTHY | — |
+
+CRA-F0147–CRA-F0149 extend CRA-C0006’s Frontier action/result mismatch pattern, including the marker-action omission already seen in CRA-F0137. CRA-F0150 extends CRA-C0001’s route-specific action/motive convergence pattern. No new cluster was required; CRA-C0007 remains the next available cluster ID. The Barber’s Quiet Customer remains a minor concern because the source does not establish whether the barber’s bereavement disclosure is overheard by the customer seated nearby. The route does not claim lasting care or resolution. No gameplay source or test files changed.
+
+The checkpoint now covers 380/861 Adventures: 214 HEALTHY, 32 MINOR CONCERN, 134 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 150 finding records. The contiguous reviewed frontier reaches position 380 with no gaps through it. The next stable ID is position 381, The Quiet Applause (`the-quiet-applause`); 481 current registered Adventures remain. Next finding ID is CRA-F0151.
+
+## Audit continuation (live positions 381–390)
+
+Resumed from the first stable ID not already reviewed and inspected ten entries in live `SCENARIOS` order. Social-performer choices and the competition anthology’s game, recitation, documentation, demonstration, safety, award, and publication routes were traced through route conditions, state/effects, persistent History/Lore, refusals, alternate outcomes, and endings. The focused outcome-continuity, anthology, and registry suites passed 21 tests across three files; tests support, but do not replace, route review.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 381 | The Quiet Applause | HEALTHY | — |
+| 382 | The Three-Ring Toss | HEALTHY | — |
+| 383 | The Last Verse Contest | HEALTHY | — |
+| 384 | Notes After the Ribbon | CONFIRMED DEFECT | CRA-F0151 (MEDIUM) — composite-card ending and persistent Lore assert baker agreement/collective authorship that the Traveler’s unilateral choice never establishes. |
+| 385 | A Line for the Broadside | HEALTHY | — |
+| 386 | The Clockmaker’s Demonstration | HEALTHY | — |
+| 387 | The Bell-Ringer Trial | CONFIRMED DEFECT | CRA-F0152 (MEDIUM) — ground-bell judging ending names the apprentice winner and claims superior skill without establishing her comparative performance. |
+| 388 | The Pie with No Recipe | HEALTHY | — |
+| 389 | The Painted Sign | HEALTHY | — |
+| 390 | The Whistle and the Wind | CONFIRMED DEFECT | CRA-F0153 (MEDIUM) — a shared round claims the Traveler made a call after the route only moves the judges. |
+
+CRA-F0151 establishes a distinct consent/collective-authorship pattern, recorded as new cluster CRA-C0007. CRA-F0152 and CRA-F0153 extend CRA-C0001’s route-specific result/action continuity pattern. The Last Verse Contest’s delivery-rule scene itself states that each contestant receives a final stanza before the room votes; that route therefore does not skip the performances. The Quiet Applause preserves the singer’s refusal, while the other healthy competition routes keep prize, evidence, participation, and persistent outcome records within what their paths establish. No gameplay source or tests were changed.
+
+The checkpoint now covers 390/861 Adventures: 221 HEALTHY, 32 MINOR CONCERN, 137 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 153 finding records. The contiguous reviewed frontier reaches position 390 with no gaps through it. Position 391, The Painted Mule (`the-painted-mule`), is next; 471 current registered Adventures remain. Next finding ID is CRA-F0154 and next cluster ID is CRA-C0008.
+
+## Audit continuation (live positions 391–400)
+
+Continued from the first stable ID not already reviewed. The competition anthology’s animal, parade, and demonstration routes plus the first seven everyday anthology routes were traced through their materially distinct choices, state/effects, persistent information, property/custody, timing, rewards, refusals, and endings. The focused anthology, outcome-continuity, and registry suites passed 21 tests across three files as supporting evidence.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 391 | The Painted Mule | CONFIRMED DEFECT | CRA-F0154 (MEDIUM) — the story-about-the-sign route says the boast was corrected although no correction/removal is selected. |
+| 392 | The Tin-Can Orchestra | HEALTHY | — |
+| 393 | The Tilt Table | HEALTHY | — |
+| 394 | The Envelope Under the Teacup | HEALTHY | — |
+| 395 | Two Dates on One Photograph | HEALTHY | — |
+| 396 | A Notice Printed Backward | HEALTHY | — |
+| 397 | Supper at the Inn | HEALTHY | — |
+| 398 | The Cobbler’s Last Pair | CONFIRMED DEFECT | CRA-F0155 (MEDIUM) — split-pair ending asserts both customers agree though the dancer was not consulted; CRA-F0156 (MEDIUM) — partner-only route imports an unselected worker patch and agreement. |
+| 399 | The Parcel with No Address | HEALTHY | — |
+| 400 | The Clock That Kept Local Time | HEALTHY | — |
+
+CRA-F0154–CRA-F0156 extend CRA-C0001’s route-specific action/outcome continuity pattern, except CRA-F0155, which joins the consent/collective-authorship cluster CRA-C0007 first established in the prior batch. No new cluster was needed. Two Dates on One Photograph grants its detailed composition Knowledge only after inspecting and sharing the negative-sleeve evidence. The first press-limit option in A Line for the Broadside is a minor decision-flow concern because the later layout choice can revise it; no contradictory final publication claim is forced. No gameplay source or tests changed.
+
+The checkpoint now covers 400/861 Adventures: 228 HEALTHY, 33 MINOR CONCERN, 139 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 156 finding records. The contiguous reviewed frontier reaches position 400 with no gaps through it. Position 401, The Play with an Unwritten Ending (`the-play-with-an-unwritten-ending`), is next; 461 current registered Adventures remain. Next finding ID is CRA-F0157; next cluster ID is CRA-C0008.
+
+## Audit continuation (live positions 401–410)
+
+Continued in live `SCENARIOS` order after position 400. The remaining everyday anthology and first two procedural-comedy routes were traced across choices, state/effects, Knowledge gates, ownership/usability requirements, risk outcomes, refusals, and endings. Supporting anthology, continuity, Gear-correction, apprenticeship/Gear, and registry suites passed 41 tests across five files; route-level review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 401 | The Play with an Unwritten Ending | HEALTHY | — |
+| 402 | A Chair Beside the Sickbed | HEALTHY | — |
+| 403 | The Lamp Left in the Window | HEALTHY | — |
+| 404 | The Pocket in the Curtain | CONFIRMED DEFECT | CRA-F0157 (LOW) — the opening exposes the full note, then offers to return it “unopened” or “unseen.” |
+| 405 | The Trestle Table | HEALTHY | — |
+| 406 | A Loaf Set Aside | HEALTHY | — |
+| 407 | The Stage Rigging | HEALTHY | — |
+| 408 | The Back-Room Lantern | HEALTHY | — |
+| 409 | The Doorway Delivery | HEALTHY | — |
+| 410 | The Queue with Two Ends | HEALTHY | — |
+
+CRA-F0157 extends CRA-C0001’s route/action-state continuity pattern: the privacy-preserving option conflicts with information already disclosed to the Traveler. The singer’s privacy, consent to step down, and understudy participation remain distinct; only the “unopened/unseen” promise is defective. The patient’s requested care remains nonmedical; lamp/river information is Knowledge-gated; lantern and auger use remain gated by item usability; the stage hazard’s fatal branch is explicit; and the queue does not claim to know the disputed customers’ arrival order. No gameplay source or tests changed.
+
+The checkpoint now covers 410/861 Adventures: 237 HEALTHY, 33 MINOR CONCERN, 140 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 157 finding records. The contiguous reviewed frontier reaches position 410 with no gaps through it. Position 411, The Clerk’s Second Stamp (`the-clerks-second-stamp`), is next; 451 current registered Adventures remain. Next finding ID is CRA-F0158; next cluster ID remains CRA-C0008.
+
+## Audit continuation (live positions 411–420)
+
+Continued in live registry order across the procedural-comedy set. The clerk-certificate signature requirement, humane animal judging, safe roof retrieval, shared-door delivery boundary, clock references, parcel provenance and correction, seating/fragile parcel, pigeon message privacy/delivery, scale-model purpose, and weather/feed observations were traced through their distinct paths and endings. Supporting comedy, anthology, playtest-correction, and registry suites passed 29 tests across four files.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 411 | The Clerk’s Second Stamp | CONFIRMED DEFECT | CRA-F0158 (MEDIUM) — an ending claims a usable certificate before the Traveler signs the required declaration. |
+| 412 | The Patient Pig | HEALTHY | — |
+| 413 | The Wardrobe on the Roof | HEALTHY | — |
+| 414 | The House with Two Doorbells | HEALTHY | — |
+| 415 | The Town Clock’s Argument | HEALTHY | — |
+| 416 | The Baker and the Brown Paper | HEALTHY | — |
+| 417 | The Sixth Chair | HEALTHY | — |
+| 418 | The Pigeon Postscript | CONFIRMED DEFECT | CRA-F0159 (MEDIUM) — the sealed-note route receives a farm reply without contacting the owner. |
+| 419 | The Tinsmith’s Tiny Door | HEALTHY | — |
+| 420 | The Barnyard Weather Report | HEALTHY | — |
+
+CRA-F0158–CRA-F0159 extend CRA-C0001’s action/result and route-specific source continuity pattern. The Clerk’s correct-line route alone records the Traveler’s declaration; the shared scrape/initial route says the usable certificate is ready before signing. The Pigeon Postscript’s explicit `callOwner` path is distinct and supported; the defect is only the no-contact `leaveSecond` path into the farm-reply ending. The doorbell suggestions are treated as accepted social outcomes because the endings explicitly narrate the neighbors’ agreement; no additional defect was inferred. No gameplay source or tests changed.
+
+The checkpoint now covers 420/861 Adventures: 245 HEALTHY, 33 MINOR CONCERN, 142 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. There are 159 finding records. The contiguous reviewed frontier reaches position 420 with no gaps through it. Position 421, The Paper Mill Parade (`the-paper-mill-parade`), is next; 441 current registered Adventures remain. Next finding ID is CRA-F0160; next cluster ID remains CRA-C0008.
