@@ -449,16 +449,17 @@
           "auditText": "Gunshot outcome changes hit and invents a shot on tackle branch",
           "auditWitness": "gunDrawn.diveForDoor failure > gunshotAftermath; weaponDown.retrievePistol failure > gunshotAftermath",
           "auditEvidence": "Door failure shot catches side, next scene floor shot and bleeding leg. Retrieve failure only tackle, next scene a gunshot and leg injury despite no shot in result/effect.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/deadMansHand.ts — failures converge on gunshotAftermath without shot-vs-tackle proof."
+            "src/scenarios/deadMansHand.ts — failed retrievePistol now enters tackleAftermath; gunshotAftermath remains for routes where a shot is fired.",
+            "src/scenarios/deadMansHand.test.ts — failed tackle has no shot or wound, contrasted with gunshot damage."
           ],
-          "reviewNotes": "src/scenarios/deadMansHand.ts — failures converge on gunshotAftermath without shot-vs-tackle proof.",
+          "reviewNotes": "I2-DEEP isolated the route-connection defect. Attached RC14 chronology and RC15 location findings remain untouched.",
           "crossClusterFindingIds": [
             "O01-015",
             "O01-016"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -475,7 +476,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "deep-room-at-harker-mine",
@@ -2373,15 +2374,16 @@
           "auditText": "Failed rope rescue invents a ladder that was never fetched",
           "auditWitness": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure",
           "auditEvidence": "roadsideFire/callUp -> windowAnswer/anchorRopeAtPost failure -> ladderFailure — No ladder has been moved from orchard yard, and ladderReady flag is absent. Failure message says line slipped from sill, but ladderFailure says player/shopkeeper catch slipping ladder at window. Following choices also assume ladder rescue failed.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/burningLoft.ts — rope failure without fetched ladder reaches ladderFailure asserting ladder slips."
+            "src/scenarios/burningLoft.ts — shared ladderFailure endpoint now uses route-neutral rescue-failure text; trapped person remains above and outside parties remain safe.",
+            "src/scenarios/burningLoft.test.ts — failed rope route retains ropeSlipped and does not narrate ladder/rope state incorrectly."
           ],
-          "reviewNotes": "src/scenarios/burningLoft.ts — rope failure without fetched ladder reaches ladderFailure asserting ladder slips.",
+          "reviewNotes": "Narrative-only RC12 repair; rescue consequences and attached RC11 work were not changed.",
           "crossClusterFindingIds": [
             "O15-025"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -2392,7 +2394,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-cache-ledger",
@@ -2879,15 +2881,16 @@
           "auditText": "All endings assert surrender; actual surrendered purse never deducted",
           "auditWitness": "threat.respond_callHouse > aftermath.ending_leaveHedge > settlement; threat.respond_leavePurse",
           "auditEvidence": "Both closing options claim surrendered purse/coins even after thieves withdraw; surrender effect only sets response flag, no loss of money.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/roadDangerGenreBatch.ts — build() composes response-specific settlement text with ending-specific result"
+            "src/scenarios/roadDangerGenreBatch.ts — ending variants no longer assert purse surrender for callHouse, leavePurse, or holdGate.",
+            "src/scenarios/roadDangerGenreBatch.test.ts — all three responses are paired with both endings; neither ending claims purse loss."
           ],
-          "reviewNotes": "callHouse and holdGate routes share leaveHedge result 'poorer by the coins surrendered'; only leavePurse surrenders the purse. The purse deduction concern is separate; this is an independent RC12 ending-state leak.",
+          "reviewNotes": "RC12 narrative corrected without changing coin deduction/accounting; attached RC02 finding remains outside this repair.",
           "crossClusterFindingIds": [
             "R371-044"
           ],
-          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -2898,7 +2901,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-lantern-in-the-marsh",
@@ -3228,19 +3231,19 @@
           "auditText": "Clinic handover ending uses promise despite treatment already underway",
           "auditWitness": "townCare.returnBookToBenn > handOverEnding; pursuerAccount.handLedgerToBenn > same ending",
           "auditEvidence": "Clinic route doctor already treating; ending only Benn promises future doctor. Trail handover invents warden record with no town/warden contact.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "longWayHome.ts — both audited handover routes converge on handOverEnding",
-            "longWayHome.ts — handOverEnding unconditionally promises doctor visit and warden record"
+            "src/scenarios/longWayHome.ts — clinic returnBookToBenn enters clinicHandoverEnding; trail handOverEnding now limits itself to Benn's unverified promise.",
+            "src/scenarios/longWayHome.test.ts — clinic and trail handover routes assert distinct care and warden state."
           ],
-          "reviewNotes": "Current shared ending still states a doctor visit and warden record despite route variants that do not establish those same events; no test directly contrasts both handover routes.",
+          "reviewNotes": "Separate endpoint fixes convergence. I1 O01-022 discovery flags remain intact; attached RC14/RC07/RC09/RC05 findings were not implemented.",
           "crossClusterFindingIds": [
             "O01-023",
             "O01-025",
             "O01-026",
             "O01-027"
           ],
-          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -3269,7 +3272,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-lost-payroll",
@@ -3527,15 +3530,16 @@
           "auditText": "Payment ending confirms two lamps although lower light remains unverified",
           "auditWitness": "decision.takeFee > paid",
           "auditEvidence": "Only upper lamp positively identified; lower flicker explicitly may be reflection and is not evidence of person. paid appends leave both lamps with crew.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/salvageRecoveryGenreBatch.ts — settlement says both lamps left with crew; lower light remains uncertain."
+            "src/scenarios/salvageRecoveryGenreBatch.ts — fee outcome describes the cleared upper-cut recovery and leaves lower light unidentified and untouched.",
+            "src/scenarios/salvageRecoveryGenreBatch.test.ts — fee route asserts no lower-light recovery/identification claim."
           ],
-          "reviewNotes": "src/scenarios/salvageRecoveryGenreBatch.ts — settlement says both lamps left with crew; lower light remains uncertain.",
+          "reviewNotes": "Local salvage narrative only; attached RC02 compensation/accounting remains unchanged.",
           "crossClusterFindingIds": [
             "R371-054"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -3546,7 +3550,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-missing-assayer",
@@ -3915,19 +3919,19 @@
           "auditText": "Failure to brace safely outside becomes fall inside",
           "auditWitness": "braceLip.braceLipWithGear failure > entrySlip",
           "auditEvidence": "Failure message you pull clear before edge slumps; next scene loose bank slumps behind you and take hard fall below, with channel routes only.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "theRoadBelow.ts — failed bracing result says traveler pulls clear before edge slumps then targets entrySlip",
-            "theRoadBelow.ts — entrySlip says loose bank slumps behind traveler and causes hard knock"
+            "src/scenarios/theRoadBelow.ts — brace failures enter braceFailureOutside with outside-only continuations; direct-entry failure still uses entrySlip.",
+            "src/scenarios/theRoadBelow.test.ts — failed brace verifies above-ground state and outlet choice; existing O01-043 tests remain."
           ],
-          "reviewNotes": "The failure result says the Traveler pulls clear before the edge slumps, but entrySlip narrates being struck as the bank slumps behind them; the same result does not preserve the stated position.",
+          "reviewNotes": "Narrow brace route correction. Preserves neriEncountered/roadWarned behavior and leaves RC15/RC14/RC09/RC02 findings untouched.",
           "crossClusterFindingIds": [
             "O01-045",
             "O01-046",
             "O01-047",
             "O01-048"
           ],
-          "reviewedAtMainSha": "14ad5e08aeed7745845a78cb7043f39347fdbd77"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -3956,7 +3960,7 @@
           "severity": "LOW"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-school-bell-frame",
@@ -4037,15 +4041,16 @@
           "auditText": "Search withdrawal ends with missing hand found",
           "auditWitness": "complication.response_withdraw > settlement.acceptGear > gear",
           "auditEvidence": "Response marks site for later search; gear ending asserts missing hand found and dog watered.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/adventurerSupportGenreBatch.ts — withdrawal response → settlement"
+            "src/scenarios/adventurerSupportGenreBatch.ts — gear handoff describes agreed compensation without claiming the missing person was found or hound watered.",
+            "src/scenarios/adventurerSupportGenreBatch.test.ts — follow/water/withdraw responses remain distinct and Gear wording is route-neutral."
           ],
-          "reviewNotes": "withdraw reports the missing scent for a future search, but unconditional settlement says the missing hand is found.",
+          "reviewNotes": "Neutral handoff wording fixes the shared claim; attached RC02 reward/payment findings remain untouched.",
           "crossClusterFindingIds": [
             "R371-033"
           ],
-          "reviewedAtMainSha": "2d988d892be715d5e844cf64ab2a48368552570d"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -4056,7 +4061,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-silted-toolbox",
@@ -4071,15 +4076,16 @@
           "auditText": "Limited recovery pays for private chest that was left unsafe",
           "auditWitness": "arrival.verifyFirst > evidence.secureRecovery > decision.takeFee > paid",
           "auditEvidence": "Rod consequence private object remains beyond safe reach; secureRecovery moves only clearly authorized crew box; paid claims carpenter marked chest returned to owner.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/salvageRecoveryGenreBatch.ts — limited-recovery payment still claims private chest returned."
+            "src/scenarios/salvageRecoveryGenreBatch.ts — local fee result says the private carpenter's chest is not part of the authorized handover.",
+            "src/scenarios/salvageRecoveryGenreBatch.test.ts — limited crew-box fee route no longer says the private chest was returned."
           ],
-          "reviewNotes": "src/scenarios/salvageRecoveryGenreBatch.ts — limited-recovery payment still claims private chest returned.",
+          "reviewNotes": "Local narrative correction only; fee amount and ownership mechanics unchanged, attached RC02 finding untouched.",
           "crossClusterFindingIds": [
             "R371-054"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -4090,7 +4096,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "the-sound-in-the-well",
@@ -4487,15 +4493,16 @@
           "auditText": "Recovered tin becomes unrecovered in followup",
           "auditWitness": "complication.response_line > followup",
           "auditEvidence": "Response retrieves tin from firm side; followup says tin still visible below and choices leave it.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/adventurerSupportGenreBatch.ts: line response consequence says the tin comes up; generated followup text unconditionally appends the Three Points Down followup claiming the tin is still visible below and asks what to leave."
+            "src/scenarios/adventurerSupportGenreBatch.ts — response_line now bypasses the still-below follow-up using existing support_response_line proof.",
+            "src/scenarios/adventurerSupportGenreBatch.test.ts — recovered-line route reaches settlement; leave route retains the follow-up."
           ],
-          "reviewNotes": "The line response establishes recovery before the shared followup, which reverses object state. R371-033 is an attached RC02 finding; no RC02 change is made.",
+          "reviewNotes": "Existing run-local response flag is reused; no new state/save migration. Attached RC02 settlement finding untouched.",
           "crossClusterFindingIds": [
             "R371-033"
           ],
-          "reviewedAtMainSha": "c314b7561ada076832f1c5d99d49e1a976b00c40"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -4506,7 +4513,7 @@
           "severity": "HIGH"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     },
     {
       "adventureId": "town-name-that-moved",
@@ -4612,15 +4619,16 @@
           "auditText": "Successful rope catch becomes a missed first throw after haul failure",
           "auditWitness": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss",
           "auditEvidence": "lakeShore/throwTravelRope success -> ropeTaut/haulFromShore failure -> ropeMiss — Victim caught rope and lost it during hauling; failure message says rope jerks free. ropeMiss instead says first throw missed, and elapsed variant says rope missed again. The current rescue progress is rewritten.",
-          "status": "OPEN_REPRODUCIBLE",
+          "status": "VERIFIED_HEALTHY_REPAIRED",
           "evidence": [
-            "src/scenarios/underTheIce.ts — successful catch then failed haul reaches text saying first throw missed."
+            "src/scenarios/underTheIce.ts — ropeMiss now says only that the victim is not secured on shore, valid after initial miss or failed haul.",
+            "src/scenarios/underTheIce.test.ts — initial miss and caught-rope/failed-haul routes share the truthful fallback."
           ],
-          "reviewNotes": "src/scenarios/underTheIce.ts — successful catch then failed haul reaches text saying first throw missed.",
+          "reviewNotes": "Neutral fallback also serves legacy saves without intermediate-catch proof. No new flag/save behavior; attached RC14 chronology remains untouched.",
           "crossClusterFindingIds": [
             "O15-027"
           ],
-          "reviewedAtMainSha": "fe943130a570b33c57e632a91021781d3373311e"
+          "reviewedAtMainSha": "1eca1a7"
         }
       ],
       "crossClusterFindings": [
@@ -4631,7 +4639,7 @@
           "severity": "MEDIUM"
         }
       ],
-      "status": "OPEN"
+      "status": "RECONCILED"
     }
   ],
   "nonCanonicalHistoricalWork": [

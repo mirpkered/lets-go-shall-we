@@ -26,7 +26,7 @@ Current-source verification remains complete. Pass I1 implements a bounded subse
 
 `bridge-out` — O01-020, O01-021; `the-ice-gives-warning` — R125-034; `a-gun-on-the-table` — R125-063; `only-one-bullet` — RO29-15; `one-horse-short` — RO29-03; `the-broken-rail-at-crow-field` — R616-034; `the-clamp-beneath-the-press` — R616-022; `the-irrigation-stone-at-south-field` — R616-030; `the-last-at-the-cobbler` — R371-050; `the-last-clean-apron` — R371-004; `the-last-room` — O01-012; `the-last-survey` — R371-025; `the-man-who-sheds-his-skin` — R125-083; `the-markers-stop` — R125-032; `the-needle-at-the-north-station` — R616-023; `the-public-apology` — R371-003; `the-quartermasters-tally` — R371-024; `the-whistle-and-the-wind` — R371-005; `the-winds-other-side` — R616-003; `silent-night` — RO29-18.
 
-### Pass I2 cleanup queue
+### Pass I1 deferred queue (superseded by I2-DEEP)
 
 | Adventure | Finding / severity | Current verified contradiction | I1 disposition |
 |---|---|---|---|
@@ -43,7 +43,7 @@ Current-source verification remains complete. Pass I1 implements a bounded subse
 
 I1 used existing route state except three narrow run-local proof flags (`returnedCoachCoat`, `cartAndTravelerAcross`, and `ownMarkerPlaced` for route-specific marker thanks). Missing proof uses neutral text; no persistent save schema, gear, stable Knowledge, or History was added. The selected fixed/shared endings received focused regression coverage in their family suites and `src/scenarios/rc12I1Regression.test.ts`.
 
-## Batch 5 dispositions
+## Batch 5 dispositions (verification snapshot)
 
 - `a-gun-on-the-table` — R125-063, MEDIUM — **OPEN_REPRODUCIBLE**. `room.grabGun` goes directly to `weaponSafe`; that scene states the book’s eight-coin payment and four-coin balance although this route never reads the book.
 - `give-me-whatcha-got` — RO29-22, MEDIUM — **VERIFIED_HEALTHY_REPAIRED**. Refusal sets `refusedSearchShot`, and `shotPlayer` has truthful refusal-specific text distinct from the `rushedArmedRobber` text. Inspected `giveMeWhatchaGot.ts`; the injury route remains accurately described.
@@ -102,7 +102,32 @@ Queue totals: **31 open assignments across 30 Adventures**; severity **3 HIGH, 2
 - **Wave D — ambiguous cases:** none currently.
 - **Wave E — cross-cluster-sensitive review:** independently validate RC12 scope for assignments with RC02/03/05/07/09/11/13/14/15 attachments; do not absorb those fixes.
 
-The pre-I1 recommendation above is retained as verification history only. The current implementation queue is the ten-row I1 cleanup queue above. RC12 remains **PARTIALLY CLOSED** until all ten assignments are dispositioned and the ledger derives all 124 Adventures as reconciled.
+The pre-I1 recommendation above is retained as verification history only. The ten-row queue below records the state handed from I1 to I2-DEEP; it is not current open work.
+
+## Pass I2-DEEP — final forensic closure
+
+**RC12 — CLOSED**, mechanically derived from the finding-level ledger after current-source repairs.
+
+- Starting queue: 10 `OPEN_REPRODUCIBLE` assignments across 10 Adventures; 3 HIGH, 6 MEDIUM, 1 LOW. No ambiguous or unreviewed assignments.
+- Implementation source commit: `1eca1a7` (`Repair final RC12 route convergence defects`).
+- Disposition: 10 repaired independently in RC12; 0 reassigned; 0 blocked. Attached non-RC12 findings remain with their owning clusters.
+- Final assignment totals: `VERIFIED_HEALTHY_REPAIRED` 142; `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES` 2; `VERIFIED_FALSE_POSITIVE` 0; `VERIFIED_REASSIGNED_NOT_INDEPENDENT_RC12` 0; `OPEN_REPRODUCIBLE` 0; `OPEN_AMBIGUOUS` 0; `UNREVIEWED` 0 (144 total).
+- Final Adventure totals: **124 reconciled**, **0 open**, **0 unreviewed**.
+- `dead-mans-hand` (O01-017): separated tackle failure from fired-shot aftermath; regression contrasts no-shot/no-wound with the actual gunshot route. RC14/RC15 untouched.
+- `the-burning-loft` (O15-024): made the shared rescue-failure endpoint route-neutral; rescue consequences remain unchanged. RC11 untouched.
+- `the-lantern-in-the-hedge` (R371-045): removed purse-surrender claims from both endings for all response routes; coin/economy mechanics unchanged. RC02 untouched.
+- `the-long-way-home` (O01-024): split clinic handover from trail handover, preserving I1 name/call discovery behavior. RC14/RC07/RC09/RC05 untouched.
+- `the-mineshaft-lamp` (R371-059): fee text limits claims to the cleared upper cut and leaves the lower light unidentified. RC02 untouched.
+- `the-road-below` (O01-044): failed outside bracing now remains above ground and offers outside continuations; prior `neriEncountered`/`roadWarned` behavior preserved. RC15/RC14/RC09/RC02 untouched.
+- `the-silent-hound` (R371-036): Gear transfer no longer claims the missing hand was found or dog watered; route-specific response narration remains. RC02 untouched.
+- `the-silted-toolbox` (R371-060): fee text no longer claims return of the private chest after authorized-box-only recovery. RC02 untouched.
+- `three-points-down` (R371-035): recovered-tin response uses existing response proof to bypass the still-below follow-up; leave/withdraw routes retain it. RC02 untouched.
+- `under-the-ice` (O15-026): neutral rope fallback is truthful after either an initial miss or a failed haul; no new state, including for legacy saves. RC14 untouched.
+- No new flags, persistent facts, save schema, Gear, or Knowledge were added. The same-Adventure scan also removed the false dropped-pistol action exposed by the gunshot aftermath.
+- I2 route regressions cover the relevant route contrasts and fallbacks. Full suite, build/type check, registry, inventory, audit/library and ledger validation were run for this delivery.
+- No authoring rule required change. Weekly Scenario Batch remains paused. No unrelated root-cause work was implemented.
+
+All ten I2-DEEP cases are now `VERIFIED_HEALTHY_REPAIRED`; no RC12 implementation queue remains.
 
 ## Supplemental noncanonical historical work
 
