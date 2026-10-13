@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 440 current registered Adventures reviewed; 421 of 861 remain.
-Next: position 441, The Ferry Beneath the Ferry (`the-ferry-beneath-the-ferry`; `src/scenarios/deepExplorationBatch.ts`); next finding ID `CRA-F0176`; next available cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 450 current registered Adventures reviewed; 411 of 861 remain.
+Next: position 451, The Roadside Tinker (`the-roadside-tinker`; `src/scenarios/merchantEcologyBatch.ts`); next finding ID `CRA-F0184`; next available cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 252 |
+| HEALTHY | 256 |
 | MINOR CONCERN | 33 |
-| CONFIRMED DEFECT | 155 |
+| CONFIRMED DEFECT | 161 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 440 |
+| Total reviewed current registered Adventures | 450 |
 
-There are 175 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 431–440 and added eleven findings (ten MEDIUM, one HIGH).
+There are 183 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 441–450 and added eight findings (all MEDIUM).
 
 ## Registry position reconciliation
 
@@ -843,4 +843,23 @@ Continued with the next ten stable IDs in `SCENARIOS` order, then crossed from t
 
 CRA-F0165, CRA-F0167–CRA-F0168, CRA-F0170–CRA-F0173, and CRA-F0175 extend existing CRA-C0001 (route-specific state/outcome at convergence). CRA-F0166 extends existing CRA-C0007 (NPC consensus inferred from a unilateral route). CRA-F0169 and CRA-F0174 extend existing CRA-C0004 (Gear ownership treated as Gear usability). No new cluster was needed; CRA-C0007 already exists, and the next unused cluster remains CRA-C0008.
 
-The ledger now covers 440/861 Adventures: 252 HEALTHY, 33 MINOR CONCERN, 155 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. It contains 175 findings. The reviewed frontier is contiguous through position 440. The next stable ID is position 441, The Ferry Beneath the Ferry (`the-ferry-beneath-the-ferry`), with 421 Adventures remaining and next finding ID CRA-F0176. No gameplay source, gameplay tests, design documents, deployment, or scheduler state changed; Weekly Scenario Batch remains paused.
+The ledger now covers 450/861 Adventures: 256 HEALTHY, 33 MINOR CONCERN, 161 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW. It contains 183 findings. The reviewed frontier is contiguous through position 450. Position 441, The Ferry Beneath the Ferry (`ferry-beneath-the-ferry`), was verified from the live scenario ID; the first unreviewed entry is position 451, The Roadside Tinker (`the-roadside-tinker`), with 411 Adventures remaining and next finding ID CRA-F0184. No new cluster was needed: CRA-F0176 and F0181 extend CRA-C0004, CRA-F0179 extends CRA-C0007, and the other five findings extend CRA-C0001. No gameplay source, gameplay tests, design documents, deployment, or scheduler state changed; Weekly Scenario Batch remains paused.
+
+## Audit continuation (live positions 441–450)
+
+Reviewed the next ten stable IDs in live `SCENARIOS` order, crossing from deep-exploration stories into fixed-stock merchants. Routes were traced through equipment gates, alternate access, evidence and reporting, NPC responses, object recovery, payment/tool substitution, persistent effects, refusal/retreat, and fatal outcomes. Supporting deep-exploration, merchant, registry, and equipment suites passed 43 tests across four files; route-level source review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 441 | The Ferry Beneath the Ferry | CONFIRMED DEFECT | CRA-F0176 (MEDIUM) — the lower-waterline route claims to use a Travel Rope but is available without a usable rope. |
+| 442 | The Lantern Vault | CONFIRMED DEFECT | CRA-F0177 (MEDIUM) — a supply-room-only route claims the cellar refuge purpose without seeing its supporting evidence. |
+| 443 | The Hollow Fort | CONFIRMED DEFECT | CRA-F0178 (MEDIUM) — the shared return says workers stop stripping timber without the route telling them to stop. |
+| 444 | The Road Through the Barrow | CONFIRMED DEFECT | CRA-F0179 (MEDIUM) — a secret-entry return claims keeper acceptance and crew consensus without either party responding. |
+| 445 | The Bell Below the Water | HEALTHY | — |
+| 446 | The Forgotten Platform | CONFIRMED DEFECT | CRA-F0180 (MEDIUM) — the report ending claims delivery of both map and ledger copies from routes that did not acquire them. |
+| 447 | The White Chamber | CONFIRMED DEFECT | CRA-F0181–CRA-F0183 (MEDIUM) — broken rope passes as usable; a no-line route claims a taut rope; inspection-only paths claim pack recovery, delivery, and payment. |
+| 448 | The Siding Tool Board | HEALTHY | — |
+| 449 | The Ferryman’s Locker | HEALTHY | — |
+| 450 | The Doctor’s Road Cart | HEALTHY | — |
+
+The findings extend existing clusters: CRA-F0176 and CRA-F0181 use CRA-C0004 (Gear ownership/usability); CRA-F0179 uses CRA-C0007 (NPC consensus); CRA-F0177–CRA-F0178, CRA-F0180, and CRA-F0182–CRA-F0183 use CRA-C0001 (route-specific state/evidence lost at convergence). No new cluster was created. The ledger is contiguous through position 450; next is position 451, The Roadside Tinker (`the-roadside-tinker`), with 411 remaining and next finding CRA-F0184.

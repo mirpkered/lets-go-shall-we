@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 440,
-  "reviewedCount": 440,
-  "remainingCount": 421,
-  "nextPosition": 441,
-  "nextFindingId": "CRA-F0176",
+  "reviewedThroughPosition": 450,
+  "reviewedCount": 450,
+  "remainingCount": 411,
+  "nextPosition": 451,
+  "nextFindingId": "CRA-F0184",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -452,7 +452,17 @@
     {"position":437,"adventureId":"door-beneath-the-road","slug":"door-beneath-the-road","title":"The Door Beneath the Road","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0170"],"reviewProvenance":"current-source route review; wagon recovery/report, Copper lift disabled/retained, Green drain/restoration, White seal, underpass plate/avoidance, Red mapping/token/death, all exits and Knowledge/History traced","notes":"roadCollapse.saveWagon and driverAccount.recoverFirst reach shallowRoad after lifting/recovering the wagon and leaving the hole covered. Neither path marks/reports the void or contacts a road crew, yet shallowRoad says the road crew was told about it. Explicit report routes go to roadReport and carry their own report/map actions. The token branch’s surface-warning narration was checked separately; the finding is anchored to the unreported recovery route. No wagon/cargo reward is recorded beyond the selected recovery.","preReconciliationPosition":437,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":438,"adventureId":"beneath-saint-orras","slug":"beneath-saint-orras","title":"Beneath Saint Orra’s","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0171","CRA-F0172"],"reviewProvenance":"current-source route review; caretaker denial/record copy/mark comparison, chalk supply, landing retreat, hidden-room description, counterweight opening, respectful closure, copied-name/archive, bone removal, and all effects/endings traced","notes":"F0171: orraNiches.copyNiches -> orraExit (and the partial-account/describe routes) reaches an ending that says the wall damage is marked, although those actions only copy/record evidence and do not mark the damage; only orraYard.leaveOrra states that action. F0172: orraOssuary.copyName -> orraName.keepCopy -> orraResolved carries the name to the parish archive but does not select closure or tell the caretaker, while the shared ending says the caretaker accepts the account and closes the counterweight room. Close/tell and restore/share alternatives explicitly establish those results. The bone-removal route records a trust breach and return, not a treasure reward.","preReconciliationPosition":438,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":439,"adventureId":"house-at-mile-marker-nine","slug":"house-at-mile-marker-nine","title":"The House at Mile Marker Nine","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0173"],"reviewProvenance":"current-source route review; road/barn/cellar entry, initial view, manual wind, clock notch, reflected porch/trunk, fixed corridor, letters/ledger, stop/reset, and all endings traced","notes":"clockLetters.stopNow sets clockStopped and enters clockStopped, whose text says the windows go dark; clockStopped.leaveStopped nevertheless enters routeEnding, which says the Traveler leaves with a reliable way to trigger the earlier view. That ending is false on the stopped-clock route. A separate direct cellar.service route also reaches routeEnding without setting clockNotched; the clock/door distinction and fixed corridor Knowledge otherwise remain route-bounded.","preReconciliationPosition":439,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":440,"adventureId":"deep-room-at-harker-mine","slug":"deep-room-at-harker-mine","title":"The Deep Room at Harker Mine","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0174","CRA-F0175"],"reviewProvenance":"current-source route review; side-drift rescue/failure, voice-vs-knock air check, map/crew/wait routes, wage vs multi-tool settlement, optional descent, lower door, cross-adventure relic checks, reseal/token/death endings, and save-persisted local flags traced","notes":"F0174: airShaftHarker.testDraft checks anyItems lantern/headlamp and harkerOutside.descendHarker checks only items minerHeadlamp. A BROKEN light therefore permits a claimed flame/draft test or a descent whose harkerDeep scene says the headlamp beam falls across the channels; engine distinguishes possession from usable state. The supplied-lantern route and correctly usable Travel Rope comparisons remain distinct. F0175: harkerDeep.compareToken compares the Red Door Token and grants matching-pattern Knowledge, then exits directly to harkerResealed without closing/wedging the opened lower door; the shared ending falsely says the lower seal is restored. harkerDeep.resealHarker explicitly closes/wedges it, while copyEvidence records the channels and closes from the outer room. Rescue wages/tool substitution, prospector/miner rescue state, and Iron Orchard fragment comparison remain separately gated.","preReconciliationPosition":440,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":440,"adventureId":"deep-room-at-harker-mine","slug":"deep-room-at-harker-mine","title":"The Deep Room at Harker Mine","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0174","CRA-F0175"],"reviewProvenance":"current-source route review; side-drift rescue/failure, voice-vs-knock air check, map/crew/wait routes, wage vs multi-tool settlement, optional descent, lower door, cross-adventure relic checks, reseal/token/death endings, and save-persisted local flags traced","notes":"F0174: airShaftHarker.testDraft checks anyItems lantern/headlamp and harkerOutside.descendHarker checks only items minerHeadlamp. A BROKEN light therefore permits a claimed flame/draft test or a descent whose harkerDeep scene says the headlamp beam falls across the channels; engine distinguishes possession from usable state. The supplied-lantern route and correctly usable Travel Rope comparisons remain distinct. F0175: harkerDeep.compareToken compares the Red Door Token and grants matching-pattern Knowledge, then exits directly to harkerResealed without closing/wedging the opened lower door; the shared ending falsely says the lower seal is restored. harkerDeep.resealHarker explicitly closes/wedges it, while copyEvidence records the channels and closes from the outer room. Rescue wages/tool substitution, prospector/miner rescue state, and Iron Orchard fragment comparison remain separately gated.","preReconciliationPosition":440,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":441,"adventureId":"ferry-beneath-the-ferry","slug":"ferry-beneath-the-ferry","title":"The Ferry Beneath the Ferry","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0176"],"reviewProvenance":"current-source route review; rope, bank, drain, gate, old-road, timber-clearing, toll-record, payment/tool substitution, retreat and fatal routes traced","notes":"lowerWater.followOldRoad is labelled as using the rope to inspect the waterline below, but has no Travel Rope ownership/usability requirement; lowerWater is reachable from drainAccess.turnGate or gateRoom.openDrain without a rope. The adjacent goDeeper route explicitly describes entering without a line and is fatal. Gate state, safe shelf, timber clearing, toll slate, wages versus sounding-rod reward, Knowledge/History and other exits were checked separately.","preReconciliationPosition":441,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":442,"adventureId":"lantern-vault","slug":"lantern-vault","title":"The Lantern Vault","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0177"],"reviewProvenance":"current-source route review; seven/three/five lamp routes, register/map/room/hatch evidence, private-name handling, wick recovery, payment, reporting, cellar closure and unresolved lamp origin traced","notes":"vaultThree.copyMap -> vaultHubThree.leaveThree reaches vaultResolution without visiting the refuge room, register or service-route plate. The shared resolution nevertheless says the cellar marked a refuge route for weather-cut-off travelers. doorFiveAgain2 also enters that ending directly from the three-lamp hub without inspecting the hatch/plate. Routes through vaultNine or vaultFive establish the refuge purpose; the supply-room map alone establishes only the former roadside store. Wick recovery, Knowledge, private names and the explicit route-report endings remain distinct.","preReconciliationPosition":442,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":443,"adventureId":"hollow-fort","slug":"hollow-fort","title":"The Hollow Fort","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0178"],"reviewProvenance":"current-source route review; yard/panel/archive/cistern/powder/tunnel/bastion routes, usable-hook drain, roster copying, resealing, retreat, danger/death and all result variants traced","notes":"fortYard.archive -> fortArchive.compareWall -> fortMarked (and cistern measure/retreat variants) contains no action or effect telling the workers to stop stripping timber, yet fortMarked says they stop. Only walkAwayFort explicitly tells them to leave the wall alone; exitFort explicitly marks the hatch for them. Conditional fortResolution variants preserve roster, drain, bastion and escape-route facts correctly; the finding is limited to the unsupported work-stoppage claim on the direct survey returns.","preReconciliationPosition":443,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":444,"adventureId":"road-through-the-barrow","slug":"road-through-the-barrow","title":"The Road Through the Barrow","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0179"],"reviewProvenance":"current-source route review; exterior map, consent/secret entry, loop and false niche, burial markers, untouched or disturbed bowl, returned/taken grave goods, rerouting, closure and death/retreat outcomes traced","notes":"barrowArch.secretEntry -> barrowLoop.trueNiche -> barrowBurial.returnLoop -> barrowResolved (also the copy-markers route) reaches an ending saying the keeper accepts the account and the crew agrees to reroute the road, although no keeper/crew response or meeting occurs on that branch. Permission routes and explicit surface reporting remain distinct; disturbance, restored/taken coins, trust breach and road access consequences are preserved. This is the existing NPC-consensus root pattern, not a new cluster.","preReconciliationPosition":444,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":445,"adventureId":"bell-below-the-water","slug":"bell-below-the-water","title":"The Bell Below the Water","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; roof, muddy edge/probe, gate schedule/hold, upper bell, rod/wait lower access, gauge, basin drain/restore, reporting and fatal route traced","notes":"The descent paths preserve the safe bank/roof return, rod access requires usable Gear, and waiting for the sluice crew is explicitly conditional on gateHeld. Water changes are action/schedule-driven rather than a hidden timer. The gauge and outlet Knowledge/History follow inspection/copy actions; report and retreat endings do not claim lower-room exploration. No unsupported reward, person/object move, or persistent effect was found.","preReconciliationPosition":445,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":446,"adventureId":"forgotten-platform","slug":"forgotten-platform","title":"The Forgotten Platform","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0180"],"reviewProvenance":"current-source route review; overlook/drain/signal approaches, luggage ledger, telegraph copies, vault map/tool, platform hub reporting, route Knowledge/History and tool reward traced","notes":"luggageRoom.leaveBags -> platformHub.tellWorker can be selected without copying/learning the ledger or map, and other hub paths carry only one record; tellWorker always terminates at platformResolved, which says the worker receives both map and ledger copies and restores the station to the maintenance record. The action label asks to report both records even when they were never inspected, and no effects record either copy. Specific copy/report routes establish only their own evidence. Tool reward/Knowledge, trackside safety and unanswered impossible destination names remain accurate.","preReconciliationPosition":446,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":447,"adventureId":"white-chamber","slug":"white-chamber","title":"The White Chamber","sourceFile":"src/scenarios/deepExplorationBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0181","CRA-F0182","CRA-F0183"],"reviewProvenance":"current-source route review; rope/chalk/no-marker entry, draft/wear/echo/cut mapping, reversible wheel, pack recovery/retreat, sealed-door inspection/opening, tracing, four-coin outcomes and fatal dark passage traced","notes":"F0181: ropeCave requires only item presence, so BROKEN Travel Rope satisfies tying a return line and sets whiteLineSet; engine distinguishes owned from usable gear. F0182: a route with no rope/chalk can enter via whiteChalkReady.saveChalkForLater, navigate by draft/marks, open the seal, and reach whiteDeep, whose scene unconditionally says the rope remains taut. F0183: whitePackRoom.inspectSeal has no recovery effect, yet whiteSeal says the pack is already recovered; openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives it and pays the fee without any take/return choice. The line-proof, gear-usability and pack-recovery contradictions are separately witnessed. The valid usable Folding Rule gate, chalk consumption, wheel state, explicit pack recovery/return alternatives and fatal no-air route were also checked.","preReconciliationPosition":447,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":448,"adventureId":"the-siding-tool-board","slug":"the-siding-tool-board","title":"The Siding Tool Board","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; each priced purchase, duplicate ownership, capacity, optional carried-gear sale/reconditioning, receipt, departure and equipment persistence traced","notes":"Stock IDs, labels, hints and prices align; purchases deduct exact coins and grant the named item with purchase history, and duplicate ownership is blocked. Sale choices remove only carried eligible tools and pay the stated buy-back price; the seller explicitly inspects/reconditions them. No bank sale, refund, ownership or repair claim leaks into departure.","preReconciliationPosition":448,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":449,"adventureId":"the-ferrymans-locker","slug":"the-ferrymans-locker","title":"The Ferryman’s Locker","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; checked-stock purchase gates, money/gear effects, carried rope/clamp buy-back, duplicate/capacity restrictions and dusk departure traced","notes":"The finite posted stock and coin costs match the purchase effects, bought Gear is individually added and recorded, and buy-back only accepts carried rope hardware/clamp at the stated reconditioning prices. The Freightman’s Strap is not falsely bought back, and leaving preserves the player’s actual carried choices without creating an obligation or implying a crossing action.","preReconciliationPosition":449,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":450,"adventureId":"the-doctors-road-cart","slug":"the-doctors-road-cart","sourceFile":"src/scenarios/merchantEcologyBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; medical-worker entry, stock prices/hints, item and finite-supply purchase effects, capacity/duplicate/money gates, receipts and departure traced","notes":"Each of the three items costs two coins as posted; bandages, gloves, and the finite match-case supply are granted by the matching purchase and availability gates, and the receipt does not claim treatment or care. Departing closes the case without inventing an obligation or medical outcome.","preReconciliationPosition":450,"positionDelta":0,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -629,7 +639,15 @@
     {"findingId":"CRA-F0172","position":438,"adventureId":"beneath-saint-orras","severity":"MEDIUM","defect":"Archiving the copied name converges on a claim that the caretaker accepted the account and closed the room without that outcome being selected or recorded.","routeWitness":"orraOssuary.copyName -> orraName.keepCopy -> orraResolved; the action carries the copy to the parish archive and only records preservation history, while orraResolved says the caretaker accepts the account and closes the counterweight room. The restoreStone route expressly closes and shares the name; closeOssuary expressly closes and tells the caretaker.","violatedRule":"Shared endings must not import a distinct participant response or closure action from a sibling route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0173","position":439,"adventureId":"house-at-mile-marker-nine","severity":"MEDIUM","defect":"The stopped-clock route exits through an ending that promises a reliable way to trigger the earlier view.","routeWitness":"clockLetters.stopNow -> clockStopped.leaveStopped -> routeEnding; clockStopped says the windows go dark and the clock is left stopped, while routeEnding claims the Traveler leaves with a reliable way to trigger the earlier view. Direct houseCellar.followService -> serviceRooms.leaveService also reaches that claim without ever setting clockNotched.","violatedRule":"A shared ending must preserve route-specific mechanism state and must not promise an unavailable or untested trigger.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0174","position":440,"adventureId":"deep-room-at-harker-mine","severity":"MEDIUM","defect":"Broken lantern/headlamp ownership satisfies route choices that claim to test stale air or illuminate a deep chamber.","routeWitness":"airShaftHarker.testDraft gates with anyItems lantern/minerHeadlamp; harkerOutside.descendHarker gates with items minerHeadlamp only. BROKEN items still satisfy these gates (engine.meets filters condition only through anyUsableItems/usableItems), but the draft test awards Knowledge and the deep route reaches harkerDeep, whose text says a headlamp beam falls across the channels. Other item-use gates in the anthology use usability conditions.","violatedRule":"Physical use of Gear requires a usable item; possession alone cannot establish light, flame, or a successful test.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0175","position":440,"adventureId":"deep-room-at-harker-mine","severity":"HIGH","defect":"Comparing the Red Door Token after opening the lower seal exits through text falsely claiming the door was restored.","routeWitness":"harkerDoor.openDoor -> harkerDeep.compareToken -> harkerResealed; openDoor leaves the lower seal open and compareToken only records the matching three-cut pattern/Knowledge. It neither closes the door nor wedges it, while harkerResealed says the lower seal is restored. The separate resealHarker choice explicitly closes and wedges it.","violatedRule":"Containment, closure, and restoration may be claimed only after the route performs the corresponding physical action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0175","position":440,"adventureId":"deep-room-at-harker-mine","severity":"HIGH","defect":"Comparing the Red Door Token after opening the lower seal exits through text falsely claiming the door was restored.","routeWitness":"harkerDoor.openDoor -> harkerDeep.compareToken -> harkerResealed; openDoor leaves the lower seal open and compareToken only records the matching three-cut pattern/Knowledge. It neither closes the door nor wedges it, while harkerResealed says the lower seal is restored. The separate resealHarker choice explicitly closes and wedges it.","violatedRule":"Containment, closure, and restoration may be claimed only after the route performs the corresponding physical action.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0176","position":441,"adventureId":"ferry-beneath-the-ferry","severity":"MEDIUM","defect":"A route choice claims to use the Travel Rope to inspect the lower waterline but is available without owning or having a usable rope.","routeWitness":"ferryLanding.drainAccess -> drainTunnel.turnGate -> lowerWater.followOldRoad -> oldRoad, or ferryLanding.stonePilings -> gateRoom.openDrain -> lowerWater.followOldRoad; followOldRoad has no items/usableItems requirement although its label says use the rope. The adjacent goDeeper route explicitly enters without a line and is fatal.","violatedRule":"A physical Gear action must require the named Gear in usable condition; route access must not imply equipment that the route did not establish.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0177","position":442,"adventureId":"lantern-vault","severity":"MEDIUM","defect":"A supply-room-only or uninspected-hatch route claims the cellar’s weather-refuge purpose without learning the refuge evidence.","routeWitness":"innCellar.three -> vaultThree.copyMap -> vaultHubThree.leaveThree (or doorFiveAgain2) -> vaultResolution; the supply map establishes a roadside store only, and doorFiveAgain2 does not inspect the plate. vaultResolution says the cellar marked a refuge route for weather-cut-off travelers. vaultNine and the plate in vaultFive establish that fact on separate routes.","violatedRule":"Knowledge and summary claims at convergence must be supported by evidence actually encountered or reported on that route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0178","position":443,"adventureId":"hollow-fort","severity":"MEDIUM","defect":"The shared fort return ending says workers stop stripping timber on routes that never tell them to stop or establish that they received the finding.","routeWitness":"fortYard.archive -> fortArchive.compareWall -> fortMarked, and fortYard.cistern -> fortCistern.measureCistern/archiveCistern -> fortMarked; these choices return evidence without an instruction/report effect, while fortMarked states workers stop stripping timber. walkAwayFort explicitly tells them to stop and exitFort explicitly marks the hatch for workers, demonstrating separate communication routes.","violatedRule":"A shared ending may not claim an NPC changed behavior unless the route communicated the relevant request/result or otherwise established that response.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0179","position":444,"adventureId":"road-through-the-barrow","severity":"MEDIUM","defect":"A secret-entry/return route claims keeper acceptance and crew consensus to reroute the road without either party responding.","routeWitness":"barrowArch.secretEntry -> barrowLoop.trueNiche -> barrowBurial.returnLoop -> barrowResolved (also the copy-markers route) reaches an ending saying the keeper accepts the account and the crew agrees to reroute the road, although no keeper/crew encounter/report occurs on that branch. Permission/meeting routes are distinct.","violatedRule":"NPC acceptance and group agreement require participation or a route-established response from the affected people.","clusterId":"CRA-C0007","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0180","position":446,"adventureId":"forgotten-platform","severity":"MEDIUM","defect":"The report ending claims the worker receives both map and ledger copies even when the route has not obtained either or only obtained one record.","routeWitness":"railCurve.walkPlatform -> platform.luggage -> luggageRoom.leaveBags -> platformHub.tellWorker -> platformResolved; no ledger is copied and no map is visited. Other entries to platformHub can carry only one record, while tellWorker has no requirements/effects recording both. platformResolved always says the worker receives map and ledger copies and restores the station record.","violatedRule":"A shared result may not claim possession/transfer of records that the route did not acquire or copy.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0181","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"A broken Travel Rope satisfies the choice to tie a return line and sets route proof as though the line were secured.","routeWitness":"whiteCaveMouth.ropeCave requires items:['travelRope'] but omits usableItems; the effect sets whiteLineSet. BROKEN gear remains owned and satisfies items, while useRule in the same cave correctly requires usableItems.","violatedRule":"Possession is not usability: a physical action using Gear must require the item in usable condition.","clusterId":"CRA-C0004","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0182","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"A no-rope/no-chalk route can reach the deep chamber, whose text unconditionally claims the return rope remains taut.","routeWitness":"whiteCaveMouth.askForChalk -> whiteChalkReady.saveChalkForLater -> whiteFirstRoom.followDraft -> whiteDraftRoom.downDraft -> whiteMechanism.followMapped -> whitePackRoom.inspectSeal -> whiteSeal.openSeal -> whiteDeep; no whiteLineSet or whiteChalkSet is established, but whiteDeep says the rope remains taut behind the Traveler.","violatedRule":"A route-specific safety resource cannot be asserted unless that route established it; absent proof must not be filled in from another path.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0183","position":447,"adventureId":"white-chamber","severity":"MEDIUM","defect":"Inspecting the seal is narrated as pack recovery, and the tracing exit later claims delivery/payment although no recovery/return choice occurred.","routeWitness":"whitePackRoom.inspectSeal -> whiteSeal; inspectSeal has no recovery effect, but whiteSeal says the pack is already recovered. whiteSeal.openSeal -> whiteDeep.leaveRod -> whiteFragment then says the prospector receives the recovered pack and pays four coins, with no takePack or retreatPack action/effect on that route.","violatedRule":"Object recovery, delivery, and compensation must follow route-established actions, not inspection-only convergence.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -748,7 +766,12 @@
         "CRA-F0171",
         "CRA-F0172",
         "CRA-F0173",
-        "CRA-F0175"
+        "CRA-F0175",
+        "CRA-F0177",
+        "CRA-F0178",
+        "CRA-F0180",
+        "CRA-F0182",
+        "CRA-F0183"
       ]
     },
     {
@@ -805,7 +828,9 @@
         "CRA-F0121",
         "CRA-F0124",
         "CRA-F0169",
-        "CRA-F0174"
+        "CRA-F0174",
+        "CRA-F0176",
+        "CRA-F0181"
       ]
     },
     {
@@ -847,14 +872,15 @@
       "findingIds": [
         "CRA-F0151",
         "CRA-F0155",
-        "CRA-F0166"
+        "CRA-F0166",
+        "CRA-F0179"
       ]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 252,
+    "HEALTHY": 256,
     "MINOR CONCERN": 33,
-    "CONFIRMED DEFECT": 155,
+    "CONFIRMED DEFECT": 161,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1025,6 +1051,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/comedyAbsurdityBatch.test.ts src/scenarios/deepExplorationBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "43 tests passed across 4 files; supporting comedy/deep-exploration graph and ending checks, 861-entry registry validation, and broken-Gear usability semantics; current-source route review remains authoritative"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/deepExplorationBatch.test.ts src/scenarios/merchantEcologyBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "43 tests passed across 4 files; supporting deep-exploration graph/ending checks, fixed-stock merchant validation, 861-entry registry validation, and broken-Gear usability semantics; current-source route review remains authoritative"
     }
   ],
   "reviewBatches": [
@@ -1198,15 +1228,19 @@
     },
     {
       "positions": "431-440",
-      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. CRA-F0165, F0167-F0168, F0170-F0173, and F0175 extend CRA-C0001; CRA-F0166 extends existing CRA-C0007; CRA-F0169 and CRA-F0174 extend CRA-C0004. Nine Adventures are confirmed defects and one is healthy; Saint Orra and Harker each have two independent witnessed findings. Comedy/deep-exploration/registry/equipment suites passed 43 tests across four files as supporting evidence. No gameplay source or test files changed."
+      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. CRA-F0165, F0167-F0168, F0170-F0173, and F0175 extend CRA-C0001; F0166 extends existing CRA-C0007; F0169 and F0174 extend CRA-C0004. Nine Adventures are confirmed defects and one is healthy; Saint Orra and Harker each have two independent witnessed findings. Comedy/deep-exploration/registry/equipment suites passed 43 tests across four files as supporting evidence. No gameplay source or test files changed."
+    },
+    {
+      "positions": "441-450",
+      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. Six Adventures have confirmed defects and four are healthy; eight witnessed findings extend CRA-C0001, CRA-C0004, and CRA-C0007, with no new cluster. Deep-exploration, merchant, registry, and equipment suites passed 43 tests across four files as supporting evidence; current-source route review remains authoritative. No gameplay source or test files changed."
     }
   ],
-  "highestContiguousReviewedPosition": 440,
-  "maxReviewedRegistryPosition": 440,
+  "highestContiguousReviewedPosition": 450,
+  "maxReviewedRegistryPosition": 450,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 441,
-  "firstUnreviewedStableId": "the-ferry-beneath-the-ferry",
-  "nextStableId": "the-ferry-beneath-the-ferry",
+  "firstUnreviewedPosition": 451,
+  "firstUnreviewedStableId": "the-roadside-tinker",
+  "nextStableId": "the-roadside-tinker",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1647,7 +1681,17 @@
     "door-beneath-the-road",
     "beneath-saint-orras",
     "house-at-mile-marker-nine",
-    "deep-room-at-harker-mine"
+    "deep-room-at-harker-mine",
+    "ferry-beneath-the-ferry",
+    "lantern-vault",
+    "hollow-fort",
+    "road-through-the-barrow",
+    "bell-below-the-water",
+    "forgotten-platform",
+    "white-chamber",
+    "the-siding-tool-board",
+    "the-ferrymans-locker",
+    "the-doctors-road-cart"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1656,9 +1700,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 440,
-    "uniqueCurrentRegisteredAdventuresReviewed": 440,
-    "directStableIdMatches": 438,
+    "recordedEntriesInspected": 450,
+    "uniqueCurrentRegisteredAdventuresReviewed": 450,
+    "directStableIdMatches": 448,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1690,9 +1734,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 440,
+    "highestContiguousReviewedPosition": 450,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 440,
+    "maxReviewedLivePosition": 450,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1710,6 +1754,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, and the first seven deep-exploration Adventures at positions 434–440 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 441, The Ferry Beneath the Ferry, is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, and deep-exploration Adventures at positions 434–447 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Fixed-stock merchants at positions 448–450 were reviewed in registry order. Position 451, The Roadside Tinker (stable ID the-roadside-tinker), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
