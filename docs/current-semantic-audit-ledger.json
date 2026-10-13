@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 420,
-  "reviewedCount": 420,
-  "remainingCount": 441,
-  "nextPosition": 421,
-  "nextFindingId": "CRA-F0160",
+  "reviewedThroughPosition": 430,
+  "reviewedCount": 430,
+  "remainingCount": 431,
+  "nextPosition": 431,
+  "nextFindingId": "CRA-F0165",
   "nextClusterId": "CRA-C0008",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -432,7 +432,17 @@
     {"position":417,"adventureId":"the-sixth-chair","slug":"the-sixth-chair","title":"The Sixth Chair","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; chair offer, ledge meal, cloth-stabilized stool, host-led arrangement, parcel protection, and rotating seat outcomes traced","notes":"The guest’s place and fragile parcel are accounted for on the different seating plans; rotating seats explicitly occurs between courses, and the host’s seat/parcel arrangement remains a choice rather than status judgment.","preReconciliationPosition":405,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":418,"adventureId":"the-pigeon-postscript","slug":"the-pigeon-postscript","title":"The Pigeon Postscript","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0159"],"reviewProvenance":"current source route review; freeing bird, outside-address reading, named-note delivery, sealed-note hold, owner-contact, reply, and bird-return routes traced","notes":"The farm-reply ending is reached directly from addresses.leaveSecond, where the Traveler only leaves the unaddressed note sealed and the stationmaster has not been asked to contact the owner. The alternate callOwner branch explicitly sends a message and can legitimately receive the farm’s identification; this assignment is limited to the no-contact route.","preReconciliationPosition":406,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
     {"position":419,"adventureId":"the-tinsmiths-tiny-door","slug":"the-tinsmiths-tiny-door","title":"The Tinsmith’s Tiny Door","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; model purpose, limited-spoon test, sign correction suggestion, mechanism demonstration, customer response, and leave routes traced","notes":"The full-size spoon is not treated as a valid test of a scale model. The maker demonstrates latch/draft only on the demonstration route; the leave route does not claim the sign was corrected or a sale occurred.","preReconciliationPosition":407,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
-    {"position":420,"adventureId":"the-barnyard-weather-report","slug":"the-barnyard-weather-report","title":"The Barnyard Weather Report","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; sky observation, laundry response, wait-for-clearer-sign, rooster/feed account, feed timing, refusal, and leave outcomes traced","notes":"Rain is observed before laundry is gathered, the rooster is not treated as a forecast, and refilling the bucket is the only route that clearly claims to feed it immediately. Keeping the keeper’s routine is compatible with the keeper’s later feed round; no weather or animal certainty is overclaimed.","preReconciliationPosition":408,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
+    {"position":420,"adventureId":"the-barnyard-weather-report","slug":"the-barnyard-weather-report","title":"The Barnyard Weather Report","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current source route review; sky observation, laundry response, wait-for-clearer-sign, rooster/feed account, feed timing, refusal, and leave outcomes traced","notes":"Rain is observed before laundry is gathered, the rooster is not treated as a forecast, and refilling the bucket is the only route that clearly claims to feed it immediately. Keeping the keeper’s routine is compatible with the keeper’s later feed round; no weather or animal certainty is overclaimed.","preReconciliationPosition":408,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":421,"adventureId":"the-paper-mill-parade","slug":"the-paper-mill-parade","title":"The Paper Mill Parade","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0160"],"reviewProvenance":"current-source route review; welcome, two-sided banner, worker-preference, quiet/private, leave-undecided, and procession outcomes traced","notes":"worker.respectQuiet reaches welcome, whose shared text puts the worker's welcome in large letters and has them wave publicly from the mill gate. writeWelcome and oneMessage also reach this ending, but the worker's explicit privacy preference is established only by respectQuiet; the shared public fanfare loses that branch distinction. No Knowledge, History, rewards, persistence, failure, or save-resume variants appear in this graph.","preReconciliationPosition":409,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":422,"adventureId":"the-mayors-missing-gavel","slug":"the-mayors-missing-gavel","title":"The Mayor’s Missing Gavel","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0161"],"reviewProvenance":"current-source route review; meeting purpose, gavel search, bell/taking-turns, labor/leave-plan, found-object, and leave outcomes traced","notes":"search.keepBell deliberately leaves the gavel in the kindling basket and reaches meeting; meeting.offerLabor then reaches work, whose ending says the gavel is returned to its drawer. The purpose.useBell/takeTurns path does not locate or move it either. Only search.returnGavel reaches found and returns it to the table. The work result asserts an unperformed relocation. No rewards, persistent effects, Knowledge, or save-resume paths appear.","preReconciliationPosition":410,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":423,"adventureId":"the-milkman-and-the-moon","slug":"the-milkman-and-the-moon","title":"The Milkman and the Moon","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; departure note, paid terms, neighbor acceptance/refusal, return-to-dairy, pause/resume, and leave-with-bottle outcomes traced","notes":"The order is paid through the week; pausing preserves the paid balance, returning the bottle avoids an extra charge, and the neighbor accepts only tonight's bottle while future deliveries pause until the family returns. Leaving keeps the bottle at the step without claiming delivery or payment. No amount, ownership, or future service is invented; no persistent save path appears.","preReconciliationPosition":411,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":424,"adventureId":"the-court-of-the-courtyard","slug":"the-court-of-the-courtyard","title":"The Court of the Courtyard","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; mark inspection, care accounts, roost observation, remembered origin, shared-care interim agreement, ownership deferral, and leave outcomes traced","notes":"The scenario distinguishes tonight's preferred roost from ownership and tomorrow's laying place. Shared care/egg handling is an interim arrangement until the aunt is asked; the unresolved route leaves ownership open. Closing doors affects neither ownership nor the stated interim arrangement. No reward, persistent state, or save-resume branch appears.","preReconciliationPosition":412,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":425,"adventureId":"the-drying-room-schedule","slug":"the-drying-room-schedule","title":"The Drying Room Schedule","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; room rules, rack-capacity inspection, time rotation, cold-priority choices, lighter garments, and leave outcomes traced","notes":"The schedule and priority branches preserve the three-coat rack limit, slower door-peg drying, equal or first-turn allocation, and clear stovepipe. The ending admits some sleeves remain damp rather than promising complete drying. Leaving does not claim a schedule or use of the rack.","preReconciliationPosition":413,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":426,"adventureId":"the-sheep-counting-exam","slug":"the-sheep-counting-exam","title":"The Sheep-Counting Exam","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; gate count, shepherd-led movement, group marks, verification, gate closure, unsupported estimate, and two-sheep correction outcomes traced","notes":"Successful routes converge only after the flock is bunched at the gate or counted groups are marked; the ending explicitly places every sheep in the near pasture before the shepherd confirms the count. The guess route admits two sheep remain behind the hedge and keeps the gate open. No route claims an estimate is correct without verification.","preReconciliationPosition":414,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":427,"adventureId":"the-pearl-button","slug":"the-pearl-button","title":"The Pearl Button","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; customer expectation, button comparison, horn selection, pearl disclosure/temporary use, tailor follow-up, and leave-before-choice outcomes traced","notes":"The chosen route charges for one repair and selects the better-fitting horn button; the disclosure route lets the customer knowingly keep the pearl button for the night and promises a matching horn button tomorrow without a second charge. Leaving preserves the customer's undecided choice and coat on the counter. No route presumes ownership or payment beyond the stated repair.","preReconciliationPosition":415,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"},
+    {"position":428,"adventureId":"the-wagon-wheel-meeting","slug":"the-wagon-wheel-meeting","title":"The Wagon-Wheel Meeting","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0162"],"reviewProvenance":"current-source route review; speaker movement, cart-lane choice, spoke turns, marker placement, estimates, clerk notes, foreman inspection plan, offer-to-walk, committee follow-through, and leave outcomes traced","notes":"circle.keepLaneOpen enters plan without the marker action from spokes.markStart and without visiting notes, where the foreman agrees to inspect the first hundred yards. The shared ending nevertheless says residents agree where to inspect first. Other plan routes either mark the first damaged stone or carry the foreman's explicit inspection agreement; the location-specific plan claim is not established on keepLaneOpen. The meeting does not claim repair or payment occurred."},
+    {"position":429,"adventureId":"the-ferrymans-sign","slug":"the-ferrymans-sign","title":"The Ferryman’s Sign","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0163","CRA-F0164"],"reviewProvenance":"current-source route review; traveler warning, safety explanation, offered escort, river/ferry explanation, sign turning, towpath marking request, old-landing exploration, and all endings traced","notes":"redirect.explainSafety reaches signFixed without changing the sign, yet signFixed says it points upstream (reason.turnBoard is the distinct route that turns it). Separately, reason.markPath reaches walked after only asking the ferryman to mark the towpath; walked says the Traveler walks the travelers to the landing and marks the turn with pale cloth. redirect.offerWalk establishes the escort but not the cloth marker. Old-landing exploration returns to the upstream rope and reports the misleading sign. No reward or persistent state is involved."},
+    {"position":430,"adventureId":"the-backwards-courtroom","slug":"the-backwards-courtroom","title":"The Backwards Courtroom","sourceFile":"src/scenarios/comedyAbsurdityBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; permission to move chair, doorway clearance/layout inspection, bench arrangements, hearing/leave-after-setup, clerk-led setup, and boundary-evidence outcomes traced","notes":"Both setup paths establish a usable hearing layout before the hearing; leaving after setup still allows the hearing to proceed and does not claim the Traveler stays. The magistrate asks for a boundary marker before deciding the fence line, so no verdict or property result is invented. No persistent effects, rewards, or save-resume route appears.","preReconciliationPosition":418,"positionDelta":12,"positionBasis":"LIVE_SCENARIOS_BY_STABLE_ID","registryStatus":"REGISTERED"}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -593,7 +603,12 @@
     {"findingId":"CRA-F0156","position":398,"adventureId":"the-cobblers-last-pair","severity":"MEDIUM","defect":"The partner-negotiation route invents an unselected worker patch agreement and completed patch outcome.","routeWitness":"shop.hearDancer -> dancer.askPartner -> partner; only the dancer’s partner agrees to change the performance figure, yet the ending additionally says the worker accepts a canvas patch and promise to return. This route never asks the worker, selects a patch, or establishes that repair.","violatedRule":"Converged endings may not import an action or agreement from an unvisited route/participant.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0157","position":404,"adventureId":"the-pocket-in-the-curtain","severity":"LOW","defect":"The option to return the note unopened/unseen contradicts the opening, which has already exposed the note’s full text to the Traveler.","routeWitness":"curtain opening states the pocket contains the quoted request (“I will not sing the solo. Ask the understudy to take it.”), then offers returnNoteToDirector (“Give the note to the director unopened”) or singer.offerToReturnNote (“Offer to return the note unseen”). The Traveler has necessarily read the exposed contents before either choice.","violatedRule":"Choice labels and privacy outcomes must reflect information already revealed to the player; a read message cannot subsequently be returned as unseen/unopened.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0158","position":411,"adventureId":"the-clerks-second-stamp","severity":"MEDIUM","defect":"A shared correction ending describes the innkeeper receiving a usable certificate before the Traveler signs their required declaration.","routeWitness":"purpose.signNow -> signatureCheck.askClerkInitial -> scraped; the ending says the clerk initials the error “before you sign” yet also says the innkeeper gets a usable certificate. The other incoming path copy.scrape -> scraped likewise never reaches a Traveler-signature choice. Only signatureCheck.signCorrectLine -> signed establishes the required name/arrival-date declaration. counter.acceptForm -> accepted also presents the form as accepted without a signature, though it does not claim the form is valid.","violatedRule":"A form requiring the Traveler’s own declaration cannot be described as a usable completed certificate until that declaration is signed.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0159","position":418,"adventureId":"the-pigeon-postscript","severity":"MEDIUM","defect":"The unaddressed-message route receives a farm reply without contacting or waiting for the pigeon’s owner.","routeWitness":"office.readAddresses -> addresses.leaveSecond -> identified; the choice only leaves the unaddressed note sealed and the stationmaster has not sent a message. The shared ending says the farm replies that it belongs to a neighboring child. The separate office.callOwner route explicitly sends a message before this reply and is supported.","violatedRule":"A response from an absent source requires an established contact/request or an explicitly represented arrival/wait route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0159","position":418,"adventureId":"the-pigeon-postscript","severity":"MEDIUM","defect":"The unaddressed-message route receives a farm reply without contacting or waiting for the pigeon’s owner.","routeWitness":"office.readAddresses -> addresses.leaveSecond -> identified; the choice only leaves the unaddressed note sealed and the stationmaster has not sent a message. The shared ending says the farm replies that it belongs to a neighboring child. The separate office.callOwner route explicitly sends a message before this reply and is supported.","violatedRule":"A response from an absent source requires an established contact/request or an explicitly represented arrival/wait route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0160","position":421,"adventureId":"the-paper-mill-parade","severity":"MEDIUM","defect":"The explicit request to keep the returning worker’s welcome small and private converges on a public ending that puts the welcome in large letters and has the worker wave from the mill gate.","routeWitness":"yard.askPurpose -> purpose.askWorker -> worker.respectQuiet -> welcome; respectQuiet selects a small/private welcome, but welcome unconditionally says the banner welcomes the worker in large letters and the worker waves from the mill gate. The writeWelcome and oneMessage routes support a prominent welcome; the quiet route does not.","violatedRule":"A converged outcome must preserve route-established privacy and participation choices rather than publicly exposing a person who asked for a private welcome.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0161","position":422,"adventureId":"the-mayors-missing-gavel","severity":"MEDIUM","defect":"The labor ending claims the missing gavel was returned to its drawer on routes that never locate or return it.","routeWitness":"hall.askPurpose -> purpose.useBell -> meeting.offerLabor -> work and hall.findObject -> search.keepBell -> meeting.offerLabor -> work; the first path never locates the gavel, while the second explicitly leaves it in the kindling basket. Both reach work, which says the gavel is returned to its drawer. Only search.returnGavel reaches found and returns it to the table.","violatedRule":"An ending may not assert an object relocation or resolution absent from the selected route’s actions and state.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0162","position":428,"adventureId":"the-wagon-wheel-meeting","severity":"LOW","defect":"The clear-cart-lane route ends by claiming the residents agreed where to inspect first without establishing an inspection location or plan on that route.","routeWitness":"green.moveSpeakers -> circle.keepLaneOpen -> plan; this path only leaves a clear lane for the cart. The shared plan ending says residents agree where to inspect first. Alternative plan entries either mark the first damaged stone (spokes.markStart) or pass through notes, where the foreman agrees to inspect the first hundred yards.","violatedRule":"A shared ending may claim a route-specific plan/result only when every incoming route establishes that result.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0163","position":429,"adventureId":"the-ferrymans-sign","severity":"MEDIUM","defect":"The safety-explanation route is described as having changed the ferry sign even though it only points out the new rope and landing.","routeWitness":"landing.callTravelers -> redirect.explainSafety -> signFixed; the action explains the safe landing but changes no sign state. The ending says the sign points upstream. The separate reason.turnBoard route is the one that turns the sign toward the new path.","violatedRule":"A result may not claim completion of a concrete action that the chosen route did not perform.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0164","position":429,"adventureId":"the-ferrymans-sign","severity":"MEDIUM","defect":"The request for the ferryman to mark the towpath converges on an ending claiming the Traveler escorts the travelers and marks the turn with cloth.","routeWitness":"landing.askFerryman -> reason.markPath -> walked; the selected action asks the ferryman to mark the towpath, but the ending says the Traveler walks the travelers to the landing and marks the turn with pale cloth. The alternate redirect.offerWalk route establishes the escort but not the cloth marker.","violatedRule":"A converged ending must not substitute a different actor or unselected action for the route’s requested intervention.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -692,7 +707,19 @@
         "CRA-F0140",
         "CRA-F0141",
         "CRA-F0142",
-        "CRA-F0150"
+        "CRA-F0150",
+        "CRA-F0152",
+        "CRA-F0153",
+        "CRA-F0154",
+        "CRA-F0156",
+        "CRA-F0157",
+        "CRA-F0158",
+        "CRA-F0159",
+        "CRA-F0160",
+        "CRA-F0161",
+        "CRA-F0162",
+        "CRA-F0163",
+        "CRA-F0164"
       ]
     },
     {
@@ -779,14 +806,7 @@
         "CRA-F0146",
         "CRA-F0147",
         "CRA-F0148",
-        "CRA-F0149",
-        "CRA-F0152",
-        "CRA-F0153",
-        "CRA-F0154",
-        "CRA-F0156",
-        "CRA-F0157",
-        "CRA-F0158",
-        "CRA-F0159"
+        "CRA-F0149"
       ]
     },
     {
@@ -800,9 +820,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 245,
+    "HEALTHY": 251,
     "MINOR CONCERN": 33,
-    "CONFIRMED DEFECT": 142,
+    "CONFIRMED DEFECT": 146,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1135,14 +1155,18 @@
     {
       "positions": "411-420",
       "status": "reviewed next ten stable IDs in live registry order; recorded CRA-F0158 for the unsigned lodging declaration treated as a usable certificate, and CRA-F0159 for a farm reply without contact on the sealed-note branch; animal welfare, roof safety, two-household boundary, market time, parcel provenance, seating, model purpose, and weather/feed routes reviewed; procedural-comedy/anthology/reward/registry tests passed 29 tests across four files; gameplay source/tests unchanged"
+    },
+    {
+      "positions": "421-430",
+      "status": "reviewed next ten previously unreviewed stable IDs in live SCENARIOS order; CRA-F0160–CRA-F0164 record route-specific privacy, object relocation, plan, sign, and escort/marker claims extending CRA-C0001; six Adventures healthy and four confirmed-defect Adventures; procedural-comedy, anthology, reward-correction, and registry suites passed 29 tests across four files as supporting evidence; cluster index reconciliation moved CRA-F0152, F0153, F0154, F0156, F0157, F0158, and F0159 from the C0006 index list to C0001 to match their unchanged finding records; no gameplay source/tests changed"
     }
   ],
-  "highestContiguousReviewedPosition": 420,
-  "maxReviewedRegistryPosition": 420,
+  "highestContiguousReviewedPosition": 430,
+  "maxReviewedRegistryPosition": 430,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 421,
-  "firstUnreviewedStableId": "the-paper-mill-parade",
-  "nextStableId": "the-paper-mill-parade",
+  "firstUnreviewedPosition": 431,
+  "firstUnreviewedStableId": "the-misplaced-pigeonhole",
+  "nextStableId": "the-misplaced-pigeonhole",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1563,7 +1587,17 @@
     "the-sixth-chair",
     "the-pigeon-postscript",
     "the-tinsmiths-tiny-door",
-    "the-barnyard-weather-report"
+    "the-barnyard-weather-report",
+    "the-paper-mill-parade",
+    "the-mayors-missing-gavel",
+    "the-milkman-and-the-moon",
+    "the-court-of-the-courtyard",
+    "the-drying-room-schedule",
+    "the-sheep-counting-exam",
+    "the-pearl-button",
+    "the-wagon-wheel-meeting",
+    "the-ferrymans-sign",
+    "the-backwards-courtroom"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -1572,9 +1606,9 @@
     "reconciledAgainst": "SCENARIOS exported by src/scenarios/index.ts",
     "sourceSnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
     "checkpointBeforeReconciliation": "b49fc69458b586df2abf437f95cdd79c624f7ac5",
-    "recordedEntriesInspected": 420,
-    "uniqueCurrentRegisteredAdventuresReviewed": 420,
-    "directStableIdMatches": 418,
+    "recordedEntriesInspected": 430,
+    "uniqueCurrentRegisteredAdventuresReviewed": 430,
+    "directStableIdMatches": 428,
     "legacyIdsResolvedByExactUniqueTitleAndSourceFile": 2,
     "duplicateReviewedEntries": 0,
     "unresolvedOrphanedEntries": 0,
@@ -1601,14 +1635,14 @@
       {
         "oldRecordedPositions": [
           346,
-          408
+          418
         ],
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 420,
+    "highestContiguousReviewedPosition": 430,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 420,
+    "maxReviewedLivePosition": 430,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -1626,6 +1660,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, and procedural-comedy Adventures at positions 409–420 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 421 is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, and procedural-comedy Adventures at positions 409–430 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 431 is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

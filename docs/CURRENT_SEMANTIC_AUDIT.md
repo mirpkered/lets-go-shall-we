@@ -2,30 +2,30 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 420 current registered Adventures reviewed; 441 of 861 remain.
-Next: position 421, The Paper Mill Parade (`the-paper-mill-parade`; `src/scenarios/comedyAbsurdityBatch.ts`); next finding ID `CRA-F0160`; next cluster ID `CRA-C0008`.
+Checkpoint reconciled by stable Adventure ID: 430 current registered Adventures reviewed; 431 of 861 remain.
+Next: position 431, The Misplaced Pigeonhole (`the-misplaced-pigeonhole`; `src/scenarios/comedyAbsurdityBatch.ts`); next finding ID `CRA-F0165`; next cluster ID `CRA-C0008`.
 
 ## Current checkpoint
 
-The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 420 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
+The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. All 430 completed semantic reviews remain preserved; their original recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables show current live positions. Focused suites were supporting evidence only. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 245 |
+| HEALTHY | 251 |
 | MINOR CONCERN | 33 |
-| CONFIRMED DEFECT | 142 |
+| CONFIRMED DEFECT | 146 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 420 |
+| Total reviewed current registered Adventures | 430 |
 
-There are 159 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 411–420 and added two MEDIUM findings.
+There are 164 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Historical batches remain documented below; the latest batch reviewed positions 421–430 and added five findings (four MEDIUM, one LOW).
 
 ## Registry position reconciliation
 
-The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 420 recorded entries, 418 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+The JSON ledger is stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 430 recorded entries, 428 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
 
-Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–408 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
+Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 420. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–420 were then reviewed in live-registry order. There are no gaps through position 420. The next unreviewed Adventure is position 421, The Paper Mill Parade; the checkpoint review count is 420, so 441 current registered Adventures remain.
+The highest contiguous reviewed position is now 430. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–430 were then reviewed in live-registry order. There are no gaps through position 430. The next unreviewed Adventure is position 431, The Misplaced Pigeonhole; the checkpoint review count is 430, so 431 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -366,13 +366,34 @@ The Hollow Man’s optional bone-removal action checks only knife ownership, so 
 
 ## Finding clusters
 
-- **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0040, CRA-F0042–CRA-F0044, CRA-F0046–CRA-F0047, CRA-F0049–CRA-F0053, CRA-F0055, CRA-F0058–CRA-F0069.
+- **CRA-C0001 — Route-specific state lost at convergence:** the complete membership is authoritative in the JSON ledger’s CRA-C0001 `findingIds` array. This cluster includes CRA-F0160–CRA-F0164. During checkpoint reconciliation, CRA-F0152, CRA-F0153, CRA-F0154, CRA-F0156, CRA-F0157, CRA-F0158, and CRA-F0159 were moved in the cluster index from CRA-C0006 to CRA-C0001 to match their unchanged finding records and audit notes; finding IDs, classifications, finding text, and semantic history were not changed.
 - **CRA-C0002 — Knowledge/History without route proof:** CRA-F0001, CRA-F0004, CRA-F0031, CRA-F0034, CRA-F0041.
 - **CRA-C0003 — Elapsed-time proxy used as event proof:** CRA-F0011.
 - **CRA-C0004 — Gear ownership treated as Gear usability:** CRA-F0020, CRA-F0021, CRA-F0023–CRA-F0027, CRA-F0030, CRA-F0045, CRA-F0054, CRA-F0056–CRA-F0057.
 - **CRA-C0005 — A single fee can be refunded more than once:** CRA-F0048; an intermediate refund and follow-up refund both apply money effects for the same paid reading.
+- **CRA-C0006 — Generic frontier archetypes promise unsupported actors or action outcomes:** CRA-F0128–CRA-F0137 and CRA-F0143–CRA-F0149. The seven corrected entries are not members of this Frontier-builder cluster.
+- **CRA-C0007 — NPC consensus inferred from a unilateral route choice:** CRA-F0151 and CRA-F0155.
 
 The detailed findings, witnesses, source provenance, and carry-forward limitations are in [current-semantic-audit-ledger.json](current-semantic-audit-ledger.json).
+
+## Audit continuation (live positions 421–430)
+
+After correcting the cluster index to agree with each existing finding record, the consistency check passed. Continued in live `SCENARIOS` order from the first unreviewed stable ID. Procedural-comedy routes were traced through materially distinct choices, converged endings, object/privacy/plan outcomes, payments, and leave or unresolved results. No persistent Knowledge/History, rewards, or save-resume variants appeared in these ten graphs. Comedy, anthology, reward-correction, and registry suites passed 29 tests across four files as supporting evidence; route review remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 421 | The Paper Mill Parade | CONFIRMED DEFECT | CRA-F0160 (MEDIUM) — the private-welcome route converges on large public lettering and a public wave. |
+| 422 | The Mayor’s Missing Gavel | CONFIRMED DEFECT | CRA-F0161 (MEDIUM) — the labor ending says the gavel was returned to a drawer on routes that never returned it. |
+| 423 | The Milkman and the Moon | HEALTHY | — |
+| 424 | The Court of the Courtyard | HEALTHY | — |
+| 425 | The Drying Room Schedule | HEALTHY | — |
+| 426 | The Sheep-Counting Exam | HEALTHY | — |
+| 427 | The Pearl Button | HEALTHY | — |
+| 428 | The Wagon-Wheel Meeting | CONFIRMED DEFECT | CRA-F0162 (LOW) — the clear-lane route reaches an ending that claims an inspection location was agreed. |
+| 429 | The Ferryman’s Sign | CONFIRMED DEFECT | CRA-F0163 (MEDIUM), CRA-F0164 (MEDIUM) — safety explanation claims the sign changed; a request for the ferryman to mark a path becomes a Traveler escort/cloth marker. |
+| 430 | The Backwards Courtroom | HEALTHY | — |
+
+These findings extend CRA-C0001; no new cluster was justified. The ledger now covers 430/861 Adventures (251 HEALTHY, 33 MINOR CONCERN, 146 CONFIRMED DEFECT, zero NEEDS MANUAL REVIEW) and contains 164 finding records. The next live position is 431, The Misplaced Pigeonhole (`the-misplaced-pigeonhole`), with 431 Adventures remaining and next finding ID CRA-F0165. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
 
 ## Validation and process notes
 
