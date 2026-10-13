@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–230 reviewed; 631 of 861 remain.
-Next: position 231; next finding ID `CRA-F0070`.
+Checkpoint: registry positions 1–240 reviewed; 621 of 861 remain.
+Next: position 241; next finding ID `CRA-F0075`.
 
 ## Current checkpoint
 
@@ -11,11 +11,11 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 151 |
+| HEALTHY | 157 |
 | MINOR CONCERN | 15 |
-| CONFIRMED DEFECT | 64 |
+| CONFIRMED DEFECT | 68 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 230 |
+| Total reviewed | 240 |
 
 There are 69 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056–CRA-F0057, CRA-F0061, CRA-F0065, and CRA-F0069 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, CRA-F0055, CRA-F0059–CRA-F0060, CRA-F0062–CRA-F0064, CRA-F0066–CRA-F0068 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, and CRA-F0051 are HIGH. Batch 51–60 found no additional confirmed defects.
 
@@ -419,5 +419,24 @@ The Lost Survey Party’s refusal and slope-retreat routes enter `surveyDelay`, 
 | 230 | The Abandoned Camp | CONFIRMED DEFECT | CRA-F0069 (LOW) — the silent return route reaches a shared ending that reports no answer to a call. |
 
 River without a Bridge’s successful crossings converge on text saying a safe way has been found and marked for travelers behind, despite no route marking action and despite direct-current fording being an explicitly hazardous alternative (CRA-F0066). In The Ice Gives Warning, a failed solo crossing reaches an ending that introduces an unestablished rope rescue; a separate “leave the cart” route also shares an ending claiming the cart arrives later without any recovery or transport action (CRA-F0067/F0068). In The Abandoned Camp, returning from the stream without calling reaches `campAnswer`, which says no one answers from the ridge or stream (CRA-F0069); taking food also leads to an automatic note-writing aftermath, retained as a lesser player-agency concern. The Washed-Out Cut’s direct wait-for-crew route lacks a shown alert, but the option itself frames the crew as expected, so the ambiguity remains minor rather than a confirmed defect. The other six routesets retain their route-specific time, participant, Gear, Knowledge, location, and consequence distinctions. The Survival Expedition support suite passed 11 tests; it checks exhaustive route/chance reachability but is not a substitute for semantic review.
+
+## Positions 231–240
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 231 | The Wind Changes | HEALTHY | — |
+| 232 | The Load Must Go | CONFIRMED DEFECT | CRA-F0070 (MEDIUM) — the wagon-slip scene contradicts which load was left safe; CRA-F0071 (MEDIUM) — walking the driver out is narrated as bringing the medicine chest and listing cargo. |
+| 233 | Hold until Morning | HEALTHY | — |
+| 234 | The Christmas Goose | HEALTHY | — |
+| 235 | The Last Parcel Before Christmas | CONFIRMED DEFECT | CRA-F0072 (MEDIUM) — an ambiguous address clue grants Knowledge asserting a specific intended recipient/location. |
+| 236 | A Place at the Table | HEALTHY | — |
+| 237 | Carolers at Wrong House | HEALTHY | — |
+| 238 | Christmas Tree on Miller’s Hill | CONFIRMED DEFECT | CRA-F0073 (LOW) — a clean-fall route reaches text asserting split branches were cut. |
+| 239 | Gift with No Name | HEALTHY | — |
+| 240 | Christmas at Station | CONFIRMED DEFECT | CRA-F0074 (MEDIUM) — a shared ending grants History claiming station-helping participation after routes that leave or do not help. |
+
+In The Load Must Go, `unloadOil`/`unloadBedding` each establish that the chosen load is safely shelved, but the later shared failure says both the barrel split and bedding soaked. Its `saveDriverLoad` route evacuates only the driver while the ending additionally claims the medicine chest arrived and left cargo was listed (CRA-F0070/F0071). The Last Parcel Before Christmas turns an explicitly ambiguous clerk recollection into persistent Knowledge of Nell’s intended bridge-side address, although the route later establishes she is staying with her aunt at the mill (CRA-F0072). Christmas Tree on Miller’s Hill’s clean-fall branch reaches square-arrival wording that says split branches were cut; only rough-fall cleanup establishes that (CRA-F0073). Christmas at Station unconditionally grants History that the Traveler spent the night helping passengers at the station, including routes where they leave by carter or walk to a farmhouse and routes that only wait or ride (CRA-F0074). A passive telegraph report in the coal-saving branch was retained as a minor concern, not a separate confirmed defect. Other batch routes retained truthful state and consequence distinctions. The combined Christmas affinity, Survival Expedition, and registry suites passed: 32 tests across 3 files. These tests support, but do not replace, route-level source review. No gameplay source or tests were changed.
+
+Batch 231–240 added five findings, with no new CRA cluster required. Totals are now 157 HEALTHY, 15 MINOR CONCERN, and 68 CONFIRMED DEFECT across 240 reviewed Adventures; 621 remain. The next canonical registry entry is position 241, The Missing Stocking, and the next finding ID is CRA-F0075.
 
 Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
