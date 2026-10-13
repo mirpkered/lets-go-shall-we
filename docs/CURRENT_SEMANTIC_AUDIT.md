@@ -2,12 +2,12 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–360 reviewed; 501 of 861 remain.
-Next: position 361, One Umbrella, Three Walkers; next finding ID `CRA-F0140`.
+Checkpoint reconciled by stable Adventure ID: 360 current registered Adventures reviewed; 501 of 861 remain.
+Next: position 121, The Woman at the Crossing (`the-woman-at-the-crossing`; `src/scenarios/strangeRoadsBatch.ts`); next finding ID `CRA-F0140`.
 
 ## Current checkpoint
 
-The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positions 1–20 are carried forward from prior conversation review summaries; positions 21–360 were reviewed against current scenario source. Focused suites were run where existing relevant test files were available. No source or test files were changed.
+The canonical registry order is the live `SCENARIOS` array in `src/scenarios/index.ts`. This checkpoint has been reconciled against that array by stable ID. The 360 completed semantic reviews remain preserved; their recorded positions were not uniformly aligned with the live registry. Historical batch headings retain the originally recorded ranges, while position cells in their tables now show current live positions. Focused suites were supporting evidence only. No source or test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
@@ -15,11 +15,19 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 | MINOR CONCERN | 29 |
 | CONFIRMED DEFECT | 126 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 360 |
+| Total reviewed current registered Adventures | 360 |
 
 There are 139 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Batch 301–310 added six MEDIUM and three LOW findings; batch 311–320 added one HIGH, six MEDIUM, and one LOW; batch 321–330 added five MEDIUM findings (four route-convergence findings and one broken-knife usability finding); batch 331–340 added four MEDIUM findings; batch 341–350 added three MEDIUM findings; batch 351–360 added six MEDIUM findings.
 
-## Positions 21–30
+## Registry position reconciliation
+
+The JSON ledger is now stable-ID-first: every reviewed Adventure has its current live registry position plus its pre-reconciliation position and delta. Of 360 recorded entries, 358 matched current stable IDs directly; two legacy IDs were resolved one-to-one by exact display title and the same source file, with the prior IDs retained as aliases. There are no duplicate reviewed identities or unresolved orphan reviews.
+
+Position drift is nonuniform. Positions 1–120 matched directly. The first gap is current position 121; after it, recorded positions 121–347 map +4 to live positions, while recorded positions 348–360 map +12. The latter change reflects eight omitted live Adventures before the resumed Frontier Discovery entries. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
+
+The highest contiguous reviewed position is 120. Another 240 reviewed Adventures occur beyond that first gap, through live position 372. The 12 currently unreviewed positions through 372 are 121–124 and 352–359. The first is The Woman at the Crossing; the remaining entries are retained in `registryReconciliation.unreviewedPositions` in the machine ledger. The checkpoint review count remains 360, so 501 current registered Adventures remain.
+
+## Audit batch (originally recorded positions 21–30; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -34,7 +42,7 @@ There are 139 finding records so far. Severity metadata for findings CRA-F0001�
 | 29 | The Empty Wagon | HEALTHY | — |
 | 30 | The Bell After Midnight | CONFIRMED DEFECT | CRA-F0015 — shared safe ending says straw was soaked after routes that only move the stablehand or carry the lantern clear. |
 
-## Positions 31–40
+## Audit batch (originally recorded positions 31–40; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -53,7 +61,7 @@ The timing concern in One Horse Short is not counted as a defect because the sce
 
 The Borrowed Horse concern is deliberately not counted as confirmed: the “walk to the farm and bring help back” choice transitions directly to a stable ending that says the mare is returned. The omitted physical handling is compressed, but the choice can reasonably imply the help-assisted return; current evidence does not establish a contradiction firmly enough to register a finding.
 
-## Positions 41–50
+## Audit batch (originally recorded positions 41–50; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -70,7 +78,7 @@ The Borrowed Horse concern is deliberately not counted as confirmed: the “walk
 
 The Blue Hole witness is `drowningEmergency → firstSwim → turnBackEarly/floatInPlace → quietRest`: the scene says the swimmer is still calling for help, while the ending says no great event occurred. The same first-swim convergence also loses the minor calf-cramp variant; both are manifestations of one unresolved-event state being dropped.
 
-## Positions 51–60
+## Audit batch (originally recorded positions 51–60; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -87,7 +95,7 @@ The Blue Hole witness is `drowningEmergency → firstSwim → turnBackEarly/floa
 
 For positions 51–54, the shared work builder’s quiet/complication selection, rushed/early exits, careful/tool/help choices, success/failure outcomes, payment, and knowledge/history effects were compared with each job’s specific facts. Positions 55–60 were traced through their distinct purchase, wage-dispute, appraisal, damage-witness, and advance/scope branches. In particular, negotiation success/failure and the prior advance in Half Now were checked cumulatively; each ending’s claimed settlement matches its route effects. No new confirmed semantic defect was established.
 
-## Positions 61–70
+## Audit batch (originally recorded positions 61–70; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -104,7 +112,7 @@ For positions 51–54, the shared work builder’s quiet/complication selection,
 
 The Meeting Hall minor concern is a narrow duration mismatch: `heardAccounts.offerLimitedHelp` costs 30 minutes, but the shared `sharedLabor` ending says the Traveler lends an hour. The direct one-hour offer also reaches that ending. No larger route-state or outcome contradiction was established. In The Pawned Tool, both routes to `heldForClaim` preserve the rule’s described state; the shared ending nevertheless requires a claimant to describe a missing hinge pin, contrary to the opening’s freely moving brass hinge. This is registered as CRA-F0019 in the existing object/state-at-convergence cluster.
 
-## Positions 71–80
+## Audit batch (originally recorded positions 71–80; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -121,7 +129,7 @@ The Meeting Hall minor concern is a narrow duration mismatch: `heardAccounts.off
 
 The gear-use findings share CRA-C0004. Engine requirements establish the distinction: `items` checks inventory inclusion, whereas `usableItems` also rejects an item whose condition is `BROKEN`. The Road Crew’s rope option correctly includes a usability gate, but its four other gear-use options do not. The Creek crossing’s two rope-use choices and Dry Camp’s marker-placement choice likewise omit that gate. CRA-F0022 is separately grouped with route-specific participant state: `foggyTrack.signalLantern` reaches `heardTravelers` without establishing that anyone is present or answers.
 
-## Positions 81–90
+## Audit batch (originally recorded positions 81–90; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -138,7 +146,7 @@ The gear-use findings share CRA-C0004. Engine requirements establish the distinc
 
 CRA-F0024–CRA-F0027 extend CRA-C0004: physical Gear use is sometimes guarded by ownership (`items`/`anyItems`) instead of usability. The reviewed routes were distinguished from inspections and chance bonuses that the engine already filters by item condition. CRA-F0028 and CRA-F0029 extend CRA-C0001: selected variants/routes converge on text importing participants, objects, or interventions not established by that route. Position 83’s apparently unguarded rope retie is only reachable after a usable-rope gate; its failed attempt does not change the rope’s condition, so a BROKEN-rope retie route is unreachable in the authored flow.
 
-## Positions 91–100
+## Audit batch (originally recorded positions 91–100; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -155,7 +163,7 @@ CRA-F0024–CRA-F0027 extend CRA-C0004: physical Gear use is sometimes guarded b
 
 The Old Horse wording is retained as a minor concern: the terms scene says the horse “will still cost three coins” immediately before presenting work in exchange, while that route takes time and no money. CRA-F0030 is another use-versus-ownership Gear gate in CRA-C0004. CRA-F0031 joins CRA-C0002 because an explicit Knowledge claim is more specific than what the route’s visible dialogue supplies. CRA-F0032 joins CRA-C0001 because the selected “nothing” state does not constrain the available object-taking action or its shared result/history.
 
-## Positions 101–110
+## Audit batch (originally recorded positions 101–110; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -170,7 +178,7 @@ The Old Horse wording is retained as a minor concern: the terms scene says the h
 | 109 | The Broken Promise | HEALTHY | — |
 | 110 | The Landlord’s Story | HEALTHY | — |
 
-## Positions 111–120
+## Audit batch (originally recorded positions 111–120; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
@@ -189,124 +197,124 @@ The Missing Sack’s `sendWordToStop` and roadside carter inquiry reach the reso
 
 The dispute routes preserve evidentiary limits: suspected theft stays unproven, a horse ownership claim stays unresolved, loupe condition is distinct from seller authority, and partial testimony does not become a ruling on the full agreement. Payment, purchase, and meal effects are gated and applied on their corresponding routes. Listening/memory and withdrawal paths do not gain facts that were not heard.
 
-## Positions 121–130
+## Audit batch (originally recorded positions 121–130; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 121 | The Long Night | HEALTHY | — |
-| 122 | The Doctor Is Three Miles Away | HEALTHY | — |
-| 123 | When the Baby Comes | HEALTHY | — |
-| 124 | The Red Flag | CONFIRMED DEFECT | CRA-F0036 — quiet-room monitoring reports a doctor-informed status without establishing contact. |
-| 125 | The Telegram | HEALTHY | — |
-| 126 | The Wrong Letter | HEALTHY | — |
-| 127 | The Second Message | HEALTHY | — |
-| 128 | Wire Down | HEALTHY | — |
-| 129 | The Last Train Message | HEALTHY | — |
-| 130 | Property Of... | MINOR CONCERN | The worker’s stated view shifts in the final limited-account outcome without an earlier explicit inference. |
+| 125 | The Long Night | HEALTHY | — |
+| 126 | The Doctor Is Three Miles Away | HEALTHY | — |
+| 127 | When the Baby Comes | HEALTHY | — |
+| 128 | The Red Flag | CONFIRMED DEFECT | CRA-F0036 — quiet-room monitoring reports a doctor-informed status without establishing contact. |
+| 129 | The Telegram | HEALTHY | — |
+| 130 | The Wrong Letter | HEALTHY | — |
+| 131 | The Second Message | HEALTHY | — |
+| 132 | Wire Down | HEALTHY | — |
+| 133 | The Last Train Message | HEALTHY | — |
+| 134 | Property Of... | MINOR CONCERN | The worker’s stated view shifts in the final limited-account outcome without an earlier explicit inference. |
 
 The medical routes keep company/support separate from clinical treatment. In The Red Flag, the separate/watch outcome says the inn “keeps the doctor informed,” but that route does not send for or otherwise contact a doctor; only the separate doctor route explicitly sends a rider. This is CRA-F0036, a low-severity unsupported communication assertion. The five communication scenarios preserve message privacy, distinguish sender verification from content, and keep delivery/receipt outcomes route-specific. Property Of... protects the ownership uncertainty; its final accountRecorded wording (“stops treating that single act as proof”) implies an earlier inference by the worker that was not clearly stated, retained as a minor characterization-transition concern.
 
-## Positions 131–140
+## Audit batch (originally recorded positions 131–140; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 131 | To the Magistrate | HEALTHY | — |
-| 132 | The Warrant | HEALTHY | — |
-| 133 | The Will | HEALTHY | — |
-| 134 | Home Before Dark | HEALTHY | — |
-| 135 | The Visitor | HEALTHY | — |
-| 136 | The Back Door | CONFIRMED DEFECT | CRA-F0037 — the private-room departure route asserts an aunt destination established only in a different branch. |
-| 137 | The Wake | HEALTHY | — |
-| 138 | The Church Supper | HEALTHY | — |
-| 139 | The Old Burial Ground | HEALTHY | — |
-| 140 | At the Forge | HEALTHY | — |
+| 135 | To the Magistrate | HEALTHY | — |
+| 136 | The Warrant | HEALTHY | — |
+| 137 | The Will | HEALTHY | — |
+| 138 | Home Before Dark | HEALTHY | — |
+| 139 | The Visitor | HEALTHY | — |
+| 140 | The Back Door | CONFIRMED DEFECT | CRA-F0037 — the private-room departure route asserts an aunt destination established only in a different branch. |
+| 141 | The Wake | HEALTHY | — |
+| 142 | The Church Supper | HEALTHY | — |
+| 143 | The Old Burial Ground | HEALTHY | — |
+| 144 | At the Forge | HEALTHY | — |
 
 The Back Door’s `privacy` branch establishes the trusted aunt as a destination. The separate `shelter` branch establishes only a private room and the resident’s choice to leave by the rear lane or wait until dawn, yet `shelter.leave` sends them to the aunt’s home. That route-specific, safety-sensitive destination leak is CRA-F0037 (MEDIUM, CRA-C0001). The legal, family, religious/community and craft routes otherwise keep decisions, payments, privacy, authority and work outcomes bounded by their selected paths.
 
-## Positions 141–150
+## Audit batch (originally recorded positions 141–150; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 141 | The Morning Edition | HEALTHY | — |
-| 142 | Hold Still | HEALTHY | — |
-| 143 | The Undertaker’s Request | HEALTHY | — |
-| 144 | The Watchmaker | HEALTHY | — |
-| 145 | Before the Steamer Leaves | HEALTHY | — |
-| 146 | The Missing Crate | HEALTHY | — |
-| 147 | Locked Through | HEALTHY | — |
-| 148 | At the Landing | HEALTHY | — |
-| 149 | First Snow | HEALTHY | — |
-| 150 | The Thaw | HEALTHY | — |
+| 145 | The Morning Edition | HEALTHY | — |
+| 146 | Hold Still | HEALTHY | — |
+| 147 | The Undertaker’s Request | HEALTHY | — |
+| 148 | The Watchmaker | HEALTHY | — |
+| 149 | Before the Steamer Leaves | HEALTHY | — |
+| 150 | The Missing Crate | HEALTHY | — |
+| 151 | Locked Through | HEALTHY | — |
+| 152 | At the Landing | HEALTHY | — |
+| 153 | First Snow | HEALTHY | — |
+| 154 | The Thaw | HEALTHY | — |
 
 The specialized-trade routes preserve the editor’s authority over publication, distinguish an exposed/covered plate from a finished print, keep family decisions with the sister, and separate the watch’s maker from its owner and repair status. River-commerce outcomes keep counts, cargo identity, boarding decisions, and paid work tied to evidence or the actor with authority; the steamer baggage flow distinguishes verification, owner identification, and deferred checking. The two seasonal routes limit claims to what the traveler or farmer actually does: the boards support only foot/handcart travel, the cloak changes the traveler’s exposure rather than creek conditions, and the light snow remains a manageable inconvenience. No additional confirmed defects were identified.
 
-## Positions 151–160
+## Audit batch (originally recorded positions 151–160; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 151 | Before the Frost | MINOR CONCERN | Work-to-dusk outcome tracks only 20 minutes and remains pre-dusk; exact timing is unspecified. |
-| 152 | New Year’s Eve | HEALTHY | — |
-| 153 | The Traveling Players | HEALTHY | — |
-| 154 | The Miracle Tonic | HEALTHY | — |
-| 155 | Three Rounds | HEALTHY | — |
-| 156 | Dance Until Midnight | HEALTHY | — |
-| 157 | The Speaker | HEALTHY | — |
-| 158 | You Must Be the New Man | HEALTHY | — |
-| 159 | That’s Him | HEALTHY | — |
-| 160 | We Were Expecting Someone Else | HEALTHY | — |
+| 155 | Before the Frost | MINOR CONCERN | Work-to-dusk outcome tracks only 20 minutes and remains pre-dusk; exact timing is unspecified. |
+| 156 | New Year’s Eve | HEALTHY | — |
+| 157 | The Traveling Players | HEALTHY | — |
+| 158 | The Miracle Tonic | HEALTHY | — |
+| 159 | Three Rounds | HEALTHY | — |
+| 160 | Dance Until Midnight | HEALTHY | — |
+| 161 | The Speaker | HEALTHY | — |
+| 162 | You Must Be the New Man | HEALTHY | — |
+| 163 | That’s Him | HEALTHY | — |
+| 164 | We Were Expecting Someone Else | HEALTHY | — |
 
 The remaining seasonal stories preserve partial work and choice-specific rewards. Before the Frost has a minor timing-model concern: its gather action advances 20 minutes, but the full-harvest result says the work continues until light fades; the phase remains pre-dusk, and the source does not establish an exact sunset interval. The entertainment routes keep performer arrival, audience expectations, medical claims, consent, and the limits of the wind instrument explicit; The Speaker’s second demonstration gives the Traveler a direct explanatory/comparison choice. The first three mistaken-identity stories do not convert an assumption into a job, payment obligation, accusation, or repair; the actual clerk, repairer, or account check is only stated on the corresponding route. No additional confirmed defects were identified.
 
-## Positions 161–170
+## Audit batch (originally recorded positions 161–170; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 161 | The Package | HEALTHY | — |
-| 162 | Collection Day | HEALTHY | — |
-| 163 | Out by Sundown | HEALTHY | — |
-| 164 | The Mule Is Mine | MINOR CONCERN | `muleCareAgreed` is set but not consumed beyond the resulting scene. |
-| 165 | The Sealed Crate | HEALTHY | — |
-| 166 | Find Her | MINOR CONCERN | Search/errand reward terms are unclear on routes that return no address. |
-| 167 | Dear Mary | HEALTHY | — |
-| 168 | The Locket | HEALTHY | — |
-| 169 | Supper for Two | HEALTHY | — |
-| 170 | The Children’s Court | HEALTHY | — |
+| 165 | The Package | HEALTHY | — |
+| 166 | Collection Day | HEALTHY | — |
+| 167 | Out by Sundown | HEALTHY | — |
+| 168 | The Mule Is Mine | MINOR CONCERN | `muleCareAgreed` is set but not consumed beyond the resulting scene. |
+| 169 | The Sealed Crate | HEALTHY | — |
+| 170 | Find Her | MINOR CONCERN | Search/errand reward terms are unclear on routes that return no address. |
+| 171 | Dear Mary | HEALTHY | — |
+| 172 | The Locket | HEALTHY | — |
+| 173 | Supper for Two | HEALTHY | — |
+| 174 | The Children’s Court | HEALTHY | — |
 
 The parcel, employment, and small human stories keep custody, authority, privacy, and consent tied to their selected routes. Collection Day’s incoming coin is carried back to the shopkeeper while the one-coin effect corresponds to the stated errand wage; the mule stays in its pen while the debt is disputed. The Mule Is Mine has a redundant route flag, and Find Her leaves compensation unclear on unsuccessful/no-address routes; both are minor concerns, not confirmed semantic defects. The sealed-crate payment follows delivery. The Locket records a return only after recognition of its distinctive flower, while a single initial remains inconclusive. No additional confirmed defects were identified.
 
-## Positions 171–180
+## Audit batch (originally recorded positions 171–180; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 171 | Still Waiting | HEALTHY | — |
-| 172 | The Jack-o’-Lantern Contest | HEALTHY | — |
-| 173 | All Hallows at the Boarding House | HEALTHY | — |
-| 174 | The Masked Visitor | HEALTHY | — |
-| 175 | The Halloween Dare | HEALTHY | — |
-| 176 | The Scarecrow Changes Fields | CONFIRMED DEFECT | CRA-F0038 (MEDIUM) — observation-only routes inherit the farmhand’s admission/agreement and may record it as Knowledge. |
-| 177 | The Harvest Mask | HEALTHY | — |
-| 178 | The Witch at Miller’s Ford | HEALTHY | — |
-| 179 | The Man in the Corn | HEALTHY | — |
-| 180 | The Coffin Maker’s Extra Order | CONFIRMED DEFECT | CRA-F0039 (HIGH) — shared closure attributes the anonymous threat to the tailor without route proof. |
+| 175 | Still Waiting | HEALTHY | — |
+| 176 | The Jack-o’-Lantern Contest | HEALTHY | — |
+| 177 | All Hallows at the Boarding House | HEALTHY | — |
+| 178 | The Masked Visitor | HEALTHY | — |
+| 179 | The Halloween Dare | HEALTHY | — |
+| 180 | The Scarecrow Changes Fields | CONFIRMED DEFECT | CRA-F0038 (MEDIUM) — observation-only routes inherit the farmhand’s admission/agreement and may record it as Knowledge. |
+| 181 | The Harvest Mask | HEALTHY | — |
+| 182 | The Witch at Miller’s Ford | HEALTHY | — |
+| 183 | The Man in the Corn | HEALTHY | — |
+| 184 | The Coffin Maker’s Extra Order | CONFIRMED DEFECT | CRA-F0039 (HIGH) — shared closure attributes the anonymous threat to the tailor without route proof. |
 
 In The Scarecrow Changes Fields, `watchAfterDark -> inspectPeg -> scarecrowChoice` does not speak with the farmhand, yet the shared scene says the farmhand admitted moving the scarecrow and the follow-up says the farmhand agreed to notify the farmer. The `keepWatching` route also grants Knowledge that the farmhand moved it without an interview. These route-specific person/action and Knowledge facts are established only by the interview path (CRA-F0038, MEDIUM).
 
 In The Coffin Maker’s Extra Order, returning payment or bringing the maker together reaches closure that says the tailor must answer, without establishing the tailor’s involvement. Preserving the order proves handwriting/delivery and a prior business connection only; the route that confronts the tailor and reaches the former partner establishes the measurements-for-intimidation explanation. Shared closure also records that culpability as Knowledge. The unproved attribution is CRA-F0039 (HIGH). October affinity, second-wave, and content-depth supporting suites passed (28 tests across three files); these tests do not replace the route traces.
 
-## Positions 181–190
+## Audit batch (originally recorded positions 181–190; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 181 | The Skeleton in the Wagon | CONFIRMED DEFECT | CRA-F0040 (MEDIUM) — convergence invents a lot-number handoff and written shipment account on routes that did not inspect or record them. |
-| 182 | The Headless Rider | MINOR CONCERN | Keeper-fetch/turn flags are written but not reflected in later route outcomes. |
-| 183 | The Last House before the Woods | CONFIRMED DEFECT | CRA-F0041 (LOW) — common Knowledge identifies the caller as a stranger even when unseen. |
-| 184 | The Séance at Bellweather House | CONFIRMED DEFECT | CRA-F0042 (MEDIUM) — shared ending claims a written answer, witnessed voice, and fee recovery across incompatible routes. |
-| 185 | The Red Chalk Circle | CONFIRMED DEFECT | CRA-F0043 (HIGH) — boundary-escape route claims Orin is out without finding or rescuing him. |
-| 186 | The Man Who Sleeps in the Graveyard | HEALTHY | — |
-| 187 | The Widow’s Mirror | CONFIRMED DEFECT | CRA-F0044 (LOW) — shared ending asserts the glazier dismantles the mirror without that service being selected. |
-| 188 | The Bone Box | HEALTHY | — |
-| 189 | The Lantern at the Crossing | CONFIRMED DEFECT | CRA-F0045 (MEDIUM) — Spirit Glass reveal is available with a BROKEN Lantern. |
-| 190 | The Quiet Room | HEALTHY | — |
+| 185 | The Skeleton in the Wagon | CONFIRMED DEFECT | CRA-F0040 (MEDIUM) — convergence invents a lot-number handoff and written shipment account on routes that did not inspect or record them. |
+| 186 | The Headless Rider | MINOR CONCERN | Keeper-fetch/turn flags are written but not reflected in later route outcomes. |
+| 187 | The Last House before the Woods | CONFIRMED DEFECT | CRA-F0041 (LOW) — common Knowledge identifies the caller as a stranger even when unseen. |
+| 188 | The Séance at Bellweather House | CONFIRMED DEFECT | CRA-F0042 (MEDIUM) — shared ending claims a written answer, witnessed voice, and fee recovery across incompatible routes. |
+| 189 | The Red Chalk Circle | CONFIRMED DEFECT | CRA-F0043 (HIGH) — boundary-escape route claims Orin is out without finding or rescuing him. |
+| 190 | The Man Who Sleeps in the Graveyard | HEALTHY | — |
+| 191 | The Widow’s Mirror | CONFIRMED DEFECT | CRA-F0044 (LOW) — shared ending asserts the glazier dismantles the mirror without that service being selected. |
+| 192 | The Bone Box | HEALTHY | — |
+| 193 | The Lantern at the Crossing | CONFIRMED DEFECT | CRA-F0045 (MEDIUM) — Spirit Glass reveal is available with a BROKEN Lantern. |
+| 194 | The Quiet Room | HEALTHY | — |
 
 The Skeleton in the Wagon’s shared settlement says the teacher takes the lot number back to school and gives the passerby a written shipment account even when the player only covers the crate or braces the axle without inspecting or recording the tag (CRA-F0040, MEDIUM). In The Headless Rider, the hood/lantern explanation and injury/horse/brother outcomes remain route-specific; the unused keeper-fetch and turn flags leave a minor action-feedback concern.
 
@@ -314,20 +322,20 @@ The Last House before the Woods unconditionally grants Knowledge that a stranger
 
 In The Red Chalk Circle, a retreat or successful struggle at the disturbed boundary reaches `chalkAfter` without visiting the crawlspace, but the shared text says Orin is out (CRA-F0043, HIGH). The Widow’s Mirror uses a common ending claiming the glazier dismantles the mirror even after a simple carry-out or cover route that never requests the service (CRA-F0044, LOW). The Bone Box’s current post-definition variants truthfully distinguish burning and keeping the map; leaving the closed box to the broker leaves later custody to the broker. The Lantern at the Crossing checks that the Lantern owns Spirit Glass but not that the item is usable; engine requirements treat `itemUpgrades` separately from condition, so a BROKEN Lantern still exposes the clue (CRA-F0045, MEDIUM). The Quiet Room’s current post-definition patch correctly separates sealing the hatch from leaving before dawn.
 
-## Positions 191–200
+## Audit batch (originally recorded positions 191–200; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 191 | The House with Two Cellars | CONFIRMED DEFECT | CRA-F0046 (MEDIUM) — common ending says jar names were copied even when the player never inspected them. |
-| 192 | The Black Thread | CONFIRMED DEFECT | CRA-F0047 (MEDIUM) — shared resolution says the tailor opened the storeroom and threads were cut on routes that never did so. |
-| 193 | The Medium Who Knows Too Much | CONFIRMED DEFECT | CRA-F0048 (MEDIUM) — paid-reading challenge can refund the same coin twice. |
-| 194 | The Thing Under the Floorboards | MINOR CONCERN | Ending identifies the underfloor presence as the old owner’s remains without route proof. |
-| 195 | The Candle That Will Not Go Out | HEALTHY | — |
-| 196 | The Book Without a Title | CONFIRMED DEFECT | CRA-F0049 (MEDIUM) — ending says the printer copied a mark on routes that never examined it. |
-| 197 | The Voice in the Well | CONFIRMED DEFECT | CRA-F0050 (HIGH) — departure/retreat inherits the mason’s cap and speaking-tube discovery. |
-| 198 | The Empty Coffin | CONFIRMED DEFECT | CRA-F0051 (HIGH) — bypass routes claim the living cooper’s deception was solved. |
-| 199 | The Man Who Came Back Wrong | CONFIRMED DEFECT | CRA-F0052 (MEDIUM) — shared ending imports sluice and footprint discoveries into bypass routes. |
-| 200 | Hanging Charms | HEALTHY | — |
+| 195 | The House with Two Cellars | CONFIRMED DEFECT | CRA-F0046 (MEDIUM) — common ending says jar names were copied even when the player never inspected them. |
+| 196 | The Black Thread | CONFIRMED DEFECT | CRA-F0047 (MEDIUM) — shared resolution says the tailor opened the storeroom and threads were cut on routes that never did so. |
+| 197 | The Medium Who Knows Too Much | CONFIRMED DEFECT | CRA-F0048 (MEDIUM) — paid-reading challenge can refund the same coin twice. |
+| 198 | The Thing Under the Floorboards | MINOR CONCERN | Ending identifies the underfloor presence as the old owner’s remains without route proof. |
+| 199 | The Candle That Will Not Go Out | HEALTHY | — |
+| 200 | The Book Without a Title | CONFIRMED DEFECT | CRA-F0049 (MEDIUM) — ending says the printer copied a mark on routes that never examined it. |
+| 201 | The Voice in the Well | CONFIRMED DEFECT | CRA-F0050 (HIGH) — departure/retreat inherits the mason’s cap and speaking-tube discovery. |
+| 202 | The Empty Coffin | CONFIRMED DEFECT | CRA-F0051 (HIGH) — bypass routes claim the living cooper’s deception was solved. |
+| 203 | The Man Who Came Back Wrong | CONFIRMED DEFECT | CRA-F0052 (MEDIUM) — shared ending imports sluice and footprint discoveries into bypass routes. |
+| 204 | Hanging Charms | HEALTHY | — |
 
 The House with Two Cellars always says the jar labels were copied, even when the player stays above, fastens the arch without recording names, or retreats after the skeleton appears; only the `readJarNames` route copies them (CRA-F0046, MEDIUM). In The Black Thread, `threadAfter` says the tailor opens his storeroom and the group cuts the strands together even after routes that leave the street or only tell neighbors; this is an incompatible shared resolution (CRA-F0047, MEDIUM).
 
@@ -335,20 +343,20 @@ The Medium Who Knows Too Much charges one coin, then applies a one-coin refund o
 
 The Book Without a Title’s common ending says the printer copies the repeated mark even when the Traveler closes the book or stops reading before inspecting/copying its margins (CRA-F0049, MEDIUM). The Voice in the Well sends direct leave and haul-back routes to text where a mason has capped the well and found a speaking tube, although those routes never call him or inspect the wall (CRA-F0050, HIGH). The Empty Coffin’s close/delay and avoid-accusation routes claim the missing-body cause is known despite never finding the living cooper in the side room (CRA-F0051, HIGH). The Man Who Came Back Wrong likewise says the miller sealed the drain and reports the second footprint set after routes that never inspect the sluice (CRA-F0052, MEDIUM). The patched Candle and Hanging Charms endings preserve their distinct leave, closure, entry, and inspection outcomes.
 
-## Positions 201–210
+## Audit batch (originally recorded positions 201–210; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 201 | The Third Knock | HEALTHY | — |
-| 202 | The Wrong Shadow | CONFIRMED DEFECT | CRA-F0053 (MEDIUM) — shared ending includes a lamplighter who was absent; CRA-F0054 (LOW) — Lantern use lacks a usable-item gate. |
-| 203 | The Red Chapel | HEALTHY | — |
-| 204 | The Man Who Wouldn’t Stay Dead | HEALTHY | — |
-| 205 | Below the Old Fort | CONFIRMED DEFECT | CRA-F0055 (MEDIUM) — ending claims a copied route plan on routes that never found it; CRA-F0056 (LOW) — silvered knife use lacks a usable-item gate. |
-| 206 | The Barrow Door | HEALTHY | — |
-| 207 | The Hollow Man | CONFIRMED DEFECT | CRA-F0057 (LOW) — broken smallKnife still enables bone removal. |
-| 208 | The Borrowed Face | MINOR CONCERN | Final text assumes a mirror/glazier follow-up even on dismissal without a mirror scene. |
-| 209 | The Doorway with No Room | CONFIRMED DEFECT | CRA-F0058 (MEDIUM) — default seal/withdraw ending claims a second opening and builder measurements not established on those routes. |
-| 210 | The Last Candle in the House | HEALTHY | — |
+| 205 | The Third Knock | HEALTHY | — |
+| 206 | The Wrong Shadow | CONFIRMED DEFECT | CRA-F0053 (MEDIUM) — shared ending includes a lamplighter who was absent; CRA-F0054 (LOW) — Lantern use lacks a usable-item gate. |
+| 207 | The Red Chapel | HEALTHY | — |
+| 208 | The Man Who Wouldn’t Stay Dead | HEALTHY | — |
+| 209 | Below the Old Fort | CONFIRMED DEFECT | CRA-F0055 (MEDIUM) — ending claims a copied route plan on routes that never found it; CRA-F0056 (LOW) — silvered knife use lacks a usable-item gate. |
+| 210 | The Barrow Door | HEALTHY | — |
+| 211 | The Hollow Man | CONFIRMED DEFECT | CRA-F0057 (LOW) — broken smallKnife still enables bone removal. |
+| 212 | The Borrowed Face | MINOR CONCERN | Final text assumes a mirror/glazier follow-up even on dismissal without a mirror scene. |
+| 213 | The Doorway with No Room | CONFIRMED DEFECT | CRA-F0058 (MEDIUM) — default seal/withdraw ending claims a second opening and builder measurements not established on those routes. |
+| 214 | The Last Candle in the House | HEALTHY | — |
 
 The Third Knock keeps its letter states and delivery choices distinct: the name is established before the player can carry it, and the sealed letter can be burned, left, returned at dawn, or delivered. The Wrong Shadow’s shared ending says both the lamplighter and Traveler saw the turn and that the lamplighter reached the crowded street even when the Traveler left or tested the shadow without calling him (CRA-F0053, MEDIUM). Its `testShadowLight` choice also physically uses the starting Lantern without requiring it to be usable (CRA-F0054, LOW).
 
@@ -384,75 +392,75 @@ Batch 191–200 supporting suites (`occultInvestigationBatch.test.ts`, `finalCho
 
 Batch 201–210 supporting suites (`occultInvestigationBatch.test.ts`, `finalChoiceConsequenceAudit.test.ts`, and `equipment.test.ts`) passed: 52 tests across 3 files. Scenario registry validation was rerun separately; checks support, but do not replace, the route-level source review. No gameplay source or tests were changed.
 
-## Positions 211–220
+## Audit batch (originally recorded positions 211–220; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 211 | The Pass Before Snow | CONFIRMED DEFECT | CRA-F0059 (MEDIUM) — the shared rescue ending claims a signal was answered after a route that only crawls to shelter. |
-| 212 | No Water at Miller’s Spring | CONFIRMED DEFECT | CRA-F0060 (MEDIUM) — a successful basin dig converges into text locating the seep in a different place. |
-| 213 | The Broken Axle | CONFIRMED DEFECT | CRA-F0061 (LOW) — a successful rush-to-town route is praised as un-rushed. |
-| 214 | Across the Floodplain | CONFIRMED DEFECT | CRA-F0062 (MEDIUM) — guarding the cart reaches a rescue ending that says the Traveler signaled. |
-| 215 | The Cave Before the Storm | HEALTHY | — |
-| 216 | The Lost Survey Party | CONFIRMED DEFECT | CRA-F0063 (MEDIUM) — refusal/retreat outcomes claim unmade search marks. |
-| 217 | Three Days to the Railhead | HEALTHY | — |
-| 218 | Whiteout | HEALTHY | — |
-| 219 | The Last Rope | CONFIRMED DEFECT | CRA-F0064 (MEDIUM) — successful direct lowering inherits rope loss/strain; CRA-F0065 (LOW) — fetching a crew is narrated as calling one. |
-| 220 | The Empty Cabin | HEALTHY | — |
+| 215 | The Pass Before Snow | CONFIRMED DEFECT | CRA-F0059 (MEDIUM) — the shared rescue ending claims a signal was answered after a route that only crawls to shelter. |
+| 216 | No Water at Miller’s Spring | CONFIRMED DEFECT | CRA-F0060 (MEDIUM) — a successful basin dig converges into text locating the seep in a different place. |
+| 217 | The Broken Axle | CONFIRMED DEFECT | CRA-F0061 (LOW) — a successful rush-to-town route is praised as un-rushed. |
+| 218 | Across the Floodplain | CONFIRMED DEFECT | CRA-F0062 (MEDIUM) — guarding the cart reaches a rescue ending that says the Traveler signaled. |
+| 219 | The Cave Before the Storm | HEALTHY | — |
+| 220 | The Lost Survey Party | CONFIRMED DEFECT | CRA-F0063 (MEDIUM) — refusal/retreat outcomes claim unmade search marks. |
+| 221 | Three Days to the Railhead | HEALTHY | — |
+| 222 | Whiteout | HEALTHY | — |
+| 223 | The Last Rope | CONFIRMED DEFECT | CRA-F0064 (MEDIUM) — successful direct lowering inherits rope loss/strain; CRA-F0065 (LOW) — fetching a crew is narrated as calling one. |
+| 224 | The Empty Cabin | HEALTHY | — |
 
 The Pass Before Snow’s crawl-and-wait option and gear-gated downhill signal converge on `passRescue`, whose unconditional “Your signal is answered” only fits the latter (CRA-F0059). No Water at Miller’s Spring routes a successful dig at the old basin into `springSeep`, whose location text instead places the water below a branch in the shaded fold (CRA-F0060). In The Broken Axle, the successful `forceBrokenWagon` branch explicitly chooses to drive before dark, but the shared settlement praises the Traveler for not rushing (CRA-F0061). Across the Floodplain routes “Keep the family and cart on the rise” to a rescue ending that says the crew arrived after a signal, although that branch takes no signaling action (CRA-F0062).
 
 The Lost Survey Party’s refusal and slope-retreat routes enter `surveyDelay`, which claims clear marks were left at both camp and slope; only the creek-avoidance route actually marks a place (CRA-F0063). The Last Rope has two independent route facts lost in convergence: the successful direct lowering route keeps an undamaged rope, while `porterUp` says it remains behind or took strain; and retreating to fetch a crew reaches `ravineWait`, which says the crew followed a call (CRA-F0064/F0065). The Cave Before the Storm, Three Days to the Railhead, Whiteout, and The Empty Cabin retain route-appropriate knowledge, item/participant state, consequences, and endings. Supporting Survival Expedition suite passed: 11 tests in one file, including exhaustive fresh-character route/chance exploration and selected gear branches; the separate registry release validation passed 3 tests and confirmed the 861-entry registry. Tests support but do not replace the source review.
 
-## Positions 221–230
+## Audit batch (originally recorded positions 221–230; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 221 | The Long Way Around | HEALTHY | — |
-| 222 | River without a Bridge | CONFIRMED DEFECT | CRA-F0066 (MEDIUM) — a successful crossing is described as a safe route marked for others, though no branch marks it and one branch is a hazardous ford. |
-| 223 | Night on the Ridge | HEALTHY | — |
-| 224 | The Markers Stop | HEALTHY | — |
-| 225 | The Ice Gives Warning | CONFIRMED DEFECT | CRA-F0067 (MEDIUM) — solo failure invents a rope rescue; CRA-F0068 (MEDIUM) — “leave the cart” later says it arrives. |
-| 226 | The Washed-Out Cut | MINOR CONCERN | No-contact wait can reach a repair-crew ending; the explicit wait choice makes this plausible but the alert path is unstated. |
-| 227 | The Wrong Valley | HEALTHY | — |
-| 228 | The Rocks Start Moving | HEALTHY | — |
-| 229 | The Tree across the Creek | HEALTHY | — |
-| 230 | The Abandoned Camp | CONFIRMED DEFECT | CRA-F0069 (LOW) — the silent return route reaches a shared ending that reports no answer to a call. |
+| 225 | The Long Way Around | HEALTHY | — |
+| 226 | River without a Bridge | CONFIRMED DEFECT | CRA-F0066 (MEDIUM) — a successful crossing is described as a safe route marked for others, though no branch marks it and one branch is a hazardous ford. |
+| 227 | Night on the Ridge | HEALTHY | — |
+| 228 | The Markers Stop | HEALTHY | — |
+| 229 | The Ice Gives Warning | CONFIRMED DEFECT | CRA-F0067 (MEDIUM) — solo failure invents a rope rescue; CRA-F0068 (MEDIUM) — “leave the cart” later says it arrives. |
+| 230 | The Washed-Out Cut | MINOR CONCERN | No-contact wait can reach a repair-crew ending; the explicit wait choice makes this plausible but the alert path is unstated. |
+| 231 | The Wrong Valley | HEALTHY | — |
+| 232 | The Rocks Start Moving | HEALTHY | — |
+| 233 | The Tree across the Creek | HEALTHY | — |
+| 234 | The Abandoned Camp | CONFIRMED DEFECT | CRA-F0069 (LOW) — the silent return route reaches a shared ending that reports no answer to a call. |
 
 River without a Bridge’s successful crossings converge on text saying a safe way has been found and marked for travelers behind, despite no route marking action and despite direct-current fording being an explicitly hazardous alternative (CRA-F0066). In The Ice Gives Warning, a failed solo crossing reaches an ending that introduces an unestablished rope rescue; a separate “leave the cart” route also shares an ending claiming the cart arrives later without any recovery or transport action (CRA-F0067/F0068). In The Abandoned Camp, returning from the stream without calling reaches `campAnswer`, which says no one answers from the ridge or stream (CRA-F0069); taking food also leads to an automatic note-writing aftermath, retained as a lesser player-agency concern. The Washed-Out Cut’s direct wait-for-crew route lacks a shown alert, but the option itself frames the crew as expected, so the ambiguity remains minor rather than a confirmed defect. The other six routesets retain their route-specific time, participant, Gear, Knowledge, location, and consequence distinctions. The Survival Expedition support suite passed 11 tests; it checks exhaustive route/chance reachability but is not a substitute for semantic review.
 
-## Positions 231–240
+## Audit batch (originally recorded positions 231–240; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 231 | The Wind Changes | HEALTHY | — |
-| 232 | The Load Must Go | CONFIRMED DEFECT | CRA-F0070 (MEDIUM) — the wagon-slip scene contradicts which load was left safe; CRA-F0071 (MEDIUM) — walking the driver out is narrated as bringing the medicine chest and listing cargo. |
-| 233 | Hold until Morning | HEALTHY | — |
-| 234 | The Christmas Goose | HEALTHY | — |
-| 235 | The Last Parcel Before Christmas | CONFIRMED DEFECT | CRA-F0072 (MEDIUM) — an ambiguous address clue grants Knowledge asserting a specific intended recipient/location. |
-| 236 | A Place at the Table | HEALTHY | — |
-| 237 | Carolers at Wrong House | HEALTHY | — |
-| 238 | Christmas Tree on Miller’s Hill | CONFIRMED DEFECT | CRA-F0073 (LOW) — a clean-fall route reaches text asserting split branches were cut. |
-| 239 | Gift with No Name | HEALTHY | — |
-| 240 | Christmas at Station | CONFIRMED DEFECT | CRA-F0074 (MEDIUM) — a shared ending grants History claiming station-helping participation after routes that leave or do not help. |
+| 235 | The Wind Changes | HEALTHY | — |
+| 236 | The Load Must Go | CONFIRMED DEFECT | CRA-F0070 (MEDIUM) — the wagon-slip scene contradicts which load was left safe; CRA-F0071 (MEDIUM) — walking the driver out is narrated as bringing the medicine chest and listing cargo. |
+| 237 | Hold until Morning | HEALTHY | — |
+| 238 | The Christmas Goose | HEALTHY | — |
+| 239 | The Last Parcel Before Christmas | CONFIRMED DEFECT | CRA-F0072 (MEDIUM) — an ambiguous address clue grants Knowledge asserting a specific intended recipient/location. |
+| 240 | A Place at the Table | HEALTHY | — |
+| 241 | Carolers at Wrong House | HEALTHY | — |
+| 242 | Christmas Tree on Miller’s Hill | CONFIRMED DEFECT | CRA-F0073 (LOW) — a clean-fall route reaches text asserting split branches were cut. |
+| 243 | Gift with No Name | HEALTHY | — |
+| 244 | Christmas at Station | CONFIRMED DEFECT | CRA-F0074 (MEDIUM) — a shared ending grants History claiming station-helping participation after routes that leave or do not help. |
 
 In The Load Must Go, `unloadOil`/`unloadBedding` each establish that the chosen load is safely shelved, but the later shared failure says both the barrel split and bedding soaked. Its `saveDriverLoad` route evacuates only the driver while the ending additionally claims the medicine chest arrived and left cargo was listed (CRA-F0070/F0071). The Last Parcel Before Christmas turns an explicitly ambiguous clerk recollection into persistent Knowledge of Nell’s intended bridge-side address, although the route later establishes she is staying with her aunt at the mill (CRA-F0072). Christmas Tree on Miller’s Hill’s clean-fall branch reaches square-arrival wording that says split branches were cut; only rough-fall cleanup establishes that (CRA-F0073). Christmas at Station unconditionally grants History that the Traveler spent the night helping passengers at the station, including routes where they leave by carter or walk to a farmhouse and routes that only wait or ride (CRA-F0074). A passive telegraph report in the coal-saving branch was retained as a minor concern, not a separate confirmed defect. Other batch routes retained truthful state and consequence distinctions. The combined Christmas affinity, Survival Expedition, and registry suites passed: 32 tests across 3 files. These tests support, but do not replace, route-level source review. No gameplay source or tests were changed.
 
 Batch 231–240 added five findings, with no new CRA cluster required. Totals are now 157 HEALTHY, 15 MINOR CONCERN, and 68 CONFIRMED DEFECT across 240 reviewed Adventures; 621 remain. The next canonical registry entry is position 241, The Missing Stocking, and the next finding ID is CRA-F0075.
 
-## Positions 241–250
+## Audit batch (originally recorded positions 241–250; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 241 | The Missing Stocking | CONFIRMED DEFECT | CRA-F0075 (LOW) — the quiet-return route is shown as if the brother confessed after the player chose not to hear his explanation. |
-| 242 | The Toymaker’s Last Order | HEALTHY | — |
-| 243 | The Pageant Problem | CONFIRMED DEFECT | CRA-F0076 (LOW) — shared rehearsal text asserts mutually exclusive substitute/returning-child states. |
-| 244 | The Stranger’s Christmas Dinner | HEALTHY | — |
-| 245 | Three Gifts, Two Labels | HEALTHY | — |
-| 246 | The Christmas Visitor | HEALTHY | — |
-| 247 | The Empty Chair at Midnight | HEALTHY | — |
-| 248 | The Evergreen Door | HEALTHY | — |
-| 249 | The Gift That Came Back | HEALTHY | — |
-| 250 | The Snowbound Inn | HEALTHY | — |
+| 245 | The Missing Stocking | CONFIRMED DEFECT | CRA-F0075 (LOW) — the quiet-return route is shown as if the brother confessed after the player chose not to hear his explanation. |
+| 246 | The Toymaker’s Last Order | HEALTHY | — |
+| 247 | The Pageant Problem | CONFIRMED DEFECT | CRA-F0076 (LOW) — shared rehearsal text asserts mutually exclusive substitute/returning-child states. |
+| 248 | The Stranger’s Christmas Dinner | HEALTHY | — |
+| 249 | Three Gifts, Two Labels | HEALTHY | — |
+| 250 | The Christmas Visitor | HEALTHY | — |
+| 251 | The Empty Chair at Midnight | HEALTHY | — |
+| 252 | The Evergreen Door | HEALTHY | — |
+| 253 | The Gift That Came Back | HEALTHY | — |
+| 254 | The Snowbound Inn | HEALTHY | — |
 
 In The Missing Stocking, `quietReturn` from the stable sets `stockingFound` and enters the reunion variant, which says the brother admits moving the stocking as a joke. The preceding stable scene only says he offers to explain; the player selected the alternative to avoid the public explanation, and no subsequent route state or scene establishes that he confesses privately (CRA-F0075). In The Pageant Problem, the common rehearsal prose asserts both a substitute innkeeper and a returning child regardless of branch. It therefore contradicts the prop-only path, Traveler substitution, sibling substitution, and child-return routes; the later performance variants do correctly distinguish the participant routes (CRA-F0076). The remaining eight Adventures preserve the important route distinctions: tool-repair versus simpler toy completion and delay; anonymous-donor uncertainty and correctly gated extra-bowl payment; gift-giver confirmation before parcel assignment; visitor claims versus letter proof; unresolved napkin mystery; cellar descent versus daylight/neighbor plans; family ownership decisions about the wooden bird; and paired/solo search, failure, and dawn discovery at the snowbound inn. The Christmas affinity and registry suites passed 21 tests across 2 files; these checks support but do not replace the source review. No gameplay source or tests were changed.
 
@@ -460,210 +468,210 @@ Batch 241–250 added two LOW-severity findings to CRA-C0001; no new cluster was
 
 Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
 
-## Positions 251–260
+## Audit batch (originally recorded positions 251–260; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 251 | Footprints around the House | HEALTHY | — |
-| 252 | The Red Scarf in the Snow | HEALTHY | — |
-| 253 | The Empty Sleigh | HEALTHY | — |
-| 254 | The House with the Warm Window | HEALTHY | — |
-| 255 | The Frozen Letter | CONFIRMED DEFECT | CRA-F0077 (MEDIUM) — the sealed-letter route grants Knowledge that the letter is not urgent without learning its contents. |
-| 256 | The Longest Night | HEALTHY | — |
-| 257 | The Ice Lanterns | HEALTHY | — |
-| 258 | The Widow’s Firewood | CONFIRMED DEFECT | CRA-F0078 (MEDIUM) — accepting only the neighbor’s own wood still claims the miller’s logs were returned. |
-| 259 | The Road under Snow | HEALTHY | — |
-| 260 | The Frozen Millwheel | CONFIRMED DEFECT | CRA-F0079 (MEDIUM) — a gate-bracing success reaches the repaired-wheel outcome without route proof that the bearing was warmed. |
+| 255 | Footprints around the House | HEALTHY | — |
+| 256 | The Red Scarf in the Snow | HEALTHY | — |
+| 257 | The Empty Sleigh | HEALTHY | — |
+| 258 | The House with the Warm Window | HEALTHY | — |
+| 259 | The Frozen Letter | CONFIRMED DEFECT | CRA-F0077 (MEDIUM) — the sealed-letter route grants Knowledge that the letter is not urgent without learning its contents. |
+| 260 | The Longest Night | HEALTHY | — |
+| 261 | The Ice Lanterns | HEALTHY | — |
+| 262 | The Widow’s Firewood | CONFIRMED DEFECT | CRA-F0078 (MEDIUM) — accepting only the neighbor’s own wood still claims the miller’s logs were returned. |
+| 263 | The Road under Snow | HEALTHY | — |
+| 264 | The Frozen Millwheel | CONFIRMED DEFECT | CRA-F0079 (MEDIUM) — a gate-bracing success reaches the repaired-wheel outcome without route proof that the bearing was warmed. |
 
 The Frozen Letter’s `mill.secureLetter` branch keeps the letter sealed but grants Knowledge that it is not an emergency warning. That conclusion appears only on the separate `askMiller` → `letterContext` route (CRA-F0077). In The Widow’s Firewood, `acceptOwnWood` joins the same settlement as `correctTheft`; only the latter separates and returns the miller’s logs, yet both settlement and ending claim they were returned (CRA-F0078). The Frozen Millwheel’s failed sluice-handle route can succeed by bracing the gate and having the miller close it, then reach `wheelFreed` without establishing bearing heat; the result, History, and payoff describe the full warmed-bearing/pressure-eased repair (CRA-F0079). The other seven Adventures keep route evidence and consequence distinctions coherent across their search, travel, rescue, refusal, object, and persistence paths. The Christmas affinity and registry suites passed 21 tests across 2 files; these checks support but do not replace the route-level review. No gameplay source or tests were changed.
 
 Batch 251–260 added three MEDIUM findings to existing clusters; no new cluster was required. Totals are now 172 HEALTHY, 15 MINOR CONCERN, and 73 CONFIRMED DEFECT across 260 reviewed Adventures; 601 remain. The next registry entry is position 261, The Visitor at Midnight, and the next finding ID is CRA-F0080.
 
-## Positions 261–270
+## Audit batch (originally recorded positions 261–270; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 261 | The Visitor at Midnight | CONFIRMED DEFECT | CRA-F0080 (MEDIUM) — the shelter route establishes a visitor is present, but the shared ending reopens whether anyone stood at the door. |
-| 262 | The Bridge Goes Down | CONFIRMED DEFECT | CRA-F0081 (HIGH) — calling the driver to abandon the wagon sets rescue proof and enables text claiming he reached shore. |
-| 263 | Smoke over Main Street | HEALTHY | — |
-| 264 | The Train That Didn’t Stop | CONFIRMED DEFECT | CRA-F0082 (MEDIUM) — running alongside is credited with clearing the track and averting collision. |
-| 265 | The Mine Gives Way | HEALTHY | — |
-| 266 | Water Through the Door | HEALTHY | — |
-| 267 | The Boiler Room | CONFIRMED DEFECT | CRA-F0083 (HIGH) — un-warned worker routes reach an ending that says workers were counted outside. |
-| 268 | The Crowd Breaks | CONFIRMED DEFECT | CRA-F0084 (LOW) — a passive wait after failed crowd control grants History credit for guiding the crowd. |
-| 269 | The Ferry Lists | HEALTHY | — |
-| 270 | The Roof Comes In | CONFIRMED DEFECT | CRA-F0085 (MEDIUM) — bracing the wall alone reaches text claiming the visible pair are already outside. |
+| 265 | The Visitor at Midnight | CONFIRMED DEFECT | CRA-F0080 (MEDIUM) — the shelter route establishes a visitor is present, but the shared ending reopens whether anyone stood at the door. |
+| 266 | The Bridge Goes Down | CONFIRMED DEFECT | CRA-F0081 (HIGH) — calling the driver to abandon the wagon sets rescue proof and enables text claiming he reached shore. |
+| 267 | Smoke over Main Street | HEALTHY | — |
+| 268 | The Train That Didn’t Stop | CONFIRMED DEFECT | CRA-F0082 (MEDIUM) — running alongside is credited with clearing the track and averting collision. |
+| 269 | The Mine Gives Way | HEALTHY | — |
+| 270 | Water Through the Door | HEALTHY | — |
+| 271 | The Boiler Room | CONFIRMED DEFECT | CRA-F0083 (HIGH) — un-warned worker routes reach an ending that says workers were counted outside. |
+| 272 | The Crowd Breaks | CONFIRMED DEFECT | CRA-F0084 (LOW) — a passive wait after failed crowd control grants History credit for guiding the crowd. |
+| 273 | The Ferry Lists | HEALTHY | — |
+| 274 | The Roof Comes In | CONFIRMED DEFECT | CRA-F0085 (MEDIUM) — bracing the wall alone reaches text claiming the visible pair are already outside. |
 
 The Visitor at Midnight retains the uncertainty about identity and the missing tracks, but the `offerSafeShelter` route explicitly places the visitor in the outer room until the watch arrives; `midnightEnd` nevertheless questions whether anyone stood at the door (CRA-F0080). In The Bridge Goes Down, `childAcross.callFather` only calls the driver to abandon the wagon but sets `bridgePeopleSaved`, enabling the finale to say the driver reached shore; `muleSaved.muleCallDriver` repeats the unsupported proof (CRA-F0081). In The Train That Didn’t Stop, the `runAlongside` option enters `platformClear` without warning or clearing effects, yet the shared scene and later History/ending credit track clearance and collision prevention (CRA-F0082). The Boiler Room’s `tellForeman`/`inspectValve` routes bypass worker evacuation, while the foreman scene explicitly conditions workers being outside on the player having warned them; the shared aftermath/end still says workers are counted outside (CRA-F0083). The Crowd Breaks’ failed stand-call followed by `fallStayWall` only waits for stewards to act, but the later report grants History for helping guide the crowd (CRA-F0084). The Roof Comes In’s direct `braceNorth` branch reaches `wallBraced`, which unconditionally claims the visible pair are already outside even though only `eastPair` performs that evacuation (CRA-F0085). The other four Adventures preserve their rescue, object, and outcome distinctions across the reviewed routes.
 
 Batch 261–270 added six findings to existing CRA-C0001/C0002 patterns; no new cluster was needed. Totals are now 176 HEALTHY, 15 MINOR CONCERN, and 79 CONFIRMED DEFECT across 270 reviewed Adventures; 591 remain. CRA-F0080–CRA-F0085 comprise two HIGH, three MEDIUM, and one LOW finding. The Christmas affinity, disaster state-aware, and registry suites passed 25 tests across 3 files; these checks support but do not replace the source review. No gameplay source or tests were changed. The next registry entry is position 271, The Powder Wagon, and the next finding ID is CRA-F0086.
 
-## Positions 271–280
+## Audit batch (originally recorded positions 271–280; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 271 | The Powder Wagon | HEALTHY | — |
-| 272 | After the Tornado | CONFIRMED DEFECT | CRA-F0086 (MEDIUM) — checking the cow’s gate sets the “moved” proof and makes the ending say it is safe. |
-| 273 | The Second Wave | HEALTHY | — |
-| 274 | Wanted in Red Creek | HEALTHY | — |
-| 275 | The Man at the End of the Bar | CONFIRMED DEFECT | CRA-F0087 (MEDIUM) — exit routes that never hear from a clerk still say the clerk corrected the accusation. |
-| 276 | The Stage Was Hit | CONFIRMED DEFECT | CRA-F0088 (MEDIUM) — the coach party is said to travel under escort even when no town help was summoned. |
-| 277 | The Bounty Poster | HEALTHY | — |
-| 278 | The Empty Jail | CONFIRMED DEFECT | CRA-F0089 (LOW) — waiting without contacting anyone reaches text asserting a clerk reviewed the charge book. |
-| 279 | Three Men at the Water Trough | HEALTHY | — |
-| 280 | The Rustled Herd | CONFIRMED DEFECT | CRA-F0090 (MEDIUM) — settlement combines market and holding-pasture counts when either source was not visited. |
+| 275 | The Powder Wagon | HEALTHY | — |
+| 276 | After the Tornado | CONFIRMED DEFECT | CRA-F0086 (MEDIUM) — checking the cow’s gate sets the “moved” proof and makes the ending say it is safe. |
+| 277 | The Second Wave | HEALTHY | — |
+| 278 | Wanted in Red Creek | HEALTHY | — |
+| 279 | The Man at the End of the Bar | CONFIRMED DEFECT | CRA-F0087 (MEDIUM) — exit routes that never hear from a clerk still say the clerk corrected the accusation. |
+| 280 | The Stage Was Hit | CONFIRMED DEFECT | CRA-F0088 (MEDIUM) — the coach party is said to travel under escort even when no town help was summoned. |
+| 281 | The Bounty Poster | HEALTHY | — |
+| 282 | The Empty Jail | CONFIRMED DEFECT | CRA-F0089 (LOW) — waiting without contacting anyone reaches text asserting a clerk reviewed the charge book. |
+| 283 | Three Men at the Water Trough | HEALTHY | — |
+| 284 | The Rustled Herd | CONFIRMED DEFECT | CRA-F0090 (MEDIUM) — settlement combines market and holding-pasture counts when either source was not visited. |
 
 After the stove is made safe in After the Tornado, the cow remains unresolved; choosing only to check its gate sets `tornadoCowMoved` and later counts it safe (CRA-F0086). The Man at the End of the Bar routes directly through the kitchen exit or a successful weapon diversion to `safeEnd` without contacting the clerk, but the ending says the clerk corrected the accusation (CRA-F0087). The Stage Was Hit permits waiting with survivors without warning town; the doctor/escort is conditional in the survivor scene but the ending makes escort unconditional (CRA-F0088). The Empty Jail’s wait-only route neither calls nor finds the clerk, yet `jailerBack` reports the clerk’s review and the wait scene refers to an unanswered call (CRA-F0089). The Rustled Herd can reach settlement from the brands alone, from market, or from the holding pasture, but settlement always combines the buyer’s twelve-calf receipt and the eighteen-cattle holding count (CRA-F0090). The other five Adventures preserve their route-specific knowledge, hazard control, rescue, suspicion, and animal/property outcomes.
 
 Batch 271–280 added five findings to CRA-C0001; no new cluster was needed. Totals are now 181 HEALTHY, 15 MINOR CONCERN, and 84 CONFIRMED DEFECT across 280 reviewed Adventures; 581 remain. CRA-F0086–CRA-F0090 comprise four MEDIUM and one LOW finding. The disaster/western/registry suites passed 12 tests across 3 files; these checks support but do not replace source review. No gameplay source or tests were changed. The next registry entry is position 281, A Gun on the Table, and the next finding ID is CRA-F0091.
 
-## Positions 281–290
+## Audit batch (originally recorded positions 281–290; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 281 | A Gun on the Table | CONFIRMED DEFECT | CRA-F0091 (MEDIUM) — routes that do not fetch the harvest book reach text asserting its repayment entry and a negotiated balance/date. |
-| 282 | The Outlaw’s Mother | CONFIRMED DEFECT | CRA-F0092 (LOW) — handing the letter to the deputy grants History that family news was carried to the wanted son. |
-| 283 | The False Deputy | HEALTHY | — |
-| 284 | One Horse, Two Riders | HEALTHY | — |
-| 285 | The Last Shot | CONFIRMED DEFECT | CRA-F0093 (LOW) — a retreat without signaling the rancher grants History credit for helping them leave. |
-| 286 | The Map in the Ledger | CONFIRMED DEFECT | CRA-F0094 (LOW) — copying an unexplained map can end by naming its mark as a water gate. |
-| 287 | The Town That Moved | HEALTHY | — |
-| 288 | The Old Survey Stone | HEALTHY | — |
-| 289 | The Sealed Mine Office | HEALTHY | — |
-| 290 | The Room Behind the Chimney | CONFIRMED DEFECT | CRA-F0095 (MEDIUM) — partial or unexamined routes converge on claims that the family learned the room’s purpose and returned both objects. |
+| 285 | A Gun on the Table | CONFIRMED DEFECT | CRA-F0091 (MEDIUM) — routes that do not fetch the harvest book reach text asserting its repayment entry and a negotiated balance/date. |
+| 286 | The Outlaw’s Mother | CONFIRMED DEFECT | CRA-F0092 (LOW) — handing the letter to the deputy grants History that family news was carried to the wanted son. |
+| 287 | The False Deputy | HEALTHY | — |
+| 288 | One Horse, Two Riders | HEALTHY | — |
+| 289 | The Last Shot | CONFIRMED DEFECT | CRA-F0093 (LOW) — a retreat without signaling the rancher grants History credit for helping them leave. |
+| 290 | The Map in the Ledger | CONFIRMED DEFECT | CRA-F0094 (LOW) — copying an unexplained map can end by naming its mark as a water gate. |
+| 291 | The Town That Moved | HEALTHY | — |
+| 292 | The Old Survey Stone | HEALTHY | — |
+| 293 | The Sealed Mine Office | HEALTHY | — |
+| 294 | The Room Behind the Chimney | CONFIRMED DEFECT | CRA-F0095 (MEDIUM) — partial or unexamined routes converge on claims that the family learned the room’s purpose and returned both objects. |
 
 In A Gun on the Table, `distanceTalk` and the innkeeper’s `hallCall` both reach `book` without retrieving the harvest book, but that scene presents its eight-coin repayment entry as known. A successful grab-and-secure route bypasses the book yet reaches a settled ending that states the conditional four-coin balance and accepted date (CRA-F0091). The Outlaw’s Mother correctly gates delivery wording on `familyNewsDeliveredToSon`, but the separate `deputyLetter` choice grants History claiming family news was carried to the wanted son even though the letter was given to the deputy (CRA-F0092). In The Last Shot, `coverLeave` reaches retreat without signaling the rancher; the retreat scene says their safety depends on following a signal, but `retreatReport` still grants History credit for helping them leave (CRA-F0093). In The Map in the Ledger, copying the map or returning from the creek before reading the stone reaches an ending that identifies the mark as a water gate; that interpretation is established only by `stoneRecord` (CRA-F0094). The Room Behind the Chimney’s shared discovery claims both the purpose was learned and both objects were returned, although braced withdrawal learns no letter contents and retrieves nothing, while box and letter routes can return only one object (CRA-F0095). One Horse, Two Riders’ foot-follow branch permits the explicit `trackDoctor` action to take the stranger to the ranch house before the doctor-ending claim; other routes preserve the pouch/posse distinctions. The False Deputy preserves the distinction between reporting and escort, The Town That Moved’s discovery is supported by its visited marker/record routes, the Old Survey Stone’s calf-return claims remain correctly gated by `oldSurveyCalfReturned`, and the Sealed Mine Office uses route-specific variants to avoid importing private wage, notice, map, or drainage facts. Western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed.
 
 Batch 281–290 added five findings to existing CRA-C0001/C0002 patterns; no new cluster was required. Totals are now 186 HEALTHY, 15 MINOR CONCERN, and 89 CONFIRMED DEFECT across 290 reviewed Adventures; 571 remain. CRA-F0091–CRA-F0095 comprise two MEDIUM and three LOW findings. The western outlaw, Lost Places, and registry suites passed 13 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 291, The Island When the Water Falls, and the next finding ID is CRA-F0096.
 
-## Positions 291–300
+## Audit batch (originally recorded positions 291–300; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 291 | The Island When the Water Falls | CONFIRMED DEFECT | CRA-F0096 (LOW) — safe-bank/retreat routes conclude the island was a freight landing without visiting it. |
-| 292 | The Forgotten Station | CONFIRMED DEFECT | CRA-F0097 (LOW) — discovery cites the book and chalk when the route did not inspect them. |
-| 293 | The Cave with Worked Stone | HEALTHY | — |
-| 294 | The Lost Payroll | HEALTHY | — |
-| 295 | The House under the Hill | CONFIRMED DEFECT | CRA-F0098 (MEDIUM) — the ending supplies flood history and landholder closure after routes with no deed or landholder contact. |
-| 296 | The Riverboat Cache | HEALTHY | — |
-| 297 | The Last Room in the Fort | CONFIRMED DEFECT | CRA-F0099 (LOW) — a blankets-only inventory route still refers unidentified letters to the surgeon’s family. |
-| 298 | The Thing at Black Creek | CONFIRMED DEFECT | CRA-F0100 (MEDIUM), CRA-F0101 (MEDIUM) — premature bear Knowledge; closure/participation attributed without sufficient route proof. |
-| 299 | Teeth in the Mine | CONFIRMED DEFECT | CRA-F0102 (MEDIUM), CRA-F0103 (HIGH), CRA-F0104 (LOW) — a located miner becomes “not found,” a broken rope can complete rescue, and a trapped miner is implied to help carry the Traveler. |
-| 300 | Something in the Corn | HEALTHY | — |
+| 295 | The Island When the Water Falls | CONFIRMED DEFECT | CRA-F0096 (LOW) — safe-bank/retreat routes conclude the island was a freight landing without visiting it. |
+| 296 | The Forgotten Station | CONFIRMED DEFECT | CRA-F0097 (LOW) — discovery cites the book and chalk when the route did not inspect them. |
+| 297 | The Cave with Worked Stone | HEALTHY | — |
+| 298 | The Lost Payroll | HEALTHY | — |
+| 299 | The House under the Hill | CONFIRMED DEFECT | CRA-F0098 (MEDIUM) — the ending supplies flood history and landholder closure after routes with no deed or landholder contact. |
+| 300 | The Riverboat Cache | HEALTHY | — |
+| 301 | The Last Room in the Fort | CONFIRMED DEFECT | CRA-F0099 (LOW) — a blankets-only inventory route still refers unidentified letters to the surgeon’s family. |
+| 302 | The Thing at Black Creek | CONFIRMED DEFECT | CRA-F0100 (MEDIUM), CRA-F0101 (MEDIUM) — premature bear Knowledge; closure/participation attributed without sufficient route proof. |
+| 303 | Teeth in the Mine | CONFIRMED DEFECT | CRA-F0102 (MEDIUM), CRA-F0103 (HIGH), CRA-F0104 (LOW) — a located miner becomes “not found,” a broken rope can complete rescue, and a trapped miner is implied to help carry the Traveler. |
+| 304 | Something in the Corn | HEALTHY | — |
 
 The Island When the Water Falls can end directly from waiting on the safe bank or reading the post without reaching the island, yet the ending definitively calls it a former freight landing (CRA-F0096). The Forgotten Station’s worker/account/crate routes converge on text crediting the book and chalk even when the player did not inspect both (CRA-F0097). The House under the Hill’s room-only retreat and upper-room exit assert a flood cause and landholder closure that those routes never establish (CRA-F0098). In The Last Room in the Fort, choosing to record blankets/cot only still leads to a county disposition of unidentified private letters (CRA-F0099). The Thing at Black Creek grants Knowledge before the keeper provides the claimed explanation (CRA-F0100), and multiple endings/history assert weir closure and farm protection without the necessary call or completed action (CRA-F0101). Teeth in the Mine resets one located miner to “not found” on withdrawal (CRA-F0102), accepts an owned-but-BROKEN rope for the rescue and related History (CRA-F0103), and after the brace failure says “the miners” drag the Traveler although the second miner remains trapped (CRA-F0104). The Cave with Worked Stone, Lost Payroll, Riverboat Cache, and Something in the Corn preserve their uncertainty, evidence, object custody, and outcome distinctions across the reviewed routes. Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files; graph/metadata tests support but do not replace source review. No gameplay source or tests were changed.
 
 Batch 291–300 added nine findings to existing CRA-C0001/C0002/C0004 patterns; no new cluster was required. Totals are now 190 HEALTHY, 15 MINOR CONCERN, and 95 CONFIRMED DEFECT across 300 reviewed Adventures; 561 remain. CRA-F0096–CRA-F0104 comprise one HIGH, four MEDIUM, and four LOW findings. The Lost Places, Monster Hunt, and registry suites passed 19 tests across 3 files. No gameplay source or tests were changed. The next canonical registry entry is position 301, The Barrow Hound, and the next finding ID is CRA-F0105.
 
-## Positions 301–310
+## Audit batch (originally recorded positions 301–310; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 301 | The Barrow Hound | CONFIRMED DEFECT | CRA-F0105 (LOW) — the marked-rim ending also claims the flock was moved to higher pasture. |
-| 302 | The White Stag | CONFIRMED DEFECT | CRA-F0106 (MEDIUM) — shared closure says the farmer postponed the hunt and livestock caused crop loss on unresolved routes. |
-| 303 | The Red-Eyed Boar | HEALTHY | — |
-| 304 | The Bone-Eater | HEALTHY | — |
-| 305 | The Lantern-Eater | CONFIRMED DEFECT | CRA-F0107 (LOW) — a route damages an exposed lantern, but successful-combat closure says it remains untouched while covered. |
-| 306 | The Mire Horse | CONFIRMED DEFECT | CRA-F0108 (MEDIUM) — a mark-and-retreat route claims an unseen helper guides the Traveler and removes the false light. |
-| 307 | The River Devil | CONFIRMED DEFECT | CRA-F0109 (MEDIUM) — Knowledge identifies a submerged log before the route probes beneath the dark water. |
-| 308 | The Miller’s Beast | CONFIRMED DEFECT | CRA-F0110 (MEDIUM), CRA-F0111 (LOW) — Knowledge credits an unperformed wheel-stop; yard-guiding route says the badger exits via the culvert. |
-| 309 | The Ashen Man | CONFIRMED DEFECT | CRA-F0112 (MEDIUM) — ember-only containment reaches text claiming the trapped worker is with family. |
-| 310 | The Thing Beneath the Ice | CONFIRMED DEFECT | CRA-F0113 (MEDIUM) — a direct retreat route gains a sound-response conclusion without testing sound behavior. |
+| 305 | The Barrow Hound | CONFIRMED DEFECT | CRA-F0105 (LOW) — the marked-rim ending also claims the flock was moved to higher pasture. |
+| 306 | The White Stag | CONFIRMED DEFECT | CRA-F0106 (MEDIUM) — shared closure says the farmer postponed the hunt and livestock caused crop loss on unresolved routes. |
+| 307 | The Red-Eyed Boar | HEALTHY | — |
+| 308 | The Bone-Eater | HEALTHY | — |
+| 309 | The Lantern-Eater | CONFIRMED DEFECT | CRA-F0107 (LOW) — a route damages an exposed lantern, but successful-combat closure says it remains untouched while covered. |
+| 310 | The Mire Horse | CONFIRMED DEFECT | CRA-F0108 (MEDIUM) — a mark-and-retreat route claims an unseen helper guides the Traveler and removes the false light. |
+| 311 | The River Devil | CONFIRMED DEFECT | CRA-F0109 (MEDIUM) — Knowledge identifies a submerged log before the route probes beneath the dark water. |
+| 312 | The Miller’s Beast | CONFIRMED DEFECT | CRA-F0110 (MEDIUM), CRA-F0111 (LOW) — Knowledge credits an unperformed wheel-stop; yard-guiding route says the badger exits via the culvert. |
+| 313 | The Ashen Man | CONFIRMED DEFECT | CRA-F0112 (MEDIUM) — ember-only containment reaches text claiming the trapped worker is with family. |
+| 314 | The Thing Beneath the Ice | CONFIRMED DEFECT | CRA-F0113 (MEDIUM) — a direct retreat route gains a sound-response conclusion without testing sound behavior. |
 
 The Barrow Hound’s `markMound` route reaches an ending that also claims pasture relocation, which is only the separate `closePasture` outcome (CRA-F0105). The White Stag’s orchard-release and unresolved-hunter routes reach text that settles both farmer intent and the cause of crop damage without establishing either (CRA-F0106). In the Lantern-Eater, raising the lantern damages it before a successful strike reaches `campDawn`, whose text says it remained untouched while covered (CRA-F0107). The Mire Horse’s `markSkiff` route goes directly from evidence to `marshDeception` without meeting the helper, while the ending credits him with removing the light and guiding the Traveler (CRA-F0108). River Devil’s `inspectWater` grants the submerged-log conclusion before the later probe identifies the object (CRA-F0109). The Miller’s Beast grants stopping-wheel Knowledge on routes that leave the wheel turning, and its yard-guiding route shares an ending that says the badger exits by the culvert (CRA-F0110–F0111). In the Ashen Man, smothering the ember from the kiln interior does not free the worker, though the shared ending says the worker is safe with family (CRA-F0112). The Thing Beneath the Ice grants a specific sound-response conclusion on the direct retreat route that bypasses the sound-comparison scene (CRA-F0113).
 
 The Red-Eyed Boar distinguishes opening the corridor from trap/charge outcomes; the Bone-Eater preserves observation, boundary, containment, and withdrawal variants. The current batch added six MEDIUM and three LOW findings to existing CRA-C0001 and CRA-C0002 patterns; no new cluster was required. Supporting Monster Hunt, Miller’s Beast F6, provenance, and registry tests passed (27 tests across four files); these support but do not replace the route review. No gameplay source or tests were changed. Totals are 192 HEALTHY, 15 MINOR CONCERN, and 103 CONFIRMED DEFECT across 310 reviewed Adventures; 551 remain. Next canonical registry entry: position 311, The Goat That Wouldn’t Stay Dead; next finding ID `CRA-F0114`.
 
-## Positions 311–320
+## Audit batch (originally recorded positions 311–320; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 311 | The Goat That Wouldn’t Stay Dead | CONFIRMED DEFECT | CRA-F0114 (MEDIUM) — grave closure can credit the feed-tally explanation without visiting the ledger. |
-| 312 | The Widow’s Beast | CONFIRMED DEFECT | CRA-F0115 (MEDIUM) — shared closure combines fence repair and stopping food even when routes establish only one or neither. |
-| 313 | The Cellar Thing | CONFIRMED DEFECT | CRA-F0116 (HIGH) — fetching the keeper bypasses the seller rescue route but claims the seller reached the yard and the opening was boarded. |
-| 314 | The Man Who Sheds His Skin | CONFIRMED DEFECT | CRA-F0117 (MEDIUM) — cousin contact is treated as proof of the tailor’s two-brother explanation. |
-| 315 | The Pale Children of the Quarry | HEALTHY | — |
-| 316 | The Antlered Thing | HEALTHY | — |
-| 317 | The Last Trap | CONFIRMED DEFECT | CRA-F0118 (MEDIUM), CRA-F0119 (MEDIUM), CRA-F0120 (LOW) — shared results overstate dog recovery, trap disarming, and bedroll chronology. |
-| 318 | The Broken Antler | CONFIRMED DEFECT | CRA-F0121 (MEDIUM) — a BROKEN knife can satisfy the physical wire-cut action. |
-| 319 | The Man-Eater of Miller’s Gap | HEALTHY | — |
-| 320 | The Cinder Hound | HEALTHY | — |
+| 315 | The Goat That Wouldn’t Stay Dead | CONFIRMED DEFECT | CRA-F0114 (MEDIUM) — grave closure can credit the feed-tally explanation without visiting the ledger. |
+| 316 | The Widow’s Beast | CONFIRMED DEFECT | CRA-F0115 (MEDIUM) — shared closure combines fence repair and stopping food even when routes establish only one or neither. |
+| 317 | The Cellar Thing | CONFIRMED DEFECT | CRA-F0116 (HIGH) — fetching the keeper bypasses the seller rescue route but claims the seller reached the yard and the opening was boarded. |
+| 318 | The Man Who Sheds His Skin | CONFIRMED DEFECT | CRA-F0117 (MEDIUM) — cousin contact is treated as proof of the tailor’s two-brother explanation. |
+| 319 | The Pale Children of the Quarry | HEALTHY | — |
+| 320 | The Antlered Thing | HEALTHY | — |
+| 321 | The Last Trap | CONFIRMED DEFECT | CRA-F0118 (MEDIUM), CRA-F0119 (MEDIUM), CRA-F0120 (LOW) — shared results overstate dog recovery, trap disarming, and bedroll chronology. |
+| 322 | The Broken Antler | CONFIRMED DEFECT | CRA-F0121 (MEDIUM) — a BROKEN knife can satisfy the physical wire-cut action. |
+| 323 | The Man-Eater of Miller’s Gap | HEALTHY | — |
+| 324 | The Cinder Hound | HEALTHY | — |
 
 The Goat That Wouldn’t Stay Dead’s gravedigger route can bypass the feed ledger but still grant History for resolving the goat identities through its tally (CRA-F0114). The Widow’s Beast’s shared `widowAfter` result claims both repaired fencing and stopped feeding across independent or non-intervention routes (CRA-F0115). In The Cellar Thing, fetching the keeper from outside the cellar goes directly to rescue closure, whose text says the seller reached the yard and the keeper boarded the service opening although those events are established only through the voice/passage route (CRA-F0116). In The Man Who Sheds His Skin, asking for the cousin reaches the identity ending without meeting the tailor, yet the ending circulates the two-brother/exchanged-coat explanation (CRA-F0117). The Last Trap has three distinct mismatches: dogs are said to return when still unrecovered (CRA-F0118); wire/dog resolution is asserted after back-away routes that do not establish either (CRA-F0119); and a route that first sees the bedroll placed says the Traveler left before it was set (CRA-F0120). The Broken Antler requires a knife in inventory but not a usable knife for cutting wire, so BROKEN gear can complete the action (CRA-F0121).
 
 The Pale Children of the Quarry, Antlered Thing, Man-Eater of Miller’s Gap, and Cinder Hound were reviewed across their materially distinct discovery, intervention, withdrawal, danger, and closure variants and retained uncertainty/outcome distinctions. The current batch added six findings to CRA-C0001, one to CRA-C0002, and one to CRA-C0004; no new cluster was needed. Focused route/choice, persistence, Monster Hunt, Gear-usability, I1 regression, and registry suites passed 48 tests across six files. These checks support but do not replace semantic source review. No gameplay source or tests were changed. Totals are now 196 HEALTHY, 15 MINOR CONCERN, and 109 CONFIRMED DEFECT across 320 reviewed Adventures; 541 remain. CRA-F0114–CRA-F0121 comprise one HIGH, six MEDIUM, and one LOW finding. The next canonical registry entry is position 321, The Three-Toed Track, and the next finding ID is CRA-F0122.
 
-## Positions 321–330
+## Audit batch (originally recorded positions 321–330; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 321 | The Three-Toed Track | CONFIRMED DEFECT | CRA-F0122 (MEDIUM) — resolved routes claim sale terms were compared when they were not. |
-| 322 | The Red Maw | HEALTHY | — |
-| 323 | The Beast at the Toll Road | CONFIRMED DEFECT | CRA-F0123 (MEDIUM), CRA-F0124 (MEDIUM) — resolution overstates sack/horse recovery; a BROKEN knife can cut the control rope. |
-| 324 | The Skin in the Tree | CONFIRMED DEFECT | CRA-F0125 (MEDIUM) — shared closure presumes landholder/warden intervention and animal release on routes that do not establish them. |
-| 325 | The Thing That Mimics the Whistle | HEALTHY | — |
-| 326 | The Stoneback | CONFIRMED DEFECT | CRA-F0126 (MEDIUM) — rope stabilization is narrated as cart rerouting and cessation of stack shifts. |
-| 327 | The Roof Through the Trees | HEALTHY | — |
-| 328 | The Camp with Fresh Ashes | MINOR CONCERN | — |
-| 329 | The Floorboard That Was Replaced | HEALTHY | — |
-| 330 | The Forgotten Sluice | HEALTHY | — |
+| 325 | The Three-Toed Track | CONFIRMED DEFECT | CRA-F0122 (MEDIUM) — resolved routes claim sale terms were compared when they were not. |
+| 326 | The Red Maw | HEALTHY | — |
+| 327 | The Beast at the Toll Road | CONFIRMED DEFECT | CRA-F0123 (MEDIUM), CRA-F0124 (MEDIUM) — resolution overstates sack/horse recovery; a BROKEN knife can cut the control rope. |
+| 328 | The Skin in the Tree | CONFIRMED DEFECT | CRA-F0125 (MEDIUM) — shared closure presumes landholder/warden intervention and animal release on routes that do not establish them. |
+| 329 | The Thing That Mimics the Whistle | HEALTHY | — |
+| 330 | The Stoneback | CONFIRMED DEFECT | CRA-F0126 (MEDIUM) — rope stabilization is narrated as cart rerouting and cessation of stack shifts. |
+| 331 | The Roof Through the Trees | HEALTHY | — |
+| 332 | The Camp with Fresh Ashes | MINOR CONCERN | — |
+| 333 | The Floorboard That Was Replaced | HEALTHY | — |
+| 334 | The Forgotten Sluice | HEALTHY | — |
 
 The Three-Toed Track’s return-plate and payment routes reach `trackResolved` without comparing the sale note, though the shared ending says the terms were compared (CRA-F0122). In The Beast at the Toll Road, exposing or interrupting the staged attack reaches text claiming grain recovery and horse release without those outcomes being recorded (CRA-F0123); the control-rope action also accepts a broken small knife (CRA-F0124). The Skin in the Tree’s direct drag-mark route reaches the camp without asking the landholder, and mark-and-withdraw / solo snare-cut routes still claim warden removal and animal release (CRA-F0125). In The Stoneback, securing one loose stack with rope enters an ending that says the crew rerouted the cart and the creature stopped shifting stacks, outcomes established by separate upper-bench choices (CRA-F0126). The Red Maw, Thing That Mimics the Whistle, Roof Through the Trees, Floorboard That Was Replaced, and Forgotten Sluice preserved route-specific uncertainty and outcomes, including the sluice’s targeted override. Camp with Fresh Ashes is a minor wording concern: its cautious closure calls the unidentified person an absent worker and says only the Traveler’s tracks are new, without defining the watch interval.
 
 That batch added four findings to CRA-C0001 and one to CRA-C0004; no new cluster was needed. Focused Monster Hunt, Frontier Discovery, Frontier RC12, final-choice, and registry suites passed 42 tests across five files. These checks support but do not replace semantic review. No source or test files were changed. At that checkpoint, totals were 201 HEALTHY, 16 MINOR CONCERN, and 113 CONFIRMED DEFECT across 330 reviewed Adventures; 531 remained. CRA-F0122–CRA-F0126 were all MEDIUM.
 
-## Positions 331–340
+## Audit batch (originally recorded positions 331–340; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 331 | The Mule Trail | MINOR CONCERN | — |
-| 332 | The Prospector’s Map | MINOR CONCERN | — |
-| 333 | The Empty Assay Office | MINOR CONCERN | — |
-| 334 | The Cabin with Two Locks | MINOR CONCERN | — |
-| 335 | The Gold Dust in the Floorboards | MINOR CONCERN | — |
-| 336 | The Old Hoist | CONFIRMED DEFECT | CRA-F0127 (MEDIUM) — tested hoist is later described as untouched. |
-| 337 | The Camp Below the Slide | CONFIRMED DEFECT | CRA-F0128 (MEDIUM) — object-action choices do not resolve tool/chest acquisition. |
-| 338 | The Hidden Tailings Pile | CONFIRMED DEFECT | CRA-F0129 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
-| 339 | The Old Claim Cabin | HEALTHY | — |
-| 340 | The Claim with No Name | CONFIRMED DEFECT | CRA-F0130 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
+| 335 | The Mule Trail | MINOR CONCERN | — |
+| 336 | The Prospector’s Map | MINOR CONCERN | — |
+| 337 | The Empty Assay Office | MINOR CONCERN | — |
+| 338 | The Cabin with Two Locks | MINOR CONCERN | — |
+| 339 | The Gold Dust in the Floorboards | MINOR CONCERN | — |
+| 340 | The Old Hoist | CONFIRMED DEFECT | CRA-F0127 (MEDIUM) — tested hoist is later described as untouched. |
+| 341 | The Camp Below the Slide | CONFIRMED DEFECT | CRA-F0128 (MEDIUM) — object-action choices do not resolve tool/chest acquisition. |
+| 342 | The Hidden Tailings Pile | CONFIRMED DEFECT | CRA-F0129 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
+| 343 | The Old Claim Cabin | HEALTHY | — |
+| 344 | The Claim with No Name | CONFIRMED DEFECT | CRA-F0130 (MEDIUM) — bilateral evidence-sharing choice has no established second party. |
 
 The Old Hoist tests the mechanism with loose timber, then both cautious closure and mishap text say it was left untouched (CRA-F0127). The Camp Below the Slide offers taking a loose tool or reaching for a chest, but successful routes never resolve whether either object is acquired or left (CRA-F0128). The Hidden Tailings Pile and The Claim with No Name inherit a generic “give both sides the same account” option without introducing or contacting the other party (CRA-F0129–CRA-F0130). The Old Claim Cabin preserves uncertainty about who worked the claim and what the find means; no contradiction was found. The Mule Trail, Prospector’s Map, Empty Assay Office, Cabin with Two Locks, and Gold Dust in the Floorboards have limited or repeated generic route payoffs, but their text does not assert a route-unsupported fact, so they remain minor concerns.
 
 The batch added CRA-F0127 to the established route-state/convergence cluster CRA-C0001 and created CRA-C0006 for generic Frontier Discovery archetypes that promise unsupported actors or unresolved action outcomes (CRA-F0128–CRA-F0130). Frontier Discovery, registry, and diversity suites passed 31 tests across three files as supporting evidence; card-by-card route review remains authoritative. No gameplay source or tests were changed. At that checkpoint totals were 202 HEALTHY, 21 MINOR CONCERN, and 117 CONFIRMED DEFECT across 340 reviewed Adventures; 521 remained. All four new findings were MEDIUM.
 
-## Positions 341–350
+## Audit batch (originally recorded positions 341–350; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 341 | The Broken Rocker Box | MINOR CONCERN | — |
-| 342 | The Rusted Safe | MINOR CONCERN | — |
-| 343 | The Cache Under the Stove | HEALTHY | — |
-| 344 | The Washed-Out Claim | CONFIRMED DEFECT | CRA-F0131 (MEDIUM) — the promised shovel-taking action has no resolved acquisition outcome. |
-| 345 | The Old Dredge | CONFIRMED DEFECT | CRA-F0132 (MEDIUM) — the ledger-markings investigation produces no reading/result. |
-| 346 | The Derelict Stamp Mill | MINOR CONCERN | — |
-| 347 | The Survey Stakes Are Wrong | HEALTHY | — |
-| 348 | The Claim at Dry Creek | HEALTHY | — |
-| 349 | Claim Jumpers at Sundown | CONFIRMED DEFECT | CRA-F0133 (MEDIUM) — evidence is “shared” with an absent employer who is never contacted. |
-| 350 | The Man in the Abandoned Camp | MINOR CONCERN | — |
+| 345 | The Broken Rocker Box | MINOR CONCERN | — |
+| 346 | The Rusted Safe | MINOR CONCERN | — |
+| 347 | The Cache Under the Stove | HEALTHY | — |
+| 348 | The Washed-Out Claim | CONFIRMED DEFECT | CRA-F0131 (MEDIUM) — the promised shovel-taking action has no resolved acquisition outcome. |
+| 349 | The Old Dredge | CONFIRMED DEFECT | CRA-F0132 (MEDIUM) — the ledger-markings investigation produces no reading/result. |
+| 350 | The Derelict Stamp Mill | MINOR CONCERN | — |
+| 351 | The Survey Stakes Are Wrong | HEALTHY | — |
+| 360 | The Claim at Dry Creek | HEALTHY | — |
+| 361 | Claim Jumpers at Sundown | CONFIRMED DEFECT | CRA-F0133 (MEDIUM) — evidence is “shared” with an absent employer who is never contacted. |
+| 362 | The Man in the Abandoned Camp | MINOR CONCERN | — |
 
 The Washed-Out Claim’s cautious action says to take the loose shovel, but it grants only general site insight; no item or route state records whether the shovel was taken, and later endings do not resolve its disposition (CRA-F0131). The Old Dredge offers reading the ledger-box markings from the bank, but neither the success route nor its ending supplies any marking or information result (CRA-F0132). Claim Jumpers at Sundown places visitors at the gate but represents the employer only through a posted map; its generic “give both sides the same account” choice claims bilateral sharing without a route to the absent employer (CRA-F0133). The Cache Under the Stove explicitly resolves coins/items and their effects; Survey Stakes Are Wrong has a card-specific route specialization that keeps observations separate; and Claim at Dry Creek has both groups physically present. The Broken Rocker Box, Rusted Safe, Derelict Stamp Mill, and Man in the Abandoned Camp contain repeated or under-resolved action prompts, but no definite unsupported fact, so they remain minor concerns.
 
 The three confirmed findings join CRA-C0006, the generic Frontier archetype mismatch pattern. Supporting Frontier Discovery, registry, and diversity suites passed 31 tests across three files; route-level source inspection determined the classifications. No gameplay source or tests were changed. At the position-350 checkpoint the totals were 205 HEALTHY, 25 MINOR CONCERN, and 120 CONFIRMED DEFECT; 511 remained. All three findings were MEDIUM.
 
-## Positions 351–360
+## Audit batch (originally recorded positions 351–360; table positions are live)
 
 | Position | Adventure | Classification | Finding |
 | ---: | --- | --- | --- |
-| 351 | The Timber Claim | CONFIRMED DEFECT | CRA-F0134 (MEDIUM) — a generic bilateral account is offered without any claimant present. |
-| 352 | The Second Claim Marker | CONFIRMED DEFECT | CRA-F0135 (MEDIUM) — the same bilateral-sharing choice has no recipient. |
-| 353 | The Claim That Pays Too Well | CONFIRMED DEFECT | CRA-F0136 (MEDIUM) — no second claimant/recipient is established for the shared account. |
-| 354 | The Camp with Fresh-Cut Wood | CONFIRMED DEFECT | CRA-F0137 (MEDIUM) — the selected note-marker action is not resolved. |
-| 355 | The Shaft Behind the Trees | MINOR CONCERN | — |
-| 356 | The Old Ferry Landing | MINOR CONCERN | — |
-| 357 | The Collapsed Storehouse | MINOR CONCERN | — |
-| 358 | The Trail That Ends at Stone | MINOR CONCERN | — |
-| 359 | The Toast Nobody Ordered | CONFIRMED DEFECT | CRA-F0138 (MEDIUM) — an unvisited couple-preference branch grants Knowledge. |
-| 360 | An Invitation for Someone Else | CONFIRMED DEFECT | CRA-F0139 (MEDIUM) — “supper, then explain” ends before the explanation. |
+| 363 | The Timber Claim | CONFIRMED DEFECT | CRA-F0134 (MEDIUM) — a generic bilateral account is offered without any claimant present. |
+| 364 | The Second Claim Marker | CONFIRMED DEFECT | CRA-F0135 (MEDIUM) — the same bilateral-sharing choice has no recipient. |
+| 365 | The Claim That Pays Too Well | CONFIRMED DEFECT | CRA-F0136 (MEDIUM) — no second claimant/recipient is established for the shared account. |
+| 366 | The Camp with Fresh-Cut Wood | CONFIRMED DEFECT | CRA-F0137 (MEDIUM) — the selected note-marker action is not resolved. |
+| 367 | The Shaft Behind the Trees | MINOR CONCERN | — |
+| 368 | The Old Ferry Landing | MINOR CONCERN | — |
+| 369 | The Collapsed Storehouse | MINOR CONCERN | — |
+| 370 | The Trail That Ends at Stone | MINOR CONCERN | — |
+| 371 | The Toast Nobody Ordered | CONFIRMED DEFECT | CRA-F0138 (MEDIUM) — an unvisited couple-preference branch grants Knowledge. |
+| 372 | An Invitation for Someone Else | CONFIRMED DEFECT | CRA-F0139 (MEDIUM) — “supper, then explain” ends before the explanation. |
 
 The Timber Claim, Second Claim Marker, and Claim That Pays Too Well use a generic claim-sharing choice without a present or established second recipient; each is independently witnessed in its scenario-specific setup and routed through `shareRecord` (CRA-F0134–CRA-F0136). Camp with Fresh-Cut Wood offers leaving a note-like marker twice, but neither the route effect nor terminal text records that intervention (CRA-F0137). The Shaft Behind the Trees, Old Ferry Landing, Collapsed Storehouse, and Trail That Ends at Stone retain uncertainty and warned boundaries; their repeated or generic actions lack payoff detail but do not establish a concrete false state, so they remain minor concerns. In The Toast Nobody Ordered, the best-man aside does not reveal the couple’s preference, yet the offer-words route grants that exact Knowledge (CRA-F0138). An Invitation for Someone Else sends “Accept supper, then explain” directly to the meal ending without correcting the host’s mistaken identity (CRA-F0139).
 
