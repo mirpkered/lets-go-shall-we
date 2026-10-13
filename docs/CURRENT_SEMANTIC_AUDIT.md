@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 620 current registered Adventures reviewed; 241 of 861 remain.
-Next: position 621, The Wind’s Other Side (`the-winds-other-side`; `src/scenarios/wildernessFieldcraftGenreBatch.ts`); next finding ID `CRA-F0237`; next available cluster ID `CRA-C0010`.
+Checkpoint reconciled by stable Adventure ID: 630 current registered Adventures reviewed; 231 of 861 remain.
+Next: position 631, The Leaning Pine (`the-leaning-pine`; `src/scenarios/wildernessFieldcraftGenreBatch.ts`); next finding ID `CRA-F0238`; next available cluster ID `CRA-C0010`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 368 |
-| MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 214 |
+| HEALTHY | 376 |
+| MINOR CONCERN | 39 |
+| CONFIRMED DEFECT | 215 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 620 |
+| Total reviewed current registered Adventures | 630 |
 
-There are 236 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 added CRA-F0223 on reward-condition mismatch, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge authorization. Positions 581–590 added CRA-F0226 on reward-condition mismatch and CRA-F0227–CRA-F0228 on missing action/state proof; seven Adventures were healthy. Positions 591–600 added CRA-F0229–CRA-F0231 for an unsupported brace-test winner, unsafe quarry-route convergence, and an unproved signal-contest prize; CRA-F0232 records a bent Survey Chain granted as NORMAL. Six Adventures were healthy. Positions 601–610 added CRA-F0233–CRA-F0235 for a split-log award without correction, a hinge diagnosis prize after a wrong untested choice, and a safe roof-anchor result without anchor proof; seven Adventures were healthy.
+There are 237 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 added CRA-F0223 on reward-condition mismatch, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge authorization. Positions 581–590 added CRA-F0226 on reward-condition mismatch and CRA-F0227–CRA-F0228 on missing action/state proof; seven Adventures were healthy. Positions 591–600 added CRA-F0229–CRA-F0231 for an unsupported brace-test winner, unsafe quarry-route convergence, and an unproved signal-contest prize; CRA-F0232 records a bent Survey Chain granted as NORMAL. Six Adventures were healthy. Positions 601–610 added CRA-F0233–CRA-F0235 for a split-log award without correction, a hinge diagnosis prize after a wrong untested choice, and a safe roof-anchor result without anchor proof; seven Adventures were healthy. Positions 611–620 added CRA-F0236 for shallow-shelf-only crossing survey language claiming a safer road-bridge route, extending CRA-C0001. Positions 621–630 added CRA-F0237 for unsupported public-water access at the north cairn, also extending CRA-C0001; eight were healthy and one minor concern was recorded.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 610. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–610 were then reviewed in live-registry order. There are no gaps through position 610. The next unreviewed Adventure is position 611, The Fair-Weather Reading (`the-fair-weather-reading`); 251 current registered Adventures remain.
+The highest contiguous reviewed position is now 630. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–630 were then reviewed in live-registry order. There are no gaps through position 630. The next unreviewed Adventure is position 631, The Leaning Pine (`the-leaning-pine`); 231 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1202,3 +1202,24 @@ One current contradiction was confirmed. In The Alder Crossing, `edge.markShallo
 | 620 | The Smoke Along the Draw | HEALTHY | — warning/evacuation, ridge retreat, brush-gap limitation, crew response and containment reward routes preserve their outcomes. |
 
 The ledger now covers positions 1–620 without gaps (620 reviewed, 241 remaining), with 368 HEALTHY, 38 MINOR CONCERN, 214 CONFIRMED DEFECT, and zero NEEDS MANUAL REVIEW. There are 236 findings. Next is position 621, The Wind’s Other Side (`the-winds-other-side`), and next finding ID CRA-F0237; CRA-C0010 remains the next available cluster ID.
+
+## Audit continuation (live positions 621–630)
+
+Reviewed ten unreviewed Adventures in live `SCENARIOS` order. Traced the stone-lee/brush-bench and fire routes; fen probing, guide-line, spade and deferred-board variants; the cold-rope fracture and retreat; uncertain tracks versus the answered ridge search and rescue; reed-bed signals, guide/crew approaches and deferred pack recovery; mule inspection, safe shoulder, pull-forward and handler outcomes; cairn/chain/drover/book evidence and authorization; dry-match fuel/stove alternatives; rain shelter, cloak and exposed-contour routes; and salt-lick signs, herd calls, calf search and farmer outcomes. Relevant wilderness, Gear and compensation tests were inspected as supporting evidence, including the wind-bench regression; the local test runner is unavailable, so tests were not run. Route/source tracing remains authoritative. No source or gameplay tests changed.
+
+One current contradiction was confirmed. In The Broken Cairn, three routes reach the shared north result without verifying the pasture boundary or authoritative route-book access: the frost-shifted socket, a chain measurement that explicitly cannot resolve the boundary, and the drover’s uncertain gate statement. Only the book-check route establishes that the northern track is public water access, yet the shared result states this as fact on all routes. CRA-F0237 extends CRA-C0001. The Cold Rope at Dawn is a minor wording concern: its terminal “leave the ice intact” phrase is ambiguous after the preceding scene establishes a fracture, but it does not claim a successful crossing. Eight Adventures were healthy; no new cluster was established.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 621 | The Wind’s Other Side | HEALTHY | — the brush-bench partial does not inherit stone-lee sparks; bedding, stores, fire and Knowledge claims fit each route. |
+| 622 | A Footing in the Fen | HEALTHY | — probing, line and bearing stop short of proving a safe center crossing; the spade only drains the edge and requires usable Gear. |
+| 623 | The Cold Rope at Dawn | MINOR CONCERN | — no crossing occurs after the first-weight fracture; terminal “leave the ice intact” wording is ambiguous about the already-fractured sheet. |
+| 624 | Where the Print Ends | HEALTHY | — incomplete tracks remain uncertain; the rescue branch follows a direct response and location of the injured hand. |
+| 625 | The Reed Bed Signal | HEALTHY | — a glint is not treated as a person until answered; guide/crew rescue and deferred pack recovery remain distinct. |
+| 626 | The Mule’s Last Step | HEALTHY | — refusal is not treated as proof of a specific collapse; safe return, forced lead/slip, fee and Knowledge outcomes differ correctly. |
+| 627 | The Broken Cairn | CONFIRMED DEFECT | CRA-F0237 (MEDIUM) — shared north result asserts public-water authorization without boundary or route-book proof. |
+| 628 | One Dry Match | HEALTHY | — usable Match Case gate, relocated stove versus attended small flame, and fuel/compensation claims stay distinct. |
+| 629 | Rain on the Return Path | HEALTHY | — shelter, wait, cloak, exposed contour, retreat/marker and compensation outcomes preserve their route evidence. |
+| 630 | The Salt Lick Trail | HEALTHY | — sign, herd call, calf discovery and farmer lead/hold routes support the resulting claims and reward. |
+
+The ledger now covers positions 1–630 without gaps (630 reviewed, 231 remaining), with 376 HEALTHY, 39 MINOR CONCERN, 215 CONFIRMED DEFECT, and zero NEEDS MANUAL REVIEW. There are 237 findings. Next is position 631, The Leaning Pine (`the-leaning-pine`), next finding ID CRA-F0238; CRA-C0010 remains the next available cluster ID.
