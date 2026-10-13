@@ -4,10 +4,10 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 530,
-  "reviewedCount": 530,
-  "remainingCount": 331,
-  "nextPosition": 531,
+  "reviewedThroughPosition": 540,
+  "reviewedCount": 540,
+  "remainingCount": 321,
+  "nextPosition": 541,
   "nextFindingId": "CRA-F0211",
   "nextClusterId": "CRA-C0009",
   "status": "IN_PROGRESS",
@@ -544,7 +544,17 @@
     {"position":527,"adventureId":"the-missing-survey-case","slug":"the-missing-survey-case","title":"The Missing Survey Case","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0210"],"reviewProvenance":"current-source route review; crew-first/strap-gated case/marker approaches, chainman evacuation, cart roll/leave outcomes and case-loss/partial results traced","notes":"The instrument case begins on a plank table below the crack. On workers -> evacuate -> call, the Traveler asks the chainman to wait while the others circle; no route moves the case. The shared partial ending nevertheless says the case reaches the track scratched but usable. The explicit cart -> roll branch does move it; case -> cart -> leave and evacuation -> go correctly lose the case while saving people."},
     {"position":528,"adventureId":"the-smallpox-letter","slug":"the-smallpox-letter","title":"The Smallpox Letter","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; case/cloak availability, receipt/privacy/return, sealed clinic wait/crowd delivery and witnessed stablehand handoff traced","notes":"The seal remains intact until the doctor opens the notice; the Traveler never learns who is ill. Receipt and parent questions preserve confidentiality, returning leaves custody with the postmaster, and delivered/handoff routes identify the recipient and custody transfer. Case/cloak choices require usable named Gear."},
     {"position":529,"adventureId":"the-winter-feed-sled","slug":"the-winter-feed-sled","title":"The Winter Feed Sled","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; road/sounding-rod/inlet routes, unload/turn/listen/urge choices, late feed, partial hand-carry and sled loss traced","notes":"The usable sounding rod reveals hollow middle ice and enables a turn or hand-carried partial delivery. The inlet route lets the Traveler listen and turn the team away or deliberately urge it onto unsafe ice; the loss ending protects the horse and records replacement feed. Safe long-road outcomes and lateness are consistent."},
-    {"position":530,"adventureId":"the-fence-at-crow-road","slug":"the-fence-at-crow-road","title":"The Fence at Crow Road","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; authority inquiry/crew withdrawal/stand, commissioner wait/public-work completion, combat and injured withdrawal outcomes traced","notes":"The landowners’ men own pasture but not the county verge; waiting for the commissioner, finishing with witnesses, and standing ground remain separate. Crew withdrawal leaves the gap open and workers safe. Combat win reaches commissioner verification; loss preserves workers/tools and withholds the protection bonus. Existing wage-exclusion regression supports but does not replace this route trace."}
+    {"position":530,"adventureId":"the-fence-at-crow-road","slug":"the-fence-at-crow-road","title":"The Fence at Crow Road","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; authority inquiry/crew withdrawal/stand, commissioner wait/public-work completion, combat and injured withdrawal outcomes traced","notes":"The landowners’ men own pasture but not the county verge; waiting for the commissioner, finishing with witnesses, and standing ground remain separate. Crew withdrawal leaves the gap open and workers safe. Combat win reaches commissioner verification; loss preserves workers/tools and withholds the protection bonus. Existing wage-exclusion regression supports but does not replace this route trace."},
+    {"position":531,"adventureId":"the-glass-plate-box","slug":"the-glass-plate-box","title":"The Glass-Plate Box","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; blanket/map-case protection, box-first/camera-first crossing, turnback, combat win and loss traced","notes":"Both protective Gear choices require possession and usability. Carrying the plate box first yields intact plates; camera-first and combat loss lead to the cracked-plate outcome, while turning back preserves the plates but delays delivery. Combat victory protects Lyle and does not claim that the Traveler carried either object."},
+    {"position":532,"adventureId":"the-night-mail-train","slug":"the-night-mail-train","title":"The Night Mail Train","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; sack watch, passenger shelter, parcel-room transfer, porter call, combat and delay outcomes traced","notes":"The direct parcel-room route transfers the sacks with the agent’s key. On the passenger-shelter route, sacks stay in view until the agent returns and records them inside; that subsequent securing action is expressly attributed to the agent. The whistle route brings a porter onto watch, while winning the stop prevents the attempted theft before arrival. Delay and shared-awning results do not claim opened or lost mail."},
+    {"position":533,"adventureId":"the-bridge-pins","slug":"the-bridge-pins","title":"The Bridge Pins","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; rope-secure, watch/move, crew-clear, thief combat win/loss, beam-clear and partial outcomes traced","notes":"The rope route secures the chest to the cart; the alternate watch-and-move route enters a beam scene that explicitly establishes the chest as secure before either outcome. The partial result’s tied-to-cart wording is consistent with that intervening state. Crew evacuation remains distinct from chest protection; the combat-loss partial still states the resulting near miss without claiming that the workers were cleared by the Traveler."},
+    {"position":534,"adventureId":"the-lost-childs-lantern","slug":"the-lost-childs-lantern","title":"The Lost Child’s Lantern","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; whistle/wait signal, known-gate route, hidden-ditch retreat/call, lantern-fetch and both-child outcomes traced","notes":"The brother remains at a known post when signaled; gate routes bring both children together, while the lantern route deliberately returns to the farm for a light and leads them by the fence. The ditch route retreats rather than crossing the drop; finding the gate can continue through the farmstead before the described lantern-guided return. Meal/wick and coin/parish outcomes remain tied to the distinct endings."},
+    {"position":535,"adventureId":"the-telegraph-repair-car","slug":"the-telegraph-repair-car","title":"The Telegraph Repair Car","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; marker/gloves/mirror availability, closure, wave/handcar block, tester/firm-pole repair and climb/brace outcomes traced","notes":"The local choice helper adds usableItems to every named item requirement, including marker, gloves, mirror and tester. The tester variant claims continuity but explicitly not pole safety; second-pole relay, line closure and direct bracing remain distinct. Waving and blocking with the handcar lead to the appropriate safe and damage outcomes."},
+    {"position":536,"adventureId":"the-supper-wagon","slug":"the-supper-wagon","title":"The Supper Wagon","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; cook-supplied cover, rest/delay, usable whistle, hand-carry, horse return and hammer-clearing outcomes traced","notes":"The blanket is supplied by the cook; the Traveler’s Farm Whistle is possession-and-usability gated by the helper. Carrying food while the team rests, returning the horse for camp collection, and shifting the branch with a usable hammer lead to separate route results and fees."},
+    {"position":537,"adventureId":"the-fence-at-the-fog-line","slug":"the-fence-at-the-fog-line","title":"The Fence at the Fog Line","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; usable marker/rope, long/short boardwalk, wait, porter-slip and jar-movement outcomes traced","notes":"Marker and rope actions are possession-and-usability gated. The intact long boardwalk is late but safe; the missing-plank crossing has a shaken porter. Helping the slipping porter before moving the jar remains distinct from asking Kersey to move it while the Traveler helps."},
+    {"position":538,"adventureId":"the-lumber-crew-at-the-gully","slug":"the-lumber-crew-at-the-gully","title":"The Lumber Crew at the Gully","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; owned stretcher, crew loan, line rescue, saw-first, slow/alone lift and item transfer traced","notes":"The crew-loan route is the only rescue path that begins without the Traveler’s own stretcher and permits accepting the retired spare; the owned-stretcher route excludes that grant. Rope rescue and saw-first preserve the worker/saw priority distinction. The conditional ownership sentence is supported only when the acceptance effect occurs; strain and delay remain explicit."},
+    {"position":539,"adventureId":"the-quiet-coffin-cart","slug":"the-quiet-coffin-cart","title":"The Quiet Coffin Cart","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; usable rope/wedge brake methods, turnback, family steadying, unload/carry and fee traced","notes":"Both named Gear methods require usable equipment. Turning back delays the service without risking the coffin; after braking, the family either steadies the cart or unloads and carries it uphill. Only the narrated arrival route pays the stated two-coin fee."},
+    {"position":540,"adventureId":"the-silent-warehouse-shift","slug":"the-silent-warehouse-shift","title":"The Silent Warehouse Shift","sourceFile":"src/scenarios/escortProtectionGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; list/lantern/watch, crate-first, worker-first, combat success/loss, ember and pursuit outcomes traced","notes":"The two evacuation actions set distinct history flags and the ending chooses the corresponding order-specific text; both keep oil sealed and people clear. Combat success stops the attempted theft before the figure leaves and reaches evacuation; loss takes the figure out the river door while goods remain safe and no pursuit bonus is paid. Watch/help and fight outcomes preserve the different crate-handling claims."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -1021,7 +1031,7 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 304,
+    "HEALTHY": 314,
     "MINOR CONCERN": 38,
     "CONFIRMED DEFECT": 188,
     "NEEDS MANUAL REVIEW": 0
@@ -1231,6 +1241,10 @@
     {
       "command": "pnpm exec vitest run src/scenarios/escortProtectionGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
       "result": "21 tests passed across 3 files; supporting Escort/Protection response and reward variants, registry integrity, and equipment semantics for positions 521-530; semantic conclusions are from per-route source traces"
+    },
+    {
+      "command": "pnpm exec vitest run src/scenarios/escortProtectionGenreBatch.test.ts src/scenarioRegistryValidation.test.ts src/equipment.test.ts",
+      "result": "21 tests passed across 3 files; supporting Escort/Protection item-availability, route/reward behavior, registry integrity, and Gear-usability semantics for positions 531-540; conclusions are based on per-route source traces"
     }
   ],
   "reviewBatches": [
@@ -1441,14 +1455,18 @@
     {
       "positions": "521-530",
       "status": "reviewed the next ten stable IDs in live SCENARIOS order. CRA-F0209 records the farrier removing a stone already extracted by the Traveler; CRA-F0210 records a survey case reaching the track after a people-first route that never moved it. Both extend CRA-C0001. Eight Adventures are healthy; no new cluster was needed. Escort/Protection, registry, and equipment suites passed 21 tests across three files as supporting evidence; no gameplay source or tests changed."
+    },
+    {
+      "positions": "531-540",
+      "status": "reviewed the next ten unreviewed stable IDs in live SCENARIOS order. All route networks were traced, including glass/camera custody, mail-sack and passenger handling, chest securing before bridge evacuation, both child-recovery routes, telegraph safety/relay methods, food/horse outcomes, fog/porter/jar state, stretcher ownership and transfer, coffin-cart methods, and warehouse fire/theft outcomes. Apparent convergence compression is supported by explicit intervening scene state or plausible NPC follow-through; no confirmed defect or distinct minor concern was established. All ten are HEALTHY. No finding or cluster ID was consumed; next finding remains CRA-F0211 and next cluster CRA-C0009. Escort/Protection, registry, and equipment suites passed 21 tests across three files as supporting evidence; gameplay source/tests unchanged."
     }
   ],
-  "highestContiguousReviewedPosition": 530,
-  "maxReviewedRegistryPosition": 530,
+  "highestContiguousReviewedPosition": 540,
+  "maxReviewedRegistryPosition": 540,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 531,
-  "firstUnreviewedStableId": "the-glass-plate-box",
-  "nextStableId": "the-glass-plate-box",
+  "firstUnreviewedPosition": 541,
+  "firstUnreviewedStableId": "the-last-mile-of-the-medicine-wagon",
+  "nextStableId": "the-last-mile-of-the-medicine-wagon",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -1979,7 +1997,17 @@
     "the-missing-survey-case",
     "the-smallpox-letter",
     "the-winter-feed-sled",
-    "the-fence-at-crow-road"
+    "the-fence-at-crow-road",
+    "the-glass-plate-box",
+    "the-night-mail-train",
+    "the-bridge-pins",
+    "the-lost-childs-lantern",
+    "the-telegraph-repair-car",
+    "the-supper-wagon",
+    "the-fence-at-the-fog-line",
+    "the-lumber-crew-at-the-gully",
+    "the-quiet-coffin-cart",
+    "the-silent-warehouse-shift"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2022,9 +2050,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 530,
+    "highestContiguousReviewedPosition": 540,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 530,
+    "maxReviewedLivePosition": 540,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2042,6 +2070,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, and Escort/Protection Adventures at positions 521–530 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 531, The Glass-Plate Box (stable ID the-glass-plate-box), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, and Escort/Protection Adventures at positions 521–540 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 541, The Last Mile of the Medicine Wagon (stable ID the-last-mile-of-the-medicine-wagon), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }

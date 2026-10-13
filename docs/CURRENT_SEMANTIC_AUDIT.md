@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 530 current registered Adventures reviewed; 331 of 861 remain.
-Next: position 531, The Glass-Plate Box (`the-glass-plate-box`; `src/scenarios/escortProtectionGenreBatch.ts`); next finding ID `CRA-F0211`; next available cluster ID `CRA-C0009`.
+Checkpoint reconciled by stable Adventure ID: 540 current registered Adventures reviewed; 321 of 861 remain.
+Next: position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`; `src/scenarios/escortProtectionGenreBatch.ts`); next finding ID `CRA-F0211`; next available cluster ID `CRA-C0009`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 304 |
+| HEALTHY | 314 |
 | MINOR CONCERN | 38 |
 | CONFIRMED DEFECT | 188 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 530 |
+| Total reviewed current registered Adventures | 540 |
 
-There are 210 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy.
+There are 210 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 530. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–530 were then reviewed in live-registry order. There are no gaps through position 530. The next unreviewed Adventure is position 531, The Glass-Plate Box (`the-glass-plate-box`); 331 current registered Adventures remain.
+The highest contiguous reviewed position is now 540. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–540 were then reviewed in live-registry order. There are no gaps through position 540. The next unreviewed Adventure is position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`); 321 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1015,3 +1015,22 @@ Reviewed the next ten stable IDs in live `SCENARIOS` order. Traced courier custo
 | 530 | The Fence at Crow Road | HEALTHY | — authority inquiry, withdrawal, commissioner verification, combat and injured withdrawal preserve crew/wage outcomes. |
 
 CRA-F0209–CRA-F0210 extend CRA-C0001 (prior action and object-location facts lost at a shared outcome); no new cluster was needed. No gameplay source or tests changed. The ledger is contiguous through position 530; next is position 531, The Glass-Plate Box (`the-glass-plate-box`), with 331 remaining and next finding CRA-F0211.
+
+## Audit continuation (live positions 531–540)
+
+Reviewed the next ten unreviewed stable IDs in live `SCENARIOS` order. Traced glass/camera custody and damaged cargo, mail-sack/passenger/porter outcomes, bridge-chest securing before evacuation and combat, both child-recovery routes, telegraph closure/marker/gloves/mirror/tester and repair methods, food/horse/team outcomes, fog/boardwalk/porter/jar variants, stretcher ownership and transfer, coffin-cart restraint/carry/delay paths, and warehouse fire/theft/evacuation outcomes. Apparent convergence compression is supported by explicit intervening scene state or plausible named-NPC follow-through; no confirmed defect or distinct minor concern was established. All ten are HEALTHY. The focused Escort/Protection, registry, and equipment suites passed 21 tests across three files as supporting evidence; route-level source traces remain authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 531 | The Glass-Plate Box | HEALTHY | — box-first, camera-first, turnback, and combat outcomes preserve plate/camera condition and delivery timing. |
+| 532 | The Night Mail Train | HEALTHY | — the agent’s return and parcel-room logging is explicit; porter involvement is tied to the whistle route and sacks remain sealed. |
+| 533 | The Bridge Pins | HEALTHY | — the alternate move route’s beam scene establishes the chest as secure before the tied-to-cart partial result; worker clearance and combat outcomes stay distinct. |
+| 534 | The Lost Child’s Lantern | HEALTHY | — gate recovery, ditch retreat, brother signaling, and farm-lantern return preserve child locations and separate meal/wick from coin outcomes. |
+| 535 | The Telegraph Repair Car | HEALTHY | — named Gear gates include usability; firm-pole tester/relay text distinguishes continuity from pole safety. |
+| 536 | The Supper Wagon | HEALTHY | — cook-supplied cover, Traveler whistle, rest/delay, hand-carry, horse return, and usable-hammer outcomes remain distinct. |
+| 537 | The Fence at the Fog Line | HEALTHY | — marker/rope usability, intact versus missing-plank paths, porter assistance, and jar custody match the selected route. |
+| 538 | The Lumber Crew at the Gully | HEALTHY | — owned/borrowed stretcher, acceptance, rope rescue, saw-first, and strain outcomes preserve person/equipment priorities. |
+| 539 | The Quiet Coffin Cart | HEALTHY | — usable rope/wedge methods, turnback, steadying versus unload/carry, and the two-coin arrival fee align. |
+| 540 | The Silent Warehouse Shift | HEALTHY | — order-specific evacuation variants preserve crate/worker sequencing; combat win/loss and watch outcomes do not claim an unchosen evacuation method. |
+
+No finding or cluster ID was consumed; next finding remains CRA-F0211 and next available cluster remains CRA-C0009. The ledger is contiguous through position 540; next is position 541, The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`), with 321 current registered Adventures remaining. No gameplay source or tests changed; Weekly Scenario Batch remains paused.
