@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint: registry positions 1–200 reviewed; 661 of 861 remain.
-Next: position 201; next finding ID `CRA-F0053`.
+Checkpoint: registry positions 1–210 reviewed; 651 of 861 remain.
+Next: position 211; next finding ID `CRA-F0059`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is `SCENARIOS` in `src/scenarios/index.ts`. Positio
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 136 |
-| MINOR CONCERN | 13 |
-| CONFIRMED DEFECT | 51 |
+| HEALTHY | 141 |
+| MINOR CONCERN | 14 |
+| CONFIRMED DEFECT | 55 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed | 200 |
+| Total reviewed | 210 |
 
-There are 52 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, and CRA-F0044 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, and CRA-F0052 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, and CRA-F0051 are HIGH. Batch 51–60 found no additional confirmed defects.
+There are 58 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Findings CRA-F0016–CRA-F0018 are HIGH, MEDIUM, MEDIUM respectively; CRA-F0019, CRA-F0023–CRA-F0026, CRA-F0028–CRA-F0032, CRA-F0034–CRA-F0036, CRA-F0041, CRA-F0044, CRA-F0054, CRA-F0056, and CRA-F0057 are LOW; CRA-F0027, CRA-F0033, CRA-F0037–CRA-F0038, CRA-F0040, CRA-F0042, CRA-F0045–CRA-F0049, CRA-F0052–CRA-F0053, and CRA-F0055 are MEDIUM; CRA-F0039, CRA-F0043, CRA-F0050, and CRA-F0051 are HIGH. Batch 51–60 found no additional confirmed defects.
 
 ## Positions 21–30
 
@@ -335,12 +335,33 @@ The Medium Who Knows Too Much charges one coin, then applies a one-coin refund o
 
 The Book Without a Title’s common ending says the printer copies the repeated mark even when the Traveler closes the book or stops reading before inspecting/copying its margins (CRA-F0049, MEDIUM). The Voice in the Well sends direct leave and haul-back routes to text where a mason has capped the well and found a speaking tube, although those routes never call him or inspect the wall (CRA-F0050, HIGH). The Empty Coffin’s close/delay and avoid-accusation routes claim the missing-body cause is known despite never finding the living cooper in the side room (CRA-F0051, HIGH). The Man Who Came Back Wrong likewise says the miller sealed the drain and reports the second footprint set after routes that never inspect the sluice (CRA-F0052, MEDIUM). The patched Candle and Hanging Charms endings preserve their distinct leave, closure, entry, and inspection outcomes.
 
+## Positions 201–210
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 201 | The Third Knock | HEALTHY | — |
+| 202 | The Wrong Shadow | CONFIRMED DEFECT | CRA-F0053 (MEDIUM) — shared ending includes a lamplighter who was absent; CRA-F0054 (LOW) — Lantern use lacks a usable-item gate. |
+| 203 | The Red Chapel | HEALTHY | — |
+| 204 | The Man Who Wouldn’t Stay Dead | HEALTHY | — |
+| 205 | Below the Old Fort | CONFIRMED DEFECT | CRA-F0055 (MEDIUM) — ending claims a copied route plan on routes that never found it; CRA-F0056 (LOW) — silvered knife use lacks a usable-item gate. |
+| 206 | The Barrow Door | HEALTHY | — |
+| 207 | The Hollow Man | CONFIRMED DEFECT | CRA-F0057 (LOW) — broken smallKnife still enables bone removal. |
+| 208 | The Borrowed Face | MINOR CONCERN | Final text assumes a mirror/glazier follow-up even on dismissal without a mirror scene. |
+| 209 | The Doorway with No Room | CONFIRMED DEFECT | CRA-F0058 (MEDIUM) — default seal/withdraw ending claims a second opening and builder measurements not established on those routes. |
+| 210 | The Last Candle in the House | HEALTHY | — |
+
+The Third Knock keeps its letter states and delivery choices distinct: the name is established before the player can carry it, and the sealed letter can be burned, left, returned at dawn, or delivered. The Wrong Shadow’s shared ending says both the lamplighter and Traveler saw the turn and that the lamplighter reached the crowded street even when the Traveler left or tested the shadow without calling him (CRA-F0053, MEDIUM). Its `testShadowLight` choice also physically uses the starting Lantern without requiring it to be usable (CRA-F0054, LOW).
+
+The Red Chapel retains the route-specific Salt/Chalk interruption, trapped-participant movement, and retreat outcomes. In Below the Old Fort, the common resolution claims a copied route plan even from barracks/lamp/guard routes that never enter the powder room, where the plan is found (CRA-F0055, MEDIUM). The separate silvered-edge action checks the smallKnife upgrade but not whether the knife is usable (CRA-F0056, LOW). The Man Who Wouldn’t Stay Dead keeps its marker/stake evidence and retreat/failure outcomes bounded; the Barrow Door’s patched variants distinguish the son returned, left inside, outside call, and never-entered states.
+
+The Hollow Man’s optional bone-removal action checks only knife ownership, so a BROKEN smallKnife can still perform the physical action (CRA-F0057, LOW); its other endings do not claim the missing worker was found. The Borrowed Face’s common ending assumes an inn mirror was covered and left for glazier inspection even on the direct dismissal route; because the inn could plausibly contain an unmentioned mirror, this remains a minor concern. The Doorway with No Room’s patches distinguish opening the far door and turning back, but the default ending still claims both openings were bricked in and builder measurements confirmed the impossible corridor on direct seal and threshold-measure/leave routes (CRA-F0058, MEDIUM). The Last Candle in the House’s current variants preserve waiting outside, inspection, and snuffing without inspection.
+
 ## Finding clusters
 
-- **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0040, CRA-F0042–CRA-F0044, CRA-F0046–CRA-F0047, CRA-F0049–CRA-F0052.
+- **CRA-C0001 — Route-specific state lost at convergence:** CRA-F0002, CRA-F0003, CRA-F0005, CRA-F0012–CRA-F0019, CRA-F0022, CRA-F0028–CRA-F0029, CRA-F0032–CRA-F0033, CRA-F0035–CRA-F0040, CRA-F0042–CRA-F0044, CRA-F0046–CRA-F0047, CRA-F0049–CRA-F0053, CRA-F0055, CRA-F0058.
 - **CRA-C0002 — Knowledge/History without route proof:** CRA-F0001, CRA-F0004, CRA-F0031, CRA-F0034, CRA-F0041.
 - **CRA-C0003 — Elapsed-time proxy used as event proof:** CRA-F0011.
-- **CRA-C0004 — Gear ownership treated as Gear usability:** CRA-F0020, CRA-F0021, CRA-F0023–CRA-F0027, CRA-F0030, CRA-F0045.
+- **CRA-C0004 — Gear ownership treated as Gear usability:** CRA-F0020, CRA-F0021, CRA-F0023–CRA-F0027, CRA-F0030, CRA-F0045, CRA-F0054, CRA-F0056–CRA-F0057.
 - **CRA-C0005 — A single fee can be refunded more than once:** CRA-F0048; an intermediate refund and follow-up refund both apply money effects for the same paid reading.
 
 The detailed findings, witnesses, source provenance, and carry-forward limitations are in [current-semantic-audit-ledger.json](current-semantic-audit-ledger.json).
@@ -360,5 +381,7 @@ Batch 171–180 supporting suites (`octoberAffinityBatch.test.ts`, `secondWaveBa
 Batch 181–190 supporting suites (`octoberAffinityBatch.test.ts`, `occultInvestigationBatch.test.ts`, `finalChoiceConsequenceAudit.test.ts`, and `scenarioRegistryValidation.test.ts`) passed: 57 tests across 4 files. They support, but do not replace, the route-level source review. No gameplay source or tests were changed.
 
 Batch 191–200 supporting suites (`occultInvestigationBatch.test.ts`, `finalChoiceConsequenceAudit.test.ts`, and `scenarioRegistryValidation.test.ts`) passed: 44 tests across 3 files. They support, but do not replace, the route-level source review. The root-cause cluster pointer was advanced to CRA-C0006 after adding CRA-C0005; no established cluster was renumbered. No gameplay source or tests were changed.
+
+Batch 201–210 supporting suites (`occultInvestigationBatch.test.ts`, `finalChoiceConsequenceAudit.test.ts`, and `equipment.test.ts`) passed: 52 tests across 3 files. Scenario registry validation was rerun separately; checks support, but do not replace, the route-level source review. No gameplay source or tests were changed.
 
 Batch 161–170 used the same four supporting suites: 36 tests passed across 4 files. These checks support, but do not replace, route-level source review.
