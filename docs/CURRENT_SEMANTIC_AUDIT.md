@@ -2,8 +2,8 @@
 
 Status: **IN PROGRESS**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Checkpoint reconciled by stable Adventure ID: 600 current registered Adventures reviewed; 261 of 861 remain.
-Next: position 601, The Blind Trail Marker (`the-blind-trail-marker`; `src/scenarios/competitionGearGenreBatch.ts`); next finding ID `CRA-F0233`; next available cluster ID `CRA-C0010`.
+Checkpoint reconciled by stable Adventure ID: 610 current registered Adventures reviewed; 251 of 861 remain.
+Next: position 611, The Fair-Weather Reading (`the-fair-weather-reading`; `src/scenarios/competitionGearGenreBatch.ts`); next finding ID `CRA-F0236`; next available cluster ID `CRA-C0010`.
 
 ## Current checkpoint
 
@@ -11,13 +11,13 @@ The canonical registry order is the live `SCENARIOS` array in `src/scenarios/ind
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 352 |
+| HEALTHY | 359 |
 | MINOR CONCERN | 38 |
-| CONFIRMED DEFECT | 210 |
+| CONFIRMED DEFECT | 213 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed current registered Adventures | 600 |
+| Total reviewed current registered Adventures | 610 |
 
-There are 232 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 added CRA-F0223 on reward-condition mismatch, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge authorization. Positions 581–590 added CRA-F0226 on reward-condition mismatch and CRA-F0227–CRA-F0228 on missing action/state proof; seven Adventures were healthy. Positions 591–600 added CRA-F0229–CRA-F0231 for an unsupported brace-test winner, unsafe quarry-route convergence, and an unproved signal-contest prize; CRA-F0232 records a bent Survey Chain granted as NORMAL. Six Adventures were healthy.
+There are 235 finding records so far. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. The per-finding severity distribution is preserved in the JSON ledger. Positions 461–470 added two MEDIUM confirmed findings, both extending CRA-C0001, and one minor concern. Positions 471–480 added three MEDIUM confirmed findings, also extending CRA-C0001. Positions 481–490 added two MEDIUM findings, also extending CRA-C0001, and one minor concern. Positions 491–500 added four findings to CRA-C0001 and one new equipment-gate pattern (CRA-C0008), plus one minor concern. Positions 501–510 added ten route/state findings, all extending CRA-C0001; no further cluster was needed. Positions 511–520 added three MEDIUM route-state findings to CRA-C0001 and two minor concerns; five Adventures were healthy. Positions 521–530 added two MEDIUM convergence findings to CRA-C0001; the other eight Adventures were healthy. Positions 531–540 were all HEALTHY; no findings or clusters were added. Positions 541–550 added two MEDIUM convergence findings (CRA-F0211–CRA-F0212) and one MEDIUM unusable-Gear measurement finding (CRA-F0213); seven Adventures were healthy. Positions 551–560 added four MEDIUM defects, CRA-F0214–CRA-F0217; six Adventures were healthy. Positions 561–570 added four MEDIUM convergence findings (CRA-F0218, CRA-F0219, CRA-F0221, CRA-F0222) and one MEDIUM unusable-Gear finding (CRA-F0220); five Adventures were healthy. Positions 571–580 added CRA-F0223 on reward-condition mismatch, CRA-F0224 on unsafe washout recovery, and CRA-F0225 on unproved wedge authorization. Positions 581–590 added CRA-F0226 on reward-condition mismatch and CRA-F0227–CRA-F0228 on missing action/state proof; seven Adventures were healthy. Positions 591–600 added CRA-F0229–CRA-F0231 for an unsupported brace-test winner, unsafe quarry-route convergence, and an unproved signal-contest prize; CRA-F0232 records a bent Survey Chain granted as NORMAL. Six Adventures were healthy. Positions 601–610 added CRA-F0233–CRA-F0235 for a split-log award without correction, a hinge diagnosis prize after a wrong untested choice, and a safe roof-anchor result without anchor proof; seven Adventures were healthy.
 
 ## Registry position reconciliation
 
@@ -25,7 +25,7 @@ The JSON ledger is stable-ID-first: every reviewed Adventure has its current liv
 
 Position drift is nonuniform. Positions 1–120 matched directly. Recorded positions 121–345 map +4 to live positions; recorded positions 346–418 map +12. The two legacy October IDs resolve at current positions 176–177. These are checkpoint bookkeeping omissions/stale position labels; the gameplay source snapshot did not change from `cba101f0feba09c67543f942331ca38f765ebe14`.
 
-The highest contiguous reviewed position is now 600. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–600 were then reviewed in live-registry order. There are no gaps through position 600. The next unreviewed Adventure is position 601, The Blind Trail Marker (`the-blind-trail-marker`); 261 current registered Adventures remain.
+The highest contiguous reviewed position is now 610. The formerly unreviewed positions 358–359 were reviewed, positions 360–372 were skipped because their stable IDs were already reviewed, and positions 373–610 were then reviewed in live-registry order. There are no gaps through position 610. The next unreviewed Adventure is position 611, The Fair-Weather Reading (`the-fair-weather-reading`); 251 current registered Adventures remain.
 
 ## Audit batch (originally recorded positions 21–30; table positions are live)
 
@@ -1158,3 +1158,24 @@ Four contradictions were recorded. In The Match at the Brace, a full sudden load
 | 600 | The Millwheel Hand | HEALTHY | — the toolkit follows a found/refitted peg and clean hand test; unsafe continuation, report, and damage routes never reach it. |
 
 The ledger now covers positions 1–600 without gaps (600 reviewed, 261 remaining), with 352 HEALTHY, 38 MINOR CONCERN, 210 CONFIRMED DEFECT, and zero NEEDS MANUAL REVIEW. There are 232 findings. Next is position 601, The Blind Trail Marker (`the-blind-trail-marker`), and next finding ID CRA-F0233; CRA-C0010 remains the next available cluster ID.
+
+## Audit continuation (live positions 601–610)
+
+Reviewed the next ten stable IDs in live `SCENARIOS` order. Traced the false-track/dead-end/reconsideration and prize routes; split-log inspection/reorientation and replacement versus direct cut, binding reset, stop, and chance outcomes; ferry signal instructions, current observation, punt rescue, line attempt, late call, refusal and whistle; old/new hinge evidence, post wear, load test and square prize; low/high strap placement, cart-stop correction, recentering, chance finish and prize tiers; target reset/revised round and no-placement coin outcome; the capped waterwheel wager, no-stake observation, call settlement and save/resume; roof-anchor inspection, weather postponement, direct sling, safe finish, street clearing and fee; the finite card stake, free viewing, guess, refund, prize and refusal; and harness fold inspection, fixed-winch stop, tear/risk and helper outcomes. Existing focused tests were inspected for trail reward acquisition, siding flags/legacy saves, ferry refusal, waterwheel wager persistence, and card wager affordability. They are supporting evidence only; route/source review is authoritative. The local package runner remains unavailable and no tests were changed.
+
+Three contradictions were recorded, all extending CRA-C0001. At the saw trial, direct cutting bypasses the stated requirement to turn and re-mark the discovered split log, yet can reach a counted clean-cut result and tool prize. At The Iron Squares, choosing the visibly new hinge from the history scene skips the working-load test but enters the result that narrates that test and offers the diagnosis prize. At The Rigging on the Roof, tying the sling and starting without anchor inspection can reach a finish that says the work used a sound anchor, despite only the explicit relocation routes establishing the sound beam. Seven other Adventures were healthy; no minor concern or new cluster was established.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 601 | The Blind Trail Marker | HEALTHY | — false-line/dead-end recovery preserves the evidence; the Travel Rope prize follows the correct trail explanation. |
+| 602 | The Saw before Supper | CONFIRMED DEFECT | CRA-F0233 (MEDIUM) — the split-log correction can be bypassed before a counted cut/prize. |
+| 603 | The Bell Rope at Ferry End | HEALTHY | — the whistle follows an effective stop signal; late call, released line and refusal do not claim it. |
+| 604 | The Iron Squares | CONFIRMED DEFECT | CRA-F0234 (MEDIUM) — a wrong appearance-based choice reaches the unperformed load-test result and diagnosis prize. |
+| 605 | The Load on the Siding | HEALTHY | — strap methods, recentering and winner/runner-up/loss/disqualification outcomes remain gated by their route state. |
+| 606 | The Hammer and the Ribbon | HEALTHY | — the first safe mark has no placement; winner Gear requires the revised-round leading score. |
+| 607 | The Bet at the Water Wheel | HEALTHY | — one funded wager settles once; free observation, loss and saved continuation do not create extra payouts. |
+| 608 | The Rigging on the Roof | CONFIRMED DEFECT | CRA-F0235 (HIGH) — direct sling setup can reach a finish claiming a sound anchor without establishing one. |
+| 609 | The Quiet Card Count | HEALTHY | — the single affordable wager returns or loses only its stated amount; free viewers cannot claim a prize. |
+| 610 | The Harness Stitch Trial | HEALTHY | — inspection/stop routes prove the fault; tear and close-call routes receive no prize, while a wrong appearance guess is not awarded to the Traveler. |
+
+The ledger now covers positions 1–610 without gaps (610 reviewed, 251 remaining), with 359 HEALTHY, 38 MINOR CONCERN, 213 CONFIRMED DEFECT, and zero NEEDS MANUAL REVIEW. There are 235 findings. Next is position 611, The Fair-Weather Reading (`the-fair-weather-reading`), and next finding ID CRA-F0236; CRA-C0010 remains the next available cluster ID.

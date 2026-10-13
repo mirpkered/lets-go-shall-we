@@ -4,11 +4,11 @@
   "branchAtReview": "codex/rc12-i2-deep-closure-20261012",
   "workingTreeStateAtReview": "clean before audit checkpoint creation",
   "totalRegisteredAdventures": 861,
-  "reviewedThroughPosition": 600,
-  "reviewedCount": 600,
-  "remainingCount": 261,
-  "nextPosition": 601,
-  "nextFindingId": "CRA-F0233",
+  "reviewedThroughPosition": 610,
+  "reviewedCount": 610,
+  "remainingCount": 251,
+  "nextPosition": 611,
+  "nextFindingId": "CRA-F0236",
   "nextClusterId": "CRA-C0010",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -614,7 +614,17 @@
     {"position":597,"adventureId":"the-lookout-at-dusk","slug":"the-lookout-at-dusk","title":"The Lookout at Dusk","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0231"],"reviewProvenance":"current-source route review; glass/chart/wind observation, signal-call, extra-worker rescue, pause/continue, score, glasses/coin/refusal paths traced; current focused test inspected","notes":"The scoring scene is reachable from chart.stayContest and seen.completeCall without identifying a signal or recording a correctness result. It nevertheless exposes claimGlass, whose only gate is that the Traveler does not already own Field Glasses, while the scene/prize source say glasses require a correct signal reading. The test verifies rescue Knowledge/compensation separation but not contest-score proof."},
     {"position":598,"adventureId":"the-long-carry","slug":"the-long-carry","title":"The Long Carry","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; balanced/drag methods, unsafe rut, rebalance, firm-course revision, push/race win and late result, rival assistance, purse/frame/lesson traced; existing targeted regression inspected","notes":"The shared safe-finish scene preserves whether carrier changes were learned through text variants; winner-only Pack Frame is in a separate confirmed-win scene, while safe non-winning finishes offer only the stated purse. Push success and failure route to win/late and help/close paths do not claim an unearned frame. Tests cover method-specific Knowledge, save persistence and frame qualification."},
     {"position":599,"adventureId":"five-marks-on-the-board","slug":"five-marks-on-the-board","title":"Five Marks on the Board","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; first aim, observed stance, wind shift, adjusted/unchanged throws, close/low/high score, tie-break/share, prize/coin/withdrawal traced","notes":"Chance outcomes separate high, narrow, and low scores before offering winner, runner-up, or no-prize routes. The calm-air tie-break reaches the winner prize only on success; the agreed share is a distinct negotiated one-coin split. Withdrawal exits without payment or Gear."},
-    {"position":600,"adventureId":"the-millwheel-hand","slug":"the-millwheel-hand","title":"The Millwheel Hand","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; peg inspection, repair/test, belt-first/hand-turn methods, stop/report, forced-turn success/failure, toolkit/fee traced; existing targeted regression inspected","notes":"The toolkit result is reachable only after finding/refitting the loose peg and checking a clean slow hand-turn; the report-wear route explicitly stops without prize. Tightening first leads to the sideways belt warning; forced continuation can only stop with fault/damage outcomes, never reach the safe prize. Existing tests distinguish forced-turn consequence from cautious stop."}
+    {"position":600,"adventureId":"the-millwheel-hand","slug":"the-millwheel-hand","title":"The Millwheel Hand","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; peg inspection, repair/test, belt-first/hand-turn methods, stop/report, forced-turn success/failure, toolkit/fee traced; existing targeted regression inspected","notes":"The toolkit result is reachable only after finding/refitting the loose peg and checking a clean slow hand-turn; the report-wear route explicitly stops without prize. Tightening first leads to the sideways belt warning; forced continuation can only stop with fault/damage outcomes, never reach the safe prize. Existing tests distinguish forced-turn consequence from cautious stop."},
+    {"position":601,"adventureId":"the-blind-trail-marker","slug":"the-blind-trail-marker","title":"The Blind Trail Marker","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; deep-print dead end, rule/edge comparison, false heel sign, correct/wrong/refusal result and prize traced; existing focused test inspected","notes":"The false deepest trail leads to a thicket and can be reconsidered; the correct rope prize is available only after naming the narrow return track and evidence. Wrong guesses, withdrawal, and observing without a stake do not claim it."},
+    {"position":602,"adventureId":"the-saw-before-supper-trial","slug":"the-saw-before-supper-trial","title":"The Saw before Supper","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0233"],"reviewProvenance":"current-source route review; underside split inspection/turn-or-replace, trestle inspection/withdrawal, binding-kerf safe reset, hard-pull success/failure, stop and prize/coin paths traced","notes":"The opening log contains a hidden split; after inspection, Rook says continuation requires turning and re-marking it. The direct startCut route bypasses inspection and enters the shared cut scene; easing the binding blade reaches finish and can award the tool, while a successful hard pull reaches fast and can also award it. No route establishes the required reorientation/re-mark before these counted cuts."},
+    {"position":603,"adventureId":"the-bell-rope-at-ferry-end","slug":"the-bell-rope-at-ferry-end","title":"The Bell Rope at Ferry End","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; signal rules, lookout/current instruction, stop-signal rescue, dry-dock line attempt, late call, release, prize/fee/refusal traced; existing focused regression inspected","notes":"The whistle follows a stop signal that lets the dock hand catch the drifting punt. A late contest call and a released line receive no prize; refusal keeps the whistle out of inventory and preserves the learned signal lesson. Prize and helper-fee alternatives are distinct."},
+    {"position":604,"adventureId":"the-iron-squares","slug":"the-iron-squares","title":"The Iron Squares","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0234"],"reviewProvenance":"current-source route review; closed-gap, swing, post-hole history, old/new hinge choices, actual-load result, prize/coin endings traced","notes":"history.chooseNew sends the player directly to result. That scene narrates a working-load test proving the older hinge fits better and offers the square prize as the diagnosis award, although the route contains only the wrong appearance-based choice and never performs the test or chooses the older hinge. The separate swing.chooseNewHinge route correctly terminates as a wrong diagnosis, exposing the inconsistent convergence."},
+    {"position":605,"adventureId":"the-load-on-the-siding","slug":"the-load-on-the-siding","title":"The Load on the Siding","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; low/high strap, cart rail correction, recentering, chance runner-up/loss, disqualification and prize tiers traced; existing targeted tests inspected","notes":"Route flags keep low and high straps distinct; recentering the high load is explicitly recorded before a winner result, and uncorrected high-strap chance outcomes lead to runner-up or loss without the winner’s strap. Disqualification and rail correction remain separate; tests cover result flags and legacy saves."},
+    {"position":606,"adventureId":"the-hammer-and-the-ribbon","slug":"the-hammer-and-the-ribbon","title":"The Hammer and the Ribbon","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; unsafe-frame hold/reset, clear-lane initial throw, reduced round score, revised round, miss, withdrawal and wedge/coin/helper outcomes traced; existing focused regression inspected","notes":"The initial safe mark ends in a shortened round with no placement and offers only the participation coin. The wedge appears only after a post-reset/revised-round success explicitly establishes the leading score; miss, withdrawal, and helping branches do not receive winner gear."},
+    {"position":607,"adventureId":"the-bet-at-the-water-wheel","slug":"the-bet-at-the-water-wheel","title":"The Bet at the Water Wheel","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; single capped wager, free observation, calls, chance outcomes, exact stake return/winnings, loss, lesson and resume traced; existing save/wager tests inspected","notes":"Only a paid one-coin stake exposes a wager call; correct and incorrect outcomes set distinct flags and money effects, then close the single trial. Watching for free offers no payment, and no second wager or replay payout is reachable. The result variants and save/resume test preserve the settlement."},
+    {"position":608,"adventureId":"the-rigging-on-the-roof","slug":"the-rigging-on-the-roof","title":"The Rigging on the Roof","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"CONFIRMED DEFECT","findingIds":["CRA-F0235"],"reviewProvenance":"current-source route review; cracked-anchor inspection/sound-beam relocation, postpone/cover, direct sling start, lowering/reset, street-clear signal, rushed lift success/failure and prize/fee outcomes traced","notes":"The opening offers tieSling as a direct start without selecting or establishing an anchor. Only inspectAnchor.useBeam and weather.secureLine establish the sound beam, but tieSling can reach lift.lowerAndReset -> finish and the finish asserts a sound anchor before offering the safe-lift prize. The route therefore receives a safety claim/reward with no route proof that the known cracked nearest ring was avoided."},
+    {"position":609,"adventureId":"the-quiet-card-count","slug":"the-quiet-card-count","title":"The Quiet Card Count","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; single stake, free demonstration, tell/guess, correct/incorrect settlement, case/coin options, method lesson and refusal traced; existing targeted tests inspected","notes":"The one-coin wager is finite and requires funds; free viewers cannot guess for a payout. Correct guesses receive only the declared case or one-coin equivalent with the stake returned; wrong guesses lose only one coin. The explanatory route refunds the stake and grants no prize."},
+    {"position":610,"adventureId":"the-harness-stitch-trial","slug":"the-harness-stitch-trial","title":"The Harness Stitch Trial","sourceFile":"src/scenarios/competitionGearGenreBatch.ts","classification":"HEALTHY","findingIds":[],"reviewProvenance":"current-source route review; fold inspection, fixed-winch load, stop/one-more-pull outcomes, clean appearance guess, tear/risk and compensation/prize variants traced; existing targeted regressions inspected","notes":"A correct fold inspection or a timely stop after the load exposes the weak stitch and reaches the prize result; further pulling yields a close-call or tear without a prize. Choosing the cleanest-looking strap leads to a separate result that says it fails and awards the prize to the helper who inspected the fold, not the Traveler. Knowledge and compensation remain with the safe-diagnosis route."}
   ],
   "findings": [
     {"findingId":"CRA-F0001","position":1,"adventureId":"broken-bell","severity":null,"defect":"Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.","routeWitness":null,"violatedRule":"Knowledge/History must be granted only when route actions establish it.","clusterId":"CRA-C0002","metadataConfidence":"CARRY_FORWARD_INCOMPLETE","preReconciliationPosition":1},
@@ -850,7 +860,10 @@
     {"findingId":"CRA-F0229","position":592,"adventureId":"the-match-at-the-brace","severity":"MEDIUM","defect":"The full-load test can award Nell the ribbon and hammer as the stronger safe brace even though that test explicitly cracks both braces and establishes no safe winner.","routeWitness":"trial.testFast -> strain -> awardNell -> winner. testFast records brace_harsh_test but strain has no variant using that flag; the scene says both braces crack under the sudden load, yet awardNell is enabled and winner says Nell receives the ribbon and the hammer rewards a safe result. The gradual test is the only route where the text establishes Nell’s brace holds.","violatedRule":"A prize and winner claim must be supported by the actual route’s recorded trial result; a failed/damaging test cannot inherit the safe winner outcome from another method.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0230","position":596,"adventureId":"the-quarry-step","severity":"HIGH","defect":"A direct climb-to-top success can reach the safe lower-ledge result and prize without establishing avoidance of the expressly excluded cracked upper shelf.","routeWitness":"climb.climbQuick successNext=bell -> bell -> acceptMarker/markerPrize. The choice climbs directly to the bell at the top; unlike inspection.askSafeRule and hold.moveToLedge success, it establishes no use of the lower sound ledge. bell asserts the Traveler rang the lower bell from that ledge without touching the cracked shelf and grants the completed-trial prize.","violatedRule":"A safety-sensitive location/result claim and completion reward require route proof that the excluded hazard was avoided; a branch directly to the endpoint cannot inherit a safe-path assertion without establishing it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
     {"findingId":"CRA-F0231","position":597,"adventureId":"the-lookout-at-dusk","severity":"MEDIUM","defect":"The Field Glasses signal prize is claimable after routes that never establish which signal was called or whether that call was correct.","routeWitness":"chart.stayContest -> scoring -> claimGlass/prize; and seen.completeCall -> scoring -> claimGlass/prize. Neither path records a selected signal/correctness result. scoring says the judge checks whether the signal call was correct, but claimGlass is gated only by notOwnedItems, so an unproved call receives the winner’s glasses.","violatedRule":"A contest reward conditioned on a correct result must be gated by route-established result state; merely continuing to or reporting an unrecorded call cannot prove a win.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
-    {"findingId":"CRA-F0232","position":594,"adventureId":"the-chain-at-twenty-paces","severity":"MEDIUM","defect":"The bent Survey Chain identified as due for repair is granted without a damaged condition, so the engine records it as NORMAL.","routeWitness":"start -> inspectChain/repeat/reportFault or borrowRule/comparison -> submitCorrected -> award -> acceptChain/chainPrize. The story offers the Survey Chain as the prize, identifies its flattened link as shortening the measure, and says it is due for repair; no route repairs it before award. item('surveyChain',...) grants gainItems without gainItemConditions, and engine itemState/itemCondition defaults missing condition to NORMAL.","violatedRule":"Granted Gear condition must match the condition established for that same item; a known bent tool must not enter inventory as mechanically NORMAL without repair.","clusterId":"CRA-C0009","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
+    {"findingId":"CRA-F0232","position":594,"adventureId":"the-chain-at-twenty-paces","severity":"MEDIUM","defect":"The bent Survey Chain identified as due for repair is granted without a damaged condition, so the engine records it as NORMAL.","routeWitness":"start -> inspectChain/repeat/reportFault or borrowRule/comparison -> submitCorrected -> award -> acceptChain/chainPrize. The story offers the Survey Chain as the prize, identifies its flattened link as shortening the measure, and says it is due for repair; no route repairs it before award. item('surveyChain',...) grants gainItems without gainItemConditions, and engine itemState/itemCondition defaults missing condition to NORMAL.","violatedRule":"Granted Gear condition must match the condition established for that same item; a known bent tool must not enter inventory as mechanically NORMAL without repair.","clusterId":"CRA-C0009","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0233","position":602,"adventureId":"the-saw-before-supper-trial","severity":"MEDIUM","defect":"A split practice log can reach a counted clean-cut/tool-prize result without the required turn-and-re-mark correction.","routeWitness":"log.startCut -> cut -> finish -> takePryTool/prize, or pullHard success -> fast -> acceptFastPryTool/prize. The log has a hidden split; split.turnLog is the only route that turns it and cuts from the sound end, and Rook says that correction is required to continue. The direct startCut route and its outcomes have no flag/variant establishing the correction.","violatedRule":"A contest may not award a clean counted result when the route bypasses the stated corrective condition for the known hazard; shared outcomes must preserve route-established setup and safety actions.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0234","position":604,"adventureId":"the-iron-squares","severity":"MEDIUM","defect":"An appearance-based wrong hinge choice reaches the prize-bearing load-test result without performing the test or selecting the fitting hinge.","routeWitness":"hinges.askSmith -> history.chooseNew -> result -> acceptSquare. history states the new hinge’s post hole is oval and the older hinge fits better, yet chooseNew proceeds directly to result; result claims the gate’s normal load revealed the older hinge fits and offers the diagnosis prize. The separate swing.chooseNewHinge route goes to wrong, so the history route skips both the test action and correct diagnosis.","violatedRule":"A result and diagnosis reward must depend on the selected test/action and correct conclusion; a wrong guess cannot inherit the successful test result from a distinct route.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"},
+    {"findingId":"CRA-F0235","position":608,"adventureId":"the-rigging-on-the-roof","severity":"HIGH","defect":"The direct sling-start route can receive the safe-anchor finish and prize without establishing that the cracked nearest ring was avoided in favor of the sound beam.","routeWitness":"rig.tieSling -> lift.lowerAndReset -> finish -> takeMirror/prize. The opening offers tieSling without an anchor-selection or inspection effect. Only anchor.useBeam and weather.secureLine establish use of the sound beam; finish nevertheless says Mina judges the work on a sound anchor and offers the safe-lift prize. No route state records that the cracked ring was avoided on the direct-start path.","violatedRule":"A safety-sensitive completion and reward must be supported by route-established safe equipment/setup; a shared finish cannot assert an inspected-safe anchor when a reachable path never establishes it.","clusterId":"CRA-C0001","metadataConfidence":"CURRENT_SOURCE_REVIEW"}
   ],
   "clusters": [
     {
@@ -1016,7 +1029,10 @@
         "CRA-F0228",
         "CRA-F0229",
         "CRA-F0230",
-        "CRA-F0231"
+        "CRA-F0231",
+        "CRA-F0233",
+        "CRA-F0234",
+        "CRA-F0235"
       ]
     },
     {
@@ -1138,9 +1154,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 352,
+    "HEALTHY": 359,
     "MINOR CONCERN": 38,
-    "CONFIRMED DEFECT": 210,
+    "CONFIRMED DEFECT": 213,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -1602,14 +1618,18 @@
     {
       "positions": "591-600",
       "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0229 records the sudden-load brace contest awarding a safe winner despite both braces cracking; CRA-F0230 records the direct quarry climb inheriting the lower-ledge safe completion and prize; CRA-F0231 records the signal contest exposing the glasses prize without a recorded call/result. These extend CRA-C0001. CRA-F0232 records a bent Survey Chain granted at default NORMAL condition and extends CRA-C0009. Six Adventures are healthy; no distinct minor concern was found. Route-level source review is authoritative; focused test execution was unavailable because this checkout has no local package binaries installed. No gameplay source or tests changed."
+    },
+    {
+      "positions": "601-610",
+      "status": "reviewed ten Adventures in live SCENARIOS order. CRA-F0233 records a split-log prize result without the required reorientation; CRA-F0234 records the iron-square prize result after a wrong guess without the load test; CRA-F0235 records a safe roof-anchor result/reward without sound-anchor proof. All extend CRA-C0001. Seven Adventures are healthy; no distinct minor concern or new cluster was established. Source-route review is authoritative; focused test execution was unavailable because this checkout has no local package binaries installed. No gameplay source or tests changed."
     }
   ],
-  "highestContiguousReviewedPosition": 600,
-  "maxReviewedRegistryPosition": 600,
+  "highestContiguousReviewedPosition": 610,
+  "maxReviewedRegistryPosition": 610,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 601,
-  "firstUnreviewedStableId": "the-blind-trail-marker",
-  "nextStableId": "the-blind-trail-marker",
+  "firstUnreviewedPosition": 611,
+  "firstUnreviewedStableId": "the-fair-weather-reading",
+  "nextStableId": "the-fair-weather-reading",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -2210,7 +2230,17 @@
     "the-lookout-at-dusk",
     "the-long-carry",
     "five-marks-on-the-board",
-    "the-millwheel-hand"
+    "the-millwheel-hand",
+    "the-blind-trail-marker",
+    "the-saw-before-supper-trial",
+    "the-bell-rope-at-ferry-end",
+    "the-iron-squares",
+    "the-load-on-the-siding",
+    "the-hammer-and-the-ribbon",
+    "the-bet-at-the-water-wheel",
+    "the-rigging-on-the-roof",
+    "the-quiet-card-count",
+    "the-harness-stitch-trial"
   ],
   "registrySnapshotSha": "cba101f0feba09c67543f942331ca38f765ebe14",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -2253,9 +2283,9 @@
         "delta": 12
       }
     ],
-    "highestContiguousReviewedPosition": 600,
+    "highestContiguousReviewedPosition": 610,
     "reviewedBeyondFirstGap": 0,
-    "maxReviewedLivePosition": 600,
+    "maxReviewedLivePosition": 610,
     "unreviewedPositions": [],
     "identityAliases": [
       {
@@ -2273,6 +2303,6 @@
         "resolution": "exact unique title and same source file; recorded ID retained as alias"
       }
     ],
-    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–591, and Competition/Gear challenge Adventures at positions 592–600 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 601, The Blind Trail Marker (stable ID the-blind-trail-marker), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
+    "reconciliationNote": "Four formerly unreviewed current Adventures at positions 121–124, eight Frontier Discovery Adventures at positions 352–359, social anthology Adventures at positions 373–381, competition anthology Adventures at positions 382–393, everyday anthology Adventures at positions 394–408, procedural-comedy Adventures at positions 409–433, deep-exploration Adventures at positions 434–447, fixed-stock merchants at positions 448–457, Gear corrective Adventures at positions 458–465, Adventurer Support Adventures at positions 466–489, Road Danger Adventures at positions 490–520, Escort/Protection Adventures at positions 521–543, Trades/Apprenticeship/Salvage-Recovery Adventures at positions 544–591, and Competition/Gear challenge Adventures at positions 592–610 have now received route-level review. Positions 360–372 were already reviewed and skipped by stable ID. Position 611, The Fair-Weather Reading (stable ID the-fair-weather-reading), is the first currently unreviewed live Adventure. Remaining live positions remap by stable ID, not by a constant offset. Source code at sourceSnapshot is unchanged from the checkpoint snapshot."
   }
 }
