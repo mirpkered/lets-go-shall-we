@@ -1927,6 +1927,16 @@ Cumulative implementation dispositions are **140 repaired** and **5 healthy/no-l
 
 Next: rederive the open CRA-C0001 inventory and group by exact source mechanism; do not assume the next numeric finding ID shares this wagon-state mechanism.
 
+### CRA-C0001 repair program — local Wave 13: response-specific authority confirmation
+
+Wave 13 repairs four MEDIUM findings in the shared road-danger builder: CRA-F0190 (`the-glass-at-milepost-nine`), CRA-F0198 (`the-brass-notch`), CRA-F0199 (`the-ferry-chain`), and CRA-F0200 (`the-courier-who-came-back`). The builder supports narrowly scoped route-truth aftermath overrides for these stories. The Glass retains its station-answer/case result only on `signalStation`, while other responses get neutral owner/circumstance text. Brass Notch, Ferry Chain, and Courier Who Came Back now avoid claiming foreman, ferryman, or county-clerk confirmations that their response routes do not establish. No Gear, reward, Knowledge, or persistent state behavior changed.
+
+`src/scenarios/roadDangerGenreBatch.test.ts` verifies positive and negative response contrasts, narrower receipt evidence, and an unaffected Paper Road caller. The focused road-danger, CRA-C0008 equipment-availability, registry, and library-audit suites passed **29 tests across four files**. The full suite passed immediately before this wave at **127 files / 2,360 tests**; TypeScript and production build passed after this wave with the existing large-bundle warning. Ledger finding-parent/cluster consistency and `git diff --check` pass.
+
+All four affected Adventures now derive HEALTHY. Live classifications are **607 HEALTHY, 59 MINOR CONCERN, 195 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Cumulative implementation dispositions are **144 repaired** and **5 healthy/no-longer-reproduces**. Open inventory is **205 findings overall**, including **171 CRA-C0001** (136 MEDIUM, 32 LOW, 3 unrecovered severity); overall open severity is **157 MEDIUM, 38 LOW, and 10 unrecovered**. The 861 live reviews and 354 live finding records remain unchanged. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
+Next subgroup selection must be rederived from the ledger; consider another builder-backed family only after checking its exact route witnesses and caller blast radius.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.

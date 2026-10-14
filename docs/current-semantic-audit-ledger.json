@@ -8500,12 +8500,12 @@
       "slug": "the-glass-at-milepost-nine",
       "title": "The Glass at Milepost Nine",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0190"
       ],
       "reviewProvenance": "current-source route review; usable-glasses/warn/circle approaches, station/cover/description responses, aftermath case discovery, restitution, witness and combat branches traced",
-      "notes": "On respond_coverDriver, the lookout leaves first and the second figure follows; on respond_recordFace the driver backs toward the staffed road. Neither response calls the station or establishes an answer. The shared aftermath variant appends the selected response result to text claiming the lookout abandoned the glasses when the station answered. That causal signal event is supported only by respond_signalStation, not the two other responses.",
+      "notes": "On respond_coverDriver, the lookout leaves first and the second figure follows; on respond_recordFace the driver backs toward the staffed road. Neither response calls the station or establishes an answer. The shared aftermath variant appends the selected response result to text claiming the lookout abandoned the glasses when the station answered. That causal signal event is supported only by respond_signalStation, not the two other responses. The C0001 repair gives the station-specific result only to respond_signalStation and uses neutral owner/circumstance text on other routes; route-contrast coverage passes.",
       "preReconciliationPosition": 490,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8724,12 +8724,12 @@
       "slug": "the-brass-notch",
       "title": "The Brass Notch",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0198"
       ],
       "reviewProvenance": "current-source route review; clerk/lock/badge approaches, foreman-call/witness/follow responses, lock-repair/leave endings, optional Gear/coins/refusal, combat and evidence custody traced",
-      "notes": "The common aftermath says the foreman confirms the man was not assigned. Only keepDoor asks the clerk to call the foreman, and its response says the man leaves before the foreman arrives. offerWitness merely records badge/tool marks; followAtDistance lets the man walk toward town and leaves evidence with the clerk. Neither establishes a foreman contact or assignment check before the shared confirmation.",
+      "notes": "The common aftermath says the foreman confirms the man was not assigned. Only keepDoor asks the clerk to call the foreman, and its response says the man leaves before the foreman arrives. offerWitness merely records badge/tool marks; followAtDistance lets the man walk toward town and leaves evidence with the clerk. Neither establishes a foreman contact or assignment check before the shared confirmation. The C0001 repair now reports retained evidence and pending reconciliation without claiming a foreman check; response-contrast coverage passes.",
       "preReconciliationPosition": 503,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8742,12 +8742,12 @@
       "slug": "the-ferry-chain",
       "title": "The Ferry Chain",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0199"
       ],
       "reviewProvenance": "current-source route review; cut-post/ferryman/skiff approaches, ferryman-call/wait/show-cut responses, combat win/loss, chain repair/alternate boat endings and private cloak compensation traced",
-      "notes": "The shared aftermath says the ferryman confirms the stranger had no claim. The ferryman is explicitly found in the shed only by findFerryman, or brought into view by callFerryman. waitBank instead receives a downstream boat and showCut only causes the stranger to leave; neither response establishes that the ferryman appears or speaks on the other approaches. The ferry remains at the far bank until repair, and the alternate crossing stays separate.",
+      "notes": "The shared aftermath says the ferryman confirms the stranger had no claim. The ferryman is explicitly found in the shed only by findFerryman, or brought into view by callFerryman. waitBank instead receives a downstream boat and showCut only causes the stranger to leave; neither response establishes that the ferryman appears or speaks on the other approaches. The ferry remains at the far bank until repair, and the alternate crossing stays separate. The C0001 repair now says no ferryman statement was recorded while preserving chain repair/delay and alternate crossing outcomes; route-pair coverage passes.",
       "preReconciliationPosition": 504,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8760,12 +8760,12 @@
       "slug": "the-courier-who-came-back",
       "title": "The Courier Who Came Back",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0200"
       ],
       "reviewProvenance": "current-source route review; route/receipt/rest approaches, wrapper/stablehand/register responses, clerk/innkeeper endings, witness fee/refusal and empty-container Knowledge traced",
-      "notes": "Every response converges on narration that the county clerk confirms the papers were never placed in the satchel, but no response contacts the county clerk. compareReceipt only establishes that no sealed papers were handed to Penn at this inn; searchWrapper reveals a stamp/number and askStablehand establishes how the satchel was found. The shared stronger claim that no papers were ever placed in the satchel is not established on these branches.",
+      "notes": "Every response converges on narration that the county clerk confirms the papers were never placed in the satchel, but no response contacts the county clerk. compareReceipt only establishes that no sealed papers were handed to Penn at this inn; searchWrapper reveals a stamp/number and askStablehand establishes how the satchel was found. The shared stronger claim that no papers were ever placed in the satchel is not established on these branches. The C0001 repair now keeps the common outcome neutral about what happened before the inn, while the receipt route retains its narrower fact; route-contrast coverage passes.",
       "preReconciliationPosition": 505,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17353,6 +17353,8 @@
       "violatedRule": "A shared outcome must not import a communication event or its causal result from a sibling response route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The road-danger builder now gives The Glass at Milepost Nine a neutral aftermath by default; only respond_signalStation receives the specific field-glass-case departure wording. The route-contrast regression verifies signalStation keeps its supported result while coverDriver and recordFace do not claim a station answer. The focused road-danger suite passed 10 tests, including an unaffected Paper Road caller.",
       "registrationStatus": "LIVE"
     },
     {
@@ -17451,6 +17453,8 @@
       "violatedRule": "An absent authority’s confirmation requires a route-established contact or later arrival before it can support a shared conclusion.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The Brass Notch aftermath now reports only retained evidence and pending record reconciliation; it no longer claims the foreman checked assignment records on routes that do not establish that check. The route-contrast regression covers keepDoor, offerWitness, and followAtDistance. The focused road-danger suite passed 10 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -17463,6 +17467,8 @@
       "violatedRule": "A character’s testimony may be used only after that character is present and has provided it on the route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The Ferry Chain aftermath now states that no ferryman statement about the stranger’s claim was recorded; ferry delay and chain repair remain unchanged. The route-contrast regression covers inspectPost/waitBank, watchSkiff/showCut, and findFerryman/callFerryman. The focused road-danger suite passed 10 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -17475,6 +17481,8 @@
       "violatedRule": "A shared factual conclusion must not exceed the information established by its incoming evidence route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The Courier Who Came Back aftermath now distinguishes the empty wrapper/satchel evidence from whether county papers were packed before arrival; it does not claim a county clerk confirmed the broader fact. The route-contrast regression covers searchWrapper, askStablehand, and the narrower compareReceipt evidence. The focused road-danger suite passed 10 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20030,9 +20038,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 603,
+    "HEALTHY": 607,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 199,
+    "CONFIRMED DEFECT": 195,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
