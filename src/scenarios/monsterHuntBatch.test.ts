@@ -399,6 +399,64 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(sceneText(scenario.scenes.tollRevealed, legacyReveal)).toMatch(/does not establish that the horse was freed/i);
   });
 
+  it('keeps snare rescue, landholder presence, and warden cleanup distinct', () => {
+    const scenario = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-skin-in-the-tree')!;
+    let direct = take(fresh(scenario), scenario, 'inspectTreeBase');
+    direct = take(direct, scenario, 'followDragMarks');
+    const campText = sceneText(scenario.scenes.poacherCamp, direct);
+    expect(campText).toMatch(/no landholder has been contacted on this route/i);
+    expect(campText).not.toMatch(/landholder has arrived/i);
+    const freeWithoutContact = scenario.scenes.poacherCamp.choices.find(({ id }) => id === 'freeAnimal')!;
+    const callLandholder = scenario.scenes.poacherCamp.choices.find(({ id }) => id === 'callLandholder')!;
+    expect(meets(freeWithoutContact.requirements, direct)).toBe(false);
+    expect(meets(callLandholder.requirements, direct)).toBe(true);
+
+    let called = take(direct, scenario, 'callLandholder');
+    expect(called.run?.sceneId).toBe('landholderArrives');
+    expect(sceneText(scenario.scenes.landholderArrives, called)).toMatch(/landholder arrives with a lantern/i);
+    called = take(called, scenario, 'askLandholderFree');
+    called = loadSave({ getItem: () => JSON.stringify(called) });
+    const landholderFreed = sceneText(scenario.scenes.hideResolved, called);
+    expect(landholderFreed).toMatch(/landholder frees the exhausted animal from one snare/i);
+    expect(landholderFreed).toMatch(/second snare and the hides remain/i);
+    expect(landholderFreed).toMatch(/no warden visit or full removal is established/i);
+
+    let markOnly = take(fresh(scenario), scenario, 'inspectTreeBase');
+    markOnly = take(markOnly, scenario, 'followDragMarks');
+    markOnly = take(markOnly, scenario, 'markSnares');
+    const markedText = sceneText(scenario.scenes.hideResolved, markOnly);
+    expect(markedText).toMatch(/mark the two-snare line and withdraw/i);
+    expect(markedText).toMatch(/animal remains caught/i);
+    expect(markedText).not.toMatch(/animal is released|hides are taken down/i);
+
+    let travelerFreed = take(fresh(scenario), scenario, 'inspectTreeBase');
+    travelerFreed = take(travelerFreed, scenario, 'followDragMarks');
+    travelerFreed = take(travelerFreed, scenario, 'cutSnare', 0);
+    const travelerText = sceneText(scenario.scenes.hideResolved, travelerFreed);
+    expect(travelerText).toMatch(/your cut frees the exhausted animal from one snare/i);
+    expect(travelerText).toMatch(/no landholder or warden action is established/i);
+
+    let injured = take(fresh(scenario), scenario, 'inspectTreeBase');
+    injured = take(injured, scenario, 'followDragMarks');
+    injured = take(injured, scenario, 'cutSnare', 0.999999);
+    const injuryText = sceneText(scenario.scenes.hideInjury, injured);
+    expect(injuryText).toMatch(/retreat before the exhausted animal is freed/i);
+    expect(injuryText).toMatch(/no warden response established/i);
+    expect(injuryText).not.toMatch(/animal is freed by the time a warden arrives|snares and hides are removed/i);
+
+    let invited = take(fresh(scenario), scenario, 'askRoadCrew');
+    invited = take(invited, scenario, 'askLandholder');
+    expect(invited.run?.flags).toContain('hideLandholderAtCamp');
+    expect(meets(freeWithoutContact.requirements, invited)).toBe(true);
+    expect(sceneText(scenario.scenes.poacherCamp, invited)).toMatch(/landholder arrives with a lantern/i);
+    invited = take(invited, scenario, 'freeAnimal');
+    expect(sceneText(scenario.scenes.hideResolved, invited)).toMatch(/landholder frees the exhausted animal/i);
+
+    const legacyResult = fresh(scenario);
+    legacyResult.run!.sceneId = 'hideResolved';
+    expect(sceneText(scenario.scenes.hideResolved, legacyResult)).toMatch(/animal’s disposition and any later removal .* not established/i);
+  });
+
   it('keeps road-side observation available without entering the unstable ravine', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const observed = take(take(fresh(scenario), scenario, 'callAgain'), scenario, 'stopSignals');

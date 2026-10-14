@@ -225,22 +225,33 @@ export const THE_SKIN_IN_THE_TREE: Scenario = {
       { id: 'avoidRavine', label: 'Mark the ravine and stay on the road', next: 'hideLeft' },
     ]),
     hideAccount: scene('hideAccount', 'A Hunter’s Signal', 'A local hunter says a hide hung high attracts scavengers away from a snare line. The snare line is on private land, but the hunter did not set it and asks you not to cut anything before the owner is found.', [
-      { id: 'askLandholder', label: 'Ask the landholder to inspect the snare line', next: 'poacherCamp' },
+      { id: 'askLandholder', label: 'Ask the landholder to inspect the snare line', next: 'poacherCamp', effects: { setFlags: ['hideLandholderAtCamp'] } },
       { id: 'leavePrivateLand', label: 'Keep to the public road', next: 'hideLeft', effects: { setFlags: ['heardHideExplanation'] } },
       { id: 'followSecondHide', label: 'Follow the second hide from the road', next: 'poacherCamp' },
     ]),
-    poacherCamp: scene('poacherCamp', 'The Ravine Camp', 'A poacher has hidden two snares and used the hides as a signal to retrieve them after dark. One snared animal is alive but exhausted. The poacher is not present; the landholder has arrived with a lantern.', [
-      { id: 'freeAnimal', label: 'Ask the landholder to free the animal', next: 'hideResolved', effects: { historyFlags: ['helped a landholder remove hidden snares marked by hides in trees'] } },
-      { id: 'markSnares', label: 'Mark the snares and withdraw', next: 'hideResolved', effects: { knowledge: ['Hides in trees marked a hidden snare line used by a poacher.'] } },
-      { id: 'cutSnare', label: 'Cut the taut snare yourself', hint: 'The animal is alive and the wire is under tension.', chance: { probability: 0.48, successNext: 'hideResolved', failureNext: 'hideInjury', successMessage: 'The snare slackens and the animal pulls free.', failureMessage: 'The wire snaps back and cuts your hand.', failureEffects: { health: -3 } } },
+    poacherCamp: { ...scene('poacherCamp', 'The Ravine Camp', 'A poacher has hidden two snares and used the hides as a signal to retrieve them after dark. One snared animal is alive but exhausted. No landholder has been contacted on this route.', [
+      { id: 'freeAnimal', label: 'Ask the landholder to free the animal', requirements: { flags: ['hideLandholderAtCamp'] }, next: 'hideResolved', effects: { setFlags: ['hideAnimalFreedByLandholder'], historyFlags: ['helped a landholder free an animal from a hidden snare line marked by hides in trees'] } },
+      { id: 'callLandholder', label: 'Call the landholder and wait for them', requirements: { notFlags: ['hideLandholderAtCamp'] }, next: 'landholderArrives', effects: { setFlags: ['hideLandholderAtCamp'] } },
+      { id: 'markSnares', label: 'Mark the snares and withdraw', next: 'hideResolved', effects: { setFlags: ['hideSnaresMarked'], knowledge: ['Hides in trees marked a hidden snare line used by a poacher.'] } },
+      { id: 'cutSnare', label: 'Cut the taut snare yourself', hint: 'The animal is alive and the wire is under tension.', chance: { probability: 0.48, successNext: 'hideResolved', failureNext: 'hideInjury', successMessage: 'The snare slackens and the animal pulls free.', successEffects: { setFlags: ['hideAnimalFreedByTraveler'] }, failureMessage: 'The wire snaps back and cuts your hand.', failureEffects: { health: -3 } } },
+    ], 'warning'), textVariants: [
+      { requirements: { flags: ['hideLandholderAtCamp'] }, text: 'A poacher has hidden two snares and used the hides as a signal to retrieve them after dark. One snared animal is alive but exhausted. The landholder arrives with a lantern after you ask them to inspect the line.' },
+    ] },
+    landholderArrives: scene('landholderArrives', 'The Landholder Reaches the Ravine', 'The landholder arrives with a lantern after your call. One animal remains caught and exhausted; a second snare and the hides are still at the site. The landholder asks whether you want them to free the animal or mark the line for a warden.', [
+      { id: 'askLandholderFree', label: 'Ask the landholder to free the animal', next: 'hideResolved', effects: { setFlags: ['hideAnimalFreedByLandholder'], historyFlags: ['helped a landholder free an animal from a hidden snare line marked by hides in trees'] } },
+      { id: 'markAndWithdraw', label: 'Mark the snares and withdraw', next: 'hideResolved', effects: { setFlags: ['hideSnaresMarked'], knowledge: ['Hides in trees marked a hidden snare line used by a poacher.'] } },
     ], 'warning'),
-    hideResolved: end('hideResolved', 'The Trees Cleared', 'The landholder calls a warden and removes the snares with help. The animal is released without a trophy; the hides are taken down, and the route is no longer marked for poaching.'),
+    hideResolved: { ...end('hideResolved', 'The Snare Line’s Disposition', 'You leave the ravine camp. The animal’s disposition and any later removal of the snares or hides are not established on this route.'), textVariants: [
+      { requirements: { flags: ['hideAnimalFreedByLandholder'] }, text: 'The landholder frees the exhausted animal from one snare. The second snare and the hides remain for later inspection; no warden visit or full removal is established here.' },
+      { requirements: { flags: ['hideAnimalFreedByTraveler'] }, text: 'Your cut frees the exhausted animal from one snare. The second snare and the hides remain at the site; no landholder or warden action is established.' },
+      { requirements: { flags: ['hideSnaresMarked'] }, text: 'You mark the two-snare line and withdraw. The exhausted animal remains caught, and no snare or hide removal is established.' },
+    ] },
     hideLeft: { ...end('hideLeft', 'A Sign Not Followed', 'You stay on the public road and leave the hides in place. What the trail means remains unestablished on this route; you do not enter private ground without permission.'), textVariants: [
       { requirements: { flags: ['examinedTreeHideEvidence', 'heardHideExplanation'] }, text: 'You stay on the public road after examining the tied hide, ladder track, and drag marks, and hearing the hunter’s explanation of the snare-line signal. You leave the private land and snares for the owner and warden.' },
       { requirements: { flags: ['heardHideExplanation'] }, text: 'You stay on the public road after hearing the hunter explain how a hide can signal a snare line. You leave the private land and snares for the owner and warden.' },
       { requirements: { flags: ['examinedTreeHideEvidence'] }, text: 'You stay on the public road after examining the tied hide and the drag marks toward the ravine. Their purpose remains uncertain because you do not follow them onto private land.' },
     ] },
-    hideInjury: end('hideInjury', 'A Snare under Tension', 'The wire cuts your hand before the landholder can secure it. The animal is freed by the time a warden arrives; the snares and hides are removed.'),
+    hideInjury: end('hideInjury', 'A Snare under Tension', 'The wire snaps back and cuts your hand. You retreat before the exhausted animal is freed; the second snare and the hides remain at the site, with no warden response established.'),
   },
 };
 
