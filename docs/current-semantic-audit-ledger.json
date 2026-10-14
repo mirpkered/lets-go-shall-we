@@ -6789,12 +6789,12 @@
       "slug": "the-bell-ringer-trial",
       "title": "The Bell-Ringer Trial",
       "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0152"
       ],
       "reviewProvenance": "current source route review; rope inspection, light-pull conversion, loud first pull, knot separation, ground-bell practice, judging, teaching, and stop/withdrawal outcomes traced",
-      "notes": "On inspection.changeToLightPull -> lightRound.judgeThePattern, no comparative result names the apprentice or establishes her as the cleanest, yet apprenticeWins declares her winner and says experienced ringers admit she showed more skill. The distinct apprentice-performance route explicitly establishes her clean rhythm and remains supported; the defect is confined to the converted ground-bell route.",
+      "notes": "Wave 88 makes the ground-bell practice scene report the observed comparison: the apprentice keeps an even beat while the experienced ringers lose count or rush, establishing her as the cleanest pattern before the judgment. The separate apprentice-performance route and safety-stop outcomes remain intact.",
       "preReconciliationPosition": 375,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -6839,12 +6839,12 @@
       "slug": "the-whistle-and-the-wind",
       "title": "The Whistle and the Wind",
       "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0153"
       ],
       "reviewProvenance": "current source route review; listen/repeat, uncertainty report, entrant kettle call, judging rules, moving judges, pause/cancel, imitation-only score, bird-exchange vote, and consolation ribbon outcomes traced",
-      "notes": "The shared round scene says “Your call makes the children laugh” even when reached by contest.watchJudges -> rules.moveJudges, where the selected action only moves the judges and no Traveler call is established. That unsupported performance then feeds both scoreImitation and countExchange results. The explicit imitateKettle/repeatCall routes do establish calls and are not implicated.",
+      "notes": "Wave 88 records a run-local flag only when imitateKettle or repeatCall performs a Traveler call. The shared round is neutral without that proof, its call-specific variant is shown only when established, and countExchange is unavailable on the judge-movement route. The repeatCall Knowledge effect remains unchanged.",
       "preReconciliationPosition": 378,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -6857,12 +6857,12 @@
       "slug": "the-painted-mule",
       "title": "The Painted Mule",
       "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0154"
       ],
       "reviewProvenance": "current source route review; owner/innkeeper accounts, wording correction, quiet-viewing permission, sign removal, story option, refusal/leave, and animal work/fairness outcomes traced",
-      "notes": "The innkeeper.offerNewAttraction route only suggests a story about the sign and never selects revision or removal, but its story ending says the boast was corrected. The distinct revision/paintTruth and removeBoard routes do perform those changes. The ending therefore claims a correction not established by this path.",
+      "notes": "Wave 88 changes the story-only ending to describe how the boast became a dispute over the sign, without claiming the sign was corrected. The explicit paintTruth and removeBoard routes retain their correction/removal outcomes.",
       "preReconciliationPosition": 379,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17018,7 +17018,9 @@
       "violatedRule": "A judgment outcome and reactions attributed to it must follow from the performance and route result actually established.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 88 states the observed comparative ground-bell performance in surpriseCompetitionBatch.ts before apprenticeWins; surpriseAnthologyBatch.test.ts contrasts this route with the independently established clean-rhythm route."
     },
     {
       "findingId": "CRA-F0153",
@@ -17030,7 +17032,9 @@
       "violatedRule": "A shared scene may not assert route-specific player action unless every incoming path establishes that action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 88 gates the call-specific round wording and bird-exchange choice on a run-local flag set only by imitateKettle/repeatCall, and removes the unsupported personal non-win claim from the no-call result. surpriseAnthologyBatch.test.ts covers both calling routes and the judge-only contrast."
     },
     {
       "findingId": "CRA-F0154",
@@ -17042,7 +17046,9 @@
       "violatedRule": "An ending may not claim a corrective action that the selected route did not perform or establish.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 88 changes the offerNewAttraction ending to describe the sign dispute without asserting correction; surpriseAnthologyBatch.test.ts contrasts that story-only route with the explicit paintTruth route."
     },
     {
       "findingId": "CRA-F0155",
@@ -20241,9 +20247,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 699,
+    "HEALTHY": 702,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 103,
+    "CONFIRMED DEFECT": 100,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
