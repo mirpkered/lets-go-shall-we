@@ -1034,7 +1034,7 @@
       "slug": "the-blue-hole",
       "title": "The Blue Hole",
       "sourceFile": "src/scenarios/theBlueHole.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0016"
       ],
@@ -3338,7 +3338,7 @@
       "slug": "coffin-makers-extra-order",
       "title": "The Coffin Maker’s Extra Order",
       "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0039"
       ],
@@ -3425,7 +3425,7 @@
       "slug": "red-chalk-circle",
       "title": "The Red Chalk Circle",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0043"
       ],
@@ -3631,7 +3631,7 @@
       "slug": "voice-in-the-well",
       "title": "The Voice in the Well",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0050"
       ],
@@ -3649,7 +3649,7 @@
       "slug": "the-empty-coffin",
       "title": "The Empty Coffin",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0051"
       ],
@@ -4728,7 +4728,7 @@
       "slug": "the-bridge-goes-down",
       "title": "The Bridge Goes Down",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0081"
       ],
@@ -4812,7 +4812,7 @@
       "slug": "the-boiler-room",
       "title": "The Boiler Room",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0083"
       ],
@@ -5609,7 +5609,7 @@
       "slug": "the-cellar-thing",
       "title": "The Cellar Thing",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0116"
       ],
@@ -10195,7 +10195,7 @@
       "slug": "the-quarry-step",
       "title": "The Quarry Step",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0230"
       ],
@@ -10383,7 +10383,7 @@
       "slug": "the-rigging-on-the-roof",
       "title": "The Rigging on the Roof",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0235"
       ],
@@ -10749,7 +10749,7 @@
       "slug": "the-spring-run",
       "title": "The Spring Run",
       "sourceFile": "src/scenarios/wildernessFieldcraftGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0238"
       ],
@@ -12827,13 +12827,13 @@
       "slug": "the-two-widths-at-morrow-road",
       "title": "The Two Widths at Morrow Road",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0289",
         "CRA-F0290"
       ],
       "reviewProvenance": "current-source route review; competing-track analysis, limited track follow, inventory request, settlement variants and Survey Chain inspection traced",
-      "notes": "Following only the broad track to the fork reaches careful text saying owner finds crate behind feed partition without any inventory route. An inventory request is rendered as a refused accusation. Separately the Survey Chain measurement action has no ownership/usability gate.",
+      "notes": "The broad-track route now reports only reaching the fork, and the inventory request remains pending without inventing an accusation. The separate Survey Chain action is gated by CRA-C0008 and retains its usable-Gear check.",
       "preReconciliationPosition": 754,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12846,13 +12846,13 @@
       "slug": "the-seal-with-the-second-notch",
       "title": "The Seal with the Second Notch",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0291",
         "CRA-F0292"
       ],
       "reviewProvenance": "current-source route review; Loupe/seal inspection, waybill inquiry, dimensions, hold/exception/record, and compensation traced",
-      "notes": "Holding for sender confirmation reaches careful text saying receiver accepts responsibility; that agreement belongs to witnessed-exception route. Separately, Assayer’s Loupe choice has no item/usable gate; wax-impression tool route has both.",
+      "notes": "Holding for sender confirmation no longer claims receiver acceptance; the distinct witnessed-exception route retains its truthful acceptance result. The separate Assayer’s Loupe action remains gated by CRA-C0008 and preserves its Gear-free alternatives.",
       "preReconciliationPosition": 755,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12881,7 +12881,7 @@
       "slug": "the-gate-pin-at-south-pasture",
       "title": "The Gate Pin at South Pasture",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0293",
         "CRA-F0297"
@@ -12900,7 +12900,7 @@
       "slug": "the-ledger-page-that-dried",
       "title": "The Ledger Page That Dried",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0294",
         "CRA-F0298"
@@ -12919,7 +12919,7 @@
       "slug": "the-rope-fibers-on-the-ferry-cleat",
       "title": "The Rope Fibers on the Ferry Cleat",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0295",
         "CRA-F0299"
@@ -12956,7 +12956,7 @@
       "slug": "the-stone-under-the-floorboard",
       "title": "The Stone under the Floorboard",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0301",
         "CRA-F0302"
@@ -12975,7 +12975,7 @@
       "slug": "the-missing-shears-at-the-mill",
       "title": "The Missing Shears at the Mill",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0303"
       ],
@@ -12993,7 +12993,7 @@
       "slug": "the-boot-mark-in-the-ash",
       "title": "The Boot Mark in the Ash",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0304",
         "CRA-F0305"
@@ -13117,12 +13117,12 @@
       "slug": "the-bent-pin-in-the-harvest-engine",
       "title": "The Bent Pin in the Harvest Engine",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0311"
       ],
       "reviewProvenance": "current-source route review; gated Field Calipers, stopped-cycle observation, shutdown, guard repair, restart test, unsafe full-load, injury/partial, payout and Knowledge variants traced",
-      "notes": "diagnose.careful lets owner/mechanic inspect together but careful settlement claims guard secured and pin replaced; only repair action explicitly establishes replacement after guard secure. Independent physical pin measurement remains properly gated. Other shutdown/unsafe outcomes preserve no injury and only test/repair proof; gear reward is withheld after rush.",
+      "notes": "The joint-inspection route now says the engine remains stopped and does not claim guard/pin repair; the explicit repair route still reports its established result. Independent physical pin measurement remains properly gated. Other shutdown/unsafe outcomes preserve no injury and only test/repair proof; gear reward is withheld after rush.",
       "preReconciliationPosition": 770,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13153,7 +13153,7 @@
       "slug": "the-wax-on-the-keyhole",
       "title": "The Wax on the Keyhole",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0313"
       ],
@@ -13171,7 +13171,7 @@
       "slug": "the-quiet-bell-at-milepost-four",
       "title": "The Quiet Bell at Milepost Four",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0314"
       ],
@@ -13189,7 +13189,7 @@
       "slug": "the-notches-on-the-old-millstone",
       "title": "The Notches on the Old Millstone",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0315",
         "CRA-F0316"
@@ -13224,7 +13224,7 @@
       "slug": "the-sealed-letter-at-cedar-post",
       "title": "The Sealed Letter at Cedar Post",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0317"
       ],
@@ -18557,7 +18557,9 @@
       "violatedRule": "Converged outcome narration must match the selected route’s action and established discovery.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now ties the broad-track careful result to only reaching the fork and leaves the crate unaccounted for; the inventory-request action now reports a pending check rather than an accusation/refusal. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts both route-specific results."
     },
     {
       "findingId": "CRA-F0290",
@@ -18583,7 +18585,9 @@
       "violatedRule": "Shared settlement may not claim a route-specific agreement absent action/proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now distinguishes holding the crate for sender confirmation from the separate witnessed-exception route that accepts responsibility. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts the held-for-confirmation route does not claim acceptance and the verified route retains it."
     },
     {
       "findingId": "CRA-F0292",
@@ -18853,7 +18857,9 @@
       "violatedRule": "A result may not claim route-specific repair/completion absent a chosen or otherwise established action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now keeps the joint-inspection route truthful that the engine remains stopped and the guard/pin are not yet repaired; only the explicit repair action reports the guard secured and pin replaced. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts both routes."
     },
     {
       "findingId": "CRA-F0312",
@@ -19980,9 +19986,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 583,
+    "HEALTHY": 586,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 220,
+    "CONFIRMED DEFECT": 217,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
