@@ -1354,12 +1354,12 @@
       "slug": "the-pawned-tool",
       "title": "The Pawned Tool",
       "sourceFile": "src/scenarios/commerceBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0019"
       ],
       "reviewProvenance": "current source route review; all randomized seller accounts, mark inspection, purchase, hold-for-claim, and decline routes examined",
-      "notes": "The setup explicitly says the brass hinge moves freely. On sellerAccount.askMarketKeeper or markSeen.holdAfterMark, heldForClaim says a claimant must describe the tool and its missing brass hinge pin. No route/state change establishes a missing pin, and the stated free-moving hinge implies it is present. The ending invents a contradictory object condition.",
+      "notes": "The setup explicitly says the brass hinge moves freely. On sellerAccount.askMarketKeeper or markSeen.holdAfterMark, heldForClaim said a claimant must describe the tool and its missing brass hinge pin. Replaced that contradictory condition with a neutral claimant-description requirement. Both hold routes are tested; purchase, uncertainty, and refusal outcomes remain unchanged.",
       "preReconciliationPosition": 62,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15084,6 +15084,8 @@
       "violatedRule": "Object condition at a later scene must remain compatible with explicit setup and route-established state.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "commerceBatch.ts heldForClaim now requires a claimant to describe a feature not already announced at the stall instead of inventing a missing brass hinge pin. commerceBatch.test.ts verifies the freely moving hinge setup and both askMarketKeeper and holdAfterMark routes. The focused commerce, scenario registry, and scenario library checks pass. No purchase price, ownership judgment, reward, Knowledge, or persistence behavior changed.",
       "preReconciliationPosition": 62,
       "registrationStatus": "LIVE"
     },
@@ -20084,9 +20086,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 628,
+    "HEALTHY": 629,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 174,
+    "CONFIRMED DEFECT": 173,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
