@@ -3719,13 +3719,13 @@
       "slug": "the-wrong-shadow",
       "title": "The Wrong Shadow",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0053",
         "CRA-F0054"
       ],
       "reviewProvenance": "current source route review; leave, lantern test/retreat, hold-light success/failure, lamplighter call/witness and walk/leave variants inspected; Gear condition requirements checked",
-      "notes": "shadowAfter unconditionally says the lamplighter reaches the crowded street and both Traveler and lamplighter saw the shadow turn, even on leaveShadowAlley and shadowTest routes where the lamplighter was not present. Separately, testShadowLight is explicitly a physical use of the Traveler’s Lantern but has no requirements, so it remains available with an absent or BROKEN Lantern.",
+      "notes": "shadowAfter now defaults to the Traveler's witnessed turn and does not place the lamplighter in the crowded street. Only walkWithLamplighter sets walkedWithLamplighterToStreet; that variant says they walked together and distinguishes the Traveler seeing the turn from the lamplighter seeing the shadow facing the wall on his return. CRA-F0054's usable-Lantern gate remains intact.",
       "preReconciliationPosition": 202,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15578,6 +15578,8 @@
       "violatedRule": "A shared ending may not import route-specific participant presence or observation into unrelated branches.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "shadowAfter now defaults to the Traveler's observation only; a factual run-local walkedWithLamplighterToStreet flag is set solely by walkWithLamplighter and gates the joint-street variant. That variant no longer claims the lamplighter witnessed the turn; it says he saw the shadow facing the wall when he returned. Regression contrasts leaving alone, lantern-test retreat, separate departure after calling him, and the joint walk after save/reload. occultInvestigationBatch.test.ts (34 tests) and CRA-C0008 equipment availability suite (15 tests) pass; TypeScript and build pass. CRA-F0054's Gear gate was not changed.",
       "preReconciliationPosition": 202,
       "registrationStatus": "LIVE"
     },
@@ -20116,9 +20118,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 644,
+    "HEALTHY": 645,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 158,
+    "CONFIRMED DEFECT": 157,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
