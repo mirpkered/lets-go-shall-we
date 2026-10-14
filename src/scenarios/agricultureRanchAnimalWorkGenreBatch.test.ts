@@ -22,6 +22,34 @@ const take = (state: SaveData, scenario: Scenario, choiceId: string): SaveData =
 };
 
 describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', () => {
+  it('keeps orchard inspection and spring-pipe findings on the routes that establish them', () => {
+    const appleRow = BATCH.find(({ id }) => id === 'the-apple-row-after-hail')!;
+    let crateCover = take(fresh(appleRow), appleRow, 'cover');
+    const coverText = sceneText(appleRow.scenes.work, crateCover);
+    expect(coverText).toMatch(/crates are covered/i);
+    expect(coverText).toMatch(/does not establish whether the net was lifted clear or whether the upper row has fresh bruises/i);
+    expect(coverText).not.toContain('The net is lifted clear, but the upper row has fresh bruises.');
+
+    let ropeLift = fresh(appleRow);
+    ropeLift.run!.inventory.push('travelRope');
+    ropeLift.itemStates = { travelRope: { condition: 'NORMAL', upgrades: [], provenance: [] } };
+    ropeLift = take(ropeLift, appleRow, 'lift');
+    expect(ropeLift.run?.flags).toContain('appleNetLiftedForInspection');
+    ropeLift = loadSave({ getItem: () => JSON.stringify(ropeLift) });
+    expect(sceneText(appleRow.scenes.work, ropeLift)).toMatch(/net is lifted clear, but the upper row has fresh bruises/i);
+
+    const trough = BATCH.find(({ id }) => id === 'the-trough-after-thaw')!;
+    const closedOnly = take(fresh(trough), trough, 'close');
+    const closedText = sceneText(trough.scenes.check, closedOnly);
+    expect(closedText).toMatch(/condition of the spring pipe has not been established/i);
+    expect(closedText).not.toMatch(/the pipe is clear/i);
+
+    let inspectedPipe = take(fresh(trough), trough, 'pipe');
+    expect(inspectedPipe.run?.flags).toContain('thawSpringPipeInspected');
+    inspectedPipe = loadSave({ getItem: () => JSON.stringify(inspectedPipe) });
+    expect(sceneText(trough.scenes.check, inspectedPipe)).toMatch(/the pipe is clear/i);
+  });
+
   it('does not confuse crop cover or bin bracing with moving stored goods', () => {
     const oats = BATCH.find(({ id }) => id === 'the-dry-row-before-the-threshing')!;
     let covered = take(fresh(oats), oats, 'cover');
