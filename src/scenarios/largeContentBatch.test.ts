@@ -74,14 +74,16 @@ describe('disaster, western, and lost-place expansion', () => {
     const character = newCharacter('State Test');
     const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, bridge) };
     expect(sceneText(bridge.scenes.bridgeEnd, state)).not.toMatch(/driver.*daughter.*mule reach/i);
+    // Legacy bridgePeopleSaved was set by call-only routes; it is no longer accepted as proof of shore arrival.
     state.run!.flags.push('bridgePeopleSaved');
-    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver reaches the west bank/i);
-    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/daughter and the mule are not confirmed ashore/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).not.toMatch(/driver reaches the west bank/i);
     state.run!.flags.push('bridgeChildSaved');
-    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver and his daughter reach the west bank/i);
-    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/mule’s position remains uncertain/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/daughter reaches the west bank/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver.*not confirmed ashore/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).not.toMatch(/driver and his daughter reach the west bank/i);
     state.run!.flags.push('bridgeMuleFreed');
-    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/driver, his daughter, and the mule reach the west bank/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).toMatch(/daughter and mule reach the west bank/i);
+    expect(sceneText(bridge.scenes.bridgeEnd, state)).not.toMatch(/driver, his daughter, and the mule reach the west bank/i);
 
     const ferry = DISASTER_RESCUE_ADVENTURES.find(({ id }) => id === 'the-ferry-lists')!;
     expect(ferry.scenes.ferryEnd.text).toMatch(/who reached the landing.*unaccounted names remain/i);

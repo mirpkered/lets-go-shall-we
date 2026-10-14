@@ -80,8 +80,10 @@ describe('The Bridge Goes Down child-state continuity (R125-054)', () => {
     expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeDrop, state)).toMatch(/daughter, who reached shore before the span broke/i);
     state = act(state, 'bridgeDrop', 'searchNearWater');
     state = act(state, 'bridgeAftermath', 'bridgeLeave');
-    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).toMatch(/driver and his daughter reach the west bank/i);
-    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).not.toMatch(/daughter.*not confirmed/i);
+    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).toMatch(/daughter reaches the west bank/i);
+    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).toMatch(/driver.*not confirmed ashore/i);
+    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).not.toMatch(/driver and his daughter reach the west bank/i);
+    expect(sceneText(THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd, state)).not.toMatch(/daughter[^.]*not confirmed/i);
   });
 
   it('uses neutral wording for legacy shared-scene saves without child-state proof', () => {
