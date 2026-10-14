@@ -201,6 +201,20 @@ describe('survival and expedition adventure batch', () => {
     expect(act(ledge, THE_CAVE_BEFORE_THE_STORM, 'caveDryChamber', 'waitCaveLedge').run?.status).toBe('death');
   });
 
+  it('does not praise the successful forced-axle route as unhurried', () => {
+    let forced = act(start(THE_BROKEN_AXLE), THE_BROKEN_AXLE, 'axleRoad', 'inspectAxleBreak');
+    forced = act(forced, THE_BROKEN_AXLE, 'axleExamined', 'braceAfterLook', 0.999999);
+    expect(forced.run?.sceneId).toBe('axleUnstable');
+    forced = act(forced, THE_BROKEN_AXLE, 'axleUnstable', 'forceBrokenWagon', 0);
+    expect(forced.run?.sceneId).toBe('axleSettlement');
+    expect(sceneText(THE_BROKEN_AXLE.scenes.axleSettlement, forced)).not.toMatch(/without rushing it/i);
+    expect(sceneText(THE_BROKEN_AXLE.scenes.axleSettlement, forced)).toMatch(/grateful that you brought the wagon in/i);
+
+    let lightened = act(start(THE_BROKEN_AXLE), THE_BROKEN_AXLE, 'axleRoad', 'unloadAxle');
+    lightened = act(lightened, THE_BROKEN_AXLE, 'axleLightened', 'slowAxleHome', 0);
+    expect(sceneText(THE_BROKEN_AXLE.scenes.axleSettlement, lightened)).not.toMatch(/without rushing it/i);
+  });
+
   it('uses equipment capability and records explicit strain, loss, and injury', () => {
     const dry = start(THE_LAST_ROPE);
     expect(THE_LAST_ROPE.scenes.ravineLedge.choices.filter(({ requirements }) => meets(requirements, dry)).map(({ id }) => id)).not.toContain('lowerRavineRope');
