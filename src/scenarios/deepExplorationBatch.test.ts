@@ -527,6 +527,26 @@ describe('deep exploration anthology', () => {
     expect(sceneText(house.scenes.letterEnding, legacy)).toMatch(/account of writing about someone associated with Briar House/i);
   });
 
+  it('does not enter Briar House’s second bedroom through the window while its old door is open', () => {
+    const house = getScenario('last-door-briar-house')!;
+    const character = newCharacter('Briar Window Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, house, () => 0) };
+    let atWindow = choose(initial, house, house.scenes.briarPorch.choices.find(({ id }) => id === 'library')!, () => 0);
+    atWindow = choose(atWindow, house, house.scenes.libraryFirst.choices.find(({ id }) => id === 'hallFromLibrary')!, () => 0);
+    atWindow = choose(atWindow, house, house.scenes.hallOne.choices.find(({ id }) => id === 'closeHallDoor')!, () => 0);
+    expect(atWindow.run?.sceneId).toBe('bedroomShift');
+    atWindow = choose(atWindow, house, house.scenes.bedroomShift.choices.find(({ id }) => id === 'searchWindow')!, () => 0);
+    expect(atWindow.run?.sceneId).toBe('windowFrame');
+    expect(atWindow.run?.flags).not.toContain('bedroomDoorClosed');
+    expect(atWindow.run?.flags).not.toContain('briarSecondBedroomReached');
+    expect(sceneText(house.scenes.windowFrame, atWindow)).toMatch(/old bedroom door still open/i);
+
+    const enteredAfterClosing = choose(atWindow, house, house.scenes.windowFrame.choices.find(({ id }) => id === 'closeDoorNow')!, () => 0);
+    expect(enteredAfterClosing.run?.sceneId).toBe('secondBedroom');
+    expect(enteredAfterClosing.run?.flags).toContain('bedroomDoorClosed');
+    expect(enteredAfterClosing.run?.flags).toContain('briarSecondBedroomReached');
+  });
+
   it('keeps the Iron Orchard ending accurate when a rod was removed', () => {
     const orchard = getScenario('iron-orchard')!;
     const traveler = newCharacter('Rod Inspector');
