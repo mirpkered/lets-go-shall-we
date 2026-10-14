@@ -177,4 +177,61 @@ describe('Trades / Apprenticeships / Practical Work batch', () => {
     saveGame(after, storage as never);
     expect(sceneText(scenario.scenes.hiddenRot, loadSave(storage as never))).toMatch(/Brass Plumb Bob.*alignment problem.*cannot tell.*hairline opens.*damp plaster hid a split.*rotten end is cut back/i);
   });
+
+  it('keeps diagnosis, transcription, and harness teaching distinct from completed work', () => {
+    const fresh = (scenario: (typeof BATCH)[number]): SaveData => {
+      const character = newCharacter('Trade Route Truth Tester');
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const pick = (scenario: (typeof BATCH)[number], state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      const option = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      expect(option, `${scenario.id}.${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(option.requirements, state), `${scenario.id}.${sceneId}.${choiceId} requirements`).toBe(true);
+      return choose(state, scenario, option, () => 0);
+    };
+    const resumed = (state: SaveData): SaveData => {
+      const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+      saveGame(state, storage as never);
+      return loadSave(storage as never);
+    };
+
+    const door = BATCH.find(({ id }) => id === 'the-door-that-swelled')!;
+    let reset = pick(door, fresh(door), 'door', 'inspect');
+    reset = pick(door, reset, 'settle', 'reset');
+    reset = resumed(reset);
+    expect(sceneText(door.scenes.settlement, reset)).toMatch(/resets the lower hinge.*tests the door.*latch turns freely/i);
+    let explained = pick(door, fresh(door), 'door', 'inspect');
+    explained = pick(door, explained, 'settle', 'explain');
+    explained = resumed(explained);
+    expect(sceneText(door.scenes.settlement, explained)).toMatch(/schedule a dry-day trim.*hinge has not been reset.*free movement is not established/i);
+    expect(sceneText(door.scenes.settlement, explained)).not.toMatch(/hinge holds|latch turns freely/i);
+    expect(explained.character?.knowledge).toContain('A door that binds at the sill after rain may have a settled hinge or swollen frame, not a faulty lock.');
+    const pryToolOffer = door.scenes.settlement.choices.find(({ id }) => id === 'takeTool')!;
+    expect(meets(pryToolOffer.requirements, explained)).toBe(true);
+    expect(pryToolOffer.hint).toMatch(/route result above establishes whether the hinge was reset/i);
+
+    const press = BATCH.find(({ id }) => id === 'paper-under-the-press')!;
+    let copied = pick(press, fresh(press), 'ledger', 'support');
+    copied = pick(press, copied, 'ink', 'copy');
+    expect(copied.run?.sceneId).toBe('settlement');
+    expect(sceneText(press.scenes.settlement, copied)).toMatch(/volume dries without losing its sewing.*gatherings remain legible for transcription/i);
+    expect(sceneText(press.scenes.settlement, copied)).not.toMatch(/entries are copied/i);
+    let deferred = pick(press, fresh(press), 'ledger', 'support');
+    deferred = pick(press, deferred, 'ink', 'wait');
+    deferred = resumed(deferred);
+    expect(sceneText(press.scenes.settlement, deferred)).not.toMatch(/entries are copied/i);
+    expect(deferred.character?.knowledge).toContain('A damp book can be opened by supported gatherings; forcing the whole spine flat risks tearing the sewing.');
+
+    const harness = BATCH.find(({ id }) => id === 'the-horse-that-wore-one-strap')!;
+    let refit = pick(harness, fresh(harness), 'trace', 'fit');
+    refit = pick(harness, refit, 'load', 'refit');
+    refit = resumed(refit);
+    expect(sceneText(harness.scenes.settlement, refit)).toMatch(/refits the collar.*lighter wagon.*traces share the pull/i);
+    let teachOnly = pick(harness, fresh(harness), 'trace', 'fit');
+    teachOnly = pick(harness, teachOnly, 'load', 'teach');
+    teachOnly = resumed(teachOnly);
+    expect(sceneText(harness.scenes.settlement, teachOnly)).toMatch(/show the farmer the fit marks.*collar was not refit or tested.*balanced pull remains unestablished/i);
+    expect(sceneText(harness.scenes.settlement, teachOnly)).not.toMatch(/traces share the pull/i);
+    expect(teachOnly.character?.knowledge).toContain('Uneven trace wear can come from a collar that rides low on one shoulder; check fit under a turn.');
+  });
 });
