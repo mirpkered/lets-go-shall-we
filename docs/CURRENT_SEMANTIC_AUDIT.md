@@ -5,6 +5,10 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
+### Active local repair checkpoint — CRA-C0001 Wave 42
+
+CRA-F0075 (`the-missing-stocking`, LOW) is repaired locally. Live classifications now derive to **637 HEALTHY, 59 MINOR CONCERN, 165 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **180 are dispositioned** (175 repaired and 5 healthy/no-longer-reproduces) and **174 remain open**, including **140 CRA-C0001** (116 MEDIUM, 21 LOW, 3 unrecovered severity). The explicit explanation route retains its confession; quiet return and replacement routes use only their established facts. No push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
 ## Current checkpoint
 
 The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. Reconciliation separates **861 live-reviewed** Adventures from **24 reviewed-but-unregistered historical** records. The historical records and their seven attached findings remain preserved in `adventures` and `unregisteredReviewedAdventures`, but do not count toward live coverage or live defect totals. The latest 20 reviews were reconciled by stable ID to positions 809–828. Historical batch summaries below are retained as history and must not be read as current totals. No scenario source or gameplay test files were changed.

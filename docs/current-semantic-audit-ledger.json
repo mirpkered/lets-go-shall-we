@@ -4382,12 +4382,12 @@
       "slug": "the-missing-stocking",
       "title": "The Missing Stocking",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0075"
       ],
       "reviewProvenance": "current source route review; hay/kitchen/stable search, brother conversation, original return versus paper replacement, private/public explanation and reunion variants traced",
-      "notes": "On kitchen.checkStable -> stable.quietReturn, the selected option returns the stocking without the public explanation, but stockingFound selects reunion text claiming the brother admits moving it as a prank. The stable scene only says he offers to tell Ada; the choice does not establish that he did. Other found/replacement variants are route-matched.",
+      "notes": "Previously, stable.quietReturn reached reunion with stockingFound and received an unsupported brother-admission claim; the default also said the family knew why the stocking vanished, and direct makeReplacement could receive an unsupported stable-location claim. Reunion text now reports only proven recovery or replacement facts. The brother's explanation remains on the explicit reveal route. Route-contrast regression covers quiet return, direct replacement, and explicit explanation.",
       "preReconciliationPosition": 241,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15890,6 +15890,8 @@
       "violatedRule": "A converged route variant must preserve whether a consequential explanation or disclosure actually occurred; an offer to confess is not the confession itself.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The reunion default no longer claims the family knows why the stocking vanished. The stockingFound variant reports only Ada recovering the original and checking the wooden bird; the stockingReplaced variant says only that the original remains missing. Thus quietReturn and direct paper replacement do not inherit the brother's explanation or stable-search route. The explicit truthStocking route still reaches reveal, which states the brother explains the prank, and then stockingAfter. christmasAffinityBatch.test.ts contrasts quiet return, direct replacement, and the explicit explanation route; 20 tests pass. No new state, persistence, rewards, or other root-cause behavior changed.",
       "preReconciliationPosition": 241,
       "registrationStatus": "LIVE"
     },
@@ -20100,9 +20102,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 636,
+    "HEALTHY": 637,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 166,
+    "CONFIRMED DEFECT": 165,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
