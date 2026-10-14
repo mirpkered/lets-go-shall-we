@@ -3461,12 +3461,12 @@
       "slug": "the-widows-mirror",
       "title": "The Widow’s Mirror",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0044"
       ],
       "reviewProvenance": "current source route review; carry outside, backing inspection, glazier identification, repair, upgrade, watch, Yew Charm, cover and terminal variants inspected",
-      "notes": "mirrorAfter is reached by carryMirrorOut and by covering the mirror after viewing, without asking the glazier to dismantle it. It nevertheless says the glazier takes the mirror apart in daylight. Only allowRepair explicitly authorizes that action; fitSpiritGlass chooses a different service.",
+      "notes": "mirrorAfter now defaults to neutral text and only claims dismantling/warped-silver explanation after allowRepair sets widow_mirror_dismantled. Carrying out the mirror, covering it at dusk, or fitting Spirit Glass no longer implies that it was dismantled. Regression preserves the selected repair result and save/reload behavior.",
       "preReconciliationPosition": 187,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15447,6 +15447,8 @@
       "violatedRule": "A shared outcome may not assert an NPC action or service selected only on a different branch.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "mirrorAfter now defaults to neutral text stating that no repair is established. Only mirrorMason.allowRepair records factual run-local proof widow_mirror_dismantled and receives the glazier-dismantled/warped-silver explanation. The Spirit Glass fitting route, carry-out route, and dusk-cover route no longer imply dismantling. Regression contrasts carryMirrorOut with allowRepair and verifies the repair proof survives save/reload; occultInvestigationBatch.test.ts passes 31 tests. Knowledge from allowRepair and the Spirit Glass upgrade remain unchanged.",
       "preReconciliationPosition": 187,
       "registrationStatus": "LIVE"
     },
@@ -20094,9 +20096,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 633,
+    "HEALTHY": 634,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 169,
+    "CONFIRMED DEFECT": 168,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
