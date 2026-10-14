@@ -8636,7 +8636,7 @@
       "slug": "the-punctured-tireless-wheel",
       "title": "The Wheel with the Clean Cut",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0194"
       ],
@@ -13031,7 +13031,7 @@
       "slug": "the-stone-chips-at-the-quarry",
       "title": "The Stone Chips at the Quarry",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0308"
       ],
@@ -13067,7 +13067,7 @@
       "slug": "the-chalk-line-at-the-old-boundary",
       "title": "The Chalk Line at the Old Boundary",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0310"
       ],
@@ -17379,7 +17379,9 @@
       "violatedRule": "An equipment-specific action must be gated by possession and usability of the tool it names, or state a route-established source for that tool.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/roadDangerGenreBatch.ts now gates aftermath.ending_spliceTrace with items and usableItems for freightmansStrap. ending_reportTrace remains available without it. src/craC0008EquipmentAvailability.test.ts drives both routes and checks usable, absent, and BROKEN strap behavior; src/scenarios/roadDangerGenreBatch.test.ts retains shared-builder reward/settlement coverage."
     },
     {
       "findingId": "CRA-F0195",
@@ -18567,7 +18569,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for surveyChain. The ask/compare alternatives remain available. src/craC0008EquipmentAvailability.test.ts drives the tool route and absent/BROKEN fallback."
     },
     {
       "findingId": "CRA-F0291",
@@ -18591,7 +18595,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for assayersLoupe. The waybill and dimension alternatives remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0293",
@@ -18603,7 +18609,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.compare with items and usableItems for fieldCalipers. The physical pin comparison and witness inquiry remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0294",
@@ -18615,7 +18623,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for waterproofLedgerTube. The page-impression comparison and clerk inquiry remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0295",
@@ -18627,7 +18637,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.compare with items and usableItems for heavyLeatherGloves. The spare-line comparison and securing inquiry remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0296",
@@ -18711,7 +18723,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for collapsibleSoundingRod. Mirror and toll-plan alternatives remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0303",
@@ -18747,7 +18761,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for joinersFoldingRule. Worker inquiries and comparison remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0306",
@@ -18771,7 +18787,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.compare with items and usableItems for waterproofLedgerTube. Seal-copy and crew-route alternatives remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0308",
@@ -18783,7 +18801,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now independently gates observe.measure on usable fieldCalipers and observe.compare on usable surveyChain. The crew-route alternative remains available. src/craC0008EquipmentAvailability.test.ts tests each tool alone, the other-tool-only contrast, absent/BROKEN rejection, and fallback."
     },
     {
       "findingId": "CRA-F0309",
@@ -18807,7 +18827,9 @@
       "violatedRule": "Equipment-specific actions require an availability and usable-condition gate.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.compare with items and usableItems for surveyChain. County-map and neighbor-account alternatives remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0311",
@@ -18879,7 +18901,9 @@
       "violatedRule": "Equipment-specific actions require availability and usable-condition gates.",
       "clusterId": "CRA-C0008",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gates observe.measure with items and usableItems for assayersLoupe. Charcoal-rubbing and mason-history alternatives remain available. src/craC0008EquipmentAvailability.test.ts covers usable, absent, and BROKEN states."
     },
     {
       "findingId": "CRA-F0317",
@@ -19936,9 +19960,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 559,
+    "HEALTHY": 562,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 244,
+    "CONFIRMED DEFECT": 241,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
