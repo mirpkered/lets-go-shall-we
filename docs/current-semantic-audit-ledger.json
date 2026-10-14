@@ -5291,12 +5291,12 @@
       "slug": "the-house-under-the-hill",
       "title": "The House under the Hill",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0098"
       ],
       "reviewProvenance": "current source route review; landholder/no-landholder entry, exterior papers, upper-room objects, threshold retreat, stair, lower niche, success/failure slide, Knowledge and History routes traced",
-      "notes": "lookWindow -> room.roomRetreat -> discovery and upper.upperOut -> discovery reach shared text stating the house was abandoned after flood damage and that the landholder will mark the slope closed, despite no deed inspection/landholder contact on those routes. The ending merges the documented-history branch with routes that only saw the exposed rooms.",
+      "notes": "Original review witness preserved: room.roomRetreat and upper.upperOut reached discovery without deed inspection or landholder contact, yet the ending asserted flood history and a future closure action; the direct leave ending also said the landholder was warned. Wave 69 gates the two independent history sources separately and removes unsupported landholder follow-up claims from both endings.",
       "preReconciliationPosition": 295,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16238,6 +16238,8 @@
       "routeWitness": "slope.lookWindow -> room.roomRetreat -> discovery and slope.enterHouse -> upper.upperOut -> discovery; neither route consults landholder or papers, yet discovery states the family left after flood damage and that the landholder will mark the slope closed until shored.",
       "violatedRule": "Route convergence must preserve both information provenance and NPC follow-up; one branch's documentary history or contact cannot become universal ending knowledge/action.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 69 sets independent run-local history proof for the landholder's flood account and the deed's move-uphill record. The shared discovery uses source-specific variants and a neutral fallback; it no longer claims that the landholder will close the slope, and the direct leave ending no longer invents a warning. Regression covers outside retreat, upper-room exit, direct departure, landholder-only account, deed route, Knowledge preservation, save/reload, and legacy no-proof state. Lost Places, registry, and library checks pass (21 tests across 3 files); TypeScript and production build pass with the known bundle-size warning. No hazard, rescue, or reward behavior changed.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 295,
       "registrationStatus": "LIVE"
@@ -20170,9 +20172,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 665,
+    "HEALTHY": 666,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 137,
+    "CONFIRMED DEFECT": 136,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
