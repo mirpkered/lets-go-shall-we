@@ -362,6 +362,64 @@ describe('Road Danger / Highwaymen genre batch', () => {
     expect(sceneText(story.scenes.fightLost, marked)).not.toMatch(/marked route/i);
   });
 
+  it('keeps gate location and permit claims tied to the selected response', () => {
+    const gate = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-closed-gate')!;
+    for (const approach of ['readSign', 'askFamily', 'findRancher']) {
+      for (const response of ['showPermit', 'openBackLane', 'callNeighbor']) {
+        let state = act(initial(gate), gate, `approach_${approach}`);
+        state = act(state, gate, `respond_${response}`);
+        const aftermath = sceneText(gate.scenes.aftermath, state);
+        expect(aftermath).not.toMatch(/county clerk is asked|the clerk is asked to confirm/i);
+        expect(aftermath.includes('family takes the longer marked back lane')).toBe(response === 'openBackLane');
+        expect(aftermath.includes('rancher confirms the seasonal closure has not begun')).toBe(response === 'showPermit');
+        if (response === 'showPermit') expect(aftermath).toMatch(/without a separate clerk request/i);
+        if (response === 'openBackLane') expect(aftermath).toMatch(/no separate clerk date-check is claimed/i);
+        if (response === 'callNeighbor') {
+          expect(aftermath).toMatch(/neighbor witnesses the riders abandoning the chain/i);
+          expect(aftermath).toMatch(/nor a clerk date-check/i);
+        }
+      }
+    }
+  });
+
+  it('offers the dropped pry-tool return only after that tool is dropped', () => {
+    const camp = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-camp-with-two-fires')!;
+    const returnTool = camp.scenes.aftermath.choices.find(({ id }) => id === 'ending_returnTool')!;
+    for (const response of ['callWatch', 'closeGap', 'wakeCook']) {
+      let state = act(initial(camp), camp, 'approach_secureHorse');
+      state = act(state, camp, `respond_${response}`);
+      expect(meets(returnTool.requirements, state), response).toBe(response === 'callWatch');
+      if (response === 'callWatch') {
+        expect(sceneText(camp.scenes.aftermath, state)).toMatch(/drops a pry tool/i);
+        state = act(state, camp, 'ending_returnTool');
+        expect(sceneText(camp.scenes.settlement, state)).toMatch(/owner identifies the tool as caravan property/i);
+      } else {
+        expect(sceneText(camp.scenes.aftermath, state)).not.toMatch(/drops a pry tool/i);
+      }
+    }
+    const combat = act(act(initial(camp), camp, 'approach_secureHorse'), camp, 'fight', () => 0);
+    const combatAftermath = act(combat, camp, 'checkRoad');
+    expect(meets(returnTool.requirements, combatAftermath)).toBe(false);
+    expect(camp.scenes.gear.text).toMatch(/separate from any tool left at the scene/i);
+  });
+
+  it('separates purse identification, a confession, and restitution by response', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-blue-thread')!;
+    for (const response of ['countCoins', 'askFinder', 'callWoodcutter']) {
+      let state = act(initial(story), story, 'approach_followThread');
+      state = act(state, story, `respond_${response}`);
+      const aftermath = sceneText(story.scenes.aftermath, state);
+      expect(aftermath).not.toMatch(/returns the remaining coins|repays the missing coins/i);
+      expect(aftermath.includes('finder admits taking two coins')).toBe(response === 'askFinder');
+      if (response === 'countCoins') expect(aftermath).toMatch(/laundry ticket and takes back the purse/i);
+      if (response === 'askFinder') expect(aftermath).toMatch(/no repayment is established/i);
+      if (response === 'callWoodcutter') expect(aftermath).toMatch(/finder’s handling and any missing coins remain unestablished/i);
+      state = act(state, story, 'ending_walkToInn');
+      expect(sceneText(story.scenes.settlement, state)).not.toMatch(/finder’s account/i);
+      expect(sceneText(story.scenes.settlement, state)).toMatch(/without assigning blame/i);
+    }
+  });
+
   it('keeps public-axle ownership distinct from physical return to the crew', () => {
     const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
     for (const [approach, response] of [['checkCrewBook', 'callForeman'], ['askSmith', 'refusePurchase'], ['stabilizeWagon', 'checkStamp']]) {
