@@ -281,21 +281,25 @@ export const THE_LAST_ROPE: Scenario = {
     ravineLedge: { id: 'ravineLedge', title: 'One Line, Three Needs', tone: 'danger', text: 'A porter is stranded on a broad ledge below a ravine path. A Travel Rope would be the only useful line here; none is lying nearby. The ledge is stable, but the anchor above is a cracked dead tree. The porter can wait while you inspect the stone wall and a living pine farther along the rim.', choices: [
       { id: 'inspectRavineAnchor', label: 'Test the stone and living pine anchors', next: 'anchorTest' },
       { id: 'lowerRavineRope', label: 'Lower the rope directly to the porter', requirements: { usableItems: ['travelRope'] }, hint: 'The dead tree cannot hold a full fall; the line may be lost.', chance: { probability: 0.58, successNext: 'porterUp', failureNext: 'ropeStrain', successMessage: 'The porter climbs while you hold the line from the path.', failureMessage: 'The dead tree tears loose and the line snaps tight.' , failureEffects: { damageItems: ['travelRope'], health: -2 } } },
-      { id: 'callRavineHelp', label: 'Call for help from the marked road', next: 'ravineWait' },
+      { id: 'callRavineHelp', label: 'Call for help from the marked road', next: 'ravineWait', effects: { setFlags: ['calledRavineCrew'] } },
       { id: 'leaveRavine', label: 'Retreat and bring a trained crew', next: 'ravineWait', effects: { historyFlags: ['withdrew_for_ravine_rescue_crew'] } },
     ] },
     anchorTest: { id: 'anchorTest', title: 'A Better Anchor', tone: 'warning', text: 'The dead tree is hollow at its roots. The living pine stands beyond a longer path, and a stone horn offers a wide route around the ravine. The porter can climb if the line is anchored well, but the rope will be left behind.', choices: [
       { id: 'anchorPineRope', label: 'Anchor the rope to the living pine', requirements: { usableItems: ['travelRope'] }, next: 'porterUp', effects: { loseItems: ['travelRope'], historyFlags: ['sacrificed_rope_to_rescue_ravine_porter'] } },
       { id: 'walkStoneHorn', label: 'Find the stone path to the ledge', next: 'porterWalked' },
-      { id: 'callFromAnchor', label: 'Call the porter toward the stone path', next: 'ravineWait' },
+      { id: 'callFromAnchor', label: 'Call the porter toward the stone path', next: 'ravineWait', effects: { setFlags: ['calledRavineCrew'] } },
     ] },
     ropeStrain: { id: 'ropeStrain', title: 'The Line Jerks', tone: 'danger', text: 'The failed anchor has damaged your rope. The porter remains on the stable ledge, but the line can no longer hold a full climb. A stone path curves around the ravine, or you can retreat to find a proper crew.', choices: [
       { id: 'walkAfterRope', label: 'Use the stone path to reach the ledge', next: 'porterWalked' },
       { id: 'retreatAfterRope', label: 'Return for a trained rescue crew', next: 'ravineWait' },
     ] },
-    porterUp: end('porterUp', 'The Porter Reaches the Rim', 'The porter climbs onto the rim, shaken but able to walk. Your rope remains at the ravine or has taken the strain; the porter insists the cargo can be replaced, while the line cannot be trusted again today.'),
+    porterUp: { ...end('porterUp', 'The Porter Reaches the Rim', 'The porter climbs onto the rim, shaken but able to walk. The cargo remains below for a later trip; it cannot be brought up safely by the route taken today.'), textVariants: [
+      { requirements: { historyFlags: ['sacrificed_rope_to_rescue_ravine_porter'] }, text: 'The porter climbs onto the rim, shaken but able to walk. Your rope remains at the ravine after the living pine held the climb; the porter insists the cargo can be replaced, while the line cannot be trusted again today.' },
+    ] },
     porterWalked: end('porterWalked', 'The Long Stone Path', 'The stone path reaches the ledge without a rope. You guide the porter around the ravine at a slow pace; the cargo stays below until a proper crew can secure it.'),
-    ravineWait: end('ravineWait', 'Help on the Marked Road', 'A rescue crew follows your call and lowers a sound line from the living pine. The porter is brought up safely; you gave up time and the cargo remains for a second trip.'),
+    ravineWait: { ...end('ravineWait', 'Help on the Marked Road', 'A trained rescue crew reaches the ravine and lowers a sound line from the living pine. The porter is brought up safely; time was lost, and the cargo remains for a second trip.'), textVariants: [
+      { requirements: { flags: ['calledRavineCrew'] }, text: 'A rescue crew follows your call and lowers a sound line from the living pine. The porter is brought up safely; you gave up time and the cargo remains for a second trip.' },
+    ] },
   },
 };
 

@@ -136,6 +136,26 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_LOST_SURVEY_PARTY.scenes.surveyDelay, loadSave(storage))).not.toMatch(/marks at the camp and slope/i);
   });
 
+  it('keeps rope cost and rescue method truthful at the ravine endings', () => {
+    const direct = act(start(THE_LAST_ROPE, ['travelRope']), THE_LAST_ROPE, 'ravineLedge', 'lowerRavineRope', 0);
+    expect(direct.run?.sceneId).toBe('porterUp');
+    expect(sceneText(THE_LAST_ROPE.scenes.porterUp, direct)).not.toMatch(/rope remains at the ravine|cannot be trusted again/i);
+
+    let anchored = act(start(THE_LAST_ROPE, ['travelRope']), THE_LAST_ROPE, 'ravineLedge', 'inspectRavineAnchor');
+    anchored = act(anchored, THE_LAST_ROPE, 'anchorTest', 'anchorPineRope');
+    const ropeStorage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(anchored, ropeStorage);
+    expect(sceneText(THE_LAST_ROPE.scenes.porterUp, loadSave(ropeStorage))).toMatch(/rope remains at the ravine/i);
+
+    const fetchedCrew = act(start(THE_LAST_ROPE), THE_LAST_ROPE, 'ravineLedge', 'leaveRavine');
+    expect(sceneText(THE_LAST_ROPE.scenes.ravineWait, fetchedCrew)).not.toMatch(/follows your call/i);
+
+    const calledCrew = act(start(THE_LAST_ROPE), THE_LAST_ROPE, 'ravineLedge', 'callRavineHelp');
+    const crewStorage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(calledCrew, crewStorage);
+    expect(sceneText(THE_LAST_ROPE.scenes.ravineWait, loadSave(crewStorage))).toMatch(/follows your call/i);
+  });
+
   it('makes risky environmental choices possible, foreshadowed, and consequential', () => {
     const floodRisk = ACROSS_THE_FLOODPLAIN.scenes.floodHerd.choices.find(({ id }) => id === 'crossFloodChannel')!;
     expect(floodRisk.hint).toMatch(/drown/i);
