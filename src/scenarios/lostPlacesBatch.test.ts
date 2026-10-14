@@ -42,6 +42,47 @@ function text(state: SaveData, scenario: Scenario): string {
 }
 
 describe('Lost Places route-accurate endings', () => {
+  it('reserves the map symbol and private-letter disposition for routes that establish them', () => {
+    const map = get('the-map-in-the-ledger');
+    let copiedOnly = actIn(start(map), map, 'copyMap');
+    expect(text(copiedOnly, map)).toMatch(/third stone’s mark remains unidentified/i);
+    expect(text(copiedOnly, map)).not.toMatch(/water-gate mark can guide/i);
+
+    let locationOnly = actIn(start(map), map, 'traceCreek');
+    locationOnly = actIn(locationOnly, map, 'takeTrackBack');
+    expect(text(locationOnly, map)).toMatch(/mark remains unidentified/i);
+
+    let interpreted = actIn(start(map), map, 'traceCreek');
+    interpreted = actIn(interpreted, map, 'checkStone');
+    interpreted = actIn(interpreted, map, 'stoneRecord');
+    interpreted = loadSave({ getItem: () => JSON.stringify(interpreted) });
+    expect(text(interpreted, map)).toMatch(/identified water-gate mark/i);
+    expect(interpreted.character?.knowledge).toContain('The third stone at the split pine marks an old mill water gate, not a buried cache.');
+
+    const fort = get('the-last-room-in-the-fort');
+    let inventoryOnly = actIn(start(fort), fort, 'readInventory');
+    inventoryOnly = actIn(inventoryOnly, fort, 'planPermission');
+    inventoryOnly = actIn(inventoryOnly, fort, 'openRoom');
+    inventoryOnly = actIn(inventoryOnly, fort, 'roomCount');
+    expect(text(inventoryOnly, fort)).toMatch(/letters’ ownership and eventual destination remain undetermined/i);
+    expect(text(inventoryOnly, fort)).not.toMatch(/referred to the surgeon’s family/i);
+
+    let identifiedAndReferred = actIn(start(fort), fort, 'readInventory');
+    identifiedAndReferred = actIn(identifiedAndReferred, fort, 'planPermission');
+    identifiedAndReferred = actIn(identifiedAndReferred, fort, 'openRoom');
+    identifiedAndReferred = actIn(identifiedAndReferred, fort, 'roomLetters');
+    identifiedAndReferred = actIn(identifiedAndReferred, fort, 'fortRecord');
+    identifiedAndReferred = loadSave({ getItem: () => JSON.stringify(identifiedAndReferred) });
+    expect(text(identifiedAndReferred, fort)).toMatch(/identified letters are referred to the surgeon’s family/i);
+    expect(identifiedAndReferred.character?.knowledge).toContain('Room seven at the old fort was a temporary infirmary during a fever year, not an armory.');
+
+    let waitedOutside = actIn(start(fort), fort, 'readInventory');
+    waitedOutside = actIn(waitedOutside, fort, 'planPermission');
+    waitedOutside = actIn(waitedOutside, fort, 'waitOutside');
+    waitedOutside = actIn(waitedOutside, fort, 'fortRecord');
+    expect(text(waitedOutside, fort)).toMatch(/identified letters are referred to the surgeon’s family/i);
+  });
+
   it('keeps the Old Survey Stone calf unresolved on the boundary-only route', () => {
     const scenario = get('the-old-survey-stone');
     let state = start(scenario);

@@ -19,7 +19,7 @@ export const THE_MAP_IN_THE_LEDGER = E('the-map-in-the-ledger', 'The Map in the 
     { id: 'millerStop', label: 'Keep the account and ask no more', next: 'copied' },
   ]),
   creek: scene('creek', 'The Split Pine', 'The split pine still stands above the creek. Three stones are set along its roots; the third bears a shallow chisel mark. A narrow track climbs to an old work shelf, while the creek path returns to the road.', [
-    { id: 'checkStone', label: 'Read the chisel mark', next: 'stone' },
+    { id: 'checkStone', label: 'Read the chisel mark', next: 'stone', effects: { setFlags: ['thirdStoneWaterGateIdentified'] } },
     { id: 'takeTrackBack', label: 'Return to the road with the location', next: 'copied' },
     { id: 'climbShelf', label: 'Follow the track to the old shelf', next: 'shelf' },
   ]),
@@ -34,7 +34,9 @@ export const THE_MAP_IN_THE_LEDGER = E('the-map-in-the-ledger', 'The Map in the 
   ], 'warning'),
   shelfFall: scene('shelfFall', 'The Marking Slips', 'The bank sheds soil beneath your boots. You retreat with a bruised shin; the mill token remains below the slumped earth, and the cut channel is still visible from the path.', [{ id: 'fallLeave', label: 'Return to the road', next: 'copied', effects: { health: -1 } }], 'warning'),
   discovery: scene('discovery', 'What the Ledger Meant', 'The drawing marks a forgotten water diversion, not treasure. The miller can use the old channel date to explain why the present wheel floods in spring; the token is a crew marker, not payment.', [{ id: 'discoveryShare', label: 'Take the dated note back to the miller', next: 'revealed', effects: { historyFlags: ['found a mill crew marker beneath a ledger map'] } }]),
-  copied: end('copied', 'A Map with a Use', 'You leave with the map’s location and what it may mean. No treasure is claimed; the ledger remains with its owner, and the old water-gate mark can guide a later repair.'),
+  copied: { ...end('copied', 'A Map with a Use', 'You leave with the map’s location and what it may mean. No treasure is claimed; the ledger remains with its owner, and the third stone’s mark remains unidentified on this route.'), textVariants: [
+    { requirements: { flags: ['thirdStoneWaterGateIdentified'] }, text: 'You leave with the map’s location and the third stone’s identified water-gate mark. No treasure is claimed; the ledger remains with its owner, and the mark may guide a later repair.' },
+  ] },
   revealed: end('revealed', 'The Mill’s Earlier Course', 'The miller recognizes the old channel date and adds it to the account book. The map has recovered a piece of working history, not a fortune.'),
   leave: end('leave', 'The Book Stays Shut', 'You decline the errand. The miller keeps the ledger, and the map remains an unexplained drawing beneath old accounts.'),
 }, 'ledger', 'mill/creek', ['evidence interpretation', 'optional deeper exploration', 'knowledge payoff']);
@@ -431,8 +433,10 @@ export const THE_LAST_ROOM_IN_THE_FORT = E('the-last-room-in-the-fort', 'The Las
     { id: 'roomLetters', label: 'Ask the clerk to identify the letters', next: 'records' },
     { id: 'roomCount', label: 'Record the blankets and cot only', next: 'discovery' },
   ]),
-  records: scene('records', 'A Fever Ward, Briefly', 'The letters show room seven served as a temporary infirmary during the fever year. The blankets were counted as public stores; the letters belong to a surgeon’s descendants. The fort inventory omitted the room because it was sealed during the review.', [{ id: 'fortRecord', label: 'Return the letters for family notice', next: 'discovery', effects: { knowledge: ['Room seven at the old fort was a temporary infirmary during a fever year, not an armory.'], historyFlags: ['helped open and correctly inventory a sealed fort room'] } }]),
-  discovery: end('discovery', 'An Inventory Completed', 'The county adds room seven to the fort record. The blankets remain public property and the letters are referred to the surgeon’s family. The room’s history matters more than anything hidden inside.'),
+  records: scene('records', 'A Fever Ward, Briefly', 'The letters show room seven served as a temporary infirmary during the fever year. The blankets were counted as public stores; the letters belong to a surgeon’s descendants. The fort inventory omitted the room because it was sealed during the review.', [{ id: 'fortRecord', label: 'Return the letters for family notice', next: 'discovery', effects: { setFlags: ['fortLettersReferredForFamilyNotice'], knowledge: ['Room seven at the old fort was a temporary infirmary during a fever year, not an armory.'], historyFlags: ['helped open and correctly inventory a sealed fort room'] } }]),
+  discovery: { ...end('discovery', 'An Inventory Completed', 'The county adds room seven to the fort record with the blankets and broken cot that were counted. The letters’ ownership and eventual destination remain undetermined on this route.'), textVariants: [
+    { requirements: { flags: ['fortLettersReferredForFamilyNotice'] }, text: 'The county adds room seven to the fort record. The blankets remain public property, and the identified letters are referred to the surgeon’s family. The room’s history matters more than anything hidden inside.' },
+  ] },
   leave: end('leave', 'A Door Still Sealed', 'You leave the room closed until the clerk can be present. The inventory remains incomplete, but no private property is disturbed.'),
 }, 'gate', 'abandoned military post', ['document-led exploration', 'permission before entry', 'historical reveal']);
 
