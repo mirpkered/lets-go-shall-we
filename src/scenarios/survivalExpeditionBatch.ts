@@ -599,14 +599,14 @@ export const THE_ABANDONED_CAMP: Scenario = {
   scenes: {
     emptyCamp: { id: 'emptyCamp', title: 'A Fire Left Warm', tone: 'warning', text: 'A small camp stands beside the trail. The fire is down to coals, a covered pot remains on a flat stone, and a bedroll is gone. No blood or broken gear is visible. Fresh tracks lead both toward the ridge and down to a stream.', choices: [
       { id: 'inspectCamp', label: 'Read the tracks around the fire', next: 'campTracks', effects: { knowledge: ['The abandoned camp had a warm fire, food covered in a pot, and tracks toward both ridge and stream.'] } },
-      { id: 'callAtCamp', label: 'Call out and wait for an answer', next: 'campAnswer' },
+      { id: 'callAtCamp', label: 'Call out and wait for an answer', next: 'campAnswer', effects: { setFlags: ['campCallMade'] } },
       { id: 'leaveCampAlone', label: 'Leave the camp and keep to the trail', next: 'campLeave' },
       { id: 'takeCampFood', label: 'Take food from the covered pot', hint: 'The food belongs to whoever left the camp; there is no evidence it was abandoned for good.', next: 'campTaken', effects: { historyFlags: ['took_food_from_unattended_camp'] } },
     ] },
     campTracks: { id: 'campTracks', title: 'Two Ordinary Trails', tone: 'safe', text: 'The ridge bootprints head to a viewpoint. Lighter prints descend to the shallow stream; neither line shows a hurried departure, and the camp is not far from the road.', choices: [
       { id: 'followRidgeTracks', label: 'Follow the bootprints to the viewpoint', next: 'campRidge' },
       { id: 'followStreamTracks', label: 'Check where the stream prints lead', next: 'campStream', effects: { setFlags: ['streamTracksChecked'] } },
-      { id: 'waitAtCamp', label: 'Wait by the trail without touching gear', next: 'campAnswer' },
+      { id: 'waitAtCamp', label: 'Wait by the trail without touching gear', next: 'campAnswer', effects: { setFlags: ['campWaitedForReturn'] } },
     ] },
     campRidge: { id: 'campRidge', title: 'A View above the Camp', tone: 'safe', text: 'A traveler sits on the ridge sketching the valley. They left the bedroll and meal while checking the view; they say their stream trip was yesterday. That accounts for the traveler, but it does not identify the lighter prints. They ask you not to move their things.', choices: [
       { id: 'tellCamperTracks', label: 'Compare notes without guessing who left them', next: 'campReunion' },
@@ -617,7 +617,10 @@ export const THE_ABANDONED_CAMP: Scenario = {
       { id: 'returnEmptyCamp', label: 'Return without crossing the stream', next: 'campAnswer' },
     ] },
     campTaken: end('campTaken', 'Food for the Road', 'You take the food and leave a note at the camp describing what you saw. The choice saves your meal, but the traveler returns to find their covered pot empty and your note in its place.'),
-    campAnswer: end('campAnswer', 'No One Answers', 'No one answers from the ridge or stream. You leave the food and bedroll undisturbed and tell the next road keeper where the camp stands; there was no evidence to turn an empty site into a rescue emergency.'),
+    campAnswer: { ...end('campAnswer', 'The Quiet Camp', 'You return without crossing. The food and bedroll remain undisturbed, and you tell the next road keeper where the camp stands; there was no evidence to turn an empty site into a rescue emergency.'), textVariants: [
+      { requirements: { flags: ['campCallMade'] }, text: 'You call out from camp, but no one answers from the ridge or stream. You leave the food and bedroll undisturbed and tell the next road keeper where the camp stands; there was no evidence to turn an ordinary absence into a rescue emergency.' },
+      { requirements: { flags: ['campWaitedForReturn'] }, text: 'You wait by the trail without touching the camp. No one returns during the wait. You tell the next road keeper where the camp stands; there was no evidence to turn an ordinary absence into a rescue emergency.' },
+    ] },
     campLeave: end('campLeave', 'The Trail Keeps Going', 'You leave the camp as you found it. The traveler may return from either short path, and nothing in the quiet site proves they are lost.'),
     campReunion: { ...end('campReunion', 'A Camper Returns', 'The traveler returns to camp and finds the meal and gear untouched. Their account explains why they left, while the unclaimed stream prints remain just that: unclaimed. You leave without turning an ordinary absence into a certainty.'), textVariants: [
       { requirements: { flags: ['streamTracksChecked'] }, text: 'The traveler returns to camp and finds the meal and gear untouched. Their account places them on the ridge, not at the stream; you checked where the prints led, but could not prove whose they were. You part with a clear limit on what the evidence establishes.' },

@@ -281,6 +281,20 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceSafeWait, waited)).not.toMatch(/cart remains on the near bank/i);
   });
 
+  it('distinguishes calling, waiting, and returning without contact at the abandoned camp', () => {
+    const returned = act(act(start(THE_ABANDONED_CAMP), THE_ABANDONED_CAMP, 'emptyCamp', 'inspectCamp'), THE_ABANDONED_CAMP, 'campTracks', 'followStreamTracks');
+    const noCrossing = act(returned, THE_ABANDONED_CAMP, 'campStream', 'returnEmptyCamp');
+    expect(sceneText(THE_ABANDONED_CAMP.scenes.campAnswer, noCrossing)).not.toMatch(/no one answers/i);
+
+    const called = act(start(THE_ABANDONED_CAMP), THE_ABANDONED_CAMP, 'emptyCamp', 'callAtCamp');
+    const calledStorage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(called, calledStorage);
+    expect(sceneText(THE_ABANDONED_CAMP.scenes.campAnswer, loadSave(calledStorage))).toMatch(/you call out.*no one answers/i);
+
+    const waited = act(act(start(THE_ABANDONED_CAMP), THE_ABANDONED_CAMP, 'emptyCamp', 'inspectCamp'), THE_ABANDONED_CAMP, 'campTracks', 'waitAtCamp');
+    expect(sceneText(THE_ABANDONED_CAMP.scenes.campAnswer, waited)).toMatch(/wait.*no one returns/i);
+  });
+
   it('remembers meeting the Empty Cabin trapper without inventing that encounter on other exits', () => {
     let met = act(start(THE_EMPTY_CABIN), THE_EMPTY_CABIN, 'cabinDoor', 'readCabinNote');
     met = act(met, THE_EMPTY_CABIN, 'cabinSigns', 'followCabinPrints');
