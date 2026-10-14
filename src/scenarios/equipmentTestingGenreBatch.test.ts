@@ -26,6 +26,79 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     expect(scenario.scenes.proof.text).not.toMatch(/clamp holds/i);
   });
 
+  it('keeps The Line Under Load inspection, low-test, and hand-comparison claims distinct', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-line-under-load')!;
+    const character = newCharacter('Anchor Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const inspected = choose(initial, scenario, scenario.scenes.brief.choices.find(({ id }) => id === 'readAnchor')!);
+    expect(inspected.run?.sceneId).toBe('anchorInspection');
+    expect(scenario.scenes.anchorInspection.text).toMatch(/has not tested the gauge/i);
+    expect(scenario.scenes.anchorInspection.text).not.toMatch(/gauge shows|consistent readings/i);
+    const inspectionOnly = choose(inspected, scenario, scenario.scenes.anchorInspection.choices.find(({ id }) => id === 'leaveUntested')!);
+    expect(scenario.scenes[inspectionOnly.run!.sceneId].text).toMatch(/gauge has not been tested or calibrated/i);
+
+    const lowTest = choose(initial, scenario, scenario.scenes.brief.choices.find(({ id }) => id === 'lowTest')!);
+    expect(scenario.scenes[lowTest.run!.sceneId].text).toMatch(/gauge shows the nearer line/i);
+    const handComparison = choose(lowTest, scenario, scenario.scenes.reading.choices.find(({ id }) => id === 'compareByHand')!);
+    expect(handComparison.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).toMatch(/low-load test exposed a shifting anchor eye/i);
+    expect(scenario.scenes.result.text).not.toMatch(/repeat gives consistent readings/i);
+    const explicitRepeat = choose(lowTest, scenario, scenario.scenes.reading.choices.find(({ id }) => id === 'stopAndReset')!);
+    expect(explicitRepeat.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).not.toMatch(/repeat gives consistent readings/i);
+  });
+
+  it('does not claim the pack pad was fitted on the inspection-only saddle route', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-saddle-that-sat-crooked')!;
+    const character = newCharacter('Saddle Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const inspected = choose(initial, scenario, scenario.scenes.yard.choices.find(({ id }) => id === 'inspectGirth')!);
+    expect(inspected.run?.sceneId).toBe('girthInspection');
+    expect(scenario.scenes.girthInspection.text).toMatch(/pad has not been fitted or tested/i);
+    expect(scenario.scenes.girthInspection.text).not.toMatch(/spreads pressure|stays centered/i);
+    const fitAfterInspection = choose(inspected, scenario, scenario.scenes.girthInspection.choices.find(({ id }) => id === 'fitPad')!);
+    expect(fitAfterInspection.run?.sceneId).toBe('trail');
+    expect(scenario.scenes.trail.text).toMatch(/pad spreads pressure/i);
+    const directFit = choose(initial, scenario, scenario.scenes.yard.choices.find(({ id }) => id === 'fitPad')!);
+    expect(directFit.run?.sceneId).toBe('trail');
+  });
+
+  it('separates lantern vent inspection from the leeward flame and hinge test', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-lantern-in-crosswind')!;
+    const character = newCharacter('Lantern Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const vent = choose(initial, scenario, scenario.scenes.lamp.choices.find(({ id }) => id === 'checkVent')!);
+    expect(vent.run?.sceneId).toBe('ventChecked');
+    expect(scenario.scenes.ventChecked.text).toMatch(/flame and hinge direction remain untested/i);
+    expect(scenario.scenes.ventChecked.text).not.toMatch(/steadies the flame|hinge points the light/i);
+    const tested = choose(vent, scenario, scenario.scenes.ventChecked.choices.find(({ id }) => id === 'testLeeward')!);
+    expect(tested.run?.sceneId).toBe('signal');
+    expect(scenario.scenes.signal.text).toMatch(/screen steadies the flame on the leeward side/i);
+    const directTest = choose(initial, scenario, scenario.scenes.lamp.choices.find(({ id }) => id === 'testLeeward')!);
+    expect(directTest.run?.sceneId).toBe('signal');
+  });
+
+  it('records the buckle upgrade only when the Traveler accepts the tested reinforcement', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-freightmans-buckle-trial')!;
+    const character = newCharacter('Buckle Decline Test');
+    character.carriedItem = 'freightmansStrap';
+    character.carriedItems = ['freightmansStrap'];
+    const record = { condition: 'NORMAL' as const, upgrades: [], provenance: [] };
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, itemStates: { freightmansStrap: record }, run: startRun(character, scenario, () => 0, { freightmansStrap: record }) };
+    const inspect = choose(initial, scenario, scenario.scenes.strap.choices.find(({ id }) => id === 'inspectSeam')!);
+    expect(scenario.scenes.test.text).not.toMatch(/strap gains its existing Stitched Buckle upgrade/i);
+    const declined = choose(inspect, scenario, scenario.scenes.test.choices.find(({ id }) => id === 'stop')!);
+    expect(declined.run?.sceneId).toBe('declined');
+    expect(getCarriedItems(declined.character)).toContain('freightmansStrap');
+    expect(declined.itemStates?.freightmansStrap?.upgrades).toEqual([]);
+    expect(scenario.scenes.declined.text).toMatch(/declined the edge treatment and upgrade/i);
+
+    const accepted = choose(inspect, scenario, scenario.scenes.test.choices.find(({ id }) => id === 'accept')!);
+    expect(accepted.run?.sceneId).toBe('done');
+    expect(accepted.itemStates?.freightmansStrap?.upgrades.map(({ id }) => id)).toContain('stitchedBuckle');
+    expect(scenario.scenes.done.text).toMatch(/actual condition and upgrade recorded/i);
+  });
+
   it('registers 24 unique, all-year Adventures with a valid reachable graph', () => {
     expect(BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);
