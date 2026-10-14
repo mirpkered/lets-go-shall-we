@@ -177,6 +177,25 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(tree.scenes.treeDelayEnd, standing)).not.toMatch(/fallen short/i);
   });
 
+  it('reports the miller’s logs as returned only after the restitution route', () => {
+    const firewood = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'widows-firewood')!;
+
+    let ownWoodOnly = pick(fresh(firewood), firewood, 'inspectLogs');
+    ownWoodOnly = pick(ownWoodOnly, firewood, 'followWoodTrail');
+    ownWoodOnly = pick(ownWoodOnly, firewood, 'acceptOwnWood');
+    expect(sceneText(firewood.scenes.settled, ownWoodOnly)).toMatch(/miller’s marked logs remains unresolved/i);
+    ownWoodOnly = pick(ownWoodOnly, firewood, 'firewoodEnd');
+    expect(sceneText(firewood.scenes.firewoodEnd, ownWoodOnly)).toMatch(/miller’s logs remain a separate matter/i);
+    expect(sceneText(firewood.scenes.firewoodEnd, ownWoodOnly)).not.toMatch(/logs have been returned/i);
+
+    let repaid = pick(fresh(firewood), firewood, 'askMiller');
+    repaid = pick(repaid, firewood, 'privateAsk');
+    repaid = pick(repaid, firewood, 'correctTheft');
+    expect(sceneText(firewood.scenes.settled, repaid)).toMatch(/logs have been separated and returned/i);
+    repaid = pick(repaid, firewood, 'firewoodEnd');
+    expect(sceneText(firewood.scenes.firewoodEnd, repaid)).toMatch(/miller’s logs have been returned/i);
+  });
+
   it('mentions garland trimming only after the tree takes a branch-breaking fall', () => {
     const tree = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'christmas-tree-millers-hill')!;
     let clean = pick(pick(fresh(tree), tree, 'joinRopeCrew'), tree, 'pullTreeNow', () => 0);
