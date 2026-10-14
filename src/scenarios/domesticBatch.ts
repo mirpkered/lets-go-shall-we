@@ -68,7 +68,7 @@ export const DOMESTIC_ADVENTURES = authorBatch([
         { id: 'lodging', label: 'Find a room before making contact', title: 'Shelter First', text: 'The innkeeper offers a room under the traveler’s own name and agrees not to send word back. The aunt can be contacted when the person is ready.' },
       ] },
       { id: 'shelter', label: 'Ask the farm owner for a private room', title: 'A Door That Closes', text: 'The farm owner agrees to provide a room and asks no questions in front of the household. The person decides whether to leave now or wait until the yard is quiet.', outcomes: [
-        { id: 'leave', label: 'Leave by the rear lane now', title: 'Out of the House', text: 'The person takes the lane to the aunt’s home, and you go only as far as they request. No argument is staged or demanded.' },
+        { id: 'leave', label: 'Leave by the rear lane now', title: 'Out of the House', text: 'The person leaves by the rear lane; the destination has not been discussed. You go only as far as they request. No argument is staged or demanded.' },
         { id: 'wait', label: 'Wait in the private room until dawn', title: 'A Safer Hour', text: 'They choose to rest behind a closed door while the farm owner stays nearby. In the morning they can decide where to go next.' },
       ] },
     ],

@@ -25,4 +25,24 @@ describe('domestic scenario payoff', () => {
     expect(ending.text).toMatch(/whether you accompany them/i);
     expect(ending.text).toMatch(/their plan—not a confrontation—sets its terms/i);
   });
+
+  it('does not disclose the aunt destination on the separate private-room departure route', () => {
+    const scenario = DOMESTIC_ADVENTURES.find(({ id }) => id === 'the-back-door')!;
+    const character = newCharacter('Private Room Departure QA');
+    let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const pick = (choiceId: string) => {
+      const current = scenario.scenes[state.run!.sceneId];
+      const choice = current.choices.find(({ id }) => id === choiceId);
+      expect(choice, `${current.id}.${choiceId}`).toBeDefined();
+      state = choose(state, scenario, choice!);
+    };
+
+    pick('take-shelter');
+    expect(state.run?.sceneId).toBe('shelter');
+    pick('shelter-leave');
+    const ending = scenario.scenes[state.run!.sceneId];
+    expect(ending.title).toBe('Out of the House');
+    expect(ending.text).toMatch(/destination has not been discussed/i);
+    expect(ending.text).not.toMatch(/aunt/i);
+  });
 });
