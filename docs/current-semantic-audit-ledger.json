@@ -5489,7 +5489,8 @@
         "CRA-F0108"
       ],
       "reviewProvenance": "current source route review; marked-path retreat, hoof/boot evidence, helper contact, dry-hummock confrontation success/failure, mud sinking, rope bonus, self-extraction and call-for-help routes traced",
-      "notes": "marshEvidence.markSkiff marks the hidden skiff and retreats directly to marshDeception without reaching or contacting the helper. That ending says the helper takes down the false light and leads the Traveler to dry ground; neither action/person encounter is established by this route.",
+      "notes": "marshEvidence.markSkiff marks the hidden skiff and retreats directly to marshDeception without reaching or contacting the helper. That ending said the helper took down the false light and led the Traveler to dry ground; neither action/person encounter was established by this route. The ending is now neutral about helper/light disposition unless the player explicitly asks the helper to guide them. The separate marshSinkingWorse outcome no longer invents a helper rescue or light removal after failed self-extraction.",
+      "classification": "HEALTHY",
       "preReconciliationPosition": 306,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16382,7 +16383,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 306,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 72: marshDeception now has neutral truthful fallback text; only the explicit askForHelp/callForGuide choices set mireHorseHelperGuidesOut and receive the guide-specific result. The ending no longer claims the light was removed, that later travelers were warned, or in its title that the horse mystery was solved. Same-Adventure scan also corrected marshSinkingWorse: failed self-extraction now reports the established injury/footing without inventing a helper rescue or light removal. Tests contrast mark-skiff retreat, both explicit guide requests, save/reload, legacy missing-proof state, and failed self-extraction. Focused Monster Hunt, registry, and library tests pass (25 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0109",
@@ -20176,9 +20179,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 668,
+    "HEALTHY": 669,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 134,
+    "CONFIRMED DEFECT": 133,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
