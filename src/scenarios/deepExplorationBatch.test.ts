@@ -684,6 +684,35 @@ describe('deep exploration anthology', () => {
     expect(sceneText(vault.scenes.vaultResolution, legacyWithoutProof)).toMatch(/old purpose is uncertain/i);
   });
 
+  it('reports only the Forgotten Platform evidence actually copied or observed', () => {
+    const platform = getScenario('forgotten-platform')!;
+    const traveler = newCharacter('Platform Route Reviewer');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, platform, () => 0) };
+    const chooseId = (state: SaveData, sceneId: string, choiceId: string) => choose(state, platform, platform.scenes[sceneId]!.choices.find(({ id }) => id === choiceId)!, () => 0);
+    const atPlatform = chooseId(chooseId(initial, 'railCurve', 'overlook'), 'curveView', 'walkPlatform');
+
+    const noCopyReport = chooseId(chooseId(chooseId(atPlatform, 'platform', 'luggage'), 'luggageRoom', 'leaveBags'), 'platformHub', 'tellWorker');
+    expect(sceneText(platform.scenes.platformHub, noCopyReport)).not.toMatch(/old records explain that the service line was abandoned/i);
+    expect(sceneText(platform.scenes.platformResolved, noCopyReport)).toMatch(/account of the platform beyond the curve/i);
+    expect(sceneText(platform.scenes.platformResolved, noCopyReport)).not.toMatch(/map and ledger copies|restored to the maintenance record/i);
+
+    const ledgerOnly = chooseId(chooseId(chooseId(atPlatform, 'platform', 'luggage'), 'luggageRoom', 'copyLuggage'), 'platformHub', 'tellWorker');
+    expect(ledgerOnly.character?.knowledge).toContain('The forgotten station ledger records one trunk never collected by its owner.');
+    expect(sceneText(platform.scenes.platformResolved, ledgerOnly)).toMatch(/no map-and-ledger pair was established/i);
+    expect(sceneText(platform.scenes.platformResolved, ledgerOnly)).not.toMatch(/receives the map and ledger copies|restored to the maintenance record/i);
+
+    const vaultOnly = chooseId(atPlatform, 'platform', 'vault');
+    const mapOnly = chooseId(chooseId(vaultOnly, 'vaultRoom', 'copyMapRail'), 'platformHub', 'tellWorker');
+    expect(mapOnly.character?.knowledge).toContain('The forgotten service line ended at the platform; the map shows no nonexistent destinations.');
+    expect(sceneText(platform.scenes.platformResolved, mapOnly)).toMatch(/no map-and-ledger pair was established/i);
+
+    const telegraphOnly = chooseId(chooseId(atPlatform, 'platform', 'telegraph'), 'telegraphRoom', 'copyMessages');
+    expect(telegraphOnly.character?.knowledge).toContain('Old telegraph copies name stations absent from the current railway map.');
+    const telegraphReport = chooseId(telegraphOnly, 'platformHub', 'tellWorker');
+    expect(sceneText(platform.scenes.platformResolved, telegraphReport)).not.toMatch(/receives the map and ledger copies|restored to the maintenance record/i);
+    expect(platform.scenes.platformHub.choices.map(({ next }) => next)).not.toContain('platform');
+  });
+
   it('does not give the drain-only Hollow Fort route credit for the unseen roster or escape tunnel', () => {
     const fort = getScenario('hollow-fort')!;
     const traveler = newCharacter('Fort Drainage Inspector');
