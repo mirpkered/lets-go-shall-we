@@ -5362,14 +5362,14 @@
       "slug": "teeth-in-the-mine",
       "title": "Teeth in the Mine",
       "sourceFile": "src/scenarios/monsterHuntFirst.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0102",
         "CRA-F0103",
         "CRA-F0104"
       ],
       "reviewProvenance": "current source route review; foreman and air-shaft information, copied bell, side-chamber rescue, rope/guide methods, second-miner success/failure, withdrawal, brace-pole containment, injury/death and Knowledge/History outcomes traced",
-      "notes": "Three distinct issues: after mineEcho establishes one miner alive in the side chamber, withdrawMine reaches mineWaited saying the missing pair are not yet found; lowerRope checks only that travelRope is present, so a BROKEN rope can still trigger a successful rescue and History credit; and a failed holdBrace explicitly leaves the second miner behind but mineInjury says 'the miners' drag the Traveler toward the shaft, implying both miners are present. Existing gear-usability pattern applies to the rope check.",
+      "notes": "CRA-F0102 and CRA-F0104 are repaired: hearing one miner in the side chamber is preserved in the trained-crew withdrawal result, and failed bracing no longer credits the trapped second miner with pulling the Traveler out. CRA-F0103 remains independently documented as a completed CRA-C0004 repair; no Gear gate or Gear behavior was changed in this CRA-C0001 wave.",
       "preReconciliationPosition": 299,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16272,6 +16272,8 @@
       "routeWitness": "mineMouth.questionForeman -> mineAccount.callIntoShaft -> mineEcho establishes one miner alive in the side chamber; mineEcho.withdrawMine -> mineWaited then says 'The missing pair are not yet found.' The remaining second miner is unresolved, but the first has been located.",
       "violatedRule": "Withdrawal may leave part of an objective unresolved, but it must preserve already established person-location and rescue information.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Both routes into `mineEcho` now set factual run-local proof `heardMinerInSideChamber`; `mineWaited` reports that one miner answered and the second remains unaccounted for only when that proof exists. Leaving at the entrance or waiting after the foreman account keeps the neutral missing-pair text. The regression exercises both entry paths and round-trips the flag through save/load. Monster Hunt family, RC12 F6, inventory, registry, and library checks pass; TypeScript and production build pass; the full suite passes (127 files / 2,401 tests).",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 299,
       "registrationStatus": "LIVE"
@@ -16300,6 +16302,8 @@
       "routeWitness": "secondMiner.holdBrace failure message explicitly says the second miner remains behind the brace and advances to mineInjury; mineInjury says the miners drag the Traveler toward the air shaft, while only the first miner was at the shaft and the second remains trapped.",
       "violatedRule": "Person presence and participation in an ending must match each individual rescue/location state.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The `mineInjury` result now states only that the brace catches the Traveler's shoulder, the Traveler gets clear, and the second miner remains behind the brace; it no longer attributes the extraction to 'the miners.' The regression drives the failed `holdBrace` outcome and contrasts it with the successful two-miner rescue. Monster Hunt family, RC12 F6, inventory, registry, and library checks pass; TypeScript and production build pass; the full suite passes (127 files / 2,401 tests).",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 299,
       "registrationStatus": "LIVE"
@@ -20134,9 +20138,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 651,
+    "HEALTHY": 652,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 151,
+    "CONFIRMED DEFECT": 150,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
