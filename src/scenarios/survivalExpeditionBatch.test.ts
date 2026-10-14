@@ -119,6 +119,23 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(ACROSS_THE_FLOODPLAIN.scenes.floodRescue, loadSave(floodStorage))).toMatch(/after your signal/i);
   });
 
+  it('claims survey search marks only after the creek location is marked', () => {
+    const declined = act(start(THE_LOST_SURVEY_PARTY), THE_LOST_SURVEY_PARTY, 'surveyTable', 'declineSurveySearch');
+    expect(sceneText(THE_LOST_SURVEY_PARTY.scenes.surveyDelay, declined)).not.toMatch(/leave clear marks/i);
+
+    let retreated = act(start(THE_LOST_SURVEY_PARTY), THE_LOST_SURVEY_PARTY, 'surveyTable', 'followSurveyPrints');
+    retreated = act(retreated, THE_LOST_SURVEY_PARTY, 'surveySlope', 'leaveSurveySlope');
+    expect(sceneText(THE_LOST_SURVEY_PARTY.scenes.surveyDelay, retreated)).not.toMatch(/leave clear marks/i);
+
+    let marked = act(start(THE_LOST_SURVEY_PARTY), THE_LOST_SURVEY_PARTY, 'surveyTable', 'readSurveyBook');
+    marked = act(marked, THE_LOST_SURVEY_PARTY, 'surveyNotebook', 'searchCreekSurvey');
+    marked = act(marked, THE_LOST_SURVEY_PARTY, 'surveyCreek', 'avoidSurveyWater');
+    const storage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(marked, storage);
+    expect(sceneText(THE_LOST_SURVEY_PARTY.scenes.surveyDelay, loadSave(storage))).toMatch(/mark the creek/i);
+    expect(sceneText(THE_LOST_SURVEY_PARTY.scenes.surveyDelay, loadSave(storage))).not.toMatch(/marks at the camp and slope/i);
+  });
+
   it('makes risky environmental choices possible, foreshadowed, and consequential', () => {
     const floodRisk = ACROSS_THE_FLOODPLAIN.scenes.floodHerd.choices.find(({ id }) => id === 'crossFloodChannel')!;
     expect(floodRisk.hint).toMatch(/drown/i);

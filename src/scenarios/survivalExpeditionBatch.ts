@@ -202,7 +202,9 @@ export const THE_LOST_SURVEY_PARTY: Scenario = {
       { id: 'avoidSurveyWater', label: 'Mark the place and return with help', next: 'surveyDelay', effects: { historyFlags: ['marked_survey_party_creek_search'] } },
     ] },
     surveyAnswer: end('surveyAnswer', 'An Answer from the Willow', 'A surveyor answers from a high bank downstream. The rest of the crew sheltered in a tool hut after the creek rose; a search party follows your signal and brings them back together.'),
-    surveyDelay: end('surveyDelay', 'A Larger Search', 'You leave clear marks at the camp and slope. A larger party searches the creek at first light; the crew is not found that evening, but no one is sent into the rising water alone.'),
+    surveyDelay: { ...end('surveyDelay', 'A Larger Search', 'A larger party searches the creek at first light; the crew is not found that evening, but no one is sent into the rising water alone.'), textVariants: [
+      { requirements: { historyFlags: ['marked_survey_party_creek_search'] }, text: 'You mark the creek location before returning for help. A larger party searches the creek at first light; the crew is not found that evening, but no one is sent into the rising water alone.' },
+    ] },
     surveyInjury: end('surveyInjury', 'The Slope Breaks', 'You climb back to the road with a bruised side. The creek cannot be crossed safely, so you carry the last known location to the keeper and leave the search to a larger party.'),
   },
 };
