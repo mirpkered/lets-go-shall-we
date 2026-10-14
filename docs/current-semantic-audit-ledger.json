@@ -15913,7 +15913,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 267,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "boilerAftermath and boilerEnd no longer claim that workers were counted outside; warning, feed shutdown, pressure relief, and actual evacuation are not conflated. Reward and equipment choices are unchanged. disasterRescueBatch.stateAware.test.ts drives an unwarned feed-shutdown/vent route and a warned-but-incomplete route, verifying both remain free of the unsupported evacuation claim."
     },
     {
       "findingId": "CRA-F0084",
