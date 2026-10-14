@@ -4866,12 +4866,12 @@
       "slug": "the-roof-comes-in",
       "title": "The Roof Comes In",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0085"
       ],
       "reviewProvenance": "current source route review; visible-pair evacuation, trapped voice, bench rescue success/failure, wall bracing, retreat, crew handoff, headcount, aftermath and ending traced",
-      "notes": "The initial hall.braceNorth route reaches wallBraced without roofPairSafe and without evacuating the visible pair, yet wallBraced unconditionally says the two visible people are already outside. The separate eastPair route is the one that explicitly guides them out; later text otherwise conditions pair safety on that action.",
+      "notes": "Original review witness preserved: the initial hall.braceNorth route reaches wallBraced without roofPairSafe and without evacuating the visible pair, yet wallBraced unconditionally says the two visible people are already outside. The separate eastPair route is the one that explicitly guides them out; later text otherwise conditions pair safety on that action. Wave 60 moves the specific outside claim behind the existing roofPairSafe route proof; without that proof the scene states the pair's status neutrally.",
       "preReconciliationPosition": 270,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16051,6 +16051,8 @@
       "routeWitness": "hall.braceNorth -> wallBraced; only hall.eastPair leads to pairOut and sets roofPairSafe. wallBraced unconditionally says the two visible people are already outside before offering beamReach/beamKeepOut.",
       "violatedRule": "Shared route text must preserve person location and rescue state established by each incoming branch.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "wallBraced now uses neutral base text and includes the specific outside-pair statement only when the existing roofPairSafe run flag is present. Regression contrasts direct wall bracing with east-door evacuation followed by bracing; both route proofs are checked after save serialization. Disaster state-aware, registry, diversity, library, inventory, and selected RC12 checks pass (55 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 270,
       "registrationStatus": "LIVE"
@@ -20152,9 +20154,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 656,
+    "HEALTHY": 657,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 146,
+    "CONFIRMED DEFECT": 145,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
