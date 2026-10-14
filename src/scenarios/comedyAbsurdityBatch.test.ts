@@ -136,6 +136,36 @@ describe('comedy and absurdity additions', () => {
     expect(scenario.scenes.found.text).toMatch(/gavel returns to the table/i);
   });
 
+  it('keeps resident pickup separate from correcting the reversed mail labels', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-misplaced-pigeonhole')!;
+    const character = newCharacter('Pigeonhole Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let ownerPickup = act(initial, 'desk', 'askGuests');
+    ownerPickup = act(ownerPickup, 'residents', 'letEachTake');
+    expect(ownerPickup.run?.sceneId).toBe('collected');
+    expect(scenario.scenes.collected.text).toMatch(/take the letters they recognize without opening them/i);
+    expect(scenario.scenes.collected.text).toMatch(/reversed labels remain in place/i);
+    expect(scenario.scenes.collected.text).not.toMatch(/keeper turns the labels/i);
+
+    let roomSort = act(initial, 'desk', 'checkLabels');
+    roomSort = act(roomSort, 'register', 'sortByRoom');
+    expect(roomSort.run?.sceneId).toBe('sorted');
+    expect(scenario.scenes.sorted.text).toMatch(/keeper turns the labels/i);
+    expect(scenario.scenes.sorted.text).toMatch(/next post can be sorted without repeating the mistake/i);
+
+    let labelCorrection = act(initial, 'desk', 'askGuests');
+    labelCorrection = act(labelCorrection, 'residents', 'correctLabels');
+    expect(labelCorrection.run?.sceneId).toBe('held');
+    expect(scenario.scenes.held.text).toMatch(/keeper corrects the labels/i);
+  });
+
   it('keeps each graph forward-only, connected, actionable, concise, and within four choices', () => {
     for (const scenario of THE_COMEDY_ABSURDITY_ADVENTURES) {
       expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);

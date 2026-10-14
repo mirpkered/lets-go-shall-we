@@ -511,9 +511,10 @@ export const THE_MISPLACED_PIGEONHOLE = story('the-misplaced-pigeonhole', 'The M
     { id: 'holdUnreadable', label: 'Set the blurred address aside', next: 'held' },
   ]),
   residents: scene('residents', 'A Private Collection', 'One resident recognizes their handwriting from the outside. Another asks that their letter not be passed around the desk, even if the name is visible.', [
-    { id: 'letEachTake', label: 'Let each resident collect their own', next: 'sorted' },
+    { id: 'letEachTake', label: 'Let each resident collect their own', next: 'collected' },
     { id: 'correctLabels', label: 'Fix the cubby labels first', next: 'held' },
   ]),
+  collected: end('collected', 'Letters Kept Private', 'The residents take the letters they recognize without opening them. The reversed labels remain in place, so the keeper still needs to correct the shelf before the next post.'),
   sorted: end('sorted', 'Letters in the Right Rooms', 'The keeper turns the labels and places each sealed letter in the proper cubby. No one opens a message, and the next post can be sorted without repeating the mistake.'),
   held: end('held', 'One Letter Held for Its Owner', 'The blurred letter stays sealed rather than being guessed into the wrong room. The keeper corrects the labels and adds a clear six-or-nine mark to the register, preventing the next batch from repeating the mistake.'),
   left: end('left', 'The Mail Can Wait', 'You leave the sealed letters with the keeper. The labels remain turned, but no private message is opened in the name of haste.'),
