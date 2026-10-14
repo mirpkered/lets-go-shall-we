@@ -12762,12 +12762,12 @@
       "slug": "the-foal-in-the-windbreak",
       "title": "The Foal in the Windbreak",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0287"
       ],
       "reviewProvenance": "current-source route review; tarp-secure versus mare-relocation setup, muddy-sill board versus wide-yard gate, reunion, payment and blanket compensation traced",
-      "notes": "foal.dam -> passage lacks tarp-secure/rail-lowered proof, but passage asserts the tarp is tied away and rail lowered. foal.secure establishes that setup. Both later passage choices reunite foal and mare; unsafe push is stopped and compensation follows reunion.",
+      "notes": "foal.dam -> passage lacked tarp-secure proof while the shared scene asserted the tarp was tied away. Wave 81 records tarp-secure and mare-brought-to-near-pen as separate run-local facts, keeps legacy passage text neutral without tarp proof, and gives the mare-relocation route its own truthful reunion text. Original route-review evidence is retained.",
       "preReconciliationPosition": 750,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14319,12 +14319,12 @@
       "slug": "the-fence-pliers-at-willow-turn",
       "title": "The Fencing Pliers at Willow Turn",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0350"
       ],
       "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
-      "notes": "Inspected the pliers (inventory and usable condition gated), temporary-twine, and stop/post-pull routes; followed both gate-test and rail-reinforcement branches through coin or separately owned spare-pliers compensation. The rail branch does not open the gate or move sheep, yet shares text asserting both. No persistent effect or legacy-resume state is used.",
+      "notes": "Inspected the pliers (inventory and usable condition gated), temporary-twine, and stop/post-pull routes; followed both gate-test and rail-reinforcement branches through coin or separately owned spare-pliers compensation. Wave 81 records gate-tested and lower-rail-reinforced as separate run-local facts; each receives its own result, with a neutral fallback for legacy state. Original route-review evidence is retained.",
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
@@ -14335,12 +14335,12 @@
       "slug": "the-lost-halter-at-blue-hill",
       "title": "The Lost Halter at Blue Hill",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0351"
       ],
       "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
-      "notes": "Traced gate/owner approach, rope barrier (inventory and usable condition gated), pull/stop, owner arrival, hold-road and walk-with-handler routes, and coin or released Gate Hook settlement. The pull does not establish successful restraint or injury, but the stop text erases the attempt. No persistent effect or legacy-resume state is used.",
+      "notes": "Traced gate/owner approach, rope barrier (inventory and usable condition gated), pull/stop, owner arrival, hold-road and walk-with-handler routes, and coin or released Gate Hook settlement. Wave 81 preserves the selected halter-pull attempt while distinguishing it from successful restraint or buckle strain. Original route-review evidence is retained.",
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
@@ -18728,7 +18728,9 @@
       "violatedRule": "A converged scene may not claim route-specific setup absent from an incoming branch.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 81 in src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts records tarp tying and bringing the mare to the near pen separately. The passage only claims the tarp is tied away with foalTarpTiedBack; the mare-relocation branch reaches its own accurate reunion result. Tests cover both routes, save/reload, and a legacy passage with no tarp proof."
     },
     {
       "findingId": "CRA-F0288",
@@ -19608,7 +19610,9 @@
       "violatedRule": "A converged result may assert only actions and outcomes established by the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 81 in src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts records willowGateTestedWithSheep and willowLowerRailReinforced separately. Gate passage is stated only after the one-sheep latch test; rail reinforcement keeps the gate closed and sheep in the paddock. Regression covers both outcomes, save/reload, and a neutral legacy fallback."
     },
     {
       "findingId": "CRA-F0351",
@@ -19620,7 +19624,9 @@
       "violatedRule": "Failure or interruption narration must preserve the attempted action while distinguishing it from a completed or harmful outcome.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 81 updates the selected pull/stop result in src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts: it acknowledges the attempted pull, the mule's sidestep, and stopping before the bent buckle takes strain. The gate/owner route remains distinct. Covered by agricultureRanchAnimalWorkGenreBatch.test.ts."
     },
     {
       "findingId": "CRA-F0352",
@@ -20205,9 +20211,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 681,
+    "HEALTHY": 684,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 121,
+    "CONFIRMED DEFECT": 118,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
