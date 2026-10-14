@@ -161,6 +161,18 @@ describe('wilderness, navigation, and camp life adventure batch', () => {
       .toContain('no other traveler answers your call');
   });
 
+  it('does not turn a roadside lantern into an unproven traveler response', () => {
+    const marked = act(start(THE_FOG_COMES_DOWN, { fogCompany: 'alone' }, 'roadmansLantern'), THE_FOG_COMES_DOWN, 'foggyTrack', 'signalLantern');
+    expect(marked.run?.sceneId).toBe('lanternMarkedRoadside');
+    expect(sceneText(THE_FOG_COMES_DOWN.scenes.lanternMarkedRoadside, marked)).toMatch(/no other traveler’s arrival is established/i);
+    expect(sceneText(THE_FOG_COMES_DOWN.scenes.lanternMarkedRoadside, marked)).not.toMatch(/traveler answers|both keep to the fence/i);
+
+    let answered = act(start(THE_FOG_COMES_DOWN, { fogCompany: 'nearby' }), THE_FOG_COMES_DOWN, 'foggyTrack', 'stayRoad', () => 0);
+    answered = act(answered, THE_FOG_COMES_DOWN, 'roadBend', 'callAhead');
+    expect(answered.run?.sceneId).toBe('heardTravelers');
+    expect(sceneText(THE_FOG_COMES_DOWN.scenes.heardTravelers, answered)).toMatch(/traveler answers from the road/i);
+  });
+
   it('keeps a dry camp manageable and makes the next day’s water route visible', () => {
     const broke = start(DRY_CAMP);
     expect(DRY_CAMP.scenes.dryHollow.choices.filter(({ requirements }) => meets(requirements, broke)).map(({ id }) => id))
