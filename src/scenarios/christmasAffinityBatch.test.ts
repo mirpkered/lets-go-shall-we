@@ -206,6 +206,7 @@ describe('Christmas and winter-affinity adventures', () => {
   it('matches pageant performer acknowledgements to the selected route', () => {
     const pageant = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-pageant-problem')!;
     let traveler = pick(fresh(pageant), pageant, 'suggestSubstitute');
+    expect(sceneText(pageant.scenes.rehearsal, traveler)).toMatch(/you will deliver the innkeeper’s brief lines/i);
     traveler = pick(traveler, pageant, 'chooseGentlePace');
     expect(sceneText(pageant.scenes.performance, traveler)).toMatch(/you deliver the innkeeper’s brief lines/i);
     traveler = pick(traveler, pageant, 'takeCurtainCall');
@@ -214,13 +215,21 @@ describe('Christmas and winter-affinity adventures', () => {
 
     let sibling = pick(fresh(pageant), pageant, 'findChild');
     sibling = pick(sibling, pageant, 'inviteSibling');
+    expect(sceneText(pageant.scenes.rehearsal, sibling)).toMatch(/older sibling will take the innkeeper’s brief lines/i);
     sibling = pick(sibling, pageant, 'startOnTime');
     expect(sceneText(pageant.scenes.performance, sibling)).toMatch(/older sibling takes the innkeeper’s brief lines/i);
 
     let child = pick(fresh(pageant), pageant, 'findChild');
     child = pick(child, pageant, 'walkChildBack');
+    expect(sceneText(pageant.scenes.rehearsal, child)).toMatch(/returning child will speak the innkeeper’s lines slowly/i);
     child = pick(child, pageant, 'chooseGentlePace');
     expect(sceneText(pageant.scenes.performance, child)).toMatch(/returning child speaks the innkeeper’s lines/i);
+
+    let noReplacement = pick(fresh(pageant), pageant, 'repairCrook');
+    noReplacement = pick(noReplacement, pageant, 'testCrook');
+    const rehearsal = sceneText(pageant.scenes.rehearsal, noReplacement);
+    expect(rehearsal).toMatch(/cast adjusts the brief innkeeper part/i);
+    expect(rehearsal).not.toMatch(/substitute innkeeper|returning child/i);
   });
 
   it('states whether the Christmas visitor letter reached the family', () => {
