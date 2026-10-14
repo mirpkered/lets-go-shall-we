@@ -106,6 +106,36 @@ describe('comedy and absurdity additions', () => {
     expect(scenario.scenes.welcome.text).toMatch(/wave from the mill gate/i);
   });
 
+  it('does not claim the missing gavel was returned on the labor route', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-mayors-missing-gavel')!;
+    const character = newCharacter('Gavel Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let notLocated = act(initial, 'hall', 'askPurpose');
+    notLocated = act(notLocated, 'purpose', 'useBell');
+    notLocated = act(notLocated, 'meeting', 'offerLabor');
+    expect(notLocated.run?.sceneId).toBe('work');
+    expect(scenario.scenes.work.text).not.toMatch(/gavel is returned to its drawer/i);
+    expect(scenario.scenes.work.text).toMatch(/without settling where the gavel is/i);
+
+    let leftInBasket = act(initial, 'hall', 'findObject');
+    leftInBasket = act(leftInBasket, 'search', 'keepBell');
+    leftInBasket = act(leftInBasket, 'meeting', 'offerLabor');
+    expect(leftInBasket.run?.sceneId).toBe('work');
+    expect(scenario.scenes.work.text).not.toMatch(/gavel is returned to its drawer/i);
+
+    let explicitlyReturned = act(initial, 'hall', 'findObject');
+    explicitlyReturned = act(explicitlyReturned, 'search', 'returnGavel');
+    expect(explicitlyReturned.run?.sceneId).toBe('found');
+    expect(scenario.scenes.found.text).toMatch(/gavel returns to the table/i);
+  });
+
   it('keeps each graph forward-only, connected, actionable, concise, and within four choices', () => {
     for (const scenario of THE_COMEDY_ABSURDITY_ADVENTURES) {
       expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);

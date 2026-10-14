@@ -316,7 +316,7 @@ export const THE_MAYORS_MISSING_GAVEL = story('the-mayors-missing-gavel', 'The M
     { id: 'leavePlan', label: 'Leave the repair to the residents', next: 'plan' },
   ]),
   found: end('found', 'Order Restored, Lid Still Warped', 'The gavel returns to the table, and the meeting approves the roof repair. The clerk replaces the kindling basket lid before anyone borrows the gavel again.'),
-  work: end('work', 'A Meeting That Moves', 'The town agrees on the repair and accepts your offer to carry boards. The bell stays on the table; the gavel is returned to its drawer.'),
+  work: end('work', 'A Meeting That Moves', 'The town agrees on the repair and accepts your offer to carry boards. The bell stays on the table; the meeting moves on without settling where the gavel is.'),
   plan: end('plan', 'The Roof Is the Business', 'The residents settle the work morning and stop debating the missing tool. The roof still needs repair, but it no longer needs a gavel to be discussed.'),
   leave: end('leave', 'The Meeting Waits', 'You leave before the mayor finds a substitute. Through the open door, the residents are still debating whether a bell counts.'),
 });
