@@ -216,6 +216,48 @@ describe('Road Danger / Highwaymen genre batch', () => {
     expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/Pike confirms the county stamp/i);
   });
 
+  it('keeps the Stones in the Rut obstruction state tied to its approach', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-stones-in-the-rut')!;
+    const aftermath = (approach: string, response: string, item?: string): SaveData => {
+      let state = act(initial(story, item), story, `approach_${approach}`);
+      state = act(state, story, `respond_${response}`);
+      expect(state.run?.sceneId).toBe('aftermath');
+      return state;
+    };
+
+    const responses: [string, string | undefined][] = [['openDitch', undefined], ['nameWitness', undefined], ['useWhistle', 'conductorWhistle']];
+    for (const approach of ['inspectCord', 'warnFarm']) {
+      for (const [response, item] of responses) {
+        const text = sceneText(story.scenes.aftermath, aftermath(approach, response, item));
+        expect(text).not.toMatch(/obstruction is cleared|road opens again|road is reopened/i);
+        expect(text).not.toMatch(/cord was a lookout signal/i);
+      }
+    }
+    expect(story.scenes.aftermath.title).toBe('After the Roadside Threat');
+    for (const [response, item] of responses) {
+      const movedRoute = aftermath('moveStones', response, item);
+      expect(movedRoute.run?.flags).toContain('road_approach_moveStones');
+      expect(sceneText(story.scenes.aftermath, movedRoute)).toMatch(/you moved the loose stones before the confrontation, and the road opened slowly/i);
+    }
+    let movedCombat = act(initial(story), story, 'approach_moveStones');
+    movedCombat = act(movedCombat, story, 'fight', () => 0);
+    expect(movedCombat.run?.sceneId).toBe('fightWon');
+    movedCombat = act(movedCombat, story, 'checkRoad');
+    expect(sceneText(story.scenes.aftermath, movedCombat)).toMatch(/you moved the loose stones before the confrontation, and the road opened slowly/i);
+
+    for (const state of [aftermath('moveStones', 'openDitch'), aftermath('inspectCord', 'openDitch')]) {
+      const warned = act(state, story, 'ending_markPinch');
+      expect(sceneText(story.scenes.settlement, warned)).toMatch(/posts warnings at both approaches/i);
+      expect(sceneText(story.scenes.settlement, warned)).toMatch(/while deciding when wagons can safely use the narrow stretch again/i);
+    }
+
+    let noMoveCombat = act(initial(story), story, 'approach_inspectCord');
+    noMoveCombat = act(noMoveCombat, story, 'fight', () => 0);
+    expect(noMoveCombat.run?.sceneId).toBe('fightWon');
+    noMoveCombat = act(noMoveCombat, story, 'checkRoad');
+    expect(sceneText(story.scenes.aftermath, noMoveCombat)).not.toMatch(/obstruction is cleared|road opens again/i);
+  });
+
   it('keeps public-axle ownership distinct from physical return to the crew', () => {
     const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
     for (const [approach, response] of [['checkCrewBook', 'callForeman'], ['askSmith', 'refusePurchase'], ['stabilizeWagon', 'checkStamp']]) {
