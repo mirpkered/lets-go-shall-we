@@ -3,7 +3,7 @@ import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { THE_BARROW_HOUND, THE_LANTERN_EATER, THE_MIRE_HORSE } from './monsterHuntFirst';
-import { THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
+import { THE_ASHEN_MAN, THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
 import { THE_SKIN_IN_THE_TREE } from './monsterHuntThird';
@@ -22,6 +22,30 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
+  it('does not turn ember containment into a rescued-worker outcome', () => {
+    let emberOnly = take(fresh(THE_ASHEN_MAN), THE_ASHEN_MAN, 'questionWitnesses');
+    emberOnly = take(emberOnly, THE_ASHEN_MAN, 'askFamilyAboutKiln');
+    emberOnly = take(emberOnly, THE_ASHEN_MAN, 'smotherEmber');
+    const unresolvedText = sceneText(THE_ASHEN_MAN.scenes.emberStopped, emberOnly);
+    expect(unresolvedText).toMatch(/worker’s rescue is not established on this route/i);
+    expect(unresolvedText).not.toMatch(/worker.*safe with the family|worker you brought out/i);
+    expect(emberOnly.character?.knowledge).toContain('The Ashen Man followed a live ember from the burned house; it faded when that ember was smothered.');
+
+    let rescued = take(fresh(THE_ASHEN_MAN), THE_ASHEN_MAN, 'questionWitnesses');
+    rescued = take(rescued, THE_ASHEN_MAN, 'askFamilyAboutKiln');
+    rescued = take(rescued, THE_ASHEN_MAN, 'pullWorkerClear');
+    expect(rescued.run?.flags).toContain('ashenWorkerReachedDaylight');
+    rescued = take(rescued, THE_ASHEN_MAN, 'smotherFromSide');
+    rescued = loadSave({ getItem: () => JSON.stringify(rescued) });
+    const rescuedText = sceneText(THE_ASHEN_MAN.scenes.emberStopped, rescued);
+    expect(rescuedText).toMatch(/worker you brought out is coughing but able to walk/i);
+    expect(rescuedText).not.toMatch(/rescue is not established/i);
+
+    let openedFromPath = take(fresh(THE_ASHEN_MAN), THE_ASHEN_MAN, 'inspectAshTrail');
+    openedFromPath = take(openedFromPath, THE_ASHEN_MAN, 'openKilnDoor');
+    expect(openedFromPath.run?.flags).toContain('ashenWorkerReachedDaylight');
+  });
+
   it('does not turn the Barrow Hound rim-marking action into flock relocation', () => {
     let markedRim = take(fresh(THE_BARROW_HOUND), THE_BARROW_HOUND, 'askShepherd');
     markedRim = take(markedRim, THE_BARROW_HOUND, 'circleWest');
