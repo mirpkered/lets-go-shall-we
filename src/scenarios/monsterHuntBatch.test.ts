@@ -360,6 +360,45 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(neutralStoneback).not.toMatch(/crew moves its cart|workers stay on the upper bench/i);
   });
 
+  it('does not turn toll-road exposure into recovery of the horse or stolen sacks', () => {
+    const scenario = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-beast-at-the-toll-road')!;
+    let exposed = take(fresh(scenario), scenario, 'inspectWheel');
+    exposed = take(exposed, scenario, 'followChain');
+    exposed = take(exposed, scenario, 'raiseAlarm');
+    expect(exposed.run?.flags).not.toContain('tollHorseLeadFreed');
+    const exposedText = sceneText(scenario.scenes.tollRevealed, exposed);
+    expect(exposedText).toMatch(/false frame is exposed/i);
+    expect(exposedText).toMatch(/grain sacks remain unaccounted for/i);
+    expect(exposedText).toMatch(/does not establish that the horse was freed/i);
+    expect(exposedText).not.toMatch(/keeper opens the toll gate|recovering the sacks|freeing the horse/i);
+
+    let freedHorse = take(fresh(scenario), scenario, 'askTollKeeper');
+    freedHorse = take(freedHorse, scenario, 'walkThroughPass');
+    freedHorse = take(freedHorse, scenario, 'freeHorse');
+    expect(freedHorse.run?.flags).toContain('tollHorseLeadFreed');
+    freedHorse = take(freedHorse, scenario, 'raiseAlarm');
+    freedHorse = loadSave({ getItem: () => JSON.stringify(freedHorse) });
+    const freedText = sceneText(scenario.scenes.tollRevealed, freedHorse);
+    expect(freedText).toMatch(/horse’s lead is free/i);
+    expect(freedText).toMatch(/final place is not established/i);
+    expect(freedText).toMatch(/grain sacks remain unaccounted for/i);
+
+    const grabbedHorse = take(take(fresh(scenario), scenario, 'askTollKeeper'), scenario, 'walkThroughPass');
+    expect(take(grabbedHorse, scenario, 'grabHorse', 0).run?.flags).toContain('tollHorseLeadFreed');
+
+    let failedConfrontation = take(fresh(scenario), scenario, 'inspectWheel');
+    failedConfrontation = take(failedConfrontation, scenario, 'followChain');
+    failedConfrontation = take(failedConfrontation, scenario, 'confrontMen', 0.999999);
+    const injuryText = sceneText(scenario.scenes.tollInjury, failedConfrontation);
+    expect(injuryText).toMatch(/one man shoves you against the wall as the other escapes/i);
+    expect(injuryText).toMatch(/no recovery of the horse or sacks is established/i);
+    expect(injuryText).not.toMatch(/keeper recovers/i);
+
+    const legacyReveal = fresh(scenario);
+    legacyReveal.run!.sceneId = 'tollRevealed';
+    expect(sceneText(scenario.scenes.tollRevealed, legacyReveal)).toMatch(/does not establish that the horse was freed/i);
+  });
+
   it('keeps road-side observation available without entering the unstable ravine', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const observed = take(take(fresh(scenario), scenario, 'callAgain'), scenario, 'stopSignals');

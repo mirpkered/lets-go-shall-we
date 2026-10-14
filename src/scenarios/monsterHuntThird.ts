@@ -191,20 +191,22 @@ export const THE_BEAST_AT_THE_TOLL_ROAD: Scenario = {
       { id: 'walkThroughPass', label: 'Walk the bend before another wagon arrives', next: 'horseAtBend' },
     ]),
     horseAtBend: scene('horseAtBend', 'A Frightened Horse', 'A loose horse stands in the brush, caught by a snagged lead rope. It shies toward the drop when approached. The toll road has no shoulder, but the horse can be freed from the wall side.', [
-      { id: 'freeHorse', label: 'Free the lead rope from the wall side', next: 'stagedBeast' },
+      { id: 'freeHorse', label: 'Free the lead rope from the wall side', next: 'stagedBeast', effects: { setFlags: ['tollHorseLeadFreed'] } },
       { id: 'callTollKeeper', label: 'Call the toll keeper to bring a halter', next: 'tollClosed' },
-      { id: 'grabHorse', label: 'Grab the horse’s lead at the bend', hint: 'The horse is frightened and can bolt toward the drop.', chance: { probability: 0.41, successNext: 'stagedBeast', failureNext: 'horseInjury', successMessage: 'The horse lets you free the snag from the wall side.', failureMessage: 'It bolts and knocks you against the rock.', failureEffects: { health: -4 } } },
+      { id: 'grabHorse', label: 'Grab the horse’s lead at the bend', hint: 'The horse is frightened and can bolt toward the drop.', chance: { probability: 0.41, successNext: 'stagedBeast', failureNext: 'horseInjury', successMessage: 'The horse lets you free the snag from the wall side.', successEffects: { setFlags: ['tollHorseLeadFreed'] }, failureMessage: 'It bolts and knocks you against the rock.', failureEffects: { health: -4 } } },
     ], 'warning'),
     stagedBeast: scene('stagedBeast', 'A Beast on a Chain', 'The hide-covered frame swings across the road when a rope is pulled from a brush blind. Two men have been taking sacks after wagons stop. The loose horse’s lead was tied to the frame; no animal attacked the drivers.', [
       { id: 'raiseAlarm', label: 'Call the toll keeper and drivers', next: 'tollRevealed', effects: { historyFlags: ['exposed a false toll-road beast and protected the wagon route'] } },
       { id: 'cutControlRope', label: 'Cut the frame’s control rope', requirements: { items: ['smallKnife'], usableItems: ['smallKnife'] }, next: 'tollRevealed', effects: { damageItems: ['smallKnife'] } },
       { id: 'confrontMen', label: 'Confront the men at the brush blind', hint: 'They have the road blocked and may be armed.', chance: { probability: 0.48, successNext: 'tollRevealed', failureNext: 'tollInjury', successMessage: 'The men flee toward the upper trail.', failureMessage: 'One shoves you against the wall as the other escapes.', failureEffects: { health: -4 } } },
     ], 'danger'),
-    tollRevealed: end('tollRevealed', 'The Road Reopened', 'The keeper opens the toll gate after recovering the sacks and freeing the horse. The frame is taken apart in daylight; the next wagon waits until the bend is cleared, and the drivers are warned that the animal was real even if the beast was not.'),
+    tollRevealed: { ...end('tollRevealed', 'A Staged Attack Exposed', 'The false frame is exposed. The missing grain sacks remain unaccounted for, and this result does not establish that the horse was freed. The bend still needs to be cleared before wagons pass.'), textVariants: [
+      { requirements: { flags: ['tollHorseLeadFreed'] }, text: 'The false frame is exposed, and the horse’s lead is free; its final place is not established. The missing grain sacks remain unaccounted for. The bend still needs to be cleared before wagons pass.' },
+    ] },
     tollRetreat: end('tollRetreat', 'A Longer Road', 'You turn back before the narrow bend. The driver takes the wider route with the cargo intact; the toll road remains closed until someone checks the brush.'),
     tollClosed: end('tollClosed', 'The Gate Stays Shut', 'The next wagon is warned and takes the longer road. No one is struck, but the false frame and loose horse remain beyond the toll gate until a crew can reach them.'),
     horseInjury: end('horseInjury', 'Against the Rock Wall', 'The horse bolts along the bend and escapes into the upper brush. You are bruised; the toll keeper closes the gate before another wagon arrives.'),
-    tollInjury: end('tollInjury', 'The Brush Blind', 'The men flee after bruising you against the wall. The toll keeper recovers the loose horse and grain, but the false beast frame remains in the brush.'),
+    tollInjury: end('tollInjury', 'The Brush Blind', 'One man shoves you against the wall as the other escapes. The toll keeper has not yet been called; the false frame remains in the brush, and no recovery of the horse or sacks is established.'),
   },
 };
 
