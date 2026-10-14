@@ -27,7 +27,7 @@ export const THE_MILLERS_BEAST: Scenario = {
     ]),
     millVisitor: scene('millVisitor', 'A Shape beside the Chute', 'A large badger comes from the wall gap. It has been nesting behind the chute and tearing sacks for straw, not food. It freezes when the miller steps toward its burrow; the culvert offers a way out.', [
       { id: 'openCulvert', label: 'Open the culvert route and step back', next: 'badgerLeaves', effects: { knowledge: ['A badger nested behind the mill chute and used the culvert; stopping the wheel let it leave safely.'] } },
-      { id: 'guideOutside', label: 'Guide it toward the open yard', next: 'badgerLeaves' },
+      { id: 'guideOutside', label: 'Guide it toward the open yard', next: 'badgerGuidedOutside' },
       { id: 'cornerBadger', label: 'Corner it before it reaches the gears', hint: 'The badger is trapped between the chute and machinery.', chance: { probability: 0.35, successNext: 'badgerLeaves', failureNext: 'millInjury', successMessage: 'It bolts through the culvert.', failureMessage: 'It bites through your glove and darts under the belt.', failureEffects: { health: -3, setFlags: ['badgerBitTraveler'] } } },
     ], 'warning'),
     millHuman: scene('millHuman', 'Someone at the Drain', 'A mill apprentice admits using the outer latch to sleep in the dry culvert. They tore the sacks for bedding, then fled when they heard the wheel. They are embarrassed, not armed; the miller is angry about the damage.', [
@@ -35,7 +35,8 @@ export const THE_MILLERS_BEAST: Scenario = {
       { id: 'tellMillerTruth', label: 'Tell the miller who opened the latch', next: 'millRepaid' },
       { id: 'leaveApprentice', label: 'Leave the matter to the miller', next: 'millClosed' },
     ]),
-    badgerLeaves: end('badgerLeaves', 'The Wheel Turns Empty', 'The badger leaves through the culvert and the miller patches the wall. The torn sacks are replaced before the next grinding; the mill can turn again without trapping an animal behind its gears.'),
+    badgerLeaves: end('badgerLeaves', 'The Wheel Turns Empty', 'The badger leaves through the culvert. Before grinding resumes, the miller still needs to secure the wall gap and replace the torn sacks.'),
+    badgerGuidedOutside: end('badgerGuidedOutside', 'A Clear Yard', 'You guide the badger toward the open yard, away from the chute and machinery. Before grinding resumes, the miller still needs to secure the wall gap and replace the torn sacks.'),
     millRepaid: end('millRepaid', 'Sacks Replaced', 'The apprentice helps replace the torn sacks and agrees to ask for shelter rather than hide in the mill. The miller keeps the outer latch repaired; no beast was in the machinery.'),
     millClosed: end('millClosed', 'A Mill Kept Shut', 'The miller closes the loading door and waits for daylight before inspecting the culvert. The damaged grain is lost, but no one reaches behind the turning belt.'),
     millInjury: { ...end('millInjury', 'The Lower Aisle', 'You are hurt. The miller stops the wheel and closes the building until a proper repair and animal check can be made.'), textVariants: [

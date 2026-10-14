@@ -206,6 +206,22 @@ describe('RC12 Monster Hunt converged endings', () => {
     const oldUnqualifiedSave = structuredClone(beltRoute);
     oldUnqualifiedSave.run!.flags = [];
     expect(sceneText(THE_MILLERS_BEAST.scenes.millInjury, oldUnqualifiedSave)).not.toMatch(/badger bites|belt catches/i);
+
+    let guidedOutside = take(take(fresh(THE_MILLERS_BEAST), THE_MILLERS_BEAST, 'listenToWheel'), THE_MILLERS_BEAST, 'stopWheel');
+    guidedOutside = take(guidedOutside, THE_MILLERS_BEAST, 'guideOutside');
+    const yardText = sceneText(THE_MILLERS_BEAST.scenes.badgerGuidedOutside, guidedOutside);
+    expect(yardText).toMatch(/guide the badger toward the open yard/i);
+    expect(yardText).not.toMatch(/leaves through the culvert/i);
+    expect(yardText).toMatch(/miller still needs to secure the wall gap/i);
+    expect(yardText).toMatch(/replace the torn sacks/i);
+
+    let openedCulvert = take(take(fresh(THE_MILLERS_BEAST), THE_MILLERS_BEAST, 'listenToWheel'), THE_MILLERS_BEAST, 'stopWheel');
+    openedCulvert = take(openedCulvert, THE_MILLERS_BEAST, 'openCulvert');
+    expect(sceneText(THE_MILLERS_BEAST.scenes.badgerLeaves, openedCulvert)).toMatch(/badger leaves through the culvert/i);
+
+    let cornered = take(take(fresh(THE_MILLERS_BEAST), THE_MILLERS_BEAST, 'inspectSacks'), THE_MILLERS_BEAST, 'setEmptyCrate');
+    cornered = take(cornered, THE_MILLERS_BEAST, 'cornerBadger', 0);
+    expect(sceneText(THE_MILLERS_BEAST.scenes.badgerLeaves, cornered)).toMatch(/badger leaves through the culvert/i);
   });
 
   it('leaves the goat mystery unresolved without claiming unchecked records or repairs', () => {
