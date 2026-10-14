@@ -56,6 +56,42 @@ function assertPlayableGraph(scenario: Scenario, item?: string, supplies: Record
 }
 
 describe('occult investigation adventures', () => {
+  it('keeps Bellweather closure claims within the voice, written-answer, and fee evidence', () => {
+    const scenario = adventures.find((s) => s.id === 'seance-at-bellweather-house')!;
+
+    let noVoice = fresh(scenario);
+    noVoice = act(noVoice, scenario, 'inspectRoom');
+    noVoice = act(noVoice, scenario, 'confrontMedium');
+    noVoice = act(noVoice, scenario, 'endHouseSeance');
+    const neutral = sceneText(scenario.scenes.bellweatherAfter, noVoice);
+    expect(neutral).not.toMatch(/keeps the written answer|voice remains an account|recover part of the fee/i);
+    expect(neutral).toMatch(/no written answer/i);
+
+    let heardOnly = fresh(scenario);
+    heardOnly = act(heardOnly, scenario, 'sitAsWitness');
+    heardOnly = act(heardOnly, scenario, 'breakCircle');
+    heardOnly = act(heardOnly, scenario, 'stayBellweather');
+    expect(sceneText(scenario.scenes.bellweatherAfter, heardOnly)).toMatch(/different accounts of the voice/i);
+    expect(sceneText(scenario.scenes.bellweatherAfter, heardOnly)).not.toMatch(/keeps the written answer|recover part of the fee/i);
+
+    let written = fresh(scenario);
+    written = act(written, scenario, 'sitAsWitness');
+    written = act(written, scenario, 'askForProof');
+    written = roundTrip(act(written, scenario, 'recordAnswer'));
+    const recorded = sceneText(scenario.scenes.bellweatherAfter, written);
+    expect(recorded).toMatch(/keeps the written answer/i);
+    expect(recorded).toMatch(/voice and cold breath remain unexplained/i);
+    expect(recorded).not.toMatch(/recover part of the fee/i);
+    expect(written.character?.lore).toContain('At Bellweather House, a trick and an unexplained voice shared the same séance.');
+
+    let watchedContinuation = fresh(scenario);
+    watchedContinuation = act(watchedContinuation, scenario, 'inspectRoom');
+    watchedContinuation = act(watchedContinuation, scenario, 'confrontMedium');
+    watchedContinuation = act(watchedContinuation, scenario, 'continueUnderWatch');
+    watchedContinuation = act(watchedContinuation, scenario, 'endSeanceNow');
+    expect(sceneText(scenario.scenes.bellweatherAfter, watchedContinuation)).toMatch(/different accounts of the voice/i);
+  });
+
   it('registers 27 distinct new stories without adding the rejected bell duplicate', () => {
     expect(adventures).toHaveLength(27);
     expect(new Set(SCENARIOS.map((s) => s.id)).size).toBe(SCENARIOS.length);
