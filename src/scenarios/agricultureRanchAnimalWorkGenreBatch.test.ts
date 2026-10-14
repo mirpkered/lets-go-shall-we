@@ -22,6 +22,45 @@ const take = (state: SaveData, scenario: Scenario, choiceId: string): SaveData =
 };
 
 describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', () => {
+  it('does not confuse crop cover or bin bracing with moving stored goods', () => {
+    const oats = BATCH.find(({ id }) => id === 'the-dry-row-before-the-threshing')!;
+    let covered = take(fresh(oats), oats, 'cover');
+    covered = take(covered, oats, 'crew');
+    const coveredResult = sceneText(oats.scenes.result, covered);
+    expect(coveredResult).toMatch(/rows remain in the field/i);
+    expect(coveredResult).toMatch(/transfer to the barn is not established/i);
+    expect(coveredResult).not.toMatch(/dry rows reach the barn/i);
+
+    let loaded = take(fresh(oats), oats, 'near');
+    loaded = take(loaded, oats, 'return');
+    expect(loaded.run?.flags).toContain('oatsRemainingRowsReachedBarn');
+    loaded = loadSave({ getItem: () => JSON.stringify(loaded) });
+    expect(sceneText(oats.scenes.result, loaded)).toMatch(/dry rows reach the barn/i);
+
+    let coverReward = take(fresh(oats), oats, 'cover');
+    coverReward = take(coverReward, oats, 'crew');
+    const strap = oats.scenes.result.choices.find(({ id }) => id === 'strap')!;
+    coverReward = choose(coverReward, oats, strap);
+    coverReward = finishRewardResolution(placeReward(openRewardResolution(coverReward), 'freightmansStrap', 'carry'));
+    const strapProvenance = coverReward.itemStates?.freightmansStrap?.provenance.join(' ') ?? '';
+    expect(strapProvenance).toMatch(/helped protect the dry rows/i);
+    expect(strapProvenance).not.toMatch(/rows reached the barn/i);
+
+    const winterBin = BATCH.find(({ id }) => id === 'the-last-bin-at-winter-yard')!;
+    let braced = take(fresh(winterBin), winterBin, 'board');
+    braced = take(braced, winterBin, 'raise');
+    const bracedText = sceneText(winterBin.scenes.partial, braced);
+    expect(bracedText).toMatch(/does not establish where the sealed sacks were left/i);
+    expect(bracedText).not.toMatch(/sacks stay raised|moving the feed/i);
+
+    let movedSacks = take(fresh(winterBin), winterBin, 'sacks');
+    movedSacks = take(movedSacks, winterBin, 'raise');
+    expect(movedSacks.run?.flags).toContain('winterFeedSacksRaised');
+    movedSacks = loadSave({ getItem: () => JSON.stringify(movedSacks) });
+    expect(sceneText(winterBin.scenes.partial, movedSacks)).toMatch(/sacks stay raised/i);
+    expect(sceneText(winterBin.scenes.partial, movedSacks)).toMatch(/coin for moving the feed/i);
+  });
+
   it('keeps the feed-sack record check and shears recollection attached to the routes that establish them', () => {
     const feed = BATCH.find(({ id }) => id === 'the-feed-bin-with-the-blue-seam')!;
     const separated = take(fresh(feed), feed, 'separate');
