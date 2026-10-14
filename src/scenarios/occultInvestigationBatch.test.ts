@@ -473,6 +473,24 @@ describe('occult investigation adventures', () => {
     expect(meets(scenario.scenes.cellarLanding.choices.find((c) => c.id === 'nailArch')!.requirements, full)).toBe(true);
   });
 
+  it('claims the cellar jar names were copied only on the copy route', () => {
+    const scenario = adventures.find((s) => s.id === 'house-with-two-cellars')!;
+
+    let stayedAbove = act(fresh(scenario), scenario, 'stayAboveCellar');
+    expect(sceneText(scenario.scenes.cellarAfter, stayedAbove)).toMatch(/jar labels remain unrecorded/i);
+
+    let securedArch = act(act(fresh(scenario), scenario, 'takeMarkedNailsAndDescend'), scenario, 'nailArch');
+    expect(sceneText(scenario.scenes.cellarAfter, securedArch)).toMatch(/jar labels remain unrecorded/i);
+
+    let retreated = act(act(act(fresh(scenario), scenario, 'descendTwoCellars'), scenario, 'pushArch'), scenario, 'retreatCellar');
+    expect(sceneText(scenario.scenes.cellarAfter, retreated)).toMatch(/jar labels remain unrecorded/i);
+
+    let copied = act(act(fresh(scenario), scenario, 'descendTwoCellars'), scenario, 'readJarNames');
+    copied = roundTrip(copied);
+    expect(sceneText(scenario.scenes.cellarAfter, copied)).toMatch(/you copied the jar names/i);
+    expect(copied.character?.knowledge).toContain('The second cellar held jars bearing family names and an iron-lined sealed arch.');
+  });
+
   it('offers contextual chapel Supplies and consumes Salt only as a boundary-reading aid', () => {
     let state = fresh(BROKEN_BELL);
     state.run!.sceneId = 'priestFarewell';
