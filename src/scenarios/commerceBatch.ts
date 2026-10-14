@@ -228,7 +228,7 @@ export const THE_PAWNED_TOOL: Scenario = {
       { id: 'declineAfterMark', label: 'Leave the tool with the seller', next: 'declinedRule' },
     ] },
     boughtPawnedRule: ending('boughtPawnedRule', 'A Rule in Your Kit', 'You pay two coins and accept the rule with the seller’s account still uncertain. Its hinge is sound and its maker’s mark is old, but neither proves who has the better claim.'),
-    heldForClaim: ending('heldForClaim', 'A Day to Ask Around', 'The market keeper agrees to hold the rule until evening. The seller leaves without the two coins; anyone who claims it must describe the tool and its missing brass hinge pin.'),
+    heldForClaim: ending('heldForClaim', 'A Day to Ask Around', 'The market keeper agrees to hold the rule until evening. The seller leaves without the two coins; anyone who claims it must describe a feature not already announced at the stall.'),
     declinedRule: ending('declinedRule', 'No Purchase Made', 'You leave the rule with its seller. They may have needed coin, may have misunderstood its value, or may not have had the right to sell it; you do not decide which.'),
   },
 };

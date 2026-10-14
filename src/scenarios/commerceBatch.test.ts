@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -253,6 +253,21 @@ describe('commerce, bargains, and property adventure batch', () => {
     expect(state.run?.inventory).toContain('joinersFoldingRule');
     expect(state.character?.money).toBe(0);
     expect(state.character?.historyFlags).toContain('bought_joiners_rule_after_uncertain_ownership_account');
+  });
+
+  it('does not invent a missing hinge pin when the keeper holds the pawned rule', () => {
+    const seller = start(THE_PAWNED_TOOL, { sellerAccount: 'inheritance' }, undefined, 2);
+    expect(sceneText(THE_PAWNED_TOOL.scenes.stall, seller)).toMatch(/brass hinge moves freely/i);
+
+    const fromAccount = act(seller, THE_PAWNED_TOOL, 'stall', 'askSellerAccount');
+    const heldAfterAccount = act(fromAccount, THE_PAWNED_TOOL, 'sellerAccount', 'askMarketKeeper');
+    expect(heldAfterAccount.run?.sceneId).toBe('heldForClaim');
+    expect(sceneText(THE_PAWNED_TOOL.scenes.heldForClaim, heldAfterAccount)).not.toMatch(/missing brass hinge pin/i);
+
+    const fromMark = act(seller, THE_PAWNED_TOOL, 'stall', 'inspectMakerMark');
+    const heldAfterMark = act(fromMark, THE_PAWNED_TOOL, 'markSeen', 'holdAfterMark');
+    expect(heldAfterMark.run?.sceneId).toBe('heldForClaim');
+    expect(sceneText(THE_PAWNED_TOOL.scenes.heldForClaim, heldAfterMark)).not.toMatch(/missing brass hinge pin/i);
   });
 
   it('keeps lodging choices available to a broke traveler without making the innkeeper a villain', () => {
