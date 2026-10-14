@@ -5416,7 +5416,7 @@
       "slug": "the-white-stag",
       "title": "The White Stag",
       "sourceFile": "src/scenarios/monsterHuntFirst.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0106"
       ],
