@@ -7478,13 +7478,13 @@
       "slug": "the-ferrymans-sign",
       "title": "The Ferryman’s Sign",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0163",
         "CRA-F0164"
       ],
       "reviewProvenance": "current-source route review; traveler warning, safety explanation, offered escort, river/ferry explanation, sign turning, towpath marking request, old-landing exploration, and all endings traced",
-      "notes": "redirect.explainSafety reaches signFixed without changing the sign, yet signFixed says it points upstream (reason.turnBoard is the distinct route that turns it). Separately, reason.markPath reaches walked after only asking the ferryman to mark the towpath; walked says the Traveler walks the travelers to the landing and marks the turn with pale cloth. redirect.offerWalk establishes the escort but not the cloth marker. Old-landing exploration returns to the upstream rope and reports the misleading sign. No reward or persistent state is involved.",
+      "notes": "Original review witness preserved: the shared signFixed and walked outcomes claimed sign-turning, escort, and cloth marking beyond the selected action. Wave 57 records the evidence-backed repair disposition for both findings; route review provenance and original witness remain unchanged.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17098,6 +17098,8 @@
       "routeWitness": "landing.callTravelers -> redirect.explainSafety -> signFixed; the action explains the safe landing but changes no sign state. The ending says the sign points upstream. The separate reason.turnBoard route is the one that turns the sign toward the new path.",
       "violatedRule": "A result may not claim completion of a concrete action that the chosen route did not perform.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The `explainSafety` route now reports that the travelers were shown the upstream rope/landing without claiming the sign was turned; the specific sign-turn wording is gated on factual `ferrySignTurned` proof from `turnBoard`. Regression contrasts both routes and verifies the turned route wording survives save/reload. Comedy/Absurdity, registry, diversity, library, inventory, and selected RC12 checks pass (51 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -17110,6 +17112,8 @@
       "routeWitness": "landing.askFerryman -> reason.markPath -> walked; the selected action asks the ferryman to mark the towpath, but the ending says the Traveler walks the travelers to the landing and marks the turn with pale cloth. The alternate redirect.offerWalk route establishes the escort but not the cloth marker.",
       "violatedRule": "A converged ending must not substitute a different actor or unselected action for the route’s requested intervention.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The `offerWalk` route retains the explicit Traveler escort but no longer invents a pale-cloth marker; `markPath` reports only the request to the ferryman and does not claim an escort or completed mark. Both outcomes are gated by factual run-local route flags, with a neutral absent-proof fallback. Regression exercises both routes and verifies escort proof survives save/reload. Comedy/Absurdity, registry, diversity, library, inventory, and selected RC12 checks pass (51 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -20142,9 +20146,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 653,
+    "HEALTHY": 654,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 149,
+    "CONFIRMED DEFECT": 148,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
