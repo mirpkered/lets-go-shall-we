@@ -1917,6 +1917,14 @@ Disposition-derived live classifications are **601 HEALTHY, 58 MINOR CONCERN, 20
 
 Next C0001 work should be selected from the current ledger by exact mechanism and route witness; no unrelated survival findings were included in this wave.
 
+### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
+
+Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.
+
+The regression covers solo failure versus the distinct rope-offer route, cart abandonment versus waiting, and save/reload of the left-behind proof. The initial test reproduced the unsupported rope claim; the final focused Survival Expedition suite passed **16 tests**. No unrelated ice outcomes or persistence systems changed. CRA-F0067/F0068 are now `VERIFIED_HEALTHY_REPAIRED`, and the Adventure derives HEALTHY.
+
+Disposition-derived classifications are **603 HEALTHY, 58 MINOR CONCERN, 200 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. The live inventory remains 354 findings. Cumulative implementation dispositions are **137 repaired** and **5 healthy/no-longer-reproduces**. The open inventory is **212 findings overall**, including **178 CRA-C0001** (143 MEDIUM, 33 LOW, 3 unrecovered severity); overall open severity is 164 MEDIUM, 39 LOW, and 10 unrecovered. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
 ### CRA-C0001 repair program — local Wave 9: river-crossing follow-up claim
 
 Wave 9 repairs CRA-F0066 (MEDIUM), `river-without-a-bridge`. The common far-bank ending now reports only the shared proven result—arrival at the far bank—and explicitly avoids claiming that a safe route was marked for others. This is truthful across the risky direct ford, upstream bend, solo ferry, and mill-crew boat successes without adding state or changing any crossing outcome.

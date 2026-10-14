@@ -4110,13 +4110,13 @@
       "slug": "the-ice-gives-warning",
       "title": "The Ice Gives Warning",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0067",
         "CRA-F0068"
       ],
       "reviewProvenance": "current source route review; call/lantern/rope warnings, probing gear, solo crossing success/death, cart carry, mill-road and wait/abandon outcomes traced; post-definition far-bank text variant inspected",
-      "notes": "Solo cross failure reaches iceBreak, which invents a rescue rope although no rope was established or used on that route. Separately, leaving the cart to seek the mill road reaches iceSafeWait, whose common text says the cart arrives later without any route retrieving or arranging its movement. The cart-and-traveler success variant is correctly gated by cartAndTravelerAcross.",
+      "notes": "iceBreak now states only that the current carries the Traveler under; no rope is invented on the solo failure route. iceSafeWait uses neutral fallback text and the run-local iceCartLeftBehind proof for the explicit abandon-cart route. The existing cartAndTravelerAcross positive variant remains intact. Tests cover rope/no-rope, cart left/wait contrasts, and save/reload.",
       "preReconciliationPosition": 225,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15738,6 +15738,8 @@
       "violatedRule": "Rescue actions and equipment in an ending must be established by the selected route; adjacent route options cannot donate their resources to another branch.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts removes the unestablished rope from iceBreak; it now states only that the current carries the Traveler under before anyone can reach them. src/scenarios/survivalExpeditionBatch.test.ts drives solo crossing failure and confirms the separate throwIceLine action remains on its own route.",
       "preReconciliationPosition": 225,
       "registrationStatus": "LIVE"
     },
@@ -15751,6 +15753,8 @@
       "violatedRule": "An ending must preserve object location and may not imply recovery or transport without route proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts sets the factual run-local iceCartLeftBehind flag only on leaveIceCart. iceSafeWait defaults to neutral text that does not place the cart across the creek; the flag variant states the cart remains on the near bank. src/scenarios/survivalExpeditionBatch.test.ts covers leave versus wait routes and save/reload of the positive left-behind proof.",
       "preReconciliationPosition": 225,
       "registrationStatus": "LIVE"
     },
@@ -20020,9 +20024,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 602,
+    "HEALTHY": 603,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 201,
+    "CONFIRMED DEFECT": 200,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
