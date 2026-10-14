@@ -208,6 +208,13 @@ describe('strange roads and supernatural adventure batch', () => {
     state = act(state, THE_BLACK_DOG, 'dogTravelerHelped', 'followDogForHelp');
     expect(state.run?.status).toBe('success');
     expect(THE_BLACK_DOG.scenes[state.run!.sceneId].text).toContain('The dog leads you to a farmhand');
+
+    let passingCart = act(start(THE_BLACK_DOG, { blackDogTruth: 'lostTraveler' }), THE_BLACK_DOG, 'blackDogRoad', 'followBlackDog');
+    passingCart = act(passingCart, THE_BLACK_DOG, 'dogFollowed', 'helpDitchTraveler');
+    passingCart = act(passingCart, THE_BLACK_DOG, 'dogTravelerHelped', 'callForPassingHelp');
+    const passingHelpText = sceneText(THE_BLACK_DOG.scenes.dogPassingHelp, passingCart);
+    expect(passingHelpText).toMatch(/cart answers from the road/i);
+    expect(passingHelpText).not.toMatch(/farmhand arrives/i);
   });
 
   it('does not identify the mine voice unless the traveler reaches its source', () => {

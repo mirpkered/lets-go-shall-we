@@ -339,7 +339,7 @@ export const THE_BLACK_DOG: Scenario = {
       { id: 'callForPassingHelp', label: 'Stay and call toward the road', timeCost: 4, next: 'dogPassingHelp' },
     ] },
     dogHelpFound: end('dogHelpFound', 'A Guide to Help', 'The dog leads you to a farmhand, who returns with you and helps the traveler walk to the nearby yard. The dog had been making the same trip back and forth; without it, you might have passed the injured stranger.'),
-    dogPassingHelp: end('dogPassingHelp', 'Help Reaches the Ditch', 'You stay beside the traveler and call until a cart answers from the road. The dog waits at the bend until the farmhand arrives, then follows them toward the gate.'),
+    dogPassingHelp: end('dogPassingHelp', 'Help Reaches the Ditch', 'You stay beside the traveler and call until a cart answers from the road. The dog waits at the bend while you remain with the injured traveler; what the cart’s driver will do next is not yet clear.'),
     dogPassed: end('dogPassed', 'The Road Goes On', 'You leave the dog space and continue. It may have been lost, waiting for someone, or only resting by the road.'),
   },
 };
