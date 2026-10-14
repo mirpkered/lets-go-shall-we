@@ -7805,7 +7805,7 @@
       "slug": "forgotten-platform",
       "title": "The Forgotten Platform",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0180"
       ],
@@ -7815,7 +7815,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 119 repairs the only attached finding, CRA-F0180; the report now claims only the observed station/track facts, so this Adventure derives HEALTHY."
     },
     {
       "position": 447,
@@ -17436,7 +17438,9 @@
       "violatedRule": "A shared result may not claim possession/transfer of records that the route did not acquire or copy.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 119: platformHub no longer claims old records prove abandonment on every entry, and the tellWorker label/result now report the observed platform and track end without claiming receipt of both the map and ledger or restoration of the maintenance record. The exact flow has no path that collects both documents; record-copy Knowledge effects and the documented-platform History effect remain unchanged. Regression covers no-copy, ledger-only, map-only, and telegraph-copy report routes. Focused deep-exploration, registry, scenario-library, and content-quality checks passed (42 tests); TypeScript/production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0181",
@@ -20351,9 +20355,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 740,
+    "HEALTHY": 741,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 62,
+    "CONFIRMED DEFECT": 61,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
