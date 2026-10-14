@@ -795,12 +795,12 @@
       "slug": "the-sound-in-the-well",
       "title": "The Sound in the Well",
       "sourceFile": "src/scenarios/soundInWell.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0014"
       ],
       "reviewProvenance": "current source route review",
-      "notes": "The descendWell or descendWithTravelRope success route can reach belowWell; climbOutAlone has no arrival/summoning effect and leads to abandonedWellLedge, whose shared text asserts that both the owner and farmhands remain at the rim preparing a lift. Farmhands are only explicitly summoned via extraHands on other routes. This is an unsupported optional-helper arrival claim at convergence.",
+      "notes": "The descendWell or descendWithTravelRope success route can reach belowWell; climbOutAlone has no arrival/summoning effect and leads to abandonedWellLedge. The ending now leaves later help unestablished while preserving the worker's known position and the Traveler's withdrawal outcome. The successful rope-lift route still establishes the owner taking the rescued worker inside.",
       "preReconciliationPosition": 26,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15006,6 +15006,8 @@
       "violatedRule": "Optional participant presence and rescue preparation may be narrated only when route state establishes them.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "abandonedWellLedge now states only that the worker remains on the ledge and leaves later help unestablished. Regression contrasts climbOutAlone against lowerFarmLoop success, which still establishes the owner taking the rescued worker inside. groundedExpansion suite passes 13 tests.",
       "preReconciliationPosition": 26,
       "registrationStatus": "LIVE"
     },
@@ -20059,9 +20061,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 617,
+    "HEALTHY": 618,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 185,
+    "CONFIRMED DEFECT": 184,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
