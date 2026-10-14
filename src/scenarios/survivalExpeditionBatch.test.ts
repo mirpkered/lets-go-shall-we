@@ -295,6 +295,23 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_ABANDONED_CAMP.scenes.campAnswer, waited)).toMatch(/wait.*no one returns/i);
   });
 
+  it('keeps the wagon-slip damage and driver-only recovery route-specific', () => {
+    let oilSafe = act(start(THE_LOAD_MUST_GO), THE_LOAD_MUST_GO, 'steepGrade', 'unloadOil');
+    oilSafe = act(oilSafe, THE_LOAD_MUST_GO, 'loadLightened', 'moveLightenedWagon', 0.999999);
+    expect(oilSafe.run?.sceneId).toBe('loadSlip');
+    expect(sceneText(THE_LOAD_MUST_GO.scenes.loadSlip, oilSafe)).not.toMatch(/barrel has split/i);
+
+    let beddingSafe = act(start(THE_LOAD_MUST_GO), THE_LOAD_MUST_GO, 'steepGrade', 'unloadBedding');
+    beddingSafe = act(beddingSafe, THE_LOAD_MUST_GO, 'loadLightened', 'moveLightenedWagon', 0.999999);
+    expect(sceneText(THE_LOAD_MUST_GO.scenes.loadSlip, beddingSafe)).not.toMatch(/bedding is soaked/i);
+
+    const driverOnly = act(oilSafe, THE_LOAD_MUST_GO, 'loadSlip', 'saveDriverLoad');
+    expect(driverOnly.run?.sceneId).toBe('loadArrival');
+    const arrivalText = sceneText(THE_LOAD_MUST_GO.scenes.loadArrival, driverOnly);
+    expect(arrivalText).toMatch(/wagon and medicine chest remain at the shelf/i);
+    expect(arrivalText).not.toMatch(/with the medicine chest|listed for recovery/i);
+  });
+
   it('remembers meeting the Empty Cabin trapper without inventing that encounter on other exits', () => {
     let met = act(start(THE_EMPTY_CABIN), THE_EMPTY_CABIN, 'cabinDoor', 'readCabinNote');
     met = act(met, THE_EMPTY_CABIN, 'cabinSigns', 'followCabinPrints');

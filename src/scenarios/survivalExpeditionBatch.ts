@@ -674,11 +674,13 @@ export const THE_LOAD_MUST_GO: Scenario = {
       { id: 'dropBedLoad', label: 'Leave the bedding for a second trip', next: 'loadLightened', effects: { setFlags: ['sacrificed_bedding'] } },
       { id: 'holdLoadGrade', label: 'Hold position until a second team arrives', next: 'loadWait' },
     ] },
-    loadSlip: { id: 'loadSlip', title: 'The Rear Wheel Slides', tone: 'danger', text: 'The wagon slips but stops at the shelf. The medicine chest is still tied down; one barrel has split and the driver’s bedding is soaked. The road above is safe on foot, while the wagon needs a second team.', choices: [
+    loadSlip: { id: 'loadSlip', title: 'The Rear Wheel Slides', tone: 'danger', text: 'The wagon slips but stops at the shelf. The medicine chest remains tied down. The driver will not attempt another move before a second team arrives; the road above is safe on foot.', choices: [
       { id: 'saveDriverLoad', label: 'Walk the driver to the upper road', next: 'loadArrival', effects: { historyFlags: ['saved_driver_after_wagon_slip'] } },
       { id: 'tryAgainLoad', label: 'Try to save the wagon before dark', hint: 'The wet grade has already moved the wagon once.', chance: { probability: 0.36, successNext: 'loadArrival', failureNext: 'loadLoss', successMessage: 'The driver’s second brace holds long enough to reach level ground.', failureMessage: 'The rear wheel slips over the shelf edge.', failureEffects: { health: -2 } } },
     ] },
-    loadArrival: end('loadArrival', 'On Level Ground', 'The driver reaches the upper road with the medicine chest. The cargo left behind is named and listed for recovery; the wagon is not driven further until a second team arrives.'),
+    loadArrival: { ...end('loadArrival', 'On Level Ground', 'The driver reaches the upper road. The wagon has stopped on level ground; any cargo already left on the shelf remains for another trip. No recovery list has been made.'), textVariants: [
+      { requirements: { historyFlags: ['saved_driver_after_wagon_slip'] }, text: 'You walk the driver to the upper road. The wagon and medicine chest remain at the shelf, and no list has been made of the cargo left behind; a second team must handle the recovery.' },
+    ] },
     loadWait: end('loadWait', 'A Team Comes Up', 'A second team arrives before the clay gives way. The wedge is recovered, and the freight is divided between two wagons; the delay costs an afternoon but no one or cargo is lost.'),
     loadAbandoned: end('loadAbandoned', 'Driver First', 'You get the driver onto the upper road and leave the wagon secured as best it can be. The medicine chest remains on the grade until help arrives; the choice saves a person, not the whole load.'),
     loadLoss: end('loadLoss', 'The Wagon Goes', 'The wagon slips over the shelf and breaks below. The driver is already uphill; the freight is lost, and the medicine chest will have to be replaced or recovered when the slope is safe.'),
