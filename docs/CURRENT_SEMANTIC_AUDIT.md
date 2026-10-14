@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 111
+### Active local repair checkpoint — CRA-C0001 Wave 112
+
+Wave 112 repairs CRA-F0160 (The Paper Mill Parade). The worker’s explicit `respectQuiet` choice now reaches a dedicated ending that honors a small, private welcome and avoids the public large-letter banner and mill-gate wave. The prominent `writeWelcome`/`oneMessage` path and the two-sided `useSuggestion` path retain their distinct outcomes. No new state or persistence was needed. Focused comedy-absurdity tests passed **11 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **734 HEALTHY, 59 MINOR CONCERN, 68 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **286 are dispositioned** (281 repaired and 5 healthy/no-longer-reproduces) and **68 remain open**, including **34 CRA-C0001** (26 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `6922162`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 111
 
 Wave 111 repairs CRA-F0159 (The Pigeon Postscript). Leaving the second note sealed now ends with its identity unresolved and no farm contact or reply. The separate wait choice records that the owner did not arrive during the wait and the note remains unidentified. Only the route that asks the station master to contact the farm reaches its identification reply; the miller-delivery result is unchanged. Same-Adventure review covered both no-contact paths. Focused comedy-absurdity tests passed **10 tests**; TypeScript and production build passed with the existing large-bundle warning. Current classifications derive to **733 HEALTHY, 59 MINOR CONCERN, 69 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **285 are dispositioned** (280 repaired and 5 healthy/no-longer-reproduces) and **69 remain open**, including **35 CRA-C0001** (27 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `5ecc21e`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 

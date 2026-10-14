@@ -7356,7 +7356,7 @@
       "slug": "the-paper-mill-parade",
       "title": "The Paper Mill Parade",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0160"
       ],
@@ -7366,7 +7366,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 112 (game/test commit 6922162): the worker's respectQuiet choice now reaches a dedicated ending that honors the requested small, private welcome and does not put the worker's name in large letters or ask them to wave publicly. The prominent writeWelcome/oneMessage route retains its public banner ending, and useSuggestion retains the two-sided ending. No new state or persistence was needed. Focused comedy-absurdity tests passed (11); production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "position": 422,
@@ -17148,7 +17150,9 @@
       "violatedRule": "A converged outcome must preserve route-established privacy and participation choices rather than publicly exposing a person who asked for a private welcome.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 112 (game/test commit 6922162): worker.respectQuiet now reaches the dedicated quietWelcome ending, which preserves the requested small/private result and omits the public large-letter banner and mill-gate wave. The prominent writeWelcome/oneMessage route and two-sided useSuggestion route retain their established outcomes. No additional state or save handling was needed. Regression contrasts private and prominent routes; the focused comedy-absurdity suite passed 11 tests and the production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0161",
@@ -20323,9 +20327,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 733,
+    "HEALTHY": 734,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 69,
+    "CONFIRMED DEFECT": 68,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
