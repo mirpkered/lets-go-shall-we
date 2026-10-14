@@ -7653,12 +7653,12 @@
       "slug": "house-at-mile-marker-nine",
       "title": "The House at Mile Marker Nine",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0173"
       ],
       "reviewProvenance": "current-source route review; road/barn/cellar entry, initial view, manual wind, clock notch, reflected porch/trunk, fixed corridor, letters/ledger, stop/reset, and all endings traced",
-      "notes": "clockLetters.stopNow sets clockStopped and enters clockStopped, whose text says the windows go dark; clockStopped.leaveStopped nevertheless enters routeEnding, which says the Traveler leaves with a reliable way to trigger the earlier view. That ending is false on the stopped-clock route. A separate direct cellar.service route also reaches routeEnding without setting clockNotched; the clock/door distinction and fixed corridor Knowledge otherwise remain route-bounded.",
+      "notes": "clockLetters.stopNow set clockStopped and entered clockStopped, whose text says the windows go dark; clockStopped.leaveStopped nevertheless entered routeEnding, which said the Traveler left with a reliable way to trigger the earlier view. A separate direct cellar.service route also reached routeEnding without setting clockNotched. The shared ending now claims only the fixed service route and leaves reliable replay of the earlier view unestablished; clock/door distinction and fixed-corridor Knowledge remain route-bounded.",
       "preReconciliationPosition": 439,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17141,6 +17141,8 @@
       "violatedRule": "A shared ending must preserve route-specific mechanism state and must not promise an unavailable or untested trigger.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared ending now claims only the established fixed service route and explicitly leaves reliable replay of the earlier view unestablished. Route-contrast regression drives the stopped-clock path and the direct service-corridor path that bypasses clock setup; deep-exploration suite passes 24 tests. No state or persistence changes were introduced.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20046,9 +20048,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 611,
+    "HEALTHY": 612,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 191,
+    "CONFIRMED DEFECT": 190,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
