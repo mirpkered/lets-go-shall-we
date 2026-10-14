@@ -7639,7 +7639,7 @@
       "slug": "door-beneath-the-road",
       "title": "The Door Beneath the Road",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0170"
       ],
@@ -7649,7 +7649,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 117 (game/test commit e1cee35): both shallow wagon-recovery routes now report recovery and the marked detour without claiming the road crew was notified; they explicitly state that the crew has not been notified. The separate reportHole route still reaches roadReport with the clear warning, and the unrecovered-wagon condition remains intact. No state was needed. Deep-exploration tests passed 29; production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "position": 438,
@@ -17294,7 +17296,9 @@
       "violatedRule": "Communication and recipient knowledge must be established by a route action or explicitly narrated contact, not inherited from an unrelated recovery result.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 117 (game/test commit e1cee35): shallowRoad retains recovered wagon/cargo and the marked-detour result but now states that the road crew has not been notified. Both the direct saveWagon and driverAccount.recoverFirst routes are regression-tested against that result. The explicit reportHole route still produces the crew warning and says the wagon must first be recovered before using the detour. No route state or persistence was added; 29 focused deep-exploration tests and the production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0171",
@@ -20343,9 +20347,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 738,
+    "HEALTHY": 739,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 64,
+    "CONFIRMED DEFECT": 63,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

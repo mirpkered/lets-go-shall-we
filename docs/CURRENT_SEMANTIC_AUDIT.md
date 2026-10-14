@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 116
+### Active local repair checkpoint — CRA-C0001 Wave 117
+
+Wave 117 repairs CRA-F0170 (The Door Beneath the Road). The direct and driver-assisted wagon recovery outcomes retain the recovered cargo and marked-detour result but now explicitly say the road crew has not been notified. The separate `reportHole` route still reaches the clear-warning outcome and retains the unrecovered-wagon constraint. No new state was needed. Focused deep-exploration tests passed **29 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **739 HEALTHY, 59 MINOR CONCERN, 63 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **291 are dispositioned** (286 repaired and 5 healthy/no-longer-reproduces) and **63 remain open**, including **29 CRA-C0001** (21 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `e1cee35`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 116
 
 Wave 116 repairs CRA-F0168 (The Last Door in Briar House). Inspecting the bedroom window now reaches a frame scene instead of entering the second room while the old door is open. The player can explicitly close that door before entering, which establishes the existing `bedroomDoorClosed` and `briarSecondBedroomReached` proof. No new persistent state was added. Deep-exploration tests passed **29 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **738 HEALTHY, 59 MINOR CONCERN, 64 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **290 are dispositioned** (285 repaired and 5 healthy/no-longer-reproduces) and **64 remain open**, including **30 CRA-C0001** (22 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `69bfc10`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 
