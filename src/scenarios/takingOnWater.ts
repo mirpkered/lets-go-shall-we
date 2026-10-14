@@ -225,9 +225,9 @@ export const TAKING_ON_WATER: Scenario = {
     },
     rescueResponse: {
       id: 'rescueResponse', title: 'A Boat Turns Back', tone: 'safe',
-      text: 'Someone on shore hears you and rows out in a small skiff. They help you aboard and tie the canoe alongside; water still sloshes among the cargo.',
-      textVariants: [{ requirements: { flags: ['seenSkiff'] }, text: 'The fisherman from the far shore rows over and helps you aboard. He ties the canoe alongside; its seam still leaks and water sloshes among the cargo.' }],
-      choices: [{ id: 'acceptRescue', label: 'Climb aboard and leave the canoe in tow', effects: { historyFlags: ['signaled_for_help'] }, next: 'rescueEnding' }],
+      text: 'Someone on shore hears you and rows out in a small skiff. They help you aboard and take you to the landing; this rescue does not establish the canoe’s condition or recovery.',
+      textVariants: [{ requirements: { flags: ['seenSkiff'] }, text: 'The fisherman from the far shore rows over and helps you aboard. He takes you to the landing; this rescue does not establish the canoe’s condition or recovery.' }],
+      choices: [{ id: 'acceptRescue', label: 'Climb aboard and continue to the landing', effects: { historyFlags: ['signaled_for_help'] }, next: 'rescueEnding' }],
     },
     swampedNearShore: {
       id: 'swampedNearShore', title: 'Water Over the Ribs', tone: 'danger',
@@ -267,7 +267,7 @@ export const TAKING_ON_WATER: Scenario = {
     },
     swimStruggle: {
       id: 'swimStruggle', title: 'A Breath on Floating Wood', tone: 'danger',
-      text: 'You catch the canoe’s gunwale and keep your head above water. Your arms ache and the shore is still a hard swim, but you are not sinking. If your money or carried gear was deliberately left behind, it is gone; anything secured remains with you.',
+      text: 'You keep your head above water. Your arms ache and the shore is still a hard swim, but you are not sinking. If your money or carried gear was deliberately left behind, it is gone; anything secured remains with you.',
       choices: [
         { id: 'restThenSwim', label: 'Rest against the hull, then kick for shore', hint: 'The pause costs time, but gives your arms a chance to recover.', timeCost: 4, chance: { probability: 0.78, lateProbability: 0.58, lateAfterMinutes: 44, bonusItems: ['woolTravelBlanket', 'heavyLeatherGloves'], bonusProbability: 0.08, successNext: 'shoreLanding', failureNext: 'deathEnding', successMessage: 'After a breath, you find a little strength and reach the bank.', failureMessage: 'Cold and exhaustion overcome you before you can reach shore.' } },
         { id: 'callFromWater', label: 'Shout and wave for the distant skiff', requirements: { flags: ['seenSkiff'] }, timeCost: 2, chance: { probability: 0.58, bonusItems: WHISTLES, bonusProbability: 0.18, successNext: 'rescueResponse', failureNext: 'swimStruggleFinal', successMessage: 'The skiff turns at last and rows toward you.', failureMessage: 'The skiff does not see you through the chop.' } },
@@ -276,7 +276,7 @@ export const TAKING_ON_WATER: Scenario = {
     },
     swimStruggleFinal: {
       id: 'swimStruggleFinal', title: 'Still Afloat', tone: 'danger',
-      text: 'The skiff has not answered. You are still holding the canoe; the nearest shore is reachable, but your strength is fading. Another desperate swim may be fatal.',
+      text: 'The skiff has not answered. You remain afloat; the nearest shore is reachable, but your strength is fading. Another desperate swim may be fatal.',
       choices: [
         { id: 'holdForWardens', label: 'Hold on and keep calling for help', timeCost: 4, chance: { probability: 0.68, successNext: 'rescueResponse', failureNext: 'deathEnding', successMessage: 'The fisherman hears you and rows back.', failureMessage: 'Your strength gives out before help arrives.' } },
         { id: 'desperateSwim', label: 'Risk one final swim for shore', hint: 'You are exhausted; failure may be fatal.', timeCost: 3, chance: { probability: 0.38, successNext: 'shoreLanding', failureNext: 'deathEnding', successMessage: 'You find a final burst of strength and reach land.', failureMessage: 'You cannot keep your head above the water.' } },
@@ -289,11 +289,11 @@ export const TAKING_ON_WATER: Scenario = {
     },
     shoreEnding: { id: 'shoreEnding', title: 'A Long Paddle Behind You', text: 'The lake settles behind the near shore. You saved yourself and what you deliberately kept close; the rest can be replaced. The canoe is beached if you brought it in, or can be recovered when the water calms.', choices: [], ending: 'success' },
     rescueEnding: {
-      id: 'rescueEnding', title: 'Seen in Time', text: 'The fisherman brings you and the canoe to the landing. You are safe; this route does not establish the condition of every ordinary supply.', choices: [], ending: 'success',
+      id: 'rescueEnding', title: 'Seen in Time', text: 'The fisherman brings you safely to the landing. The canoe’s condition and recovery are not established by this rescue; this route does not establish the condition of every ordinary supply.', choices: [], ending: 'success',
       textVariants: [
-        { requirements: { flags: ['possessionsLeftBehind', 'cargoLightened'] }, text: 'The fisherman brings you and the canoe to the landing. The food and cooking gear thrown overboard are lost, and unsecured money or carried gear left behind is not recovered. You are safe.' },
-        { requirements: { flags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you and the canoe to the landing. Any unsecured money or carried gear you left behind is not recovered. You are safe.' },
-        { requirements: { flags: ['cargoLightened'], notFlags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you and the canoe to the landing. The food and cooking gear deliberately thrown overboard are lost; anything separately secured or kept with you remains yours. You are safe.' },
+        { requirements: { flags: ['possessionsLeftBehind', 'cargoLightened'] }, text: 'The fisherman brings you safely to the landing. The food and cooking gear thrown overboard are lost, and unsecured money or carried gear left behind is not recovered. The canoe’s condition and recovery are not established by this rescue. You are safe.' },
+        { requirements: { flags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you safely to the landing. Any unsecured money or carried gear you left behind is not recovered. The canoe’s condition and recovery are not established by this rescue. You are safe.' },
+        { requirements: { flags: ['cargoLightened'], notFlags: ['possessionsLeftBehind'] }, text: 'The fisherman brings you safely to the landing. The food and cooking gear deliberately thrown overboard are lost; anything separately secured or kept with you remains yours. The canoe’s condition and recovery are not established by this rescue. You are safe.' },
       ],
     },
     deathEnding: { id: 'deathEnding', title: 'The Cold Takes Hold', text: 'The shore was visible, but cold water and exhaustion left you without the strength to reach it. The canoe drifts beyond the reeds.', choices: [], ending: 'death' },

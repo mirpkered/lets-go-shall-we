@@ -227,6 +227,30 @@ describe('Taking on Water', () => {
     expect(available(noAnswer).length).toBeGreaterThan(0);
   });
 
+  it('keeps canoe recovery claims out of struggle and rescue convergence', () => {
+    const prepareSwim = (sceneId: string, choiceId: string) => {
+      const state = fresh();
+      const swim = { ...state, run: { ...state.run!, sceneId, visitedSceneIds: [...state.run!.visitedSceneIds!, sceneId] } };
+      const struggled = act(swim, choiceId, 0.999999);
+      expect(struggled.run?.sceneId).toBe('swimStruggle');
+      expect(sceneText(TAKING_ON_WATER.scenes.swimStruggle, struggled)).not.toMatch(/canoe.?s gunwale/i);
+      return struggled;
+    };
+
+    const abandoned = prepareSwim('swimDecision', 'swimLeavePossessions');
+    const holdingHull = prepareSwim('swimSecured', 'securedSwimWithCanoe');
+    for (const state of [abandoned, holdingHull]) {
+      expect(sceneText(TAKING_ON_WATER.scenes.swimStruggleFinal, state)).not.toMatch(/holding the canoe/i);
+      const response = act(state, 'callTowardShore', 0);
+      expect(response.run?.sceneId).toBe('rescueResponse');
+      expect(sceneText(TAKING_ON_WATER.scenes.rescueResponse, response)).not.toMatch(/ties the canoe alongside/i);
+      const rescued = act(response, 'acceptRescue');
+      expect(rescued.run?.sceneId).toBe('rescueEnding');
+      expect(sceneText(TAKING_ON_WATER.scenes.rescueEnding, rescued)).not.toMatch(/brings you and the canoe|brings the canoe/i);
+      expect(sceneText(TAKING_ON_WATER.scenes.rescueEnding, rescued)).toMatch(/canoe’s condition and recovery are not established/i);
+    }
+  });
+
   it('makes cool water modestly harder to swim in and persists the selected condition across reload', () => {
     const cool = fresh(null, 0, 0.95);
     expect(cool.run?.randomSelections?.lakeCondition).toBe('coolWater');
