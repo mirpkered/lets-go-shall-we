@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
-import { THE_BOILER_ROOM, THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
+import { AFTER_THE_TORNADO, THE_BOILER_ROOM, THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
 
 function fresh(scenario: Scenario = THE_CROWD_BREAKS, carriedItem?: string): SaveData {
   const character = newCharacter('State Tester');
@@ -93,6 +93,22 @@ describe('state-aware shared aftermath narration', () => {
     const scene = THE_ROOF_COMES_IN.scenes.wallBraced;
     const variant = scene.textVariants?.find(({ requirements }) => meets(requirements, state));
     expect(variant?.text).toMatch(/two visible people are already outside/i);
+  });
+
+  it('does not treat checking the fallen gate as moving the cow', () => {
+    let state = fresh(AFTER_THE_TORNADO);
+    state = act(state, AFTER_THE_TORNADO, 'checkKitchen');
+    state = act(state, AFTER_THE_TORNADO, 'stoveSmother');
+    state = act(state, AFTER_THE_TORNADO, 'safeCow');
+    expect(state.run?.sceneId).toBe('tornadoAftermath');
+    expect(state.run?.flags).toContain('tornadoFireSafe');
+    expect(state.run?.flags).not.toContain('tornadoCowMoved');
+
+    let moved = fresh(AFTER_THE_TORNADO);
+    moved = act(moved, AFTER_THE_TORNADO, 'sendForHelp');
+    moved = act(moved, AFTER_THE_TORNADO, 'leaveCow');
+    expect(moved.run?.sceneId).toBe('tornadoAftermath');
+    expect(moved.run?.flags).toContain('tornadoCowMoved');
   });
 
   it('does not treat calling the bridge driver as proof he reached shore', () => {

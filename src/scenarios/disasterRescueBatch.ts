@@ -440,7 +440,7 @@ export const AFTER_THE_TORNADO = A('after-the-tornado', 'After the Tornado', 'Th
   ]),
   stoveSafe: scene('stoveSafe', 'A Hearth without Smoke', 'The stove is cold and the kitchen is safe for now. The house has lost part of its roof, so the family cannot stay through another storm. The child and cow are still unresolved.', [
     { id: 'safeSearch', label: 'Search the wash shed for the child', next: 'childFound', effects: { setFlags: ['tornadoFireSafe', 'tornadoChildFound'] } },
-    { id: 'safeCow', label: 'Check the fallen gate in the orchard', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFireSafe', 'tornadoCowMoved'] } },
+    { id: 'safeCow', label: 'Check the fallen gate in the orchard', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFireSafe'] } },
   ]),
   helpRider: scene('helpRider', 'Help on the South Lane', 'The neighbor arrives with a wagon and two blankets. They can carry the family and a person needing care, but cannot take the cow and household goods together. The north road remains blocked by fallen trees.', [
     { id: 'loadFamily', label: 'Load the family and anyone injured', next: 'tornadoAftermath', effects: { setFlags: ['tornadoFamilyMoved'] } },
