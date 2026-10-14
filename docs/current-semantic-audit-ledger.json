@@ -8708,12 +8708,12 @@
       "slug": "the-second-rope",
       "title": "The Second Rope",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0197"
       ],
       "reviewProvenance": "current-source route review; usable-rope/driver/retreat approaches, rope-gated team response, driver/account/retreat responses, combat win/loss, cargo custody and alternate crossing/reward outcomes traced",
-      "notes": "fightLost says the driver leads the team down the marked route. Only approach_markRetreat establishes a marked turnaround route; approach_steadyHorses secures a tie point and approach_callOwner only locates the driver. The combat-loss ending is shared across those unmarked approaches. Cargo remains sealed and the other response, combat-win, reward and refusal outcomes stay distinct.",
+      "notes": "fightLost said the driver leads the team down the marked route. Only approach_markRetreat establishes a marked turnaround route; approach_steadyHorses secures a tie point and approach_callOwner only locates the driver. Repaired with a scenario-specific combat-loss result: the driver reaches the team, while the Traveler cannot see how they leave the pass. The marked-retreat setup remains intact; cargo, other responses, combat-win, reward, and refusal outcomes are unchanged. Regression contrasts both unmarked approaches against the explicit marked approach.",
       "preReconciliationPosition": 502,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17475,6 +17475,8 @@
       "violatedRule": "A later movement result must not claim route-specific preparation that the player did not establish.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "routeTruthFightLoss override for the-second-rope replaces the unsupported marked-route claim with a witnessed result: the Traveler is hurt, the pair flee, the driver reaches the team, and the descent is not observed. roadDangerGenreBatch.test.ts reproduces the old claim first and now verifies both unmarked approaches do not assert a marked route, while the explicit markRetreat choice still records its safe turn-around point. The road-danger and Gear regression suites pass; no Gear gates, cargo custody, rewards, or persistence behavior changed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20082,9 +20084,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 627,
+    "HEALTHY": 628,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 175,
+    "CONFIRMED DEFECT": 174,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
