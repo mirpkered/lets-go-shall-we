@@ -33,9 +33,25 @@ const work: Work[] = [
 const s = (id:string,title:string,text:string,choices:Scene['choices'],textVariants?:Scene['textVariants']) => largeScene(id,title,text,choices,undefined,textVariants);
 const e = (id:string,title:string,text:string) => largeEnd(id,title,text);
 const pay = (item:string,source:string,flag:string) => ({gainItems:[item],gainItemProvenance:{[item]:source},historyFlags:[flag]});
+const complicationTiming = new Map<string,'afterRepair'|'afterTest'>([
+  ['the-tool-peg-on-night-shift','afterRepair'],
+  ['the-misfed-grain-gate','afterTest'],
+  ['the-dragging-brake-at-bell-yard','afterTest'],
+  ['the-shaft-marks-at-ash-mill','afterTest'],
+  ['the-sorting-table-jam','afterTest'],
+  ['the-cable-over-foundry-road','afterTest'],
+  ['the-ore-cart-on-the-incline','afterTest'],
+  ['the-bell-before-the-restart','afterTest'],
+  ['the-oil-on-the-switch-rod','afterTest'],
+  ['the-sparks-at-the-belt-house','afterTest'],
+  ['the-slow-wheel-at-copper-mill','afterTest'],
+]);
 const rushedFailureGearIds = new Set(['the-belt-that-slapped-back','one-tooth-on-the-sawmill','the-east-siding-points','the-load-under-the-warehouse-hoist','the-pump-below-number-three','the-grain-under-the-guard','the-hoist-that-would-not-set-down','the-lathe-chip','the-winches-uneven-pull','the-misfed-grain-gate','the-dragging-brake-at-bell-yard','the-sorting-table-jam','the-bell-before-the-restart','the-oil-on-the-switch-rod','the-sparks-at-the-belt-house']);
 const learnedLesson = (w:Work) => w.knowledgeFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[w.knowledgeFact]]} : {knowledge:[w.lesson]};
 const make = (w:Work):Scenario => {
+  const timing = complicationTiming.get(w.id);
+  const diagnosisText = timing ? w.diagnosis : `${w.diagnosis} ${w.complication}`;
+  const testText = timing === 'afterTest' ? w.restart : `${w.restart} ${w.complication}`;
   const inspection:Scene['choices'] = [
     {id:'inspect',label:w.toolAction ?? 'Inspect the moving parts from outside the marked work zone',next:'diagnose',...(w.tool?{requirements:{items:[w.tool],usableItems:[w.tool]}}:{}),effects:{setFlags:['usedIndustrialGear']}},
     {id:'observe',label:'Watch one stopped cycle and compare the wear marks',next:'diagnose'},
@@ -45,13 +61,13 @@ const make = (w:Work):Scenario => {
   if (w.tool) inspection[0] = {id:'inspect',label:w.toolAction!,next:'diagnose',requirements:{items:[w.tool],usableItems:[w.tool]},effects:{setFlags:['usedIndustrialGear']}};
   const scenes:Record<string,Scene> = {
     inspect:s('inspect','Stopped Before the Fault',`${w.problem} ${w.clue} The equipment is stopped or isolated before you approach; the foreman asks for practical help, not a guess about the machine.`,inspection),
-    diagnose:s('diagnose','A Cause, Not Yet a Repair',`${w.diagnosis} ${w.complication}`,[
+    diagnose:s('diagnose','A Cause, Not Yet a Repair',diagnosisText,[
       {id:'repair',label:w.repair,next:'test',effects:{setFlags:['choseRepair']}},
       {id:'hold',label:'Leave the machine stopped and ask the responsible fitter to take over',next:'shutdown',effects:{...learnedLesson(w),setFlags:['choseShutdown']}},
       {id:'rush',label:'Tell the foreman to resume the full job without a test',next:'unsafe',effects:{setFlags:['choseRush']}},
       ...(w.extraTool?[{id:'useSpecialistFile',label:w.extraTool.label,next:'test',requirements:{items:[w.extraTool.id],usableItems:[w.extraTool.id]},effects:{setFlags:['usedSpecialistFile']}}]:[]),
     ]),
-    test:s('test','A Test Is Another Decision',`${w.restart} ${w.complication} A safe short test can reveal a remaining fault; it cannot certify every part of the machine.`,[
+    test:s('test','A Test Is Another Decision',`${testText} A safe short test can reveal a remaining fault; it cannot certify every part of the machine.`,[
       {id:'slow',label:'Run the controlled test described by the operator',next:'settle',effects:{...learnedLesson(w),setFlags:['testedCarefully']}},
       {id:'stopAgain',label:'Stop at the first irregular movement and call the fitter',next:'shutdown',effects:{...learnedLesson(w),setFlags:['choseShutdown']}},
       {id:'fullLoad',label:'Put the machine straight back to its full work load',next:'unsafe',effects:{...learnedLesson(w),setFlags:['choseRush']}},
@@ -69,7 +85,7 @@ const make = (w:Work):Scenario => {
       {id:'declineFee',label:'Decline the fee',next:'unpaid',effects:learnedLesson(w)},
       {id:'gear',label:`Accept the released ${w.rewardName} as wages`,next:'kept',requirements:{notOwnedItems:[w.reward],...(rushedFailureGearIds.has(w.id)?{notFlags:['choseRush']}: {})},effects:{...learnedLesson(w),...pay(w.reward,`${w.custodian} The operational machine and employer-owned tools remain with the worksite.`,`earned_industrial_${w.id}`)}},
     ]),textVariants:[
-      {requirements:{flags:['testedCarefully']},text:`The controlled test gives the crew a result without promising more than it checked. ${w.complication}`},
+      {requirements:{flags:['testedCarefully']},text:timing==='afterRepair'?'The controlled test gives the crew a result without promising more than it checked.':`The controlled test gives the crew a result without promising more than it checked. ${w.complication}`},
       {requirements:{flags:['choseShutdown']},text:'The work stays stopped for the fitter. Your decision prevents an unresolved machine state from being treated as a safe restart.'},
       {requirements:{flags:['choseRush']},text:'The rushed restart damages a small part and costs the shift time. No one is injured, but the fitter must complete the inspection before work resumes.'},
     ]},
