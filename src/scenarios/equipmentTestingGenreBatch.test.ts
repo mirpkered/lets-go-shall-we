@@ -38,6 +38,29 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     }
   });
 
+  it('does not compare two rainfall sites until both cups have been placed', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-rain-cup-at-mill-run')!;
+    const character = newCharacter('Rain Cup Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+
+    let oneSite = choose(initial, scenario, scenario.scenes.cup.choices.find(({ id }) => id === 'upperOnly')!);
+    expect(oneSite.run?.sceneId).toBe('upperReading');
+    expect(scenario.scenes.upperReading.text).toMatch(/records rainfall at that stake only/i);
+    expect(scenario.scenes.upperReading.text).not.toMatch(/pasture cup shows more rain|both sites were recorded/i);
+
+    const singleReading = choose(oneSite, scenario, scenario.scenes.upperReading.choices.find(({ id }) => id === 'keepSingleReading')!);
+    expect(singleReading.run?.sceneId).toBe('singleReading');
+    expect(scenario.scenes.singleReading.text).toMatch(/mill-yard comparison remains unknown/i);
+
+    const completedComparison = choose(oneSite, scenario, scenario.scenes.upperReading.choices.find(({ id }) => id === 'placeMillCup')!);
+    expect(completedComparison.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).toMatch(/pasture cup shows more rain/i);
+
+    const bothSites = choose(initial, scenario, scenario.scenes.cup.choices.find(({ id }) => id === 'placeBoth')!);
+    expect(bothSites.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).toMatch(/pasture cup shows more rain/i);
+  });
+
   it('adds seven mundane, distinct and carryable tools with explicit limits', () => {
     const ids = ['fieldCalipers', 'lineTensionGauge', 'foldingBenchClamp', 'brassPlumbBob', 'telegraphLineTester', 'paddedPackSaddle', 'fieldRainGauge'];
     for (const id of ids) {
