@@ -15885,7 +15885,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 262,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The driver-reaching proof was removed from call-only and unconfirmed crossing routes. Shared wagon/drop and final text now keep the driver's location unconfirmed when route evidence does not establish shore arrival; the daughter's and mule's independently established states remain distinct. disasterRescueBatch.stateAware.test.ts drives child-across then callFather and mule-freed then muleCallDriver, confirming neither grants bridgePeopleSaved nor creates a driver-at-shore ending claim."
     },
     {
       "findingId": "CRA-F0082",
