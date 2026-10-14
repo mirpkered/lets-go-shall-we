@@ -11012,7 +11012,7 @@
       "slug": "the-fourth-mule",
       "title": "The Fourth Mule",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0243"
       ],
@@ -18220,6 +18220,8 @@
       "violatedRule": "A converged outcome must preserve route-established object location and custody; a cached load cannot be narrated as together with the party until retrieved.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local Wave 99: the safe ending now uses neutral load-location wording by default and a route variant states that bedding remains at the staging shed only when `fourth_mule_bedding_cached` is present. The existing flag is reused; no new persistent state is added. Regression covers cached bedding after save/reload, the split-by-hand contrast, the explicit return-bedding route, and a missing-flag legacy fallback. The Expedition Logistics suite passes 11 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20289,9 +20291,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 723,
+    "HEALTHY": 724,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 79,
+    "CONFIRMED DEFECT": 78,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
