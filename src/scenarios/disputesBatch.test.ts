@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
-import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_FALSE_GUIDE, THE_LANDLORDS_STORY } from './disputesBatch';
+import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_FALSE_GUIDE, THE_LANDLORDS_STORY, THE_MISSING_SACK } from './disputesBatch';
 
 const WATCH_OWNERS = ['Tavren', 'Isolde', 'Araminta', 'Fenella', 'Leofric'];
 
@@ -114,6 +114,40 @@ describe('deception, disputes, and self-interest adventure batch', () => {
     const testified = act(state, THE_BROKEN_PROMISE, 'roadsideDispute', 'giveLimitedAccountCoin');
     expect(testified.character?.knowledge).toContain('You heard one traveler offer a coin for something, but did not hear the full agreement.');
     expect(THE_BROKEN_PROMISE.scenes.roadsideDispute.choices.find(({ id }) => id === 'giveLimitedAccountPaid')?.requirements?.selections).toEqual({ heardFragment: 'ifPaid' });
+  });
+
+  it('keeps the missing-sack account tied to an actual reply from the previous inn', () => {
+    const noReplyText = (selections: Record<string, string>, route: 'loading' | 'search') => {
+      let state = start(THE_MISSING_SACK, selections);
+      if (route === 'loading') {
+        state = act(state, THE_MISSING_SACK, 'wagonStop', 'checkWagonLedger');
+        state = act(state, THE_MISSING_SACK, 'loadingMarks', 'sendWordToStop');
+      } else {
+        state = act(state, THE_MISSING_SACK, 'wagonStop', 'lookAlongRoad');
+        state = act(state, THE_MISSING_SACK, 'roadsideSearch', 'askRoadsideSearch');
+      }
+      expect(state.run?.sceneId).toBe('sackAccountFound');
+      return sceneText(THE_MISSING_SACK.scenes.sackAccountFound, state);
+    };
+
+    for (const outcome of ['wrongStop', 'slipped', 'neverLoaded', 'taken']) {
+      const selections = { sackOutcome: outcome };
+      for (const route of ['loading', 'search'] as const) {
+        expect(noReplyText(selections, route)).toMatch(/cause remains open|no reply has arrived/i);
+        expect(noReplyText(selections, route)).not.toMatch(/sack is found|found at another stop|never loaded/i);
+      }
+
+      let replied = start(THE_MISSING_SACK, selections);
+      replied = act(replied, THE_MISSING_SACK, 'wagonStop', 'askLastStop');
+      replied = act(replied, THE_MISSING_SACK, 'lastStopAsked', 'acceptSackReply');
+      const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+      saveGame(replied, storage as never);
+      replied = loadSave(storage as never);
+      const text = sceneText(THE_MISSING_SACK.scenes.sackAccountFound, replied);
+      if (outcome === 'wrongStop') expect(text).toMatch(/previous inn reports finding the sack/i);
+      else if (outcome === 'neverLoaded') expect(text).toMatch(/wagon arrived already short/i);
+      else expect(text).toMatch(/sack remains missing/i);
+    }
   });
 
   it('uses exact Finders Keepers watch provenance as a natural, non-verdict callback', () => {

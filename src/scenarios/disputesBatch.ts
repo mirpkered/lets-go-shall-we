@@ -220,14 +220,22 @@ export const THE_MISSING_SACK: Scenario = {
       { requirements: { selections: { sackOutcome: 'neverLoaded' } }, text: 'The inn reports no extra sack and says the wagon arrived with the count already short.' },
       { requirements: { selections: { sackOutcome: 'taken' } }, text: 'The inn has no extra sack. Someone at the crossing remembers hands on the load, but cannot identify who moved what.' },
     ], choices: [
-      { id: 'acceptSackReply', label: 'Pass the reply to the shopkeeper', next: 'sackAccountFound' },
+      { id: 'acceptSackReply', label: 'Pass the reply to the shopkeeper', next: 'sackAccountFound', effects: { setFlags: ['sack_reply_received'] } },
       { id: 'leaveAfterSackReply', label: 'Leave the remaining question open', next: 'sackUnresolved' },
     ] },
     roadsideSearch: { id: 'roadsideSearch', title: 'Along the Last Stretch', tone: 'safe', text: 'A brief search finds no clear trail. The road is busy and the ground holds mixed wagon marks; you cannot identify who handled the sack.', choices: [
       { id: 'askRoadsideSearch', label: 'Ask a nearby carter if they saw it', timeCost: 4, next: 'sackAccountFound' },
       { id: 'endRoadsideSearch', label: 'Stop searching and leave the dispute', next: 'sackUnresolved' },
     ] },
-    sackAccountFound: end('sackAccountFound', 'A Better Account', 'The shopkeeper and driver agree on what they can establish. The sack is found, left at another stop, or accounted for as never loaded; where no witness exists, they leave the cause unsettled.'),
+    sackAccountFound: {
+      ...end('sackAccountFound', 'A Better Account', 'The shopkeeper and driver still disagree about when the sack disappeared. No reply has arrived from the previous inn, and the nearby search did not identify the sack or its path.'),
+      textVariants: [
+        { requirements: { flags: ['sack_reply_received'], selections: { sackOutcome: 'wrongStop' } }, text: 'The previous inn reports finding the sack in its store room, set aside with another delivery; it can be sent back.' },
+        { requirements: { flags: ['sack_reply_received'], selections: { sackOutcome: 'neverLoaded' } }, text: 'The previous inn reports no extra sack and says the wagon arrived already short; the exact cause remains unverified.' },
+        { requirements: { flags: ['sack_reply_received'], selections: { sackOutcome: 'slipped' } }, text: 'The previous inn found no extra sack. The driver recalls a rough patch where cargo may have shifted off; the sack remains missing.' },
+        { requirements: { flags: ['sack_reply_received'], selections: { sackOutcome: 'taken' } }, text: 'The inn found no extra sack. Someone recalls hands at the load during the crossing, but no one identified who moved it; the sack remains missing.' },
+      ],
+    },
     sackUnresolved: end('sackUnresolved', 'No One Accused', 'The wagon moves on while the shopkeeper notes the short delivery. The sack may have been misplaced, lost, or taken; the evidence does not justify naming anyone.'),
   },
 };
