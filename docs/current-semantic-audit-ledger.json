@@ -5596,12 +5596,12 @@
       "slug": "the-widows-beast",
       "title": "The Widow’s Beast",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0115"
       ],
       "reviewProvenance": "current source route review; widow account/refusal, fence/track inspection, wolfdog observation, neighbor-loss/mediation, gate protection, drive-away success/failure, feeding and shared closure traced",
-      "notes": "widowAfter universally says neighbors repair the fence and widow stops leaving food. It is reachable from stopFeeding without neighbor repair; repairFence without a stop-feeding conversation; leaveDogRoom/closeYardGate/driveDog without either action; and mediateFence without establishing the widow stopped feeding. The result merges independent route actions.",
+      "notes": "Wave 77 repaired the convergence claim using separate run-local proof for the explicit stop-feeding choice and the two fence-repair choices. The ending now states each outcome independently and uses neutral wording when either proof is absent. Original route-review evidence is retained in the finding record.",
       "preReconciliationPosition": 312,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16488,7 +16488,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 312,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 77: askWidowStopFeeding sets widowStoppedLeavingFood; repairFence and mediateFence set widowFenceRepaired. widowAfter selects truthful independent outcomes and defaults to neutral text. Regression contrasts feeding-only, fence-only (including save/reload), observation/retreat-only, gate-protection-only, drive-away success, and mediated fence repair. Focused Monster Hunt, persistence, registry, and library checks pass (37 tests across 5 files)."
     },
     {
       "findingId": "CRA-F0116",
@@ -20191,9 +20193,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 674,
+    "HEALTHY": 675,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 128,
+    "CONFIRMED DEFECT": 127,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
