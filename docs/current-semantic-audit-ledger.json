@@ -5,12 +5,12 @@
   "workingTreeStateAtReview": "audit-only update; gameplay source and tests unchanged",
   "totalRegisteredAdventures": 861,
   "liveRegistryCount": 861,
-  "reviewedThroughPosition": 846,
-  "reviewedCount": 846,
-  "remainingCount": 15,
-  "nextPosition": 847,
-  "firstUnreviewedLiveStableId": "seal-that-cooled-wrong",
-  "firstUnreviewedLivePosition": 847,
+  "reviewedThroughPosition": 856,
+  "reviewedCount": 856,
+  "remainingCount": 5,
+  "nextPosition": 857,
+  "firstUnreviewedLiveStableId": "morning-the-warning-arrived",
+  "firstUnreviewedLivePosition": 857,
   "reviewedStableIdsScope": "CURRENT_LIVE_SCENARIOS_ONLY",
   "unregisteredReviewedAdventureIds": [
     "the-night-bird-turn",
@@ -14609,6 +14609,146 @@
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 847,
+      "adventureId": "seal-that-cooled-wrong",
+      "slug": "seal-that-cooled-wrong",
+      "title": "The Seal That Cooled Wrong",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced accept/decline, outside verification, sealed delivery, recording the seal, warning the recipient, opening and disclosing, reporting the breach, and concealment/delay. The doubled ridge is consistently a clue, not proof of who handled it or changed contents; the exact Knowledge rule is stated before it is granted. A recipient’s instruction does not establish that shipment was held.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 848,
+      "adventureId": "copy-that-came-back",
+      "slug": "copy-that-came-back",
+      "title": "The Copy That Came Back",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Compared sender/receiver disagreement, read-back, holding disputed crates, loading only confirmed crates, consignee decision, delay/refusal, and compensation/Lore. The Knowledge fact is directly established by the two visibly conflicting copies; disputed freight is not released on the hold route.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 849,
+      "adventureId": "flooded-relay-book",
+      "slug": "flooded-relay-book",
+      "title": "The Flooded Relay Book",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced fresh warning, keeping the quarry gate closed pending verification, qualified runner, paid duplicate, injury shortcut, refusal, and close-out. Sending time is distinguished from receipt; no warning-received claim leaks to delay or hazard exits. Relay-delay Knowledge is described by the dry copy before route action.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 850,
+      "adventureId": "initials-on-the-wire",
+      "slug": "initials-on-the-wire",
+      "title": "Initials on the Wire",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced named-agent confirmation, full-name authorization hold, qualified explanation, refusal, and payment/Lore. Payer, sender, and release authority remain distinct; the fact is explicitly presented before its Knowledge grant, and no crate is released on initials alone.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 851,
+      "adventureId": "town-name-that-moved",
+      "slug": "town-name-that-moved",
+      "title": "The Town Name That Moved",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced both-office household comparison, sealed return, inquiry, open-letter route, refusal, and forwarding/Lore rewards. The shared place name does not identify the intended recipient; the private letter itself admits two directory matches, and no unverified delivery is claimed.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 852,
+      "adventureId": "bell-before-the-wire",
+      "slug": "bell-before-the-wire",
+      "title": "The Bell before the Wire",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced confirmation request, wait for line repair, report-only communication-down route, refusal, and Knowledge eligibility. The operator’s one/two-ring convention and red line-down peg are explicit before the fact is granted; guessed message is not propagated as known.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 853,
+      "adventureId": "horse-change-ledger",
+      "slug": "horse-change-ledger",
+      "title": "The Horse-Change Ledger",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced current stable-ledger route to staffed relay, hold for map correction, signed handoff alternative, refusal, and Knowledge/fee outcome. New horse-change entry supersedes stale map only for the described handoff; no packet receipt is claimed before delivery.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 854,
+      "adventureId": "first-words-over-the-wire",
+      "slug": "first-words-over-the-wire",
+      "title": "First Words over the Wire",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced ask-family-before-display, preserve unopened, date/route-only display, open/disclose/conceal branches, refusal, Lore/Knowledge and save flags. Missing addressee stays unknown; letter revelation explicitly does not identify family, and privacy-changing actions record the breach.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 855,
+      "adventureId": "postal-road-after-the-flood",
+      "slug": "postal-road-after-the-flood",
+      "title": "The Postal Road after the Flood",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced ridge delivery, telegraph warning/delay, correcting the lower post, unsafe abandoned-valley route where available, refusal, route Lore, and relay Knowledge. The old road is not represented as connected; the ridge route and warning alternative preserve distinct delivery outcomes.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 856,
+      "adventureId": "letter-from-ash-lot",
+      "slug": "letter-from-ash-lot",
+      "title": "The Letter from Ash Lot",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct message-handling, outcome, privacy, reward, and relevant save-state variants traced.",
+      "notes": "Traced asking family for consent, archive/hold route, opening and disclosure/report/conceal branches, refusal, private history and secondary Knowledge. The letter does not prove who stayed behind; returning by consent is distinct from preserving or opening it, and disclosure is recorded.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
     }
   ],
   "findings": [
@@ -19520,7 +19660,7 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 468,
+    "HEALTHY": 478,
     "MINOR CONCERN": 58,
     "CONFIRMED DEFECT": 320,
     "NEEDS MANUAL REVIEW": 0
@@ -20277,14 +20417,18 @@
     {
       "positions": "837–846 (10 newly completed live reviews)",
       "status": "Reviewed the Tower Bell Anchor plus nine courier/telegraph scenarios. The Tower Bell Anchor extends CRA-C0011 because sway measurement is shown before the plumb-bob action. Station Mark in the Margin extends CRA-C0002: its primary Knowledge fact is granted after handling choices that do not resolve the clerk’s tentative mark interpretation. The other eight mail/telegraph routes were traced through delivery, delay, warnings, refusal, privacy/seal, hazard, reward, Knowledge/Lore, and save behavior where applicable."
+    },
+    {
+      "positions": "847–856 (10 newly completed live reviews)",
+      "status": "Reviewed ten courier/telegraph scenarios. Direct source tracing covered delivery, delay, refusal, qualified warning, sealed/opened/concealed messages, authority, route, chronology, hazard and withdrawal branches, handoff-gated rewards, Knowledge/Lore, and persistence where applicable. The information and privacy boundaries remained truthful on the inspected routes; no new confirmed defect was established."
     }
   ],
-  "highestContiguousReviewedPosition": 846,
-  "maxReviewedRegistryPosition": 846,
+  "highestContiguousReviewedPosition": 856,
+  "maxReviewedRegistryPosition": 856,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 847,
-  "firstUnreviewedStableId": "seal-that-cooled-wrong",
-  "nextStableId": "seal-that-cooled-wrong",
+  "firstUnreviewedPosition": 857,
+  "firstUnreviewedStableId": "morning-the-warning-arrived",
+  "nextStableId": "morning-the-warning-arrived",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -21131,7 +21275,17 @@
     "station-without-a-clock",
     "copyists-pencil",
     "the-last-mile-pouch",
-    "station-mark-in-margin"
+    "station-mark-in-margin",
+    "seal-that-cooled-wrong",
+    "copy-that-came-back",
+    "flooded-relay-book",
+    "initials-on-the-wire",
+    "town-name-that-moved",
+    "bell-before-the-wire",
+    "horse-change-ledger",
+    "first-words-over-the-wire",
+    "postal-road-after-the-flood",
+    "letter-from-ash-lot"
   ],
   "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -21153,8 +21307,8 @@
     "registryOrderSource": "src/scenarios/index.ts",
     "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
     "liveRegistryCount": 861,
-    "reviewedLiveCount": 846,
-    "remainingLiveCount": 15,
+    "reviewedLiveCount": 856,
+    "remainingLiveCount": 5,
     "unregisteredReviewedCount": 24,
     "unregisteredHistoricalFindingCount": 7,
     "unregisteredReviewedAdventureIds": [
@@ -21185,26 +21339,26 @@
     ],
     "unreviewedPositionRanges": [
       [
-        847,
+        857,
         861
       ]
     ],
     "latest20ReconciledToPositions809Through828": true,
     "latestBatchPositions": [
-      837,
-      838,
-      839,
-      840,
-      841,
-      842,
-      843,
-      844,
-      845,
-      846
+      847,
+      848,
+      849,
+      850,
+      851,
+      852,
+      853,
+      854,
+      855,
+      856
     ]
   },
-  "reviewedLiveCount": 846,
-  "remainingLiveCount": 15,
+  "reviewedLiveCount": 856,
+  "remainingLiveCount": 5,
   "reviewedLiveStableIds": [
     "broken-bell",
     "last-stop",
@@ -22051,9 +22205,7 @@
     "station-without-a-clock",
     "copyists-pencil",
     "the-last-mile-pouch",
-    "station-mark-in-margin"
-  ],
-  "unreviewedLiveStableIds": [
+    "station-mark-in-margin",
     "seal-that-cooled-wrong",
     "copy-that-came-back",
     "flooded-relay-book",
@@ -22063,7 +22215,9 @@
     "horse-change-ledger",
     "first-words-over-the-wire",
     "postal-road-after-the-flood",
-    "letter-from-ash-lot",
+    "letter-from-ash-lot"
+  ],
+  "unreviewedLiveStableIds": [
     "morning-the-warning-arrived",
     "no-forwarding-address-for-the-founder",
     "blue-room-dispatch",
@@ -22075,7 +22229,7 @@
   "unclusteredHistoricalFindingCount": 0,
   "unreviewedPositionRanges": [
     [
-      847,
+      857,
       861
     ]
   ]

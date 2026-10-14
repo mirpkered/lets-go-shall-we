@@ -3,7 +3,7 @@
 Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 846 live Adventures reviewed; 15 remain. First live gap: position 847, The Seal That Cooled Wrong (`seal-that-cooled-wrong`; `src/scenarios/courierMailTelegraphGenreBatch.ts`). Next finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
+Current live registry: 861 Adventures; 856 live Adventures reviewed; 5 remain. First live gap: position 857, The Morning the Warning Arrived (`morning-the-warning-arrived`; `src/scenarios/courierMailTelegraphGenreBatch.ts`). Next finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
 ## Current checkpoint
 
@@ -11,12 +11,12 @@ The canonical registry order is the live exported `SCENARIOS` array in `src/scen
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 460 |
+| HEALTHY | 478 |
 | MINOR CONCERN | 58 |
 | CONFIRMED DEFECT | 320 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed live Adventures | 846 |
-| Live Adventures remaining | 15 |
+| Total reviewed live Adventures | 856 |
+| Live Adventures remaining | 5 |
 
 There are 361 finding records in the preserved audit history: 354 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 283, LOW 48, plus 10 unrecovered values.
 
@@ -26,7 +26,7 @@ The 24 unregistered reviewed Adventure IDs are recorded in the JSON `unregistere
 
 Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 222, C0002 19, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 24 (348 clustered live findings); six live findings are unclustered.
 
-Coverage invariant: **861 registered = 846 reviewed + 15 remaining**. The verified unreviewed position range is **847–861**. The first unreviewed live entry is position 847, `seal-that-cooled-wrong` — The Seal That Cooled Wrong — `src/scenarios/courierMailTelegraphGenreBatch.ts`.
+Coverage invariant: **861 registered = 856 reviewed + 5 remaining**. The verified unreviewed position range is **857–861**. The first unreviewed live entry is position 857, `morning-the-warning-arrived` — The Morning the Warning Arrived — `src/scenarios/courierMailTelegraphGenreBatch.ts`.
 
 ## Live-registry continuation (10 newly completed reviews)
 
@@ -1717,3 +1717,22 @@ The Tower Bell Anchor extends CRA-C0011 because its plumb-line sway result is sh
 | 846 | The Station Mark in the Margin (`station-mark-in-margin`) | CONFIRMED DEFECT | CRA-F0361 (MEDIUM, CRA-C0002) — primary Knowledge is granted without route proof of the mark convention. |
 
 Current live totals are **846 reviewed / 15 remaining**; next finding ID: **CRA-F0362**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 847–856)
+
+Ten additional courier/telegraph routes are HEALTHY. Current source preserves distinctions among delivery, delay, refusal, qualified warning, privacy choices, route/authority verification, and hazard withdrawal. Knowledge is granted where the encountered record or clerk states the corresponding convention; optional Knowledge/Lore and Gear rewards remain handoff-gated. Sealed correspondence branches retain separate keep/open/disclose/conceal outcomes and their persistent history flags.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 847 | The Seal That Cooled Wrong (`seal-that-cooled-wrong`) | HEALTHY | — the seal remains a clue rather than proof of handler or changed contents. |
+| 848 | The Copy That Came Back (`copy-that-came-back`) | HEALTHY | — conflicting sender/receiver copies are not collapsed into authorization. |
+| 849 | The Flooded Relay Book (`flooded-relay-book`) | HEALTHY | — dispatch time is distinguished from receipt; gate closure remains available. |
+| 850 | Initials on the Wire (`initials-on-the-wire`) | HEALTHY | — payer, sender, and release authority remain distinct. |
+| 851 | The Town Name That Moved (`town-name-that-moved`) | HEALTHY | — shared place name does not identify the intended recipient. |
+| 852 | The Bell before the Wire (`bell-before-the-wire`) | HEALTHY | — line-down and message-waiting signals remain distinct; no guessed message is treated as received. |
+| 853 | The Horse-Change Ledger (`horse-change-ledger`) | HEALTHY | — current handoff record is distinguished from stale route map. |
+| 854 | First Words over the Wire (`first-words-over-the-wire`) | HEALTHY | — missing addressee remains unknown; privacy-changing action is recorded. |
+| 855 | The Postal Road after the Flood (`postal-road-after-the-flood`) | HEALTHY | — disconnected valley road is not treated as a viable delivery route. |
+| 856 | The Letter from Ash Lot (`letter-from-ash-lot`) | HEALTHY | — consent, archive, and opening remain distinct; the letter does not establish who stayed. |
+
+Current live totals are **856 reviewed / 5 remaining**; next finding ID: **CRA-F0362**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
