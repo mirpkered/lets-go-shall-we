@@ -5036,12 +5036,12 @@
       "slug": "the-rustled-herd",
       "title": "The Rustled Herd",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0090"
       ],
       "reviewProvenance": "current source route review; split tracks, sale receipt, brands, ledger, holding pasture, neighbor account, settlement/unsettled paths and Knowledge traced",
-      "notes": "The brandsReport choice goes directly from the remaining brands and incomplete ranch ledger to settlement, but settlement unconditionally states that a buyer’s receipt accounts for twelve calves and the holding pasture for eighteen. Those facts are established only by the separate market and holding routes; settlement may also be entered after seeing only one of them.",
+      "notes": "Original review witness preserved: brandsReport goes directly from the remaining brands and incomplete ranch ledger to settlement; marketReceipt and holdingConfer can also reach settlement after only one evidence source. Wave 65 gates the full count on both factual run-local evidence flags, gives each partial route only its established evidence, and keeps missing/legacy proof neutral. The positive comparison accounts for the thirty missing cattle without retaining the unsupported six-too-high conclusion.",
       "preReconciliationPosition": 280,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16126,6 +16126,8 @@
       "routeWitness": "pasture.inspectBrands -> brands.brandsReport -> settlement directly, with no visit to market or holding; alternatively market.marketReceipt -> settlement omits the holding count, and holding.holdingConfer -> settlement omits the receipt. settlement states both counts and concludes the rancher’s count was six too high.",
       "violatedRule": "A resolved ownership/count conclusion must be supported by all material records and must not import evidence from unvisited routes.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 65 adds run-local herdMarketEvidenceSeen, herdHoldingCountSeen, and herdBrandsReported proof at the corresponding evidence/report actions. Settlement and ending text distinguish marks-only, receipt-only, holding-only, and the route that visits market then brings both owners together at the holding pasture. The full route accounts for the thirty missing cattle from the twelve-calf receipt and eighteen-cattle holding count; the unsupported six-too-high statement is removed. Regression covers all four evidence states, preserves the market Knowledge result, verifies the full comparison through save/reload, and checks neutral missing-proof legacy text. Western Outlaw tests pass (11 tests); adjacent registry/library/inventory checks pass (34 tests across the selected runs); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 280,
       "registrationStatus": "LIVE"
@@ -20162,9 +20164,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 661,
+    "HEALTHY": 662,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 141,
+    "CONFIRMED DEFECT": 140,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
