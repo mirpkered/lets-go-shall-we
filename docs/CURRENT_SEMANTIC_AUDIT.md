@@ -5,7 +5,13 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 107
+### Previous local repair checkpoint — CRA-C0001 Wave 106
+
+### Active local repair checkpoint — CRA-C0001 Wave 108
+
+Wave 108 repairs CRA-F0150 (The Public Apology). The shared silence ending no longer assigns the subject-change/embarrassment motive to the separate route that insists the sign is crooked. Both routes retain the same supported consequences—the conversation turns elsewhere, the painter and merchant stop speaking, and the original friction remains unresolved—without attributing an unestablished reason. The apology route is unchanged. Regression contrasts subject-change, rumor-insistence, and apology. Focused tests passed **11 tests**; TypeScript and production build passed with the existing large-bundle warning. Current classifications derive to **731 HEALTHY, 59 MINOR CONCERN, 71 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **282 are dispositioned** (277 repaired and 5 healthy/no-longer-reproduces) and **72 remain open**, including **38 CRA-C0001** (30 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `520fcb3`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 107
 
 Wave 107 repairs CRA-F0127 (The Old Hoist). The generated closure no longer says the hoist was “untouched” after the loose-timber test or claims the cable was marked on routes that do not establish that action. It now states only the supported safety conclusion from the frayed cable and unreliable brake, and that the Traveler leaves without trusting it under a passenger’s weight. The frontier-discovery regression contrasts rim inspection, successful timber testing, and test failure/mishap. Focused tests passed **15 tests**; the full suite passed **127 files / 2,478 tests**; TypeScript and production build passed with the existing large-bundle warning. Current classifications derive to **730 HEALTHY, 59 MINOR CONCERN, 72 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **281 are dispositioned** (276 repaired and 5 healthy/no-longer-reproduces) and **73 remain open**, including **39 CRA-C0001** (31 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `31e15f8`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 

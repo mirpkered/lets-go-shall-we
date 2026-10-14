@@ -6659,7 +6659,7 @@
       "slug": "the-public-apology",
       "title": "The Public Apology",
       "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0150"
       ],
@@ -6669,7 +6669,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 108: the shared silence ending now reports only the supported consequence: conversation moves elsewhere, the painter and merchant stop speaking, and the original friction remains unresolved. It no longer attributes the Traveler's motive to embarrassment on the separate route that insists the sign is crooked. No state was added and the distinct apology outcome remains intact. Regression contrasts subject-change, rumor-insistence, and apology routes. Focused tests passed (11); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "position": 380,
@@ -17008,7 +17010,9 @@
       "violatedRule": "Converged narration must preserve route-specific action and motive rather than substituting another incoming route's rationale.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 108: the shared silence ending now reports only the supported consequence: conversation moves elsewhere, the painter and merchant stop speaking, and the original friction remains unresolved. It no longer attributes the Traveler's motive to embarrassment on the separate route that insists the sign is crooked. No state was added and the distinct apology outcome remains intact. Regression contrasts subject-change, rumor-insistence, and apology routes. Focused tests passed (11); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0151",
@@ -20309,9 +20313,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 730,
+    "HEALTHY": 731,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 72,
+    "CONFIRMED DEFECT": 71,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
