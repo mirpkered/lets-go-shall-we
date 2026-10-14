@@ -33,6 +33,13 @@ function act(state: SaveData, scenario: Scenario, sceneId: string, choiceId: str
   return choose(state, scenario, choice!, () => roll);
 }
 
+function roundTrip(state: SaveData): SaveData {
+  let raw: string | null = null;
+  const storage = { getItem: () => raw, setItem: (_key: string, value: string) => { raw = value; } };
+  saveGame(state, storage);
+  return loadSave(storage);
+}
+
 function explore(scenario: Scenario, gear: string[] = [], ownedAssets: NonNullable<SaveData['character']>['ownedAssets'] = []): void {
   const queue = [start(scenario, gear, ownedAssets)];
   const seen = new Set<string>();
@@ -95,6 +102,24 @@ describe('survival and expedition adventure batch', () => {
     expect(spring.run?.sceneId).toBe('springHouse');
     expect(THE_CAVE_BEFORE_THE_STORM.scenes.caveMouth.choices.some(({ id }) => id === 'useRockOverhang')).toBe(true);
     expect(THE_EMPTY_CABIN.scenes.cabinDoor.choices.some(({ id }) => id === 'useCabinShelter')).toBe(true);
+  });
+
+  it('keeps the seep at the basin when a successful dig establishes it there', () => {
+    const dug = act(start(NO_WATER_AT_MILLERS_SPRING), NO_WATER_AT_MILLERS_SPRING, 'drySpring', 'digSpringBasin', 0);
+    expect(dug.run?.flags).toContain('dugSpringSeepAtBasin');
+    const restoredDug = roundTrip(dug);
+    const dugText = sceneText(NO_WATER_AT_MILLERS_SPRING.scenes.springSeep, restoredDug);
+    expect(dugText).toMatch(/seep gathers where you dug at the old basin/i);
+    expect(dugText).not.toMatch(/beneath a fallen branch/i);
+
+    let read = act(start(NO_WATER_AT_MILLERS_SPRING), NO_WATER_AT_MILLERS_SPRING, 'drySpring', 'readSpringGround');
+    const readText = sceneText(NO_WATER_AT_MILLERS_SPRING.scenes.springSeep, read);
+    expect(readText).toMatch(/shaded fold has a damp line beneath a fallen branch/i);
+    expect(readText).not.toMatch(/where you dug at the old basin/i);
+
+    const failed = act(start(NO_WATER_AT_MILLERS_SPRING), NO_WATER_AT_MILLERS_SPRING, 'drySpring', 'digSpringBasin', 0.999999);
+    expect(failed.run?.sceneId).toBe('springSpent');
+    expect(failed.run?.flags).not.toContain('dugSpringSeepAtBasin');
   });
 
   it('attributes rescue signals only to routes that actually signal', () => {
