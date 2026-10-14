@@ -144,6 +144,20 @@ describe('day off and pleasant encounters adventure batch', () => {
     expect(THE_SWIMMING_HOLE.scenes.poolRested.ending).toBe('success');
   });
 
+  it('offers a keepsake only when the selected shore variant found one', () => {
+    const choiceIds = (state: SaveData) => THE_SWIMMING_HOLE.scenes.poolShore.choices
+      .filter(({ requirements }) => meets(requirements, state))
+      .map(({ id }) => id);
+    const noneFound = act(start(THE_SWIMMING_HOLE, { shoreCuriosity: 'nothing' }), THE_SWIMMING_HOLE, 'poolBank', 'lookPoolShore');
+    expect(choiceIds(noneFound)).toEqual(['leavePoolCuriosity']);
+
+    for (const [selection, choiceId] of [['blueGlass', 'keepBlueGlass'], ['smoothStone', 'keepSmoothStone']]) {
+      const found = act(start(THE_SWIMMING_HOLE, { shoreCuriosity: selection }), THE_SWIMMING_HOLE, 'poolBank', 'lookPoolShore');
+      expect(choiceIds(found)).toContain(choiceId);
+      expect(act(found, THE_SWIMMING_HOLE, 'poolShore', choiceId).run?.sceneId).toBe('poolKeepsake');
+    }
+  });
+
   it('offers modest shared lore and stories without requiring any later payoff', () => {
     const harvest = start(SUPPER_WITH_STRANGERS, { supperTopic: 'harvest' });
     expect(sceneText(SUPPER_WITH_STRANGERS.scenes.supperStories, harvest)).toContain('harvest dance');

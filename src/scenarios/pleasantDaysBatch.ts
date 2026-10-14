@@ -110,7 +110,8 @@ export const THE_SWIMMING_HOLE: Scenario = {
       { requirements: { selections: { shoreCuriosity: 'smoothStone' } }, text: 'You find a flat, smooth stone that would skip well across the pool. It is an ordinary bit of river stone.' },
       { requirements: { selections: { shoreCuriosity: 'nothing' } }, text: 'The pebbles are ordinary and the water is clear. There is nothing to find, which is fine.' },
     ], choices: [
-      { id: 'keepPoolCuriosity', label: 'Take the small curiosity as a keepsake', next: 'poolKeepsake', effects: { historyFlags: ['kept_a_small_swimming_hole_curiosity'] } },
+      { id: 'keepBlueGlass', label: 'Keep the smoothed blue glass', requirements: { selections: { shoreCuriosity: 'blueGlass' } }, next: 'poolKeepsake', effects: { historyFlags: ['kept_a_small_swimming_hole_curiosity'] } },
+      { id: 'keepSmoothStone', label: 'Keep the smooth river stone', requirements: { selections: { shoreCuriosity: 'smoothStone' } }, next: 'poolKeepsake', effects: { historyFlags: ['kept_a_small_swimming_hole_curiosity'] } },
       { id: 'leavePoolCuriosity', label: 'Leave it where the water brought it', next: 'poolLeft' },
     ] },
     poolSwum: ending('poolSwum', 'Cool Water, Warm Sun', 'You swim where the water stays calm, then sit on the dry bank until the sun warms your shoulders. Nothing goes wrong; it is simply a pleasant stop.'),
