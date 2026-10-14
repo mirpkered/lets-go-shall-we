@@ -340,18 +340,20 @@ export const THE_MIRE_HORSE: Scenario = {
       { id: 'enterReeds', label: 'Chase the figure through the reeds', hint: 'The path is firm; the reeds hide deep water and unstable mud.', next: 'marshSinking', effects: { health: -3 } },
     ], 'warning'),
     marshHummocks: scene('marshHummocks', 'A Man with a Bell', 'From the next dry hummock you see a ferryman’s helper with a hand bell beside the hidden skiff. The horse shape is a lamp hung behind reeds. He says he uses it to draw stranded travelers toward his boat, but it can also lead them into deep mud.', [
-      { id: 'askForHelp', label: 'Ask him to guide you back to the path', next: 'marshDeception' },
+      { id: 'askForHelp', label: 'Ask him to guide you back to the path', next: 'marshDeception', effects: { setFlags: ['mireHorseHelperGuidesOut'] } },
       { id: 'takeBell', label: 'Take the bell and lead him out', next: 'marshDeception', effects: { historyFlags: ['stopped a false marsh signal used to draw travelers off the path'] } },
       { id: 'confrontHelper', label: 'Confront him beside the skiff', hint: 'The narrow hummock leaves little room to retreat.', chance: { probability: 0.55, successNext: 'marshDeception', failureNext: 'marshSinking', successMessage: 'He steps aside and lets you pass.', failureMessage: 'He shoves you off the hummock into the soft edge.', failureEffects: { health: -3 } } },
     ]),
     marshSinking: scene('marshSinking', 'The Path under the Water', 'Your boot sinks into mud up to the ankle. The raised planks are still within reach, and the hidden bell has stopped. Nothing is pulling you under, but struggling in place will make the footing worse.', [
       { id: 'reachPlanks', label: 'Reach back to the raised planks', chance: { probability: 0.65, bonusItems: ['travelRope'], bonusProbability: 0.15, successNext: 'marshRetreat', failureNext: 'marshSinkingWorse', successMessage: 'You pull free onto the planks.', failureMessage: 'The mud gives way again and costs you time.', failureEffects: { health: -2 } } },
-      { id: 'callForGuide', label: 'Call for the ferryman’s helper', next: 'marshDeception' },
+      { id: 'callForGuide', label: 'Call for the ferryman’s helper', next: 'marshDeception', effects: { setFlags: ['mireHorseHelperGuidesOut'] } },
       { id: 'stayStill', label: 'Hold still and wait for help', next: 'marshRetreat' },
     ], 'danger'),
-    marshDeception: end('marshDeception', 'No Horse in the Mire', 'The helper takes down the false horse-light and leads you to dry ground. The marsh horse was a lamp and a bell, not a creature; the unsafe path was still real, and the next traveler will be warned.'),
+    marshDeception: { ...end('marshDeception', 'Back from the Mire', 'You return to dry ground by the marked path. This route does not establish the horse-shaped light’s final state or whether anyone warned the next traveler.'), textVariants: [
+      { requirements: { flags: ['mireHorseHelperGuidesOut'] }, text: 'The ferryman’s helper answers your request and guides you back to dry ground. The light’s final state and any warning to later travelers are not established.' },
+    ] },
     marshRetreat: end('marshRetreat', 'Dry Ground at Dusk', 'You return to the marked path and reach dry ground. The horse-shaped light remains beyond the reeds, unexplained but no longer worth following.'),
-    marshSinkingWorse: end('marshSinkingWorse', 'A Muddy Rescue', 'The helper reaches you from the hummock and pulls you onto the planks. You are bruised and wet; the false light is taken down before anyone else follows it.'),
+    marshSinkingWorse: end('marshSinkingWorse', 'Bruised at the Planks', 'The mud gives way again. You are bruised and wet, but this route does not establish who reached you or what happened to the horse-shaped light afterward.'),
   },
 };
 

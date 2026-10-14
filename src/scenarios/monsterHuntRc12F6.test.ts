@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
+import { THE_MIRE_HORSE } from './monsterHuntFirst';
 import { THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
@@ -21,6 +22,39 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
+  it('does not invent helper intervention on the Mire Horse mark-and-retreat route', () => {
+    let markedSkiff = take(fresh(THE_MIRE_HORSE), THE_MIRE_HORSE, 'inspectReeds');
+    markedSkiff = take(markedSkiff, THE_MIRE_HORSE, 'markSkiff');
+    const retreatText = sceneText(THE_MIRE_HORSE.scenes.marshDeception, markedSkiff);
+    expect(THE_MIRE_HORSE.scenes.marshDeception.title).not.toMatch(/no horse/i);
+    expect(retreatText).toMatch(/return to dry ground/i);
+    expect(retreatText).not.toMatch(/helper.*(answers|guides|takes down)|light.*taken down|next traveler.*warn/i);
+
+    let askedForGuide = take(fresh(THE_MIRE_HORSE), THE_MIRE_HORSE, 'inspectReeds');
+    askedForGuide = take(askedForGuide, THE_MIRE_HORSE, 'followBoots');
+    askedForGuide = take(askedForGuide, THE_MIRE_HORSE, 'askForHelp');
+    const resumed = loadSave({ getItem: () => JSON.stringify(askedForGuide) });
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshDeception, resumed)).toMatch(/helper answers your request and guides you back/i);
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshDeception, resumed)).not.toMatch(/takes down|warned/i);
+
+    let calledForGuide = take(fresh(THE_MIRE_HORSE), THE_MIRE_HORSE, 'callFigure');
+    calledForGuide = take(calledForGuide, THE_MIRE_HORSE, 'enterReeds');
+    calledForGuide = take(calledForGuide, THE_MIRE_HORSE, 'callForGuide');
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshDeception, calledForGuide)).toMatch(/helper answers your request and guides you back/i);
+
+    let mudFailure = take(fresh(THE_MIRE_HORSE), THE_MIRE_HORSE, 'callFigure');
+    mudFailure = take(mudFailure, THE_MIRE_HORSE, 'enterReeds');
+    mudFailure = take(mudFailure, THE_MIRE_HORSE, 'reachPlanks', 0.999);
+    expect(mudFailure.run?.sceneId).toBe('marshSinkingWorse');
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshSinkingWorse, mudFailure)).toMatch(/does not establish who reached you/i);
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshSinkingWorse, mudFailure)).not.toMatch(/helper reaches|pulls you|light is taken down/i);
+
+    const legacyWithoutProof = fresh(THE_MIRE_HORSE);
+    legacyWithoutProof.run!.sceneId = 'marshDeception';
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshDeception, legacyWithoutProof)).toMatch(/does not establish the horse-shaped light’s final state/i);
+    expect(sceneText(THE_MIRE_HORSE.scenes.marshDeception, legacyWithoutProof)).not.toMatch(/helper answers|guides you back/i);
+  });
+
   it('does not turn fetching the cellar keeper into a completed rescue or boarded opening', () => {
     let fetchOnly = take(fresh(THE_CELLAR_THING), THE_CELLAR_THING, 'inspectOutsideWall');
     fetchOnly = take(fetchOnly, THE_CELLAR_THING, 'fetchKeeper');
