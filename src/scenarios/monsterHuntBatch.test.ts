@@ -295,6 +295,71 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(scenario.scenes.catSeenAtDistance.text).toMatch(/has not noticed you on the broad upper rock/i);
   });
 
+  it('keeps sale-note comparison and quarry outcomes on the routes that establish them', () => {
+    const track = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-three-toed-track')!;
+    let returnedPlate = take(fresh(track), track, 'comparePrints');
+    returnedPlate = take(returnedPlate, track, 'showFarmer');
+    returnedPlate = take(returnedPlate, track, 'returnPlate');
+    const plateOnlyText = sceneText(track.scenes.trackResolved, returnedPlate);
+    expect(plateOnlyText).toMatch(/has not established the sheep’s location or compared the sale note/i);
+    expect(plateOnlyText).not.toMatch(/sheep are accounted for|sale terms are compared/i);
+
+    let paymentRequest = take(fresh(track), track, 'comparePrints');
+    paymentRequest = take(paymentRequest, track, 'followWallGap');
+    paymentRequest = take(paymentRequest, track, 'askForPayment');
+    expect(paymentRequest.run?.flags).toContain('threeToedSheepLocated');
+    expect(paymentRequest.run?.flags).not.toContain('threeToedSaleNoteCompared');
+    paymentRequest = loadSave({ getItem: () => JSON.stringify(paymentRequest) });
+    const paymentText = sceneText(track.scenes.trackResolved, paymentRequest);
+    expect(paymentText).toMatch(/sheep are accounted for in the neighboring pen/i);
+    expect(paymentText).toMatch(/sale note has not been compared/i);
+
+    let noteCompared = take(fresh(track), track, 'comparePrints');
+    noteCompared = take(noteCompared, track, 'followWallGap');
+    noteCompared = take(noteCompared, track, 'compareSaleNote');
+    expect(noteCompared.run?.flags).toContain('threeToedSaleNoteCompared');
+    noteCompared = loadSave({ getItem: () => JSON.stringify(noteCompared) });
+    const comparedText = sceneText(track.scenes.trackResolved, noteCompared);
+    expect(comparedText).toMatch(/owner and buyer compare the sale note/i);
+    expect(comparedText).not.toMatch(/sale note has not been compared/i);
+
+    const legacyTrack = fresh(track);
+    legacyTrack.run!.sceneId = 'trackResolved';
+    const neutralTrack = sceneText(track.scenes.trackResolved, legacyTrack);
+    expect(neutralTrack).toMatch(/has not established the sheep’s location or compared the sale note/i);
+
+    const stoneback = MONSTER_HUNT_THIRD.find(({ id }) => id === 'the-stoneback')!;
+    let rerouted = take(fresh(stoneback), stoneback, 'inspectCleat');
+    rerouted = take(rerouted, stoneback, 'rerouteHaul');
+    expect(rerouted.run?.flags).toContain('stoneCartReroutedToUpperBench');
+    rerouted = loadSave({ getItem: () => JSON.stringify(rerouted) });
+    const reroutedText = sceneText(stoneback.scenes.stoneRerouted, rerouted);
+    expect(reroutedText).toMatch(/crew moves its cart to the upper bench/i);
+    expect(reroutedText).not.toMatch(/stoneback stops shifting/i);
+
+    let ropeSecured = take(fresh(stoneback, 'travelRope'), stoneback, 'inspectCleat');
+    ropeSecured = take(ropeSecured, stoneback, 'useRopeStack');
+    expect(ropeSecured.run?.flags).toContain('stoneLooseStackSecured');
+    ropeSecured = loadSave({ getItem: () => JSON.stringify(ropeSecured) });
+    const ropeText = sceneText(stoneback.scenes.stoneRerouted, ropeSecured);
+    expect(ropeText).toMatch(/secure the loose stack with your rope/i);
+    expect(ropeText).toMatch(/has not rerouted its cart/i);
+
+    let workersMoved = take(fresh(stoneback), stoneback, 'inspectCleat');
+    workersMoved = take(workersMoved, stoneback, 'approachCleft');
+    workersMoved = take(workersMoved, stoneback, 'leaveDenAlone');
+    expect(workersMoved.run?.flags).toContain('stoneWorkersKeptOnUpperBench');
+    const workerText = sceneText(stoneback.scenes.stoneRerouted, workersMoved);
+    expect(workerText).toMatch(/workers stay on the upper bench/i);
+    expect(workerText).toMatch(/does not establish a cart reroute/i);
+
+    const legacyStoneback = fresh(stoneback);
+    legacyStoneback.run!.sceneId = 'stoneRerouted';
+    const neutralStoneback = sceneText(stoneback.scenes.stoneRerouted, legacyStoneback);
+    expect(neutralStoneback).toMatch(/does not establish that the cart was rerouted/i);
+    expect(neutralStoneback).not.toMatch(/crew moves its cart|workers stay on the upper bench/i);
+  });
+
   it('keeps road-side observation available without entering the unstable ravine', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const observed = take(take(fresh(scenario), scenario, 'callAgain'), scenario, 'stopSignals');

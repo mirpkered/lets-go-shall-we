@@ -127,12 +127,15 @@ export const THE_THREE_TOED_TRACK: Scenario = {
       { id: 'accuseTheft', label: 'Accuse the neighbor before checking', hint: 'The neighbor says the sheep were sold with permission.', next: 'trackArgument' },
     ]),
     poacherFound: scene('poacherFound', 'Sheep beyond the Wall', 'The missing sheep are in a neighboring pen. The three-toed plate was used to hide their route after a sale was disputed; the owner claims payment is still due. Both parties are present and unarmed.', [
-      { id: 'compareSaleNote', label: 'Compare the sale note with the owner', next: 'trackResolved', effects: { historyFlags: ['resolved a disputed sheep sale after identifying false three-toed tracks'] } },
-      { id: 'askForPayment', label: 'Ask the buyer to pay the agreed balance', next: 'trackResolved' },
+      { id: 'compareSaleNote', label: 'Compare the sale note with the owner', next: 'trackResolved', effects: { setFlags: ['threeToedSaleNoteCompared', 'threeToedSheepLocated'], historyFlags: ['resolved a disputed sheep sale after identifying false three-toed tracks'] } },
+      { id: 'askForPayment', label: 'Ask the buyer to pay the agreed balance', next: 'trackResolved', effects: { setFlags: ['threeToedSheepLocated'] } },
       { id: 'leaveDispute', label: 'Leave the payment dispute to them', next: 'trackArgument' },
     ]),
     trackArgument: end('trackArgument', 'A Dispute Still Open', 'The sheep remain in the buyer’s pen and the payment is still disputed. You have shown the tracks were made by a boot plate, not a creature; the neighbors must settle the sale themselves.'),
-    trackResolved: end('trackResolved', 'No Beast in the Mud', 'The sheep are accounted for and the sale terms are compared. The three-toed plate explains the strange prints, but whether the balance is owed depends on the note the neighbors hold.'),
+    trackResolved: { ...end('trackResolved', 'No Beast in the Mud', 'The plate explains the exaggerated prints, but this route has not established the sheep’s location or compared the sale note.'), textVariants: [
+      { requirements: { flags: ['threeToedSheepLocated', 'threeToedSaleNoteCompared'] }, text: 'The sheep are accounted for in the neighboring pen, and the owner and buyer compare the sale note. The plate explains the exaggerated prints; whether a balance is owed depends on what the note records.' },
+      { requirements: { flags: ['threeToedSheepLocated'] }, text: 'The sheep are accounted for in the neighboring pen, but the sale note has not been compared. The plate explains the exaggerated prints; whether a balance is owed remains unsettled.' },
+    ] },
     tracksLeft: end('tracksLeft', 'Prints Unfollowed', 'You leave the tracks by the wall. The sheep remain missing, and the reports still disagree about the size of whatever crossed the lane.'),
   },
 };
@@ -286,16 +289,20 @@ export const THE_STONEBACK: Scenario = {
       { id: 'closeQuarry', label: 'Close the haul road and leave', next: 'stoneClosed' },
     ], 'warning'),
     stonePattern: scene('stonePattern', 'A Cleft under the Stack', 'Small claw marks run from the cleft to each moved stack. The creature pushes stones only when the heavy cart passes nearby. A firm upper bench offers another route for the crew, but it adds a day of hauling.', [
-      { id: 'rerouteHaul', label: 'Reroute the cart to the upper bench', next: 'stoneRerouted', effects: { historyFlags: ['rerouted quarry work to protect a stone-backed creature’s den'] } },
-      { id: 'useRopeStack', label: 'Secure the loose stack with your rope', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, next: 'stoneRerouted', effects: { damageItems: ['travelRope'] } },
+      { id: 'rerouteHaul', label: 'Reroute the cart to the upper bench', next: 'stoneRerouted', effects: { setFlags: ['stoneCartReroutedToUpperBench'], historyFlags: ['rerouted quarry work to protect a stone-backed creature’s den'] } },
+      { id: 'useRopeStack', label: 'Secure the loose stack with your rope', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, next: 'stoneRerouted', effects: { setFlags: ['stoneLooseStackSecured'], damageItems: ['travelRope'] } },
       { id: 'approachCleft', label: 'Approach the cleft without a cart', next: 'stoneReveal' },
     ]),
     stoneReveal: scene('stoneReveal', 'A Shell of Quarry Stone', 'The creature shows a plated back crusted with quarry dust. It blocks the cleft but does not leave it. The workers’ cart vibrates the ground; the upper bench stays firm and out of its path.', [
-      { id: 'leaveDenAlone', label: 'Keep workers on the upper bench', next: 'stoneRerouted' },
+      { id: 'leaveDenAlone', label: 'Keep workers on the upper bench', next: 'stoneRerouted', effects: { setFlags: ['stoneWorkersKeptOnUpperBench'] } },
       { id: 'drawStonebackOut', label: 'Draw it away with a rolling stone', hint: 'The stacks above the cleft are loose and could collapse.', chance: { probability: 0.43, successNext: 'stoneRetreat', failureNext: 'stoneInjury', successMessage: 'The creature follows the rolling stone away from the cleft.', failureMessage: 'The upper stack shifts and sends stone across the road.', failureEffects: { health: -4 } } },
       { id: 'enterCleft', label: 'Enter the narrow cleft', hint: 'The creature is blocking the den and the stone stacks are unstable.', chance: { probability: 0.2, successNext: 'stoneRetreat', failureNext: 'stoneFatal', successMessage: 'The creature retreats deeper into the cleft.', failureMessage: 'The stack collapses across the narrow opening.', failureEffects: { health: -10 } } },
     ], 'danger'),
-    stoneRerouted: end('stoneRerouted', 'A Quarry Route Changed', 'The crew moves its cart to the upper bench and leaves the cleft undisturbed. Work costs another day, but the Stoneback stops shifting the stacks. The crushed handcart is counted as a loss, not a trophy.'),
+    stoneRerouted: { ...end('stoneRerouted', 'A Quarry Work Decision', 'This route does not establish that the cart was rerouted or that the Stoneback stopped shifting the stacks. The crushed handcart remains a loss, not a trophy.'), textVariants: [
+      { requirements: { flags: ['stoneCartReroutedToUpperBench'] }, text: 'The crew moves its cart to the upper bench and leaves the cleft undisturbed. Work costs another day. The crushed handcart is counted as a loss, not a trophy.' },
+      { requirements: { flags: ['stoneLooseStackSecured'] }, text: 'You secure the loose stack with your rope. The crew has not rerouted its cart, and whether the Stoneback shifts other stacks remains unknown. The crushed handcart is counted as a loss, not a trophy.' },
+      { requirements: { flags: ['stoneWorkersKeptOnUpperBench'] }, text: 'The workers stay on the upper bench and leave the cleft alone. This route does not establish a cart reroute or a later change in the Stoneback’s behavior. The crushed handcart is counted as a loss, not a trophy.' },
+    ] },
     stoneRetreat: end('stoneRetreat', 'The Cleared Cleft', 'The Stoneback withdraws into the cleft when the workers stop shaking the ground. The crew takes the upper route and leaves the loose stacks for a later, safer repair.'),
     stoneSafe: end('stoneSafe', 'Workers on the Upper Bench', 'The crew leaves the unstable stacks and works from firm ground. The Stoneback remains near its den; the quarry loses a day but no worker is asked to enter the cleft.'),
     stoneClosed: end('stoneClosed', 'The Road Closed', 'The quarry is closed until a foreman can inspect the stacks. The creature remains in the cleft, and the crushed cart is left where it fell.'),
