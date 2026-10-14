@@ -213,7 +213,70 @@ describe('Road Danger / Highwaymen genre batch', () => {
     const paperRoad = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-paper-road')!;
     let unaffected = act(initial(paperRoad), paperRoad, 'approach_eastOffice');
     unaffected = act(unaffected, paperRoad, 'respond_stayBack');
-    expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/Pike confirms the county stamp/i);
+    expect(sceneText(paperRoad.scenes.aftermath, unaffected)).not.toMatch(/Pike confirms|Pike checks the ribbon/i);
+    expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/contents have not been examined/i);
+  });
+
+  it('does not place Pike at the toll shed after the east-office route sends her away', () => {
+    const scenario = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-paper-road')!;
+    let state = act(initial(scenario), scenario, 'approach_eastOffice');
+    state = act(state, scenario, 'respond_stayBack');
+    const text = sceneText(scenario.scenes.aftermath, state);
+    expect(text).not.toMatch(/Pike confirms|Pike checks the ribbon|Pike is at the toll shed/i);
+    expect(text).toMatch(/county date seal remains visible on the closed case/i);
+    expect(text).toMatch(/contents have not been examined/i);
+
+    state = act(initial(scenario), scenario, 'approach_checkTracks');
+    state = act(state, scenario, 'respond_stayBack');
+    expect(sceneText(scenario.scenes.aftermath, state)).not.toMatch(/Pike confirms|Pike checks the ribbon/i);
+  });
+
+  it('keeps the mill-road pin recovery claim conditional on an actual recovery route', () => {
+    const scenario = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-mill-road-pursuit')!;
+    let helped = act(initial(scenario), scenario, 'approach_followCart');
+    helped = act(helped, scenario, 'respond_helpDriver');
+    expect(sceneText(scenario.scenes.aftermath, helped)).not.toMatch(/pin is returned|pin back at the mill/i);
+    expect(sceneText(scenario.scenes.aftermath, helped)).toMatch(/recovery and current custody are not assumed/i);
+    helped = act(helped, scenario, 'ending_walkBack');
+    const helpedSettlement = sceneText(scenario.scenes.settlement, helped);
+    expect(helpedSettlement).not.toMatch(/after the pin is returned|checks the notch and secures the pin/i);
+    expect(helpedSettlement).toMatch(/any recovered pin remains mill property/i);
+
+    let recovered = act(initial(scenario), scenario, 'approach_followCart');
+    recovered = act(recovered, scenario, 'respond_securePin');
+    expect(sceneText(scenario.scenes.aftermath, recovered)).toMatch(/return the mill’s pin/i);
+  });
+
+  it('does not say Quill keeps or carries a private note on routes that never locate it', () => {
+    const scenario = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-letter-under-the-seat')!;
+    const combinations = [
+      ['askEnvelope', 'matchReceipt'], ['askEnvelope', 'letQuillDecide'], ['askEnvelope', 'holdCoach'],
+      ['askClerk', 'matchReceipt'], ['askClerk', 'letQuillDecide'], ['askClerk', 'holdCoach'],
+      ['checkSeat', 'matchReceipt'], ['checkSeat', 'letQuillDecide'], ['checkSeat', 'holdCoach'],
+    ] as const;
+    for (const [approach, response] of combinations) {
+      let state = act(initial(scenario), scenario, `approach_${approach}`);
+      if (approach !== 'checkSeat') {
+        expect(sceneText(scenario.scenes.threat, state)).not.toMatch(/note is addressed|Quill’s sealed note/i);
+      }
+      state = act(state, scenario, `respond_${response}`);
+      const text = sceneText(scenario.scenes.aftermath, state);
+      if (approach === 'checkSeat') {
+        expect(text).toMatch(/folded note found beneath the seat remains sealed with Quill/i);
+      } else {
+        expect(text).not.toMatch(/Quill keeps her private note|note still sealed|note was found/i);
+      }
+      if (response === 'matchReceipt' && approach !== 'checkSeat') {
+        expect(text).not.toMatch(/Quill’s sealed note|ownership of the private note/i);
+      }
+      for (const ending of ['ending_boardTogether', 'ending_stayClerk']) {
+        const outcome = act(state, scenario, ending);
+        const settlement = sceneText(scenario.scenes.settlement, outcome);
+        expect(settlement).not.toMatch(/note still sealed|letter is safe|Quill keeps her private note/i);
+      }
+    }
+    expect(scenario.scenes.gear.text).not.toMatch(/retaining her own letter/i);
+    expect(scenario.scenes.gear.text).toMatch(/private papers are not transferred/i);
   });
 
   it('keeps the Stones in the Rut obstruction state tied to its approach', () => {

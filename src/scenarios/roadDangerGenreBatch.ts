@@ -43,6 +43,37 @@ const stories: RoadStory[] = [
   { id:'the-axle-grease-mark', title:'The Grease Mark', subtitle:'A wagon wheel loosens on a lonely stretch where a roadside crew has been working.', risk:'HIGH', setting:'county road and wagon turnout', activity:'labor/repair', hook:'A sabotaged fitting is checked before travel resumes; an attack is conditional and avoidable.', startTitle:'A Wheel That Wobbles', start:'A farmer’s wagon begins to wobble at a turnout. The wheel nuts are loose, but grease marks cross the wrench flats. A road crew left a tool board nearby; two workers are visible farther down the route.', approaches:[{id:'stopWagon',label:'Stop the wagon on level ground',result:'The wheel settles before it can come free; the driver is shaken but unhurt.'},{id:'checkToolBoard',label:'Check which tools remain on the crew board',result:'A Compact Wheel Wrench is missing from the board and the crew’s sign-out slate is blank.'},{id:'signalWorkers',label:'Signal the road crew before touching the wheel',result:'The workers answer and close the road behind the wagon.'}], threatTitle:'A Man Comes Back for the Wrench', threat:'A stranger steps from the ditch and says the wrench is his. The road crew identifies it as theirs; he has a second wrench tucked in his belt and glances toward the open field.', responses:[{id:'askReturn',label:'Ask him to put the crew wrench on the ground',result:'He drops it and walks away when the workers approach.'},{id:'protectDriver',label:'Move the driver behind the wagon and call the crew',result:'The driver reaches cover and the stranger leaves before anyone closes in.'},{id:'checkWheel',label:'Tighten the wheel only after the stranger leaves',result:'The crew checks each nut with its own tool before the wagon moves.'}], aftermathTitle:'A Wheel Held on the Road', aftermath:'The wheel was deliberately loosened, but the driver cannot identify who did it. The road crew recovers its wrench and checks the other passing wagons.', endings:[{id:'walkToFarm',label:'Walk the wagon to the farm before traveling again',result:'The driver has the wheel and axle examined under shelter.'},{id:'escortSlowly',label:'Escort the wagon to the staffed road station',result:'The station closes the turnout until the crew checks for further tampering.'}], rewardText:'The road foreman releases an older Carriage Jack from the crew’s retired equipment and records the transfer.', gear:'foldingCarriageJack',gearName:'Folding Carriage Jack',provenance:'The public crew signs out a retired jack to you after the active wheel is checked and the tool is formally removed from inventory.', coins:2, lesson:'Grease and tool marks can suggest recent work, but they do not identify who loosened a fitting.', combat:{enemy:'wheel saboteur',winChance:.49,damage:5,win:'The stranger leaves the crew wrench and retreats across the field when workers answer.',loss:'You are struck beside the wagon, but the driver and workers reach the road station.'} },
 ];
 
+// Keep the three route-specific facts below tied to what each branch actually
+// establishes, without changing the shared road-danger scene machinery.
+const paperRoadStory = stories.find(({ id }) => id === 'the-paper-road');
+if (paperRoadStory) {
+  paperRoadStory.responses.find(({ id }) => id === 'stayBack')!.result = 'You keep outside and call out that the county can trace the case; the rider leaves it on the bench.';
+  paperRoadStory.aftermath = 'The county date seal remains visible on the closed case. Its contents have not been examined, and the office will document whether any paper is missing.';
+}
+
+const millRoadPursuit = stories.find(({ id }) => id === 'the-mill-road-pursuit');
+if (millRoadPursuit) {
+  millRoadPursuit.aftermath = 'The driver says an older companion arranged the theft but does not know their name or destination. The pin’s recovery and current custody are not assumed by this shared account.';
+  millRoadPursuit.endings = [
+    { id: 'walkBack', label: 'Walk back with the driver and give the miller an account', result: 'The miller records the driver’s account; the pin’s custody remains as established by the earlier route.' },
+    { id: 'escortDriver', label: 'Walk the young driver to the village office', result: 'The driver gives an account without being chased into the trees; any pin not already recovered remains to be located.' },
+  ];
+  millRoadPursuit.rewardText = 'The miller offers his duplicate Carriage Jack after the road is clear and the driver’s account is recorded; any recovered pin remains mill property.';
+}
+
+const letterUnderSeat = stories.find(({ id }) => id === 'the-letter-under-the-seat');
+if (letterUnderSeat) {
+  letterUnderSeat.threat = 'The man returns and says the letter is his. He has a railway receipt with a torn corner; Quill holds the matching half but will not let him decide what belongs to her.';
+  letterUnderSeat.responses.find(({ id }) => id === 'matchReceipt')!.result = 'The halves match and show the man was paid to carry an empty envelope, not to claim ownership of any other document.';
+  letterUnderSeat.aftermath = 'The receipt confirms a paid delivery arrangement, not ownership or recovery of Quill’s private note. The clerk records the interruption.';
+  letterUnderSeat.endings = [
+    { id: 'boardTogether', label: 'Board with Quill after the clerk records the account', result: 'The coach leaves with Quill after the clerk records the man’s claim; no private paper is handed to him.' },
+    { id: 'stayClerk', label: 'Stay until the constable hears both accounts', result: 'Quill waits with the clerk while the constable hears both accounts; the clerk’s record does not settle whether the note was found.' },
+  ];
+  letterUnderSeat.rewardText = 'Quill thanks you for helping record the delivery dispute and offers a separately purchased duplicate Lockable Map Case. No private letter or paper is part of the reward.';
+  letterUnderSeat.provenance = 'Quill transfers a separately purchased spare case for help recording the delivery dispute; her private papers are not transferred.';
+}
+
 // These three quiet investigations are intentionally coin-forward. They do
 // not transfer the item named by their story evidence; keeping them out of
 // the Gear menu prevents a visible offer from contradicting the ownership
@@ -93,6 +124,14 @@ const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<st
     base: 'The ledger’s custody is recorded, but its copied number and shipment remain unidentified on this route.',
     byResponse: {
       askNumber: 'The county tool shipment is identified as misrouted; the clerk can check its paperwork next.',
+    },
+  },
+  'the-letter-under-the-seat': {
+    base: 'The receipt confirms a paid delivery arrangement, not ownership or recovery of Quill’s private note. The clerk records the interruption.',
+    byApproach: {
+      askEnvelope: 'The Traveler has not located the note on this approach.',
+      checkSeat: 'The folded note found beneath the seat remains sealed with Quill.',
+      askClerk: 'The clerk delayed departure while Quill checked her belongings, but this route records no result of that search.',
     },
   },
   'the-glass-at-milepost-nine': {
