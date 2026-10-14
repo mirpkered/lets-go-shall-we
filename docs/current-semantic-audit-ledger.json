@@ -4900,12 +4900,12 @@
       "slug": "after-the-tornado",
       "title": "After the Tornado",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0086"
       ],
       "reviewProvenance": "current source route review; child search/found/unfound, stove stabilization, cow release, neighbor/wagon arrival, family/cow allocation, aftermath and final conditions traced",
-      "notes": "From stoveSafe, the cow is expressly still unresolved. Choosing safeCow is only to check the fallen gate, but it sets tornadoCowMoved; tornadoEnd then treats the cow as safe if freed or moved. No freeing or movement occurs on that route.",
+      "notes": "Original review witness preserved: from stoveSafe, the cow is expressly still unresolved. Choosing safeCow is only to check the fallen gate, but it set tornadoCowMoved; tornadoEnd then treated the cow as safe if freed or moved. No freeing or movement occurs on that route. Wave 61 removes the unsupported move proof from safeCow while retaining it for the actual wagon relocation route.",
       "preReconciliationPosition": 272,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16066,6 +16066,8 @@
       "routeWitness": "crossroads.checkKitchen -> stoveHazard.stoveSmother -> stoveSafe (cow unresolved) -> safeCow ('Check the fallen gate in the orchard') sets tornadoCowMoved -> tornadoEnd says cow safe if freed or moved.",
       "violatedRule": "A person/animal safety result must be supported by an action that actually frees or moves them; inspection is not rescue.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The safeCow inspection choice no longer sets tornadoCowMoved; the separate helpRider.leaveCow choice still records that the wagon relocates the animal. Regression contrasts the checked-but-unmoved cow with the actual wagon move. Disaster state-aware, registry, diversity, library, and inventory checks pass (40 tests); full suite passes (127 files, 2,407 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 272,
       "registrationStatus": "LIVE"
@@ -20154,9 +20156,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 657,
+    "HEALTHY": 658,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 145,
+    "CONFIRMED DEFECT": 144,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
