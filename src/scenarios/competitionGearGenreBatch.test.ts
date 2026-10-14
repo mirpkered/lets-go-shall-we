@@ -568,4 +568,57 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     const card = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-quiet-card-count')!;
     expect(meets(card.scenes.table.choices.find(({ id }) => id === 'playHand')?.requirements, begin(card, 0))).toBe(false);
   });
+
+  it('awards the quarry marker only when the sound lower ledge is established', () => {
+    const quarry = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-quarry-step')!;
+    let direct = act(begin(quarry), quarry, 'climbQuick', () => 0);
+    expect(direct.run?.sceneId).toBe('bell');
+    expect(sceneText(quarry.scenes.bell, direct)).toMatch(/does not establish whether you stayed off the cracked upper shelf/i);
+    expect(meets(quarry.scenes.bell.choices.find(({ id }) => id === 'acceptMarker')?.requirements, direct)).toBe(false);
+    direct = act(direct, quarry, 'closeUnverifiedTrial');
+    expect(quarry.scenes.unverified.text).toMatch(/records no safe finish or prize/i);
+
+    let safe = act(begin(quarry), quarry, 'declineUpper');
+    safe = act(safe, quarry, 'askSafeRule');
+    expect(safe.run?.flags).toContain('quarrySoundLedge');
+    expect(sceneText(quarry.scenes.bell, safe)).toMatch(/from the sound lower ledge/i);
+    safe = act(safe, quarry, 'acceptMarker');
+    expect(safe.run?.inventory).toContain('foldingTrailMarker');
+
+    let traversed = act(begin(quarry), quarry, 'testLowerHolds');
+    traversed = act(traversed, quarry, 'moveToLedge', () => 0);
+    expect(traversed.run?.flags).toContain('quarrySoundLedge');
+    expect(sceneText(quarry.scenes.bell, traversed)).toMatch(/without touching the cracked shelf/i);
+  });
+
+  it('awards the roof-lift completion only after the sound beam is established', () => {
+    const roof = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-rigging-on-the-roof')!;
+    let direct = act(begin(roof), roof, 'tieSling');
+    direct = act(direct, roof, 'lowerAndReset');
+    expect(sceneText(roof.scenes.finish, direct)).toMatch(/does not establish that the cracked nearest ring was avoided/i);
+    expect(meets(roof.scenes.finish.choices.find(({ id }) => id === 'takeMirror')?.requirements, direct)).toBe(false);
+    direct = act(direct, roof, 'closeUnverifiedLift');
+    expect(roof.scenes.unverified.text).toMatch(/no route proof establishes that the cracked nearest ring was avoided/i);
+
+    let rushed = act(begin(roof), roof, 'tieSling');
+    rushed = act(rushed, roof, 'rushBundle', () => 0);
+    expect(rushed.run?.sceneId).toBe('win');
+    expect(meets(roof.scenes.win.choices.find(({ id }) => id === 'acceptRoofMirror')?.requirements, rushed)).toBe(false);
+    rushed = act(rushed, roof, 'closeUnverifiedWin');
+    expect(rushed.run?.sceneId).toBe('unverified');
+
+    let safe = act(begin(roof), roof, 'inspectAnchor');
+    safe = act(safe, roof, 'useBeam');
+    safe = act(safe, roof, 'lowerAndReset');
+    expect(safe.run?.flags).toContain('roofSoundBeamUsed');
+    const resumed = loadSave({ getItem: () => JSON.stringify(safe) });
+    expect(sceneText(roof.scenes.finish, resumed)).toMatch(/judges the work on the sound beam anchor/i);
+    expect(meets(roof.scenes.finish.choices.find(({ id }) => id === 'takeMirror')?.requirements, resumed)).toBe(true);
+    safe = act(resumed, roof, 'takeMirror');
+    expect(safe.run?.inventory).toContain('roadsideSignalMirror');
+
+    let weather = act(begin(roof), roof, 'waitWeather');
+    weather = act(weather, roof, 'secureLine');
+    expect(weather.run?.flags).toContain('roofSoundBeamUsed');
+  });
 });
