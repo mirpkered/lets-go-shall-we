@@ -148,6 +148,22 @@ describe('grounded adventure expansion batch', () => {
     expect(THE_BELL_AFTER_MIDNIGHT.scenes.stableSafe.text).not.toMatch(/straw is soaked/i);
   });
 
+  it('does not invent helpers at the well after the Traveler climbs out alone', () => {
+    let alone = act(start(THE_SOUND_IN_THE_WELL), THE_SOUND_IN_THE_WELL, 'farmyardWell', 'callDown');
+    alone = act(alone, THE_SOUND_IN_THE_WELL, 'voiceBelow', 'descendWell', () => 0);
+    const withdrew = act(alone, THE_SOUND_IN_THE_WELL, 'belowWell', 'climbOutAlone');
+    const ending = THE_SOUND_IN_THE_WELL.scenes.abandonedWellLedge.text;
+    expect(withdrew.run?.sceneId).toBe('abandonedWellLedge');
+    expect(ending).not.toMatch(/owner and farmhands remain|preparing a safer lift/i);
+    expect(ending).toMatch(/what help reaches the well afterward is not established/i);
+
+    let rescued = act(start(THE_SOUND_IN_THE_WELL), THE_SOUND_IN_THE_WELL, 'farmyardWell', 'callDown');
+    rescued = act(rescued, THE_SOUND_IN_THE_WELL, 'voiceBelow', 'waitForOwner');
+    rescued = act(rescued, THE_SOUND_IN_THE_WELL, 'ropeArrives', 'lowerFarmLoop', () => 0);
+    expect(rescued.run?.sceneId).toBe('rescuedWorker');
+    expect(THE_SOUND_IN_THE_WELL.scenes.rescuedWorker.text).toMatch(/the owner takes them inside/i);
+  });
+
   it('does not call every valid tarp tie a strap or guess on an old save', () => {
     for (const item of ['freightmansStrap', 'travelRope', 'waxedCanvasSheet']) {
       const secured = act(start(THE_EMPTY_WAGON, item), THE_EMPTY_WAGON, 'wagonOnRoad', 'secureWagonLoad');
