@@ -359,10 +359,10 @@ export const THE_ROOF_COMES_IN = A('the-roof-comes-in', 'The Roof Comes In', 'A 
     { id: 'waitBeam', label: 'Wait for the carpenter’s beam', next: 'wallBraced' },
     { id: 'markPosition', label: 'Mark the spot and withdraw', next: 'roofCrew' },
   ], 'warning'),
-  wallBraced: scene('wallBraced', 'A Beam against the North Wall', 'The carpenter’s beam props the wall from the yard. The hall will not be safe for long, but the east aisle is open to the platform and the two visible people are already outside.', [
+  wallBraced: scene('wallBraced', 'A Beam against the North Wall', 'The carpenter’s beam props the wall from the yard. The hall will not be safe for long, but the east aisle is open to the platform; the visible pair’s whereabouts depend on whether they were guided through the east door.', [
     { id: 'beamReach', label: 'Reach the person under the platform', next: 'personOut' },
     { id: 'beamKeepOut', label: 'Hold the doorway clear for rescuers', next: 'roofCrew' },
-  ], 'warning'),
+  ], 'warning', [{ requirements: { flags: ['roofPairSafe'] }, text: 'The two visible people are already outside.' }]),
   personOut: scene('personOut', 'The Last Person Reaches Rain', 'The trapped person is outside with a strained ankle. The east pair are safe if you guided them out. The north wall remains braced only while the carpenter holds the beam in place.', [
     { id: 'roofFinalCount', label: 'Give the carpenter the room count', next: 'roofAftermath', effects: { setFlags: ['roofPersonSafe'] } },
   ]),

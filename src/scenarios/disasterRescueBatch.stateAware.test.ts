@@ -69,6 +69,32 @@ describe('state-aware shared aftermath narration', () => {
     expect(THE_ROOF_COMES_IN.scenes.roofAftermath.text).toContain('Anyone brought out is taken to the inn');
   });
 
+  it('does not claim the visible pair are outside after wall bracing alone', () => {
+    let state = fresh(THE_ROOF_COMES_IN);
+    state = act(state, THE_ROOF_COMES_IN, 'braceNorth');
+    expect(state.run?.sceneId).toBe('wallBraced');
+    expect(state.run?.flags).not.toContain('roofPairSafe');
+    state = JSON.parse(JSON.stringify(state)) as SaveData;
+
+    const scene = THE_ROOF_COMES_IN.scenes.wallBraced;
+    const variant = scene.textVariants?.find(({ requirements }) => meets(requirements, state));
+    expect(scene.text).not.toMatch(/two visible people are already outside/i);
+    expect(variant?.text).toBeUndefined();
+  });
+
+  it('retains the outside-pair claim after guiding them through the east door before bracing', () => {
+    let state = fresh(THE_ROOF_COMES_IN);
+    state = act(state, THE_ROOF_COMES_IN, 'eastPair');
+    state = JSON.parse(JSON.stringify(state)) as SaveData;
+    state = act(state, THE_ROOF_COMES_IN, 'pairFetchBeam');
+    expect(state.run?.sceneId).toBe('wallBraced');
+    expect(state.run?.flags).toContain('roofPairSafe');
+
+    const scene = THE_ROOF_COMES_IN.scenes.wallBraced;
+    const variant = scene.textVariants?.find(({ requirements }) => meets(requirements, state));
+    expect(variant?.text).toMatch(/two visible people are already outside/i);
+  });
+
   it('does not treat calling the bridge driver as proof he reached shore', () => {
     let state = fresh(THE_BRIDGE_GOES_DOWN);
     state = act(state, THE_BRIDGE_GOES_DOWN, 'reachChild', 0);
