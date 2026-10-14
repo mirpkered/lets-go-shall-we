@@ -10136,12 +10136,12 @@
       "slug": "the-match-at-the-brace",
       "title": "The Match at the Brace",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0229"
       ],
       "reviewProvenance": "current-source route review; gradual/full-load test, grain explanation, crack/hold result, award/void/fee variants traced",
-      "notes": "The gradual test supports Nell’s safe brace. The full-load route explicitly says both braces crack, yet shares the strain scene where the player can award Nell for the ‘stronger safe brace’; the ending unconditionally gives her the ribbon and says the hammer rewards a safe result. No result flag/text variant preserves the harsh-test outcome.",
+      "notes": "Original review: the gradual test supports Nell’s safe brace, while the full-load route explicitly says both braces crack and previously shared an unconditional safe-winner result. Wave 94 now records gradual versus harsh test proof, gates the hammer award to the gradual-test result, and gives old/missing-proof winner saves a neutral unverified fallback.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -10217,12 +10217,12 @@
       "slug": "the-lookout-at-dusk",
       "title": "The Lookout at Dusk",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0231"
       ],
       "reviewProvenance": "current-source route review; glass/chart/wind observation, signal-call, extra-worker rescue, pause/continue, score, glasses/coin/refusal paths traced; current focused test inspected",
-      "notes": "The scoring scene is reachable from chart.stayContest and seen.completeCall without identifying a signal or recording a correctness result. It nevertheless exposes claimGlass, whose only gate is that the Traveler does not already own Field Glasses, while the scene/prize source say glasses require a correct signal reading. The test verifies rescue Knowledge/compensation separation but not contest-score proof.",
+      "notes": "Original review: chart.stayContest and seen.completeCall reached scoring without a selected signal/result, but claimGlass required only that Field Glasses were not already owned. Wave 94 now records the correct changed-signal call and gates that prize on the proof; the helper prize and correct-signal prize have distinct truthful text, while no-call coin and old/missing-proof routes make no winner or rescue claim.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18030,7 +18030,9 @@
       "violatedRule": "A prize and winner claim must be supported by the actual route’s recorded trial result; a failed/damaging test cannot inherit the safe winner outcome from another method.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 0d48ab3 records `brace_gradual_test` only on both gradual-load choices and `brace_harsh_test` on full-load choices. The shared strain scene now describes each established result; awardNell is gated on gradual-load proof, and the winner ending has truthful gradual, harsh, and missing-proof variants (including legacy saves). competitionGearGenreBatch.test.ts contrasts gradual and full loading, checks the safe prize gate and destructive route, verifies gradual proof survives save/reload, and checks neutral missing-proof and legacy-winner fallbacks. The same suite confirms the existing void/Knowledge route remains intact."
     },
     {
       "findingId": "CRA-F0230",
@@ -18056,7 +18058,9 @@
       "violatedRule": "A contest reward conditioned on a correct result must be gated by route-established result state; merely continuing to or reporting an unrecorded call cannot prove a win.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 0d48ab3 records `lookout_signal_correct` only when the Traveler calls the changed signal whose shadow stays still. The Field Glasses contest claim requires that proof; scoring, coin, prize, and worker-help outcomes no longer invent a correct call, contest winner, or rescue across routes. Separate correct-signal/helper prize variants and a neutral legacy prize fallback preserve their distinct evidence. competitionGearGenreBatch.test.ts covers correct and no-call routes, gated prize versus optional coin, save/reload of proof, legacy scoring/prize states, and the separate worker-help prize."
     },
     {
       "findingId": "CRA-F0232",
@@ -20273,9 +20277,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 715,
+    "HEALTHY": 717,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 87,
+    "CONFIRMED DEFECT": 85,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
