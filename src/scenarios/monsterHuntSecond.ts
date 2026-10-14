@@ -236,7 +236,7 @@ export const THE_MAN_WHO_SHEDS_HIS_SKIN: Scenario = {
     ]),
     laundryMark: scene('laundryMark', 'A Mark inside the Collar', 'A laundress remembers two coats with the same stitched mark inside the collar. She returned one coat to a traveler and kept the other for a missing cousin. The two men may be related, but their present whereabouts are unknown.', [
       { id: 'searchCoachStop', label: 'Search for the traveler at the coach stop', next: 'tailorFound' },
-      { id: 'askForCousin', label: 'Ask the laundress to contact her cousin', next: 'identityAfter' },
+      { id: 'askForCousin', label: 'Ask the laundress to contact her cousin', next: 'cousinContactPending' },
       { id: 'leaveLaundry', label: 'Let the laundress make contact privately', next: 'identityLeft' },
     ]),
     coachTracks: scene('coachTracks', 'A Coat in the Luggage Rack', 'A coach driver remembers one passenger changing coats at a roadside stop after rain. A damp gray coat remains in the rack, its cuff missing the same brass button. The passenger walked toward a repair shed.', [
@@ -249,7 +249,8 @@ export const THE_MAN_WHO_SHEDS_HIS_SKIN: Scenario = {
       { id: 'exposeRumor', label: 'Tell the innkeeper what the coats show', next: 'identityAfter', effects: { historyFlags: ['resolved a shapeshifter rumor by tracing two matching coats'] } },
       { id: 'letRumorStand', label: 'Keep the brothers’ reason private', next: 'identityAfter' },
     ]),
-    identityAfter: { ...end('identityAfter', 'No Change of Skin', 'The towns receive an account of two brothers and their exchanged coats. The debt dispute is not settled, but the shapeshifter rumor has a human explanation; the brothers’ reasons remain theirs.'), textVariants: [{ requirements: { flags: ['returnedCoachCoat'] }, text: 'The coat is returned to the driver. The matching button and separate accounts remain clues, but without the tailor’s account the identity claim is still unresolved.' }] },
+    identityAfter: { ...end('identityAfter', 'No Change of Skin', 'The tailor’s account identifies the coats as belonging to twin brothers who changed coats after one was mistaken for a debtor. That gives the rumor a human explanation, though the debt dispute is not settled and the brothers’ reasons remain theirs.'), textVariants: [{ requirements: { flags: ['returnedCoachCoat'] }, text: 'The coat is returned to the driver. The matching button and separate accounts remain clues, but without the tailor’s account the identity claim is still unresolved.' }] },
+    cousinContactPending: end('cousinContactPending', 'A Message, Not an Answer', 'The laundress may contact the cousin about the matching coat mark. The two men may be related, but their whereabouts and the reason for the changed descriptions remain unknown; no account establishes that they are brothers or exchanged coats.'),
     identityLeft: end('identityLeft', 'A Story Between Towns', 'You leave the claim unresolved. The residents keep their separate accounts, and no one is accused without proof.'),
     identityInjury: end('identityInjury', 'The Roadside Fall', 'You bruise your knee in the wet brush and lose the passenger’s trail. The coat and the two accounts remain at the coach stop.'),
   },

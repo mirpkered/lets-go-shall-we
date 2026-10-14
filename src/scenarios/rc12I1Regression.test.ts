@@ -91,6 +91,23 @@ describe('RC12 Pass I1 route-convergence regressions', () => {
     expect(sceneText(adventure.scenes.identityAfter, loadSave(storage))).toMatch(/identity claim is still unresolved/i);
   });
 
+  it('does not turn a cousin-contact request into the tailor’s twin-brother explanation', () => {
+    const adventure = scenario('the-man-who-sheds-his-skin');
+    let cousinContact = act(start(adventure.id), adventure, 'askLaundry');
+    cousinContact = act(cousinContact, adventure, 'askForCousin');
+    expect(cousinContact.run?.sceneId).toBe('cousinContactPending');
+    const pendingText = sceneText(adventure.scenes.cousinContactPending, cousinContact);
+    expect(pendingText).toMatch(/may contact the cousin/i);
+    expect(pendingText).toMatch(/no account establishes/i);
+    expect(pendingText).not.toMatch(/towns receive an account|the rumor has a human explanation/i);
+
+    let tailorAccount = act(start(adventure.id), adventure, 'askLaundry');
+    tailorAccount = act(tailorAccount, adventure, 'searchCoachStop');
+    tailorAccount = act(tailorAccount, adventure, 'askBrothersSettle');
+    expect(tailorAccount.run?.sceneId).toBe('identityAfter');
+    expect(sceneText(adventure.scenes.identityAfter, tailorAccount)).toMatch(/tailor’s account identifies the coats.*twin brothers/i);
+  });
+
   it('does not import sparks into the brush-bench route', () => {
     const adventure = scenario('the-winds-other-side');
     let state = act(start(adventure.id), adventure, 'chooseBrush');
