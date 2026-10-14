@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER } from './westernOutlawBatch';
+import { THE_BOUNTY_POSTER, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -24,6 +24,33 @@ const actBar=(state:SaveData,choiceId:string):SaveData=>{
   expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
   return choose(state,THE_MAN_AT_THE_END_OF_THE_BAR,choice!,()=>0);
 };
+const beginStage=():SaveData=>{
+  const character=newCharacter('Stage Tester');
+  return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_STAGE_WAS_HIT,()=>0)};
+};
+const actStage=(state:SaveData,choiceId:string):SaveData=>{
+  const scene=THE_STAGE_WAS_HIT.scenes[state.run!.sceneId];
+  const choice=scene.choices.find(({id})=>id===choiceId);
+  expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+  return choose(state,THE_STAGE_WAS_HIT,choice!,()=>0);
+};
+
+describe('The Stage Was Hit escort outcome truth',()=>{
+  it('does not turn local aid or a town warning into an unestablished escort',()=>{
+    let localAid=actStage(beginStage(),'treatPassenger');
+    localAid=actStage(localAid,'helpStayCoach');
+    localAid=actStage(localAid,'stageAccount');
+    expect(localAid.run?.sceneId).toBe('stageEnd');
+    expect(sceneText(THE_STAGE_WAS_HIT.scenes.stageEnd,localAid)).not.toMatch(/under escort/i);
+
+    let townHelp=actStage(beginStage(),'rideTown');
+    townHelp=actStage(townHelp,'warnStay');
+    townHelp=actStage(townHelp,'stageAccount');
+    expect(townHelp.run?.sceneId).toBe('stageEnd');
+    expect(THE_STAGE_WAS_HIT.scenes.townWarn.text).toMatch(/constable and a doctor/i);
+    expect(sceneText(THE_STAGE_WAS_HIT.scenes.stageEnd,townHelp)).not.toMatch(/under escort/i);
+  });
+});
 
 describe('The Man at the End of the Bar route-truth continuity',()=>{
   it('does not claim the clerk corrected the accusation unless the Traveler heard the correction',()=>{
