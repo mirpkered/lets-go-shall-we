@@ -8572,12 +8572,12 @@
       "slug": "the-ledger-under-canvas",
       "title": "The Ledger Under Canvas",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0193"
       ],
       "reviewProvenance": "current-source route review; cargo-seal/night-watch/track approaches, copied-number/secure-book/witness responses, corrected-waybill/custody endings, surplus Gear, coins, refusal and Knowledge traced",
-      "notes": "Only askNumber reveals which freight number was copied and that it belongs to the county tool shipment. secureBook explicitly avoids opening cargo or accusing anyone; callWitness only witnesses the book’s return and intact seals. The shared aftermath still asserts that the number identifies a misplaced public-works crate and that the railway will trace it via the signed waybill. traceCrate likewise remains selectable after responses that never establish the number or correction.",
+      "notes": "Only askNumber reveals which freight number was copied and that it belongs to the county tool shipment. secureBook explicitly avoids opening cargo or accusing anyone; callWitness only witnesses the book’s return and intact seals. The shared aftermath asserted that the number identifies a misplaced public-works crate and that the railway will trace it via the signed waybill; traceCrate was selectable without establishing the number. Repaired with neutral shared custody wording, response-specific shipment identification, and a route gate on traceCrate. The compensation offer no longer says it is for carrying a corrected waybill when that ending was not selected.",
       "preReconciliationPosition": 494,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17423,6 +17423,8 @@
       "violatedRule": "Information learned on one response branch must not leak into sibling routes or support an unearned resolution action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "roadDangerGenreBatch.ts now keeps the copied number’s meaning neutral after secureBook/callWitness and identifies the misrouted county tool shipment only after askNumber. The traceCrate ending requires road_response_askNumber. The shared offer text was made route-neutral while preserving the duplicate-case and coin reward mechanics. roadDangerGenreBatch.test.ts checks all three approaches against all three responses, verifies only askNumber can select correction, and contrasts the corrected-waybill route with the custody route. No other cluster, save state, reward effect, or Adventure behavior was changed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20080,9 +20082,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 626,
+    "HEALTHY": 627,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 176,
+    "CONFIRMED DEFECT": 175,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
