@@ -5805,12 +5805,12 @@
       "slug": "the-skin-in-the-tree",
       "title": "The Skin in the Tree",
       "sourceFile": "src/scenarios/monsterHuntThird.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0125"
       ],
       "reviewProvenance": "current source route review; hide/ground inspection, crew explanation, ravine tracking, landholder request, animal release, snare marking, cut success/failure, public-road withdrawal and text variants traced",
-      "notes": "hideEvidence.followDragMarks reaches poacherCamp without asking the landholder, but poacherCamp says the landholder has arrived. From there markSnares (withdraw), or cutSnare success (animal self-frees), still reaches hideResolved, which universally says the landholder called a warden, removed the snares and released the animal. Only askLandholder/freeAnimal directly establishes that intervention chain.",
+      "notes": "hideEvidence.followDragMarks reaches poacherCamp without contacting the landholder; the original camp text presupposed the landholder’s arrival. Wave 84 makes presence conditional on explicit contact, offers a call-and-wait route, and gives separate results for landholder rescue, the Traveler freeing one animal, and marking/withdrawing. Neither route claims warden response or full removal of both snares/hides. The failed cut leaves the animal caught and the site unresolved. Original route-review evidence is retained.",
       "preReconciliationPosition": 324,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16636,7 +16636,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 324,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 84 in src/scenarios/monsterHuntThird.ts makes landholder presence factual via hideLandholderAtCamp, routes uncontacted players through an explicit call/arrival scene, and tracks whether the landholder or Traveler frees the animal or the snares are merely marked. The outcomes no longer claim warden involvement, second-snare removal, hide removal, or general route clearance without proof. monsterHuntBatch.test.ts covers direct tracking, contact/arrival, both rescues, mark-and-withdraw, failed cut, persistence, and neutral legacy fallback; monsterHuntRc12F6.test.ts remains passing."
     },
     {
       "findingId": "CRA-F0126",
@@ -20217,9 +20219,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 687,
+    "HEALTHY": 688,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 115,
+    "CONFIRMED DEFECT": 114,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
