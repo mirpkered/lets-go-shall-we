@@ -3669,12 +3669,12 @@
       "slug": "the-man-who-came-back-wrong",
       "title": "The Man Who Came Back Wrong",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0052"
       ],
       "reviewProvenance": "current source route review; private detail, chalk mark, sluice inspection, prints, escort/hold, family/help, and ending routes inspected",
-      "notes": "workerAfter always says the miller seals the drain and describes a second set of footprints, including giveSpace, keepDistanceWorker, and leaveMark routes that never inspect the sluice. Only workerSluice establishes the prints/drain; the other routes leave cause/location unexplained.",
+      "notes": "workerAfter now defaults to a neutral unresolved account. Only workerSluice choices set worker_sluice_examined; route variants then report the two print sets and the selected take-home/keep-at-mill outcome. Regression contrasts the giveSpace bypass with the inspected route after save/reload.",
       "preReconciliationPosition": 199,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -3770,13 +3770,13 @@
       "slug": "below-the-old-fort",
       "title": "Below the Old Fort",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0055",
         "CRA-F0056"
       ],
       "reviewProvenance": "current source route review; entrance retreat, barracks, powder room, chest/plan, skeleton, lamp bracket, silvered edge, retreat, chance success/failure, and ending variants inspected; Gear usability checked",
-      "notes": "fortAfter always says the Traveler leaves with a copied route plan although only pushThroughFort success finds a plan; the barracks route can break the lamp or fight the guard without visiting the powder room. Separately, useSilverFort gates on the smallKnife upgrade but not usability, so a BROKEN silver-edged knife can be used to disrupt the guard. fortExit’s various retreat paths correctly avoid claiming the lamp/guard resolved.",
+      "notes": "fortAfter now defaults to neutral daylight/deeper-stair text. Route-plan, lamp-bracket, and guard-outcome variants are gated by factual run flags, so a no-plan barracks route does not claim to find or copy it. Regression contrasts crossQuietly → breakLampAnchor against the successful plan route after save/reload. CRA-F0056's usable silvered-knife gate remains intact.",
       "preReconciliationPosition": 205,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15565,6 +15565,8 @@
       "violatedRule": "Shared closure must not import location, investigation, or resolution facts from an unvisited route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "workerAfter now defaults to neutral text that leaves the return account unresolved. Only workerSluice selections set worker_sluice_examined, with separate variants for taking the worker home or keeping him at the mill. Existing occultInvestigationBatch.test.ts regression contrasts the no-inspection route with the inspected route after save/reload; suite passes 34 tests. No other cluster behavior changed.",
       "preReconciliationPosition": 199,
       "registrationStatus": "LIVE"
     },
@@ -15608,6 +15610,8 @@
       "violatedRule": "A shared ending may not claim discovery or copying of evidence that the chosen route did not find or perform.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "fortAfter now defaults to neutral text and shows route-plan language only with fort_route_plan_found set by successful pushThroughFort. Separate run flags gate the lamp and guard outcomes. Regression contrasts an unfound-plan barracks/crossQuietly/breakLampAnchor ending against the successful plan route after save/reload. occultInvestigationBatch.test.ts passes 34 tests; CRA-F0056's C0004 usability gate is unchanged.",
       "preReconciliationPosition": 205,
       "registrationStatus": "LIVE"
     },
@@ -20120,9 +20124,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 646,
+    "HEALTHY": 648,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 156,
+    "CONFIRMED DEFECT": 154,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
