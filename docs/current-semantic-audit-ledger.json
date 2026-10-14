@@ -4233,7 +4233,7 @@
         "CRA-F0071"
       ],
       "reviewProvenance": "current source route review; oil/bedding sacrifice, wedge, wait for team, wagon movement success/failure, rescue driver, abandonment and cargo endings traced",
-      "notes": "loadSlip ignores whether oil or bedding was selected for the level shelf and asserts a barrel split plus soaked bedding even though the chosen cargo is already set aside. Separately, the failure-recovery choice only walks the driver uphill, but loadArrival says the driver arrived with the medicine chest and that left cargo was listed for recovery. Other arrival/abandonment paths preserve their cargo distinction.",
+      "notes": "CRA-F0070/F0071 are repaired in the local CRA-C0001 load-state convergence wave. loadSlip now avoids inventing damage to the oil or bedding already left safely on the level shelf. loadArrival defaults to neutral driver/level-ground text, while the existing saved_driver_after_wagon_slip History proof selects driver-only recovery text that keeps the wagon and medicine chest at the shelf and does not claim a recovery list. Tests cover both cargo-sacrifice failure variants and the driver-only route. Other open findings on this Adventure remain; classification stays CONFIRMED DEFECT.",
       "preReconciliationPosition": 232,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15783,6 +15783,8 @@
       "violatedRule": "A shared failure result must preserve route-specific object selection and cannot damage or relocate a load already left in a safe place.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts loadSlip now uses neutral damage text and does not claim either the oil barrel split or bedding soaked after unloadOil/unloadBedding routes have placed the selected cargo safely on the level shelf. src/scenarios/survivalExpeditionBatch.test.ts drives both sacrifice routes into the forced wagon-slip failure and asserts the unselected/damage claims are absent. Targeted Survival Expedition suite passed 18 tests; TypeScript/production build passed.",
       "preReconciliationPosition": 232,
       "registrationStatus": "LIVE"
     },
@@ -15796,6 +15798,8 @@
       "violatedRule": "A common outcome may not convert person evacuation into object recovery or documentation that the route did not perform.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts loadArrival now defaults to neutral driver/level-ground text without claiming the medicine chest arrived or that left cargo was listed; the saved_driver_after_wagon_slip History proof selects explicit driver-only recovery text stating the wagon/chest remain at the shelf and no list was made. The regression drives loadSlip.saveDriverLoad to loadArrival and checks that contrast. Targeted Survival Expedition suite passed 18 tests; TypeScript/production build passed.",
       "preReconciliationPosition": 232,
       "registrationStatus": "LIVE"
     },

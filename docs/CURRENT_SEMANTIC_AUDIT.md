@@ -1917,6 +1917,16 @@ Disposition-derived live classifications are **601 HEALTHY, 58 MINOR CONCERN, 20
 
 Next C0001 work should be selected from the current ledger by exact mechanism and route witness; no unrelated survival findings were included in this wave.
 
+### CRA-C0001 repair program — local Wave 12: wagon cargo and driver-only recovery convergence
+
+Wave 12 repairs CRA-F0070 and CRA-F0071 (both MEDIUM) in `the-load-must-go`. The `loadSlip` failure result no longer claims that the oil barrel split or the bedding soaked after either item was explicitly unloaded onto the safe shelf. The shared `loadArrival` ending now defaults to neutral driver/level-ground text; the existing `saved_driver_after_wagon_slip` History proof selects driver-only wording that says the wagon and medicine chest remain at the shelf and no recovery list was made. No new state, persistence, reward, or route behavior was introduced.
+
+The Survival Expedition regression drives both oil- and bedding-sacrifice routes into the slip failure, then follows driver-only recovery and asserts the truthful shelf state. The focused suite passed **18 tests**; TypeScript and production build passed with the existing large-bundle warning. The Adventure remains **CONFIRMED DEFECT** because other findings on it remain open. CRA-F0070/F0071 are now `VERIFIED_HEALTHY_REPAIRED`.
+
+Cumulative implementation dispositions are **140 repaired** and **5 healthy/no-longer-reproduces**. The open inventory is **209 findings overall**, including **175 CRA-C0001** (140 MEDIUM, 32 LOW, 3 unrecovered severity); overall open severity is **161 MEDIUM, 38 LOW, and 10 unrecovered**. Live Adventure classifications remain **603 HEALTHY, 59 MINOR CONCERN, 199 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. The 861 live reviews and 354 live findings are unchanged. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
+Next: rederive the open CRA-C0001 inventory and group by exact source mechanism; do not assume the next numeric finding ID shares this wagon-state mechanism.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.
