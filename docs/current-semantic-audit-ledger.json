@@ -2285,12 +2285,12 @@
       "slug": "the-cold-room",
       "title": "The Cold Room",
       "sourceFile": "src/scenarios/strangeRoadsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0035"
       ],
       "reviewProvenance": "current source route review; direct stay, inspect/tell-innkeeper then stay, and warmer-room departure inspected; strange-roads suite passed (15 tests)",
-      "notes": "The direct coldRoomOffered.stayInColdRoom route reaches coldRoomNight without asking or speaking further with the innkeeper. The ending nevertheless says the innkeeper told the Traveler that the carpenter will inspect the room in the morning; that promise is established only on the coldRoomAccount route, which direct stay bypasses. The extra blanket is not treated as a confirmed defect because ordinary room provision is plausible but unspecified.",
+      "notes": "The direct stay now receives neutral text that makes no repair promise. Only stayAfterColdTalk sets cold_room_talked and retains the appropriate conversation result, including the carpenter promise only for the sealed service-passage cause. Regression covers direct stay and all four cause-specific discussion outcomes after save/reload; the alternate-room route and other Strange Roads callers remain unchanged.",
       "preReconciliationPosition": 119,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15320,6 +15320,8 @@
       "violatedRule": "Shared endings may not import route-specific conversation or arrangements from a bypassed branch.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "coldRoomNight now defaults to a neutral no-repair-arrangement result. stayAfterColdTalk records factual run-local proof cold_room_talked; the ending then preserves the established cause-specific conversation: felt offered for the sash, carpenter inspection of the service passage, a promised sweep for the damper, or no ordinary cause with the alternate room declined. Regression covers the bypass stay and all four talk variants after save/reload. strangeRoadsBatch.test.ts passes 16 tests; no other Strange Roads behavior changed.",
       "preReconciliationPosition": 119,
       "registrationStatus": "LIVE"
     },
@@ -20090,9 +20092,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 631,
+    "HEALTHY": 632,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 171,
+    "CONFIRMED DEFECT": 170,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
