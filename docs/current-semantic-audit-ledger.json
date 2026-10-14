@@ -15030,7 +15030,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 41,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Both firstSwim withdrawal choices now set the factual run-local flag turnedBackFromFirstSwim. quietRest uses an emergency-specific variant only when visitOutcome=drowningEmergency and that flag is present, preserving that the swimmer was still calling and the Traveler does not know the outcome; ordinary quiet-swim text remains unchanged. groundedConsequenceBatch.test.ts exercises both withdrawal choices, JSON save round-trip preservation, the neutral ordinary route, and absence of rescue claims."
     },
     {
       "findingId": "CRA-F0017",
