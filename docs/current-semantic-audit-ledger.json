@@ -10294,12 +10294,12 @@
       "slug": "the-saw-before-supper-trial",
       "title": "The Saw before Supper",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0233"
       ],
       "reviewProvenance": "current-source route review; underside split inspection/turn-or-replace, trestle inspection/withdrawal, binding-kerf safe reset, hard-pull success/failure, stop and prize/coin paths traced",
-      "notes": "The opening log contains a hidden split; after inspection, Rook says continuation requires turning and re-marking it. The direct startCut route bypasses inspection and enters the shared cut scene; easing the binding blade reaches finish and can award the tool, while a successful hard pull reaches fast and can also award it. No route establishes the required reorientation/re-mark before these counted cuts.",
+      "notes": "Original review: direct startCut and hard-pull success bypassed the stated turn-and-re-mark correction but could reach the counted result/prize. Wave 95 now records the corrected sound-end setup, gates both clean result payouts on that proof, and routes unproved/legacy results to neutral uncounted outcomes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -10326,12 +10326,12 @@
       "slug": "the-iron-squares",
       "title": "The Iron Squares",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0234"
       ],
       "reviewProvenance": "current-source route review; closed-gap, swing, post-hole history, old/new hinge choices, actual-load result, prize/coin endings traced",
-      "notes": "history.chooseNew sends the player directly to result. That scene narrates a working-load test proving the older hinge fits better and offers the square prize as the diagnosis award, although the route contains only the wrong appearance-based choice and never performs the test or chooses the older hinge. The separate swing.chooseNewHinge route correctly terminates as a wrong diagnosis, exposing the inconsistent convergence.",
+      "notes": "Original review: history.chooseNew bypassed the load test and inherited the prize-bearing successful diagnosis. Wave 95 now ends that appearance-only choice without a diagnosis or prize; only askForLoad records test proof and reaches the result/payout, with a neutral missing-proof legacy fallback.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18084,7 +18084,9 @@
       "violatedRule": "A contest may not award a clean counted result when the route bypasses the stated corrective condition for the known hazard; shared outcomes must preserve route-established setup and safety actions.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 040bb45 records `saw_sound_end_established` only when the inspected split log is turned to its sound end. Both careful and fast clean-cut payouts require that proof; uncorrected fast/finish routes and legacy saves receive an uncounted, no-prize fallback. competitionGearGenreBatch.test.ts contrasts the corrected positive route against direct-cut and uncorrected fast-success routes, tests the prize gates, save/reload, and missing-proof fallback."
     },
     {
       "findingId": "CRA-F0234",
@@ -18096,7 +18098,9 @@
       "violatedRule": "A result and diagnosis reward must depend on the selected test/action and correct conclusion; a wrong guess cannot inherit the successful test result from a distinct route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 040bb45 sends the appearance-only newer-hinge choice to a truthful no-diagnosis/no-prize ending. Only `askForLoad` records `iron_squares_normal_load_tested`; the shared result and its square/coin outcomes require that proof, with an unverified fallback for older saves. competitionGearGenreBatch.test.ts contrasts the tested correct diagnosis and reward against the appearance-only wrong choice, checks serialized proof and legacy result gating, and preserves the independent check-gap/choose-old route."
     },
     {
       "findingId": "CRA-F0235",
@@ -20277,9 +20281,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 717,
+    "HEALTHY": 719,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 85,
+    "CONFIRMED DEFECT": 83,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
