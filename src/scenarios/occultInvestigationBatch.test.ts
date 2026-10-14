@@ -375,6 +375,14 @@ describe('occult investigation adventures', () => {
     expect(sceneText(scenario.scenes.fortExit, chest)).toMatch(/take the tool chest/i);
     expect(sceneText(scenario.scenes.fortExit, chest)).not.toMatch(/rooms undisturbed/i);
 
+    let noPlan = fresh(scenario);
+    noPlan = act(noPlan, scenario, 'enterBarracks');
+    noPlan = act(noPlan, scenario, 'crossQuietly');
+    noPlan = act(noPlan, scenario, 'breakLampAnchor');
+    const noPlanEnding = sceneText(scenario.scenes.fortAfter, noPlan);
+    expect(noPlanEnding).toMatch(/no route plan was found/i);
+    expect(noPlanEnding).not.toMatch(/find the old route plan|copied route plan/i);
+
     let routePlan = fresh(scenario);
     routePlan = act(routePlan, scenario, 'openPowderRoom');
     routePlan = act(routePlan, scenario, 'pushThroughFort', 0);
