@@ -234,4 +234,66 @@ describe('Trades / Apprenticeships / Practical Work batch', () => {
     expect(sceneText(harness.scenes.settlement, teachOnly)).not.toMatch(/traces share the pull/i);
     expect(teachOnly.character?.knowledge).toContain('Uneven trace wear can come from a collar that rides low on one shoulder; check fit under a turn.');
   });
+
+  it('keeps a mark, a hinge explanation, and an airflow record distinct from completed tests', () => {
+    const fresh = (scenario: (typeof BATCH)[number]): SaveData => {
+      const character = newCharacter('Trade Test Route Tester');
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const pick = (scenario: (typeof BATCH)[number], state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      const option = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      expect(option, `${scenario.id}.${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(option.requirements, state), `${scenario.id}.${sceneId}.${choiceId} requirements`).toBe(true);
+      return choose(state, scenario, option, () => 0);
+    };
+    const resumed = (state: SaveData): SaveData => {
+      const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+      saveGame(state, storage as never);
+      return loadSave(storage as never);
+    };
+
+    const grade = BATCH.find(({ id }) => id === 'the-long-measure-at-milepost-nine')!;
+    let marked = pick(grade, fresh(grade), 'grade', 'level');
+    marked = pick(grade, marked, 'repeat', 'mark');
+    marked = resumed(marked);
+    expect(sceneText(grade.scenes.settlement, marked)).toMatch(/mark the intended stop-block position.*not been installed.*no test car has been run/i);
+    expect(sceneText(grade.scenes.settlement, marked)).not.toMatch(/stop block catches|test car well before/i);
+    let closed = pick(grade, fresh(grade), 'grade', 'level');
+    closed = pick(grade, closed, 'repeat', 'close');
+    closed = resumed(closed);
+    expect(sceneText(grade.scenes.settlement, closed)).toMatch(/close the siding.*No stop block has been installed and no empty test car has been run/i);
+    expect(closed.character?.knowledge).toContain('A flattened survey-chain link can accumulate enough error to hide a meaningful siding grade.');
+
+    const office = BATCH.find(({ id }) => id === 'the-door-at-the-telephone-office')!;
+    let refit = pick(office, fresh(office), 'lock', 'lift');
+    refit = pick(office, refit, 'hinge', 'refit');
+    refit = resumed(refit);
+    expect(sceneText(office.scenes.settlement, refit)).toMatch(/refits the hinge plate in sound timber.*No follow-up latch test is recorded/i);
+    let explained = pick(office, fresh(office), 'lock', 'lift');
+    explained = pick(office, explained, 'hinge', 'explain');
+    explained = resumed(explained);
+    expect(sceneText(office.scenes.settlement, explained)).toMatch(/hinge plate has not been refit.*closing the door without lifting is not established/i);
+    expect(sceneText(office.scenes.settlement, explained)).not.toMatch(/door closes without lifting/i);
+    expect(explained.character?.knowledge).toContain('When a key turns but a latch binds only under door weight, inspect the hinge and strike alignment before replacing the lock.');
+
+    const lamps = BATCH.find(({ id }) => id === 'the-glasshouse-lanterns')!;
+    let tested = pick(lamps, fresh(lamps), 'glass', 'chimney');
+    tested = pick(lamps, tested, 'draft', 'test');
+    tested = resumed(tested);
+    expect(sceneText(lamps.scenes.settlement, tested)).toMatch(/turns the cap.*cleans the air holes.*tests the lamp outdoors.*both lamps burn steadily/i);
+    let recorded = pick(lamps, fresh(lamps), 'glass', 'chimney');
+    recorded = pick(lamps, recorded, 'draft', 'record');
+    recorded = resumed(recorded);
+    expect(sceneText(lamps.scenes.settlement, recorded)).toMatch(/record the airflow pattern.*cap has not been turned.*no outdoor lamp test/i);
+    expect(sceneText(lamps.scenes.settlement, recorded)).not.toMatch(/Both lamps burn steadily in that open-air test/i);
+    expect(recorded.character?.knowledge).toContain('A lamp flame that gutters when closed may have a backward chimney cap or blocked draft holes, not faulty glass.');
+
+    for (const scenario of [grade, office, lamps]) {
+      const legacy = fresh(scenario);
+      legacy.run!.sceneId = 'settlement';
+      const restored = resumed(legacy);
+      const text = sceneText(scenario.scenes.settlement, restored);
+      expect(text, `${scenario.id} missing-proof fallback`).not.toMatch(/stop block catches|The door closes without lifting|Both lamps burn steadily in that open-air test/i);
+    }
+  });
 });
