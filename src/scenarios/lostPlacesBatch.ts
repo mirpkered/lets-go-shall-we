@@ -244,7 +244,7 @@ export const THE_FORGOTTEN_STATION = E('the-forgotten-station', 'The Forgotten S
     { id: 'awningNotify', label: 'Tell the track worker the crate is sound', next: 'payoff', effects: { historyFlags: ['checked a medicine delivery at a disused station'] } },
   ]),
   payoff: scene('payoff', 'The Cart Comes at Noon', 'The local cart collects the sealed crate and leaves a signed note in the book. The medicine will reach the northern families on the route it has used for years.', [{ id: 'stationFinish', label: 'Take the main line road onward', next: 'discovery' }]),
-  discovery: end('discovery', 'Forgotten by the Schedule', 'The station is an active freight link hidden by a passenger timetable. The book and chalk marks explain its use; no secret train or criminal operation was needed.'),
+  discovery: end('discovery', 'Forgotten by the Schedule', 'The disused passenger station still serves local freight. No secret train or criminal operation was needed.'),
   leave: end('leave', 'Back to the Main Line', 'You leave the quiet spur without entering the locked freight room. The platform is swept and the lamp remains dark.'),
 }, 'platform', 'disused rail spur');
 

@@ -144,6 +144,30 @@ describe('Lost Places route-accurate endings', () => {
     expect(text(state, scenario)).toMatch(/farmer inspects the salvage weights; you leave them beside the wreck/i);
   });
 
+  it('summarizes the Forgotten Station freight link without claiming uninspected records as evidence', () => {
+    const scenario = get('the-forgotten-station');
+    let noticeOnly = start(scenario);
+    noticeOnly = actIn(noticeOnly, scenario, 'enterWaiting');
+    noticeOnly = actIn(noticeOnly, scenario, 'roomLeave');
+    expect(text(noticeOnly, scenario)).toMatch(/still serves local freight/i);
+    expect(text(noticeOnly, scenario)).not.toMatch(/book and chalk marks explain/i);
+
+    let workerAndCrate = start(scenario);
+    workerAndCrate = actIn(workerAndCrate, scenario, 'askRailman');
+    workerAndCrate = actIn(workerAndCrate, scenario, 'workerAwning');
+    workerAndCrate = actIn(workerAndCrate, scenario, 'awningWait');
+    workerAndCrate = actIn(workerAndCrate, scenario, 'stationFinish');
+    expect(text(workerAndCrate, scenario)).toMatch(/still serves local freight/i);
+    expect(text(workerAndCrate, scenario)).not.toMatch(/book and chalk marks explain/i);
+
+    let bookRecord = start(scenario);
+    bookRecord = actIn(bookRecord, scenario, 'enterWaiting');
+    bookRecord = actIn(bookRecord, scenario, 'readBook');
+    bookRecord = actIn(bookRecord, scenario, 'bookCopy');
+    expect(text(bookRecord, scenario)).toMatch(/still serves local freight/i);
+    expect(text(bookRecord, scenario)).not.toMatch(/book and chalk marks explain/i);
+  });
+
   it('keeps the five audit candidates registered without changing library size', () => {
     expect(SCENARIOS).toHaveLength(861);
     expect(validateScenarioRegistry(LOST_PLACES_ADVENTURES).errors).toEqual([]);
