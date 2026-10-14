@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
+import { THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -45,6 +45,69 @@ const actJail=(state:SaveData,choiceId:string):SaveData=>{
   expect(meets(choice!.requirements,state),`${scene.id}.${choiceId} availability`).toBe(true);
   return choose(state,THE_EMPTY_JAIL,choice!);
 };
+const beginHerd=():SaveData=>{
+  const character=newCharacter('Herd Tester');
+  return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_RUSTLED_HERD,()=>0)};
+};
+const actHerd=(state:SaveData,choiceId:string):SaveData=>{
+  const scene=THE_RUSTLED_HERD.scenes[state.run!.sceneId];
+  const choice=scene.choices.find(({id})=>id===choiceId);
+  expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+  expect(meets(choice!.requirements,state),`${scene.id}.${choiceId} availability`).toBe(true);
+  return choose(state,THE_RUSTLED_HERD,choice!);
+};
+
+describe('The Rustled Herd evidence continuity',()=>{
+  it('keeps marks-only, receipt-only, and holding-only reports distinct from the full comparison',()=>{
+    let state=actHerd(beginHerd(),'inspectBrands');
+    state=actHerd(state,'brandsReport');
+    expect(state.run?.flags).toContain('herdBrandsReported');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/marks alone do not settle/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).not.toMatch(/twelve calves|eighteen|six too high/i);
+    state=actHerd(state,'settlementLeave');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/does not establish a complete count/i);
+
+    state=actHerd(beginHerd(),'readTracks');
+    state=actHerd(state,'marketTrack');
+    state=actHerd(state,'marketReceipt');
+    expect(state.run?.flags).toContain('herdMarketEvidenceSeen');
+    expect(state.character?.knowledge).toContain('The market buyer paid for twelve calves with the neighbor’s smaller brand; the rest of the missing herd remains unaccounted for.');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/receipt accounts for twelve calves.*holding pasture has not been counted/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).not.toMatch(/holding pasture accounts for eighteen|together, those counts/i);
+
+    state=actHerd(beginHerd(),'readTracks');
+    state=actHerd(state,'holdingTrack');
+    state=actHerd(state,'holdingConfer');
+    expect(state.run?.flags).toContain('herdHoldingCountSeen');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/holding pasture contains eighteen cattle.*sale receipt has not been checked/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).not.toMatch(/receipt accounts for twelve calves|together, those counts/i);
+  });
+
+  it('resolves the count only after both evidence sources are brought together and preserves the result through reload',()=>{
+    let state=actHerd(beginHerd(),'readTracks');
+    state=actHerd(state,'marketTrack');
+    state=actHerd(state,'marketFollow');
+    state=actHerd(state,'holdingConfer');
+    expect(state.run?.flags).toContain('herdMarketEvidenceSeen');
+    expect(state.run?.flags).toContain('herdHoldingCountSeen');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/twelve calves.*eighteen/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/thirty cattle/i);
+    state=actHerd(state,'settlementLeave');
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/accounted for by brand, receipt, and holding-pasture count/i);
+    const memory=new Map<string,string>();
+    const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value)};
+    saveGame(state,storage as unknown as Storage);
+    state=loadSave(storage as unknown as Storage);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/accounted for by brand, receipt, and holding-pasture count/i);
+  });
+
+  it('uses a neutral legacy fallback when route evidence flags are absent',()=>{
+    const legacy=beginHerd();
+    legacy.run!.sceneId='settled';
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,legacy)).toMatch(/does not establish a complete count/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,legacy)).not.toMatch(/twelve calves.*eighteen/i);
+  });
+});
 
 describe('The Empty Jail clerk-presence continuity',()=>{
   it('keeps the no-contact wait truthful and only adds the book review after the clerk returns',()=>{
