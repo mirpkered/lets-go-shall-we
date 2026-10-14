@@ -10677,12 +10677,12 @@
       "slug": "the-broken-cairn",
       "title": "The Broken Cairn",
       "sourceFile": "src/scenarios/wildernessFieldcraftGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0237"
       ],
       "reviewProvenance": "current-source route review; frost-shifted socket, usable-chain measurement, drover’s uncertain gate, route-book check, north reset, deferral and chain/coin compensation traced",
-      "notes": "Only book.checkBook establishes that the northern path reaches public water and that the southern gate is a landowner’s crossing. base.setNorth relies on a socket that may have shifted; measure.markPublic is reached after the chain expressly fails to show the pasture boundary; drover.markNorth follows a statement that the south gate is sometimes open, not proof the north path is public. All three bypasses enter north, whose shared result states the cairn points toward the public path and authorizes it for water access. The deferred/book-confirmed routes are distinct and truthful.",
+      "notes": "Original review: only book.resetPublic established northern public-water access, while socket, chain, and drover routes entered a shared result that authorized the path without route-book proof. Wave 97 now records `brokenCairnPublicRouteVerified` only on route-book confirmation; other north routes describe a provisional clue and make no public-access claim. Survey Chain compensation provenance no longer implies that the reward itself establishes access.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18140,7 +18140,9 @@
       "violatedRule": "Public access and route authorization cannot be asserted from a tentative physical marker or a measurement that explicitly does not resolve the boundary; the shared result must retain whether authoritative route-book verification occurred.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 3507c01 changes socket, chain, and drover options to provisional proposals and records `brokenCairnPublicRouteVerified` only when the county route book confirms the northern public-water path. The shared cairn scene has confirmed and provisional variants; the Survey Chain's compensation provenance no longer claims public authorization. wildernessFieldcraftGenreBatch.test.ts contrasts all three unverified routes against route-book confirmation, verifies the flag through save/reload, and checks a legacy no-proof state and reward provenance."
     },
     {
       "findingId": "CRA-F0238",
@@ -20283,9 +20285,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 720,
+    "HEALTHY": 721,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 82,
+    "CONFIRMED DEFECT": 81,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
