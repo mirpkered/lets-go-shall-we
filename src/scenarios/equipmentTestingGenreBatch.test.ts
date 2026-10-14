@@ -99,6 +99,69 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     expect(scenario.scenes.done.text).toMatch(/actual condition and upgrade recorded/i);
   });
 
+  it('keeps a straight-edge check separate from reversing The Glass Level Disagrees', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-glass-level-disagrees')!;
+    const character = newCharacter('Level Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const plankCheck = choose(initial, scenario, scenario.scenes.level.choices.find(({ id }) => id === 'checkPlank')!);
+    expect(plankCheck.run?.sceneId).toBe('plankCheck');
+    expect(scenario.scenes.plankCheck.text).toMatch(/has not been reversed/i);
+    expect(scenario.scenes.plankCheck.text).not.toMatch(/bubble reverses|vial is set slightly off center/i);
+    const reversed = choose(plankCheck, scenario, scenario.scenes.plankCheck.choices.find(({ id }) => id === 'reverseLevel')!);
+    expect(reversed.run?.sceneId).toBe('diagnosis');
+    expect(scenario.scenes.diagnosis.text).toMatch(/bubble reverses on the same plank/i);
+    const directReverse = choose(initial, scenario, scenario.scenes.level.choices.find(({ id }) => id === 'reverseLevel')!);
+    expect(directReverse.run?.sceneId).toBe('diagnosis');
+  });
+
+  it('does not attribute a scale reading to seam-only inspection in The Needle in the Grain Shed', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-needle-in-the-grain-shed')!;
+    const character = newCharacter('Grain Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const inspected = choose(initial, scenario, scenario.scenes.scale.choices.find(({ id }) => id === 'inspectSeam')!);
+    expect(inspected.run?.sceneId).toBe('seamInspection');
+    expect(scenario.scenes.seamInspection.text).toMatch(/has not weighed or compared the sacks/i);
+    expect(scenario.scenes.seamInspection.text).not.toMatch(/scale confirms a difference/i);
+    const weighed = choose(initial, scenario, scenario.scenes.scale.choices.find(({ id }) => id === 'compareSacks')!);
+    expect(weighed.run?.sceneId).toBe('seam');
+    expect(scenario.scenes.seam.text).toMatch(/scale confirms a difference/i);
+  });
+
+  it('separates comparing the existing lantern guard from testing the prototype hinge', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-false-comfort-of-a-guard')!;
+    const character = newCharacter('Guard Route Test');
+    character.carriedItem = 'lanternGuard';
+    character.carriedItems = ['lanternGuard'];
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const compared = choose(initial, scenario, scenario.scenes.lamp.choices.find(({ id }) => id === 'useExisting')!);
+    expect(compared.run?.sceneId).toBe('guardComparison');
+    expect(scenario.scenes.guardComparison.text).toMatch(/hinge is still loose/i);
+    expect(scenario.scenes.guardComparison.text).not.toMatch(/short dry run|hinge holds/i);
+    const leftUntested = choose(compared, scenario, scenario.scenes.guardComparison.choices.find(({ id }) => id === 'leavePrototype')!);
+    expect(scenario.scenes[leftUntested.run!.sceneId].text).toMatch(/no cart-run result has been established/i);
+    const tightened = choose(compared, scenario, scenario.scenes.guardComparison.choices.find(({ id }) => id === 'tightenHinge')!);
+    expect(tightened.run?.sceneId).toBe('rut');
+    const directTighten = choose(initial, scenario, scenario.scenes.lamp.choices.find(({ id }) => id === 'tightHinge')!);
+    expect(directTighten.run?.sceneId).toBe('rut');
+  });
+
+  it('keeps known-weight comparison distinct from a zero check on The Spring That Would Not Return', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-spring-that-would-not-return')!;
+    const character = newCharacter('Spring Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const weights = choose(initial, scenario, scenario.scenes.spring.choices.find(({ id }) => id === 'compareWeights')!);
+    expect(weights.run?.sceneId).toBe('weightComparison');
+    expect(scenario.scenes.weightComparison.text).toMatch(/zero has not been checked/i);
+    expect(scenario.scenes.weightComparison.text).not.toMatch(/dust at the pivot|returns consistently/i);
+    const zeroChecked = choose(weights, scenario, scenario.scenes.weightComparison.choices.find(({ id }) => id === 'zeroGauge')!);
+    expect(zeroChecked.run?.sceneId).toBe('calibrate');
+    expect(scenario.scenes.calibrate.text).toMatch(/zero check confirms dust/i);
+    const directZero = choose(initial, scenario, scenario.scenes.spring.choices.find(({ id }) => id === 'zeroGauge')!);
+    expect(directZero.run?.sceneId).toBe('calibrate');
+    const parked = choose(weights, scenario, scenario.scenes.weightComparison.choices.find(({ id }) => id === 'replaceLatch')!);
+    expect(scenario.scenes[parked.run!.sceneId].text).toMatch(/zero and pivot cause remain unresolved/i);
+  });
+
   it('registers 24 unique, all-year Adventures with a valid reachable graph', () => {
     expect(BATCH).toHaveLength(24);
     expect(SCENARIOS).toHaveLength(861);
@@ -196,7 +259,7 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
   it('keeps prototype trials consequential without allowing a reading to certify unsafe equipment', () => {
     expect(BATCH.find(({ id }) => id === 'the-line-under-load')?.scenes.reading.text).toContain('anchor eye confirms it is shifting');
     expect(BATCH.find(({ id }) => id === 'the-handcart-with-the-new-wheel')?.scenes.test.text).toContain('bright line opens at the join');
-    expect(BATCH.find(({ id }) => id === 'the-glass-level-disagrees')?.scenes.level.text).toContain('bubble shifts');
+    expect(BATCH.find(({ id }) => id === 'the-glass-level-disagrees')?.scenes.level.text).toContain('readings disagree');
     expect(BATCH.find(({ id }) => id === 'the-carriage-jack-demonstration')?.scenes.lift.text).toContain('hairline bend');
   });
 
