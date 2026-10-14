@@ -2153,12 +2153,12 @@
       "slug": "the-missing-sack",
       "title": "The Missing Sack",
       "sourceFile": "src/scenarios/disputesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0033"
       ],
       "reviewProvenance": "current source route review; loading marks, prior-inn replies for all four sack outcomes, roadside search/carter inquiry, unresolved and withdrawal outcomes examined; dispute suite passed (8 tests)",
-      "notes": "loadingMarks.sendWordToStop reaches sackAccountFound without receiving any reply, and roadsideSearch.askRoadsideSearch also reaches it without a reported result. The shared ending claims the parties agree on an account and that the sack was found, left at another stop, or never loaded, although these routes established no such outcome; even reply variants for slipped/taken leave the sack missing. Knowledge from checking loading marks accurately records only the disagreement.",
+      "notes": "The ending is now neutral when loadingMarks.sendWordToStop or roadsideSearch.askRoadsideSearch reaches it without a reply, and reply-specific wording preserves the distinct wrongStop, neverLoaded, slipped, and taken outcomes. The sack is called found only when the prior inn's reply establishes that it was found; otherwise the text leaves its status unresolved or missing. Loading-mark Knowledge still records only the established disagreement. Regression covers both no-reply routes against all four hidden outcome selections and all reply outcomes after save/reload.",
       "preReconciliationPosition": 111,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15290,6 +15290,8 @@
       "violatedRule": "A converged result may not assert recovery or account for an object beyond the selected route's evidence.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "THE_MISSING_SACK now records the factual sack_reply_received proof only when acceptSackReply is selected. sackAccountFound is neutral for sendWordToStop and roadsideSearch.askRoadsideSearch, which do not receive a result; reply-specific variants distinguish wrongStop recovery, neverLoaded evidence with cause still unverified, and slipped/taken outcomes where the sack remains missing. Regression tests cover both no-reply convergence routes for all four possible outcomes and all four reply outcomes after save/reload. disputesBatch.test.ts passes 9 tests. No rewards, Knowledge, History, ownership, or persistence schema changed.",
       "preReconciliationPosition": 111,
       "registrationStatus": "LIVE"
     },
@@ -20086,9 +20088,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 629,
+    "HEALTHY": 630,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 173,
+    "CONFIRMED DEFECT": 172,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
