@@ -260,7 +260,7 @@ export const LAST_LIGHT_AT_MILLERS_CROSSING: Scenario = {
       choices: [
         { id: 'searchDitchWithFarmhands', label: 'Search the ditch together', timeCost: 5, next: 'travelerFound', effects: { setFlags: ['foundAtDitch'], historyFlags: ['searched_for_missing_traveler', 'uncovered_crash_truth'] } },
         { id: 'searchMarkerWithFarmhands', label: 'Check beneath the toll marker', timeCost: 5, next: 'travelerFound', effects: { setFlags: ['foundAtMarker'], historyFlags: ['searched_for_missing_traveler', 'uncovered_crash_truth'] } },
-        { id: 'splitSearchParty', label: 'Split the group between both clues', timeCost: 7, next: 'travelerFound', effects: { setFlags: ['foundAtMarker'], historyFlags: ['searched_for_missing_traveler', 'uncovered_crash_truth'] } },
+        { id: 'splitSearchParty', label: 'Split the group between both clues', timeCost: 7, next: 'travelerFound', effects: { historyFlags: ['searched_for_missing_traveler', 'uncovered_crash_truth'] } },
       ],
     },
     travelerFound: {

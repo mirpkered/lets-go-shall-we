@@ -119,6 +119,25 @@ describe('Last Light at Miller’s Crossing', () => {
     expect(ITEMS.compactWheelWrench.carryable).toBe(true);
   });
 
+  it('does not force the split-search result into the marker-specific location variant', () => {
+    let split = act(fresh(), 'helpHalFirst');
+    split = act(split, 'escortHalToFarm');
+    split = act(split, 'sendFarmhandsToSearch');
+    expect(split.run?.sceneId).toBe('searchersArrive');
+    split = act(split, 'splitSearchParty');
+    expect(split.run?.sceneId).toBe('travelerFound');
+    expect(split.run?.flags).not.toContain('foundAtMarker');
+    expect(split.run?.flags).not.toContain('foundAtDitch');
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.travelerFound, split)).toMatch(/Mara is shaken/i);
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.travelerFound, split)).not.toMatch(/waits beneath the old toll marker/i);
+
+    let marker = act(fresh(), 'helpHalFirst');
+    marker = act(marker, 'escortHalToFarm');
+    marker = act(marker, 'sendFarmhandsToSearch');
+    marker = act(marker, 'searchMarkerWithFarmhands');
+    expect(sceneText(LAST_LIGHT_AT_MILLERS_CROSSING.scenes.travelerFound, marker)).toMatch(/waits beneath the old toll marker/i);
+  });
+
   it('supports repair and investigation that reveal the crash cause', () => {
     let state = act(fresh('pocketToolkit'), 'inspectWagonFirst');
     state = act(state, 'inspectHubWithTool');
