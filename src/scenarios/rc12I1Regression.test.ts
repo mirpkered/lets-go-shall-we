@@ -61,6 +61,28 @@ describe('RC12 Pass I1 route-convergence regressions', () => {
     expect(adventure.scenes.apology.text).not.toMatch(/without naming its source/i);
   });
 
+  it('does not assign the subject-change motive to the rumor-insistence route', () => {
+    const adventure = scenario('the-public-apology');
+    const subjectChange = act(start(adventure.id), adventure, 'changeSubject');
+    const subjectChangeText = adventure.scenes[subjectChange.run!.sceneId].text;
+    expect(subjectChange.run?.sceneId).toBe('silence');
+    expect(subjectChangeText).toMatch(/conversation turns elsewhere/i);
+    expect(subjectChangeText).not.toMatch(/avoid embarrassment/i);
+
+    let rumorInsistence = act(start(adventure.id), adventure, 'blameOriginalSpeaker');
+    rumorInsistence = act(rumorInsistence, adventure, 'standByRumor');
+    const insistenceText = adventure.scenes[rumorInsistence.run!.sceneId].text;
+    expect(rumorInsistence.run?.sceneId).toBe('silence');
+    expect(insistenceText).toMatch(/painter and merchant stop speaking/i);
+    expect(insistenceText).toMatch(/original friction remains unresolved/i);
+    expect(insistenceText).not.toMatch(/avoid embarrassment|move the conversation on/i);
+
+    let apology = act(start(adventure.id), adventure, 'ownWords');
+    apology = act(apology, adventure, 'apologizeAndLeave');
+    expect(apology.run?.sceneId).toBe('apology');
+    expect(adventure.scenes.apology.text).toMatch(/correct your part/i);
+  });
+
   it('does not turn the cook-on-time route into a late-supper result', () => {
     const adventure = scenario('the-last-clean-apron');
     let state = act(start(adventure.id), adventure, 'giveCookApron');

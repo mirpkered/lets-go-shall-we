@@ -204,7 +204,7 @@ export const THE_PUBLIC_APOLOGY = story('the-public-apology', 'The Public Apolog
     { id: 'withdrawClaim', label: 'Withdraw the remark as hearsay', next: 'apology' },
     { id: 'standByRumor', label: 'Insist the sign is crooked anyway', next: 'silence' },
   ]),
-  silence: end('silence', 'The Market Moves On', 'The conversation turns elsewhere, but the painter and merchant stop speaking to each other. Your attempt to avoid embarrassment left the original friction untouched.'),
+  silence: end('silence', 'The Market Moves On', 'The conversation turns elsewhere, but the painter and merchant stop speaking to each other. The original friction remains unresolved.'),
   repair: end('repair', 'A Sign Held Straight', 'You hold the board while the painter resets it. The merchant pays for the work, and your apology does not settle who was late; it does stop your retelling from standing as proof.'),
   apology: end('apology', 'A Smaller Audience', 'You correct your part in making the dispute public. The neighbors still disagree about the sign, and your correction does not decide whose account is right.'),
 });
