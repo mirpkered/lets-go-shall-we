@@ -4060,12 +4060,12 @@
       "slug": "river-without-a-bridge",
       "title": "River without a Bridge",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0066"
       ],
       "reviewProvenance": "current source route review; upstream bend risk, ferry wait/poling success/failure, mill skiff, far-bank signal, direct ford success/death and all crossings traced",
-      "notes": "riverAcross is reachable after any successful crossing and unconditionally says a safe route was 'found and marked for those behind you'; no crossing route performs a marking action. This overstates safety especially after the hazardous direct ford, and claims a follow-up action not selected.",
+      "notes": "riverAcross now reports only arrival at the far bank and that no crossing was marked for later travelers. This remains accurate for the direct hazardous ford, upstream bend, solo ferry pole, and mill-crew boat routes; no new state or action was added.",
       "preReconciliationPosition": 222,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15723,6 +15723,8 @@
       "violatedRule": "A route/result may not claim unchosen follow-up work or generalize one successful traversal into a safe, marked route when that is not established.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts changes riverAcross to state only the common proven result: reaching the far bank, with no crossing marked for those behind. src/scenarios/survivalExpeditionBatch.test.ts exercises successful direct ford, upstream bend, solo ferry, and mill-crew routes and verifies none claims a safe marked route.",
       "preReconciliationPosition": 222,
       "registrationStatus": "LIVE"
     },
@@ -20018,9 +20020,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 601,
+    "HEALTHY": 602,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 202,
+    "CONFIRMED DEFECT": 201,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
