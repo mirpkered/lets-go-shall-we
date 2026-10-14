@@ -7636,13 +7636,13 @@
       "slug": "beneath-saint-orras",
       "title": "Beneath Saint Orra’s",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0171",
         "CRA-F0172"
       ],
       "reviewProvenance": "current-source route review; caretaker denial/record copy/mark comparison, chalk supply, landing retreat, hidden-room description, counterweight opening, respectful closure, copied-name/archive, bone removal, and all effects/endings traced",
-      "notes": "F0171: orraNiches.copyNiches -> orraExit (and the partial-account/describe routes) reaches an ending that says the wall damage is marked, although those actions only copy/record evidence and do not mark the damage; only orraYard.leaveOrra states that action. F0172: orraOssuary.copyName -> orraName.keepCopy -> orraResolved carries the name to the parish archive but does not select closure or tell the caretaker, while the shared ending says the caretaker accepts the account and closes the counterweight room. Close/tell and restore/share alternatives explicitly establish those results. The bone-removal route records a trust breach and return, not a treasure reward.",
+      "notes": "Original review witnesses preserved: F0171 identified shared departure text claiming damage was marked on evidence/retreat routes, and F0172 identified the archive route inheriting caretaker acceptance and room closure. Wave 58 records the evidence-backed repair dispositions; route review provenance and original findings remain unchanged. The bone-removal route still records a trust breach and return, not a treasure reward.",
       "preReconciliationPosition": 438,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17200,6 +17200,8 @@
       "routeWitness": "orraYard.inspectMarks -> orraNiches.copyNiches -> orraExit (also orraLanding.retreatLanding and orraHiddenRoom.describeChamber -> orraExit); the selected actions copy/record marks or a partial account, but do not mark/report the collapsed outer wall. orraExit nonetheless says the damage is marked. The direct orraYard.leaveOrra choice explicitly does mark it.",
       "violatedRule": "A completed intervention must be route-established before a shared ending claims it happened.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Only the explicit `leaveOrra` action now sets factual run-local proof `orraDamageMarked`; `orraExit` uses the mark-specific text only with that proof and otherwise gives a neutral departure. Copy-record, copy-marks, landing-retreat, and chamber-description routes are covered as contrasts. Deep Exploration, registry, diversity, library, inventory, and selected RC12 checks pass (67 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -17212,6 +17214,8 @@
       "routeWitness": "orraOssuary.copyName -> orraName.keepCopy -> orraResolved; the action carries the copy to the parish archive and only records preservation history, while orraResolved says the caretaker accepts the account and closes the counterweight room. The restoreStone route expressly closes and shares the name; closeOssuary expressly closes and tells the caretaker.",
       "violatedRule": "Shared endings must not import a distinct participant response or closure action from a sibling route.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`closeOssuary` and `restoreStone` now set factual run-local proof for room closure and sharing the account with the caretaker; the corresponding acceptance/closure text is gated on both facts. `keepCopy` records a separate archival proof and reports only the archive request/copy, without inventing caretaker response or closure. Missing proof uses neutral text; regression covers all three routes, legacy fallback, and save/reload. Deep Exploration, registry, diversity, library, inventory, and selected RC12 checks pass (67 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -20146,9 +20150,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 654,
+    "HEALTHY": 655,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 148,
+    "CONFIRMED DEFECT": 147,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
