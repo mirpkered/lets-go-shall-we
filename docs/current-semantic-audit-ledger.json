@@ -11507,12 +11507,12 @@
       "slug": "the-new-spoke-key",
       "title": "The New Spoke Key",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0253"
       ],
       "reviewProvenance": "current-source route review; unloaded spare-key test versus rim-only inspection, loaded-wheel misuse, harden/retest, delay and compensation routes traced",
-      "notes": "wheel.inspectRim only checks the rim before tightening anything but converges on result claiming the altered key fits the spare and has a soft-toothed burr. That route has not tested the key; the testSpare route establishes the fit/burr. The hardened award requires another spare-wheel test, while the bench route waits without payment.",
+      "notes": "wheel.inspectRim only checked the rim before tightening anything but converged on result claiming the altered key fits the spare and has a soft-toothed burr. That route had not tested the key; the testSpare route establishes the fit/burr. Inspection now leads to a separate result-free decision: perform the spare test or defer it with neutral text. The hardened award still follows its repeat test; the original bench route still waits without payment.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18137,6 +18137,8 @@
       "violatedRule": "Test results and instrument/tool findings may not be asserted on a route that did not perform the test.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Rim-only inspection now enters a distinct scene that either performs the unloaded spare-spoke test or ends with neutral unverified text. Tests confirm the actual testSpare route and test-after-inspection route retain the fit/burr findings, while inspection/defer does not. Equipment Testing suite passes 17 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20048,9 +20050,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 612,
+    "HEALTHY": 613,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 190,
+    "CONFIRMED DEFECT": 189,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
