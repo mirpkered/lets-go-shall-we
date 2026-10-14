@@ -94,6 +94,9 @@ const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<st
   'the-ferry-chain': {
     base: 'The stranger has left, but no statement about his claim has been recorded. The chain needs a smith’s link; the ferry stays at the far bank until it is repaired.',
   },
+  'the-axle-without-a-mark': {
+    base: 'The axle is identified as public property, but its return to the crew is not established here. The wagon is moved only after the smith checks its own damaged part; no stolen component becomes a reward.',
+  },
   'the-courier-who-came-back': {
     base: 'The empty satchel and torn wrapper do not establish whether the county papers were packed before Penn reached the inn.',
   },

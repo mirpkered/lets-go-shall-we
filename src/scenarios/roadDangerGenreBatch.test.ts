@@ -215,4 +215,19 @@ describe('Road Danger / Highwaymen genre batch', () => {
     unaffected = act(unaffected, paperRoad, 'respond_stayBack');
     expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/Pike confirms the county stamp/i);
   });
+
+  it('keeps public-axle ownership distinct from physical return to the crew', () => {
+    const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
+    for (const [approach, response] of [['checkCrewBook', 'callForeman'], ['askSmith', 'refusePurchase'], ['stabilizeWagon', 'checkStamp']]) {
+      let state = act(initial(axle), axle, `approach_${approach}`);
+      state = act(state, axle, `respond_${response}`);
+      const aftermath = sceneText(axle.scenes.aftermath, state);
+      expect(aftermath).not.toMatch(/axle is returned to its crew/i);
+      expect(aftermath).toMatch(/return to the crew is not established/i);
+      if (response === 'callForeman') {
+        state = act(state, axle, 'ending_giveStatement');
+        expect(sceneText(axle.scenes.settlement, state)).toMatch(/axle remains in the smith’s custody/i);
+      }
+    }
+  });
 });
