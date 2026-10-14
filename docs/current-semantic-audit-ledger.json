@@ -1759,12 +1759,12 @@
       "slug": "the-dog-that-returns",
       "title": "The Dog That Returns",
       "sourceFile": "src/scenarios/animalsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0028"
       ],
       "reviewProvenance": "current source route review; four dogReason variants, observe/follow/call success/failure, truth and leave/help endings examined",
-      "notes": "dogReason=nothing is explicitly the case where the dog rests and nothing appears lost or injured. dogTruth.offerPracticalHelp nevertheless reaches dogHelped, which narrates a message, bundle placement, or giving a family room and says the dog helped someone notice what mattered. The shared ending has no selection-specific variant.",
+      "notes": "dogReason=nothing remains the case where the dog rests and nothing appears lost or injured. The dogHelped ending now has a selection-specific neutral account for this outcome; the owner, bundle, and pups variants retain their existing situation-appropriate account.",
       "preReconciliationPosition": 87,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15217,6 +15217,8 @@
       "violatedRule": "Converged narration must not import participants, objects, or interventions absent from the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "dogHelped now has a dogReason=nothing text variant that reports no person/object needs help and omits absent message/bundle/family actions. Regression contrasts that route with the bundle variant. animalsBatch suite passes 13 tests.",
       "preReconciliationPosition": 87,
       "registrationStatus": "LIVE"
     },
@@ -20070,9 +20072,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 622,
+    "HEALTHY": 623,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 180,
+    "CONFIRMED DEFECT": 179,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
