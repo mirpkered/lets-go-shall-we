@@ -215,6 +215,46 @@ describe('deep exploration anthology', () => {
     expect(result.run?.inventory).toContain('redDoorToken');
   });
 
+  it('claims the Harker lower seal was restored only after an explicit reseal action', () => {
+    const harker = getScenario('deep-room-at-harker-mine')!;
+
+    const tokenBearer = newCharacter('Token Bearer');
+    tokenBearer.carriedItem = 'redDoorToken';
+    const comparisonOnly: SaveData = { ...structuredClone(EMPTY_SAVE), character: tokenBearer, run: startRun(tokenBearer, harker, () => 0) };
+    comparisonOnly.run!.sceneId = 'harkerDeep';
+    const compared = choose(comparisonOnly, harker, harker.scenes.harkerDeep.choices.find(({ id }) => id === 'compareToken')!, () => 0);
+    expect(compared.run?.sceneId).toBe('harkerResealed');
+    expect(sceneText(harker.scenes.harkerResealed, compared)).not.toMatch(/lower seal is restored/i);
+    expect(compared.character?.knowledge).toContain('The Harker seal repeats the Red Door Token’s three-cut pattern in reverse; the matching convention links the marks, but does not identify a maker or creature.');
+
+    const resealer = newCharacter('Mine Worker');
+    const explicitReseal: SaveData = { ...structuredClone(EMPTY_SAVE), character: resealer, run: startRun(resealer, harker, () => 0) };
+    explicitReseal.run!.sceneId = 'harkerDeep';
+    const resealed = choose(explicitReseal, harker, harker.scenes.harkerDeep.choices.find(({ id }) => id === 'resealHarker')!, () => 0);
+    expect(resealed.run?.sceneId).toBe('harkerDoorResealed');
+    expect(sceneText(harker.scenes.harkerDoorResealed, resealed)).toMatch(/lower seal is restored/i);
+
+    const surveyor = newCharacter('Mine Surveyor');
+    const copiedAndResealed: SaveData = { ...structuredClone(EMPTY_SAVE), character: surveyor, run: startRun(surveyor, harker, () => 0) };
+    copiedAndResealed.run!.sceneId = 'harkerDoor';
+    const copy = choose(copiedAndResealed, harker, harker.scenes.harkerDoor.choices.find(({ id }) => id === 'copyEvidence')!, () => 0);
+    expect(copy.run?.sceneId).toBe('harkerDoorResealed');
+    expect(sceneText(harker.scenes.harkerDoorResealed, copy)).toMatch(/lower seal is restored/i);
+
+    const fragmentBearer = newCharacter('Orchard Surveyor');
+    fragmentBearer.carriedItem = 'ironOrchardRodFragment';
+    const fragmentComparison: SaveData = { ...structuredClone(EMPTY_SAVE), character: fragmentBearer, run: startRun(fragmentBearer, harker, () => 0) };
+    fragmentComparison.run!.sceneId = 'harkerDoor';
+    const comparedFragment = choose(fragmentComparison, harker, harker.scenes.harkerDoor.choices.find(({ id }) => id === 'compareRodFragment')!, () => 0);
+    expect(comparedFragment.run?.sceneId).toBe('harkerResealed');
+    expect(sceneText(harker.scenes.harkerResealed, comparedFragment)).not.toMatch(/lower seal is restored/i);
+
+    const returningTraveler = newCharacter('Returning Traveler');
+    const legacy: SaveData = { ...structuredClone(EMPTY_SAVE), character: returningTraveler, run: startRun(returningTraveler, harker, () => 0) };
+    legacy.run!.sceneId = 'harkerResealed';
+    expect(sceneText(harker.scenes.harkerResealed, legacy)).not.toMatch(/lower seal is restored/i);
+  });
+
   it('lets Briar House’s own Skeleton Key bypass only its matching bookcase lock on a later visit', () => {
     const house = getScenario('last-door-briar-house')!;
     const plainCharacter = newCharacter('No House Key');
