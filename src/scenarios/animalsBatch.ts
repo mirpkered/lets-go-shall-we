@@ -228,14 +228,19 @@ export const THE_OWNERLESS_MULE: Scenario = {
     ] },
     muleClaimant: { id: 'muleClaimant', title: 'Two Stories, One Mule', tone: 'warning', text: 'A traveler and a local farmer both say the mule has worked for them. Neither has clear papers or a distinctive brand to settle it. The stable keeper offers to keep the animal watered while they compare what they remember.', choices: [
       { id: 'askBothMuleStories', label: 'Ask each person what work the mule knows', timeCost: 5, next: 'muleCompared', effects: { knowledge: ['Two people separately claimed a gray mule; neither had conclusive proof.'] } },
-      { id: 'leaveMuleKeeper', label: 'Leave the disagreement to the stable keeper', next: 'muleAtStable' },
+      { id: 'leaveMuleKeeper', label: 'Leave the disagreement to the stable keeper', next: 'muleAtStable', effects: { setFlags: ['mule_claimants_heard'] } },
       { id: 'walkAwayMule', label: 'Step away without choosing an owner', next: 'muleLeft' },
     ] },
     muleCompared: { id: 'muleCompared', title: 'What the Mule Remembers', tone: 'safe', text: 'The animal responds to both people’s familiar calls, though it turns first toward the farmer holding a feed pail. That suggests familiarity, not legal proof. The stable keeper can hold it until the neighbors speak.', choices: [
-      { id: 'leaveMuleStable', label: 'Let the stable keeper hold it safely', next: 'muleAtStable', effects: { historyFlags: ['witnessed_uncertain_mule_ownership'] } },
+      { id: 'leaveMuleStable', label: 'Let the stable keeper hold it safely', next: 'muleAtStable', effects: { setFlags: ['mule_claimants_heard'], historyFlags: ['witnessed_uncertain_mule_ownership'] } },
       { id: 'declineMuleJudgment', label: 'Decline to decide and continue', next: 'muleLeft' },
     ] },
-    muleAtStable: ending('muleAtStable', 'Water and a Waiting Stall', 'The mule is kept in shade with water while the two claimants compare their accounts. The animal is safe for now; you have not pretended that a partial mark or familiar call settles the matter.'),
+    muleAtStable: {
+      ...ending('muleAtStable', 'Water and a Waiting Stall', 'The mule is kept in shade with water at the settlement stable. Its ownership remains unsettled, and the keeper can wait for more information before releasing it.'),
+      textVariants: [
+        { requirements: { flags: ['mule_claimants_heard'] }, text: 'The mule is kept in shade with water while the two people who claimed it compare their accounts. The animal is safe for now; you have not pretended that a partial mark or familiar call settles the matter.' },
+      ],
+    },
     muleLeft: ending('muleLeft', 'An Unsettled Claim', 'You leave the mule watered and tell someone nearby where it is. The claim remains uncertain, but the animal is no longer unattended beside the road.'),
   },
 };

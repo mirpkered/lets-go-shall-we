@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, failCharacter, finishSuccess, getCarriedItems, meets, newCharacter, retireCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE, loadSave, SAVE_KEY } from '../storage';
+import { EMPTY_SAVE, loadSave, SAVE_KEY, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -199,6 +199,24 @@ describe('animals and working stock adventure batch', () => {
     expect(retireCharacter(persisted).character).toBeNull();
     const declined = act(start(THE_OLD_HORSE), THE_OLD_HORSE, 'horseOffer', 'declineOldHorse');
     expect(declined.character?.ownedAssets).toEqual([]);
+  });
+
+  it('does not invent mule claimants when relocation bypasses the claimant scene', () => {
+    const directlyLed = act(
+      act(start(THE_OWNERLESS_MULE, { muleClue: 'tack' }), THE_OWNERLESS_MULE, 'muleGreen', 'inspectMuleTack'),
+      THE_OWNERLESS_MULE,
+      'muleClueSeen',
+      'leadMuleStable',
+    );
+    expect(directlyLed.run?.sceneId).toBe('muleAtStable');
+    expect(sceneText(THE_OWNERLESS_MULE.scenes.muleAtStable, directlyLed)).not.toMatch(/two claimants compare/i);
+
+    let claimantsHeard = act(start(THE_OWNERLESS_MULE), THE_OWNERLESS_MULE, 'muleGreen', 'askMuleResidents');
+    claimantsHeard = act(claimantsHeard, THE_OWNERLESS_MULE, 'muleClaimant', 'leaveMuleKeeper');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(claimantsHeard, storage as never);
+    claimantsHeard = loadSave(storage as never);
+    expect(sceneText(THE_OWNERLESS_MULE.scenes.muleAtStable, claimantsHeard)).toMatch(/two people who claimed it compare/i);
   });
 
   it('gives successful loose-goat routes a distinct market aftermath before completion', () => {
