@@ -5,12 +5,12 @@
   "workingTreeStateAtReview": "audit-only update; gameplay source and tests unchanged",
   "totalRegisteredAdventures": 861,
   "liveRegistryCount": 861,
-  "reviewedThroughPosition": 730,
-  "reviewedCount": 826,
-  "remainingCount": 35,
-  "nextPosition": 731,
-  "firstUnreviewedLiveStableId": "the-fence-pliers-at-willow-turn",
-  "firstUnreviewedLivePosition": 731,
+  "reviewedThroughPosition": 836,
+  "reviewedCount": 836,
+  "remainingCount": 25,
+  "nextPosition": 837,
+  "firstUnreviewedLiveStableId": "the-tower-bell-anchor",
+  "firstUnreviewedLivePosition": 837,
   "reviewedStableIdsScope": "CURRENT_LIVE_SCENARIOS_ONLY",
   "unregisteredReviewedAdventureIds": [
     "the-night-bird-turn",
@@ -336,7 +336,7 @@
   },
   "historicalReviewedAdventureRecordCount": 850,
   "unregisteredReviewedAdventureCount": 24,
-  "liveFindingCount": 342,
+  "liveFindingCount": 352,
   "unregisteredHistoricalFindingCount": 7,
   "defaultFindingRegistrationStatus": "LIVE",
   "unregisteredHistoricalFindingIds": [
@@ -350,12 +350,12 @@
   ],
   "liveSeverityTotals": {
     "HIGH": 13,
-    "MEDIUM": 273,
-    "LOW": 46,
+    "MEDIUM": 281,
+    "LOW": 48,
     "SEVERITY_UNRECOVERED": 10
   },
   "liveClusterFindingCounts": {
-    "CRA-C0001": 220,
+    "CRA-C0001": 222,
     "CRA-C0002": 18,
     "CRA-C0003": 1,
     "CRA-C0004": 34,
@@ -365,7 +365,7 @@
     "CRA-C0008": 12,
     "CRA-C0009": 3,
     "CRA-C0010": 11,
-    "CRA-C0011": 15
+    "CRA-C0011": 23
   },
   "unregisteredHistoricalClusterFindingCounts": {
     "CRA-C0001": 2,
@@ -380,7 +380,7 @@
     "CRA-C0010": 0,
     "CRA-C0011": 0
   },
-  "nextFindingId": "CRA-F0350",
+  "nextFindingId": "CRA-F0360",
   "nextClusterId": "CRA-C0012",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -14305,6 +14305,166 @@
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 731,
+      "adventureId": "the-fence-pliers-at-willow-turn",
+      "slug": "the-fence-pliers-at-willow-turn",
+      "title": "The Fencing Pliers at Willow Turn",
+      "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0350"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Inspected the pliers (inventory and usable condition gated), temporary-twine, and stop/post-pull routes; followed both gate-test and rail-reinforcement branches through coin or separately owned spare-pliers compensation. The rail branch does not open the gate or move sheep, yet shares text asserting both. No persistent effect or legacy-resume state is used.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 732,
+      "adventureId": "the-lost-halter-at-blue-hill",
+      "slug": "the-lost-halter-at-blue-hill",
+      "title": "The Lost Halter at Blue Hill",
+      "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0351"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Traced gate/owner approach, rope barrier (inventory and usable condition gated), pull/stop, owner arrival, hold-road and walk-with-handler routes, and coin or released Gate Hook settlement. The pull does not establish successful restraint or injury, but the stop text erases the attempt. No persistent effect or legacy-resume state is used.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 829,
+      "adventureId": "the-tower-without-its-shadow",
+      "slug": "the-tower-without-its-shadow",
+      "title": "The Tower Without Its Shadow",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0352"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Reviewed inspect, rush, and withdrawal entry; comparison, shore, close, force/partial routes; cautious, alternate, leave, and history-linked resolution; optional lore, lesson, fee, and legacy knowledge/lore text variants. Only measure establishes this comparison; inspect/rush disclose it early. No new persistent state is introduced.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 830,
+      "adventureId": "the-hall-with-the-mismatched-stone",
+      "slug": "the-hall-with-the-mismatched-stone",
+      "title": "The Hall with the Mismatched Stone",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0353"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Traced inspect/rush/withdraw, compare/shore/close/force, reveal resolution versus alternate/leave, lore and lesson, and fee/partial endings. The clerk recognition is route-specific and is exposed before the method choice; no persistent state is added.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 831,
+      "adventureId": "the-shed-at-ash-lot",
+      "slug": "the-shed-at-ash-lot",
+      "title": "The Shed at Ash Lot",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0354"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Reviewed inspect/rush/withdraw, visible-sill inspection versus shore/close/force, cautious boundary-record decision, alternate delay, leave/partial, lore/lesson, and fee settlement. The boundary evidence is disclosed before the inspection method; no unrelated ownership disposition is changed.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 832,
+      "adventureId": "the-school-bell-frame",
+      "slug": "the-school-bell-frame",
+      "title": "The School Bell Frame",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0355"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Traced inspect/rush/withdraw, compare/shore/close/force, record-and-keep-lowered versus alternate rehang/partial, lore/lesson, and fee outcomes. The comparison result precedes the method and any record request; no additional safety or chronology issue inferred.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 833,
+      "adventureId": "the-lodge-wall-under-new-paint",
+      "slug": "the-lodge-wall-under-new-paint",
+      "title": "The Lodge Wall Under New Paint",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0356"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Reviewed inspect/rush/withdraw; preserve/inquire versus shore/close/force; recording both building phases and member-selected layouts; lore, lesson, fee, and partial results. The historical identification is not established on every entry route.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 834,
+      "adventureId": "the-bridge-camp-post",
+      "slug": "the-bridge-camp-post",
+      "title": "The Bridge Camp Post",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0357"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Traced inspect/rush/withdraw, clean-and-record with usable gloves versus shore/close/force, cautious keep-out-of-footing and alternate nonstructural storage, lore/lesson, fee, gear/tool availability, and partial close. The ledger match is disclosed before the gated cleaning action.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 835,
+      "adventureId": "the-theater-that-never-opened",
+      "slug": "the-theater-that-never-opened",
+      "title": "The Theater That Never Opened",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0358"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Reviewed high-risk inspect/rush/withdraw, floor-level inspection versus shore/close/force, keep-balcony-closed and recorder-review routes, ground-only market/alternate delay, lore/lesson, fee, and partial outcomes. The support finding is disclosed before inspection; the safety closure itself remains consistent.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 836,
+      "adventureId": "the-old-well-house",
+      "slug": "the-old-well-house",
+      "title": "The Old Well House",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0359"
+      ],
+      "reviewProvenance": "Current-source route review; materially distinct choices, route state, convergence/endings, rewards, and applicable persistence variants traced.",
+      "notes": "Traced inspect/rush/withdraw, compare/shore/close/force, discrepancy-preserving clerk record versus plain replacement/storage, lore/lesson, fee, and partial ending. The former fitting identity is disclosed before the comparison action.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
     }
   ],
   "findings": [
@@ -18634,6 +18794,126 @@
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0350",
+      "position": 731,
+      "adventureId": "the-fence-pliers-at-willow-turn",
+      "severity": "LOW",
+      "defect": "The rail-reinforcement route reaches a shared resolution that says the gate closes and the first sheep pass, although this route explicitly reinforces the rail before opening the gate.",
+      "routeWitness": "corner -> twine or usable fencing pliers -> test -> rail -> resolved; the selected rail choice occurs before opening the gate, but resolved asserts the gate closed and sheep passed.",
+      "violatedRule": "A converged result may assert only actions and outcomes established by the selected route.",
+      "clusterId": "CRA-C0001",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0351",
+      "position": 732,
+      "adventureId": "the-lost-halter-at-blue-hill",
+      "severity": "LOW",
+      "defect": "The pull route is narrated as if nobody pulled the damaged halter, although that is the selected action; the mule sidesteps and the owner later leads it with a feed pail.",
+      "routeWitness": "halter -> pull -> stop; stop says the mule steps back and ends with ‘no one pulls on the damaged halter,’ contradicting the route action the player selected.",
+      "violatedRule": "Failure or interruption narration must preserve the attempted action while distinguishing it from a completed or harmful outcome.",
+      "clusterId": "CRA-C0001",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0352",
+      "position": 829,
+      "adventureId": "the-tower-without-its-shadow",
+      "severity": "MEDIUM",
+      "defect": "The work scene discloses that the tower was moved and reveals a maker stamp before the player chooses to compare the shadow line and foundation stones.",
+      "routeWitness": "start.inspect or start.rush -> work; work unconditionally prints methodResult before work.measure is available.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0353",
+      "position": 830,
+      "adventureId": "the-hall-with-the-mismatched-stone",
+      "severity": "MEDIUM",
+      "defect": "The work scene says the clerk recognizes the red stone’s courthouse mark before the player selects the action to set the block aside and ask the clerk.",
+      "routeWitness": "start.inspect or start.rush -> work; unconditional methodResult precedes work.measure and its clerk-inquiry method.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0354",
+      "position": 831,
+      "adventureId": "the-shed-at-ash-lot",
+      "severity": "MEDIUM",
+      "defect": "The work scene reveals cooperative initials and foundation stones beyond the surveyed deed before the player chooses to mark a no-entry line and inspect the sill.",
+      "routeWitness": "start.inspect or start.rush -> work; work unconditionally narrates methodResult before measure/inspect is chosen.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0355",
+      "position": 832,
+      "adventureId": "the-school-bell-frame",
+      "severity": "MEDIUM",
+      "defect": "The work scene reports the new crosspiece’s bearing and original bell position before the player chooses to compare peg holes and the crosspiece.",
+      "routeWitness": "start.inspect or start.rush -> work; work prints methodResult before the comparison action can be selected.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0356",
+      "position": 833,
+      "adventureId": "the-lodge-wall-under-new-paint",
+      "severity": "MEDIUM",
+      "defect": "The work scene identifies the exposed joint as part of the lodge’s first meeting room before the player chooses to preserve it and ask the committee elder.",
+      "routeWitness": "start.inspect or start.rush -> work; unconditional methodResult is shown before the preservation/inquiry method.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0357",
+      "position": 834,
+      "adventureId": "the-bridge-camp-post",
+      "severity": "MEDIUM",
+      "defect": "The work scene reveals the post’s ledger number and different crossing before the player chooses to clean the face with usable Heavy Leather Gloves and record the marks.",
+      "routeWitness": "start.inspect or start.rush -> work; methodResult precedes the gloves-gated gear action and all other work actions.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0358",
+      "position": 835,
+      "adventureId": "the-theater-that-never-opened",
+      "severity": "MEDIUM",
+      "defect": "The work scene says the visible joists are sound but the support posts stop short of the foundation before the player chooses to inspect them from below.",
+      "routeWitness": "start.inspect or start.rush -> work; methodResult precedes the balcony-closed inspection method and all resolution choices.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0359",
+      "position": 836,
+      "adventureId": "the-old-well-house",
+      "severity": "MEDIUM",
+      "defect": "The work scene identifies the ring as a former drain-gate fitting before the player chooses to compare its position with the old well sketch.",
+      "routeWitness": "start.inspect or start.rush -> work; methodResult precedes the compare-sketch method.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "clusterId": "CRA-C0011",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE"
     }
   ],
   "clusters": [
@@ -18863,7 +19143,9 @@
         "CRA-F0331",
         "CRA-F0332",
         "CRA-F0333",
-        "CRA-F0334"
+        "CRA-F0334",
+        "CRA-F0350",
+        "CRA-F0351"
       ]
     },
     {
@@ -19054,14 +19336,22 @@
         "CRA-F0346",
         "CRA-F0347",
         "CRA-F0348",
-        "CRA-F0349"
+        "CRA-F0349",
+        "CRA-F0352",
+        "CRA-F0353",
+        "CRA-F0354",
+        "CRA-F0355",
+        "CRA-F0356",
+        "CRA-F0357",
+        "CRA-F0358",
+        "CRA-F0359"
       ]
     }
   ],
   "classificationTotals": {
     "HEALTHY": 460,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 308,
+    "CONFIRMED DEFECT": 318,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -19808,14 +20098,18 @@
     {
       "positions": "830-839 (current live registry)",
       "status": "Completed ten construction/building route reviews. All ten entries in this continuing builder family disclose a story-specific measurement/tool result in the work scene before the measure choice; CRA-F0340–CRA-F0349 extend CRA-C0011. For each, inspect/rush/withdraw entry, method and usable-Gear gates, uncertain-versus-confirmed structural signs, safe close/alternate/partial routes, optional Knowledge/Lore, and tool/reward/persistence outcomes were traced."
+    },
+    {
+      "positions": "731–732 and 829–836 (10 newly completed live reviews)",
+      "status": "Reviewed the two agricultural route-state cases and eight construction stories in live-registry order. The fence-pliers rail-reinforcement branch enters the shared result without opening the gate, yet the ending says sheep pass. The lost-halter pull choice is erased by stop text saying nobody pulls. Eight construction-builder stories disclose their story-specific inspection/method result in work before measure/inspection choice; each finding extends CRA-C0011. Route choices, stop/withdraw, usable Gear gates, safe/alternate/partial outcomes, conditional reward/fee, optional Knowledge/Lore, and applicable legacy state were checked; no persistence behavior is added by these stories."
     }
   ],
-  "highestContiguousReviewedPosition": 730,
-  "maxReviewedRegistryPosition": 828,
-  "reviewedBeyondFirstGapCount": 96,
-  "firstUnreviewedPosition": 731,
-  "firstUnreviewedStableId": "the-fence-pliers-at-willow-turn",
-  "nextStableId": "the-fence-pliers-at-willow-turn",
+  "highestContiguousReviewedPosition": 836,
+  "maxReviewedRegistryPosition": 836,
+  "reviewedBeyondFirstGapCount": 0,
+  "firstUnreviewedPosition": 837,
+  "firstUnreviewedStableId": "the-tower-bell-anchor",
+  "nextStableId": "the-tower-bell-anchor",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -20547,6 +20841,8 @@
     "the-hitch-pin-at-gray-mill",
     "the-night-watch-at-hollow-barn",
     "the-two-haystacks-at-birch-meadow",
+    "the-fence-pliers-at-willow-turn",
+    "the-lost-halter-at-blue-hill",
     "the-frozen-pump-at-lower-pasture",
     "the-broken-rail-at-crow-field",
     "the-sheep-shears-that-went-missing",
@@ -20642,7 +20938,15 @@
     "the-stone-that-kept-the-water",
     "the-ladder-in-the-west-yard",
     "the-chimney-that-pulled-away",
-    "the-ramp-for-the-grain-cart"
+    "the-ramp-for-the-grain-cart",
+    "the-tower-without-its-shadow",
+    "the-hall-with-the-mismatched-stone",
+    "the-shed-at-ash-lot",
+    "the-school-bell-frame",
+    "the-lodge-wall-under-new-paint",
+    "the-bridge-camp-post",
+    "the-theater-that-never-opened",
+    "the-old-well-house"
   ],
   "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -20664,8 +20968,8 @@
     "registryOrderSource": "src/scenarios/index.ts",
     "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
     "liveRegistryCount": 861,
-    "reviewedLiveCount": 826,
-    "remainingLiveCount": 35,
+    "reviewedLiveCount": 836,
+    "remainingLiveCount": 25,
     "unregisteredReviewedCount": 24,
     "unregisteredHistoricalFindingCount": 7,
     "unregisteredReviewedAdventureIds": [
@@ -20696,18 +21000,26 @@
     ],
     "unreviewedPositionRanges": [
       [
-        731,
-        732
-      ],
-      [
-        829,
+        837,
         861
       ]
     ],
-    "latest20ReconciledToPositions809Through828": true
+    "latest20ReconciledToPositions809Through828": true,
+    "latestBatchPositions": [
+      731,
+      732,
+      829,
+      830,
+      831,
+      832,
+      833,
+      834,
+      835,
+      836
+    ]
   },
-  "reviewedLiveCount": 826,
-  "remainingLiveCount": 35,
+  "reviewedLiveCount": 836,
+  "remainingLiveCount": 25,
   "reviewedLiveStableIds": [
     "broken-bell",
     "last-stop",
@@ -21439,6 +21751,8 @@
     "the-hitch-pin-at-gray-mill",
     "the-night-watch-at-hollow-barn",
     "the-two-haystacks-at-birch-meadow",
+    "the-fence-pliers-at-willow-turn",
+    "the-lost-halter-at-blue-hill",
     "the-frozen-pump-at-lower-pasture",
     "the-broken-rail-at-crow-field",
     "the-sheep-shears-that-went-missing",
@@ -21534,11 +21848,7 @@
     "the-stone-that-kept-the-water",
     "the-ladder-in-the-west-yard",
     "the-chimney-that-pulled-away",
-    "the-ramp-for-the-grain-cart"
-  ],
-  "unreviewedLiveStableIds": [
-    "the-fence-pliers-at-willow-turn",
-    "the-lost-halter-at-blue-hill",
+    "the-ramp-for-the-grain-cart",
     "the-tower-without-its-shadow",
     "the-hall-with-the-mismatched-stone",
     "the-shed-at-ash-lot",
@@ -21546,7 +21856,9 @@
     "the-lodge-wall-under-new-paint",
     "the-bridge-camp-post",
     "the-theater-that-never-opened",
-    "the-old-well-house",
+    "the-old-well-house"
+  ],
+  "unreviewedLiveStableIds": [
     "the-tower-bell-anchor",
     "rain-on-the-relay",
     "the-wire-that-sang-twice",
@@ -21578,11 +21890,7 @@
   "unclusteredHistoricalFindingCount": 0,
   "unreviewedPositionRanges": [
     [
-      731,
-      732
-    ],
-    [
-      829,
+      837,
       861
     ]
   ]

@@ -3,7 +3,7 @@
 Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 826 live Adventures reviewed; 35 remain. First live gap: position 731, The Fencing Pliers at Willow Turn (`the-fence-pliers-at-willow-turn`). Next finding ID `CRA-F0350`; next available cluster ID `CRA-C0012`.
+Current live registry: 861 Adventures; 836 live Adventures reviewed; 25 remain. First live gap: position 837, The Tower Bell Anchor (`the-tower-bell-anchor`; `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`). Next finding ID `CRA-F0360`; next available cluster ID `CRA-C0012`.
 
 ## Current checkpoint
 
@@ -13,20 +13,39 @@ The canonical registry order is the live exported `SCENARIOS` array in `src/scen
 | --- | ---: |
 | HEALTHY | 460 |
 | MINOR CONCERN | 58 |
-| CONFIRMED DEFECT | 308 |
+| CONFIRMED DEFECT | 318 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed live Adventures | 826 |
-| Live Adventures remaining | 35 |
+| Total reviewed live Adventures | 836 |
+| Live Adventures remaining | 25 |
 
-There are 349 finding records in the preserved audit history: 342 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 273, LOW 46, plus 10 unrecovered values.
+There are 359 finding records in the preserved audit history: 352 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 281, LOW 48, plus 10 unrecovered values.
 
 ### Live-registry reconciliation
 
 The 24 unregistered reviewed Adventure IDs are recorded in the JSON `unregisteredReviewedAdventures` section. All 24 source files still exist, but those IDs are absent from the exported live `SCENARIOS` array; this is unregistered/draft content, not deleted source or duplicate replacement. The original 11 wilderness draft records remain preserved along with 13 additional unregistered records from later recorded batches.
 
-Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 220, C0002 18, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 15 (336 clustered live findings); six live findings are unclustered.
+Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 23 (346 clustered live findings); six live findings are unclustered.
 
-Coverage invariant: **861 registered = 826 reviewed + 35 remaining**. The verified unreviewed position ranges are **731–732** and **829–861**. The first unreviewed live entry is position 731, `the-fence-pliers-at-willow-turn` — The Fencing Pliers at Willow Turn — `src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts`.
+Coverage invariant: **861 registered = 836 reviewed + 25 remaining**. The verified unreviewed position range is **837–861**. The first unreviewed live entry is position 837, `the-tower-bell-anchor` — The Tower Bell Anchor — `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`.
+
+## Live-registry continuation (10 newly completed reviews)
+
+Reviewed the two agricultural Adventures at positions 731–732, then resumed at the first remaining gap and reviewed positions 829–836. Positions 733–828 were skipped because their stable IDs already had complete live reviews. The agricultural routes revealed two LOW-severity route-truth defects. Eight construction stories share the existing CRA-C0011 builder mechanism: each work scene exposes its story-specific method/inspection result before the player chooses that method. Their individual findings extend the cluster; no new cluster was needed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 731 | The Fencing Pliers at Willow Turn (`the-fence-pliers-at-willow-turn`) | CONFIRMED DEFECT | CRA-F0350 (LOW, CRA-C0001) — rail-reinforcement route says the gate closes and sheep pass before the gate is opened. |
+| 732 | The Lost Halter at Blue Hill (`the-lost-halter-at-blue-hill`) | CONFIRMED DEFECT | CRA-F0351 (LOW, CRA-C0001) — selected pull attempt is erased by stop text saying nobody pulls the halter. |
+| 829 | The Tower Without Its Shadow (`the-tower-without-its-shadow`) | CONFIRMED DEFECT | CRA-F0352 (MEDIUM, CRA-C0011) — moved-tower and maker-stamp result disclosed before comparison choice. |
+| 830 | The Hall with the Mismatched Stone (`the-hall-with-the-mismatched-stone`) | CONFIRMED DEFECT | CRA-F0353 (MEDIUM, CRA-C0011) — clerk’s recognition of the stone disclosed before the inquiry method. |
+| 831 | The Shed at Ash Lot (`the-shed-at-ash-lot`) | CONFIRMED DEFECT | CRA-F0354 (MEDIUM, CRA-C0011) — cooperative mark and boundary evidence disclosed before sill inspection. |
+| 832 | The School Bell Frame (`the-school-bell-frame`) | CONFIRMED DEFECT | CRA-F0355 (MEDIUM, CRA-C0011) — crosspiece bearing and old bell position disclosed before comparison. |
+| 833 | The Lodge Wall Under New Paint (`the-lodge-wall-under-new-paint`) | CONFIRMED DEFECT | CRA-F0356 (MEDIUM, CRA-C0011) — joint’s historical identity disclosed before preservation/inquiry. |
+| 834 | The Bridge Camp Post (`the-bridge-camp-post`) | CONFIRMED DEFECT | CRA-F0357 (MEDIUM, CRA-C0011) — ledger match disclosed before usable-gloves cleaning/recording action. |
+| 835 | The Theater That Never Opened (`the-theater-that-never-opened`) | CONFIRMED DEFECT | CRA-F0358 (MEDIUM, CRA-C0011) — support-post finding disclosed before floor-level inspection. |
+| 836 | The Old Well House (`the-old-well-house`) | CONFIRMED DEFECT | CRA-F0359 (MEDIUM, CRA-C0011) — drain-gate identity disclosed before sketch comparison. |
+
+All ten reviews preserve route distinctions for refusal/withdrawal, alternate or partial outcomes, tool usability, conditional fees/rewards, and optional Knowledge/Lore. No persistent state was introduced. Current live totals are **836 reviewed / 25 remaining**; next finding ID: **CRA-F0360**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
 
 ## Registry position reconciliation (historical note; superseded by live-registry correction above)
 
