@@ -135,6 +135,19 @@ describe('grounded adventure expansion batch', () => {
     expect(act(keeper, THE_BELL_AFTER_MIDNIGHT, 'keeperWakes', 'douseStraw').run?.sceneId).toBe('stableSafe');
   });
 
+  it('keeps the stable-fire convergence truthful about which action was taken', () => {
+    const keeper = act(start(THE_BELL_AFTER_MIDNIGHT), THE_BELL_AFTER_MIDNIGHT, 'innAtNight', 'wakeTheKeeper');
+    const doused = act(keeper, THE_BELL_AFTER_MIDNIGHT, 'keeperWakes', 'douseStraw');
+    expect(doused.run?.sceneId).toBe('stableSafe');
+    expect(THE_BELL_AFTER_MIDNIGHT.scenes.stableSafe.text).toMatch(/under control before it reaches the stalls/i);
+    expect(THE_BELL_AFTER_MIDNIGHT.scenes.stableSafe.text).not.toMatch(/straw is soaked/i);
+
+    const yard = act(start(THE_BELL_AFTER_MIDNIGHT, 'lanternGuard'), THE_BELL_AFTER_MIDNIGHT, 'innAtNight', 'takeLightOutside');
+    const cleared = act(yard, THE_BELL_AFTER_MIDNIGHT, 'stableYard', 'leadStablehandClear');
+    expect(cleared.run?.sceneId).toBe('stableSafe');
+    expect(THE_BELL_AFTER_MIDNIGHT.scenes.stableSafe.text).not.toMatch(/straw is soaked/i);
+  });
+
   it('does not call every valid tarp tie a strap or guess on an old save', () => {
     for (const item of ['freightmansStrap', 'travelRope', 'waxedCanvasSheet']) {
       const secured = act(start(THE_EMPTY_WAGON, item), THE_EMPTY_WAGON, 'wagonOnRoad', 'secureWagonLoad');

@@ -21,7 +21,7 @@ export const THE_BELL_AFTER_MIDNIGHT: Scenario = {
       { id: 'callForKeeper', label: 'Call the keeper and fetch more water', timeCost: 3, next: 'stableSafe' },
       { id: 'useLanternGuard', label: 'Use the Lantern Guard to carry the lamp clear of the rail', requirements: { items: ['lanternGuard'] , usableItems: ['lanternGuard']}, next: 'stableSafe', effects: { historyFlags: ['used_lantern_guard_at_stable_fire'] } },
     ] },
-    stableSafe: { id: 'stableSafe', title: 'The Yard Settles', tone: 'safe', ending: 'success', choices: [], text: 'The straw is soaked before the fire reaches the stalls. The keeper treats {{stablehand}}’s ankle and checks the horses. The stablehand pulled the yard bell once for help, then slipped and twisted an ankle outside the stable.' },
+    stableSafe: { id: 'stableSafe', title: 'The Yard Settles', tone: 'safe', ending: 'success', choices: [], text: 'The small fire is under control before it reaches the stalls. The keeper treats {{stablehand}}’s ankle and checks the horses. The stablehand pulled the yard bell once for help, then slipped and twisted an ankle outside the stable.' },
     morningAfterBell: { id: 'morningAfterBell', title: 'Morning at the Inn', tone: 'safe', ending: 'success', choices: [], text: 'The keeper puts out the small stable fire before it reaches the stalls. In the morning, {{stablehand}} is resting with a wrapped ankle. The single bell stroke was an interrupted call for help, not a town-wide alarm.' },
   },
 };
