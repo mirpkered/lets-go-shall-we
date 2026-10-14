@@ -13648,12 +13648,12 @@
       "slug": "the-millwrights-hand",
       "title": "The Millwright’s Hand",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0329"
       ],
       "reviewProvenance": "current-source route review; bandage/protection, movement, signal, wait/transfer/leave, Knowledge eligibility, compensation and persistence paths traced",
-      "notes": "After a non-learning signal route, choosing to return to the wheel house alone and then decline compensation reaches close text claiming handoff complete and patient left to trained care. The doctor is several miles away and the miller is managing the headrace; no one is established as staying with the patient.",
+      "notes": "The original signal -> return alone -> decline route lacked a caregiver handoff. The audited close now uses the existing leave-patient route flag to state neutrally that arrival at trained care or a completed handoff was not established; the signal route, Knowledge, and compensation behavior remain unchanged.",
       "preReconciliationPosition": 801,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13666,12 +13666,12 @@
       "slug": "the-stonecutters-narrow-way",
       "title": "The Stonecutter’s Narrow Way",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0330"
       ],
       "reviewProvenance": "current-source route review; chip clearing, broad-shelf stretcher movement, doctor signaling, stay/transfer, unsafe stair attempt, lesson eligibility, compensation and reward persistence traced",
-      "notes": "A non-learning protect route followed by the unsafe attempt to lower the stretcher on the uncleared loose stair can end with close text claiming completed handoff to trained care. The foreman is explicitly not a medical practitioner, the doctor is still at the lower works, and no outcome establishes that the carry reached either.",
+      "notes": "The original protect -> unsafe loose-stair attempt -> decline route lacked proof of a completed carry or medical handoff. The audited close now uses the existing leave-patient route flag for neutral wording; stretcher, helper, Knowledge, and reward behavior remain unchanged.",
       "preReconciliationPosition": 802,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13684,12 +13684,12 @@
       "slug": "lanterns-at-milepost-nine",
       "title": "Lanterns at Milepost Nine",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0331"
       ],
       "reviewProvenance": "current-source route review; blanket, movement, whistle-gated signal, stay/transfer/leave, no-Knowledge classification and compensation routes traced",
-      "notes": "The decision to walk back alone and leave the passenger beside the road, followed by declining compensation, reaches close text asserting a completed handoff and trained care. The coach is around the bend and the innkeeper is away fetching a doctor; the route establishes neither caregiver’s return nor a transfer.",
+      "notes": "The original leave-passenger-beside-road -> decline route did not establish the coach or doctor returning. The audited close now uses the existing leave-patient route flag for neutral wording; the whistle gate and passenger movement routes remain unchanged.",
       "preReconciliationPosition": 803,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13782,12 +13782,12 @@
       "slug": "the-quarry-call-below",
       "title": "The Quarry Call Below",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0332"
       ],
       "reviewProvenance": "current-source route review; rim communication, safe switchback, signal/doctor route, stay/transfer, blocked-ladder descent, Knowledge and reward/compensation outcomes traced",
-      "notes": "Even after the blocked-ladder descent choice, settlement can reach close text claiming completed handoff to trained care. The worker is still on the lower ledge, the rescue lead is at the upper rim, and the choice does not establish a safe descent or transfer.",
+      "notes": "The audit witness was traced against current text-variant order. Every assessment action in this story qualifies for the learned-decline variant, which appears before the generic handoff wording and makes no completed-handoff claim. The finding no longer reproduces; no scenario change was needed.",
       "preReconciliationPosition": 809,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13800,12 +13800,12 @@
       "slug": "the-frozen-post-road",
       "title": "The Soaked Post Road",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0333"
       ],
       "reviewProvenance": "current-source route review; supplied blanket/usable owned blanket, shelter/movement/signal, unsafe continued walking, lesson qualification, compensation and reward routes traced",
-      "notes": "The continuing-walk route crosses the rise away from the ready shelter, yet after declining compensation the close variant says handoff is complete and the rider is left to trained care. No doctor/keeper return or transfer is established on that route.",
+      "notes": "The audit witness was traced against current text-variant order. Every assessment action in this story qualifies for the learned-decline variant, which appears before the generic handoff wording and makes no completed-handoff claim. The finding no longer reproduces; no scenario change was needed.",
       "preReconciliationPosition": 810,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13850,12 +13850,12 @@
       "slug": "the-signal-on-the-ridge",
       "title": "The Signal on the Ridge",
       "sourceFile": "src/scenarios/medicalRescueSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0334"
       ],
       "reviewProvenance": "current-source route review; keep-in-sight/protect, gated mirror signal, switchback with guide, direct scree descent, Knowledge and stretcher reward routes traced",
-      "notes": "After choosing the direct scree descent before the guide arrives, the route can reach close text claiming completed handoff to trained care. The assistant remains on the shelf and no descent/carry/transfer result is recorded.",
+      "notes": "The audit witness was traced against current text-variant order. Every assessment action in this story qualifies for the learned-decline variant, which appears before the generic handoff wording and makes no completed-handoff claim. The finding no longer reproduces; no scenario change was needed.",
       "preReconciliationPosition": 813,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -19117,6 +19117,8 @@
       "violatedRule": "A converged ending may not assert a completed care handoff or caregiver presence absent route-established transfer/attendance.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "In src/scenarios/medicalRescueSupportGenreBatch.ts, the ledger-listed leave-alone route is guarded by aid_left_patient and now receives neutral text when compensation is declined; it no longer claims the patient reached trained care or completed a handoff. The learned and non-learning close variants are both covered. src/scenarios/medicalRescueSupportGenreBatch.test.ts drives the exact assessment -> abandon -> decline contrast for all six audited stories and verifies the stay route remains distinct. Full suite, TypeScript, and production build passed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19129,6 +19131,8 @@
       "violatedRule": "A converged ending may not claim successful transfer/care when the route leaves the rescue outcome unresolved.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "In src/scenarios/medicalRescueSupportGenreBatch.ts, the ledger-listed leave-alone route is guarded by aid_left_patient and now receives neutral text when compensation is declined; it no longer claims the patient reached trained care or completed a handoff. The learned and non-learning close variants are both covered. src/scenarios/medicalRescueSupportGenreBatch.test.ts drives the exact assessment -> abandon -> decline contrast for all six audited stories and verifies the stay route remains distinct. Full suite, TypeScript, and production build passed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19141,6 +19145,8 @@
       "violatedRule": "A converged ending may not assert a completed care handoff when the selected route explicitly leaves the patient without an attendant.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "In src/scenarios/medicalRescueSupportGenreBatch.ts, the ledger-listed leave-alone route is guarded by aid_left_patient and now receives neutral text when compensation is declined; it no longer claims the patient reached trained care or completed a handoff. The learned and non-learning close variants are both covered. src/scenarios/medicalRescueSupportGenreBatch.test.ts drives the exact assessment -> abandon -> decline contrast for all six audited stories and verifies the stay route remains distinct. Full suite, TypeScript, and production build passed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19153,6 +19159,8 @@
       "violatedRule": "A converged ending may not claim successful rescue or completed care transfer without route proof of the person’s movement and handoff.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Current MEDICAL_SUPPORT_LEARNING_PLANS marks every assessment action for the-quarry-call-below as lesson-qualifying. Therefore the witnessed protect/move/signal/useGear -> abandon -> decline path takes the earlier learned-decline close variant, which says the method remains learned and does not claim completed handoff or trained-care arrival. A route-level regression confirms this; no gameplay change was needed for this finding.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19165,6 +19173,8 @@
       "violatedRule": "A converged ending may not claim completed care or handoff absent route proof of arrival and caregiver transfer.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Current MEDICAL_SUPPORT_LEARNING_PLANS marks every assessment action for the-frozen-post-road as lesson-qualifying. Therefore the witnessed protect/signal -> abandon -> decline path takes the earlier learned-decline close variant, which preserves the learned-method narration but makes no completed-handoff or trained-care-arrival claim. A route-level regression confirms this; no gameplay change was needed for this finding.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19177,6 +19187,8 @@
       "violatedRule": "A converged ending may not claim rescue/handoff completion when the route records only an unsafe attempt and no person-state transition.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Current MEDICAL_SUPPORT_LEARNING_PLANS marks every assessment action for the-signal-on-the-ridge as lesson-qualifying. Therefore the witnessed protect/signal -> abandon -> decline path takes the earlier learned-decline close variant, which makes no completed-handoff or trained-care-arrival claim. A route-level regression confirms this; no gameplay change was needed for this finding.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19996,9 +20008,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 591,
+    "HEALTHY": 597,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 212,
+    "CONFIRMED DEFECT": 206,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
