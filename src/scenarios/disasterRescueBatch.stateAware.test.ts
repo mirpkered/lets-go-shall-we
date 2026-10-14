@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
-import { THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
+import { THE_BOILER_ROOM, THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
 
 function fresh(scenario: Scenario = THE_CROWD_BREAKS, carriedItem?: string): SaveData {
   const character = newCharacter('State Tester');
@@ -92,5 +92,25 @@ describe('state-aware shared aftermath narration', () => {
     expect(muleEnding.textVariants?.some(({ text }) => /driver.*reach(?:es)? the west bank/i.test(text))).toBe(false);
     expect(mule.run?.flags).toContain('bridgeMuleFreed');
     expect(mule.run?.flags).not.toContain('bridgePeopleSaved');
+  });
+
+  it('does not convert a boiler warning into a claim that every worker evacuated', () => {
+    let unwarned = fresh(THE_BOILER_ROOM);
+    unwarned = act(unwarned, THE_BOILER_ROOM, 'tellForeman');
+    unwarned = act(unwarned, THE_BOILER_ROOM, 'ventBoiler');
+    unwarned = act(unwarned, THE_BOILER_ROOM, 'boilerAccount');
+    expect(unwarned.run?.sceneId).toBe('boilerAftermath');
+    expect(THE_BOILER_ROOM.scenes.boilerAftermath.text).not.toMatch(/workers are counted outside/i);
+    unwarned = act(unwarned, THE_BOILER_ROOM, 'boilerLeave');
+    expect(THE_BOILER_ROOM.scenes.boilerEnd.text).not.toMatch(/workers are counted outside/i);
+
+    let warnedButIncomplete = fresh(THE_BOILER_ROOM);
+    warnedButIncomplete = act(warnedButIncomplete, THE_BOILER_ROOM, 'warnShift');
+    warnedButIncomplete = act(warnedButIncomplete, THE_BOILER_ROOM, 'assistForeman');
+    warnedButIncomplete = act(warnedButIncomplete, THE_BOILER_ROOM, 'turnWheel', 0);
+    warnedButIncomplete = act(warnedButIncomplete, THE_BOILER_ROOM, 'boilerAccount');
+    expect(warnedButIncomplete.run?.flags).toContain('boilerShiftWarned');
+    expect(warnedButIncomplete.run?.sceneId).toBe('boilerAftermath');
+    expect(THE_BOILER_ROOM.scenes.boilerAftermath.text).not.toMatch(/workers are counted outside/i);
   });
 });

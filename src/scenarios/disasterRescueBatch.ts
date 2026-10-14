@@ -260,12 +260,12 @@ export const THE_BOILER_ROOM = A('the-boiler-room', 'The Boiler Room', 'A mill b
     { id: 'boilerAidBurn', label: 'Help the injured worker to the pump', next: 'boilerAftermath', effects: { health: -2, setFlags: ['boilerWorkerHurt'] } },
     { id: 'boilerClear', label: 'Clear the doorway for the engineer', next: 'boilerAftermath' },
   ], 'danger'),
-  boilerAftermath: scene('boilerAftermath', 'The Mill Falls Quiet', 'The engineer marks the damaged joint for replacement. No one restarts the boiler today; workers are counted outside, and the miller offers two coins for your help. The mill also has a worn Foreman’s Multi-tool left from a recent repair-chest replacement.', [
+  boilerAftermath: scene('boilerAftermath', 'The Mill Falls Quiet', 'The engineer marks the damaged joint for replacement. No one restarts the boiler today, and the miller offers two coins for your help. The mill also has a worn Foreman’s Multi-tool left from a recent repair-chest replacement.', [
     { id: 'boilerLeave', label: 'Accept the two-coin payment', next: 'boilerEnd', effects: { money: 2 } },
     { id: 'boilerTakeTool', label: 'Take the Foreman’s Multi-tool instead of 2 coins', requirements: { notOwnedItems: ['foremanMultiTool'] }, next: 'boilerEnd', effects: { gainItems: ['foremanMultiTool'] } },
     { id: 'boilerRepairTool', label: 'Repair your damaged Pocket Toolkit instead of taking cash', requirements: { items: ['pocketToolkit'], itemConditions: { pocketToolkit: ['DAMAGED', 'BROKEN'] } }, next: 'boilerEnd', effects: { repairItems: ['pocketToolkit'], repairItemProvenance: { pocketToolkit: 'Repaired at the mill after the boiler shutdown' } } },
   ]),
-  boilerEnd: end('boilerEnd', 'Work Stopped in Time', 'The mill loses a shift, not its boiler house. Workers are counted outside, and the engineer marks the damaged joint for replacement.'),
+  boilerEnd: end('boilerEnd', 'Work Stopped in Time', 'The mill loses a shift, not its boiler house. The engineer marks the damaged joint for replacement.'),
   boilerDeath: end('boilerDeath', 'The Boiler Door', 'The pressurized pipe bursts before you reach the shutoff.', 'death'),
 }, 'yard');
 
