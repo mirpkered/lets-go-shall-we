@@ -4712,12 +4712,12 @@
       "slug": "visitor-at-midnight",
       "title": "The Visitor at Midnight",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0080"
       ],
       "reviewProvenance": "current source route review; closed-door refusal, porch account, chained-door account, neighbor witness, no-track watch check, key handling, offered shelter and shared finale traced",
-      "notes": "After evidence.offerSafeShelter, inside explicitly says the visitor waits in the outer room until the watch arrives; offering tea proceeds through key to midnightEnd without a departure or denial of presence. The ending nevertheless says whether anyone stood on the porch remains unresolved. The supernatural identity/account can remain uncertain, but the route has established a visitor was physically present and sheltered.",
+      "notes": "The factual midnightVisitorPresenceConfirmed flag now preserves known presence from the chained-threshold, sheltered-visitor, and neighbor-witness routes. The ending remains uncertain about identity/arrival, not whether a person was present. Closed-door/no-track routes retain the uncertainty text. Regression covers each distinction and save/reload of the shelter proof.",
       "preReconciliationPosition": 261,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15963,6 +15963,8 @@
       "violatedRule": "A mystery may preserve uncertainty about identity or explanation, but shared ending text must retain directly established person presence and route outcome.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The midnightEnd default now preserves uncertainty for closed-door/no-track routes. A factual run-local midnightVisitorPresenceConfirmed flag is set by opening the chained door, offering the visitor shelter, or choosing either path after the neighbor witnesses them. The ending then states someone was physically present while retaining uncertainty about arrival and identity. Regression covers shelter with JSON save/reload, threshold presence, neighbor witness, and closed-door ambiguity; christmasAffinityBatch.test.ts passes 23 tests and production build passes.",
       "preReconciliationPosition": 261,
       "registrationStatus": "LIVE"
     },
@@ -20108,9 +20110,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 640,
+    "HEALTHY": 641,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 162,
+    "CONFIRMED DEFECT": 161,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
