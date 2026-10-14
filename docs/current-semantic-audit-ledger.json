@@ -8783,12 +8783,12 @@
       "slug": "the-closed-gate",
       "title": "The Closed Gate",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0201"
       ],
       "reviewProvenance": "current-source route review; sign/family/rancher approaches, permit/back-lane/neighbor responses, combat win/loss, gate/road outcomes, spare strap and date Knowledge traced",
-      "notes": "The shared aftermath says the family reaches the road by the back lane and that the county clerk is asked to confirm the permit date. Only openBackLane chooses that route; showPermit instead depends on a dated permit established only by askFamily, while callNeighbor neither selects the back lane nor asks the clerk. Those response routes do not support the shared location/request claims; combat withdrawal is separate.",
+      "notes": "The shared aftermath said the family reached the road by the back lane and that the county clerk was asked to confirm the permit date, despite those facts being response-specific. The aftermath now distinguishes showPermit, openBackLane, and callNeighbor; only the chosen route’s supported permit, movement, or witness result is stated. Regression covers all nine approach/response combinations and confirms no unsupported clerk request.",
       "preReconciliationPosition": 506,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8801,12 +8801,12 @@
       "slug": "the-camp-with-two-fires",
       "title": "The Camp with Two Fires",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0202"
       ],
       "reviewProvenance": "current-source route review; horse/load/wake approaches, watch/gap/cook responses, combat win/loss, custody of chest/pry tool, return/escort endings, separate kit reward and wage-dispute resolution traced",
-      "notes": "Only callWatch explicitly says the intruder drops a pry tool and surrenders. closeGap says the intruder leaves without the chest; wakeCook says the intruder flees and leaves the tool chest untouched; combat victory says the hand surrenders but does not mention dropping the tool. Yet returnTool is selectable after every route and its ending says the owner identifies and logs that pry tool back into the chest. The separate duplicate Folding Pry Tool reward is not the dropped property.",
+      "notes": "Only callWatch establishes that the intruder drops a pry tool. The return-tool ending is now gated on that response’s road_response_callWatch proof, so closeGap, wakeCook, and combat victory cannot claim or act on an unestablished dropped tool. Other branches retain neutral truthful outcomes; the duplicate Folding Pry Tool reward remains separate from scene property. Regression checks eligible/ineligible routes and the distinct reward provenance.",
       "preReconciliationPosition": 507,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8819,12 +8819,12 @@
       "slug": "the-blue-thread",
       "title": "The Blue Thread",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0203"
       ],
       "reviewProvenance": "current-source route review; ditch/witness/fiber approaches, coin-identification/finder-question/witness responses, purse custody and reporting endings, separate fee/refusal and Knowledge traced",
-      "notes": "Only askFinder says the traveler admits taking two coins, and even that response does not say the remaining coins are returned. countCoins only has Vale identify the number/ticket; callWoodcutter only reports when the purse was on the bench. The shared aftermath nevertheless says the finder admits taking two and returns the remaining coins on all three branches.",
+      "notes": "The responses establish different evidence: countCoins identifies the ticket and contents, askFinder establishes an admission but no repayment, and callWoodcutter establishes timing only. Response-specific aftermath now preserves those distinctions without claiming restitution, and the walkToInn ending records return of the purse without assigning blame or deciding theft. Regression covers all three responses and the shared ending.",
       "preReconciliationPosition": 508,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17660,7 +17660,9 @@
       "violatedRule": "Converged location and follow-up actions must preserve the specific route the player chose rather than importing a sibling response’s movement or request.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "roadDangerGenreBatch.ts now uses response-specific aftermath variants for showPermit, openBackLane, and callNeighbor, with a neutral fallback; no branch imports another response’s movement or clerk request. roadDangerGenreBatch.test.ts checks all nine approach/response combinations. Wave 89 focused road-family/registry/library/inventory/content-quality validation (44 tests across 5 files), full suite (127 files / 2,458 tests), TypeScript, production build, and git diff --check passed. Source/test commit 7aa537a."
     },
     {
       "findingId": "CRA-F0202",
@@ -17672,7 +17674,9 @@
       "violatedRule": "An object-return action requires route-established possession/custody of the object being returned.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "roadDangerGenreBatch.ts gates ending_returnTool on road_response_callWatch, the only response that establishes the dropped pry tool. Other responses retain the non-tool endings; the separate duplicate-kit reward/provenance remains distinct. roadDangerGenreBatch.test.ts verifies callWatch eligibility and closeGap/wakeCook/combat ineligibility. Wave 89 focused checks (44 tests across 5 files), full suite (127 files / 2,458 tests), TypeScript, production build, and git diff --check passed. Source/test commit 7aa537a."
     },
     {
       "findingId": "CRA-F0203",
@@ -17684,7 +17688,9 @@
       "violatedRule": "Confession, restitution, and recovered amount are separate outcomes and must be established by the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "roadDangerGenreBatch.ts now renders distinct countCoins, askFinder, and callWoodcutter aftermath claims and uses a neutral walkToInn result that records purse return without assigning blame or deciding theft. It no longer asserts repayment. roadDangerGenreBatch.test.ts checks each response and the ending. Wave 89 focused checks (44 tests across 5 files), full suite (127 files / 2,458 tests), TypeScript, production build, and git diff --check passed. Source/test commit 7aa537a."
     },
     {
       "findingId": "CRA-F0204",
@@ -20247,9 +20253,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 702,
+    "HEALTHY": 705,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 100,
+    "CONFIRMED DEFECT": 97,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
