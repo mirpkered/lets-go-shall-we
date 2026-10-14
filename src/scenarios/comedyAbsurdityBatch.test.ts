@@ -80,6 +80,32 @@ describe('comedy and absurdity additions', () => {
     expect(scenario.scenes.signed.text).toMatch(/receives a valid form/i);
   });
 
+  it('respects the returning worker’s request for a small private welcome', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-paper-mill-parade')!;
+    const character = newCharacter('Paper Mill Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let privateRoute = act(initial, 'yard', 'askPurpose');
+    privateRoute = act(privateRoute, 'purpose', 'askWorker');
+    privateRoute = act(privateRoute, 'worker', 'respectQuiet');
+    expect(privateRoute.run?.sceneId).toBe('quietWelcome');
+    expect(scenario.scenes.quietWelcome.text).toMatch(/small and private/i);
+    expect(scenario.scenes.quietWelcome.text).not.toMatch(/the banner welcomes the returning worker in large letters/i);
+    expect(scenario.scenes.quietWelcome.text).not.toMatch(/they wave from the mill gate/i);
+
+    let prominentRoute = act(initial, 'yard', 'askPurpose');
+    prominentRoute = act(prominentRoute, 'purpose', 'writeWelcome');
+    expect(prominentRoute.run?.sceneId).toBe('welcome');
+    expect(scenario.scenes.welcome.text).toMatch(/large letters/i);
+    expect(scenario.scenes.welcome.text).toMatch(/wave from the mill gate/i);
+  });
+
   it('keeps each graph forward-only, connected, actionable, concise, and within four choices', () => {
     for (const scenario of THE_COMEDY_ABSURDITY_ADVENTURES) {
       expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);

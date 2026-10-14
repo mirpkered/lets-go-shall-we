@@ -289,9 +289,10 @@ export const THE_PAPER_MILL_PARADE = story('the-paper-mill-parade', 'The Paper M
   ]),
   worker: scene('worker', 'The Person Being Welcomed', 'The worker says they would rather not be made the whole parade. They suggest a small welcome on the back and the school’s name on the front.', [
     { id: 'useSuggestion', label: 'Write both messages as suggested', next: 'both' },
-    { id: 'respectQuiet', label: 'Keep the welcome small and private', next: 'welcome' },
+    { id: 'respectQuiet', label: 'Keep the welcome small and private', next: 'quietWelcome' },
   ]),
   welcome: end('welcome', 'A Name Carried Home', 'The banner welcomes the returning worker in large letters. They wave from the mill gate, while the school’s collection box remains on the parade table.'),
+  quietWelcome: end('quietWelcome', 'A Welcome Kept Private', 'The welcome stays small and private, as requested. The worker’s name is not put in large letters on the banner, and they are not asked to wave from the mill gate. The school’s collection box remains on the parade table.'),
   both: end('both', 'A Banner Turned Twice', 'The children turn the sheet at the two corners. The welcome appears on one side and the school name on the other; the procession reaches the mill without either group being erased.'),
   left: end('left', 'Blank Paper, Later Words', 'You leave before the wording is settled. The sheet remains stretched between the poles, and the group keeps its hour to decide.'),
 });
