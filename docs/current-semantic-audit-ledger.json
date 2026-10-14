@@ -3909,12 +3909,12 @@
       "slug": "the-broken-axle",
       "title": "The Broken Axle",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0061"
       ],
       "reviewProvenance": "current source route review; inspection, wrench use, unloading, help, brace failure, hard-drive success/failure, settlement reward/repair/refusal paths traced",
-      "notes": "forceBrokenWagon can succeed from axleUnstable and reach axleSettlement after the explicit 'Drive the wagon before dark' choice, but the settlement calls the arrival un-rushed. Other axle routes and the coin/item/repair/refusal reward choices have coherent outcomes.",
+      "notes": "The settlement now thanks the Traveler for bringing the wagon in without characterizing the chosen method as unhurried. Regression drives the successful forceBrokenWagon branch and contrasts a lightened slow delivery; settlement rewards and failure routes are unchanged.",
       "preReconciliationPosition": 213,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -4330,12 +4330,12 @@
       "slug": "christmas-tree-millers-hill",
       "title": "The Christmas Tree on Miller’s Hill",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0073"
       ],
       "reviewProvenance": "current source route review; inspect/Knowledge, rope crew, refuse, clear landing, safe/rough fall, delay, branch trim/haul, payment and post-definition delay variant traced",
-      "notes": "treeSquare is shared by the rough-fall-and-trim branch and the clean safeFall/haulTree branch, but unconditionally says the split branches are cut for garland. On a clean fall no branches split. The already-down delay variant correctly distinguishes a tree left on the slope.",
+      "notes": "treeSquare now defaults to shared arrival/lift/payment text. Only roughFall.trimBranches sets tree_branches_trimmed and retains the garland wording; the clean safeFall/haulTree route no longer invents split branches. Delay behavior and payment remain unchanged.",
       "preReconciliationPosition": 238,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15684,6 +15684,8 @@
       "violatedRule": "Outcome narration and reward framing must reflect the action actually chosen, including a successful risky/fast method.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "axleSettlement's reward introduction now thanks the Traveler for bringing the wagon in without praising the approach as unhurried. The regression drives the explicit forceBrokenWagon success route and contrasts a lightened slow delivery; reward options/effects and failure outcomes remain unchanged. survivalExpeditionBatch.test.ts and rewardAccessExpansion.test.ts pass (23 tests). No new state or save behavior added.",
       "preReconciliationPosition": 213,
       "registrationStatus": "LIVE"
     },
@@ -15860,6 +15862,8 @@
       "violatedRule": "Converged results must not import damage or cleanup actions from an alternate outcome branch.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "treeSquare now defaults to text that reports the intact tree's arrival and shared final lift/payment without asserting branch damage. Only roughFall.trimBranches sets factual run-local proof tree_branches_trimmed and retains the garland-trimming variant. Regression contrasts clean safeFall/haulTree with roughFall/trimBranches. christmasAffinityBatch.test.ts passes 19 tests; no reward, route, or post-definition delay behavior changed.",
       "preReconciliationPosition": 238,
       "registrationStatus": "LIVE"
     },
@@ -20096,9 +20100,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 634,
+    "HEALTHY": 636,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 168,
+    "CONFIRMED DEFECT": 166,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
