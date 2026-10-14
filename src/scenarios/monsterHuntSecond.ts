@@ -157,10 +157,10 @@ export const THE_WIDOWS_BEAST: Scenario = {
     widowAccount: scene('widowAccount', 'Food Left at the Steps', 'The widow says she left scraps outside after a hard winter. The animal now waits beyond the yard fence. She does not want it fed indoors, and does not know whether it has killed any sheep.', [
       { id: 'watchFromWindow', label: 'Watch the yard from inside', next: 'widowWatch' },
       { id: 'askNeighborLoss', label: 'Ask the neighbors what they lost', next: 'widowNeighbors' },
-      { id: 'askWidowStopFeeding', label: 'Help her stop leaving food outside', next: 'widowAfter' },
+      { id: 'askWidowStopFeeding', label: 'Help her stop leaving food outside', next: 'widowAfter', effects: { setFlags: ['widowStoppedLeavingFood'] } },
     ]),
     widowTracks: scene('widowTracks', 'Two Sets of Tracks', 'One broad set circles the house and ends at the broken fence. Smaller prints enter the sheep pen and turn back toward the woods. The large animal has not entered the pen; the smaller predator may have.', [
-      { id: 'repairFence', label: 'Help close the broken fence', next: 'widowAfter', effects: { historyFlags: ['repaired a widow’s fence after separating two animal trails'] } },
+      { id: 'repairFence', label: 'Help close the broken fence', next: 'widowAfter', effects: { setFlags: ['widowFenceRepaired'], historyFlags: ['repaired a widow’s fence after separating two animal trails'] } },
       { id: 'watchTracks', label: 'Watch the yard from the tree line', next: 'widowWatch' },
       { id: 'tellNeighbors', label: 'Show the neighbors both trails', next: 'widowNeighbors' },
     ]),
@@ -170,11 +170,15 @@ export const THE_WIDOWS_BEAST: Scenario = {
       { id: 'driveDog', label: 'Drive the dog from the fence', hint: 'It is wary and has not entered the yard; cornering it may provoke a bite.', chance: { probability: 0.56, successNext: 'widowAfter', failureNext: 'widowBite', successMessage: 'The dog backs toward the woods without turning on you.', failureMessage: 'The dog snaps when you block its retreat.', failureEffects: { health: -3 } } },
     ]),
     widowNeighbors: scene('widowNeighbors', 'A Lost Lamb', 'The neighbors lost one lamb, but the tracks lead through the broken fence in both directions. They agree to mend the fence before deciding which animal was responsible. The widow asks that the dog not be chased into the woods.', [
-      { id: 'mediateFence', label: 'Help the neighbors mend the shared fence', next: 'widowAfter', effects: { historyFlags: ['helped neighbors postpone blame and repair a shared fence'] } },
+      { id: 'mediateFence', label: 'Help the neighbors mend the shared fence', next: 'widowAfter', effects: { setFlags: ['widowFenceRepaired'], historyFlags: ['helped neighbors postpone blame and repair a shared fence'] } },
       { id: 'leaveDispute', label: 'Leave the neighbors to decide', next: 'widowLeave' },
       { id: 'organizeWatch', label: 'Arrange a watch from the road', next: 'widowWatch' },
     ]),
-    widowAfter: end('widowAfter', 'A Boundary Kept', 'The neighbors repair the fence and the widow stops leaving food on the steps. The wolfdog remains outside the yard, free to leave. Its presence may have protected the sheep, but the lamb’s loss is still uncertain.'),
+    widowAfter: { ...end('widowAfter', 'A Boundary Kept', 'The broken fence and whether food is left on the steps remain unresolved on this route. The wolfdog’s later whereabouts are uncertain. Its presence may have protected the sheep, but the lamb’s loss is still uncertain.'), textVariants: [
+      { requirements: { flags: ['widowFenceRepaired', 'widowStoppedLeavingFood'] }, text: 'The neighbors repair the fence and the widow stops leaving food on the steps. The wolfdog’s later whereabouts are uncertain. Its presence may have protected the sheep, but the lamb’s loss is still uncertain.' },
+      { requirements: { flags: ['widowStoppedLeavingFood'] }, text: 'The widow stops leaving food on the steps, but whether the neighbors repair the broken fence remains unresolved. The wolfdog’s later whereabouts are uncertain. Its presence may have protected the sheep, but the lamb’s loss is still uncertain.' },
+      { requirements: { flags: ['widowFenceRepaired'] }, text: 'The neighbors repair the fence, but whether the widow stops leaving food on the steps remains unresolved. The wolfdog’s later whereabouts are uncertain. Its presence may have protected the sheep, but the lamb’s loss is still uncertain.' },
+    ] },
     widowLeave: end('widowLeave', 'A Hunt Not Taken', 'You leave without driving the animal away. The widow keeps to the house and the neighbors keep their sheep behind the damaged fence until they decide what to do.'),
     widowBite: end('widowBite', 'A Dog’s Warning', 'The wolfdog bites once, then slips through the fence toward the woods. The widow closes the gate; the animal had not crossed into her yard before you blocked its escape.'),
   },

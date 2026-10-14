@@ -3,7 +3,7 @@ import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { THE_BARROW_HOUND, THE_LANTERN_EATER, THE_MIRE_HORSE } from './monsterHuntFirst';
-import { THE_ASHEN_MAN, THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
+import { THE_ASHEN_MAN, THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING, THE_WIDOWS_BEAST } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
 import { THE_SKIN_IN_THE_TREE } from './monsterHuntThird';
@@ -22,6 +22,37 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
+  it('keeps the Widow’s Beast ending truthful about independent fence and feeding actions', () => {
+    let stopFeeding = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'askWidowBehavior');
+    stopFeeding = take(stopFeeding, THE_WIDOWS_BEAST, 'askWidowStopFeeding');
+    const feedingText = sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, stopFeeding);
+    expect(feedingText).toMatch(/widow stops leaving food/i);
+    expect(feedingText).toMatch(/fence remains unresolved/i);
+    expect(feedingText).not.toMatch(/neighbors repair the fence/i);
+
+    let repairFence = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'inspectFence');
+    repairFence = take(repairFence, THE_WIDOWS_BEAST, 'repairFence');
+    expect(repairFence.run?.flags).toContain('widowFenceRepaired');
+    repairFence = loadSave({ getItem: () => JSON.stringify(repairFence) });
+    const fenceText = sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, repairFence);
+    expect(fenceText).toMatch(/neighbors repair the fence/i);
+    expect(fenceText).toMatch(/whether the widow stops leaving food.*unresolved/i);
+    expect(fenceText).not.toContain('The widow stops leaving food on the steps.');
+
+    let observeOnly = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'askWidowBehavior');
+    observeOnly = take(observeOnly, THE_WIDOWS_BEAST, 'watchFromWindow');
+    observeOnly = take(observeOnly, THE_WIDOWS_BEAST, 'leaveDogRoom');
+    const neutralText = sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, observeOnly);
+    expect(neutralText).toMatch(/fence and whether food is left on the steps remain unresolved/i);
+    expect(neutralText).not.toMatch(/neighbors repair the fence|widow stops leaving food/i);
+
+    let mediatedFence = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'inspectFence');
+    mediatedFence = take(mediatedFence, THE_WIDOWS_BEAST, 'tellNeighbors');
+    mediatedFence = take(mediatedFence, THE_WIDOWS_BEAST, 'mediateFence');
+    expect(sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, mediatedFence)).toMatch(/neighbors repair the fence/i);
+    expect(sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, mediatedFence)).toMatch(/whether the widow stops leaving food.*unresolved/i);
+  });
+
   it('does not turn ember containment into a rescued-worker outcome', () => {
     let emberOnly = take(fresh(THE_ASHEN_MAN), THE_ASHEN_MAN, 'questionWitnesses');
     emberOnly = take(emberOnly, THE_ASHEN_MAN, 'askFamilyAboutKiln');
