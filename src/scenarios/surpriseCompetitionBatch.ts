@@ -179,7 +179,7 @@ export const THE_BELL_RINGER_TRIAL = story('the-bell-ringer-trial', 'The Bell-Ri
     { id: 'awardTiming', label: 'Award the round for clear timing', next: 'apprenticeWins' },
     { id: 'endForSafety', label: 'End the contest and credit the attempt', next: 'stopped' },
   ]),
-  lightRound: scene('lightRound', 'A Pattern from Below', 'The ringers use a small hand bell on the ground to practice the pattern while the chapel rope is removed. The contest becomes a timing exercise rather than a test of power.', [
+  lightRound: scene('lightRound', 'A Pattern from Below', 'The ringers use a small hand bell on the ground to practice the pattern while the chapel rope is removed. The apprentice keeps an even beat through the full pattern; one experienced ringer loses count and another rushes the ending. The apprentice’s pattern is the cleanest, so the contest becomes a timing exercise rather than a test of power.', [
     { id: 'judgeThePattern', label: 'Judge the cleanest pattern', next: 'apprenticeWins' },
     { id: 'letRingersTeach', label: 'Let the ringers teach the pattern', next: 'sharedSkill' },
   ]),
@@ -247,26 +247,26 @@ export const THE_PAINTED_SIGN = story('the-painted-sign', 'The Painted Sign', 'A
 export const THE_WHISTLE_AND_THE_WIND = story('the-whistle-and-the-wind', 'The Whistle and the Wind', 'A roadside whistle contest becomes a test of listening rather than lung power.', T('Travelers compete to imitate three bird calls, but wind and an unseen real bird make the audience’s scoring unreliable.', 'competitor', 'humorous/absurd', 'roadside fair', ['sound-identification game', 'audience interpretation', 'unexpected result'], 'traveler is already participating in event'), 'contest', {
   contest: scene('contest', 'Three Calls, One Real Bird', 'A small fair runs a whistle contest. Contestants imitate a lark, a thrush, and a kettle. Wind carries the notes toward the trees, where an actual bird answers.', [
     { id: 'listenToBird', label: 'Listen before choosing a call', next: 'listening' },
-    { id: 'imitateKettle', label: 'Enter with the kettle call', next: 'round' },
+    { id: 'imitateKettle', label: 'Enter with the kettle call', next: 'round', effects: { setFlags: ['whistle_player_called'] } },
     { id: 'watchJudges', label: 'Ask how the judges score it', next: 'rules' },
   ]),
   listening: scene('listening', 'A Reply from the Hedgerow', 'The bird’s answer comes twice, each time after a pause. The judges cannot tell whether a contestant caused it or only happened to whistle nearby.', [
-    { id: 'repeatCall', label: 'Answer the bird with a lark call', next: 'round', effects: { knowledge: ['At the roadside whistle contest, a real bird answered some imitations from the hedgerow.'] } },
+    { id: 'repeatCall', label: 'Answer the bird with a lark call', next: 'round', effects: { setFlags: ['whistle_player_called'], knowledge: ['At the roadside whistle contest, a real bird answered some imitations from the hedgerow.'] } },
     { id: 'tellJudgesUncertain', label: 'Tell the judges the answer is uncertain', next: 'scoring' },
   ]),
   rules: scene('rules', 'A Rule That Needs an Ear', 'The judges score resemblance, not volume. One judge admits the wind has made it hard to hear the contestants from the table.', [
     { id: 'moveJudges', label: 'Move the judges closer to the line', next: 'round' },
     { id: 'pauseContest', label: 'Pause until the gusts ease', next: 'scoring' },
   ]),
-  round: scene('round', 'A Call from the Line', 'Your call makes the children laugh, then the bird answers from the hedge. The judges ask whether to score the imitation alone or the whole exchange.', [
+  round: scene('round', 'A Call from the Line', 'The judges ask whether to score a contestant’s imitation alone or include the bird’s reply. The line waits for their ruling.', [
     { id: 'scoreImitation', label: 'Ask to score the imitation alone', next: 'fairScore' },
-    { id: 'countExchange', label: 'Count the bird’s reply as part of the act', next: 'crowdChoice' },
-  ]),
+    { id: 'countExchange', label: 'Count the bird’s reply as part of the act', next: 'crowdChoice', requirements: { flags: ['whistle_player_called'] } },
+  ], 'safe', [{ requirements: { flags: ['whistle_player_called'] }, text: 'Your call makes the children laugh. The judges ask whether to score your imitation alone or include the bird’s reply.' }]),
   scoring: scene('scoring', 'A Contest Held for the Right Reason', 'The contestants agree the wind has spoiled a strict contest. The organizer can award no prize, or give a small ribbon to the most amusing call.', [
     { id: 'awardAmusing', label: 'Award the ribbon for amusement', next: 'ribbon' },
     { id: 'cancelScoring', label: 'Cancel the score and keep the game', next: 'game' },
   ]),
-  fairScore: end('fairScore', 'A Clean Score', 'The judges score only the whistle. You do not win, but the contestants accept the rule and the next round waits for calmer air.'),
+  fairScore: end('fairScore', 'A Clean Score', 'The judges score the calls without including the bird. The contestants accept the rule, and the next round waits for calmer air.'),
   crowdChoice: end('crowdChoice', 'A Duet with the Hedgerow', 'The crowd votes for the bird-and-whistle exchange. The organizer makes no claim that the bird was a contestant; the laugh is the prize.'),
   ribbon: end('ribbon', 'A Ribbon for the Kettle', 'The kettle call wins the small ribbon. The children keep practicing it while the actual bird returns to its own business.'),
   game: end('game', 'A Game without a Score', 'No ribbon is awarded. The fair keeps the whistle line open for anyone who wants to try, and the wind eventually turns.'),
@@ -291,7 +291,7 @@ export const THE_PAINTED_MULE = story('the-painted-mule', 'The Painted Mule', 'A
     { id: 'removeBoard', label: 'Take the sign down for now', next: 'down' },
   ]),
   viewing: end('viewing', 'A Mule Left in Peace', 'The owner lets a few children see the mule from the stable gate, without touching or delaying it. The animal returns to its feed, and the innkeeper serves supper without charging admission.'),
-  story: end('story', 'The Sign Becomes the Story', 'The innkeeper tells visitors how the boast was corrected. Some laugh; the mule goes to work at dawn without becoming a show.'),
+  story: end('story', 'The Sign Becomes the Story', 'The innkeeper tells visitors how a boast about the mule turned into a dispute over a sign. Some laugh; the mule goes to work at dawn without becoming a show.'),
   truth: end('truth', 'A Working Mule', 'The sign now describes the mule without promising an act. The owner thanks the painter, and the innkeeper keeps a modest advertisement for his supper.'),
   down: end('down', 'A Board Put Away', 'The sign comes down. The innkeeper loses the crowd he hoped to attract, but the mule is not made to perform for a promise nobody authorized.'),
   left: end('left', 'A Dispute Outside the Inn', 'You leave before the owner and innkeeper settle the sign. The mule is still in its stall, and the work at dawn remains the owner’s concern.'),

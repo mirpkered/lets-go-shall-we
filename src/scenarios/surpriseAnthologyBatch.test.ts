@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { auditContentQuality } from '../contentQuality';
 import { analyzeScenarioLibrary, validateScenarioMetadata } from '../scenarioDiversity';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -249,6 +249,58 @@ describe('surprise anthology and library gap-fill', () => {
     expect(Object.values(result.scenarioCounts).reduce((total, count) => total + count, 0)).toBe(1000);
     expect(result.scenarioCounts['the-stage-rigging'] ?? 0).toBeLessThan(30);
     expect(result.seasonalCount).toBeLessThan(1000);
+  });
+
+  it('preserves route evidence in the bell, whistle, and mule contest results', () => {
+    const bell = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-bell-ringer-trial')!;
+    let groundBell = act(start(bell), bell, 'yard', 'inspectRope');
+    groundBell = act(groundBell, bell, 'inspection', 'changeToLightPull');
+    expect(groundBell.run?.sceneId).toBe('lightRound');
+    expect(bell.scenes.lightRound.text).toMatch(/apprentice keeps an even beat.*experienced ringer loses count.*cleanest/i);
+    groundBell = act(groundBell, bell, 'lightRound', 'judgeThePattern');
+    expect(groundBell.run?.sceneId).toBe('apprenticeWins');
+    expect(bell.scenes.apprenticeWins.text).toMatch(/apprentice wins.*steady pattern/i);
+
+    let groundApprentice = act(start(bell), bell, 'yard', 'hearFirstRound');
+    groundApprentice = act(groundApprentice, bell, 'roundOne', 'allowApprentice');
+    expect(bell.scenes.apprentice.text).toMatch(/rhythm is clean/i);
+    groundApprentice = act(groundApprentice, bell, 'apprentice', 'awardTiming');
+    expect(groundApprentice.run?.sceneId).toBe('apprenticeWins');
+
+    const whistle = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-whistle-and-the-wind')!;
+    let called = act(start(whistle), whistle, 'contest', 'imitateKettle');
+    expect(called.run?.flags).toContain('whistle_player_called');
+    expect(sceneText(whistle.scenes.round, called)).toMatch(/your call makes the children laugh/i);
+    expect(whistle.scenes.round.choices.filter(({ requirements }) => meets(requirements, called)).map(({ id }) => id)).toContain('countExchange');
+    called = act(called, whistle, 'round', 'countExchange');
+    expect(called.run?.sceneId).toBe('crowdChoice');
+
+    let answered = act(start(whistle), whistle, 'contest', 'listenToBird');
+    answered = act(answered, whistle, 'listening', 'repeatCall');
+    expect(answered.run?.flags).toContain('whistle_player_called');
+    expect(answered.character?.knowledge).toContain('At the roadside whistle contest, a real bird answered some imitations from the hedgerow.');
+    expect(sceneText(whistle.scenes.round, answered)).toMatch(/your call makes the children laugh/i);
+
+    let judgeOnly = act(start(whistle), whistle, 'contest', 'watchJudges');
+    judgeOnly = act(judgeOnly, whistle, 'rules', 'moveJudges');
+    expect(judgeOnly.run?.flags).not.toContain('whistle_player_called');
+    expect(sceneText(whistle.scenes.round, judgeOnly)).not.toMatch(/your call makes the children laugh/i);
+    expect(whistle.scenes.round.choices.filter(({ requirements }) => meets(requirements, judgeOnly)).map(({ id }) => id)).not.toContain('countExchange');
+    judgeOnly = act(judgeOnly, whistle, 'round', 'scoreImitation');
+    expect(whistle.scenes.fairScore.text).not.toMatch(/you do not win/i);
+
+    const mule = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-painted-mule')!;
+    let storyOnly = act(start(mule), mule, 'courtyard', 'askInnkeeper');
+    storyOnly = act(storyOnly, mule, 'innkeeper', 'offerNewAttraction');
+    expect(storyOnly.run?.sceneId).toBe('story');
+    expect(mule.scenes.story.text).toMatch(/boast about the mule turned into a dispute/i);
+    expect(mule.scenes.story.text).not.toMatch(/boast was corrected/i);
+
+    let corrected = act(start(mule), mule, 'courtyard', 'askOwner');
+    corrected = act(corrected, mule, 'owner', 'suggestRemovePromise');
+    corrected = act(corrected, mule, 'revision', 'paintTruth');
+    expect(corrected.run?.sceneId).toBe('truth');
+    expect(mule.scenes.truth.text).toMatch(/sign now describes the mule/i);
   });
 
   it('keeps the collection inside the selector’s low-risk share and without new combat or fantasy', () => {
