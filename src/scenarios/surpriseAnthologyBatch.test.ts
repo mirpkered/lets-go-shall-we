@@ -303,6 +303,24 @@ describe('surprise anthology and library gap-fill', () => {
     expect(mule.scenes.truth.text).toMatch(/sign now describes the mule/i);
   });
 
+  it('keeps the cobbler partner agreement separate from the worker patch route', () => {
+    const scenario = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-cobblers-last-pair')!;
+    let partnerRoute = start(scenario);
+    partnerRoute = act(partnerRoute, scenario, 'shop', 'hearDancer');
+    partnerRoute = act(partnerRoute, scenario, 'dancer', 'askPartner');
+    expect(partnerRoute.run?.sceneId).toBe('partner');
+    expect(scenario.scenes.partner.text).toMatch(/partner agrees to change the first figure/i);
+    expect(scenario.scenes.partner.text).toMatch(/worker’s boot still needs repair/i);
+    expect(scenario.scenes.partner.text).not.toMatch(/worker accepts a canvas patch|promise to return/i);
+
+    let patchRoute = start(scenario);
+    patchRoute = act(patchRoute, scenario, 'shop', 'hearDancer');
+    patchRoute = act(patchRoute, scenario, 'dancer', 'askForPatch');
+    patchRoute = act(patchRoute, scenario, 'craft', 'canvasPatch');
+    expect(patchRoute.run?.sceneId).toBe('patched');
+    expect(scenario.scenes.patched.text).toMatch(/worker leaves with a temporary patch/i);
+  });
+
   it('keeps the collection inside the selector’s low-risk share and without new combat or fantasy', () => {
     expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'LOW').length).toBe(36);
     expect(ANTHOLOGY.filter((scenario) => scenarioRiskTier(scenario) === 'MODERATE').length).toBe(1);
