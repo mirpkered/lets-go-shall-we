@@ -5002,12 +5002,12 @@
       "slug": "the-empty-jail",
       "title": "The Empty Jail",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0089"
       ],
       "reviewProvenance": "current source route review; prisoner account, wait without contact, explicit clerk/deputy search, cell release, office/road departure, jailer return, written record, History and endings traced",
-      "notes": "The waitJailer/accountWait -> wait.waitStay route makes no call and reaches jailerBack, which says the clerk found no charge entry and asks both to wait. The only explicit route to the clerk is sendDeputy/accountOfficer/waitClerk. The shared wait scene also says no officer has answered a call that was never made.",
+      "notes": "Original review witness preserved: the waitJailer/accountWait -> wait.waitStay route makes no call and reaches jailerBack, which said the clerk found no charge entry and asked both to wait. The only explicit route to the clerk is sendDeputy/accountOfficer/waitClerk. Wave 64 separates this route from the clerk-return result; regression covers no-contact neutral wording, explicit clerk presence, and save/reload.",
       "preReconciliationPosition": 278,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16111,6 +16111,8 @@
       "routeWitness": "cell.waitJailer -> wait.waitStay -> jailerBack; waitJailer does not call anyone, wait says no officer answered a call despite no call choice, and waitStay only remains until someone arrives. jailerBack nevertheless says the clerk found no entry. Explicit clerk paths use sendDeputy/accountOfficer/waitClerk -> officer.",
       "violatedRule": "NPC arrival, records review, and institutional conclusions must be tied to route-established contact or an explicit independent arrival.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 64 separates the no-contact jailer return from the explicit clerk-return outcome. The wait scene now says no officer was contacted; jailerBack makes no charge-book claim and offers a clerk call; the clerk-return route sets factual run-local jailClerkWithTraveler proof and enters jailerBackWithClerk. Regression contrasts the no-contact route with clerk presence, verifies clerk-reviewed text and the account action remain available on the positive route after save/reload, and confirms a legacy state without proof stays neutral. Focused Western Outlaw tests pass (8 tests); full suite passes (127 files, 2,411 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 278,
       "registrationStatus": "LIVE"
@@ -20160,9 +20162,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 660,
+    "HEALTHY": 661,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 142,
+    "CONFIRMED DEFECT": 141,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
