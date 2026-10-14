@@ -57,6 +57,7 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
   });
 
   it.each([
+    { scenarioId: 'the-map-with-two-norths', resultRoutes: ['measure'], result: /comparing the map with Survey Chain distances confirms.*reduced copy/i, unsupported: /smaller arrow aligns with the map’s folded orientation|scale discrepancy comes from a reduced copy/i },
     { scenarioId: 'the-scrape-beneath-the-lock', resultRoutes: ['measure'], result: /spare key turns stiffly.*shallow line on the inside lip/i, unsupported: /The key turns stiffly and leaves a shallow line/i },
     { scenarioId: 'the-switch-that-faced-east', resultRoutes: ['ask'], result: /pin is bent at its exposed end/i, unsupported: /pin is bent at its exposed end/i },
     { scenarioId: 'the-two-seals-at-blackwater-dock', resultRoutes: ['ask'], result: /crew names Bell Landing/i, unsupported: /crew names Bell Landing/i },
@@ -80,7 +81,8 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
       const selected = testScene.textVariants?.find(({ requirements }) => meets(requirements, state))?.text ?? testScene.text;
       if (resultRoutes.includes(observation.id)) expect(selected, observation.id).toMatch(result);
       else {
-        expect(selected, observation.id).toBe(testScene.text);
+        if (scenarioId === 'the-map-with-two-norths' && observation.id === 'ask') expect(selected).toMatch(/remains flat and protected.*Map Case/i);
+        else expect(selected, observation.id).toBe(testScene.text);
         expect(selected, observation.id).not.toMatch(unsupported);
       }
     }
@@ -121,6 +123,7 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
     const testVariant = scenario.scenes.test.textVariants!.find(({ requirements }) => meets(requirements, state));
     expect(testVariant?.text).toMatch(/remains flat and protected.*Map Case.*later reference/i);
     expect(testVariant?.text).toMatch(/does not resolve the scale or orientation/i);
+    expect(testVariant?.text).not.toMatch(/smaller arrow aligns with the map’s folded orientation|scale discrepancy comes from a reduced copy/i);
     const visible = scenario.scenes.test.choices.filter(({ requirements }) => meets(requirements, state));
     expect(visible.map(({ id }) => id)).toEqual(['carefulWithCopy', 'verifyWithCopy', 'accuseWithCopy']);
     expect(visible[0].label).toMatch(/take the protected copy out/i);

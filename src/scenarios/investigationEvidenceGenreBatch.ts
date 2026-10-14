@@ -13,6 +13,10 @@ type EvidenceStory = {
 type RouteProofTest = { fallback: string; results: Record<string, string> };
 
 const routeProofTests: Record<string, RouteProofTest> = {
+  'the-map-with-two-norths': {
+    fallback: 'The map’s road names and marks can be inspected, but the small arrow’s reference and the copy’s scale have not been established on this route.',
+    results: { measure: 'Comparing the map with Survey Chain distances confirms that this is a reduced copy; the smaller arrow’s reference remains unresolved.' },
+  },
   'the-scrape-beneath-the-lock': {
     fallback: 'The hasp has a bright scrape on its outside edge, but no comparison has established how the key turns or whether the inside lip has a separate mark.',
     results: { measure: 'The spare key turns stiffly and leaves a shallow line on the inside lip. The scrape is on the outside. This suggests separate contact, not a complete account of who entered.' },
@@ -215,7 +219,10 @@ function build(c: EvidenceStory): Scenario {
   ].map((choice) => ({ ...choice, effects: { ...choice.effects, knowledge:[c.lesson] } }));
   const scenes: Record<string, Scene> = {
     observe:s('observe','A Claim and a Physical Trace',`${c.scene} ${c.claim} You are asked to help assess the evidence, not to act as an officer.`,inspectChoices),
-    test:s('test',c.testTitle,routeProofTest?.fallback ?? c.test,[...actionChoices], 'safe', routeProofTest ? Object.entries(routeProofTest.results).map(([choiceId,text]) => ({ requirements:{flags:[`${c.id}_${choiceId}`]}, text })) : c.id === 'the-map-with-two-norths' ? [
+    test:s('test',c.testTitle,routeProofTest?.fallback ?? c.test,[...actionChoices], 'safe', routeProofTest ? [
+      ...Object.entries(routeProofTest.results).map(([choiceId,text]) => ({ requirements:{flags:[`${c.id}_${choiceId}`]}, text })),
+      ...(c.id === 'the-map-with-two-norths' ? [{ requirements:{flags:['map_copy_secured']}, text:`${routeProofTest.fallback} The sheet remains flat and protected in your Lockable Map Case for later reference; securing it does not resolve the scale or orientation.` }] : []),
+    ] : c.id === 'the-map-with-two-norths' ? [
       { requirements:{flags:['map_copy_secured']}, text:`${c.test} The reduced sheet remains flat and protected in your Lockable Map Case for later reference; the case does not resolve the scale or orientation.` },
     ] : undefined),
     settlement:{...s('settlement','What the Evidence Can Support',`${c.interpretation} The owner asks how you want to close the paid inspection.`,settlementChoices),textVariants:[
