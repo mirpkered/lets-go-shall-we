@@ -8873,7 +8873,7 @@
       "slug": "the-cold-iron-latch",
       "title": "The Cold Latch",
       "sourceFile": "src/scenarios/escortProtectionGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0206"
       ],
@@ -8906,7 +8906,7 @@
       "slug": "the-axle-grease-mark",
       "title": "The Grease Mark",
       "sourceFile": "src/scenarios/escortProtectionGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0207"
       ],
@@ -17728,6 +17728,8 @@
       "violatedRule": "A shared factual assertion about permission, ownership, or prior action must be supported by the selected information route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local Wave 98: routeTruthAftermath now uses a neutral shared account, adds the unnamed one-spade work-note evidence only on the checkWorkNotes route, and gates the recordLoan ending on that route. Its result records neither a borrower nor a return. The roadDangerGenreBatch regression covers all nine approach/response combinations and verifies the record option is unavailable without the note. Focused road/escort suites passed 31 tests; full suite passed 127 files / 2,470 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "registrationStatus": "LIVE"
     },
     {
@@ -17740,6 +17742,8 @@
       "violatedRule": "Object recovery/custody must be established by the route before shared aftermath claims possession or return.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local Wave 98: the shared aftermath no longer claims the crew recovered its wrench; the askReturn response and combat-win scene retain their own explicit drop evidence. The roadDangerGenreBatch regression checks protective/check-wheel routes, askReturn recovery, and combat victory across all three approaches. Focused road/escort suites passed 31 tests; full suite passed 127 files / 2,470 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20285,9 +20289,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 721,
+    "HEALTHY": 723,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 81,
+    "CONFIRMED DEFECT": 79,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
