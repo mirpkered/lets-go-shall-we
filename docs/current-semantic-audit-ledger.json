@@ -8832,12 +8832,12 @@
       "slug": "the-axle-without-a-mark",
       "title": "The Axle without a Mark",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0204"
       ],
       "reviewProvenance": "current-source route review; unload/book/smith approaches, stamp/claim/refusal responses, smith custody, wagon repair, crew-fee/refusal and tool-ownership outcomes traced",
-      "notes": "The aftermath says the public-works axle is returned to its crew. On callForeman, the response instead says the smith keeps the axle inside after the foreman signs the claim; on refusePurchase, the stranger leaves without the axle and the smith is told to hold it. The giveStatement ending explicitly says the axle remains in smith custody until the county crew collects, contradicting the shared returned-to-crew statement.",
+      "notes": "The aftermath said the public-works axle was returned to its crew. On callForeman, the response instead says the smith keeps the axle inside after the foreman signs the claim; on refusePurchase, the stranger leaves without the axle and the smith is told to hold it. The giveStatement ending explicitly says the axle remains in smith custody until the county crew collects, contradicting the shared returned-to-crew statement. The C0001 repair preserves the distinction between public ownership and physical collection; route-contrast tests pass.",
       "preReconciliationPosition": 509,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17531,6 +17531,8 @@
       "violatedRule": "Ownership adjudication and physical custody are distinct; a claim signed by an owner does not itself transfer the object from its custodian.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The road-danger builder now uses a neutral aftermath for The Axle without a Mark: public ownership is established, but physical return is not claimed until the county crew collects. The route-contrast regression covers callForeman, refusePurchase, checkStamp, and the giveStatement ending that explicitly preserves smith custody. Targeted road-danger suite passed 11 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20042,9 +20044,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 609,
+    "HEALTHY": 610,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 193,
+    "CONFIRMED DEFECT": 192,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

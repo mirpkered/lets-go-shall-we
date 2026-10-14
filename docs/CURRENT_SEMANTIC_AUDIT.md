@@ -1947,6 +1947,14 @@ Both Adventures now derive HEALTHY. Live classifications are **609 HEALTHY, 59 M
 
 Next: refresh the full open C0001 family map and select another narrow convergence group; the remaining agriculture findings have distinct outcome mechanisms and should not be swept together.
 
+### CRA-C0001 repair program — local Wave 15: axle ownership versus custody
+
+Wave 15 repairs CRA-F0204 (MEDIUM), `the-axle-without-a-mark`. The shared road-danger aftermath now distinguishes the foreman’s proof of public ownership from physical collection: it no longer says the axle has returned to the crew, and states that return is not established in this scene. The existing `giveStatement` result still correctly says the smith retains custody until the county crew collects it. No ownership, reward, payment, or compensation mechanics changed.
+
+The road-danger regression covers the signed-claim, refusal/hold, and stamp-comparison routes, and confirms the explicit smith-custody ending remains intact. Targeted suite passed **11 tests**; the full project suite passed **127 files / 2,363 tests**; TypeScript and production build passed with the existing large-bundle warning. Ledger/cluster consistency and `git diff --check` pass.
+
+The Adventure now derives HEALTHY. Live classifications are **610 HEALTHY, 59 MINOR CONCERN, 192 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Cumulative implementation dispositions are **147 repaired** and **5 healthy/no-longer-reproduces**. Open inventory is **202 findings overall**, including **168 CRA-C0001** (133 MEDIUM, 32 LOW, 3 unrecovered severity); overall open severity is **154 MEDIUM, 38 LOW, and 10 unrecovered**. The 861 live reviews and 354 live finding records remain unchanged. CRA-F0205 (`the-rain-on-the-waybill`) remains open for a separate structural route review because its missing-case claim also affects the threat, response choices, and endings. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.
