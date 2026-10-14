@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 113
+### Active local repair checkpoint — CRA-C0001 Wave 114
+
+Wave 114 repairs CRA-F0165 (The Misplaced Pigeonhole). Residents collecting their own recognizable letters now reach a separate ending that keeps those letters sealed and explicitly leaves the reversed labels for the keeper to correct. Register-based sorting and the explicit label-correction route retain their system-fix outcomes. No new state or persistence was needed. Focused comedy-absurdity tests passed **13 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **736 HEALTHY, 59 MINOR CONCERN, 66 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **288 are dispositioned** (283 repaired and 5 healthy/no-longer-reproduces) and **66 remain open**, including **32 CRA-C0001** (24 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `b7726fc`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 113
 
 Wave 113 repairs CRA-F0161 (The Mayor’s Missing Gavel). The shared labor ending no longer claims the gavel was returned to its drawer: the purpose/use-bell route never locates it, while `search.keepBell` leaves it in the kindling basket. The ending now leaves its location unsettled; the separate explicit return-to-table route remains unchanged. No new state was needed. Focused comedy-absurdity tests passed **12 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **735 HEALTHY, 59 MINOR CONCERN, 67 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **287 are dispositioned** (282 repaired and 5 healthy/no-longer-reproduces) and **67 remain open**, including **33 CRA-C0001** (25 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `bd3900a`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 

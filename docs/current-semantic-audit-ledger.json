@@ -7527,7 +7527,7 @@
       "slug": "the-misplaced-pigeonhole",
       "title": "The Misplaced Pigeonhole",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0165"
       ],
@@ -7537,7 +7537,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 114 (game/test commit b7726fc): resident letter pickup now ends separately, confirming the letters are collected unopened while the reversed labels remain and still need correction. Register-based sorting and the explicit correctLabels route retain their system-correction outcomes. No state or persistence changes were needed. Route-contrast anthology regression passed 13 tests; production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "position": 432,
@@ -17220,7 +17222,9 @@
       "violatedRule": "A converged ending may claim a repaired process only when the selected route established the repair, not merely the immediate individual outcome.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 114 (game/test commit b7726fc): residents.letEachTake now reaches a dedicated collected ending that says the letters are taken unopened and that the reversed labels remain for the keeper to correct. register.sortByRoom remains on sorted; residents.correctLabels remains on held and explicitly corrects the labels. No new route state was necessary. Regression contrasts owner pickup with both correction routes; focused comedy-absurdity tests passed 13 and production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0166",
@@ -20331,9 +20335,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 735,
+    "HEALTHY": 736,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 67,
+    "CONFIRMED DEFECT": 66,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
