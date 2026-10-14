@@ -11290,7 +11290,7 @@
       "slug": "the-quiet-resupply",
       "title": "The Quiet Resupply",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0247"
       ],
@@ -18270,6 +18270,8 @@
       "violatedRule": "A converged scene may not assert discovery of a person or their location unless the selected route establishes how they were found.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local Wave 100: The Quiet Resupply tracks scene now has a neutral default that does not place the crew or claim current needs; its crew-location/needs text variant requires the existing `resupply_followed_crew` route flag. The crew-specific carryEssentials choice is gated by the same proof, while returning for a current manifest remains available. Regression contrasts crate-only shelter with following the print, verifies the gated action, save/reload persistence, and a missing-flag legacy fallback. The Expedition Logistics suite passed 12 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20291,9 +20293,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 724,
+    "HEALTHY": 725,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 78,
+    "CONFIRMED DEFECT": 77,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
