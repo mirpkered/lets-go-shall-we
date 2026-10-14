@@ -5471,7 +5471,8 @@
         "CRA-F0107"
       ],
       "reviewProvenance": "current source route review; lantern present/absent, exposed/covered light, road withdrawal, wait-until-dawn, entity approach, combat success/failure and item damage routes traced",
-      "notes": "lightPattern.raiseLantern explicitly damages the lantern before lightApproach; a successful strike then reaches campDawn, whose shared text says the Traveler's lantern remains as it is and the presence never touched it while covered. This route used and damaged an exposed lantern, so the ending contradicts established item state and method.",
+      "notes": "lightPattern.raiseLantern reaches lightApproach before campDawn, but the engine's damageItems effect skips the non-carryable lantern, so item condition remains NORMAL. The shared campDawn text nevertheless describes the lantern as covered throughout; that is inaccurate after the route explicitly raised it toward the presence, which dims the flame without touching the glass. The ending now uses factual run-local lanternRaisedTowardPresence proof for that route-specific account; covered-light routes retain the covered wording.",
+      "classification": "HEALTHY",
       "preReconciliationPosition": 305,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16370,7 +16371,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 305,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 73: the raised-lantern route now sets factual run-local lanternRaisedTowardPresence proof and campDawn text reports the actual exposure/dimming event without claiming the lamp was covered or mechanically damaged. The default text remains for the covered-lamp routes. Regression contrasts the successful strike after raising the lantern with a covered-fire watch and confirms the engine leaves this non-carryable lantern condition NORMAL. Monster Hunt, registry, and library suites pass (26 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0108",
@@ -20179,9 +20182,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 669,
+    "HEALTHY": 670,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 133,
+    "CONFIRMED DEFECT": 132,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
