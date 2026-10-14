@@ -3839,12 +3839,12 @@
       "slug": "doorway-with-no-room",
       "title": "The Doorway with No Room",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0058"
       ],
       "reviewProvenance": "current source route review including post-definition open/turn-back variants; seal unseen doorway, measure/leave, enter, open far door, turn back, mark both ends, Chalk use and endings inspected",
-      "notes": "The new variants accurately distinguish opening the far door and turning back. The default doorAfter remains on direct sealDoorway and measure/leavePassage routes, but claims both openings are bricked in and builder measurements confirm the impossible corridor; those routes have not discovered the far opening or performed those measurements.",
+      "notes": "doorAfter now defaults to neutral text that makes no claim about sealing both openings or a builder's measurements. Current-run flags distinguish chalk comparison, opening the far door, and turning back; each variant reports only its proven route result. Save/reload preserves run flags, while prior persistent History cannot trigger a current-run variant.",
       "preReconciliationPosition": 209,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15655,6 +15655,8 @@
       "violatedRule": "A shared ending must preserve which spaces were discovered and which follow-up work was actually completed.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "doorAfter now defaults to neutral unresolved-passage text. Current run flags (not persistent History) select separate chalk-comparison, far-door-opened, and turned-back variants; none claims unselected bricking or builder measurements. Regression covers sealDoorway, measureDoor → leavePassage, turning back, opening the far door, chalk comparison after save/reload, and stale persistent-history flags not activating variants. occultInvestigationBatch.test.ts passes 35 tests; registry/library checks and TypeScript/build pass.",
       "preReconciliationPosition": 209,
       "registrationStatus": "LIVE"
     },
@@ -20124,9 +20126,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 648,
+    "HEALTHY": 649,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 154,
+    "CONFIRMED DEFECT": 153,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
