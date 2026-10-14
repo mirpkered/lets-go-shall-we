@@ -43,13 +43,13 @@ export const TEETH_IN_THE_MINE: Scenario = {
   scenes: {
     mineMouth: scene('mineMouth', 'The Sealed Drift', 'A fall of stone sealed the lower mine passage yesterday. Two miners are missing beyond it. The foreman has barred the entrance; through a narrow air shaft comes a weak knock, then three quick taps like the rescue bell. A hand lantern burns at the mouth, and a clear path leads back outside.', [
       { id: 'questionForeman', label: 'Ask what the missing miners knew', next: 'mineAccount', effects: { knowledge: ['A sealed mine drift has a narrow air shaft that carries sound from the lower workings.'] } },
-      { id: 'listenShaft', label: 'Listen at the air shaft', next: 'mineEcho' },
+      { id: 'listenShaft', label: 'Listen at the air shaft', next: 'mineEcho', effects: { setFlags: ['heardMinerInSideChamber'] } },
       { id: 'leaveMine', label: 'Refuse the descent and send for miners', next: 'mineWaited', effects: { historyFlags: ['refused an unsafe mine descent and called trained rescuers'] } },
     ], 'warning'),
     mineAccount: scene('mineAccount', 'The Air Route', 'The foreman says the shaft opens into a side chamber, not the sealed drift. The missing pair had a chalk board for messages, but no one has answered since noon. The main collapse may shift if disturbed.', [
       { id: 'takeAirShaft', label: 'Use the narrow air shaft', requirements: { items: ['lantern'] }, next: 'sideChamber' },
       { id: 'markAndWait', label: 'Mark the shaft and wait for a crew', next: 'mineWaited' },
-      { id: 'callIntoShaft', label: 'Call the miners from the entrance', next: 'mineEcho' },
+      { id: 'callIntoShaft', label: 'Call the miners from the entrance', next: 'mineEcho', effects: { setFlags: ['heardMinerInSideChamber'] } },
     ]),
     mineEcho: scene('mineEcho', 'An Answer from the Wrong Side', 'The three quick taps come again—from deeper inside the sealed drift, not the air shaft. A miner replies from the shaft chamber with two slow knocks. The repeated rescue pattern is bait, but someone is alive in the side chamber.', [
       { id: 'followRealKnocks', label: 'Enter toward the slow knocks', requirements: { items: ['lantern'] }, next: 'sideChamber' },
@@ -75,9 +75,12 @@ export const TEETH_IN_THE_MINE: Scenario = {
     minerOut: end('minerOut', 'A Miner in Daylight', 'The rescued miner reaches daylight and tells the crew the three-tap signal was copied from their bell. The foreman seals the side shaft and sends a trained party for the second miner; you do not go back alone.'),
     minersRescued: end('minersRescued', 'Two Miners at the Mouth', 'Both miners emerge through the drain, shaken but alive. The foreman bars that route until a full crew can shore the drift. No one claims the teeth belonged to an ordinary animal.'),
     mineRetreat: end('mineRetreat', 'The Shaft Is Sealed Again', 'You and the living miner reach the mine mouth. The foreman orders the shaft barred and gathers an experienced crew; one miner remains beyond the unstable drift, and the creature is still inside.'),
-    mineWaited: end('mineWaited', 'A Crew Goes Below', 'You keep the mine mouth closed and bring trained rescuers. The missing pair are not yet found, but no one enters alone or follows the copied bell signal.'),
+    mineWaited: {
+      ...end('mineWaited', 'A Crew Goes Below', 'You keep the mine mouth closed and bring trained rescuers. The missing pair are not yet found, but no one enters alone or follows the copied bell signal.'),
+      textVariants: [{ requirements: { flags: ['heardMinerInSideChamber'] }, text: 'You report one miner’s answer from the side chamber and bring trained rescuers. The second miner remains unaccounted for; no one enters alone or follows the copied bell signal.' }],
+    },
     mineContained: end('mineContained', 'Stone against the Shaft', 'The foreman bars the narrow way with the brace pole while you retreat. The living miner is brought out; the lower drift stays sealed until a proper crew can reach the second worker.'),
-    mineInjury: end('mineInjury', 'A Costly Retreat', 'The brace slips and catches your shoulder before the miners drag you toward the air shaft. The trapped worker remains behind the stone, and the foreman closes the route.'),
+    mineInjury: end('mineInjury', 'A Costly Retreat', 'The brace slips and catches your shoulder. You get clear of the passage, but the second miner remains behind the brace; the foreman closes the route.'),
     mineFatal: end('mineFatal', 'Below the Sealed Drift', 'The creature reaches you in the confined passage. The foreman hears the lantern fall, then bars the shaft to keep the rest of the crew from following.', 'death'),
   },
 };

@@ -172,6 +172,42 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(textAt('trapLeft', leftAfterPlacement)).toMatch(/what the trapper does next is unknown/i);
   });
 
+  it('preserves each miner’s known location and participation through withdrawal or injury', () => {
+    const scenario = MONSTER_HUNT_FIRST.find(({ id }) => id === 'teeth-in-the-mine')!;
+    const textAt = (sceneId: string, state: SaveData) => sceneText(scenario.scenes[sceneId], state);
+    const reload = (state: SaveData) => loadSave({ getItem: () => JSON.stringify(state) });
+
+    const unanswered = take(fresh(scenario), scenario, 'leaveMine');
+    expect(textAt('mineWaited', unanswered)).not.toMatch(/one miner answered from the side chamber/i);
+
+    let heardViaShaft = take(fresh(scenario), scenario, 'listenShaft');
+    heardViaShaft = reload(take(heardViaShaft, scenario, 'withdrawMine'));
+    expect(textAt('mineWaited', heardViaShaft)).toMatch(/one miner’s answer from the side chamber/i);
+    expect(textAt('mineWaited', heardViaShaft)).toMatch(/the second miner remains unaccounted for/i);
+    expect(textAt('mineWaited', heardViaShaft)).not.toMatch(/the missing pair are not yet found/i);
+
+    let heardAfterQuestion = take(fresh(scenario), scenario, 'questionForeman');
+    heardAfterQuestion = take(heardAfterQuestion, scenario, 'callIntoShaft');
+    heardAfterQuestion = reload(take(heardAfterQuestion, scenario, 'withdrawMine'));
+    expect(textAt('mineWaited', heardAfterQuestion)).toMatch(/one miner’s answer from the side chamber/i);
+
+    let injury = take(fresh(scenario, 'lantern'), scenario, 'questionForeman');
+    injury = take(injury, scenario, 'takeAirShaft');
+    injury = take(injury, scenario, 'enterCollapsedDrift', 0);
+    injury = take(injury, scenario, 'holdBrace', 0.999999);
+    expect(injury.run?.sceneId).toBe('mineInjury');
+    expect(textAt('mineInjury', injury)).toMatch(/you get clear of the passage/i);
+    expect(textAt('mineInjury', injury)).toMatch(/the second miner remains behind the brace/i);
+    expect(textAt('mineInjury', injury)).not.toMatch(/the miners drag you/i);
+
+    let success = take(fresh(scenario, 'lantern'), scenario, 'questionForeman');
+    success = take(success, scenario, 'takeAirShaft');
+    success = take(success, scenario, 'enterCollapsedDrift', 0);
+    success = take(success, scenario, 'holdBrace', 0);
+    expect(success.run?.sceneId).toBe('minersRescued');
+    expect(textAt('minersRescued', success)).toMatch(/both miners emerge/i);
+  });
+
   it('makes ordinary curiosity at the ravine survivable, while keeping a warned crossing lethal', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const curious = take(fresh(scenario), scenario, 'callAgain');
