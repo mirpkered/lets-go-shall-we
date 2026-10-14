@@ -9583,12 +9583,12 @@
       "slug": "the-door-that-swelled",
       "title": "The Door that Swelled",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0215"
       ],
       "reviewProvenance": "current-source route review; gap inspection, usable pry lift, hinge reset, explain/schedule, and planing failure traced",
-      "notes": "The explain/schedule choice only explains seasonal swell and schedules a later trim; it has no hinge-reset effect. The shared settlement nonetheless says the hinge holds and the door opens freely. Only the reset choice explicitly resets the hinge and tests the door. Planing without diagnosis reaches a separate failure result.",
+      "notes": "Repaired in Wave 92. The reset route records door_hinge_reset and retains the tested latch result; the explain/schedule route records only door_dry_trim_scheduled and now says reset/free movement are unestablished. Regression contrasts both routes across save/reload and preserves Knowledge and the tool offer. Planing without diagnosis remains a separate failure result.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9600,12 +9600,12 @@
       "slug": "paper-under-the-press",
       "title": "Paper under the Press",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0216"
       ],
       "reviewProvenance": "current-source route review; spine support/canvas, copy, wait, press failure, and shares traced",
-      "notes": "At ink, the wait choice expressly refuses to open the intact gatherings further until the book dries. That route reaches a shared settlement claiming the intact entries were copied. The copy choice is the only action that establishes transcription; volume drying/sewing protection remains plausible on either route.",
+      "notes": "Repaired in Wave 92. Settlement now reports only that the volume dries without losing its sewing and that intact gatherings remain legible for transcription; it does not claim that entries were copied. Regression contrasts copy and wait, including save/reload on wait, and preserves the Knowledge result.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9632,12 +9632,12 @@
       "slug": "the-horse-that-wore-one-strap",
       "title": "The Horse that Wore One Strap",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0217"
       ],
       "reviewProvenance": "current-source route review; fit/gloves, replacement failure, collar refit, teach-only outcome and shares traced",
-      "notes": "At load, the teach choice only shows the farmer the fit marks before the next load and sets Knowledge; it does not refit the collar. The shared settlement claims the traces now share the pull after collar refit, with no later load/refit scene. The explicit refit choice does establish that result; replacing the trace without changing fit reaches a separate repeat-wear ending.",
+      "notes": "Repaired in Wave 92. The refit/test route records harness_collar_refit_tested and retains the balanced-pull result for that test; the teaching route records only harness_fit_marks_shown and says refit/balanced pull remain unestablished. Regression contrasts both routes across save/reload, preserves Knowledge and the spare-tool offer, and the trace-replacement route remains a separate repeat-wear ending.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17848,7 +17848,9 @@
       "violatedRule": "A shared result may claim a completed physical repair only when the selected route or clearly stated NPC follow-through establishes that repair.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now distinguishes the reset-and-test route from explain/schedule through factual run-local flags. The reset route retains its tested freely-turning latch result; explain/schedule states that reset and free movement are not established. Regression covers both branches and save/reload, while retaining the Knowledge result and tool offer. tradesApprenticeshipGenreBatch.test.ts passes; full suite passes 127 files / 2,461 tests; TypeScript and production build pass. Wave 92 source/test commit f8302ea."
     },
     {
       "findingId": "CRA-F0216",
@@ -17860,7 +17862,9 @@
       "violatedRule": "A knowledge-transfer or transcription outcome must be established by an action on the selected route, not inherited from a sibling route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now uses settlement text truthful to both the copy and wait routes: the volume dries with its sewing intact and gatherings remain legible for later transcription, without claiming copying occurred. Regression contrasts copy with wait, includes save/reload on wait, and preserves the Knowledge result. tradesApprenticeshipGenreBatch.test.ts passes; full suite passes 127 files / 2,461 tests; TypeScript and production build pass. Wave 92 source/test commit f8302ea."
     },
     {
       "findingId": "CRA-F0217",
@@ -17872,7 +17876,9 @@
       "violatedRule": "A completed physical adjustment and its resulting load distribution may not be asserted on a route that only teaches or schedules a future action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now distinguishes collar refit/test from showing fit marks before a future load, using factual run-local flags. Only the refit/test route reports that traces share the pull in that test; teaching says refit and balanced pull remain unestablished. Regression contrasts both routes across save/reload and preserves the Knowledge result and spare-tool offer. tradesApprenticeshipGenreBatch.test.ts passes; full suite passes 127 files / 2,461 tests; TypeScript and production build pass. Wave 92 source/test commit f8302ea."
     },
     {
       "findingId": "CRA-F0218",
@@ -20261,9 +20267,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 709,
+    "HEALTHY": 712,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 93,
+    "CONFIRMED DEFECT": 90,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
