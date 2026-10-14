@@ -408,6 +408,70 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(sceneText(scenario.scenes.prize, helper)).toMatch(/helped bring the survey hand back/i);
   });
 
+  it('counts the saw prize only after the split log is turned and re-marked', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-saw-before-supper-trial')!;
+    let corrected = act(begin(scenario), scenario, 'inspectLog');
+    corrected = act(corrected, scenario, 'turnLog');
+    expect(corrected.run?.flags).toContain('saw_sound_end_established');
+    corrected = act(corrected, scenario, 'easeBlade');
+    expect(corrected.run?.sceneId).toBe('finish');
+    expect(sceneText(scenario.scenes.finish, corrected)).toMatch(/turned to its sound end/i);
+    expect(meets(scenario.scenes.finish.choices.find(({ id }) => id === 'takePryTool')?.requirements, corrected)).toBe(true);
+    const resumed = loadSave({ getItem: () => JSON.stringify(corrected) });
+    expect(resumed.run?.flags).toContain('saw_sound_end_established');
+    corrected = act(resumed, scenario, 'takePryTool');
+    expect(corrected.run?.inventory).toContain('foldingPryTool');
+
+    let skipped = act(begin(scenario), scenario, 'startCut');
+    skipped = act(skipped, scenario, 'easeBlade');
+    expect(sceneText(scenario.scenes.finish, skipped)).toMatch(/did not establish the required turn-and-re-mark correction/i);
+    expect(meets(scenario.scenes.finish.choices.find(({ id }) => id === 'takePryTool')?.requirements, skipped)).toBe(false);
+    expect(meets(scenario.scenes.finish.choices.find(({ id }) => id === 'takeTwo')?.requirements, skipped)).toBe(false);
+    skipped = act(skipped, scenario, 'closeUnverifiedFinish');
+    expect(skipped.run?.sceneId).toBe('unverified');
+
+    let unprovenFast = act(begin(scenario), scenario, 'startCut');
+    unprovenFast = act(unprovenFast, scenario, 'pullHard', () => 0);
+    expect(unprovenFast.run?.sceneId).toBe('fast');
+    expect(sceneText(scenario.scenes.fast, unprovenFast)).toMatch(/did not establish the required turn-and-re-mark correction/i);
+    expect(meets(scenario.scenes.fast.choices.find(({ id }) => id === 'acceptFastPryTool')?.requirements, unprovenFast)).toBe(false);
+    expect(meets(scenario.scenes.fast.choices.find(({ id }) => id === 'takeFastCoins')?.requirements, unprovenFast)).toBe(false);
+    unprovenFast = act(unprovenFast, scenario, 'closeUnverifiedFast');
+    expect(unprovenFast.run?.sceneId).toBe('unverified');
+
+    const legacy = begin(scenario);
+    legacy.run!.sceneId = 'finish';
+    expect(sceneText(scenario.scenes.finish, legacy)).toMatch(/did not establish the required turn-and-re-mark correction/i);
+    expect(meets(scenario.scenes.finish.choices.find(({ id }) => id === 'takePryTool')?.requirements, legacy)).toBe(false);
+  });
+
+  it('requires a recorded normal-load test before the Iron Squares diagnosis prize', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-iron-squares')!;
+    let tested = act(begin(scenario), scenario, 'askSmith');
+    tested = act(tested, scenario, 'measurePost');
+    tested = act(tested, scenario, 'askForLoad');
+    expect(tested.run?.flags).toContain('iron_squares_normal_load_tested');
+    expect(sceneText(scenario.scenes.result, tested)).toMatch(/older hinge fits better/i);
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'acceptSquare')?.requirements, tested)).toBe(true);
+    const resumed = loadSave({ getItem: () => JSON.stringify(tested) });
+    expect(resumed.run?.flags).toContain('iron_squares_normal_load_tested');
+    tested = act(resumed, scenario, 'acceptSquare');
+    expect(tested.run?.inventory).toContain('carpenterSquare');
+
+    let appearanceOnly = act(begin(scenario), scenario, 'askSmith');
+    appearanceOnly = act(appearanceOnly, scenario, 'chooseNew');
+    expect(appearanceOnly.run?.sceneId).toBe('historyWrong');
+    expect(sceneText(scenario.scenes.historyWrong, appearanceOnly)).toMatch(/gate has not been tested under load/i);
+    expect(appearanceOnly.run?.inventory).not.toContain('carpenterSquare');
+
+    const legacy = begin(scenario);
+    legacy.run!.sceneId = 'result';
+    expect(sceneText(scenario.scenes.result, legacy)).toMatch(/does not record a normal-load test/i);
+    expect(meets(scenario.scenes.result.choices.find(({ id }) => id === 'acceptSquare')?.requirements, legacy)).toBe(false);
+    const direct = act(act(begin(scenario), scenario, 'checkGap'), scenario, 'chooseOld');
+    expect(direct.run?.sceneId).toBe('correct');
+  });
+
   it('keeps Hammer and Ribbon rewards tied to an established result', () => {
     const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-hammer-and-the-ribbon')!;
 
