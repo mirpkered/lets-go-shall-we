@@ -7733,7 +7733,7 @@
       "slug": "lantern-vault",
       "title": "The Lantern Vault",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0177"
       ],
@@ -7743,7 +7743,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 118 repairs the only attached finding, CRA-F0177. The ending's specific refuge claim is gated by route proof and otherwise remains neutral; see the finding implementation evidence. The Adventure now derives HEALTHY."
     },
     {
       "position": 443,
@@ -17394,7 +17396,9 @@
       "violatedRule": "Knowledge and summary claims at convergence must be supported by evidence actually encountered or reported on that route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 118: a factual run-local vaultRefugeEvidenceSeen flag is recorded when entering the register/evidence scenes vaultLedger, vaultNine, and vaultFive. vaultResolution now states the cellar's refuge purpose only when that route proof exists; supply-room-only exits and direct hub exits use neutral wording. The flag survives the existing save/load format, while older or proof-absent runs use the neutral fallback. deepExplorationBatch.test.ts covers three unsupported supply-room exits, register and service-plate evidence routes, save/reload, and legacy missing-proof behavior. Focused deep-exploration, registry, scenario-library, and content-quality tests passed (41 tests); production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0178",
@@ -20347,9 +20351,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 739,
+    "HEALTHY": 740,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 63,
+    "CONFIRMED DEFECT": 62,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
