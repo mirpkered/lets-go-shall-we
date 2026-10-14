@@ -46,6 +46,15 @@ describe('RC12 Monster Hunt converged endings', () => {
     expect(neutralText).toMatch(/fence and whether food is left on the steps remain unresolved/i);
     expect(neutralText).not.toMatch(/neighbors repair the fence|widow stops leaving food/i);
 
+    for (const choiceId of ['closeYardGate', 'driveDog']) {
+      let route = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'askWidowBehavior');
+      route = take(route, THE_WIDOWS_BEAST, 'watchFromWindow');
+      route = take(route, THE_WIDOWS_BEAST, choiceId, 0);
+      const routeText = sceneText(THE_WIDOWS_BEAST.scenes.widowAfter, route);
+      expect(routeText).toMatch(/fence and whether food is left on the steps remain unresolved/i);
+      expect(routeText).not.toMatch(/neighbors repair the fence|widow stops leaving food/i);
+    }
+
     let mediatedFence = take(fresh(THE_WIDOWS_BEAST), THE_WIDOWS_BEAST, 'inspectFence');
     mediatedFence = take(mediatedFence, THE_WIDOWS_BEAST, 'tellNeighbors');
     mediatedFence = take(mediatedFence, THE_WIDOWS_BEAST, 'mediateFence');
