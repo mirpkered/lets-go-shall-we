@@ -5223,12 +5223,12 @@
       "slug": "the-island-when-the-water-falls",
       "title": "The Island When the Water Falls",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0096"
       ],
       "reviewProvenance": "current source route review; shore observations, post reading, wait/turn-back, rope crossing/degradation, island foundation/tin search, success/failure, stranding, signal/rescue, swim and fatal outcome traced",
-      "notes": "wait.waitTurnBack -> discovery and post.postRecord -> discovery reach an ending that identifies the island as a former freight landing although neither route visits the island or inspects the foundation/tin. The post establishes an earlier channel and a freight-skiff rib, not the landing's use; discovery also says the river covers it again before evening without that transition on the safe-bank route.",
+      "notes": "Original review witness preserved: wait.waitTurnBack and post.postRecord reached discovery without visiting the island, while the ending identified a freight landing and claimed it was covered before evening. Wave 68 gates landing identification on foundation/tin evidence and submergence on the rescue route's established transition; safe-bank, post-only, and uninspected-island endings remain neutral. No crossing, risk, or rescue outcomes changed.",
       "preReconciliationPosition": 291,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16210,6 +16210,8 @@
       "routeWitness": "bank.waitWater -> wait.waitTurnBack -> discovery, and bank.readPost -> post.postRecord -> discovery; neither enters island/foundation/tin scenes. The post confirms an earlier channel and skiff rib but does not establish the island foundation was a freight landing or that the water later covers it before evening.",
       "violatedRule": "Final route summaries must not resolve locations or later environmental outcomes beyond the evidence and time transitions established on that route.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 68 uses run-local islandFreightLandingEstablished proof only after a successful tin recovery or foundation inspection, and islandBarSubmerged only after the rescue scene establishes the gravel bar has gone under. The shared discovery is neutral without proof and has independent truthful variants for landing evidence and submergence; the safe-bank retreat, post-only, and uninspected-island routes no longer claim either. Regression contrasts all three unsupported routes with the foundation, receipt, and rescue outcomes and verifies landing proof survives save/reload. Lost Places, registry, and library checks pass (17 tests across 3 files); full suite passes (127 files / 2,424 tests); TypeScript/production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 291,
       "registrationStatus": "LIVE"
@@ -20168,9 +20170,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 664,
+    "HEALTHY": 665,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 138,
+    "CONFIRMED DEFECT": 137,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
