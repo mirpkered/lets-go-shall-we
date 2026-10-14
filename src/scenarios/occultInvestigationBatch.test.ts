@@ -553,6 +553,46 @@ describe('occult investigation adventures', () => {
     expect(full.run?.sceneId).toBe('threadTailor');
   });
 
+  it('keeps Black Thread closure claims within each route’s actual actions', () => {
+    const scenario = adventures.find((s) => s.id === 'the-black-thread')!;
+    const unsupported = /tailor opens the storeroom|two neighbors present|cut down the threads together/i;
+
+    let left = act(fresh(scenario), scenario, 'leaveThreadStreet');
+    expect(sceneText(scenario.scenes.threadAfter, left)).not.toMatch(unsupported);
+
+    let informed = fresh(scenario);
+    informed = act(informed, scenario, 'askChildren');
+    informed = act(informed, scenario, 'tellNeighbors');
+    informed = roundTrip(informed);
+    expect(sceneText(scenario.scenes.threadAfter, informed)).toMatch(/tell the neighbors/i);
+    expect(sceneText(scenario.scenes.threadAfter, informed)).not.toMatch(unsupported);
+
+    let cutRequested = fresh(scenario);
+    cutRequested = act(cutRequested, scenario, 'traceThread');
+    cutRequested = roundTrip(act(cutRequested, scenario, 'removeThread'));
+    expect(sceneText(scenario.scenes.threadAfter, cutRequested)).toMatch(/ask the tailor to cut the strands/i);
+    expect(sceneText(scenario.scenes.threadAfter, cutRequested)).not.toMatch(unsupported);
+
+    let storeRequested = fresh(scenario);
+    storeRequested = act(storeRequested, scenario, 'traceThread');
+    storeRequested = act(storeRequested, scenario, 'inspectRing');
+    storeRequested = roundTrip(act(storeRequested, scenario, 'openTailorStore'));
+    expect(sceneText(scenario.scenes.threadAfter, storeRequested)).toMatch(/ask him to open it/i);
+    expect(sceneText(scenario.scenes.threadAfter, storeRequested)).not.toMatch(/cut down the threads together|two neighbors present/i);
+
+    let saltLaid = fresh(scenario);
+    saltLaid = act(saltLaid, scenario, 'takeThreadSalt');
+    saltLaid = act(saltLaid, scenario, 'findTailorYard');
+    saltLaid = act(saltLaid, scenario, 'inspectRing');
+    saltLaid = roundTrip(act(saltLaid, scenario, 'useSaltThread'));
+    expect(sceneText(scenario.scenes.threadAfter, saltLaid)).toMatch(/lay the washerwoman’s Consecrated Salt/i);
+    expect(sceneText(scenario.scenes.threadAfter, saltLaid)).not.toMatch(unsupported);
+
+    const legacyFallback = sceneText(scenario.scenes.threadAfter, fresh(scenario));
+    expect(legacyFallback).not.toMatch(unsupported);
+    expect(legacyFallback).toMatch(/baker calls the knots a warning.*washerwoman says they keep bad dreams away/i);
+  });
+
   it('offers two marked Nails without prior state, preserves the no-supply route, and consumes them explicitly at the arch', () => {
     const scenario = adventures.find((s) => s.id === 'house-with-two-cellars')!;
     let state = fresh(scenario);

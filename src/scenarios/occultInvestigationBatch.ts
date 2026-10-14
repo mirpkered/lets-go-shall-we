@@ -235,6 +235,26 @@ const addRunFlags = (effects: NonNullable<Scene['choices'][number]['effects']> |
   setFlags: [...new Set([...(effects?.setFlags ?? []), ...flags])],
 });
 
+const blackThread = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-black-thread')!;
+blackThread.scenes.threadTailor.choices = blackThread.scenes.threadTailor.choices.map((choice) => choice.id === 'removeThread'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['black_thread_cut_requested']) }
+  : choice);
+blackThread.scenes.threadWitness.choices = blackThread.scenes.threadWitness.choices.map((choice) => choice.id === 'tellNeighbors'
+  ? { ...choice, effects: addRunFlags(choice.effects, ['black_thread_account_told_neighbors']) }
+  : choice);
+blackThread.scenes.threadRing.choices = blackThread.scenes.threadRing.choices.map((choice) => {
+  if (choice.id === 'openTailorStore') return { ...choice, effects: addRunFlags(choice.effects, ['black_thread_storeroom_open_requested']) };
+  if (choice.id === 'useSaltThread') return { ...choice, effects: addRunFlags(choice.effects, ['black_thread_salt_laid']) };
+  return choice;
+});
+blackThread.scenes.threadAfter.text = 'The baker calls the knots a warning; the washerwoman says they keep bad dreams away. Why the strands were tied—and whether anything changed them—remains unsettled.';
+blackThread.scenes.threadAfter.textVariants = [
+  { requirements: { flags: ['black_thread_cut_requested'] }, text: 'You ask the tailor to cut the strands. The account does not establish that he opened his storeroom or that neighbors joined the work; the source of the knots remains uncertain.' },
+  { requirements: { flags: ['black_thread_account_told_neighbors'] }, text: 'You tell the neighbors what the child witnessed: a woman tied the first strand after a funeral and returned for three nights. No meeting with the tailor or change to the threads is established.' },
+  { requirements: { flags: ['black_thread_storeroom_open_requested'] }, text: 'After the tailor touches the ring, the strands draw tight toward his locked storeroom. You ask him to open it; this account does not establish that the threads were cut or neighbors were present.' },
+  { requirements: { flags: ['black_thread_salt_laid'] }, text: 'You lay the washerwoman’s Consecrated Salt before the storeroom door. The account does not establish that the tailor opened it, that neighbors attended, or that the strands were cut.' },
+];
+
 const chalkCircle = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'red-chalk-circle')!;
 chalkCircle.scenes.chalkCrawl.choices = chalkCircle.scenes.chalkCrawl.choices.map((choice) => ({
   ...choice,
