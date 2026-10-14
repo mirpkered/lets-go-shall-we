@@ -5241,12 +5241,12 @@
       "slug": "the-forgotten-station",
       "title": "The Forgotten Station",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0097"
       ],
       "reviewProvenance": "current source route review; platform marks, public waiting-room notice/book, track-worker account, awning/crate inspection, cart wait, notification and departure routes traced",
-      "notes": "room.roomLeave -> discovery follows seeing the public notice but does not read the station book or platform chalk; discovery nevertheless says the book and chalk marks explain the freight link. Other worker/awning routes reach the same source-attribution sentence without consulting both records.",
+      "notes": "Original review witness preserved: room.roomLeave sees the public notice without reading the book or chalk, while worker/awning routes also reach discovery without both records. Wave 70 removes the source-specific attribution while retaining the common, route-supported conclusion that the passenger station still serves local freight.",
       "preReconciliationPosition": 292,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16225,6 +16225,8 @@
       "routeWitness": "platform.enterWaiting -> room.roomLeave -> discovery sees only the notice; worker.workerAwning -> awning.awningNotify -> payoff -> discovery obtains the track worker’s account and crate delivery, not the book or chalk. discovery states 'The book and chalk marks explain its use.'",
       "violatedRule": "A conclusion should not claim unexamined sources as the route's evidence or imply the player read records they chose not to inspect.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 70 replaces the unsupported claim that both the book and chalk marks explain the freight link with the shared, route-supported conclusion that the disused passenger station still serves local freight. The notice-only, worker/crate, and book routes all retain truthful freight context without attributing evidence to records not read. Regression covers all three routes; Lost Places, registry, and library checks pass (22 tests across 3 files). Full suite passes (127 files / 2,429 tests); TypeScript and production build pass with the known bundle-size warning. No Knowledge, History, delivery, or schedule behavior changed.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 292,
       "registrationStatus": "LIVE"
@@ -20172,9 +20174,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 666,
+    "HEALTHY": 667,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 136,
+    "CONFIRMED DEFECT": 135,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
