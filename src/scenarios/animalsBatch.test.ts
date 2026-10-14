@@ -140,6 +140,21 @@ describe('animals and working stock adventure batch', () => {
     expect(getCarriedItems(bandageKept.character)).toContain('fieldBandageRoll');
   });
 
+  it('keeps the no-person/no-object dog route free of invented interventions', () => {
+    let quiet = act(start(THE_DOG_THAT_RETURNS, { dogReason: 'nothing' }), THE_DOG_THAT_RETURNS, 'roadBend', 'watchDogBend');
+    quiet = act(quiet, THE_DOG_THAT_RETURNS, 'dogFollowed', 'checkPullOff');
+    quiet = act(quiet, THE_DOG_THAT_RETURNS, 'dogTruth', 'offerPracticalHelp');
+    const quietEnding = sceneText(THE_DOG_THAT_RETURNS.scenes.dogHelped, quiet);
+    expect(quiet.run?.sceneId).toBe('dogHelped');
+    expect(quietEnding).toMatch(/no person or lost object needs help/i);
+    expect(quietEnding).not.toMatch(/leave a message|set the bundle|helped someone notice/i);
+
+    let bundle = act(start(THE_DOG_THAT_RETURNS, { dogReason: 'bundle' }), THE_DOG_THAT_RETURNS, 'roadBend', 'watchDogBend');
+    bundle = act(bundle, THE_DOG_THAT_RETURNS, 'dogFollowed', 'checkPullOff');
+    bundle = act(bundle, THE_DOG_THAT_RETURNS, 'dogTruth', 'offerPracticalHelp');
+    expect(sceneText(THE_DOG_THAT_RETURNS.scenes.dogHelped, bundle)).toMatch(/set the bundle beside the marker/i);
+  });
+
   it('uses work gear as a temporary support, never as a substitute for proper harness repair', () => {
     expect(THE_BROKEN_HARNESS.scenes.cartLane.text).toContain('One leather strap from its harness has split');
     expect(THE_BROKEN_HARNESS.scenes.strapBraced.text).toContain('not a replacement for the split harness');

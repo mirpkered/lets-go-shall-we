@@ -115,7 +115,10 @@ export const THE_DOG_THAT_RETURNS: Scenario = {
       { id: 'offerPracticalHelp', label: 'Offer simple help, then continue', timeCost: 5, next: 'dogHelped', effects: { historyFlags: ['offered_help_after_following_road_dog'] } },
       { id: 'leaveDogTruth', label: 'Leave the dog and pull-off undisturbed', next: 'dogIgnored' },
     ] },
-    dogHelped: ending('dogHelped', 'The Dog Stays Close', 'You leave a message, set the bundle beside the marker, or simply give the family room—whatever the moment asks. The dog remains cautious, but its repeated return has helped someone notice what mattered.'),
+    dogHelped: {
+      ...ending('dogHelped', 'The Dog Stays Close', 'You leave a message, set the bundle beside the marker, or simply give the family room—whatever the moment asks. The dog remains cautious, but its repeated return has helped someone notice what mattered.'),
+      textVariants: [{ requirements: { selections: { dogReason: 'nothing' } }, text: 'You leave the pull-off as you found it; no person or lost object needs help. The dog rests in the shade, then looks toward the road as you continue.' }],
+    },
     dogIgnored: ending('dogIgnored', 'Along the Road', 'You continue down the road. The dog stays by the bend, free to follow its own routine; you have no reason to turn a quiet moment into a crisis.'),
   },
 };
