@@ -12809,12 +12809,12 @@
       "slug": "the-scrape-beneath-the-lock",
       "title": "The Scrape Beneath the Lock",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0296"
       ],
       "reviewProvenance": "current-source route review; key/crew inquiries, test interpretation, intrusion confrontation, watch/evidence/withdrawal, Knowledge and compensation traced; route-specific key-turn result on shared test scene checked against each inspection entry",
-      "notes": "The scrape does not prove entry or identity. Careful/verify/accuse and combat outcomes preserve uncertainty; stand-ground success/failure both reach watch response, with health loss only on failure. Pocket Toolkit is owned-and-usable gated; Knowledge is granted before settlement with an idempotent legacy settlement fallback. Additional route leak: observe.ask reaches test text asserting the spare key turns and leaves an inside-lip line, which only the key-comparison route establishes.",
+      "notes": "The scrape does not prove entry or identity. Careful/verify/accuse and combat outcomes preserve uncertainty; stand-ground success/failure both reach watch response, with health loss only on failure. Pocket Toolkit is owned-and-usable gated; Knowledge is granted before settlement with an idempotent legacy settlement fallback. The key-turn/inside-lip result now appears only on the spare-key comparison route; other inspection routes receive neutral evidence text.",
       "preReconciliationPosition": 753,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12938,12 +12938,12 @@
       "slug": "the-switch-that-faced-east",
       "title": "The Switch That Faced East",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0300"
       ],
       "reviewProvenance": "current-source route review; standard-mark comparison, crew inquiry, Pocket Toolkit pin inspection, stop-signal, combat response, Knowledge and reward traced",
-      "notes": "Only the Pocket Toolkit route inspects the exposed pin, yet shared test says it is bent after mark comparison or watch inquiry. Signal remains stopped; accusations remain uncertain; failed restraint alone causes health loss. Toolkit use is properly gated and Knowledge/reward effects are bounded.",
+      "notes": "Only the Pocket Toolkit route inspects the exposed pin, and the bent-pin result now appears only there; mark comparison and watch inquiry receive neutral evidence text. Signal remains stopped; accusations remain uncertain; failed restraint alone causes health loss. Toolkit use is properly gated and Knowledge/reward effects are bounded.",
       "preReconciliationPosition": 760,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13012,13 +13012,13 @@
       "slug": "the-two-seals-at-blackwater-dock",
       "title": "The Two Seals at Blackwater Dock",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0306",
         "CRA-F0307"
       ],
       "reviewProvenance": "current-source route review; copybook/seal inspection, ledger protection, crew inquiry, hold/correction/accusation, Knowledge and reward traced",
-      "notes": "Shared test says the crew names Bell Landing after seal/ledger routes that do not ask the crew. Waterproof Ledger Tube action also lacks item/usable gate; separate wax-impression tool route is gated. Crate remains unopened and blame uncertain.",
+      "notes": "The crew’s Bell Landing account now appears only after the boat-crew question; seal/ledger routes retain a neutral discrepancy. The separate Waterproof Ledger Tube action is gated by CRA-C0008, while the wax-impression route remains gated. Crate remains unopened and blame uncertain.",
       "preReconciliationPosition": 764,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -13049,12 +13049,12 @@
       "slug": "the-empty-hook-in-the-tool-room",
       "title": "The Empty Hook in the Tool Room",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0309"
       ],
       "reviewProvenance": "current-source route review; dated inventory, dawn issue inquiry, repair-bench check, bench search, visitor wait and accusation traced",
-      "notes": "Shared test states the issue-book result after repair-bench-only inquiry. The later careful route explicitly finds hammer beneath bench; visitor accusation does not become proof.",
+      "notes": "The signed inventory/issue result now appears only after inventory comparison or storekeeper inquiry; the repair-bench route receives neutral text. The later careful route explicitly finds the hammer beneath the bench; visitor accusation does not become proof.",
       "preReconciliationPosition": 766,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18655,7 +18655,9 @@
       "violatedRule": "A converged evidence scene may not report route-specific examination results as established on every incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now shows key-turn/inside-lip findings only after the spare-key comparison; inquiry and other routes receive neutral evidence text. The combat interruption remains available on either result. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts the measured-versus-unmeasured route contrast."
     },
     {
       "findingId": "CRA-F0297",
@@ -18709,7 +18711,9 @@
       "violatedRule": "A shared evidence scene may not assert a route-specific physical inspection as completed on every incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now presents the bent locking-pin finding only after the Pocket Toolkit inspection route (the source choice is the ask slot); chalk comparison and night-watch inquiry receive a neutral fallback. The combat interruption remains available. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts the gated-result contrast."
     },
     {
       "findingId": "CRA-F0301",
@@ -18791,7 +18795,9 @@
       "violatedRule": "A converged evidence scene may not import route-specific witness information.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now presents Bell Landing as the crew's account only after the boat-crew question; seal comparison and ledger protection retain a neutral route discrepancy. src/scenarios/investigationEvidenceGenreBatch.test.ts asserts ask-versus-other-route results. CRA-C0008 Gear availability behavior was not changed."
     },
     {
       "findingId": "CRA-F0307",
@@ -18831,7 +18837,9 @@
       "violatedRule": "A converged evidence scene may not import route-specific inventory information.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now presents the signed-in/issued-to-crew result only after inventory comparison or the storekeeper's issue-history answer; the repair-bench-only route receives neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts checks both result-bearing routes against the bench route."
     },
     {
       "findingId": "CRA-F0310",
@@ -19986,9 +19994,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 586,
+    "HEALTHY": 590,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 217,
+    "CONFIRMED DEFECT": 213,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
