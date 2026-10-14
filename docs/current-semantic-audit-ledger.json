@@ -7601,7 +7601,7 @@
       "slug": "last-door-briar-house",
       "title": "The Last Door in Briar House",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0168"
       ],
@@ -7611,7 +7611,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 116 (game/test commit 69bfc10): inspecting the bedroom window no longer enters the second bedroom while its old door is open. A new frame scene explains the unmet access condition and offers to close the door before entering; that action sets both bedroomDoorClosed and briarSecondBedroomReached. The existing direct closeBedroom route remains. No new persistence was added; regression verifies absence of both flags before closure and their presence after, alongside existing saved-state conclusion coverage. Focused deep-exploration suite passed 29 tests; production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "position": 436,
@@ -17264,7 +17266,9 @@
       "violatedRule": "A route may not enter a location through a connection whose stated prerequisite was not established on that route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 116 (game/test commit 69bfc10): bedroomShift.searchWindow now reaches windowFrame rather than secondBedroom and sets no room-access flags. From there, the player can explicitly close the old door, which establishes bedroomDoorClosed before entering and records the reached room. The original closeBedroom access path remains unchanged. No save schema/state was added. Route test covers the audited window path and the subsequent valid entry; deep-exploration tests passed 29, with production TypeScript/build passing under the existing bundle warning."
     },
     {
       "findingId": "CRA-F0169",
@@ -20339,9 +20343,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 737,
+    "HEALTHY": 738,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 65,
+    "CONFIRMED DEFECT": 64,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

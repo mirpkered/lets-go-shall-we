@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 115
+### Active local repair checkpoint — CRA-C0001 Wave 116
+
+Wave 116 repairs CRA-F0168 (The Last Door in Briar House). Inspecting the bedroom window now reaches a frame scene instead of entering the second room while the old door is open. The player can explicitly close that door before entering, which establishes the existing `bedroomDoorClosed` and `briarSecondBedroomReached` proof. No new persistent state was added. Deep-exploration tests passed **29 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **738 HEALTHY, 59 MINOR CONCERN, 64 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **290 are dispositioned** (285 repaired and 5 healthy/no-longer-reproduces) and **64 remain open**, including **30 CRA-C0001** (22 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `69bfc10`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 115
 
 Wave 115 repairs CRA-F0167 (The Black Stair at Wren’s Mill). The existing `wheelPinned` run flag now gates the stillness claims in both the beyond-wall scene and sealed ending. Without it, the scene states that wheel movement cannot be determined and the ending makes no wheel-motion claim; with it, the braced/still result remains. No new or persistent state was needed. Deep-exploration route-contrast tests passed **28 tests**; production TypeScript/build passed with the existing large-bundle warning. Current classifications derive to **737 HEALTHY, 59 MINOR CONCERN, 65 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **289 are dispositioned** (284 repaired and 5 healthy/no-longer-reproduces) and **65 remain open**, including **31 CRA-C0001** (23 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `b672f95`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 
