@@ -5679,14 +5679,14 @@
       "slug": "the-last-trap",
       "title": "The Last Trap",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0118",
         "CRA-F0119",
         "CRA-F0120"
       ],
       "reviewProvenance": "current source route review; trap inspection, bedroll state, trap disable/take chain/withdrawal, den tracking, young/adult encounter, dog location/recovery, retreat and fatal outcome routes traced",
-      "notes": "Three convergence/time mismatches: trapResolved says the dogs return with the trapper even after withdrawDen or a successful approachDen, where they remain unrecovered; trapperStopped says the wire is disarmed and dogs recovered even on backTrapperAway/signalTrapperBack routes that do neither and may not have located the dogs; walkAwayTrap is available after trapperArgument says the bedroll is already placed, yet trapLeft says the Traveler left before it was set.",
+      "notes": "CRA-F0118–CRA-F0120 are repaired. trapResolved now defaults to an unresolved dog/trap outcome and only reports dog release when `freeDogs` records it; trapperStopped distinguishes disabling the wire from leading the trapper away or only signaling him to stay back; trapLeft no longer claims the Traveler left before the bedroll was placed. The trapper's later choice and unresolved dog/trap outcomes remain neutral.",
       "preReconciliationPosition": 317,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16484,6 +16484,8 @@
       "routeWitness": "withdrawDen and successful approachDen reach trapResolved while dogs remain tied/unrecovered; the ending universally states that the dogs return with the trapper.",
       "violatedRule": "Outcome summaries must preserve individual person/animal recovery and location state; retreat or partial success is not recovery.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`trapResolved` now uses neutral wording for withdrawal and successful approach routes and selects the dog-recovery variant only when the `freeDogs` action sets `lastTrapDogsFreed`. Regression contrasts dog release with withdrawal and a successful adult-creature approach and round-trips the proof through save/load. Knowledge awarded for the approach route and all unrelated effects remain unchanged. The Monster Hunt family, RC12 F6 regressions, inventory, registry, and library checks pass (35 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 317,
       "registrationStatus": "LIVE"
@@ -16497,6 +16499,8 @@
       "routeWitness": "backTrapperAway/signalTrapperBack reach trapperStopped without the disable/take-chain action; the ending asserts both disarmed wire and recovered dogs despite those state omissions.",
       "violatedRule": "A shared outcome cannot imply completed interventions or recovered beings without route proof for each.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`trapperStopped` now has neutral fallback wording and route-aware results: `disableTrap`/`takeChain` set `lastTrapWireDisabled`; `backTrapperAway` records only that the Traveler led the trapper away; `signalTrapperBack` records the signal without implying a response. None claims the dogs were recovered. Monster Hunt family, RC12 F6 regressions, inventory, registry, and library checks pass (35 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 317,
       "registrationStatus": "LIVE"
@@ -16510,6 +16514,8 @@
       "routeWitness": "trapperCamp.trapperArgument -> trapperCamp.walkAwayTrap -> trapLeft; trapperArgument establishes the bedroll is already placed, while trapLeft says the Traveler leaves before it is set.",
       "violatedRule": "Chronology and object-state narration must reflect the state established before the selected action.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`trapLeft` now says the Traveler returns to the road and does not know what the trapper does next; it makes no claim about when the bedroll was placed. Regression exercises both leaving from the opening and walking away after `trapperArgument`, confirming the latter no longer contradicts the already-placed bedroll. Monster Hunt family, RC12 F6 regressions, inventory, registry, and library checks pass (35 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 317,
       "registrationStatus": "LIVE"
@@ -20128,9 +20134,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 650,
+    "HEALTHY": 651,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 152,
+    "CONFIRMED DEFECT": 151,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
