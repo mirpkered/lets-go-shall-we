@@ -639,11 +639,12 @@
       "slug": "last-light-at-millers-crossing",
       "title": "Last Light at Miller’s Crossing",
       "sourceFile": "src/scenarios/lastLightAtMillersCrossing.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0012"
       ],
-      "reviewProvenance": "prior-chat source review summary; not re-audited this batch",
+      "reviewProvenance": "prior-chat source review retained; CRA-F0012 implementation verified against split and location-specific search routes",
+      "notes": "searchersArrive.splitSearchParty no longer sets foundAtMarker because the split search can inspect both clue locations and does not establish where Mara is found. The explicit searchMarkerWithFarmhands route still sets foundAtMarker, and the ditch search still sets foundAtDitch.",
       "preReconciliationPosition": 16,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14978,6 +14979,8 @@
       "violatedRule": "Route outcome and location facts must survive convergence without being overwritten by an unrelated choice.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "PRIOR_CHAT_REVIEW_SUMMARY",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "splitSearchParty no longer records foundAtMarker; the shared travelerFound scene falls back to non-location-specific text. Regression contrasts split search against searchMarkerWithFarmhands, which retains the marker-specific result. lastLightAtMillersCrossing suite passes 19 tests.",
       "preReconciliationPosition": 16,
       "registrationStatus": "LIVE"
     },
@@ -20067,9 +20070,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 621,
+    "HEALTHY": 622,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 181,
+    "CONFIRMED DEFECT": 180,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
