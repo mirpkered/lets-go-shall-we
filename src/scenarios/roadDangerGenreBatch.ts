@@ -66,6 +66,7 @@ const compensationOffers: Record<string, string> = {
   'the-axle-without-a-mark': 'The foreman offers the agreed three-coin road-work fee. The axle and public tools remain with their owners.',
   'the-cold-iron-latch': 'The family offers one coin or a separate unused pouch of Cold-Iron Nails; the recovered tools remain family property.',
   'the-forked-shadow': 'The station clerk offers the agreed two-coin witness fee; no purse or property is kept.',
+  'the-ledger-under-canvas': 'The foreman thanks you for helping account for the ledger and offers a duplicate Lockable Map Case from the yard’s surplus.',
 };
 
 // Optional carried-Gear approaches grant information or safer positioning;
@@ -86,6 +87,12 @@ const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<st
     base: 'The farmer confirms nothing was taken. The cord’s purpose remains uncertain; no evidence shows what the robbers intended to do if a wagon stopped.',
     byApproach: {
       moveStones: 'You moved the loose stones before the confrontation, and the road opened slowly.',
+    },
+  },
+  'the-ledger-under-canvas': {
+    base: 'The ledger’s custody is recorded, but its copied number and shipment remain unidentified on this route.',
+    byResponse: {
+      askNumber: 'The county tool shipment is identified as misrouted; the clerk can check its paperwork next.',
     },
   },
   'the-glass-at-milepost-nine': {
@@ -148,7 +155,7 @@ function build(c: RoadStory): Scenario {
   const scenes: Record<string, Scene> = {
     approach: s('approach', c.startTitle, c.start, approachChoices),
     threat: s('threat', c.threatTitle, c.threat, responseChoices, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.approaches.map((choice) => ({ requirements: { flags: [`road_approach_${choice.id}`] }, text: `${choice.result} ${c.threat}` }))),
-    aftermath: s('aftermath', c.aftermathTitle, aftermathOverride?.base ?? c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, ...(c.id === 'the-punctured-tireless-wheel' && choice.id === 'spliceTrace' ? { requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'] } } : {}), next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', aftermathTextVariants),
+    aftermath: s('aftermath', c.aftermathTitle, aftermathOverride?.base ?? c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, ...(c.id === 'the-punctured-tireless-wheel' && choice.id === 'spliceTrace' ? { requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'] } } : {}), ...(c.id === 'the-ledger-under-canvas' && choice.id === 'traceCrate' ? { requirements: { flags: ['road_response_askNumber'] } } : {}), next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', aftermathTextVariants),
     settlement: s('settlement', 'The Road Opens', offerText, [
       ...(ownedRewardChoice ? [ownedRewardChoice] : []),
       { id: 'takeCoins', label: `Take ${c.coins} coins${ownedRewardChoice ? ' instead' : ''}`, next: 'coins', effects: { money: c.coins } },

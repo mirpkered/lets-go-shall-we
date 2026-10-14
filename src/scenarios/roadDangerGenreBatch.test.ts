@@ -258,6 +258,29 @@ describe('Road Danger / Highwaymen genre batch', () => {
     expect(sceneText(story.scenes.aftermath, noMoveCombat)).not.toMatch(/obstruction is cleared|road opens again/i);
   });
 
+  it('keeps freight-number discovery and correction work on the response that establishes them', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-ledger-under-canvas')!;
+    for (const approach of ['checkSeal', 'questionNightman', 'followTrack']) {
+      for (const [response, identified] of [['askNumber', true], ['secureBook', false], ['callWitness', false]] as const) {
+        let state = act(initial(story), story, `approach_${approach}`);
+        state = act(state, story, `respond_${response}`);
+        const text = sceneText(story.scenes.aftermath, state);
+        const correction = story.scenes.aftermath.choices.find(({ id }) => id === 'ending_traceCrate')!;
+        expect(meets(correction.requirements, state), `${approach}/${response} trace option`).toBe(identified);
+        if (identified) {
+          expect(text).toMatch(/county tool shipment is identified as misrouted/i);
+          state = act(state, story, 'ending_traceCrate');
+          expect(sceneText(story.scenes.settlement, state)).toMatch(/crate can be redirected/i);
+        } else {
+          expect(text).not.toMatch(/county tool shipment|misrouted|public-works crate|signed waybill/i);
+          state = act(state, story, 'ending_leaveLedger');
+          expect(sceneText(story.scenes.settlement, state)).not.toMatch(/corrected waybill|for carrying the signed waybill/i);
+        }
+        expect(sceneText(story.scenes.settlement, state)).toMatch(/duplicate Lockable Map Case from the yard’s surplus/i);
+      }
+    }
+  });
+
   it('keeps public-axle ownership distinct from physical return to the crew', () => {
     const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
     for (const [approach, response] of [['checkCrewBook', 'callForeman'], ['askSmith', 'refusePurchase'], ['stabilizeWagon', 'checkStamp']]) {
