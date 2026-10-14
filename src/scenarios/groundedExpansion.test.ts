@@ -164,6 +164,19 @@ describe('grounded adventure expansion batch', () => {
     expect(THE_SOUND_IN_THE_WELL.scenes.rescuedWorker.text).toMatch(/the owner takes them inside/i);
   });
 
+  it('does not claim ferry-crew participation in self-guided boat rescues', () => {
+    let selfGuided = act(start(THE_MISSING_BOAT), THE_MISSING_BOAT, 'emptyLanding', 'callBoatOwner');
+    selfGuided = act(selfGuided, THE_MISSING_BOAT, 'downstreamBank', 'walkBankToShelf', () => 0);
+    expect(selfGuided.run?.sceneId).toBe('safeLanding');
+    expect(THE_MISSING_BOAT.scenes.safeLanding.text).not.toMatch(/ferry crew/i);
+    expect(THE_MISSING_BOAT.scenes.safeLanding.text).toMatch(/punt is hauled above the waterline/i);
+
+    let crewAssisted = act(start(THE_MISSING_BOAT, 'boatHook'), THE_MISSING_BOAT, 'emptyLanding', 'goForFerry');
+    crewAssisted = act(crewAssisted, THE_MISSING_BOAT, 'ferryHelp', 'catchPuntLineWithHook');
+    expect(crewAssisted.run?.sceneId).toBe('safeLanding');
+    expect(THE_MISSING_BOAT.scenes.safeLanding.text).not.toMatch(/ferry crew/i);
+  });
+
   it('does not call every valid tarp tie a strap or guess on an old save', () => {
     for (const item of ['freightmansStrap', 'travelRope', 'waxedCanvasSheet']) {
       const secured = act(start(THE_EMPTY_WAGON, item), THE_EMPTY_WAGON, 'wagonOnRoad', 'secureWagonLoad');
