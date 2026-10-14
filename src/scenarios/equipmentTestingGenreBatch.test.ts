@@ -61,6 +61,28 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
     expect(scenario.scenes.result.text).toMatch(/pasture cup shows more rain/i);
   });
 
+  it('keeps rim inspection separate from testing the altered spoke key', () => {
+    const scenario = BATCH.find(({ id }) => id === 'the-new-spoke-key')!;
+    const character = newCharacter('Spoke Key Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+
+    const inspect = choose(initial, scenario, scenario.scenes.wheel.choices.find(({ id }) => id === 'inspectRim')!);
+    expect(inspect.run?.sceneId).toBe('rimInspection');
+    expect(scenario.scenes.rimInspection.text).not.toMatch(/jaw fits|bright burr|soft tooth/i);
+
+    const defer = choose(inspect, scenario, scenario.scenes.rimInspection.choices.find(({ id }) => id === 'deferTest')!);
+    expect(defer.run?.sceneId).toBe('unverified');
+    expect(scenario.scenes.unverified.text).toMatch(/altered key has not been tested/i);
+
+    const testAfterInspecting = choose(inspect, scenario, scenario.scenes.rimInspection.choices.find(({ id }) => id === 'testAfterInspection')!);
+    expect(testAfterInspecting.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).toMatch(/jaw fits the spare nipple/i);
+
+    const testFirst = choose(initial, scenario, scenario.scenes.wheel.choices.find(({ id }) => id === 'testSpare')!);
+    expect(testFirst.run?.sceneId).toBe('result');
+    expect(scenario.scenes.result.text).toMatch(/bright burr shows one tooth is too soft/i);
+  });
+
   it('adds seven mundane, distinct and carryable tools with explicit limits', () => {
     const ids = ['fieldCalipers', 'lineTensionGauge', 'foldingBenchClamp', 'brassPlumbBob', 'telegraphLineTester', 'paddedPackSaddle', 'fieldRainGauge'];
     for (const id of ids) {
