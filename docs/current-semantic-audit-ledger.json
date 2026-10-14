@@ -1957,12 +1957,12 @@
       "slug": "the-swimming-hole",
       "title": "The Swimming Hole",
       "sourceFile": "src/scenarios/pleasantDaysBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0032"
       ],
       "reviewProvenance": "current source route review; all shoreCuriosity variants, swim/rest/leave, keep/leave curiosity routes and resulting history state examined",
-      "notes": "With shoreCuriosity=nothing, poolShore says there is nothing to find, yet keepPoolCuriosity remains available and records kept_a_small_swimming_hole_curiosity before poolKeepsake says the Traveler pockets a stone or smoothed glass. The keep choice is not gated by a present item/selection.",
+      "notes": "With shoreCuriosity=nothing, poolShore said there was nothing to find, yet the ungated keep choice could record kept_a_small_swimming_hole_curiosity before poolKeepsake said a stone or smoothed glass was pocketed. Separate keepsake choices now require the blueGlass or smoothStone selection respectively; the no-find variant can only leave the shore curiosity behind.",
       "preReconciliationPosition": 99,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15255,6 +15255,8 @@
       "violatedRule": "Choices and persistent route history must not claim possession/recovery when the selected route established that no object was found.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The generic keep action was replaced with selection-gated blue-glass and smooth-stone keepsake actions. Regression confirms neither is available for shoreCuriosity=nothing, while each found-object route can still keep its matching object and reach poolKeepsake. Pleasant-day suite passes 8 tests.",
       "preReconciliationPosition": 99,
       "registrationStatus": "LIVE"
     },
@@ -20050,9 +20052,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 613,
+    "HEALTHY": 614,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 189,
+    "CONFIRMED DEFECT": 188,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
