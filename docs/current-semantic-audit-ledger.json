@@ -11623,12 +11623,12 @@
       "slug": "the-glass-level-disagrees",
       "title": "The Glass Level Disagrees",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0256"
       ],
       "reviewProvenance": "current-source route review; reverse-level test versus straight-edge check, premature bridge opening, vial diagnosis, reseat/repeat, verified old-level delay, coin/lesson outcomes traced",
-      "notes": "level.checkPlank checks the reference against a known straight edge but converges on diagnosis asserting the bubble reverses when the level is turned end-for-end on the same plank. Only reverseLevel establishes that result. The shared diagnosis then says the vial is off-center and offers reseat/repeat as if that fault were demonstrated on either route; opening the bridge remains safely blocked.",
+      "notes": "level.checkPlank previously converged on reversal-test and vial-diagnosis text without reversing the instrument. Wave 86 separates straight-edge inspection from the reversal result; the neutral setup no longer discloses the reversal before the player selects it. The bridge remains closed on the reference-only path, and only an explicit reversal reaches the diagnosis. Regression covers both routes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11655,12 +11655,12 @@
       "slug": "the-needle-in-the-grain-shed",
       "title": "The Needle in the Grain Shed",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0257"
       ],
       "reviewProvenance": "current-source route review; weighing versus seam-only inspection, unauthorized opening/refusal, spilled-grain recovery, shortage record and scale/coin rewards traced",
-      "notes": "scale.inspectSeam only inspects the tied seam before moving sacks but reaches seam, which says the scale confirms a weight difference. The compareSacks route establishes that measurement. Opening without permission is refused; partial shortage documentation leaves the sack sealed, and recovery/resewing precedes the corrected ledger and scale reward.",
+      "notes": "scale.inspectSeam previously reached the shared result saying the scale confirmed the weight difference. Wave 86 routes seam-only inspection to a separate observation that identifies the spill but states no comparison was made; only compareSacks reaches the scale-result scene. The sealed-sack shortage record and recovery/resewing branches remain intact. Regression covers inspection and weighing routes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11672,12 +11672,12 @@
       "slug": "the-false-comfort-of-a-guard",
       "title": "The False Comfort of a Guard",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0258"
       ],
       "reviewProvenance": "current-source route review; loose prototype hinge, tighten-versus-existing-guard comparison, rain misuse, dry run, separate hood, wait and guard/coin outcomes traced",
-      "notes": "lamp.useExisting fits a separate Lantern Guard and compares it but does not tighten the prototype cage’s loose hinge. The shared rut scene says ‘After the hinge is tightened’ and credits the cage with clearing the rail on a dry run. That action/result is established by tightHinge only; rain misuse is stopped and a separate cover is correctly required.",
+      "notes": "lamp.useExisting previously converged on text that credited tightening and dry-running the prototype cage. Wave 86 gives the existing-guard comparison a truthful intermediate scene, then permits an explicit hinge-tightening test or a no-test exit. The cart-run result is reached only after tightening; the rain misuse and separate-cover behavior remain unchanged. Regression covers comparison-only and tested routes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11736,12 +11736,12 @@
       "slug": "the-spring-that-would-not-return",
       "title": "The Spring That Would Not Return",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0260"
       ],
       "reviewProvenance": "current-source route review; zero check versus known-weight comparison, force-as-lever refusal, pivot cleaning, burr filing/caliper comparison, latch replacement and settlement routes traced",
-      "notes": "spring.compareWeights chooses only comparison of two known weights, but calibrate unconditionally says a zero check confirmed dust at the pivot before the gauge was cleaned and returned consistently. zeroGauge is the route that establishes that zero-check result; the forceLatch misuse is stopped, and replacing the latch remains a parked-car partial outcome.",
+      "notes": "spring.compareWeights previously entered a diagnosis claiming a zero check and dusty pivot. Wave 86 separates two-weight comparison from the zero check; comparison-only text leaves the pivot cause unresolved and allows either an explicit zero check or a parked-car replacement outcome. The forceLatch refusal and valid zero-check calibration route remain intact. Regression covers comparison, zero-check, and unresolved partial outcome.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18334,7 +18334,9 @@
       "violatedRule": "A diagnosis may not claim a test result or causal conclusion not established by the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 86 in equipmentTestingGenreBatch.ts routes the straight-edge check to a neutral reference-only scene; the vial diagnosis follows only an explicit reversal test, and setup text no longer pre-discloses that test result. equipmentTestingGenreBatch.test.ts contrasts both paths."
     },
     {
       "findingId": "CRA-F0257",
@@ -18346,7 +18348,9 @@
       "violatedRule": "A measurement result may only be asserted when that measurement was performed on the route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 86 separates seam inspection/spill observation from weighing both sacks; only the weighing route receives the scale-difference result. equipmentTestingGenreBatch.test.ts verifies inspection-only and weighed routes."
     },
     {
       "findingId": "CRA-F0258",
@@ -18358,7 +18362,9 @@
       "violatedRule": "A shared route result must not credit a different intervention than the one selected.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 86 separates fitting/comparing the existing Lantern Guard from tightening and dry-testing the prototype cage. equipmentTestingGenreBatch.test.ts verifies comparison-only, no-test, explicit-tightening, and direct-tightening routes."
     },
     {
       "findingId": "CRA-F0259",
@@ -18384,7 +18390,9 @@
       "violatedRule": "A shared diagnosis may not claim an inspection or test step that the route did not perform.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 86 routes known-weight comparison to a neutral scene that does not claim a zero check or dusty pivot; only an explicit zero check enters calibration diagnosis. equipmentTestingGenreBatch.test.ts verifies comparison, zero-check, and unresolved replacement outcome."
     },
     {
       "findingId": "CRA-F0261",
@@ -20227,9 +20235,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 692,
+    "HEALTHY": 696,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 110,
+    "CONFIRMED DEFECT": 106,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
