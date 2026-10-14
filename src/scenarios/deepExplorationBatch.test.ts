@@ -157,6 +157,34 @@ describe('deep exploration anthology', () => {
     expect(mileMarker.scenes.serviceRooms.text).toMatch(/connect.*same way each time/i);
   });
 
+  it('does not promise a reliable clock trigger after either stopping or bypassing the clock', () => {
+    const scenario = getScenario('house-at-mile-marker-nine')!;
+    const character = newCharacter('Marker Nine Route Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const take = (state: SaveData, sceneId: string, choiceId: string) => choose(
+      state,
+      scenario,
+      scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!,
+      () => 0,
+    );
+
+    let stoppedClock = initial;
+    for (const [scene, choice] of [
+      ['markerRoad', 'frontHouse'], ['houseKitchen', 'clockKitchen'], ['clockShift', 'porchDoor'],
+      ['impossiblePorch', 'trunk'], ['clockLetters', 'stopNow'], ['clockStopped', 'leaveStopped'],
+    ]) stoppedClock = take(stoppedClock, scene, choice);
+    expect(stoppedClock.run?.sceneId).toBe('routeEnding');
+    expect(sceneText(scenario.scenes.routeEnding, stoppedClock)).not.toMatch(/leaves with a reliable way to trigger/i);
+
+    let bypassedClock = initial;
+    for (const [scene, choice] of [
+      ['markerRoad', 'barnHouse'], ['houseBarn', 'cellarFromBarn'], ['houseCellar', 'followService'], ['serviceRooms', 'leaveService'],
+    ]) bypassedClock = take(bypassedClock, scene, choice);
+    expect(bypassedClock.run?.sceneId).toBe('routeEnding');
+    expect(sceneText(scenario.scenes.routeEnding, bypassedClock)).toMatch(/fixed service route/i);
+    expect(sceneText(scenario.scenes.routeEnding, bypassedClock)).not.toMatch(/leaves with a reliable way to trigger/i);
+  });
+
   it('creates optional Supply and Relic continuity without consuming either artifact', () => {
     const orra = getScenario('beneath-saint-orras')!;
     const character = newCharacter('Continuity Explorer');
