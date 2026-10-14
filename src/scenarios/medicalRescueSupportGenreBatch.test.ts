@@ -107,6 +107,52 @@ describe('Medical / Rescue Support / Evacuation genre batch',()=>{
     }
   });
 
+  it('does not turn an explicit leave-alone route into a completed care handoff',()=>{
+    const witnesses=[
+      ['the-millwrights-hand','signal'],
+      ['the-stonecutters-narrow-way','protect'],
+      ['lanterns-at-milepost-nine','protect'],
+    ] as const;
+
+    for(const [id,assessment] of witnesses){
+      const scenario=MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.find(({id:scenarioId})=>scenarioId===id)!;
+      let left=act(fresh(scenario),scenario,assessment);
+      left=act(left,scenario,'abandon');
+      const storage={value:'',setItem(_key:string,value:string){this.value=value;},getItem(_key:string){return this.value;}};
+      saveGame(left,storage as never);
+      left=loadSave(storage as never);
+      left=actPayout(left,scenario,'decline');
+      const leftText=scenario.scenes.close.textVariants?.find(({requirements})=>meets(requirements,left))?.text ?? scenario.scenes.close.text;
+      expect(leftText,`${id} leave-alone result`).not.toMatch(/handoff is complete|left to trained care/i);
+      const lesson=scenario.scenes.settle.choices.find(({id:choiceId})=>choiceId.startsWith('declineLearned'))?.effects?.knowledge?.[0];
+      if(lesson && left.character!.knowledge.includes(lesson)){
+        expect(leftText).toContain('method you demonstrated remains learned');
+      }
+
+      let attended=act(fresh(scenario),scenario,assessment);
+      attended=act(attended,scenario,'stay');
+      expect(scenario.scenes.settle.textVariants?.find(({requirements})=>meets(requirements,attended))?.text).toMatch(/stayed with/i);
+
+      let legacy=act(fresh(scenario),scenario,assessment);
+      legacy=act(legacy,scenario,'stay');
+      legacy.run!.flags=legacy.run!.flags.filter((flag)=>!['aid_left_patient','aid_stayed','aid_transferred'].includes(flag));
+      legacy=actPayout(legacy,scenario,'decline');
+      const legacyText=scenario.scenes.close.textVariants?.find(({requirements})=>meets(requirements,legacy))?.text ?? scenario.scenes.close.text;
+      expect(legacyText,`${id} missing-route-proof fallback`).not.toMatch(/handoff is complete|left to trained care/i);
+      expect(legacyText).toMatch(/does not establish whether/i);
+    }
+
+    for(const id of ['the-quarry-call-below','the-frozen-post-road','the-signal-on-the-ridge']){
+      const scenario=MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.find(({id:scenarioId})=>scenarioId===id)!;
+      let state=act(fresh(scenario),scenario,'protect');
+      state=act(state,scenario,'abandon');
+      state=actPayout(state,scenario,'decline');
+      const closeText=scenario.scenes.close.textVariants?.find(({requirements})=>meets(requirements,state))?.text ?? scenario.scenes.close.text;
+      expect(closeText).toContain('reusable method you demonstrated remains learned');
+      expect(closeText).not.toMatch(/handoff is complete|left to trained care/i);
+    }
+  });
+
   it('keeps the Icehouse safety boundary in narration without storing a generic lesson as Knowledge',()=>{
     const icehouse=MEDICAL_RESCUE_SUPPORT_GEAR_BATCH.find(({id})=>id==='the-farmers-daughter-at-the-icehouse')!;
     expect(MEDICAL_SUPPORT_LEARNING_PLANS[icehouse.id].classification).toBe('NOT_PERSISTENT_KNOWLEDGE');

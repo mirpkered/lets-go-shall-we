@@ -73,6 +73,14 @@ const stories: AidStory[] = [
   {id:'the-evacuation-bell-at-pine-crossing',title:'The Evacuation Bell at Pine Crossing',site:'town edge during a rising creek',risk:'HIGH',patient:'two residents, one using a cane',observed:'Water is crossing the lower street. Both residents are on a dry porch; one is tired but speaking clearly and using a cane.',caregiver:'The town reeve has opened the schoolhouse as a shelter and is coordinating the lane from high ground.',complication:'A handcart can carry blankets or one seated passenger, not both. The schoolhouse is reached by the uphill lane; the lower bridge is already closed.',protect:'Move the residents’ medicines and dry clothes first, then return with the reeve’s helpers',move:'Walk the stronger resident uphill while the reeve brings a chair for the other',signal:'Ring the agreed evacuation bell from the schoolhouse lane and wait for the response',stay:'Remain on the porch with both residents until the reeve’s team arrives',transfer:'Help the resident with the cane uphill while the reeve escorts the other',abandon:'Take the handcart across the closed lower bridge to save a trip',lesson:'Evacuation is a sequence: use the open route, coordinate help, and do not overload transport.',tool:'canvasRescueSling',toolAction:'Use the Canvas Rescue Sling with the reeve’s two-person team on the uphill lane',reward:'canvasRescueSling',rewardName:'Canvas Rescue Sling',source:'The reeve’s volunteer rescue crew grants a separately owned Canvas Rescue Sling after the evacuation stores are returned and counted.',coins:2},
 ];
 
+// These audited abandon routes leave the patient without a completed handoff.
+// Keep the neutral close local to the six stories whose route witnesses prove it.
+const unresolvedAbandonmentHandoffStories = new Set([
+  'the-millwrights-hand',
+  'the-stonecutters-narrow-way',
+  'lanterns-at-milepost-nine',
+]);
+
 const makeAid = (a: AidStory): Scenario => {
   const learningPlan = MEDICAL_SUPPORT_LEARNING_PLANS[a.id];
   if (!learningPlan) throw new Error(`Missing medical-support learning classification for ${a.id}`);
@@ -145,6 +153,12 @@ const makeAid = (a: AidStory): Scenario => {
       {requirements:{flags:['aid_took_lesson','aid_declined_compensation']},text:`You decline material compensation. The reusable method you demonstrated remains learned: ${a.lesson}`},
       {requirements:{flags:['aid_took_wage'],notFlags:['aid_took_lesson']},text:`You accept ${a.coins} coin${a.coins===1?'':'s'} for the arranged support work.`},
       {requirements:{flags:['aid_took_gear'],notFlags:['aid_took_lesson']},text:`${a.source} You take the ${a.rewardName}; it helps with practical support but does not replace trained care.`},
+      ...(unresolvedAbandonmentHandoffStories.has(a.id) ? [
+        {requirements:{flags:['aid_left_patient','aid_declined_compensation','aid_took_lesson'],notFlags:['aid_took_wage','aid_took_gear']},text:`You decline material compensation. The route does not establish that ${a.patient} reached trained care or that a handoff was completed. The method you demonstrated remains learned: ${a.lesson}`},
+        {requirements:{flags:['aid_left_patient','aid_declined_compensation'],notFlags:['aid_took_lesson','aid_took_wage','aid_took_gear']},text:`You decline material compensation. The route does not establish that ${a.patient} reached trained care or that a handoff was completed.`},
+        {requirements:{flags:['aid_declined_compensation','aid_took_lesson'],notFlags:['aid_left_patient','aid_stayed','aid_transferred','aid_took_wage','aid_took_gear']},text:`You decline material compensation. The saved route does not establish whether ${a.patient} reached trained care or whether a handoff was completed. The method remains learned: ${a.lesson}`},
+        {requirements:{flags:['aid_declined_compensation'],notFlags:['aid_left_patient','aid_stayed','aid_transferred','aid_took_lesson','aid_took_wage','aid_took_gear']},text:`You decline material compensation. The saved route does not establish whether ${a.patient} reached trained care or whether a handoff was completed.`},
+      ] : []),
       {requirements:{flags:['aid_declined_compensation','aid_took_lesson'],notFlags:['aid_took_wage','aid_took_gear']},text:`You decline material compensation. The handoff is complete, with the patient left to trained care.`},
       {requirements:{flags:['aid_declined_compensation'],notFlags:['aid_took_lesson','aid_took_wage','aid_took_gear']},text:`You decline material compensation. The handoff is complete, with the patient left to trained care.`},
     ]),ending:'success'},
