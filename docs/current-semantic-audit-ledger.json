@@ -17090,7 +17090,9 @@
       "violatedRule": "Converged endings may not import an action or agreement from an unvisited route/participant.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 109: the partner-agreement ending now states only that the dancer's partner agrees to change the first figure and that the worker's boot still needs repair; it explicitly makes no patch or return promise. The separate canvasPatch route still ends with the worker receiving the temporary patch. Regression contrasts partner negotiation with explicit patch selection. CRA-F0155 (CRA-C0007 consent/participation finding) remains open and untouched, so the Adventure remains CONFIRMED DEFECT. Focused anthology tests passed (11); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0157",
