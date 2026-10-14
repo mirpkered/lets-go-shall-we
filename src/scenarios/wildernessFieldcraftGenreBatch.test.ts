@@ -245,4 +245,46 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     legacy.run!.sceneId = 'partial';
     expect(sceneText(scenario.scenes.partial, legacy)).toMatch(/No safe crossing or route for the carrier/i);
   });
+
+  it('treats public-water access as confirmed only after the route-book check', () => {
+    const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-broken-cairn')!;
+
+    const unverifiedRoutes = [
+      () => {
+        let state = act(begin(scenario), scenario, 'checkOldBase');
+        return act(state, scenario, 'setNorth');
+      },
+      () => {
+        const state = begin(scenario);
+        state.run!.inventory.push('surveyChain');
+        let measured = act(state, scenario, 'compareChain');
+        measured = act(measured, scenario, 'markPublic');
+        return measured;
+      },
+      () => act(act(begin(scenario), scenario, 'askDrover'), scenario, 'markNorth'),
+    ];
+    for (const route of unverifiedRoutes) {
+      const state = route();
+      expect(state.run?.sceneId).toBe('north');
+      expect(state.run?.flags).not.toContain('brokenCairnPublicRouteVerified');
+      expect(sceneText(scenario.scenes.north, state)).toMatch(/only as a provisional route clue/i);
+      expect(sceneText(scenario.scenes.north, state)).toMatch(/route book has not authorized this path/i);
+      expect(sceneText(scenario.scenes.north, state)).not.toMatch(/route book confirms/i);
+    }
+
+    let verified = act(begin(scenario), scenario, 'askDrover');
+    verified = act(verified, scenario, 'checkBook');
+    verified = act(verified, scenario, 'resetPublic');
+    expect(verified.run?.flags).toContain('brokenCairnPublicRouteVerified');
+    expect(sceneText(scenario.scenes.north, verified)).toMatch(/route book confirms that the northern path reaches public water/i);
+    const resumed = loadSave({ getItem: () => JSON.stringify(verified) });
+    expect(resumed.run?.flags).toContain('brokenCairnPublicRouteVerified');
+    expect(sceneText(scenario.scenes.north, resumed)).toMatch(/southern gate is a landowner’s crossing/i);
+
+    const legacy = begin(scenario);
+    legacy.run!.sceneId = 'north';
+    expect(sceneText(scenario.scenes.north, legacy)).toMatch(/only as a provisional route clue/i);
+    expect(meets(scenario.scenes.north.choices.find(({ id }) => id === 'takeChain')?.requirements, legacy)).toBe(true);
+    expect(scenario.scenes.north.choices.find(({ id }) => id === 'takeChain')?.effects?.gainItemProvenance?.surveyChain).toMatch(/award itself does not establish public access/i);
+  });
 });
