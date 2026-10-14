@@ -1,6 +1,6 @@
 import type { FrontierCard } from './frontierDiscoveryTools';
 import { frontierAdventure } from './frontierDiscoveryTools';
-import { largeScene } from './largeContentTools';
+import { largeEnd, largeScene } from './largeContentTools';
 import type { Scenario, Scene } from '../types';
 
 const cards: FrontierCard[] = [
@@ -187,8 +187,158 @@ function completeMissingAssayerInvestigation(scenario: Scenario): Scenario {
 }
 
 export const FRONTIER_DISCOVERY_ADVENTURES = frontierAdventures.map((scenario) =>
-  specializeSurveyStakes(specializeFrontierRc12(scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario)),
+  specializeFrontierC0006(specializeSurveyStakes(specializeFrontierRc12(scenario.id === 'the-missing-assayer' ? completeMissingAssayerInvestigation(scenario) : scenario))),
 );
+
+/** Keep the shared frontier archetypes from promising actions or recipients their routes do not establish. */
+function specializeFrontierC0006(scenario: Scenario): Scenario {
+  const { id } = scenario;
+  const scenes = { ...scenario.scenes };
+  const updateChoice = (sceneId: string, choiceId: string, update: Partial<Scene['choices'][number]>) => {
+    const scene = scenes[sceneId];
+    if (!scene) return;
+    scenes[sceneId] = {
+      ...scene,
+      choices: scene.choices.map((choice) => choice.id === choiceId ? { ...choice, ...update } : choice),
+    };
+  };
+  const end = (sceneId: string, title: string, text: string) => {
+    scenes[sceneId] = largeEnd(sceneId, title, text);
+  };
+
+  const noCounterparty: Record<string, string> = {
+    'the-hidden-tailings-pile': 'You keep a field account of the exposed assay fragments and replace the brush. No claimant was present or contacted, so no account is delivered to another side.',
+    'the-claim-with-no-name': 'You keep a field account of the recent creek work and leave the loose pan where it was. No claimant was identified or contacted; the account stays with you.',
+    'the-timber-claim': 'You record the fresh cuts and unreadable boundary post for later comparison. No claimant was present or contacted, and no report is delivered.',
+    'the-second-claim-marker': 'You record both lines without moving either stake. No claimant was present or contacted, so the account remains in your notes.',
+    'the-broken-gate': 'You keep a field account of the forced gate, wheel rut, and repair wedge. No claimant was present or contacted; the cause remains unsettled.',
+  };
+  if (noCounterparty[id]) {
+    updateChoice(`${id}Decision`, 'shareRecord', {
+      label: 'Keep a field record for yourself',
+      effects: { historyFlags: [`kept a private field record about ${scenario.title.toLowerCase()}`] },
+    });
+    scenes[`${id}Cautious`] = { ...scenes[`${id}Cautious`], text: noCounterparty[id] };
+  }
+
+  const presentRecipient: Record<string, { label: string; history: string; text: string }> = {
+    'claim-jumpers-at-sundown': {
+      label: 'Give the two visitors your account of the papers',
+      history: 'gave the two visitors an account of the claim papers at sundown',
+      text: 'You give the two visitors your account of the posted map and older deed copy. The employer has not been contacted, and neither paper settles the boundary.',
+    },
+    'the-claim-that-pays-too-well': {
+      label: 'Tell the prospector what you observed',
+      history: 'told the prospector what was observed at the claim and locked shed',
+      text: 'You tell the prospector what the map and locked shed establish: the shed is banded, and movement was heard inside. The unseen occupant receives no report, and the prospector’s explanation remains unverified.',
+    },
+    'the-claim-jumpers-story': {
+      label: 'Give the worker your account of the map and letter',
+      history: 'gave the present worker an account of the claim map and owner letter',
+      text: 'You give the present worker your account of the map and letter. The absent owner has not received it, and the documents still do not transfer the claim.',
+    },
+  };
+  const recipient = presentRecipient[id];
+  if (recipient) {
+    updateChoice(`${id}Decision`, 'shareRecord', {
+      label: recipient.label,
+      effects: { historyFlags: [recipient.history] },
+    });
+    scenes[`${id}Cautious`] = { ...scenes[`${id}Cautious`], text: recipient.text };
+  }
+
+  if (id === 'camp-below-the-slide') {
+    updateChoice(`${id}Evidence`, 'testGround', { label: 'Inspect the loose tool from firm ground' });
+    scenes[`${id}HazardEdge`] = {
+      ...scenes[`${id}HazardEdge`],
+      text: 'From the sound ground, you inspect the loose tool at the edge without taking it. The chest remains near the buried wall, beyond the safer stopping point. The way back is still open.',
+    };
+    const successId = `${id}ReachResult`;
+    updateChoice(`${id}Evidence`, 'pressOn', { chance: { ...scenes[`${id}Evidence`].choices.find(({ id: choiceId }) => choiceId === 'pressOn')!.chance!, successNext: successId } });
+    end(successId, 'The Chest Remains Trapped', 'You reach the chest at the buried wall, but it remains pinned under the shifted debris. You withdraw without freeing or carrying it; the loose tool at the edge was not taken either.');
+  }
+
+  if (id === 'the-washed-out-claim') {
+    updateChoice(`${id}Evidence`, 'testGround', { label: 'Inspect the loose shovel from the high bank' });
+    scenes[`${id}HazardEdge`] = {
+      ...scenes[`${id}HazardEdge`],
+      text: 'From the firm high bank, you inspect the shovel caught above the rising water. It remains where it was; you do not recover or carry it. The lower boards keep shifting, and the way back is open.',
+    };
+  }
+
+  if (id === 'the-old-dredge') {
+    updateChoice(`${id}Evidence`, 'testGround', { label: 'Try to read the box markings from the bank' });
+    scenes[`${id}HazardEdge`] = {
+      ...scenes[`${id}HazardEdge`],
+      text: 'From the bank, you can see the ledger box remains bolted above the waterline, but its markings are too worn to read at this distance. No ledger contents or owner are established. The way back is still open.',
+    };
+    const successId = `${id}LedgerBoxReached`;
+    updateChoice(`${id}Evidence`, 'pressOn', { chance: { ...scenes[`${id}Evidence`].choices.find(({ id: choiceId }) => choiceId === 'pressOn')!.chance!, successNext: successId } });
+    end(successId, 'The Box Holds Fast', 'You reach the bolted ledger box before the dredge shifts. It does not open, so its contents remain unknown; you retreat to the gravel bank without claiming to have read or recovered anything.');
+  }
+
+  if (id === 'locked-strongbox-in-the-ruins') {
+    scenes[`${id}Bold`] = {
+      ...scenes[`${id}Bold`],
+      title: 'The Strongbox Opened',
+      text: 'The pry opens the strongbox. Its contents are not identified by the evidence here, and you leave them in the box rather than treating an unknown find as yours. The scratched name remains the only clue to a possible owner.',
+    };
+  }
+
+  if (id === 'the-broken-gate') {
+    updateChoice(`${id}Evidence`, 'followEvidence', { next: `${id}CabinCheck` });
+    scenes[`${id}CabinCheck`] = largeScene(`${id}CabinCheck`, 'No One at the Cabin Door', 'You follow the track to the cabin and call from outside. No one answers or appears at the doorway. This check finds no one visibly needing help; it does not establish that the cabin is empty, and you do not enter.', [
+      { id: 'returnToFork', label: 'Return to the fork and compare the gate evidence', next: `${id}CounterAccount` },
+      { id: 'leaveFromCabin', label: 'Leave without entering the cabin', next: `${id}EvidenceLeft` },
+    ], 'safe');
+  }
+
+  if (id === 'camp-with-fresh-cut-wood') {
+    updateChoice(`${id}Decision`, 'closeCarefully', {
+      effects: {
+        historyFlags: [
+          `left a clear account of ${scenario.title.toLowerCase()}`,
+          'left a visible note-like marker from the road at the prepared camp',
+        ],
+        knowledge: [cards.find((card) => card.id === id)!.insight],
+      },
+    });
+    scenes[`${id}Cautious`] = {
+      ...scenes[`${id}Cautious`],
+      text: 'From the road, you leave a visible marker beside the prepared camp, then move on without using the shelter. The cleared path and dry wood remain ready for whoever returns.',
+    };
+  }
+
+  if (id === 'the-forgotten-supply-cache') {
+    updateChoice(`${id}Start`, 'markAndLeave', { effects: { historyFlags: ['marked the trail cache location before moving on'] } });
+    scenes[`${id}Left`] = {
+      ...scenes[`${id}Left`],
+      text: 'You mark the cache location from the trail and move on without touching the bundle. The supplies remain together for whoever returns.',
+    };
+    scenes[`${id}Bold`] = {
+      ...scenes[`${id}Bold`],
+      text: 'You take the Travel Rope and leave the food and blanket in place. The bundle was deliberately stored, and its owner may return to find one useful thing missing. You leave no marker on this route.',
+    };
+    scenes[`${id}BlanketTaken`] = {
+      ...scenes[`${id}BlanketTaken`],
+      text: 'You take the Wool Travel Blanket and leave the food and rope in place. The bundle was deliberately stored, and its owner may return to find one useful thing missing. You leave no marker on this route.',
+    };
+  }
+
+  if (id === 'the-old-hydraulic-cut') {
+    updateChoice(`${id}Start`, 'markAndLeave', { effects: { historyFlags: ['marked the danger at the old hydraulic cut before leaving'] } });
+    scenes[`${id}Left`] = {
+      ...scenes[`${id}Left`],
+      text: 'You mark the danger at the cut from the firm spur and return by the clear path. You do not descend or disturb the unstable face.',
+    };
+    const choice = scenes[`${id}Evidence`].choices.find(({ id: choiceId }) => choiceId === 'pressOn')!;
+    const successId = `${id}FittingReached`;
+    updateChoice(`${id}Evidence`, 'pressOn', { chance: { ...choice.chance!, successNext: successId } });
+    end(successId, 'At the Iron Fitting', 'You reach the iron fitting on the lower ledge. It is a physical endpoint beneath the rim pipe, but the shifting face gives no safe view of where the line continues; you learn no ore location or ownership from the descent. You return without claiming more.');
+  }
+
+  return { ...scenario, scenes };
+}
 
 /** Keep converged frontier closures truthful about the exact object state each route establishes. */
 function specializeFrontierRc12(scenario: Scenario): Scenario {

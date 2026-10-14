@@ -34,7 +34,7 @@ describe('focused live-play QA repairs', () => {
     ]);
   });
 
-  it('makes the Old Hydraulic Cut’s safe investigation purpose and result explicit without inventing a reward', () => {
+  it('resolves the Old Hydraulic Cut’s safe investigation and successful descent without inventing a reward', () => {
     const scenario = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-hydraulic-cut')!;
     expect(scenario.scenes[scenario.startScene].text).toMatch(/trace the pipe to understand how water reached the excavation/i);
     let state = pick(fresh(scenario), scenario, 'approach');
@@ -50,9 +50,9 @@ describe('focused live-play QA repairs', () => {
 
     let descended = pick(fresh(scenario), scenario, 'approach');
     descended = pick(descended, scenario, 'pressOn', () => 0);
-    descended = pick(descended, scenario, 'closeCarefully');
-    expect(scenario.scenes[descended.run!.sceneId].text).toMatch(/rim-side pipe shows how water reached the excavation/i);
-    expect(scenario.scenes[descended.run!.sceneId].text).not.toMatch(/following the pipe|you traced the pipe/i);
+    expect(descended.run?.sceneId).toBe(`${scenario.id}FittingReached`);
+    expect(scenario.scenes[descended.run!.sceneId].text).toMatch(/reach the iron fitting/i);
+    expect(scenario.scenes[descended.run!.sceneId].text).toMatch(/learn no ore location or ownership/i);
   });
 
   it('gates the Bent Pin caliper method on carried, usable Field Calipers', () => {
