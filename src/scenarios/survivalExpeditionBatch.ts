@@ -30,13 +30,15 @@ export const THE_PASS_BEFORE_SNOW: Scenario = {
       { id: 'makePassShelter', label: 'Cross the saddle in the next lull', hint: 'The route is exposed and a stumble could be fatal.', timeCost: 30, chance: { probability: 0.54, successNext: 'passShelter', failureNext: 'passWhiteout', successMessage: 'The lull holds long enough to reach shelter.', failureMessage: 'The wind returns before the mule reaches the lee.' } },
     ] },
     passWhiteout: { id: 'passWhiteout', title: 'The Markers Go', tone: 'danger', text: 'The storm has erased the saddle from sight. The mule braces its legs; loose snow slides over the trail edge. You can crouch behind a stone rib and signal downhill, or attempt the last exposed stretch before the light goes.', choices: [
-      { id: 'signalPassParty', label: 'Shelter behind stone and signal downhill', requirements: { anyUsableItems: ['trailWhistle', 'roadsideSignalMirror'] }, next: 'passRescue' },
+      { id: 'signalPassParty', label: 'Shelter behind stone and signal downhill', requirements: { anyUsableItems: ['trailWhistle', 'roadsideSignalMirror'] }, next: 'passRescue', effects: { setFlags: ['passSignaledForRescue'] } },
       { id: 'crawlPassStone', label: 'Crawl to the stone rib and wait', next: 'passRescue', effects: { health: -2 } },
       { id: 'forcePassCross', label: 'Push across the exposed snow shelf', hint: 'The edge is hidden under fresh snow; a slip may be fatal.', chance: { probability: 0.34, successNext: 'passShelter', failureNext: 'passDeath', successMessage: 'You find the rock seam beneath the snow and reach the lee.', failureMessage: 'The shelf breaks under the party.' } },
     ] },
     passRetreat: end('passRetreat', 'Down Before the Snow', 'The surveyors turn back with you. They lose the afternoon’s crossing, not their lives; the mule carries the instruments to a lower inn where the pass can be tried another day.'),
     passShelter: end('passShelter', 'Beyond the Saddle', 'The party reaches the stone shelter together. Snow closes the saddle behind you, but the instruments and mule are safe; the surveyors mark the pass as closed until spring.'),
-    passRescue: end('passRescue', 'Found Below the Ridge', 'Your signal is answered from the lower trail. A road crew climbs to the stone rib and guides everyone down one at a time. The pass remains uncrossed, but the party is alive.'),
+    passRescue: { ...end('passRescue', 'Found Below the Ridge', 'After the party shelters at the stone rib, a road crew reaches the group from the lower trail and guides everyone down one at a time. The pass remains uncrossed, but the party is alive.'), textVariants: [
+      { requirements: { flags: ['passSignaledForRescue'] }, text: 'Your signal is answered from the lower trail. A road crew climbs to the stone rib and guides everyone down one at a time. The pass remains uncrossed, but the party is alive.' },
+    ] },
     passDeath: end('passDeath', 'The Snow Shelf', 'The hidden edge gives way. The storm covers the broken trail before anyone below can reach you.', 'death'),
   },
 };
@@ -120,7 +122,7 @@ export const ACROSS_THE_FLOODPLAIN: Scenario = {
     floodSplit: { id: 'floodSplit', title: 'A Wider Channel', tone: 'danger', text: 'The main channel has widened between the family and the sheep. The cart remains on the gravel rise, but water is already running beneath its wheels. There is time for one clear move: secure the animals on the north bank or bring the people to the cart rise.', choices: [
       { id: 'northForSheep', label: 'Guide the sheep along the shallow edge', chance: { probability: 0.62, successNext: 'sheepHighGround', failureNext: 'floodLoss', successMessage: 'The sheep reach the higher road, one at a time.', failureMessage: 'The current breaks the group apart; the family cannot recover all six.' } },
       { id: 'bringPeopleCart', label: 'Keep the family and cart on the rise', next: 'cartHighGround' },
-      { id: 'leaveFloodNow', label: 'Climb out and call for help from the road', next: 'floodRescue' },
+      { id: 'leaveFloodNow', label: 'Climb out and call for help from the road', next: 'floodRescue', effects: { setFlags: ['floodHelpSignaled'] } },
     ] },
     sheepHighGround: { id: 'sheepHighGround', title: 'Above the Waterline', tone: 'warning', text: 'The sheep and family are on the north road. The cart is still on the gravel rise below; moving it now would mean returning through water that has covered the track.', choices: [
       { id: 'leaveCartFlood', label: 'Leave the cart and keep everyone uphill', next: 'floodSafe', effects: { historyFlags: ['abandoned_cart_to_save_people_and_sheep'] } },
@@ -136,7 +138,9 @@ export const ACROSS_THE_FLOODPLAIN: Scenario = {
     ] },
     floodSafe: end('floodSafe', 'The Road above the Flood', 'The family reaches the high road. The cart or a few sheep may remain below, but everyone you brought uphill is safe; the river will have to fall before anything left on the plain can be recovered.'),
     cartRecovered: end('cartRecovered', 'A Load above Water', 'The cart is hauled onto the north road. The family and sheep made it ahead; the river takes the low track, not the load.'),
-    floodRescue: end('floodRescue', 'Help from the North Road', 'A road crew reaches the rise with ropes after your signal. They bring the family uphill; the cart and any sheep still beyond the channel must wait for the flood to fall.'),
+    floodRescue: { ...end('floodRescue', 'Help from the North Road', 'A road crew reaches the rise with ropes and brings the family uphill; the cart and any sheep still beyond the channel must wait for the flood to fall.'), textVariants: [
+      { requirements: { flags: ['floodHelpSignaled'] }, text: 'A road crew reaches the rise with ropes after your signal. They bring the family uphill; the cart and any sheep still beyond the channel must wait for the flood to fall.' },
+    ] },
     floodLoss: end('floodLoss', 'The Floodplain Spreads', 'The group withdraws before the channel cuts off the high road. Some animals are swept beyond reach, but no one is sent back into water that has become too deep to cross.'),
     floodDeath: end('floodDeath', 'The Main Channel', 'The flood pulls you beneath the muddy surface. The water covers the path before the family can reach you.', 'death'),
   },

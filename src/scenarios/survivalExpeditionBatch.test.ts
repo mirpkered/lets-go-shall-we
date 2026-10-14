@@ -97,6 +97,28 @@ describe('survival and expedition adventure batch', () => {
     expect(THE_EMPTY_CABIN.scenes.cabinDoor.choices.some(({ id }) => id === 'useCabinShelter')).toBe(true);
   });
 
+  it('attributes rescue signals only to routes that actually signal', () => {
+    let waiting = act(start(THE_PASS_BEFORE_SNOW), THE_PASS_BEFORE_SNOW, 'surveyShelter', 'pressPassSaddle', 0.999999);
+    waiting = act(waiting, THE_PASS_BEFORE_SNOW, 'passWhiteout', 'crawlPassStone');
+    expect(sceneText(THE_PASS_BEFORE_SNOW.scenes.passRescue, waiting)).not.toMatch(/your signal is answered/i);
+
+    let signaled = act(start(THE_PASS_BEFORE_SNOW, ['trailWhistle']), THE_PASS_BEFORE_SNOW, 'surveyShelter', 'pressPassSaddle', 0.999999);
+    signaled = act(signaled, THE_PASS_BEFORE_SNOW, 'passWhiteout', 'signalPassParty');
+    const passStorage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(signaled, passStorage);
+    expect(sceneText(THE_PASS_BEFORE_SNOW.scenes.passRescue, loadSave(passStorage))).toMatch(/your signal is answered/i);
+
+    const splitFlood = () => act(start(ACROSS_THE_FLOODPLAIN), ACROSS_THE_FLOODPLAIN, 'floodHerd', 'moveSheepFlood', 0.999999);
+    let guarded = act(splitFlood(), ACROSS_THE_FLOODPLAIN, 'floodSplit', 'bringPeopleCart');
+    guarded = act(guarded, ACROSS_THE_FLOODPLAIN, 'cartHighGround', 'keepCartSafe');
+    expect(sceneText(ACROSS_THE_FLOODPLAIN.scenes.floodRescue, guarded)).not.toMatch(/after your signal/i);
+
+    let called = act(splitFlood(), ACROSS_THE_FLOODPLAIN, 'floodSplit', 'leaveFloodNow');
+    const floodStorage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(called, floodStorage);
+    expect(sceneText(ACROSS_THE_FLOODPLAIN.scenes.floodRescue, loadSave(floodStorage))).toMatch(/after your signal/i);
+  });
+
   it('makes risky environmental choices possible, foreshadowed, and consequential', () => {
     const floodRisk = ACROSS_THE_FLOODPLAIN.scenes.floodHerd.choices.find(({ id }) => id === 'crossFloodChannel')!;
     expect(floodRisk.hint).toMatch(/drown/i);
