@@ -274,4 +274,38 @@ describe('Halloween and October-affinity adventures', () => {
     learned = pick(learned, scarecrow, 'keepWatching');
     expect(learned.character?.knowledge).toContain('A loose peg and wind could turn the scarecrow toward the barn; a farmhand had also moved it between fields once.');
   });
+
+  it('keeps the skeleton dispute closure neutral unless the route establishes its record claims', () => {
+    const wagon = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'skeleton-in-the-wagon')!;
+    const checkNeutral = (state: SaveData) => {
+      const text = sceneText(wagon.scenes.skeletonAfter, state);
+      expect(text).toMatch(/crate remains covered and the lesson is postponed/i);
+      expect(text).not.toMatch(/lot number back|written account|wagon is braced/i);
+    };
+
+    let protectedCrate = stateAt(wagon);
+    protectedCrate = pick(protectedCrate, wagon, 'askTeacher');
+    protectedCrate = pick(protectedCrate, wagon, 'protectRemains');
+    checkNeutral(protectedCrate);
+    protectedCrate = pick(protectedCrate, wagon, 'skeletonPayment');
+    expect(sceneText(wagon.scenes.skeletonPayment, protectedCrate)).not.toMatch(/helping with the axle/i);
+
+    let braced = stateAt(wagon);
+    braced = pick(braced, wagon, 'helpAxle');
+    braced = pick(braced, wagon, 'coverAndBrace');
+    checkNeutral(braced);
+
+    let pausedByClerk = stateAt(wagon);
+    pausedByClerk = pick(pausedByClerk, wagon, 'helpAxle');
+    pausedByClerk = pick(pausedByClerk, wagon, 'callClerk');
+    pausedByClerk = pick(pausedByClerk, wagon, 'askForPause');
+    checkNeutral(pausedByClerk);
+
+    let recorded = stateAt(wagon);
+    recorded = pick(recorded, wagon, 'askTeacher');
+    recorded = pick(recorded, wagon, 'compareNames');
+    recorded = pick(recorded, wagon, 'recordDispute');
+    expect(recorded.character?.knowledge).toContain('A teaching skeleton had a school receipt and matching lot tag, but no record identifying whose remains they were.');
+    checkNeutral(recorded);
+  });
 });
