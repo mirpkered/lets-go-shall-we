@@ -218,17 +218,19 @@ export const THE_PIGEON_POSTSCRIPT = story('the-pigeon-postscript', 'The Pigeon 
   ]),
   notes: scene('notes', 'The Bird Has Done Enough', 'The notes come free without tightening the cord. One is addressed to a miller; the other has only a village name. The pigeon drinks from the clerk’s shallow dish and stays by the open window.', [
     { id: 'sortAddresses', label: 'Route the named note to the miller', next: 'sorted' },
-    { id: 'waitOwner', label: 'Wait for the owner to identify the second', next: 'identified' },
+    { id: 'waitOwner', label: 'Wait here for the owner to identify the second', next: 'waitedUnidentified' },
   ]),
   addresses: scene('addresses', 'A Name and a Place', 'The first note names the miller at the east crossing. The second says only “home.” The clerk will not open private messages without permission, and the bird is free to leave.', [
     { id: 'deliverKnown', label: 'Send the addressed note onward', next: 'sorted' },
-    { id: 'leaveSecond', label: 'Leave the unaddressed note sealed', next: 'identified' },
+    { id: 'leaveSecond', label: 'Leave the unaddressed note sealed', next: 'heldUnidentified' },
   ]),
   owner: scene('owner', 'A Familiar Flight', 'The station master sends a message to the farm. Before a reply comes, the pigeon hops to the sill and looks out; the notes can travel separately from the bird.', [
     { id: 'openWindow', label: 'Let the pigeon fly home', next: 'identified' },
     { id: 'holdBriefly', label: 'Keep the pigeon safe while the farm replies', next: 'identified' },
   ]),
   sorted: end('sorted', 'Messages Find Their Way', 'The next rider returns from the east crossing with the miller’s mark in the delivery book: the note reached him unopened. The clerk keeps the other message sealed for its owner, and the pigeon leaves the open sill without carrying a second note by mistake. You have not learned what either message says, but both the bird and the sender’s privacy are safe.'),
+  heldUnidentified: end('heldUnidentified', 'A Note Left for Its Owner', 'You leave the second note sealed. No one has contacted the farm, so no reply identifies it; the message stays private and unresolved.'),
+  waitedUnidentified: end('waitedUnidentified', 'No Reply Yet', 'You wait with the second note sealed, but the farm has not been contacted and its owner does not arrive during your wait. The note remains unidentified and private.'),
   identified: end('identified', 'Home Is Not an Address', 'The farm replies that the second note belongs to a neighboring child. The clerk routes both messages correctly, and the pigeon returns to its own loft.'),
 });
 

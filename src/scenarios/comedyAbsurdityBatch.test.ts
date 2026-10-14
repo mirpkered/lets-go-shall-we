@@ -137,6 +137,35 @@ describe('comedy and absurdity additions', () => {
     expect(ending.text).not.toMatch(/the note says|message reads/i);
   });
 
+  it('requires farm contact before a farm reply identifies the sealed note', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-pigeon-postscript')!;
+    const character = newCharacter('Pigeon Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let leftSealed = act(initial, 'office', 'readAddresses');
+    leftSealed = act(leftSealed, 'addresses', 'leaveSecond');
+    expect(leftSealed.run?.sceneId).toBe('heldUnidentified');
+    expect(scenario.scenes.heldUnidentified.text).toMatch(/no one has contacted the farm/i);
+    expect(scenario.scenes.heldUnidentified.text).not.toMatch(/farm replies/i);
+
+    let waitedWithoutContact = act(initial, 'office', 'freeBird');
+    waitedWithoutContact = act(waitedWithoutContact, 'notes', 'waitOwner');
+    expect(waitedWithoutContact.run?.sceneId).toBe('waitedUnidentified');
+    expect(scenario.scenes.waitedUnidentified.text).toMatch(/farm has not been contacted/i);
+    expect(scenario.scenes.waitedUnidentified.text).toMatch(/note remains unidentified/i);
+
+    let contacted = act(initial, 'office', 'callOwner');
+    contacted = act(contacted, 'owner', 'openWindow');
+    expect(contacted.run?.sceneId).toBe('identified');
+    expect(scenario.scenes.identified.text).toMatch(/farm replies that the second note belongs/i);
+  });
+
   it('makes the wardrobe chip an honest, consequential choice rather than a hidden identical ending', () => {
     const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-doorway-delivery')!;
     expect(findScenarioGraphProblems(scenario)).toEqual([]);
