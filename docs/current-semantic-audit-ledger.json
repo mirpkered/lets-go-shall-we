@@ -6001,7 +6001,7 @@
       "slug": "the-old-hoist",
       "title": "The Old Hoist",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0127"
       ],
@@ -6011,7 +6011,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 107: the shared hoist closure now states only that the frayed cable and unreliable brake make carrying a person unsafe, and that the Traveler leaves without trusting it under passenger weight. It no longer says the hoist was untouched or claims the cable was marked on routes that do not establish that action. The frontier-discovery regression contrasts rim inspection, successful loose-timber testing, and test failure/mishap. Focused tests passed (15); the full suite passed (127 files / 2,478 tests); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "position": 341,
@@ -16676,7 +16678,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 336,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 107: the generated closure no longer says the hoist was untouched after the loose-timber test or claims the cable was marked on routes that do not establish that action. It now states only the supported safety conclusion from the frayed cable and unreliable brake, and that the Traveler leaves without trusting it under a passenger's weight. The frontier-discovery regression contrasts rim inspection, successful timber testing, and test failure/mishap. Focused tests passed (15); the full suite passed (127 files / 2,478 tests); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0128",
@@ -20305,9 +20309,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 729,
+    "HEALTHY": 730,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 73,
+    "CONFIRMED DEFECT": 72,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
