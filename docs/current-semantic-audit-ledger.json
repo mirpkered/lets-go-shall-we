@@ -16354,7 +16354,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 302,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 71: replaced the unsupported shared stagAfter settlement with neutral route-truthful text; only the huntersFound.mendFence route sets whiteStagFenceMended and receives the specific boundary-mending variant. Orchard let-pass/lead-away, hunter withdrawal, and unresolved farmer-account routes no longer claim a hunt postponement or livestock-caused crop loss. Existing Knowledge behavior is preserved. Regression contrasts the routes, verifies the mended-boundary variant across save serialization, and covers the unresolved-neighbor route. Focused tests: 24 tests across monsterHuntBatch, monsterHuntRc12F6, registry, and library suites; full suite: 127 files / 2,430 tests; TypeScript and production build passed with known bundle-size warning."
     },
     {
       "findingId": "CRA-F0107",
@@ -20174,9 +20176,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 667,
+    "HEALTHY": 668,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 135,
+    "CONFIRMED DEFECT": 134,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
