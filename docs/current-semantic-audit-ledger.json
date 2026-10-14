@@ -2319,13 +2319,13 @@
       "slug": "the-woman-at-the-crossing",
       "title": "The Woman at the Crossing",
       "sourceFile": "src/scenarios/strangeRoadsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0140",
         "CRA-F0141"
       ],
       "reviewProvenance": "current-source route review; all four crossingFigureTruth variants; call/inspect/detour/wait, dusk/dawn crossing success and failure, detour-after-failure, and terminal routes traced",
-      "notes": "The shared crossingClear ending asserts the Traveler stopped long enough to inspect even when the route directly detours or waits then crosses at dawn without entering crossingExamined. Separately, the shared crossingScramble failure text says crossing is no longer sensible 'in the dark' when reached by the daylight crossAtDawn route. Failure costs one health; no rescue, gear, or reward state is involved.",
+      "notes": "Original review witness preserved: the shared crossingClear ending asserted inspection on detour/dawn routes, and crossingScramble said 'in the dark' after a daylight failure. Wave 56 records the evidence-backed repair disposition for both findings; route review provenance and original witness remain unchanged.",
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
       "positionDelta": 0,
@@ -16804,6 +16804,8 @@
       "routeWitness": "crossingFigure.takeCrossingDetour -> crossingDetourArrival -> crossingClear, and crossingFigure.waitAtCrossing -> crossingWaited.crossAtDawn -> crossingPassed -> crossingClear; neither route visits crossingExamined, but crossingClear says stopping long enough to inspect the bridge kept the Traveler from treating its weakness as harmless.",
       "violatedRule": "Converged narration may claim only actions established on every incoming route.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`inspectBridgeFromBank` and `inspectStonesFromNearBank` now set factual run-local proof `crossingBridgeInspected`; crossingClear uses the inspection-specific claim only with that proof and otherwise stays neutral. Regression verifies detour and dawn routes do not claim inspection, inspected route preserves the claim through save/reload, and daylight/dusk failures use truthful time-neutral text. Strange Roads, registry, diversity, library, inventory, and selected RC12 regression checks pass (60 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -16816,6 +16818,8 @@
       "routeWitness": "crossingFigure.waitAtCrossing -> crossingWaited.crossAtDawn (after 480 minutes) -> chance failure -> crossingScramble; the shared scene says the crossing is no longer sensible 'in the dark' although the route explicitly waited for morning.",
       "violatedRule": "A shared failure result must preserve route-established time and conditions.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared crossingScramble text no longer assigns darkness to the failed crossing; it now says the crossing is not sensible 'now', truthful for both dusk and daylight arrivals. Regression forces both chance-failure routes and confirms the darkness claim is absent. Strange Roads, registry, diversity, library, inventory, and selected RC12 regression checks pass (60 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -20138,9 +20142,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 652,
+    "HEALTHY": 653,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 150,
+    "CONFIRMED DEFECT": 149,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
