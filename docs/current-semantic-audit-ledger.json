@@ -4416,12 +4416,12 @@
       "slug": "the-pageant-problem",
       "title": "The Pageant Problem",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0076"
       ],
       "reviewProvenance": "current source route review; prop repair/replacement, sibling substitution, child return, Traveler substitution, rehearsal, performance, curtain call, quiet exit and decline routes traced",
-      "notes": "The shared rehearsal text says both that a substitute innkeeper knows the lines and that the returning child must speak slowly, even though the prop-only route recruits neither and the sibling/Traveler/child routes establish mutually exclusive cast replacements. Performance variants later distinguish the routes, but rehearsal does not.",
+      "notes": "The rehearsal now uses the existing participant flags to distinguish the Traveler substitute, returning child, and older sibling; the prop-only route gets neutral cast-adjustment text. Performance and applause variants remain intact. Regression covers all three participant paths and the no-replacement route.",
       "preReconciliationPosition": 243,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15905,6 +15905,8 @@
       "violatedRule": "Shared scenes must not combine mutually exclusive participant states or attribute route outcomes that the selected branch did not establish.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The rehearsal default no longer asserts an unestablished cast replacement. It uses the existing pageantTravelerSubstitute, pageantChildReturns, and pageantSiblingSubstitute flags to show the corresponding performer-specific variant; the prop-only route receives neutral cast-adjustment text. Existing performance and applause distinctions remain unchanged. christmasAffinityBatch.test.ts now asserts all three participant variants and the no-replacement route; 20 tests pass. Production build and TypeScript pass.",
       "preReconciliationPosition": 243,
       "registrationStatus": "LIVE"
     },
@@ -20102,9 +20104,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 637,
+    "HEALTHY": 638,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 165,
+    "CONFIRMED DEFECT": 164,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
