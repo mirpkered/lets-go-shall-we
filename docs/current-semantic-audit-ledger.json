@@ -5205,12 +5205,12 @@
       "adventureId": "the-room-behind-the-chimney",
       "slug": "the-room-behind-the-chimney",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0095"
       ],
       "reviewProvenance": "current source route review; household history, exterior inspection, bracing, box reach success/failure, letters, return, leave and shared discovery routes traced",
-      "notes": "The shared discovery says the family learns why the space was built and returns both box and letters. house.inspectOpening -> opening.openingBrace -> braced.bracedLeave reaches discovery without reading letters or retrieving either object; boxReturn retrieves/returns the box but not the letters; lettersShare may return the letters while the box remains in the space. The convergence erases independent information and object-custody outcomes.",
+      "notes": "Original review witness preserved: the shared discovery claimed the family learned the room's purpose and returned both box and letters. house.inspectOpening -> opening.openingBrace -> braced.bracedLeave establishes neither; boxReturn returns only the box; lettersShare can return the letters without establishing box return. Wave 67 adds independent factual run-local proof and route-specific discovery text; partial and absent-proof routes no longer overclaim.",
       "preReconciliationPosition": 290,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16195,6 +16195,8 @@
       "routeWitness": "house.inspectOpening -> opening.openingBrace -> braced.bracedLeave -> discovery establishes no letter reading or object return; boxFound.boxReturn returns only the box; letters.lettersShare returns letters but does not establish box removal/return.",
       "violatedRule": "Shared endings must preserve route-specific information acquisition and object custody; partial discovery/return must not become full resolution.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 67 sets factual run-local chimneyBoxReturned proof when the householder takes or receives the sewing box and chimneyLettersReturned proof only when the letters are read and returned. Discovery has a neutral absent-proof fallback and separate both/letters-only/box-only variants, so room purpose and object custody are no longer inferred from partial routes. Lost Places regression coverage exercises no return, box only, letters only, both, save/reload, and existing neighboring Lost Places routes; targeted validation passes 14 tests across 3 files. Full suite passes 127 files / 2,415 tests; TypeScript and production build pass with the known bundle-size warning. No persistent save schema change; the existing Knowledge effect remains on the explicit letter route.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 290,
       "registrationStatus": "LIVE"
@@ -20166,9 +20168,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 663,
+    "HEALTHY": 664,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 139,
+    "CONFIRMED DEFECT": 138,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
