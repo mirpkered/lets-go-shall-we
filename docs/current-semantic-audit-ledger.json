@@ -3274,7 +3274,7 @@
       "slug": "the-scarecrow-changes-fields",
       "title": "The Scarecrow Changes Fields",
       "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0038"
       ],
@@ -15368,6 +15368,8 @@
       "violatedRule": "A shared scene, ending, or Knowledge effect may not import person/action facts established only on a different route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 102: the scarecrow-account route is now recorded only after speaking with the farmhand. The shared peg scene admits the earlier move only with that interview proof; observation-only wording remains neutral. The first-light result claims a promise to tell the farmer only after the explicit askFarmhandOwnIt action, and the wind/watch Knowledge fact is granted only on the interviewed branch. No persistent state or schema change was added. The October-affinity regression covers observation vs interview, admission/agreement text, and Knowledge absence/presence. The focused suite passed 14 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "preReconciliationPosition": 176,
       "registrationStatus": "LIVE"
     },
@@ -20295,9 +20297,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 726,
+    "HEALTHY": 727,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 76,
+    "CONFIRMED DEFECT": 75,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
