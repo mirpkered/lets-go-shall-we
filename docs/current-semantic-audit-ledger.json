@@ -12545,13 +12545,13 @@
       "slug": "the-dry-row-before-the-threshing",
       "title": "The Dry Row before the Threshing",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0282",
         "CRA-F0283"
       ],
       "reviewProvenance": "current-source route review; near/heavy first-load routes, covered-field wait route, rope/crew cover retention, crop movement, damp-edge result, storage outcome and strap/coin settlement traced; Gear condition semantics checked",
-      "notes": "rows.cover -> wait offers either rope-secured cover or two workers holding it, then both reach result claiming dry rows reached the barn despite this route never loading or moving any rows there; no further trip/transfer choice exists. Separately, wait.rope physically secures the cover with Travel Rope but requires only items ownership, not usable condition, so BROKEN rope remains eligible. The loaded-first routes do have a second-load decision and remain distinct.",
+      "notes": "Wave 79 gates the all-rows-reached-barn outcome on run-local proof set by the second-load choice; covered-field routes report that the rows remain in the field. The Freightman’s Strap provenance no longer claims that covered crops were moved. The separate CRA-F0283 usable-rope finding was already repaired and its gate remains unchanged. Original route-review evidence is retained.",
       "preReconciliationPosition": 737,
       "positionDelta": -13,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12780,12 +12780,12 @@
       "slug": "the-last-bin-at-winter-yard",
       "title": "The Last Bin at Winter Yard",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0288"
       ],
       "reviewProvenance": "current-source route review; lower-board brace versus sealed-sack relocation, ration, bin repair versus raised-sack delay and compensation traced",
-      "notes": "bin.board -> ration -> raise -> partial never raises sacks, yet partial says the sacks stay raised. bin.sacks establishes relocation. Repair branch braces the board; unsafe mixed feed is stopped and repair reward follows the repaired outcome.",
+      "notes": "Wave 79 uses the run-local winterFeedSacksRaised proof set by the sack-relocation choice. The braced-board route’s partial outcome no longer claims sack relocation and describes the one-coin work neutrally; the sacks route retains its supported raised-sack result. Bin repair, ration, and reward routes are unchanged. Original route-review evidence is retained.",
       "preReconciliationPosition": 751,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18654,7 +18654,9 @@
       "violatedRule": "A final outcome cannot be promoted beyond the actions and transitions established on its incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 79: only the second-load choice sets oatsRemainingRowsReachedBarn. The covered-field result now reports the rows remain in the field and leaves transfer unresolved; the loaded route retains the barn-arrival result. Freightman’s Strap provenance now records crop protection without asserting movement. Regression contrasts covered versus transported crops, verifies save/reload, checks the reward provenance, and reruns the adjacent CRA-C0004 Gear usability matrix. Agriculture, CRA-C0004, registry, and library checks pass (60 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0283",
@@ -18734,7 +18736,9 @@
       "violatedRule": "Shared outcomes must not claim route-specific object relocation absent action/state proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 79: only the initial move-sacks choice sets winterFeedSacksRaised. The braced-board partial route now states that final sack position is not established and describes the wage as protection work; the relocation route retains raised-sack text and movement wording. Regression contrasts both routes and verifies proof across save/reload. Agriculture, CRA-C0004, registry, and library checks pass (60 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0289",
@@ -20197,9 +20201,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 677,
+    "HEALTHY": 679,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 125,
+    "CONFIRMED DEFECT": 123,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
