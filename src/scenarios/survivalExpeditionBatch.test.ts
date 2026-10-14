@@ -156,6 +156,21 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_LAST_ROPE.scenes.ravineWait, loadSave(crewStorage))).toMatch(/follows your call/i);
   });
 
+  it('does not turn one successful river crossing into a marked safe route', () => {
+    const routes = [
+      act(start(RIVER_WITHOUT_A_BRIDGE), RIVER_WITHOUT_A_BRIDGE, 'bridgeGone', 'fordFastRiver', 0),
+      act(act(start(RIVER_WITHOUT_A_BRIDGE), RIVER_WITHOUT_A_BRIDGE, 'bridgeGone', 'followUpRiver'), RIVER_WITHOUT_A_BRIDGE, 'riverUpstream', 'crossBendRiver', 0),
+      act(act(start(RIVER_WITHOUT_A_BRIDGE), RIVER_WITHOUT_A_BRIDGE, 'bridgeGone', 'seekRiverFerry'), RIVER_WITHOUT_A_BRIDGE, 'riverLanding', 'poleFerryAlone', 0),
+      act(act(start(RIVER_WITHOUT_A_BRIDGE), RIVER_WITHOUT_A_BRIDGE, 'bridgeGone', 'followUpRiver'), RIVER_WITHOUT_A_BRIDGE, 'riverUpstream', 'keepMillRoad').run?.sceneId === 'riverMill'
+        ? act(act(act(start(RIVER_WITHOUT_A_BRIDGE), RIVER_WITHOUT_A_BRIDGE, 'bridgeGone', 'followUpRiver'), RIVER_WITHOUT_A_BRIDGE, 'riverUpstream', 'keepMillRoad'), RIVER_WITHOUT_A_BRIDGE, 'riverMill', 'acceptMillBoat')
+        : start(RIVER_WITHOUT_A_BRIDGE),
+    ];
+    for (const route of routes) {
+      expect(route.run?.sceneId).toBe('riverAcross');
+      expect(sceneText(RIVER_WITHOUT_A_BRIDGE.scenes.riverAcross, route)).not.toMatch(/safe route has been found and marked/i);
+    }
+  });
+
   it('makes risky environmental choices possible, foreshadowed, and consequential', () => {
     const floodRisk = ACROSS_THE_FLOODPLAIN.scenes.floodHerd.choices.find(({ id }) => id === 'crossFloodChannel')!;
     expect(floodRisk.hint).toMatch(/drown/i);

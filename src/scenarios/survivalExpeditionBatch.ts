@@ -391,7 +391,7 @@ export const RIVER_WITHOUT_A_BRIDGE: Scenario = {
       { id: 'waitRiverForFerry', label: 'Wait for the ferryman instead', next: 'riverCrossing' },
     ] },
     riverCrossing: end('riverCrossing', 'A Crossing by Boat', 'The ferryman returns and takes you across in the tied ferry. The letter stays dry, and the broken bridge is reported before another traveler approaches it at speed.'),
-    riverAcross: end('riverAcross', 'The Far Bank', 'You reach the far bank with the letter intact, by boat or at the upstream bend. The bridge is gone, but a safe route has been found and marked for those behind you.'),
+    riverAcross: end('riverAcross', 'The Far Bank', 'You reach the far bank. The bridge is gone, and no crossing has been marked for travelers behind you.'),
     riverInjury: end('riverInjury', 'A Hard Fall in the Current', 'You crawl back onto the near bank with a bruised leg and a wet letter. The mill road offers help; the channel has proved too unstable to cross alone.'),
     riverLoss: end('riverLoss', 'The Ferry Swings Free', 'You reach the near bank again, but the ferry’s painter is lost downstream. The mill crew must bring another boat; no one attempts the damaged landing on foot.'),
     riverDeath: end('riverDeath', 'Under the Timbers', 'The current carries you beneath the broken bridge. The far bank is close enough to see, but the debris-filled water leaves no hold.', 'death'),
