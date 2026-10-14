@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { choose, newCharacter, sceneText, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
+import { THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -34,6 +34,47 @@ const actStage=(state:SaveData,choiceId:string):SaveData=>{
   expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
   return choose(state,THE_STAGE_WAS_HIT,choice!,()=>0);
 };
+const beginJail=():SaveData=>{
+  const character=newCharacter('Jail Tester');
+  return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_EMPTY_JAIL,()=>0)};
+};
+const actJail=(state:SaveData,choiceId:string):SaveData=>{
+  const scene=THE_EMPTY_JAIL.scenes[state.run!.sceneId];
+  const choice=scene.choices.find(({id})=>id===choiceId);
+  expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+  expect(meets(choice!.requirements,state),`${scene.id}.${choiceId} availability`).toBe(true);
+  return choose(state,THE_EMPTY_JAIL,choice!);
+};
+
+describe('The Empty Jail clerk-presence continuity',()=>{
+  it('keeps the no-contact wait truthful and only adds the book review after the clerk returns',()=>{
+    let state=actJail(beginJail(),'waitJailer');
+    state=actJail(state,'waitStay');
+    expect(state.run?.sceneId).toBe('jailerBack');
+    expect(state.run?.flags).not.toContain('jailClerkWithTraveler');
+    expect(sceneText(THE_EMPTY_JAIL.scenes.wait,state)).not.toMatch(/no officer has answered your call/i);
+    expect(sceneText(THE_EMPTY_JAIL.scenes.jailerBack,state)).not.toMatch(/clerk finds no entry/i);
+    expect(THE_EMPTY_JAIL.scenes.jailerBack.choices.some(({id})=>id==='jailerClerkAccount')).toBe(false);
+    expect(THE_EMPTY_JAIL.scenes.jailerBack.choices.some(({id})=>id==='jailerCallClerk')).toBe(true);
+
+    state=actJail(state,'jailerCallClerk');
+    state=actJail(state,'clerkReturn');
+    expect(state.run?.sceneId).toBe('jailerBackWithClerk');
+    expect(state.run?.flags).toContain('jailClerkWithTraveler');
+    const memory=new Map<string,string>();
+    const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value)};
+    saveGame(state,storage as unknown as Storage);
+    state=loadSave(storage as unknown as Storage);
+    expect(sceneText(THE_EMPTY_JAIL.scenes.jailerBackWithClerk,state)).toMatch(/clerk finds no entry/i);
+    expect(THE_EMPTY_JAIL.scenes.jailerBackWithClerk.choices.some(({id})=>id==='jailerClerkAccount')).toBe(true);
+  });
+
+  it('uses neutral text for a legacy jailer-return save without clerk-presence proof',()=>{
+    const legacy=beginJail();
+    legacy.run!.sceneId='jailerBack';
+    expect(sceneText(THE_EMPTY_JAIL.scenes.jailerBack,legacy)).not.toMatch(/clerk finds no entry/i);
+  });
+});
 
 describe('The Stage Was Hit escort outcome truth',()=>{
   it('does not turn local aid or a town warning into an unestablished escort',()=>{

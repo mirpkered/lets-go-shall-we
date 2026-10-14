@@ -157,22 +157,26 @@ export const THE_EMPTY_JAIL = W('the-empty-jail', 'The Empty Jail', 'A jailer le
     { id: 'accountWait', label: 'Keep the door locked until the jailer returns', next: 'wait' },
     { id: 'accountRelease', label: 'Open the cell and take them to the clerk', next: 'release' },
   ]),
-  wait: scene('wait', 'A Bootstep in the Hall', 'A bootstep pauses outside, then moves away. The prisoner remains inside. You can see the street through the barred window; the key is still on the desk, and no officer has answered your call.', [
+  wait: scene('wait', 'A Bootstep in the Hall', 'A bootstep pauses outside, then moves away. The prisoner remains inside. You can see the street through the barred window; the key is still on the desk, and no officer has been contacted.', [
     { id: 'waitClerk', label: 'Leave to find the town clerk', next: 'officer' },
     { id: 'waitRelease', label: 'Open the door and walk to the clerk together', next: 'release' },
     { id: 'waitStay', label: 'Stay until someone arrives', next: 'jailerBack' },
   ]),
   officer: scene('officer', 'The Clerk’s Book', 'The clerk finds no charge entered for the prisoner. The jailer has authority to hold someone briefly, but not without recording why. The clerk agrees to go with you rather than send you back alone.', [
-    { id: 'clerkReturn', label: 'Return to the jail with the clerk', next: 'jailerBack' },
+    { id: 'clerkReturn', label: 'Return to the jail with the clerk', next: 'jailerBackWithClerk', effects: { setFlags: ['jailClerkWithTraveler'] } },
     { id: 'clerkRelease', label: 'Ask the clerk to open the cell', next: 'release' },
   ]),
   release: scene('release', 'Outside the Cell', 'The prisoner steps into the hall but does not run. The clerk is on the way if you found them; the jailer may return with a different account. The prisoner agrees to wait in the public office, not disappear into the road.', [
     { id: 'releaseOffice', label: 'Walk with them to the public office', next: 'recorded' },
     { id: 'releaseRoad', label: 'Let them leave town now', hint: 'Without a charge record, leaving avoids a false hold but may look like flight.', next: 'departed' },
   ]),
-  jailerBack: scene('jailerBack', 'The Jailer Returns', 'The jailer returns with a split lip and says the prisoner attacked him. The clerk finds no entry in the book and asks both of them to wait apart while a constable is called.', [
-    { id: 'jailerClerk', label: 'Give the clerk what you observed', next: 'recorded', effects: { historyFlags: ['witnessed an unrecorded detention and asked for a written account'] } },
+  jailerBack: scene('jailerBack', 'The Jailer Returns', 'The jailer returns with a split lip and says the prisoner attacked him. The charge book has not been reviewed with a clerk, so the accusation remains unverified. You can fetch the clerk before deciding what to record.', [
+    { id: 'jailerCallClerk', label: 'Find the town clerk before giving an account', next: 'officer' },
     { id: 'jailerLeave', label: 'Leave before the dispute becomes violent', next: 'departed' },
+  ]),
+  jailerBackWithClerk: scene('jailerBackWithClerk', 'The Jailer Returns with the Clerk', 'The jailer returns with a split lip and says the prisoner attacked him. The clerk finds no entry in the book and asks both of them to wait apart while a constable is called.', [
+    { id: 'jailerClerkAccount', label: 'Give the clerk what you observed', next: 'recorded', effects: { historyFlags: ['witnessed an unrecorded detention and asked for a written account'] } },
+    { id: 'jailerLeaveWithClerk', label: 'Leave before the dispute becomes violent', next: 'departed' },
   ]),
   recorded: scene('recorded', 'A Charge Put on Paper', 'The clerk records the detention and the jailer’s account. The prisoner is released pending a hearing because the original charge was never entered. The bruise is noted; no one declares who caused it.', [{ id: 'jailEnd', label: 'Leave the clerk to finish the record', next: 'jailEnd' }]),
   departed: end('departed', 'An Unsettled Door', 'You leave without deciding whether the prisoner’s story or the jailer’s was complete. The town must answer for an empty charge book; the prisoner’s road and the jailer’s complaint remain unresolved.'),
