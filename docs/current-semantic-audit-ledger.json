@@ -4193,12 +4193,12 @@
       "slug": "the-abandoned-camp",
       "title": "The Abandoned Camp",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "MINOR CONCERN",
       "findingIds": [
         "CRA-F0069"
       ],
       "reviewProvenance": "current source route review; direct inspect/call/leave/take-food, ridge and stream prints, camper encounter, return/wait and variant outcomes traced",
-      "notes": "campStream.returnEmptyCamp reaches campAnswer without calling out, yet campAnswer says 'No one answers from the ridge or stream.' The direct call/wait routes support that statement; the silent return route does not. takeCampFood also auto-narrates leaving a note not present as a selected action; retained as a lesser agency concern within the confirmed Adventure rather than a separate finding.",
+      "notes": "campAnswer now distinguishes the explicit call and wait choices from the silent return, using factual run-local proofs and neutral default text; save/reload coverage confirms call proof persists. The pre-existing lesser agency concern remains: takeCampFood's result narrates leaving a note not represented as a separate selected action. It is retained as a minor concern, outside this route-convergence repair.",
       "preReconciliationPosition": 230,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15768,6 +15768,8 @@
       "violatedRule": "Narration must not report a communication attempt or response unless the route establishes that the attempt occurred.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts sets campCallMade only on callAtCamp and campWaitedForReturn only on waitAtCamp. campAnswer defaults to silent-return text, with call/no-answer and wait/no-return variants gated by those run-local facts. src/scenarios/survivalExpeditionBatch.test.ts verifies silent return, call, wait, and save/reload of call proof. The unrelated food-taking/note agency concern was preserved as MINOR CONCERN rather than expanded into this repair.",
       "preReconciliationPosition": 230,
       "registrationStatus": "LIVE"
     },
@@ -20025,8 +20027,8 @@
   ],
   "classificationTotals": {
     "HEALTHY": 603,
-    "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 200,
+    "MINOR CONCERN": 59,
+    "CONFIRMED DEFECT": 199,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

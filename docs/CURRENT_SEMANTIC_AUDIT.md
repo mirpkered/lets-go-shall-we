@@ -1925,6 +1925,12 @@ The regression covers solo failure versus the distinct rope-offer route, cart ab
 
 Disposition-derived classifications are **603 HEALTHY, 58 MINOR CONCERN, 200 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. The live inventory remains 354 findings. Cumulative implementation dispositions are **137 repaired** and **5 healthy/no-longer-reproduces**. The open inventory is **212 findings overall**, including **178 CRA-C0001** (143 MEDIUM, 33 LOW, 3 unrecovered severity); overall open severity is 164 MEDIUM, 39 LOW, and 10 unrecovered. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
 
+### CRA-C0001 repair program — local Wave 11: abandoned-camp contact attribution
+
+Wave 11 repairs CRA-F0069 (LOW), `the-abandoned-camp`. The shared ending now defaults to the silent-return route and no longer says “no one answers” when no one was called or waited for. The explicit call and wait choices set separate factual run-local proofs and receive distinct, accurate variants. A call-proof save/reload regression passes. The unrelated minor agency concern in `takeCampFood`—the result narrates leaving a note without a separate selected action—remains recorded as MINOR CONCERN and was not changed.
+
+CRA-F0069 is now `VERIFIED_HEALTHY_REPAIRED`. The Adventure derives **MINOR CONCERN**, not HEALTHY, because that separate lesser concern remains. Live classifications are **603 HEALTHY, 59 MINOR CONCERN, 199 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. The live inventory remains 354 findings. Cumulative implementation dispositions are **138 repaired** and **5 healthy/no-longer-reproduces**. Open inventory is **211 findings overall**, including **177 CRA-C0001** (143 MEDIUM, 32 LOW, 3 unrecovered severity); overall open severity is 164 MEDIUM, 38 LOW, and 10 unrecovered. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
 ### CRA-C0001 repair program — local Wave 9: river-crossing follow-up claim
 
 Wave 9 repairs CRA-F0066 (MEDIUM), `river-without-a-bridge`. The common far-bank ending now reports only the shared proven result—arrival at the far bank—and explicitly avoids claiming that a safe route was marked for others. This is truthful across the risky direct ford, upstream bend, solo ferry, and mill-crew boat successes without adding state or changing any crossing outcome.
