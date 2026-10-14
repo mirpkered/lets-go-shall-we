@@ -3,7 +3,7 @@
 Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 836 live Adventures reviewed; 25 remain. First live gap: position 837, The Tower Bell Anchor (`the-tower-bell-anchor`; `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`). Next finding ID `CRA-F0360`; next available cluster ID `CRA-C0012`.
+Current live registry: 861 Adventures; 846 live Adventures reviewed; 15 remain. First live gap: position 847, The Seal That Cooled Wrong (`seal-that-cooled-wrong`; `src/scenarios/courierMailTelegraphGenreBatch.ts`). Next finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
 ## Current checkpoint
 
@@ -13,20 +13,20 @@ The canonical registry order is the live exported `SCENARIOS` array in `src/scen
 | --- | ---: |
 | HEALTHY | 460 |
 | MINOR CONCERN | 58 |
-| CONFIRMED DEFECT | 318 |
+| CONFIRMED DEFECT | 320 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed live Adventures | 836 |
-| Live Adventures remaining | 25 |
+| Total reviewed live Adventures | 846 |
+| Live Adventures remaining | 15 |
 
-There are 359 finding records in the preserved audit history: 352 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 281, LOW 48, plus 10 unrecovered values.
+There are 361 finding records in the preserved audit history: 354 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 283, LOW 48, plus 10 unrecovered values.
 
 ### Live-registry reconciliation
 
 The 24 unregistered reviewed Adventure IDs are recorded in the JSON `unregisteredReviewedAdventures` section. All 24 source files still exist, but those IDs are absent from the exported live `SCENARIOS` array; this is unregistered/draft content, not deleted source or duplicate replacement. The original 11 wilderness draft records remain preserved along with 13 additional unregistered records from later recorded batches.
 
-Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 23 (346 clustered live findings); six live findings are unclustered.
+Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 222, C0002 19, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 24 (348 clustered live findings); six live findings are unclustered.
 
-Coverage invariant: **861 registered = 836 reviewed + 25 remaining**. The verified unreviewed position range is **837–861**. The first unreviewed live entry is position 837, `the-tower-bell-anchor` — The Tower Bell Anchor — `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`.
+Coverage invariant: **861 registered = 846 reviewed + 15 remaining**. The verified unreviewed position range is **847–861**. The first unreviewed live entry is position 847, `seal-that-cooled-wrong` — The Seal That Cooled Wrong — `src/scenarios/courierMailTelegraphGenreBatch.ts`.
 
 ## Live-registry continuation (10 newly completed reviews)
 
@@ -1698,3 +1698,22 @@ Completed ten route-level reviews of the construction/building structural-work b
 The construction/building suite passed **13 tests**; Gear-condition and registry suites passed **14 tests** in the prior combined run. The existing tests establish choice reachability, usable-Gear restrictions, alternate/partial outcomes, and persistence, but do not assert the method-result chronology defect; the shared source directly establishes it. No gameplay source or tests changed.
 
 The live checkpoint is now **839 reviewed / 22 remaining of 861**: **468 HEALTHY, 60 MINOR CONCERN, 311 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **349 findings**: **345 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 276, LOW 45, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 15 (339 clustered), with six unclustered. The first unreviewed live Adventure is position **840**, **The Wedge at the Schoolhouse** (`the-wedge-at-the-schoolhouse`), `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`. Next finding ID: **CRA-F0350**; next available cluster ID: **CRA-C0012**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 837–846)
+
+The Tower Bell Anchor extends CRA-C0011 because its plumb-line sway result is shown before the measurement choice. Eight courier stories are HEALTHY: delivery/delay/warning, refusal, privacy/seal handling, injury/threat withdrawal, usable-Gear requirements, and handoff-gated rewards remain distinct in current source. Station Mark in the Margin is a confirmed CRA-C0002 Knowledge-provenance defect: the certainty-level repeat-mark fact is granted after handling choices even though the source offers only the clerk’s tentative interpretation and neither choice verifies it.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 837 | The Tower Bell Anchor (`the-tower-bell-anchor`) | CONFIRMED DEFECT | CRA-F0360 (MEDIUM, CRA-C0011) — plumb-line sway result appears before measurement. |
+| 838 | Rain on the Relay (`rain-on-the-relay`) | HEALTHY | — delivery, late handoff, warning, and duplicate-send outcomes remain distinct. |
+| 839 | The Wire That Sang Twice (`the-wire-that-sang-twice`) | HEALTHY | — warning request is not narrated as confirmation received; delay stays separate. |
+| 840 | Blue Chalk at the Milepost (`blue-chalk-milepost`) | HEALTHY | — current public route is distinguished from stale chalk/private shortcut. |
+| 841 | Mailbag at Milepost Nine (`mailbag-at-milepost-nine`) | HEALTHY | — injury/interceptor withdrawal does not claim recovery handoff or unlock delivery reward. |
+| 842 | Paper Boat at High Water (`paper-boat-at-high-water`) | HEALTHY | — flooded-shortcut damage is gated and recorded only when chosen. |
+| 843 | The Station without a Clock (`station-without-a-clock`) | HEALTHY | — engine movement is not treated as the platform’s departure bell. |
+| 844 | The Copyist’s Pencil (`copyists-pencil`) | HEALTHY | — unconfirmed correction remains labelled uncertain. |
+| 845 | The Last-Mile Pouch (`the-last-mile-pouch`) | HEALTHY | — sealed delivery respects the posted property boundary. |
+| 846 | The Station Mark in the Margin (`station-mark-in-margin`) | CONFIRMED DEFECT | CRA-F0361 (MEDIUM, CRA-C0002) — primary Knowledge is granted without route proof of the mark convention. |
+
+Current live totals are **846 reviewed / 15 remaining**; next finding ID: **CRA-F0362**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.

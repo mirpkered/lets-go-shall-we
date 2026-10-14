@@ -5,12 +5,12 @@
   "workingTreeStateAtReview": "audit-only update; gameplay source and tests unchanged",
   "totalRegisteredAdventures": 861,
   "liveRegistryCount": 861,
-  "reviewedThroughPosition": 836,
-  "reviewedCount": 836,
-  "remainingCount": 25,
-  "nextPosition": 837,
-  "firstUnreviewedLiveStableId": "the-tower-bell-anchor",
-  "firstUnreviewedLivePosition": 837,
+  "reviewedThroughPosition": 846,
+  "reviewedCount": 846,
+  "remainingCount": 15,
+  "nextPosition": 847,
+  "firstUnreviewedLiveStableId": "seal-that-cooled-wrong",
+  "firstUnreviewedLivePosition": 847,
   "reviewedStableIdsScope": "CURRENT_LIVE_SCENARIOS_ONLY",
   "unregisteredReviewedAdventureIds": [
     "the-night-bird-turn",
@@ -336,7 +336,7 @@
   },
   "historicalReviewedAdventureRecordCount": 850,
   "unregisteredReviewedAdventureCount": 24,
-  "liveFindingCount": 352,
+  "liveFindingCount": 354,
   "unregisteredHistoricalFindingCount": 7,
   "defaultFindingRegistrationStatus": "LIVE",
   "unregisteredHistoricalFindingIds": [
@@ -350,13 +350,13 @@
   ],
   "liveSeverityTotals": {
     "HIGH": 13,
-    "MEDIUM": 281,
+    "MEDIUM": 283,
     "LOW": 48,
     "SEVERITY_UNRECOVERED": 10
   },
   "liveClusterFindingCounts": {
     "CRA-C0001": 222,
-    "CRA-C0002": 18,
+    "CRA-C0002": 19,
     "CRA-C0003": 1,
     "CRA-C0004": 34,
     "CRA-C0005": 1,
@@ -365,7 +365,7 @@
     "CRA-C0008": 12,
     "CRA-C0009": 3,
     "CRA-C0010": 11,
-    "CRA-C0011": 23
+    "CRA-C0011": 24
   },
   "unregisteredHistoricalClusterFindingCounts": {
     "CRA-C0001": 2,
@@ -380,7 +380,7 @@
     "CRA-C0010": 0,
     "CRA-C0011": 0
   },
-  "nextFindingId": "CRA-F0360",
+  "nextFindingId": "CRA-F0362",
   "nextClusterId": "CRA-C0012",
   "status": "IN_PROGRESS",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -14465,6 +14465,150 @@
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 837,
+      "adventureId": "the-tower-bell-anchor",
+      "slug": "the-tower-bell-anchor",
+      "title": "The Tower Bell Anchor",
+      "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0360"
+      ],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Reviewed high-risk inspect/rush/withdraw, base comparison from ladder base, shore/close/force routes, keep-platform-closed versus scaffold-inspection alternative, water supply via ground valve, knowledge/lore/fee/partial outcomes. The sway measurement is disclosed before the gated method choice; the platform remains closed on the cautious route.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 838,
+      "adventureId": "rain-on-the-relay",
+      "slug": "rain-on-the-relay",
+      "title": "Rain on the Relay",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced accept/decline, dry higher-track handoff after books close, wait-for-water delay, warning, duplicate-copy fee, and handoff/late settlement. Gear release and relay-delay Knowledge require a completed handoff; delay receives no completion reward. The warning route is a delivered warning, not a claim that the original dispatch arrived on time.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 839,
+      "adventureId": "the-wire-that-sang-twice",
+      "slug": "the-wire-that-sang-twice",
+      "title": "The Wire That Sang Twice",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced short warning with requested confirmation, hold for repair, qualified warning, paid duplicate, and threatened/hazard paths if offered; confirmation is not asserted as received. Tester Gear/Knowledge follow eligible handoff; refusal/delay has no delivery reward.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 840,
+      "adventureId": "blue-chalk-milepost",
+      "slug": "blue-chalk-milepost",
+      "title": "Blue Chalk at the Milepost",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced current public-road delivery, authorization delay, qualified warning, and the old chalk/private shortcut as setup warning; reward, forwarding Knowledge, and route Lore are handoff-gated. No route claims the closed shortcut was taken as a valid public road.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 841,
+      "adventureId": "mailbag-at-milepost-nine",
+      "slug": "mailbag-at-milepost-nine",
+      "title": "Mailbag at Milepost Nine",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced road-side recovery, wait for rail crew, sealed-letter keep/open/disclose/conceal paths, flooded/risk variants if present, watcher confrontation, injury withdrawal, settlement, and conditional flag reward. Injury/threat exits do not set completed-handoff or unlock delivery reward; open-letter text does not identify the interceptor.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 842,
+      "adventureId": "paper-boat-at-high-water",
+      "slug": "paper-boat-at-high-water",
+      "title": "Paper Boat at High Water",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced ridge delivery, runner/post delay, warning, and usable Waterproof Ledger Tube flooded-shortcut damage route. Damage and negative history are recorded only on that choice; subsequent delivery or delay remains explicit. Gear/Knowledge reward and fee require handoff.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 843,
+      "adventureId": "station-without-a-clock",
+      "slug": "station-without-a-clock",
+      "title": "The Station without a Clock",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced private handoff, waiting for the platform bell, qualified warning, refusal, and station-clock/engine distinction. The bell—not engine movement—governs boarding claim; privacy is preserved by delivery text and knowledge is reward-gated.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 844,
+      "adventureId": "copyists-pencil",
+      "slug": "copyists-pencil",
+      "title": "The Copyist’s Pencil",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced dual-version unconfirmed notice, hold for sender confirmation, temporary warning, refusal, and payment/related Lore variants. The correction remains unconfirmed; the route does not turn the alternate hand into verified authority.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 845,
+      "adventureId": "the-last-mile-pouch",
+      "slug": "the-last-mile-pouch",
+      "title": "The Last-Mile Pouch",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced sealed delivery inquiry at public door, gate-condition return/delay, farmer-at-public-gate warning, refusal, and open/disclose/conceal letter branches. The posted boundary is not crossed; sealed-message flags and alternate handling text remain distinct; rewards require handoff.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 846,
+      "adventureId": "station-mark-in-margin",
+      "slug": "station-mark-in-margin",
+      "title": "The Station Mark in the Margin",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "CONFIRMED DEFECT",
+      "findingIds": [
+        "CRA-F0361"
+      ],
+      "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
+      "notes": "Traced refusal, address/route verification, immediate transmission, uncertainty warning, hold for morning operator, settlement and save/resume. Opening says clerk thinks marks may request repeat; office book does not confirm meaning. The only primary Knowledge fact is attached to every handling choice, including carryNow and verifyOutside; no choice compares a confirmed copy or resolves the uncertainty. Save persistence is correctly durable once granted, but route proof for the grant is absent.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
     }
   ],
   "findings": [
@@ -18914,6 +19058,31 @@
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
+    },
+    {
+      "findingId": "CRA-F0360",
+      "position": 837,
+      "adventureId": "the-tower-bell-anchor",
+      "severity": "MEDIUM",
+      "defect": "The work scene reports the plumb-line sway result before the player chooses to compare the tower face before and after a gust.",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE",
+      "clusterId": "CRA-C0011",
+      "routeWitness": "start.inspect or start.rush -> work; work prints methodResult before the Brass Plumb Bob comparison action is available.",
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result."
+    },
+    {
+      "findingId": "CRA-F0361",
+      "position": 846,
+      "adventureId": "station-mark-in-margin",
+      "severity": "MEDIUM",
+      "defect": "The telegraph-repeat Knowledge fact is granted by every handling choice despite the source presenting only the clerk’s tentative interpretation and no route that verifies the mark convention.",
+      "locality": "Scenario-specific Knowledge effect in courierMailTelegraphGenreBatch.ts; shared courier handling builder applies the primary fact to all handling choices.",
+      "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "registrationStatus": "LIVE",
+      "clusterId": "CRA-C0002",
+      "routeWitness": "start.acceptDelivery -> handling -> verifyOutside or carryNow -> decision; both handling choices attach telegraphRepeatConvention, while the office book explicitly does not confirm the marks. Neither choice establishes the mark’s meaning.",
+      "violatedRule": "Persistent Knowledge must be supported by route-established learning; a tentative clue or unrelated handling action cannot grant a certainty-level fact."
     }
   ],
   "clusters": [
@@ -19170,7 +19339,8 @@
         "CRA-F0110",
         "CRA-F0113",
         "CRA-F0114",
-        "CRA-F0138"
+        "CRA-F0138",
+        "CRA-F0361"
       ]
     },
     {
@@ -19344,14 +19514,15 @@
         "CRA-F0356",
         "CRA-F0357",
         "CRA-F0358",
-        "CRA-F0359"
+        "CRA-F0359",
+        "CRA-F0360"
       ]
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 460,
+    "HEALTHY": 468,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 318,
+    "CONFIRMED DEFECT": 320,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -20102,14 +20273,18 @@
     {
       "positions": "731–732 and 829–836 (10 newly completed live reviews)",
       "status": "Reviewed the two agricultural route-state cases and eight construction stories in live-registry order. The fence-pliers rail-reinforcement branch enters the shared result without opening the gate, yet the ending says sheep pass. The lost-halter pull choice is erased by stop text saying nobody pulls. Eight construction-builder stories disclose their story-specific inspection/method result in work before measure/inspection choice; each finding extends CRA-C0011. Route choices, stop/withdraw, usable Gear gates, safe/alternate/partial outcomes, conditional reward/fee, optional Knowledge/Lore, and applicable legacy state were checked; no persistence behavior is added by these stories."
+    },
+    {
+      "positions": "837–846 (10 newly completed live reviews)",
+      "status": "Reviewed the Tower Bell Anchor plus nine courier/telegraph scenarios. The Tower Bell Anchor extends CRA-C0011 because sway measurement is shown before the plumb-bob action. Station Mark in the Margin extends CRA-C0002: its primary Knowledge fact is granted after handling choices that do not resolve the clerk’s tentative mark interpretation. The other eight mail/telegraph routes were traced through delivery, delay, warnings, refusal, privacy/seal, hazard, reward, Knowledge/Lore, and save behavior where applicable."
     }
   ],
-  "highestContiguousReviewedPosition": 836,
-  "maxReviewedRegistryPosition": 836,
+  "highestContiguousReviewedPosition": 846,
+  "maxReviewedRegistryPosition": 846,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 837,
-  "firstUnreviewedStableId": "the-tower-bell-anchor",
-  "nextStableId": "the-tower-bell-anchor",
+  "firstUnreviewedPosition": 847,
+  "firstUnreviewedStableId": "seal-that-cooled-wrong",
+  "nextStableId": "seal-that-cooled-wrong",
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -20946,7 +21121,17 @@
     "the-lodge-wall-under-new-paint",
     "the-bridge-camp-post",
     "the-theater-that-never-opened",
-    "the-old-well-house"
+    "the-old-well-house",
+    "the-tower-bell-anchor",
+    "rain-on-the-relay",
+    "the-wire-that-sang-twice",
+    "blue-chalk-milepost",
+    "mailbag-at-milepost-nine",
+    "paper-boat-at-high-water",
+    "station-without-a-clock",
+    "copyists-pencil",
+    "the-last-mile-pouch",
+    "station-mark-in-margin"
   ],
   "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -20968,8 +21153,8 @@
     "registryOrderSource": "src/scenarios/index.ts",
     "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
     "liveRegistryCount": 861,
-    "reviewedLiveCount": 836,
-    "remainingLiveCount": 25,
+    "reviewedLiveCount": 846,
+    "remainingLiveCount": 15,
     "unregisteredReviewedCount": 24,
     "unregisteredHistoricalFindingCount": 7,
     "unregisteredReviewedAdventureIds": [
@@ -21000,26 +21185,26 @@
     ],
     "unreviewedPositionRanges": [
       [
-        837,
+        847,
         861
       ]
     ],
     "latest20ReconciledToPositions809Through828": true,
     "latestBatchPositions": [
-      731,
-      732,
-      829,
-      830,
-      831,
-      832,
-      833,
-      834,
-      835,
-      836
+      837,
+      838,
+      839,
+      840,
+      841,
+      842,
+      843,
+      844,
+      845,
+      846
     ]
   },
-  "reviewedLiveCount": 836,
-  "remainingLiveCount": 25,
+  "reviewedLiveCount": 846,
+  "remainingLiveCount": 15,
   "reviewedLiveStableIds": [
     "broken-bell",
     "last-stop",
@@ -21856,9 +22041,7 @@
     "the-lodge-wall-under-new-paint",
     "the-bridge-camp-post",
     "the-theater-that-never-opened",
-    "the-old-well-house"
-  ],
-  "unreviewedLiveStableIds": [
+    "the-old-well-house",
     "the-tower-bell-anchor",
     "rain-on-the-relay",
     "the-wire-that-sang-twice",
@@ -21868,7 +22051,9 @@
     "station-without-a-clock",
     "copyists-pencil",
     "the-last-mile-pouch",
-    "station-mark-in-margin",
+    "station-mark-in-margin"
+  ],
+  "unreviewedLiveStableIds": [
     "seal-that-cooled-wrong",
     "copy-that-came-back",
     "flooded-relay-book",
@@ -21890,7 +22075,7 @@
   "unclusteredHistoricalFindingCount": 0,
   "unreviewedPositionRanges": [
     [
-      837,
+      847,
       861
     ]
   ]
