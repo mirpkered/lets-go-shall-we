@@ -7376,7 +7376,7 @@
       "slug": "the-mayors-missing-gavel",
       "title": "The Mayor’s Missing Gavel",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0161"
       ],
@@ -7386,7 +7386,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 113 (game/test commit bd3900a): the shared labor ending no longer asserts that the gavel was returned to its drawer; it leaves the gavel's whereabouts unsettled. Both the route that never locates it and the route that leaves it in the kindling basket reach this result. The explicit return-to-table route remains distinct and unchanged. Regression covers both unsupported routes and the supported return contrast; focused comedy-absurdity tests passed (12); production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "position": 423,
@@ -17164,7 +17166,9 @@
       "violatedRule": "An ending may not assert an object relocation or resolution absent from the selected route’s actions and state.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 113 (game/test commit bd3900a): the work ending now says the town moves on without settling where the gavel is, covering both the purpose/use-bell route that never locates it and search.keepBell that leaves it in the basket. The separate search.returnGavel route still reaches the result that returns the gavel to the table. No state was added. Route-contrast regression and focused comedy-absurdity tests passed (12); production TypeScript/build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0162",
@@ -20327,9 +20331,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 734,
+    "HEALTHY": 735,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 68,
+    "CONFIRMED DEFECT": 67,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
