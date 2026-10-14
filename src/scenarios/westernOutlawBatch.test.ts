@@ -91,14 +91,15 @@ describe('The Rustled Herd evidence continuity',()=>{
     expect(state.run?.flags).toContain('herdMarketEvidenceSeen');
     expect(state.run?.flags).toContain('herdHoldingCountSeen');
     expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/twelve calves.*eighteen/i);
-    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/thirty cattle/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).toMatch(/thirty missing cattle/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settlement,state)).not.toMatch(/six too high/i);
     state=actHerd(state,'settlementLeave');
-    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/accounted for by brand, receipt, and holding-pasture count/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/two records account for the thirty missing cattle/i);
     const memory=new Map<string,string>();
     const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value)};
     saveGame(state,storage as unknown as Storage);
     state=loadSave(storage as unknown as Storage);
-    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/accounted for by brand, receipt, and holding-pasture count/i);
+    expect(sceneText(THE_RUSTLED_HERD.scenes.settled,state)).toMatch(/two records account for the thirty missing cattle/i);
   });
 
   it('uses a neutral legacy fallback when route evidence flags are absent',()=>{
