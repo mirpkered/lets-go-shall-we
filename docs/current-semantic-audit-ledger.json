@@ -13135,12 +13135,12 @@
       "slug": "the-map-with-two-norths",
       "title": "The Map with Two Norths",
       "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0312"
       ],
       "reviewProvenance": "current-source route review; field-note comparison, clerk timing, protected Map Case, specialized rubbing, copy-specific choices, filing correction, Knowledge, fee/tool/decline outcomes traced",
-      "notes": "The shared test says the smaller arrow aligns with folded orientation and the scale discrepancy is from reduction even on the route that only protects the sheet in a usable Map Case before taking it outside. That route establishes safe custody, not orientation/scale analysis. Copy-flag variants and save-compatible settlement Knowledge remain distinct.",
+      "notes": "The Map Case route now establishes only protected custody and remains neutral about scale/orientation. Comparing field-note distances establishes that the copy is reduced while leaving the arrow’s reference unresolved. The separate surveyor-confirmation settlement remains route-specific; Map Case usability and copy-flag paths remain intact.",
       "preReconciliationPosition": 771,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18879,7 +18879,9 @@
       "violatedRule": "A shared evidence scene may not grant an analytical finding absent route proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gives the field-distance comparison a bounded reduced-copy result and keeps the Map Case custody route neutral about scale and arrow orientation. src/scenarios/investigationEvidenceGenreBatch.test.ts covers comparison versus custody, absent/BROKEN Map Case rejection, and the truthful custody result."
     },
     {
       "findingId": "CRA-F0313",
@@ -19994,9 +19996,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 590,
+    "HEALTHY": 591,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 213,
+    "CONFIRMED DEFECT": 212,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
