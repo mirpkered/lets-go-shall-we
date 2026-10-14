@@ -2,31 +2,31 @@
 
 Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
-Current live registry: 861 Adventures; 639 live Adventures reviewed; 222 remain.
-Next: position 640, Weighed Before Dawn (`weighed-before-dawn`; `src/scenarios/expeditionLogisticsGenreBatch.ts`); next finding ID `CRA-F0243`; next available cluster ID `CRA-C0010`.
+Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
+Current live registry: 861 Adventures; 826 live Adventures reviewed; 35 remain. First live gap: position 731, The Fencing Pliers at Willow Turn (`the-fence-pliers-at-willow-turn`). Next finding ID `CRA-F0350`; next available cluster ID `CRA-C0012`.
 
 ## Current checkpoint
 
-The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. A reconciliation found 11 reviewed records for Adventures that are present in a raw editorial-draft source file but are not exported in the live registry. Their full review history remains in the JSON under `adventures` and the explicit `unregisteredReviewedAdventures` history section, but they do not count as live coverage. Four attached findings (CRA-F0239–CRA-F0242) remain preserved and are marked `UNREGISTERED_SOURCE`. Two live position shifts were corrected by stable-ID lookup. Historical batch text below is retained as history and must not be read as live-coverage accounting. No scenario source or gameplay test files were changed.
+The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. Reconciliation now separates **826 live-reviewed** Adventures from **24 reviewed-but-unregistered historical** records. The historical records and their seven attached findings remain preserved in `adventures` and `unregisteredReviewedAdventures`, but do not count toward live coverage or live defect totals. The latest 20 completed reviews map by stable ID to current positions 809–828; their semantic notes and findings were preserved while their positions were corrected. Historical batch text below is retained as history and must not be read as live-coverage accounting. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 384 |
-| MINOR CONCERN | 39 |
-| CONFIRMED DEFECT | 216 |
+| HEALTHY | 460 |
+| MINOR CONCERN | 58 |
+| CONFIRMED DEFECT | 308 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed live Adventures | 639 |
-| Live Adventures remaining | 222 |
+| Total reviewed live Adventures | 826 |
+| Live Adventures remaining | 35 |
 
-There are 242 finding records in the preserved audit history: 238 attached to live registered Adventures and four attached to unregistered draft records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. The detailed route witnesses for those ten findings are likewise explicitly marked as unrecovered. Live severity totals are HIGH 13, MEDIUM 176, LOW 39, plus 10 unrecovered values. The final historical review batches (recorded positions 631–650) included the 11 unregistered draft records listed below; their findings and route notes are retained but excluded from all live coverage and live-cluster counts.
+There are 349 finding records in the preserved audit history: 342 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 273, LOW 46, plus 10 unrecovered values.
 
-### Live-registry reconciliation correction
+### Live-registry reconciliation
 
-The 11 unregistered reviewed Adventures are `the-night-bird-turn`, `the-fox-at-the-egg-box`, `the-ravine-bedroll`, `the-cloud-shadow-count`, `the-cold-shelf`, `the-cut-branch-marker`, `the-pack-that-shifted`, `the-snow-line-on-the-stump`, `the-spring-box-in-the-mud`, `the-cairn-below-the-cloud`, and `the-hollow-log-shelter`. Their source file, `src/scenarios/wildernessFieldcraftGenreBatch.ts`, still exists, but the records are not members of exported `SCENARIOS`. In particular, the editorial draft export is sliced and filters `the-night-bird-turn`; other draft records remain outside the exported slice. This points to draft/unregistered content mistakenly counted as live review, not source removal or duplicate-ID replacement.
+The 24 unregistered reviewed Adventure IDs are recorded in the JSON `unregisteredReviewedAdventures` section. All 24 source files still exist, but those IDs are absent from the exported live `SCENARIOS` array; this is unregistered/draft content, not deleted source or duplicate replacement. The original 11 wilderness draft records remain preserved along with 13 additional unregistered records from later recorded batches.
 
-These 11 records comprise 7 HEALTHY, 0 MINOR CONCERN, and 4 CONFIRMED DEFECT classifications. Findings CRA-F0239–CRA-F0242 are all MEDIUM and assigned to CRA-C0004. They remain in audit history with `registrationStatus: UNREGISTERED_SOURCE`; CRA-C0004 retains them historically while its live count is 22. Current live cluster counts are CRA-C0001 165, C0002 18, C0003 1, C0004 22, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (232 clustered live findings); six live findings are currently unclustered. The four unregistered historical cluster memberships are CRA-C0004; they are excluded from live counts.
+Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 220, C0002 18, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 15 (336 clustered live findings); six live findings are unclustered.
 
-The corrected live totals are 861 registered = 639 reviewed + 222 remaining. The true first unreviewed entry is position 640, `weighed-before-dawn` — Weighed Before Dawn — `src/scenarios/expeditionLogisticsGenreBatch.ts`. No semantic review of this Adventure has been performed as part of this reconciliation.
+Coverage invariant: **861 registered = 826 reviewed + 35 remaining**. The verified unreviewed position ranges are **731–732** and **829–861**. The first unreviewed live entry is position 731, `the-fence-pliers-at-willow-turn` — The Fencing Pliers at Willow Turn — `src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts`.
 
 ## Registry position reconciliation (historical note; superseded by live-registry correction above)
 
@@ -1274,3 +1274,408 @@ Three current contradictions were confirmed, each extending CRA-C0004. In The Ra
 | 650 | The Hollow Log Shelter | CONFIRMED DEFECT | CRA-F0242 (MEDIUM) — a BROKEN blanket passes the windbreak gate and is credited with blocking wind. |
 
 Historical batch-end report, superseded by the live-registry reconciliation above: the old checkpoint treated 11 draft/unregistered records as live. Do not use its 650/211 coverage or classification totals for current coverage. The corrected live state is 639 reviewed / 222 remaining; next is position 640, Weighed Before Dawn (`weighed-before-dawn`). Finding and cluster sequence remains CRA-F0243 / CRA-C0010.
+
+## Live-registry continuation (positions 640–649)
+
+Resumed from the reconciled stable-ID checkpoint at source snapshot `cba101f0feba09c67543f942331ca38f765ebe14`. The 11 unregistered historical records remain segregated and do not contribute to live coverage. Route-level source review completed the next ten actual live Adventures, positions 640–649. Seven are HEALTHY; three current defects were recorded as CRA-F0243–CRA-F0245, all extending CRA-C0001 (route-specific state or knowledge lost at convergence). No new cluster was created. Focused tests passed: `pnpm exec vitest run src/scenarios/expeditionLogisticsGenreBatch.test.ts src/scenarios/rc03AccountingC3.test.ts` — 19 tests across 2 files.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 640 | Weighed Before Dawn (`weighed-before-dawn`) | HEALTHY | — load, usable Gear, ridge actions, partial returns, payment/refusal, and Knowledge outcomes retain route proof. |
+| 641 | The Fourth Mule (`the-fourth-mule`) | CONFIRMED DEFECT | CRA-F0243 (MEDIUM) — after leaving bedding cached, shared safe text says all goods remain together. |
+| 642 | The Cache Ledger (`the-cache-ledger`) | HEALTHY | — taking cache stock prevents preservation rewards; saved run state retains the distinction across reload. |
+| 643 | Two Crates Short (`two-crates-short`) | CONFIRMED DEFECT | CRA-F0244 (MEDIUM) — weighing sealed crates alone leads to unsupported chalk-mark and missing-crate-location knowledge. |
+| 644 | The Ledge Store (`the-ledge-store`) | HEALTHY | — lift, hand-carry, blocked return, lantern, scout, partial, and reward routes remain distinct. |
+| 645 | The Wrong Waybill (`the-wrong-waybill`) | HEALTHY | — delay preserves custody; open inspection and foreman verification support the exchange/release claims. |
+| 646 | The Third Trip (`the-third-trip`) | HEALTHY | — load priority, trip count, delayed water crossing, partial delivery, and completion pay remain route-specific. |
+| 647 | The Cook-Box Count (`the-cook-box-count`) | HEALTHY | — equal portions remain partial; reserve, runner resupply, wage, and Knowledge claims are gated by their actions. |
+| 648 | Canvas Over the Crate (`the-canvas-over-the-crate`) | HEALTHY | — only the raise/move inspection route claims the fitting was found; carry and return routes use neutral variants. |
+| 649 | The Second Wagon (`the-second-wagon`) | CONFIRMED DEFECT | CRA-F0245 (MEDIUM) — the “carry only the water” route reaches partial text claiming both food and water arrive. |
+
+Current live coverage is **649 reviewed / 212 remaining of 861**. Live classifications: **391 HEALTHY, 39 MINOR CONCERN, 219 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **241 live findings** (the four findings CRA-F0239–CRA-F0242 remain historical `UNREGISTERED_SOURCE` records). The current live cluster totals are CRA-C0001 168, CRA-C0002 18, CRA-C0003 1, CRA-C0004 22, CRA-C0005 1, CRA-C0006 17, CRA-C0007 4, CRA-C0008 1, CRA-C0009 3; six legacy live findings have no recoverable cluster assignment and remain unassigned rather than inferred.
+
+The first unreviewed live Adventure is position **650**, **The Paper Tube** (`the-paper-tube`), `src/scenarios/expeditionLogisticsGenreBatch.ts`. Next finding ID: **CRA-F0246**. Next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 650–659)
+
+Continued from the persisted stable-ID checkpoint and reviewed the next ten live Adventures in registry order. Traced packet custody and dry storage; shared three-task completion; ration/resupply and turnback; lantern allocation and daylight limits; storehouse tally/issue/refusal; ferry priority and partial loads; staging alternatives; crate-only versus crew-location discovery; cart bracing versus split cargo delivery; and stale/current map evidence with hazard turnback. Six Adventures are HEALTHY, The Paper Tube is a MINOR CONCERN, and three MEDIUM confirmed convergence defects (CRA-F0246–CRA-F0248) extend CRA-C0001. No new cluster was created. The expedition-logistics and accounting support suites passed 19 tests across two files; these tests support, but do not replace, the route-level source review.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 650 | The Paper Tube (`the-paper-tube`) | MINOR CONCERN | — the wrap-to-transfer choice mentions a high dry locker although the described ferry locker is damp and the dry passenger box is a separate request route. |
+| 651 | Three Crews, One Tool (`three-crews-one-tool`) | CONFIRMED DEFECT | CRA-F0246 (MEDIUM) — successful task branches converge on a claim that all three tasks were completed without route proof for every task. |
+| 652 | The Empty Feed Sack (`the-empty-feed-sack`) | HEALTHY | — runner resupply, split rations, crate location, turnback, strain, and rewards remain route-specific. |
+| 653 | The Spare Lantern Issue (`the-spare-lantern-issue`) | HEALTHY | — allocation, daylight boundary, call-back, return, and reward variants preserve their state. |
+| 654 | The Storehouse Key (`the-storehouse-key`) | HEALTHY | — tally, issue/return, refusal, and completion reward outcomes remain distinct. |
+| 655 | The Ferry Load Order (`the-ferry-load-order`) | HEALTHY | — cargo priority, line clearing, rush/wait partials, and tool-trunk delivery are represented accurately. |
+| 656 | The Staging Board (`the-staging-board`) | HEALTHY | — relabel and jack-first staging routes establish their different chain handling before completion. |
+| 657 | The Quiet Resupply (`the-quiet-resupply`) | CONFIRMED DEFECT | CRA-F0247 (MEDIUM) — securing the crate alone reaches text that claims the crew was found above the cut. |
+| 658 | The Broken Handcart (`the-broken-handcart`) | CONFIRMED DEFECT | CRA-F0248 (MEDIUM) — bracing without caching timber reaches a result that says the timber arrives later. |
+| 659 | The Duplicate Map (`the-duplicate-map`) | HEALTHY | — the stale-copy delay and hazard-driven turnback do not claim safe passage or unsupported recovery. |
+
+Current live coverage is **659 reviewed / 202 remaining of 861**. Live classifications: **397 HEALTHY, 40 MINOR CONCERN, 222 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **248 findings in preserved history**, of which **244 are attached to live Adventures** and four remain `UNREGISTERED_SOURCE`. Live severity totals are HIGH 13, MEDIUM 182, LOW 39, with 10 unrecovered legacy severity values. Live cluster counts: CRA-C0001 171, C0002 18, C0003 1, C0004 22, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3; six live findings remain unclustered because their legacy cluster assignments are unrecovered.
+
+The next unreviewed live Adventure is position **660**, **The Last Dry Rope** (`the-last-dry-rope`), `src/scenarios/expeditionLogisticsGenreBatch.ts`. Next finding ID: **CRA-F0249**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 660–669)
+
+Reviewed the next ten actual unreviewed Adventures in live registry order. Traced dry-line assignment and safe lift alternatives; office record/message custody and late crew return; sample/pump load variants and stop-before-descent; north-flag/south-lantern handoff verification; gauge reading versus anchor-only inspection and manual comparison; bench-clamp fit/overhead misuse; caliper misuse versus pin/plate repair; intermittent telegraph splice testing and repair; pad fitting versus girth inspection/overload; and two-site rainfall versus upper-only measurement and tributary/crossing decisions. Six Adventures are HEALTHY. Four confirmed defects, CRA-F0249–CRA-F0252, extend CRA-C0001; no new cluster was needed. Focused expedition logistics, equipment-testing, and accounting suites passed 34 tests across three files. Tests are supporting evidence; findings are based on route-level source review.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 660 | The Last Dry Rope (`the-last-dry-rope`) | HEALTHY | — dry-line priority, crew/medicine move, hand-carry, tied-off chest, wait/partial and compensation routes do not overclaim a heavy lift. |
+| 661 | The Empty Camp Office (`the-empty-camp-office`) | CONFIRMED DEFECT | CRA-F0249 (LOW) — leaving the books unsecured while preserving the sealed envelope can still receive reward credit for securing working records. |
+| 662 | The Return Wagon (`the-wheel-of-the-return-wagon`) | HEALTHY | — sample-first, pump-first, rebalanced and stop/second-trip outcomes have matching route-specific text. |
+| 663 | The Night Stage (`the-night-stage`) | HEALTHY | — caller identity is checked before box handoff; wait/retrieve and unsafe approach remain distinct. |
+| 664 | The Line Under Load (`the-line-under-load`) | CONFIRMED DEFECT | CRA-F0250 (MEDIUM) — anchor-only inspection and hand comparison converge on claims of gauge readings/repeat not performed. |
+| 665 | The Clamp That Walked (`the-clamp-that-walked`) | HEALTHY | — clamp limits are explicit; overhead and forced-use routes stop safely, and successful bench repairs have a fitting action. |
+| 666 | The Caliper at the Siding (`the-caliper-at-the-siding`) | HEALTHY | — pin comparison/fitting supports the diagnosis; long-frame misuse and delayed replacement do not claim a repair. |
+| 667 | The Needle at the North Station (`the-needle-at-the-north-station`) | HEALTHY | — splice isolation, repair, repeat answers, hand-delivery, and safe hold outcomes are distinguished. |
+| 668 | The Saddle That Sat Crooked (`the-saddle-that-sat-crooked`) | CONFIRMED DEFECT | CRA-F0251 (MEDIUM) — girth-inspection-only route inherits pad-fit and centered-walk claims without fitting the pad. |
+| 669 | The Rain Cup at Mill Run (`the-rain-cup-at-mill-run`) | CONFIRMED DEFECT | CRA-F0252 (LOW) — upper-only placement reaches a two-site rainfall comparison and a reward claim that both sites were recorded. |
+
+Current live coverage is **669 reviewed / 192 remaining of 861**. Live classifications: **403 HEALTHY, 40 MINOR CONCERN, 226 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **252 findings in preserved history**, of which **248 are attached to live Adventures** and four remain `UNREGISTERED_SOURCE`. Live severity totals are HIGH 13, MEDIUM 185, LOW 40, with 10 unrecovered legacy severity values. Live cluster counts: CRA-C0001 175, C0002 18, C0003 1, C0004 22, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3; six live findings remain unclustered because their legacy cluster assignments are unrecovered.
+
+The next unreviewed live Adventure is position **670**, **The Plumb Line on the Trestle** (`the-plumb-line-on-the-trestle`), `src/scenarios/equipmentTestingGenreBatch.ts`. Next finding ID: **CRA-F0253**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 670–679)
+
+Reviewed ten further unreviewed Adventures in live registry order. Traced sample-post versus working-structure measurements; spare-wheel tool tests versus rim inspection; flame-screen testing versus vent inspection and signal orientation; jack footing and independent load support; rope-eye condition/upgrade gates and persistent provenance; buckle seam test versus acceptance/decline of a persistent upgrade; barn draft/reference/brace routes; document-hood versus locked-case custody; same-plank reversal versus straight-edge level checks; and tensioner half-turn, leather padding, gauge, abrasion, ordinary-knot and full-turn stop routes. Six Adventures are HEALTHY. Four MEDIUM findings, CRA-F0253–CRA-F0256, extend CRA-C0001; no new cluster was needed. The focused equipment-testing suite passed 15 tests; the source route traces remain the basis for each classification.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 670 | The Plumb Line on the Trestle (`the-plumb-line-on-the-trestle`) | HEALTHY | — the sample reading is not treated as a verdict on the cracked trestle; unsafe reopening is blocked. |
+| 671 | The New Spoke Key (`the-new-spoke-key`) | CONFIRMED DEFECT | CRA-F0253 (MEDIUM) — rim-only inspection reaches a scene asserting a spare-key fit and tooth-failure test that was not performed. |
+| 672 | The Lantern in Crosswind (`the-lantern-in-crosswind`) | CONFIRMED DEFECT | CRA-F0254 (MEDIUM) — vent-only inspection inherits leeward flame and hinge-orientation test results. |
+| 673 | The Carriage Jack Demonstration (`the-carriage-jack-demonstration`) | HEALTHY | — demonstration itself establishes the lift and bent brace; soft ground and unsupported holding are stopped. |
+| 674 | The Rope Eye Retested (`the-rope-eye-retested`) | HEALTHY | — only a normal, unreinforced rope is upgraded after a ground-drag test; suspended-load proof is refused. |
+| 675 | The Freightman’s Buckle Trial (`the-freightmans-buckle-trial`) | CONFIRMED DEFECT | CRA-F0255 (MEDIUM) — declining the upgrade still receives text saying the persistent buckle upgrade was applied. |
+| 676 | The Plumb Bob in the Barn (`the-plumb-bob-in-the-barn`) | HEALTHY | — draft settling, measurement limits, bracing/closure and optional lesson/payment remain distinct. |
+| 677 | The Field Case with a Seam (`the-field-case-with-a-seam`) | HEALTHY | — the original stays in the lockable case while a duplicate tests the hood; a wet original is refused. |
+| 678 | The Glass Level Disagrees (`the-glass-level-disagrees`) | CONFIRMED DEFECT | CRA-F0256 (MEDIUM) — straight-edge check receives a diagnosis claiming a same-plank reversal test and vial fault. |
+| 679 | The Test in the Windbreak (`the-test-in-the-windbreak`) | HEALTHY | — the unsafe full turn stops; measured pull is distinguished from abrasion, and the ordinary-knot alternative remains available. |
+
+Current live coverage is **679 reviewed / 182 remaining of 861**. Live classifications: **409 HEALTHY, 40 MINOR CONCERN, 230 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **256 findings in preserved history**, of which **252 are attached to live Adventures** and four remain `UNREGISTERED_SOURCE`. Live severity totals are HIGH 13, MEDIUM 189, LOW 40, with 10 unrecovered legacy severity values. Live cluster counts: CRA-C0001 179, C0002 18, C0003 1, C0004 22, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3; six live findings remain unclustered because their legacy cluster assignments are unrecovered.
+
+The next unreviewed live Adventure is position **680**, **The Needle in the Grain Shed** (`the-needle-in-the-grain-shed`), `src/scenarios/equipmentTestingGenreBatch.ts`. Next finding ID: **CRA-F0257**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 680–689)
+
+Reviewed ten more currently unreviewed Adventures in live order. Traced weighing versus seam-only inspection and ownership refusal; lantern-cage hinge tightening versus existing-guard comparison and rain cover; controlled handcart rim trials; clamp versus wedge on the press guide; cookhouse draft observation and vent/plate safety; zero calibration versus known-weight comparison and latch repair; rope-sleeve inspection and anchor limits; wet-pad control/overload/girth retest; Redbank guide-line inspection and passenger hold; and crate recovery by boat hook versus sheltered skiff with seal/tally custody. Five Adventures are HEALTHY. Five findings were added: three convergence/result-state findings CRA-F0257, CRA-F0258, and CRA-F0260 extend CRA-C0001; two broken-Gear physical-use gates CRA-F0259 and CRA-F0261 extend CRA-C0004. The focused equipment-testing and river-water suites passed 24 tests across two files; source-route tracing remains authoritative.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 680 | The Needle in the Grain Shed (`the-needle-in-the-grain-shed`) | CONFIRMED DEFECT | CRA-F0257 (LOW) — seam-only inspection reaches text claiming a sack-weight measurement. |
+| 681 | The False Comfort of a Guard (`the-false-comfort-of-a-guard`) | CONFIRMED DEFECT | CRA-F0258 (LOW) — fitting an existing guard inherits text that the prototype hinge was tightened and tested. |
+| 682 | The Handcart with the New Wheel (`the-handcart-with-the-new-wheel`) | HEALTHY | — controlled flat/rope tests expose the failed rim, while the sound old wheel takes the load home. |
+| 683 | The Clamp beneath the Press (`the-clamp-beneath-the-press`) | CONFIRMED DEFECT | CRA-F0259 (MEDIUM) — BROKEN Folding Bench Clamp passes an ownership-only physical-use gate. |
+| 684 | The Bellows That Drew Too Hard (`the-bellows-that-drew-too-hard`) | HEALTHY | — full burn is refused; small-fire success requires the high vent and the known-plate alternative stops the prototype. |
+| 685 | The Spring That Would Not Return (`the-spring-that-would-not-return`) | CONFIRMED DEFECT | CRA-F0260 (LOW) — known-weight comparison inherits a narrative that says the zero check was performed. |
+| 686 | The Rope That Frayed in the Sleeve (`the-rope-that-frayed-in-the-sleeve`) | HEALTHY | — only the crew line is tested; full loading is blocked and patching requires an unloaded retest. |
+| 687 | The Saddle Pad in the Rain (`the-saddle-pad-in-the-rain`) | HEALTHY | — heavy-load strain is stopped; control, girth adjustment, light retest and drying remain distinct. |
+| 688 | The Ferry Line at Redbank (`the-ferry-line-at-redbank`) | HEALTHY | — passengers stay ashore, usable gauge/hand inspection options are distinct, and the line is replaced before loading. |
+| 689 | The Crate Beyond the Piles (`the-crate-beyond-the-piles`) | CONFIRMED DEFECT | CRA-F0261 (MEDIUM) — BROKEN Boat Hook passes an ownership-only crate-retrieval gate. |
+
+Current live coverage is **689 reviewed / 172 remaining of 861**. Live classifications: **414 HEALTHY, 40 MINOR CONCERN, 235 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **261 findings in preserved history**, of which **257 are attached to live Adventures** and four remain `UNREGISTERED_SOURCE`. Live severity totals are HIGH 13, MEDIUM 191, LOW 43, with 10 unrecovered legacy severity values. Live cluster counts: CRA-C0001 182, C0002 18, C0003 1, C0004 24, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3; six live findings remain unclustered because their legacy cluster assignments are unrecovered.
+
+The next unreviewed live Adventure is position **690**, **The Ford with the White Stone** (`the-ford-with-the-white-stone`), `src/scenarios/riverWaterWorkGenreBatch.ts`. Next finding ID: **CRA-F0262**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 690–699)
+
+Reviewed the next ten currently unreviewed Adventures in exported `SCENARIOS` order. The route review covered bank sounding/observation and ford detours; tied-skiff bailing/unloading and patching; adding a mooring line versus moving the lighter; alternate ferry closure signals and acknowledgment; far-bank signaling versus Boat Hook branch movement; plank/line clearance; sounding versus old-mark comparison; flood-load sequencing with and without the Ledger Tube; wet-line inspection versus replacement; and channel sounding versus waiting for the pilot. Unsafe direct crossing, loaded testing, loaded-line pulling, boarding a moving ferry, and following an obsolete buoy are stopped. Reward, Knowledge, partial-delay, and persistent Gear effects were traced; none of these routes introduces run-local or save/reload-dependent proof state.
+
+Two Adventures are HEALTHY, one is MINOR CONCERN, and seven have confirmed defects. Nine finding records were added: five ownership-only physical-Gear gates extend CRA-C0004; four route-specific action/NPC/test-result claims extend CRA-C0001. No new cluster was justified; CRA-C0010 remains the next unused cluster ID. The focused river-work, Gear-condition, and registry suites passed 23 tests across three files. These tests support but do not replace the route traces.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 690 | The Ford with the White Stone (`the-ford-with-the-white-stone`) | CONFIRMED DEFECT | CRA-F0262 (MEDIUM, CRA-C0004) — BROKEN Collapsible Sounding Rod passes the ownership-only probe gate. |
+| 691 | The Skiff That Took Water (`the-skiff-that-took-water`) | MINOR CONCERN | — subtitle says the crew is aboard, but the entry scene puts both deckhands on the landing; routes keep them ashore. |
+| 692 | The Mooring at Cotter Slip (`the-mooring-at-cotter-slip`) | CONFIRMED DEFECT | CRA-F0263 (MEDIUM, CRA-C0004) — BROKEN Travel Rope can pass the second-line gate; CRA-F0264 (MEDIUM, CRA-C0001) — moving the lighter inherits text claiming a second line was set and the chafe point protected. |
+| 693 | The Lantern at the Lower Landing (`the-lantern-at-the-lower-landing`) | CONFIRMED DEFECT | CRA-F0265 (MEDIUM, CRA-C0004) — BROKEN Signal Flag Set or signal mirror passes the physical signaling gate. |
+| 694 | The Ferry That Would Not Turn (`the-ferry-that-would-not-turn`) | CONFIRMED DEFECT | CRA-F0266 (MEDIUM, CRA-C0001) — Boat Hook branch movement inherits a far-bank response despite no signal. |
+| 695 | The Rope under the Plank (`the-rope-under-the-plank`) | HEALTHY | — usable-gloves and carpenter-lift routes both establish slack and board removal; loaded-line pulling is refused. |
+| 696 | The Mark Below the Waterline (`the-mark-below-the-waterline`) | CONFIRMED DEFECT | CRA-F0267 (MEDIUM, CRA-C0004) — BROKEN Sounding Rod passes the probe gate; CRA-F0268 (MEDIUM, CRA-C0001) — old-mark comparison inherits a specific timber/material/visibility finding. |
+| 697 | The Case on the Flood Step (`the-case-on-the-flood-step`) | HEALTHY | — document-load order and tube-first index protection remain coherent; wait/neighbor-box paths stay partial. |
+| 698 | The Wet Rope at Dawn (`the-wet-rope-at-dawn`) | CONFIRMED DEFECT | CRA-F0269 (LOW, CRA-C0001) — replace/tag-out route inherits the tactile splice-flex result. |
+| 699 | The Channel That Moved (`the-channel-that-moved`) | CONFIRMED DEFECT | CRA-F0270 (MEDIUM, CRA-C0004) — BROKEN Collapsible Sounding Rod passes the physical channel-sounding gate. |
+
+Current live coverage is **699 reviewed / 162 remaining of 861**. Live classifications: **416 HEALTHY, 41 MINOR CONCERN, 242 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **270 findings in preserved history**, of which **266 are attached to live Adventures** and four remain `UNREGISTERED_SOURCE`. Live severity totals are HIGH 13, MEDIUM 199, LOW 44, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 186, C0002 18, C0003 1, C0004 29, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (260 clustered live findings); six live findings are unclustered. CRA-C0004 has 33 historical memberships including four unregistered findings; its live count is 29.
+
+The next unreviewed live Adventure is position **700**, **The Sound under the Pontoon** (`the-sound-under-the-pontoon`), `src/scenarios/riverWaterWorkGenreBatch.ts`. Next finding ID: **CRA-F0271**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 700–709)
+
+Reviewed ten more Adventures in the live exported order. Traced pontoon probing versus observing a current change, ownership dispute versus watch intervention on sealed night cargo, spade/rod clearing versus probing at the ferry wheel, glasses versus a bank-side call to recover a reed-channel boat, agreed crosswind signals and load restrictions, berth-collar inspection versus historical drawing, shortened regatta versus withdrawal, dry-side pump testing versus idle/closure, Boat Hook versus Travel Rope gate retrieval, and Slate Ferry investigation/repair/report branches. Unsafe boarding, wading, forced cranking, prying, full-load testing, and wet-bank pursuit are stopped. Partial outcomes, rewards, Knowledge, and released Gear were checked; no persistent route-proof state is introduced.
+
+Six Adventures are HEALTHY, one is MINOR CONCERN, and three have confirmed MEDIUM findings CRA-F0271–CRA-F0273, all extending existing CRA-C0004. The iron-ring inspection route leaves the keeper’s independent use of the berth drawing unstated, so it remains a minor provenance concern rather than a confirmed finding. No new cluster was needed; CRA-C0010 remains unused. River-work, Gear-condition, and registry suites passed 23 tests across three files as supporting evidence.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 700 | The Sound under the Pontoon (`the-sound-under-the-pontoon`) | CONFIRMED DEFECT | CRA-F0271 (MEDIUM, CRA-C0004) — BROKEN Collapsible Sounding Rod passes the pontoon-probe gate. |
+| 701 | The Night Cargo with Two Marks (`the-night-cargo-with-two-marks`) | HEALTHY | — sealed cargo stays with verified owners; recording marks is not treated as an ownership verdict. |
+| 702 | The Ferry Wheel in the Silt (`the-ferry-wheel-in-the-silt`) | CONFIRMED DEFECT | CRA-F0272 (MEDIUM, CRA-C0004) — BROKEN Field Spade or Sounding Rod passes an ownership-only physical-use gate. |
+| 703 | The Boat Beyond the Reeds (`the-boat-beyond-the-reeds`) | HEALTHY | — unusable mud is avoided; glasses are checked usable and recovery remains owner-controlled. |
+| 704 | The Cable Ferry in Crosswind (`the-cable-ferry-in-crosswind`) | HEALTHY | — safe signals coordinate both banks; reopening is limited-load and wait remains closed/partial. |
+| 705 | The Iron Ring at Low Water (`the-iron-ring-at-low-water`) | MINOR CONCERN | — the inspection route reaches a berth-drawing result without clarifying that the keeper consulted the drawing independently. |
+| 706 | The Damaged Oar before the Race (`the-damaged-oar-before-the-race`) | HEALTHY | — grounded test exposes the split; shortened spare-oar trial and withdrawal remain distinct. |
+| 707 | The Flooded Cellar Pump (`the-flooded-cellar-pump`) | HEALTHY | — dry-side test only clears shallow water; it is not represented as a flood barrier or evacuation. |
+| 708 | The Boat Hook at the Cattle Bank (`the-boat-hook-at-the-cattle-bank`) | CONFIRMED DEFECT | CRA-F0273 (MEDIUM, CRA-C0004) — BROKEN Boat Hook or Travel Rope passes the gate-retrieval/secure route. |
+| 709 | The Line Cut at Slate Ferry (`the-line-cut-at-slate-ferry`) | HEALTHY | — allegations remain testimony, eyewitness reporting stays precise, and the replacement is tested empty before reopening. |
+
+Current live coverage is **709 reviewed / 152 remaining of 861**. Live classifications are **422 HEALTHY, 42 MINOR CONCERN, 245 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **273 findings in preserved history**, including **269 live** and four `UNREGISTERED_SOURCE`. Live severity totals: HIGH 13, MEDIUM 202, LOW 44, plus 10 unrecovered legacy values. Live cluster counts: CRA-C0001 186, C0002 18, C0003 1, C0004 32, C0005 1, C0006 17, C0007 4, C0008 1, C0009 3 (263 clustered live findings), with six live findings unclustered. CRA-C0004 has 36 historical assignments including four unregistered records; 32 are live.
+
+The next unreviewed live Adventure is position **710**, **The Flood Mark on the Mill Door** (`the-flood-mark-on-the-mill-door`), `src/scenarios/riverWaterWorkGenreBatch.ts`. Next finding ID: **CRA-F0274**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed.
+
+## Live-registry continuation (positions 710–719)
+
+Reviewed ten Adventures in the live exported order. For the mill-door scenario, traced sack relocation versus active gate/water observation, below-mark loading refusal, intake clearing versus shutdown, and coin/gauge settlement. The returned-empty boat traced tally comparison versus dry-bank eddy inspection, unsafe dive refusal, cargo location reconciliation, and coin/strap settlement. Bridge debris traced detour/closure, farmer-first versus warning-boards-first, and stopped pier climbing. Freight net traced ashore testing versus moving cargo, people-first versus cargo-first, and refused net-as-mooring. Old lock traced Boat Hook/Travel Rope retrieval versus unsafe climb, sealed property return, and compensation. The passenger route preserved consent and sealed-letter/decline variants. Wet manifest traced duplicate, drying, and usable Ledger Tube paths plus the sealed-crate refusal. The spring flood preserved high-ground wait versus ridge passage and stopped ford use. Morning Bend traced signal versus marker handling, and barge rudder work stayed tied until fitted repair; temporary testing did not authorize the fast reach. Reward, partial, Gear, and persistent effects were checked; no new route flags or save-dependent state are involved.
+
+Four Adventures are HEALTHY, three are MINOR CONCERN, and three have confirmed defects CRA-F0274–CRA-F0276. CRA-F0274 and CRA-F0275 extend CRA-C0001 for route-specific observation/discovery lost at convergence; CRA-F0276 extends CRA-C0004 for BROKEN Boat Hook/Travel Rope passing ownership-only physical-use gates. The freight-net crate release and marker-route worker response are retained as minor because the text permits intervening scene events but does not spell them out. The wet-manifest page-drying route similarly leaves the clerk's duplicate lookup implicit. No new cluster was justified; CRA-C0010 remains unused. River-water, Gear-condition, and registry suites passed 23 tests across three files; tests support but do not replace route review.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 710 | The Flood Mark on the Mill Door (the-flood-mark-on-the-mill-door) | CONFIRMED DEFECT | CRA-F0274 (LOW, CRA-C0001) — sack relocation inherits a millrace/debris observation made only on the watch-and-compare route. |
+| 711 | The Boat That Came Back Empty (the-boat-that-came-back-empty) | CONFIRMED DEFECT | CRA-F0275 (MEDIUM, CRA-C0001) — dry-bank eddy inspection inherits a tally mismatch and second-landing chest location established only by comparing the records. |
+| 712 | The Bridge Debris and the Ferry (the-bridge-debris-and-the-ferry) | HEALTHY | — farmer-first/boards-first outcomes, road closure, and reward remain route-consistent; pier climb is stopped. |
+| 713 | The Freight Net at Dry Creek (the-freight-net-at-dry-creek) | MINOR CONCERN | — one empty crate becomes loose after being described contained; the transition is under-specified, not conclusively contradictory. |
+| 714 | The Old Lock at Ferry Cut (the-old-lock-at-ferry-cut) | CONFIRMED DEFECT | CRA-F0276 (MEDIUM, CRA-C0004) — BROKEN Boat Hook or Travel Rope passes physical retrieval gates. |
+| 715 | The Ferry Passenger Who Would Not Land (the-ferry-passenger-who-would-not-land) | HEALTHY | — consent, sealed-letter delivery, and refusal/decline remain distinct. |
+| 716 | The Wet Manifest at East Wharf (the-wet-manifest-at-east-wharf) | MINOR CONCERN | — page-drying reaches duplicate-based claim text without clarifying the clerk's independent lookup; crate remains sealed. |
+| 717 | The Spring Flood at Lower Meadow (the-spring-flood-at-lower-meadow) | HEALTHY | — ridge crossing versus high-ground delay is truthful; flooded-ford use is stopped. |
+| 718 | The Driftwood at Morning Bend (the-driftwood-at-morning-bend) | MINOR CONCERN | — marker-move route shares text that workers step back, without specifying their independent response. |
+| 719 | The Barge That Lost Its Rudder Pin (the-barge-that-lost-its-rudder-pin) | HEALTHY | — temporary pin test occurs tied against no current and never authorizes travel in the fast reach. |
+
+Current live coverage is **719 reviewed / 142 remaining of 861**. Live classifications are **426 HEALTHY, 45 MINOR CONCERN, 248 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **276 findings in preserved history**, including **272 live** and four UNREGISTERED_SOURCE. Live severity totals: HIGH 13, MEDIUM 204, LOW 45, plus 10 unrecovered legacy values. Live cluster counts: CRA-C0001 188, C0002 18, C0003 1, C0004 33, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (266 clustered live findings), with six live findings unclustered. CRA-C0004 has 37 historical assignments including four unregistered records; 33 are live.
+
+The next unreviewed live Adventure is position **720**, **The Cold Water at Stone Steps** (the-cold-water-at-stone-steps), src/scenarios/riverWaterWorkGenreBatch.ts. Next finding ID: **CRA-F0277**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 720–729)
+
+Completed ten route-level reviews in current live `SCENARIOS` order. Traced the icy-step/usable-glove versus hand-braced ramp, foot-only ferry crossing and pram hold; cut fence closure versus trail-first pursuit and herd-watch delegation; boundary-stake evidence versus unilateral placement; grounded harness patch test and transfer to the sound spare; blue-sealed sack separation versus delivery-tally inspection; held gate versus usable hook and herd reset; horse evacuation versus direct lantern lowering; short-furrow plow test and final-row stop; rope-lifted orchard net versus covering picked crates; and dog-alert/drain-screen rescue versus chase refusal. Gear ownership/condition distinctions, partial outcomes, reward and wage provenance, and unsafe-action stops were checked. No source or gameplay tests were changed.
+
+Seven Adventures are HEALTHY; three have confirmed MEDIUM defects CRA-F0277–CRA-F0279, all extending CRA-C0001. CRA-F0277 is an unsupported delivery-tally/seed-grain discovery on the sack-separation route. CRA-F0278 is inaccurate Lantern Guard reward provenance on the direct-lantern route, which never evacuates the horses. CRA-F0279 is an orchard convergence that claims the net was lifted and bruising observed on the picked-crate-cover route. No new cluster was needed; CRA-C0010 remains unused. River-water/agriculture route suites, Gear-condition coverage, and registry validation are supporting checks, not substitutes for these route traces.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 720 | The Cold Water at Stone Steps (`the-cold-water-at-stone-steps`) | HEALTHY | — usable gloves or hand bracing establish the higher ramp; icy-step use stops, and the pram remains ashore. |
+| 721 | The Cut Wire at Ash Pasture (`the-cut-wire-at-ash-pasture`) | HEALTHY | — herd remains behind the second rail; solo trail, owner custody, calm resolution, and rush/flight outcomes stay distinct. |
+| 722 | The Last Post at Miller Fence (`the-last-post-at-miller-fence`) | HEALTHY | — unilateral post placement is stopped; the boundary book and both owners precede permanent placement. |
+| 723 | The Harness before the Lime Run (`the-harness-before-the-lime-run`) | HEALTHY | — patched strap is only hand-tested; load transfers to sound spare before road travel, while delay remains partial. |
+| 724 | The Feed Bin with the Blue Seam (`the-feed-bin-with-the-blue-seam`) | CONFIRMED DEFECT | CRA-F0277 (MEDIUM, CRA-C0001) — sack separation inherits tally and seed-grain findings without checking or learning them. |
+| 725 | The Loose Gate at Thorn Brook (`the-loose-gate-at-thorn-brook`) | HEALTHY | — sound-pin repair precedes herd movement; clearing the bucket differs from closing the gate for handler reset. |
+| 726 | Lantern Smoke in the Hayloft (`the-lantern-smoke-in-the-hayloft`) | CONFIRMED DEFECT | CRA-F0278 (MEDIUM, CRA-C0001) — direct lantern lowering can earn persistent reward provenance claiming the horses were evacuated. |
+| 727 | The Plowshare before Rain (`the-plowshare-before-rain`) | HEALTHY | — refitted pin and short test precede final furrow; wait keeps team unhitched and plow covered. |
+| 728 | The Apple Row after Hail (`the-apple-row-after-hail`) | CONFIRMED DEFECT | CRA-F0279 (MEDIUM, CRA-C0001) — covering crates inherits the net-lift and upper-bruising result. |
+| 729 | The Dog at North Gate (`the-dog-at-north-gate`) | HEALTHY | — dog stays clear while handler/hook frees lamb; reward does not credit the dog with the rescue. |
+
+At the position 720–729 checkpoint, live coverage was **729 reviewed / 132 remaining of 861**. Live classifications were **433 HEALTHY, 45 MINOR CONCERN, 251 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There were **279 findings in preserved history**, including **275 live** and four `UNREGISTERED_SOURCE`. Live severity totals were HIGH 13, MEDIUM 207, LOW 45, plus 10 unrecovered legacy values. Live cluster counts were CRA-C0001 191, C0002 18, C0003 1, C0004 33, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (269 clustered live findings), with six live findings unclustered. The next unreviewed live Adventure at that checkpoint was position **730**, **The Hay Wagon in Soft Ground** (`the-hay-wagon-in-soft-ground`), `src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts`. Next finding ID: **CRA-F0280**; next available cluster ID: **CRA-C0010**. Weekly Scenario Batch remained paused.
+
+## Live-registry continuation (positions 730–739)
+
+Completed ten route-level reviews in live `SCENARIOS` order. Traced high-side unloading and blocked-jack recovery; trough closure/clean pail versus pipe inspection; machine-idle and handler-led steer/calf movement; record comparison versus witness consultation and shared-pen hold; saddle evidence, repair/report/threat and return; fleece-sack relocation versus sheep evacuation and race closure; lantern/gate management around a calving stall and the prohibited birth-handling route; first-load/second-load harvesting versus field-cover wait; suspended-hoist lowering versus stair inspection and lockout; and temporary irrigation restoration versus waiting for joint owners. Failure, partial work, non-occurrence, Gear condition, reward provenance, and ownership effects were checked.
+
+Four Adventures are HEALTHY, three are MINOR CONCERN, and three have confirmed defects with four findings CRA-F0280–CRA-F0283. CRA-F0280, CRA-F0281, and CRA-F0283 extend CRA-C0001 for route-specific inspection, animal-location, and outcome proof lost at convergence. CRA-F0282 extends CRA-C0004 because a BROKEN Travel Rope passes an ownership-only physical-use gate. The calf witness source, lantern movement during the calving transition, and grain-hoist guide adjustment remain minor because NPC/intervening action is plausible but under-described. Agriculture, Gear-condition, and registry suites passed 22 tests across three files as supporting evidence; no gameplay source or tests changed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 730 | The Hay Wagon in Soft Ground (`the-hay-wagon-in-soft-ground`) | HEALTHY | — unload/firm-block recovery or delayed work remains distinct; unsafe push is stopped. |
+| 731 | The Trough after Thaw (`the-trough-after-thaw`) | CONFIRMED DEFECT | CRA-F0280 (MEDIUM, CRA-C0001) — trough closure inherits a pipe-clear inspection result. |
+| 732 | The Steer in the Threshing Lane (`the-steer-in-the-threshing-lane`) | HEALTHY | — idle machinery and paired steer/calf movement precede restart; waiting remains partial. |
+| 733 | The Calf with Two Ear Notches (`the-calf-with-two-ear-notches`) | MINOR CONCERN | — records route enters a scene with a milker witness recollection not explicitly solicited. |
+| 734 | The Saddle Marks on the Wagon (`the-saddle-marks-on-the-wagon`) | HEALTHY | — evidence locates owner-confirmed tack; accusation is held, threat is interrupted, and repair/report outcomes differ. |
+| 735 | The Sheep Wash at Cold Creek (`the-sheep-wash-at-cold-creek`) | CONFIRMED DEFECT | CRA-F0281 (HIGH, CRA-C0001) — moving sacks inherits an unsupported flock-uphill location. |
+| 736 | The Calving Lamp at Three Oaks (`the-calfing-lamp-at-three-oaks`) | MINOR CONCERN | — shared text assumes lantern movement on gate-first setup; other actors may move it. |
+| 737 | The Dry Row before the Threshing (`the-dry-row-before-the-threshing`) | CONFIRMED DEFECT | CRA-F0282 (MEDIUM, CRA-C0004) — BROKEN Travel Rope can secure cover; CRA-F0283 (MEDIUM, CRA-C0001) — covered-field wait claims crop delivery without a load/transport route. |
+| 738 | The Grain Lift at Low Barn (`the-grain-lift-at-low-barn`) | MINOR CONCERN | — empty hoist test says the guide was shifted though no choice names that repair; operator work may be implicit. |
+| 739 | The Irrigation Stone at South Field (`the-irrigation-stone-at-south-field`) | HEALTHY | — final split follows joint owner inspection; blocking/holding and wait outcomes preserve shared access. |
+
+At the position 730–739 checkpoint, live coverage was **739 reviewed / 122 remaining of 861**. Live classifications were **437 HEALTHY, 48 MINOR CONCERN, 254 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There were **283 findings in preserved history**, including **279 live** and four `UNREGISTERED_SOURCE`. Live severity totals were HIGH 14, MEDIUM 210, LOW 45, plus 10 unrecovered legacy values. Live cluster counts were CRA-C0001 194, C0002 18, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 1, and C0009 3 (273 clustered live findings), with six live findings unclustered. The next unreviewed live Adventure at that checkpoint was position **740**, **The Red Lantern in the Pig Shed** (`the-red-lantern-in-the-pig-shed`), `src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts`. Next finding ID: **CRA-F0284**; next available cluster ID: **CRA-C0010**. Weekly Scenario Batch remained paused.
+
+## Live-registry continuation (positions 750–759)
+
+Completed ten route-level reviews in live `SCENARIOS` order. The agriculture routes traced tarp/gate and animal movement, feed-bin repair versus relocation, tool ownership and release, saddle bill versus rut evidence, and route-specific rewards. The investigation story-builder routes traced physical evidence inquiries through interpretation and settlement, including combat interruption, Knowledge acquisition, Gear rewards, and old-save settlement fallback. Investigation outcomes preserve uncertainty, but several named tool actions in the first seven builder stories lack availability gates.
+
+The source review identified eight confirmed-defect Adventures with thirteen MEDIUM findings CRA-F0287–CRA-F0299. CRA-F0287–CRA-F0289, CRA-F0291, and CRA-F0296–CRA-F0299 extend CRA-C0001 for route-specific setup, evidence, discovery, and agreement outcomes lost at convergence. CRA-F0290, CRA-F0292–CRA-F0295 extend CRA-C0008: the Survey Chain, Assayer’s Loupe, Field Calipers, Waterproof Ledger Tube, and Heavy Leather Gloves choices are explicitly tool uses but lack inventory/usable-condition gates. The Old Fence Tool and Ash Line remain MINOR CONCERN because their continuity gaps could be explained by NPC/off-screen actions but are under-specified; no additional defect was inferred. The Scrape Beneath the Lock is CONFIRMED DEFECT: its shared evidence scene says the spare key turns and leaves a mark even on the cart-crew-inquiry route, which did not test the key. Agriculture, investigation-evidence, Gear-condition, and registry suites passed 32 tests across four files as supporting evidence; route tracing remains the basis for classifications.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 750 | The Foal in the Windbreak (`the-foal-in-the-windbreak`) | CONFIRMED DEFECT | CRA-F0287 (MEDIUM, CRA-C0001) — mare-relocation enters passage text asserting tarp-secure and rail-lowering actions that route did not establish. |
+| 751 | The Last Bin at Winter Yard (`the-last-bin-at-winter-yard`) | CONFIRMED DEFECT | CRA-F0288 (MEDIUM, CRA-C0001) — board-brace route can reach partial result claiming sacks were raised. |
+| 752 | The Old Fence Tool at Red House (`the-old-fence-tool-at-red-house`) | MINOR CONCERN | — compare-only route shares a records scene with the farmer’s recollection; whether volunteered is not explicit. |
+| 753 | The Scrape Beneath the Lock (`the-scrape-beneath-the-lock`) | CONFIRMED DEFECT | CRA-F0296 (MEDIUM, CRA-C0001) — cart-crew inquiry route inherits key-turn evidence; Knowledge, combat outcomes, and usable Pocket Toolkit gate otherwise remain consistent. |
+| 754 | The Two Widths at Morrow Road (`the-two-widths-at-morrow-road`) | CONFIRMED DEFECT | CRA-F0289 (MEDIUM, CRA-C0001) — track-only route gets crate discovery and inventory request is narrated as accusation; CRA-F0290 (MEDIUM, CRA-C0008) — Survey Chain use has no availability gate. |
+| 755 | The Seal with the Second Notch (`the-seal-with-the-second-notch`) | CONFIRMED DEFECT | CRA-F0291 (MEDIUM, CRA-C0001) — held crate route claims receiver acceptance; CRA-F0292 (MEDIUM, CRA-C0008) — Assayer’s Loupe use has no availability gate. |
+| 756 | The Ash Line at Cooper Shed (`the-ash-line-at-cooper-shed`) | MINOR CONCERN | — combat interruption introduces an unexplained “disputed item”; no definite route contradiction is established. |
+| 757 | The Gate Pin at South Pasture (`the-gate-pin-at-south-pasture`) | CONFIRMED DEFECT | CRA-F0293 (MEDIUM, CRA-C0008) — Field Calipers comparison has no availability gate; CRA-F0297 (MEDIUM, CRA-C0001) — neighbor-inquiry route inherits socket-fit examination. |
+| 758 | The Ledger Page That Dried (`the-ledger-page-that-dried`) | CONFIRMED DEFECT | CRA-F0294 (MEDIUM, CRA-C0008) — Waterproof Ledger Tube handling has no availability gate; CRA-F0298 (MEDIUM, CRA-C0001) — tube/clerk routes inherit the pressure-mark discovery. |
+| 759 | The Rope Fibers on the Ferry Cleat (`the-rope-fibers-on-the-ferry-cleat`) | CONFIRMED DEFECT | CRA-F0295 (MEDIUM, CRA-C0008) — Heavy Leather Gloves handling has no availability gate; CRA-F0299 (MEDIUM, CRA-C0001) — last-securement inquiry inherits splice examination. |
+
+The current live checkpoint is **759 reviewed / 102 remaining of 861**: **444 HEALTHY, 50 MINOR CONCERN, 265 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **299 findings**: **295 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 226, LOW 45, plus 10 unrecovered legacy values. Live clusters are CRA-C0001 204, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 6, C0009 3 (289 clustered), with six unclustered. The first unreviewed live Adventure is position **760**, **The Switch That Faced East** (`the-switch-that-faced-east`), `src/scenarios/investigationEvidenceGenreBatch.ts`. Next finding ID: **CRA-F0300**; next available cluster ID: **CRA-C0010**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 760–769)
+
+Completed ten route-level reviews in current live registry order through the investigation-evidence builder. For each story, the inspection alternatives, shared evidence scene, interpretation/response choices, settlement, Knowledge and Gear effects, and any combat interruption were compared. The first explicit tool-use routes were checked against the helper’s per-story equipment requirements; legacy-compatible settlement Knowledge grants and Gear provenance were also traced. Existing investigation, Gear-condition, and registry suites passed 24 tests across three files as supporting checks, not as substitutes for source review.
+
+Eight Adventures have confirmed defects with eleven MEDIUM findings CRA-F0300–CRA-F0310. Six extend CRA-C0001 for shared evidence scenes importing a physical comparison, measurement, or discovery not established by every incoming inquiry route. Five extend CRA-C0008 for named equipment actions without inventory/usable-condition gates. The Dry Footprints remains a MINOR CONCERN because the chronology result is compatible with the opening scene but its route-specific establishment is unclear; the Glass in the Lantern Room is HEALTHY, including its usable mirror gate and bounded repair/charge outcomes. No new CRA cluster was needed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 760 | The Switch That Faced East (`the-switch-that-faced-east`) | CONFIRMED DEFECT | CRA-F0300 (MEDIUM, CRA-C0001) — non-tool inquiry can receive the bent-pin inspection result. |
+| 761 | The Stone under the Floorboard (`the-stone-under-the-floorboard`) | CONFIRMED DEFECT | CRA-F0301 (MEDIUM, CRA-C0001) — mirror/plan routes inherit rod-measured void result; CRA-F0302 (MEDIUM, CRA-C0008) — sounding-rod use has no availability gate. |
+| 762 | The Missing Shears at the Mill (`the-missing-shears-at-the-mill`) | CONFIRMED DEFECT | CRA-F0303 (MEDIUM, CRA-C0001) — shared test reveals a beneath-bench thread without a route that searches there. |
+| 763 | The Boot Mark in the Ash (`the-boot-mark-in-the-ash`) | CONFIRMED DEFECT | CRA-F0304 (MEDIUM, CRA-C0001) — worker-timing inquiry inherits print-size comparison; CRA-F0305 (MEDIUM, CRA-C0008) — folding-rule measurement has no availability gate. |
+| 764 | The Two Seals at Blackwater Dock (`the-two-seals-at-blackwater-dock`) | CONFIRMED DEFECT | CRA-F0306 (MEDIUM, CRA-C0001) — non-crew routes inherit Bell Landing testimony; CRA-F0307 (MEDIUM, CRA-C0008) — ledger-tube use has no availability gate. |
+| 765 | The Stone Chips at the Quarry (`the-stone-chips-at-the-quarry`) | CONFIRMED DEFECT | CRA-F0308 (MEDIUM, CRA-C0008) — Field Calipers and Survey Chain measurements have no availability gates. |
+| 766 | The Empty Hook in the Tool Room (`the-empty-hook-in-the-tool-room`) | CONFIRMED DEFECT | CRA-F0309 (MEDIUM, CRA-C0001) — repair-bench route inherits the issue-book sign-out result. |
+| 767 | The Chalk Line at the Old Boundary (`the-chalk-line-at-the-old-boundary`) | CONFIRMED DEFECT | CRA-F0310 (MEDIUM, CRA-C0008) — Survey Chain measurement has no availability gate. |
+| 768 | The Glass in the Lantern Room (`the-glass-in-the-lantern-room`) | HEALTHY | — usable Folding Card Mirror gate, uncertain cause, prospective repair, and non-accusatory outcomes are consistent. |
+| 769 | The Dry Footprints in Wet Clay (`the-dry-footprints-in-wet-clay`) | MINOR CONCERN | — route-specific wet-trail chronology is not explicit, but no post-seal crossing is claimed. |
+
+
+## Live-registry continuation (positions 770–779)
+
+Completed ten route-level reviews in live registry order: the last seven included investigation-builder stories, followed by the first three industrial machine-work stories. Inspection paths were traced separately from shared findings, responses, and final compensation. For the industrial stories, Gear gates, repair/shutdown/rush routes, test-before-restart, injury/partial consequences, Knowledge persistence, reward eligibility, and safe handoff were checked. Investigation Knowledge/settlement fallbacks and tool-specific gates were reviewed; these source distinctions, not the tests, determine the classifications.
+
+Six Adventures have confirmed defects with seven MEDIUM findings CRA-F0311–CRA-F0317. Six extend CRA-C0001 for unsupported route-specific inspection, interpretation, and repair results at convergence. CRA-F0316 extends CRA-C0008 because the Assayer’s Loupe action lacks an inventory/usable-condition gate. The Red Thread at the Bridge and first three industrial Adventures are HEALTHY; no minor concern or new cluster was identified. Investigation-evidence, industrial mill/rail, Gear-condition, and registry suites passed 33 tests across four files as supporting checks.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 770 | The Bent Pin in the Harvest Engine (`the-bent-pin-in-the-harvest-engine`) | CONFIRMED DEFECT | CRA-F0311 (MEDIUM, CRA-C0001) — joint inspection route receives repair-completion text. |
+| 771 | The Map with Two Norths (`the-map-with-two-norths`) | CONFIRMED DEFECT | CRA-F0312 (MEDIUM, CRA-C0001) — protected-copy route receives orientation/scale analysis. |
+| 772 | The Wax on the Keyhole (`the-wax-on-the-keyhole`) | CONFIRMED DEFECT | CRA-F0313 (MEDIUM, CRA-C0001) — staff/key inquiry routes inherit wax comparison. |
+| 773 | The Quiet Bell at Milepost Four (`the-quiet-bell-at-milepost-four`) | CONFIRMED DEFECT | CRA-F0314 (MEDIUM, CRA-C0001) — witness/window inquiry routes inherit rope-mechanism test. |
+| 774 | The Notches on the Old Millstone (`the-notches-on-the-old-millstone`) | CONFIRMED DEFECT | CRA-F0315 (MEDIUM, CRA-C0001) — foundation-history inquiry inherits mark comparison; CRA-F0316 (MEDIUM, CRA-C0008) — Assayer’s Loupe use has no availability gate. |
+| 775 | The Red Thread at the Bridge (`the-red-thread-at-the-bridge`) | HEALTHY | — marker purpose is stated at entry; evidence limits and bridge closure remain truthful. |
+| 776 | The Sealed Letter at Cedar Post (`the-sealed-letter-at-cedar-post`) | CONFIRMED DEFECT | CRA-F0317 (MEDIUM, CRA-C0001) — courier/ledger route receives witness-book signature verification. |
+| 777 | The Belt That Slapped Back (`the-belt-that-slapped-back`) | HEALTHY | — usable multi-tool gate, isolated repair, hand/unloaded test, load complication, and no-injury rush result remain consistent. |
+| 778 | One Tooth on the Sawmill (`one-tooth-on-the-sawmill`) | HEALTHY | — usable glove gate, log isolation, hand pass, secondary chip, and partial/unsafe outcomes remain distinct. |
+| 779 | The East Siding Points (`the-east-siding-points`) | HEALTHY | — usable toolkit gate and stop signal remain; halfway-catching lock prevents unsupported safe-clear claim. |
+
+
+## Live-registry continuation (positions 780–789)
+
+Completed ten route-level reviews of industrial mill/rail work scenarios. For each machine, the inspection Gear gate, observation alternative, shutdown and repair sequence, test-before-restart branch, full-load/rush outcome, partial/withdrawal path, machine-specific complication, Knowledge, and compensation/reward effects were checked. The same helper preserves the test/shutdown/rush distinction and withholds specified rewards after a rushed failure. Industrial mill/rail, Gear-condition, and registry suites passed 23 tests across three files as supporting checks.
+
+Nine Adventures are HEALTHY. The Rivet at Car Seven remains a MINOR CONCERN: its optional file action explicitly leaves a possibly cracked hole to the fitter but then proceeds to the short empty-car movement test without clarifying why that test is safe before fitter inspection. The route is controlled and does not prove an unsafe event, so this was not promoted to a confirmed defect. No new finding or cluster was added.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 780 | The Load under the Warehouse Hoist (`the-load-under-the-warehouse-hoist`) | HEALTHY | — rated rigging, blocking, empty-hook test, and later sling-split discovery remain distinct; no loaded lift is certified. |
+| 781 | The Pump below Number Three (`the-pump-below-number-three`) | HEALTHY | — isolated pin replacement and shallow-channel test reveal reduced discharge before full-flow claim. |
+| 782 | The Warm Bearing at Noon (`the-warm-bearing-at-noon`) | HEALTHY | — unloaded test does not clear load recurrence; the line remains shut for scoring inspection. |
+| 783 | The Rivet at Car Seven (`the-rivet-at-car-seven`) | MINOR CONCERN | — optional burr-file route reaches a short movement test before fitter inspection of possible cracked hole; rationale is under-specified. |
+| 784 | The Semaphore in the Rain (`the-semaphore-in-the-rain`) | HEALTHY | — full linkage travel is tested, but rain-obscured sight line keeps junction closed. |
+| 785 | The Grain under the Guard (`the-grain-under-the-guard`) | HEALTHY | — lockout/gloves/empty-run sequence is respected; continued feed leakage keeps fault open. |
+| 786 | The Hoist That Would Not Set Down (`the-hoist-that-would-not-set-down`) | HEALTHY | — empty brake test is not treated as loaded capacity; bent lifting eye prevents another lift. |
+| 787 | The Lathe Chip (`the-lathe-chip`) | HEALTHY | — isolated rest repair and scrap test do not claim the already-undersize production shaft is usable. |
+| 788 | The Winch’s Uneven Pull (`the-winches-uneven-pull`) | HEALTHY | — empty tub test exposes a loaded wheel defect; system remains out of service. |
+| 789 | The Steam Pipe behind the Washroom (`the-steam-pipe-behind-the-washroom`) | HEALTHY | — normal gauge does not negate scald risk; valve isolation, cooling, fitter reseal, and second weak seam remain explicit. |
+
+At the preceding 780–789 checkpoint, live coverage was **789 reviewed / 72 remaining of 861**: **458 HEALTHY, 52 MINOR CONCERN, 279 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. That checkpoint carried 317 history findings (313 live and four unregistered), with live clusters C0001 216, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, and six unclustered. The current checkpoint is summarized below after positions 790–799.
+
+## Live-registry continuation (positions 790–799)
+
+Completed ten route-level reviews of the industrial mill/rail builder. For each story, the materially distinct paths were traced through inspection (named Gear or observation/shutdown), diagnosis, repair/hold/rush, safe test/stop, full-load failure, partial withdrawal, settlement, Knowledge, and reward. The common diagnosis scene concatenates the story’s `complication` text before the player selects repair, hold, or rush; the same text is then repeated in the test scene. In all ten records, the complication describes a later discovery, repair, or test outcome, creating a chronology defect before the outcome-producing action. This demonstrably shared builder mechanism establishes CRA-C0010.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 790 | The Tool Peg on Night Shift (`the-tool-peg-on-night-shift`) | CONFIRMED DEFECT | CRA-F0318 (MEDIUM, CRA-C0010) — diagnosis says the spanner is unknown and also already found in the fitter’s drawer before the search/repair choice. |
+| 791 | The Misfed Grain Gate (`the-misfed-grain-gate`) | CONFIRMED DEFECT | CRA-F0319 (MEDIUM, CRA-C0010) — low-flow gate hold and damp second-bin discovery are disclosed before stop replacement/test. |
+| 792 | The Dragging Brake at Bell Yard (`the-dragging-brake-at-bell-yard`) | CONFIRMED DEFECT | CRA-F0320 (MEDIUM, CRA-C0010) — cleared shoes and postponed loaded test are reported before spring replacement/empty test. |
+| 793 | The Shaft Marks at Ash Mill (`the-shaft-marks-at-ash-mill`) | CONFIRMED DEFECT | CRA-F0321 (MEDIUM, CRA-C0010) — hand-turn success and uneven block compression appear before millwright inspection/hand-turn test. |
+| 794 | The Jam at the Sorting Table (`the-sorting-table-jam`) | CONFIRMED DEFECT | CRA-F0322 (MEDIUM, CRA-C0010) — the running table and held unlabeled parcel are reported before clearing the jam. |
+| 795 | The Cable over Foundry Road (`the-cable-over-foundry-road`) | CONFIRMED DEFECT | CRA-F0323 (MEDIUM, CRA-C0010) — free empty-carrier movement and the cracked anchor discovery precede worker clearance and rigger inspection. |
+| 796 | The Ore Cart on the Incline (`the-ore-cart-on-the-incline`) | CONFIRMED DEFECT | CRA-F0324 (MEDIUM, CRA-C0010) — empty-cart brake success and cracked rim are disclosed before added chocking/unloading/testing. |
+| 797 | The Bell before the Restart (`the-bell-before-the-restart`) | CONFIRMED DEFECT | CRA-F0325 (MEDIUM, CRA-C0010) — crew whistle response and foreman admission appear before signal agreement and test. |
+| 798 | The Oil on the Switch Rod (`the-oil-on-the-switch-rod`) | CONFIRMED DEFECT | CRA-F0326 (MEDIUM, CRA-C0010) — free movement and oval lock-hole discovery appear before cleaning/lubrication/double-throw test. |
+| 799 | The Sparks at the Belt House (`the-sparks-at-the-belt-house`) | CONFIRMED DEFECT | CRA-F0327 (MEDIUM, CRA-C0010) — cleared splice and oil-waste discovery appear before splice replacement/cleanup/test. |
+
+The supporting industrial mill/rail, Gear-condition, and registry suites passed **23 tests across three files**. Tests are supporting evidence; the findings are based on the shared-builder source and each story’s current complication text. No scenario source or gameplay tests were changed.
+
+At the 790–799 checkpoint, live coverage was **799 reviewed / 62 remaining of 861**: **458 HEALTHY, 52 MINOR CONCERN, 289 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. That checkpoint had 327 history findings (323 live and four unregistered), including 10 CRA-C0010 chronology findings. The current checkpoint is summarized below after positions 800–809.
+
+## Live-registry continuation (positions 800–809)
+
+Completed ten route-level reviews spanning the last Industrial Mill/Rail story and the first nine Medical Rescue/Support stories. For the industrial case, the usable-caliper, observation, repair, hold, full-load, unloaded-test, partial, Knowledge, and compensation routes were traced. Its diagnosis scene repeats the post-test complication before any repair/test choice, extending CRA-C0010.
+
+For each medical story, the assessment choices and their usable-Gear requirements, patient/caregiver state, follow-up stay/transfer/abandon choices, lesson qualification, compensation, reward, and save/resume behavior were traced. The shared close scene’s compensation/lesson variants were compared against routes that leave the patient, attempt an unsafe carry, or do not establish transfer. Four precise route-specific handoff contradictions extend CRA-C0001. Two unsafe-action aftermaths remain MINOR CONCERN because the text leaves the immediate result under-specified but does not establish a definite false claim. Three other medical stories are HEALTHY.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 800 | The Slow Wheel at Copper Mill (`the-slow-wheel-at-copper-mill`) | CONFIRMED DEFECT | CRA-F0328 (MEDIUM, CRA-C0010) — the click-is-gone/full-inspection complication appears in diagnosis before repair or test. |
+| 801 | The Millwright’s Hand (`the-millwrights-hand`) | CONFIRMED DEFECT | CRA-F0329 (MEDIUM, CRA-C0001) — leave-to-secure-mill route ends claiming trained care/handoff while doctor is miles away and no one is established as staying. |
+| 802 | The Stonecutter’s Narrow Way (`the-stonecutters-narrow-way`) | CONFIRMED DEFECT | CRA-F0330 (MEDIUM, CRA-C0001) — unresolved loose-stair stretcher attempt can end as completed trained-care handoff. |
+| 803 | Lanterns at Milepost Nine (`lanterns-at-milepost-nine`) | CONFIRMED DEFECT | CRA-F0331 (MEDIUM, CRA-C0001) — passenger explicitly left beside the road can end with a claimed handoff despite coach/doctor not returning. |
+| 804 | The Roofer’s Breath (`the-roofers-breath`) | HEALTHY | — roofer is already on level ground with carpenter present; no unsupported diagnosis or return-to-roof claim. |
+| 805 | The Ferry-Keeper’s Shoulder (`the-ferry-keepers-shoulder`) | MINOR CONCERN | — pull-by-shoulder route has no explicit immediate consequence before settlement; no definite injury claim is made. |
+| 806 | A Hand under the Wagon (`a-hand-under-the-wagon`) | MINOR CONCERN | — coat-pull under a rocking load has no explicit result/load-state update before handoff; no conclusively false outcome is established. |
+| 807 | The Doctor’s Case on the Wrong Road (`the-doctors-case-on-the-wrong-road`) | HEALTHY | — wrong-road case run is not narrated as a successful delivery; family remains with child. |
+| 808 | The Smoke Room at Cedar Inn (`the-smoke-room-at-cedar-inn`) | HEALTHY | — cook remains outside under doctor’s care; pantry boundary and no-reentry claim remain truthful. |
+| 809 | The Quarry Call Below (`the-quarry-call-below`) | CONFIRMED DEFECT | CRA-F0332 (MEDIUM, CRA-C0001) — blocked-ladder attempt reaches completed-handoff text while worker remains below and rescue lead stays at rim. |
+
+The industrial mill/rail, medical rescue/support, Gear-condition, and registry suites passed **31 tests across four files**. The medical suite also checks route-specific lesson eligibility, Gear usability, and save/resume; it does not replace the route-level witness review. No scenario source or gameplay test was changed.
+
+The current live checkpoint is **809 reviewed / 52 remaining of 861**: **461 HEALTHY, 54 MINOR CONCERN, 294 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **332 findings**: **328 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 259, LOW 45, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 220, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, and C0010 11 (322 clustered), with six unclustered. The first unreviewed live Adventure is position **810**, **The Soaked Post Road** (`the-frozen-post-road`), `src/scenarios/medicalRescueSupportGenreBatch.ts`. Next finding ID: **CRA-F0333**; next available cluster ID: **CRA-C0011**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 810–819)
+
+Completed ten route-level reviews of medical rescue/support scenarios. Across each graph, assessment and usable-Gear gates, patient and caregiver locations, stay/transfer/withdrawal decisions, lesson and compensation eligibility, persistent state, and endings were traced. Five Adventures are HEALTHY. Three remain MINOR CONCERN because a hazardous attempt’s immediate aftermath is under-specified without a provably false result. Two have confirmed completed-care handoff claims without route proof of arrival or transfer; both extend CRA-C0001. Medical rescue/support, Gear-condition, and registry suites passed **22 tests across three files** as supporting checks.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 810 | The Soaked Post Road (`the-frozen-post-road`) | CONFIRMED DEFECT | CRA-F0333 (MEDIUM, CRA-C0001) — continuing walk away from the ready shelter can end with a completed-care handoff claim without arrival or transfer. |
+| 811 | The Count at the Mine Mouth (`the-mine-mouth-count`) | HEALTHY | — the two missing miners remain unaccounted for; no route claims they were found or the unstable drift entered safely. |
+| 812 | The Night Watchman’s Lamp (`the-night-watchmans-lamp`) | MINOR CONCERN | — a dizzy patient can be hurried across the yard without an explicit immediate result, though no injury or diagnosis is asserted. |
+| 813 | The Signal on the Ridge (`the-signal-on-the-ridge`) | CONFIRMED DEFECT | CRA-F0334 (MEDIUM, CRA-C0001) — direct scree-descent attempt reaches completed-handoff wording without a person-state transition or transfer. |
+| 814 | The Splintered Door at South Ward (`the-splintered-door-at-south-ward`) | HEALTHY | — caregiver remains with the patient; the pry action is gated to an empty outer hinge. |
+| 815 | The Collapsed Shed Door (`the-collapsed-shed-door`) | MINOR CONCERN | — pull beneath the shifting beam has no explicit result before generic handoff, but no definite false rescue claim is made. |
+| 816 | The Rail Carriage Step (`the-rail-carriage-step`) | HEALTHY | — conductor remains with the passenger or holds boarding; the ending does not claim a completed lift. |
+| 817 | The Sickroom at Red Hollow (`the-sickroom-at-red-hollow`) | HEALTHY | — neighbor presence and patient condition remain explicit; no diagnosis or recovery is invented. |
+| 818 | The Trapper at the Culvert (`the-trapper-at-the-culvert`) | HEALTHY | — driver cover remains available and unsafe reach does not claim the trap disarmed or supplies recovered. |
+| 819 | The Sleeper under the Platform (`the-sleeper-under-the-platform`) | MINOR CONCERN | — pulling before checking the cart load has no explicit immediate outcome, but no extraction or injury is asserted. |
+
+The live checkpoint is now **819 reviewed / 42 remaining of 861**: **466 HEALTHY, 57 MINOR CONCERN, 296 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **334 findings**: **330 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 261, LOW 45, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, and C0010 11 (322 clustered), with six unclustered. The first unreviewed live Adventure is position **820**, **The Farmer’s Daughter at the Icehouse** (`the-farmers-daughter-at-the-icehouse`), `src/scenarios/medicalRescueSupportGenreBatch.ts`. Next finding ID: **CRA-F0335**; next available cluster ID: **CRA-C0011**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 820–829)
+
+Completed five medical rescue/support scenarios and the first five construction/building scenarios. For the medical cases, the materially distinct support and movement choices, responsible-person presence, unsafe actions, referral/transfer, Gear, Knowledge eligibility, rewards, and close variants were checked. Two are HEALTHY; three are MINOR CONCERN because an unsafe action lacks a specific immediate consequence, but no definite false outcome is asserted.
+
+The five construction scenarios share a concrete builder defect. `start.inspect` and `start.rush` both enter `work`; that scene unconditionally includes the story-specific `methodResult`, even though the player’s `measure` choice is only offered afterward. Thus the unperformed Carpenter’s Square, rope, clamp, trim, or sounding-rod result is disclosed to every incoming route. CRA-F0335–CRA-F0339 record each assignment under new CRA-C0011, “Method result disclosed before method choice.”
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 820 | The Farmer’s Daughter at the Icehouse (`the-farmers-daughter-at-the-icehouse`) | MINOR CONCERN | — premature carry down the narrow steps has no explicit immediate result; no definite injury or false handoff is claimed. |
+| 821 | The Foggy Lane to the Doctor (`the-foggy-lane-to-the-doctor`) | HEALTHY | — innkeeper-guided patient route and Traveler-goes-ahead handoff retain an attendant; no diagnosis or arrival is invented. |
+| 822 | The Camp Cook’s Burned Sleeve (`the-camp-cook-with-the-burned-sleeve`) | MINOR CONCERN | — pulling stuck fabric has no stated immediate result; no successful treatment or removal is claimed. |
+| 823 | The Dog Handler at the Switchback (`the-dog-handler-at-the-switchback`) | MINOR CONCERN | — shale-shortcut choice separates handler and dog without a stated reunion or consequence; no reunion is claimed later. |
+| 824 | The Evacuation Bell at Pine Crossing (`the-evacuation-bell-at-pine-crossing`) | HEALTHY | — residents remain with the reeve/team on high ground; the closed-bridge cart choice does not claim their evacuation. |
+| 825 | The Square at Mill Street (`the-square-at-mill-street`) | CONFIRMED DEFECT | CRA-F0335 (MEDIUM, CRA-C0011) — square measurement result appears in `work` before `work.measure`. |
+| 826 | The Roof That Held Its Breath (`the-roof-that-held-its-breath`) | CONFIRMED DEFECT | CRA-F0336 (MEDIUM, CRA-C0011) — rope/shoring result appears before the Travel Rope method is selected. |
+| 827 | Three Knots on the Platform (`three-knots-on-the-platform`) | CONFIRMED DEFECT | CRA-F0337 (MEDIUM, CRA-C0011) — clamp result and sinking-post discovery appear before the clamp choice. |
+| 828 | The Wall Beneath the Plaster (`the-wall-beneath-the-plaster`) | CONFIRMED DEFECT | CRA-F0338 (MEDIUM, CRA-C0011) — trim-removal discovery appears before the Pocket Toolkit choice. |
+| 829 | The Riverward Retaining Wall (`the-riverward-retaining-wall`) | CONFIRMED DEFECT | CRA-F0339 (MEDIUM, CRA-C0011) — sounding-rod ground result appears before the measurement choice. |
+
+Construction/building (13), medical rescue/support (8), Gear condition (11), and registry (3) suites passed **35 tests across four files**. These tests support choice reachability, usable-Gear gates, route variants, partial/alternate outcomes, and persistence; they do not directly assert the chronology defects, which are witnessed in current source. No scenario source or gameplay tests changed.
+
+The live checkpoint is now **829 reviewed / 32 remaining of 861**: **468 HEALTHY, 60 MINOR CONCERN, 301 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **339 findings**: **335 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 266, LOW 45, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 5 (329 clustered), with six unclustered. The first unreviewed live Adventure is position **830**, **The Barn Door That Wasn’t Square** (`the-barn-door-that-wasnt-square`), `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`. Next finding ID: **CRA-F0340**; next available cluster ID: **CRA-C0012**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+
+## Live-registry continuation (positions 830–839)
+
+Completed ten route-level reviews of the construction/building structural-work builder. The stories cover a binding barn door, deteriorating schoolhouse support, split porch timber, moving inn landing, disputed shed ownership, bell-tower brace, hidden drain path, scaffold ladder, fire-damaged chimney tie, and grain-cart ramp. Across each, the specific measurement/tool result is embedded in the shared `work` scene before `measure` is selected. Consequently inspect and rush entrants are told the result without performing the action; applicable Gear requirements do not prevent the disclosure. These ten findings CRA-F0340–CRA-F0349 extend CRA-C0011. For each, closure, safe/alternate/partial outcomes, Knowledge/Lore variants, ownership or authority boundaries, reward conditions, and any load/person safety state were also reviewed.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 830 | The Barn Door That Wasn’t Square (`the-barn-door-that-wasnt-square`) | CONFIRMED DEFECT | CRA-F0340 (MEDIUM, CRA-C0011) — hinge/post measurement result precedes the Carpenter’s Square action. |
+| 831 | The Wedge at the Schoolhouse (`the-wedge-at-the-schoolhouse`) | CONFIRMED DEFECT | CRA-F0341 (MEDIUM, CRA-C0011) — wedge and rot result precedes the Steel Wedge action. |
+| 832 | The Last Board at Harper Yard (`the-last-board-at-harper-yard`) | CONFIRMED DEFECT | CRA-F0342 (MEDIUM, CRA-C0011) — auger/split result precedes the Hand Auger test. |
+| 833 | The Joint That Opened in Winter (`the-joint-that-opened-in-winter`) | CONFIRMED DEFECT | CRA-F0343 (MEDIUM, CRA-C0011) — joint/landing comparison precedes the comparison action. |
+| 834 | The Shed with Two Roofs (`the-shed-with-two-roofs`) | CONFIRMED DEFECT | CRA-F0344 (MEDIUM, CRA-C0011) — base/opening inspection result precedes external inspection. |
+| 835 | The Brace Before the Bell (`the-brace-before-the-bell`) | CONFIRMED DEFECT | CRA-F0345 (MEDIUM, CRA-C0011) — plumb-line result precedes measurement. |
+| 836 | The Stone That Kept the Water (`the-stone-that-kept-the-water`) | CONFIRMED DEFECT | CRA-F0346 (MEDIUM, CRA-C0011) — drain-channel direction precedes tracing with the lantern. |
+| 837 | The Ladder in the West Yard (`the-ladder-in-the-west-yard`) | CONFIRMED DEFECT | CRA-F0347 (MEDIUM, CRA-C0011) — rope-secure/split-lashing result precedes the usable Travel Rope action. |
+| 838 | The Chimney That Pulled Away (`the-chimney-that-pulled-away`) | CONFIRMED DEFECT | CRA-F0348 (MEDIUM, CRA-C0011) — protected board-removal result precedes the glove-gated method. |
+| 839 | The Ramp for the Grain Cart (`the-ramp-for-the-grain-cart`) | CONFIRMED DEFECT | CRA-F0349 (MEDIUM, CRA-C0011) — support-foot comparison precedes setting aside load and comparing feet. |
+
+The construction/building suite passed **13 tests**; Gear-condition and registry suites passed **14 tests** in the prior combined run. The existing tests establish choice reachability, usable-Gear restrictions, alternate/partial outcomes, and persistence, but do not assert the method-result chronology defect; the shared source directly establishes it. No gameplay source or tests changed.
+
+The live checkpoint is now **839 reviewed / 22 remaining of 861**: **468 HEALTHY, 60 MINOR CONCERN, 311 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Preserved history contains **349 findings**: **345 live** and four unregistered. Live severity totals are HIGH 14, MEDIUM 276, LOW 45, plus 10 unrecovered legacy values. Live cluster counts are CRA-C0001 222, C0002 18, C0003 1, C0004 35, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 15 (339 clustered), with six unclustered. The first unreviewed live Adventure is position **840**, **The Wedge at the Schoolhouse** (`the-wedge-at-the-schoolhouse`), `src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts`. Next finding ID: **CRA-F0350**; next available cluster ID: **CRA-C0012**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
