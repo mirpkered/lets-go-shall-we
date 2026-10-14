@@ -396,6 +396,36 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(midnight.scenes.door.choices.map(({ id }) => id)).toContain('refuseVisitor');
   });
 
+  it('preserves established visitor presence without resolving the unexplained arrival', () => {
+    const midnight = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'visitor-at-midnight')!;
+
+    let sheltered = pick(fresh(midnight), midnight, 'speakThroughDoor');
+    sheltered = pick(sheltered, midnight, 'askCartDetails');
+    sheltered = pick(sheltered, midnight, 'offerSafeShelter');
+    sheltered = pick(sheltered, midnight, 'safeVisitor');
+    sheltered = JSON.parse(JSON.stringify(sheltered)) as SaveData;
+    sheltered = pick(sheltered, midnight, 'midnightEnd');
+    expect(sceneText(midnight.scenes.midnightEnd, sheltered)).toMatch(/someone was physically present at the house/i);
+    expect(sceneText(midnight.scenes.midnightEnd, sheltered)).toMatch(/arrival and identity unexplained/i);
+    expect(sheltered.character?.knowledge).toContain('A brass key from the burned old inn appeared during a midnight shelter request; the visitor left no tracks and made no threat.');
+
+    let threshold = pick(pick(fresh(midnight), midnight, 'openDoor'), midnight, 'closeChain');
+    threshold = pick(pick(threshold, midnight, 'showKey'), midnight, 'midnightEnd');
+    expect(sceneText(midnight.scenes.midnightEnd, threshold)).toMatch(/someone was physically present/i);
+
+    let witnessed = pick(fresh(midnight), midnight, 'wakeNeighbor');
+    witnessed = pick(witnessed, midnight, 'askWatchIdentity');
+    witnessed = pick(pick(witnessed, midnight, 'showKey'), midnight, 'midnightEnd');
+    expect(sceneText(midnight.scenes.midnightEnd, witnessed)).toMatch(/someone was physically present/i);
+
+    let unseen = pick(fresh(midnight), midnight, 'speakThroughDoor');
+    unseen = pick(unseen, midnight, 'askCartDetails');
+    unseen = pick(unseen, midnight, 'letWatchQuestion');
+    unseen = pick(pick(unseen, midnight, 'leaveKey'), midnight, 'midnightEnd');
+    expect(sceneText(midnight.scenes.midnightEnd, unseen)).toMatch(/whether anyone stood there/i);
+    expect(sceneText(midnight.scenes.midnightEnd, unseen)).not.toMatch(/someone was physically present/i);
+  });
+
   it('does not identify the anonymous giver or motive from delivery evidence alone', () => {
     const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'gift-with-no-name')!;
     const routes = [
