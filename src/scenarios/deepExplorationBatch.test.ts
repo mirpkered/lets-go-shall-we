@@ -567,11 +567,20 @@ describe('deep exploration anthology', () => {
     const road = getScenario('door-beneath-the-road')!;
     const traveler = newCharacter('Road Reporter');
     const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, road, () => 0) };
-    initial.run!.sceneId = 'driverAccount';
-    const report = choose(initial, road, road.scenes.driverAccount.choices.find(({ id }) => id === 'reportHole')!, () => 0);
+    const directRecovery = choose(initial, road, road.scenes.roadCollapse.choices.find(({ id }) => id === 'saveWagon')!, () => 0);
+    expect(directRecovery.run?.sceneId).toBe('shallowRoad');
+    expect(sceneText(road.scenes.shallowRoad, directRecovery)).toMatch(/wagon and its cargo are recovered/i);
+    expect(sceneText(road.scenes.shallowRoad, directRecovery)).toMatch(/road crew has not been notified/i);
+
+    const account = choose(initial, road, road.scenes.roadCollapse.choices.find(({ id }) => id === 'askDriver')!, () => 0);
+    const recoveredFirst = choose(account, road, road.scenes.driverAccount.choices.find(({ id }) => id === 'recoverFirst')!, () => 0);
+    expect(recoveredFirst.run?.sceneId).toBe('shallowRoad');
+    expect(sceneText(road.scenes.shallowRoad, recoveredFirst)).toMatch(/road crew has not been notified/i);
+
+    const report = choose(account, road, road.scenes.driverAccount.choices.find(({ id }) => id === 'reportHole')!, () => 0);
     expect(sceneText(road.scenes.roadReport, report)).toMatch(/wagon still needs to be recovered/i);
     expect(sceneText(road.scenes.roadReport, report)).not.toMatch(/wagon can use the detour/i);
-    expect(road.scenes.shallowRoad.text).toMatch(/wagon and its cargo are recovered/i);
+    expect(sceneText(road.scenes.roadReport, report)).toMatch(/leave a clear warning/i);
   });
 
   it('varies Harker Mine closure for direct rescue, crew rescue, and entered lower room', () => {
