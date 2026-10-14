@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
+import { A_GUN_ON_THE_TABLE, THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -56,6 +56,68 @@ const actHerd=(state:SaveData,choiceId:string):SaveData=>{
   expect(meets(choice!.requirements,state),`${scene.id}.${choiceId} availability`).toBe(true);
   return choose(state,THE_RUSTLED_HERD,choice!);
 };
+const beginGun=():SaveData=>{
+  const character=newCharacter('Debt Tester');
+  return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,A_GUN_ON_THE_TABLE,()=>0)};
+};
+const actGun=(state:SaveData,choiceId:string):SaveData=>{
+  const scene=A_GUN_ON_THE_TABLE.scenes[state.run!.sceneId];
+  const choice=scene.choices.find(({id})=>id===choiceId);
+  expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+  return choose(state,A_GUN_ON_THE_TABLE,choice!,()=>0);
+};
+
+describe('A Gun on the Table harvest-book continuity',()=>{
+  it('keeps evidence and repayment claims neutral when the book was not fetched',()=>{
+    let state=actGun(beginGun(),'moveGun');
+    state=actGun(state,'distanceTalk');
+    expect(state.run?.sceneId).toBe('book');
+    expect(state.run?.flags).not.toContain('harvestBookReviewed');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.book,state)).toMatch(/neither account has been checked against the harvest book/i);
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.book,state)).not.toMatch(/payment of eight coins/i);
+    state=actGun(state,'bookInstallment');
+    state=actGun(state,'gunDepart');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).toMatch(/no balance or repayment date was established/i);
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).not.toMatch(/eight-coin payment|four coins|accept a date/i);
+
+    state=actGun(beginGun(),'leaveRoom');
+    state=actGun(state,'hallCall');
+    expect(state.run?.sceneId).toBe('book');
+    expect(state.run?.flags).not.toContain('harvestBookReviewed');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.book,state)).toMatch(/neither account has been checked against the harvest book/i);
+
+    state=actGun(beginGun(),'moveGun');
+    state=actGun(state,'fetchBook');
+    expect(state.run?.flags).toContain('harvestBookReviewed');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.book,state)).toMatch(/records a payment of eight coins/i);
+  });
+
+  it('keeps a successful disarm ending neutral when the harvest book was never reviewed',()=>{
+    let state=actGun(beginGun(),'grabGun');
+    expect(state.run?.sceneId).toBe('weaponSafe');
+    state=actGun(state,'gunDepart');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).toMatch(/no balance or repayment date was established/i);
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).not.toMatch(/eight-coin payment|four coins|accept a date/i);
+  });
+
+  it('uses neutral legacy text without book-review proof and preserves reviewed evidence through reload',()=>{
+    const legacy=beginGun();
+    legacy.run!.sceneId='settled';
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,legacy)).toMatch(/no balance or repayment date was established/i);
+
+    let state=actGun(beginGun(),'moveGun');
+    state=actGun(state,'fetchBook');
+    state=actGun(state,'bookInstallment');
+    state=actGun(state,'gunDepart');
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).toMatch(/records an eight-coin payment/i);
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).toMatch(/no repayment date or agreement was recorded/i);
+    const memory=new Map<string,string>();
+    const storage={getItem:(key:string)=>memory.get(key)??null,setItem:(key:string,value:string)=>memory.set(key,value)};
+    saveGame(state,storage as unknown as Storage);
+    state=loadSave(storage as unknown as Storage);
+    expect(sceneText(A_GUN_ON_THE_TABLE.scenes.settled,state)).toMatch(/records an eight-coin payment/i);
+  });
+});
 
 describe('The Rustled Herd evidence continuity',()=>{
   it('keeps marks-only, receipt-only, and holding-only reports distinct from the full comparison',()=>{

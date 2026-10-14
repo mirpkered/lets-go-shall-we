@@ -277,7 +277,7 @@ export const A_GUN_ON_THE_TABLE = W('a-gun-on-the-table', 'A Gun on the Table', 
     { id: 'accountsLeave', label: 'Refuse to arbitrate an armed debt', next: 'outside' },
   ]),
   distance: scene('distance', 'Three Steps from the Table', 'Both men move away from the revolver, but neither leaves the room. The rancher stands near the door; the partner stands by the window. They agree to compare the old harvest book if someone fetches it.', [
-    { id: 'fetchBook', label: 'Ask the innkeeper to bring the book', next: 'book' },
+    { id: 'fetchBook', label: 'Ask the innkeeper to bring the book', next: 'book', effects: { setFlags: ['harvestBookReviewed'] } },
     { id: 'distanceTalk', label: 'Have each state what they can prove', next: 'book' },
     { id: 'distanceLeave', label: 'Leave while they remain apart', next: 'outside' },
   ]),
@@ -285,13 +285,13 @@ export const A_GUN_ON_THE_TABLE = W('a-gun-on-the-table', 'A Gun on the Table', 
     { id: 'hallCall', label: 'Ask the innkeeper to bring a witness', next: 'book' },
     { id: 'hallWait', label: 'Wait outside until they put the gun away', next: 'armedEnd' },
   ]),
-  book: scene('book', 'A Mark beside the Harvest', 'The harvest book shows a payment of eight coins from the partner, but no notation that it settled the whole loan. The rancher admits he remembers the remaining amount differently. Neither has drawn the revolver.', [
+  book: { ...scene('book', 'The Debt Discussed', 'Neither account has been checked against the harvest book; no payment or remaining balance is established here. Neither man has drawn the revolver.', [
     { id: 'bookInstallment', label: 'Suggest a written balance and date', next: 'weaponSafe' },
     { id: 'bookConstable', label: 'Ask the constable to witness the balance', next: 'weaponSafe' },
-  ]),
+  ]), textVariants: [{ requirements: { flags: ['harvestBookReviewed'] }, text: 'The harvest book records a payment of eight coins from the partner, but no notation that it settled the whole loan. The rancher remembers the remaining amount differently. Neither has drawn the revolver.' }] },
   weaponSafe: scene('weaponSafe', 'The Revolver Put Away', 'The revolver is no longer on the table between them. With the immediate danger reduced, the men can discuss the debt away from the weapon; their accounts remain disputed.', [{ id: 'gunDepart', label: 'Leave them to discuss the account', next: 'settled' }]),
   armedEnd: end('armedEnd', 'No Judgment Made', 'You leave the debt unresolved and the revolver untouched. The innkeeper calls the constable; neither party’s version is treated as proven.'),
-  settled: end('settled', 'Four Coins Still Disputed', 'The partner owes four coins if the rancher’s account is right, but the paper does not prove it. They accept a date to compare the next harvest book. No one is declared innocent or guilty, and the weapon is no longer between them.'),
+  settled: { ...end('settled', 'The Debt Still Disputed', 'The revolver is no longer between them, but the debt remains disputed. No balance or repayment date was established on this route.'), textVariants: [{ requirements: { flags: ['harvestBookReviewed'] }, text: 'The harvest book records an eight-coin payment, but it does not establish whether that settled the loan. The remaining balance is still disputed; no repayment date or agreement was recorded. The weapon is no longer between them.' }] },
   gunDeath: end('gunDeath', 'The Table Turns', 'A hand closes over the revolver before you can move clear.', 'death'),
 }, 'room');
 
