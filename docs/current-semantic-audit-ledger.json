@@ -4968,12 +4968,12 @@
       "slug": "the-stage-was-hit",
       "title": "The Stage Was Hit",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0088"
       ],
       "reviewProvenance": "current source route review; injured-passenger aid, horse/team control, tracks, missing-passenger search, pursuit success/failure, town warning, doctor, survivors and final escort traced",
-      "notes": "Routes that treat passengers, search, or guard the coach can reach survivors without riding to town or receiving an escort. townWarn alone brings the constable and doctor, and survivors says the doctor is on the road only if warning was sent; stageEnd nevertheless unconditionally says the party travels east under escort.",
+      "notes": "Original review witness preserved: routes that treat passengers, search, or guard the coach can reach survivors without riding to town or receiving an escort. townWarn alone brings the constable and doctor, and survivors says the doctor is on the road only if warning was sent; stageEnd nevertheless claimed the party travels east under escort. Wave 63 removes that unsupported travel/escort assertion while retaining the route-established town response in townWarn.",
       "preReconciliationPosition": 276,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16096,6 +16096,8 @@
       "routeWitness": "coach.treatPassenger -> passengerHelp.helpStayCoach -> survivors -> stageEnd (also tracksReturn/steadyGuard -> survivors); only rideTown/steadyWarn/helpWarnTown reaches townWarn and sends the constable/doctor. survivors explicitly makes the doctor conditional on sending warning, but stageEnd unconditionally asserts escort.",
       "violatedRule": "An ending must not promote local aid or waiting into an external escort/resolution that the route did not establish.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "stageEnd now says the coach party regroups beside the road and no longer asserts eastward travel under escort on any incoming route. Regression contrasts local passenger aid with the explicit town-warning route and confirms neither ending invents an escort; townWarn retains its established constable/doctor arrival. Western Outlaw, registry, library, diversity, and inventory checks pass (37 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 276,
       "registrationStatus": "LIVE"
@@ -20158,9 +20160,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 659,
+    "HEALTHY": 660,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 143,
+    "CONFIRMED DEFECT": 142,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
