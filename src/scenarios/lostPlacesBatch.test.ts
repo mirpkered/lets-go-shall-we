@@ -252,3 +252,56 @@ describe('The Island When the Water Falls discovery continuity', () => {
     expect(text(rescued, scenario)).not.toMatch(/freight landing/i);
   });
 });
+
+describe('The House under the Hill history continuity', () => {
+  const scenario = get('the-house-under-the-hill');
+
+  it('keeps no-contact and no-record routes neutral and does not claim a warning on direct departure', () => {
+    let outside = start(scenario);
+    outside = actIn(outside, scenario, 'lookWindow');
+    outside = actIn(outside, scenario, 'roomRetreat');
+    expect(text(outside, scenario)).toMatch(/history was not established/i);
+    expect(text(outside, scenario)).not.toMatch(/landholder says|deed records|will mark .* closed|is warned/i);
+
+    let upperOnly = start(scenario);
+    upperOnly = actIn(upperOnly, scenario, 'enterHouse');
+    upperOnly = actIn(upperOnly, scenario, 'upperOut');
+    expect(text(upperOnly, scenario)).toMatch(/history was not established/i);
+    expect(text(upperOnly, scenario)).not.toMatch(/landholder says|deed records|will mark .* closed|is warned/i);
+
+    let directLeave = start(scenario);
+    directLeave = actIn(directLeave, scenario, 'leaveHill');
+    expect(text(directLeave, scenario)).not.toMatch(/landholder is warned|warned that|closure plan/i);
+  });
+
+  it('attributes flood abandonment to the landholder only after that account is heard', () => {
+    let state = start(scenario);
+    state = actIn(state, scenario, 'markSlope');
+    state = actIn(state, scenario, 'landholderWait');
+    state = actIn(state, scenario, 'roomRetreat');
+    expect(text(state, scenario)).toMatch(/landholder says the house was abandoned after the spring flood/i);
+    expect(text(state, scenario)).not.toMatch(/deed records|family’s move to higher ground|will mark .* closed|is warned/i);
+  });
+
+  it('attributes the move uphill to the deed route and preserves its proof across reload', () => {
+    let state = start(scenario);
+    state = actIn(state, scenario, 'lookWindow');
+    state = actIn(state, scenario, 'takePapers');
+    state = actIn(state, scenario, 'paperReturn');
+    expect(text(state, scenario)).toMatch(/deed fragment records the family’s move to higher ground/i);
+    expect(text(state, scenario)).not.toMatch(/landholder says|will mark .* closed|is warned/i);
+    expect(state.character?.knowledge).toContain('The buried house was abandoned after a spring flood undermined the lower wall; the family moved uphill.');
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    saveGame(state, storage as unknown as Storage);
+    state = loadSave(storage as unknown as Storage);
+    expect(text(state, scenario)).toMatch(/deed fragment records the family’s move to higher ground/i);
+  });
+
+  it('uses neutral legacy text when route proof is absent', () => {
+    const legacy = start(scenario);
+    legacy.run!.sceneId = 'discovery';
+    expect(text(legacy, scenario)).toMatch(/history was not established/i);
+    expect(text(legacy, scenario)).not.toMatch(/landholder says|deed records|will mark .* closed|is warned/i);
+  });
+});

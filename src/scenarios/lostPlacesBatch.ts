@@ -320,7 +320,7 @@ export const THE_HOUSE_UNDER_THE_HILL = E('the-house-under-the-hill', 'The House
     { id: 'leaveHill', label: 'Leave before the hill shifts again', next: 'leave' },
   ], 'warning'),
   landholder: scene('landholder', 'The Hill’s Old House', 'The landholder says the house was abandoned after the spring flood undermined its lower wall. A family record book may remain inside, but the hill has slid twice this week.', [
-    { id: 'landholderWait', label: 'Ask the landholder to brace the window', next: 'room' },
+    { id: 'landholderWait', label: 'Ask the landholder to brace the window', next: 'room', effects: { setFlags: ['hillFloodHistoryFromLandholder'] } },
     { id: 'landholderRetreat', label: 'Leave the records for a safer day', next: 'leave' },
   ]),
   room: scene('room', 'A Table under Soil', 'The table is trapped against the uphill wall; a drawer hangs open with damp papers inside. The stair descends under the hill, but no support is visible at its first turn. The window remains the only clear exit.', [
@@ -334,7 +334,7 @@ export const THE_HOUSE_UNDER_THE_HILL = E('the-house-under-the-hill', 'The House
     { id: 'upperDown', label: 'Descend toward the lower room', hint: 'The ceiling is shedding grit and the stair has no visible support.', chance: { probability: 0.46, successNext: 'stair', failureNext: 'slide', successMessage: 'The first steps hold beneath your weight.', failureMessage: 'The stair shifts as soil falls across the window.', failureEffects: { health: -2 } } },
     { id: 'upperOut', label: 'Climb back through the window now', next: 'discovery' },
   ], 'danger'),
-  papers: scene('papers', 'A Name and a Flood Date', 'The deed fragment names the household and records a move to higher ground after the flood. The toy belongs to the same family; it is not a hidden treasure. The hill continues to settle.', [{ id: 'paperReturn', label: 'Return the papers or toy to the landholder', next: 'discovery', effects: { knowledge: ['The buried house was abandoned after a spring flood undermined the lower wall; the family moved uphill.'] } }]),
+  papers: scene('papers', 'A Name and a Flood Date', 'The deed fragment names the household and records a move to higher ground after the flood. The toy belongs to the same family; it is not a hidden treasure. The hill continues to settle.', [{ id: 'paperReturn', label: 'Return the papers or toy to the landholder', next: 'discovery', effects: { setFlags: ['hillFloodHistoryFromDeed'], knowledge: ['The buried house was abandoned after a spring flood undermined the lower wall; the family moved uphill.'] } }]),
   stair: scene('stair', 'The Lower Turn', 'The stair reaches a room still buried in earth. A narrow air gap continues beyond the turn, but the ceiling there is unsupported. You can retreat with the upper-room evidence or take one more look.', [
     { id: 'stairBack', label: 'Return to the window with what you found', next: 'discovery' },
     { id: 'stairDeeper', label: 'Crawl under the low stone arch', hint: 'The only exit is behind you and the ceiling is unsupported.', chance: { probability: 0.38, successNext: 'lowerRoom', failureNext: 'slide', successMessage: 'You reach a small dry niche below the stair.', failureMessage: 'The ceiling drops across the turn.', failureEffects: { health: -3 } } },
@@ -347,8 +347,12 @@ export const THE_HOUSE_UNDER_THE_HILL = E('the-house-under-the-hill', 'The House
     { id: 'slideClimb', label: 'Climb through the remaining window', chance: { probability: 0.56, successNext: 'discovery', failureNext: 'houseDeath', successMessage: 'You reach the slope as the opening narrows.', failureMessage: 'The window is buried before you clear the sill.', failureEffects: { health: -3 } } },
     { id: 'slideDig', label: 'Dig beneath the settling lintel', hint: 'The lintel is carrying loose soil and may collapse.', chance: { probability: 0.22, successNext: 'discovery', failureNext: 'houseDeath', successMessage: 'You open a gap through the loose edge.', failureMessage: 'The lintel drops with the next slide.', failureEffects: { health: -4 } } },
   ], 'danger'),
-  discovery: end('discovery', 'A Household Moved Uphill', 'The exposed rooms show a family left after a flood damaged the foundation. The landholder will mark the slope closed until it is shored. You leave with only the paper, toy, or knowledge you actually recovered.'),
-  leave: end('leave', 'The Hill Still Moves', 'You leave without entering. The opening remains unstable, and the landholder is warned that the slope needs shoring before anyone searches the lower rooms.'),
+  discovery: { ...end('discovery', 'A Household in the Hillside', 'The exposed house remains unsafe as the hill settles. You leave with only the paper, toy, or knowledge you actually recovered; its abandonment history was not established on this route.'), textVariants: [
+    { requirements: { flags: ['hillFloodHistoryFromLandholder', 'hillFloodHistoryFromDeed'] }, text: 'The landholder says the house was abandoned after the spring flood undermined its lower wall, and the deed records the family’s move to higher ground. The slope remains unsafe until it is secured; no closure plan was established.' },
+    { requirements: { flags: ['hillFloodHistoryFromDeed'] }, text: 'The deed fragment records the family’s move to higher ground after the flood. The slope remains unsafe as it settles; no landholder closure plan was established.' },
+    { requirements: { flags: ['hillFloodHistoryFromLandholder'] }, text: 'The landholder says the house was abandoned after the spring flood undermined its lower wall. The slope remains unsafe as it settles; no closure plan was established.' },
+  ] },
+  leave: end('leave', 'The Hill Still Moves', 'You leave without entering. The opening remains unstable; anyone returning should wait until the slope has been secured.'),
   houseDeath: end('houseDeath', 'Buried Window', 'The hill gives way over the only open exit.', 'death'),
 }, 'slope', 'landslide-exposed house', ['threshold then optional descent', 'narrowing retreat window', 'stateful evidence recovery']);
 
