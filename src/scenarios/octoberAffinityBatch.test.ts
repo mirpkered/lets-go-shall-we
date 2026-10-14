@@ -244,4 +244,34 @@ describe('Halloween and October-affinity adventures', () => {
     expect(text).toContain('papers back');
     expect(text).toContain('No guest is blamed');
   });
+
+  it('keeps the scarecrow observation route from inventing a farmhand admission, agreement, or Knowledge', () => {
+    const scarecrow = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-scarecrow-changes-fields')!;
+
+    let observed = stateAt(scarecrow);
+    observed = pick(observed, scarecrow, 'watchAfterDark');
+    observed = pick(observed, scarecrow, 'inspectPeg');
+    expect(sceneText(scarecrow.scenes.scarecrowChoice, observed)).toMatch(/no account establishes who moved it/i);
+    expect(sceneText(scarecrow.scenes.scarecrowChoice, observed)).not.toMatch(/farmhand admits/i);
+    observed = pick(observed, scarecrow, 'anchorScarecrow');
+    expect(sceneText(scarecrow.scenes.scarecrowAfter, observed)).not.toMatch(/farmhand agrees/i);
+
+    let watched = stateAt(scarecrow);
+    watched = pick(watched, scarecrow, 'watchAfterDark');
+    watched = pick(watched, scarecrow, 'keepWatchingWithoutInterview');
+    expect(watched.character?.knowledge).not.toContain('A loose peg and wind could turn the scarecrow toward the barn; a farmhand had also moved it between fields once.');
+
+    let interviewed = stateAt(scarecrow);
+    interviewed = pick(interviewed, scarecrow, 'askWorkers');
+    interviewed = pick(interviewed, scarecrow, 'compareCloth');
+    expect(sceneText(scarecrow.scenes.scarecrowChoice, interviewed)).toMatch(/farmhand admits moving it once/i);
+    interviewed = pick(interviewed, scarecrow, 'askFarmhandOwnIt');
+    expect(sceneText(scarecrow.scenes.scarecrowAfter, interviewed)).toMatch(/they agree to tell the farmer/i);
+
+    let learned = stateAt(scarecrow);
+    learned = pick(learned, scarecrow, 'askWorkers');
+    learned = pick(learned, scarecrow, 'setWatch');
+    learned = pick(learned, scarecrow, 'keepWatching');
+    expect(learned.character?.knowledge).toContain('A loose peg and wind could turn the scarecrow toward the barn; a farmhand had also moved it between fields once.');
+  });
 });
