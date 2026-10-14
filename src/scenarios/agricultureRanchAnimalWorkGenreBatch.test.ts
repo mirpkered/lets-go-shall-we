@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { ITEMS, itemsOfClass } from '../items';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
 import { AGRICULTURE_NARRATED_WAGE_PAYMENTS, AGRICULTURE_RANCH_ANIMAL_WORK_GENRE_BATCH as BATCH } from './agricultureRanchAnimalWorkGenreBatch';
@@ -14,7 +14,48 @@ const fresh = (scenario: Scenario): SaveData => {
   return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
 };
 
+const take = (state: SaveData, scenario: Scenario, choiceId: string): SaveData => {
+  const current = scenario.scenes[state.run!.sceneId]!;
+  const choice = current.choices.find(({ id }) => id === choiceId);
+  expect(choice, `${current.id}.${choiceId} exists`).toBeTruthy();
+  return choose(state, scenario, choice!);
+};
+
 describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', () => {
+  it('keeps the feed-sack record check and shears recollection attached to the routes that establish them', () => {
+    const feed = BATCH.find(({ id }) => id === 'the-feed-bin-with-the-blue-seam')!;
+    const separated = take(fresh(feed), feed, 'separate');
+    const separateText = sceneText(feed.scenes.records, separated);
+    expect(separateText).toMatch(/delivery entry and the reason for the blue wax have not been checked/i);
+    expect(separateText).not.toMatch(/tally lists two plain sacks|farmhand recalls that the miller/i);
+    expect(feed.scenes.records.choices.map(({ id }) => id)).toEqual(['return', 'call']);
+
+    let checked = take(fresh(feed), feed, 'ask');
+    expect(checked.run?.flags).toContain('blueSeamTallyChecked');
+    checked = loadSave({ getItem: () => JSON.stringify(checked) });
+    const checkedText = sceneText(feed.scenes.records, checked);
+    expect(checkedText).toMatch(/tally lists two plain sacks/i);
+    expect(checkedText).toMatch(/farmhand recalls that the miller sometimes uses blue wax for seed grain/i);
+
+    const shears = BATCH.find(({ id }) => id === 'the-sheep-shears-that-went-missing')!;
+    let sackSearch = take(fresh(shears), shears, 'rack');
+    sackSearch = take(sackSearch, shears, 'sack');
+    const sackText = sceneText(shears.scenes.found, sackSearch);
+    expect(sackText).toMatch(/shears are found intact/i);
+    expect(sackText).toMatch(/does not establish how they came to be set aside/i);
+    expect(sackText).not.toMatch(/shearer recalls placing them on the shelf/i);
+
+    let askedShearer = take(fresh(shears), shears, 'rack');
+    askedShearer = take(askedShearer, shears, 'ask');
+    expect(askedShearer.run?.flags).toContain('shearerRetracedLastCut');
+    askedShearer = loadSave({ getItem: () => JSON.stringify(askedShearer) });
+    expect(sceneText(shears.scenes.found, askedShearer)).toMatch(/shearer recalls placing them on the shelf/i);
+
+    let shedSearch = take(fresh(shears), shears, 'gate');
+    shedSearch = take(shedSearch, shears, 'return');
+    expect(sceneText(shears.scenes.shed, shedSearch)).toMatch(/shears are on a clean shelf inside the closed tool shed/i);
+  });
+
   it('registers 24 unique Adventures with valid, reachable, acyclic graphs', () => {
     expect(BATCH).toHaveLength(30);
     expect(SCENARIOS).toHaveLength(861);
