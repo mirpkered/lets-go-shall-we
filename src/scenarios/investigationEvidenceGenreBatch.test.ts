@@ -29,6 +29,33 @@ const reachSettlement = (scenario: (typeof INVESTIGATION_EVIDENCE_GENRE_BATCH)[n
 };
 
 describe('Investigation / Evidence / Specialist Tools genre batch', () => {
+  it('keeps investigation action results attached to the action that establishes them', () => {
+    const outcomeText = (scenario: (typeof INVESTIGATION_EVIDENCE_GENRE_BATCH)[number], state: SaveData) =>
+      scenario.scenes.settlement.textVariants?.find(({ requirements }) => meets(requirements, state))?.text ?? scenario.scenes.settlement.text;
+
+    const widths = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-two-widths-at-morrow-road')!;
+    const followedTrack = reachSettlement(widths, 'careful');
+    expect(outcomeText(widths, followedTrack)).toMatch(/ends at the road fork.*crate remains unaccounted for/i);
+    expect(outcomeText(widths, followedTrack)).not.toMatch(/owner finds the crate behind a feed partition/i);
+    const inventoryRequested = reachSettlement(widths, 'accuse');
+    expect(outcomeText(widths, inventoryRequested)).toMatch(/ask the yard owner to inventory.*check is still pending/i);
+    expect(outcomeText(widths, inventoryRequested)).not.toMatch(/teamster refuses the accusation|delays his pay/i);
+
+    const seal = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-seal-with-the-second-notch')!;
+    const heldForSender = reachSettlement(seal, 'careful');
+    expect(outcomeText(seal, heldForSender)).toMatch(/held for the sender’s written confirmation.*has not accepted responsibility/i);
+    expect(outcomeText(seal, heldForSender)).not.toMatch(/receiver accepts responsibility/i);
+    const witnessedAcceptance = reachSettlement(seal, 'verify');
+    expect(outcomeText(seal, witnessedAcceptance)).toMatch(/receiver accepts responsibility.*witnessed exception/i);
+
+    const engine = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-bent-pin-in-the-harvest-engine')!;
+    const heldStopped = reachSettlement(engine, 'careful');
+    expect(outcomeText(engine, heldStopped)).toMatch(/engine stays stopped.*not secured the guard or replaced the pin/i);
+    expect(outcomeText(engine, heldStopped)).not.toMatch(/guard is secured and the pin replaced/i);
+    const repairChosen = reachSettlement(engine, 'verify');
+    expect(outcomeText(engine, repairChosen)).toMatch(/guard is secured and the pin replaced/i);
+  });
+
   it.each([
     { scenarioId: 'the-gate-pin-at-south-pasture', resultRoutes: ['measure'], result: /old polished side fits the socket/i, unsupported: /fits the socket/i },
     { scenarioId: 'the-ledger-page-that-dried', resultRoutes: ['compare'], result: /next sheet preserves part of the line/i, unsupported: /two coin marks/i },
