@@ -7798,7 +7798,7 @@
       "slug": "white-chamber",
       "title": "The White Chamber",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0181",
         "CRA-F0182",
@@ -17283,6 +17283,8 @@
       "violatedRule": "A route-specific safety resource cannot be asserted unless that route established it; absent proof must not be filled in from another path.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "whiteDeep and whiteReversed no longer assert an outside rope, and the seal-entry/retreat choices do not assume rope or chalk. Regression follows a no-rope/no-chalk route through both deep entry and the reversed wheel, and confirms whiteLineSet is present on the explicit usable-rope route. deepExplorationBatch.test.ts passes 26 tests; the existing CRA-C0004 usable-rope gate was not changed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -17295,6 +17297,8 @@
       "violatedRule": "Object recovery, delivery, and compensation must follow route-established actions, not inspection-only convergence.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "whiteSeal now says the pack remains beside the door until a recovery route is chosen. The copySeal and leaveRod report endings describe the account/tracing and existing four-coin payment without claiming the pack was received; explicit takePack still reports the prospector receiving it. Regression covers inspection/report, tracing, preserved fee effects, and explicit recovery. deepExplorationBatch.test.ts passes 26 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20074,9 +20078,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 624,
+    "HEALTHY": 625,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 178,
+    "CONFIRMED DEFECT": 177,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
