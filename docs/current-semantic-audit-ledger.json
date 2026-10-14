@@ -8539,12 +8539,12 @@
       "slug": "the-paper-road",
       "title": "The Paper Road",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0191"
       ],
       "reviewProvenance": "current-source route review; Pike departure/retention approaches, seal/witness/stay-back responses, sealed return/escort endings, duplicate Gear, coins, refusal and Knowledge traced",
-      "notes": "The eastOffice approach explicitly sends Pike east to report the theft. The shared response menu still offers stayBack, whose result asks Pike to confirm the stamp, and the aftermath unconditionally says Pike checks the ribbon. Neither return of Pike to the toll shed nor a later office confirmation is established on that branch; the other approaches keep her available. The case remains sealed and custody/reward handling is otherwise consistent.",
+      "notes": "The eastOffice approach sent Pike east, while the shared stayBack response and aftermath previously placed her at the toll shed. Wave 87 removes Pike-dependent claims from the response and makes the aftermath rely only on the visible county seal and still-sealed case; the map remains unexamined and the office documents missing papers. Existing return/escort choices and reward handling remain unchanged.",
       "preReconciliationPosition": 492,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8675,12 +8675,12 @@
       "slug": "the-mill-road-pursuit",
       "title": "The Mill-Road Pursuit",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0195"
       ],
       "reviewProvenance": "current-source route review; ownership/traffic/follow approaches, pin recovery/driver aid/miller responses, combat win/loss, return/escort endings, personal jack reward and Knowledge traced",
-      "notes": "On helpDriver, the player helps lift the cart before anyone reaches the pin; the driver only admits the older partner promised payment for a pin they did not own. The shared aftermath nevertheless says the pin is returned to the miller, and the escortDriver ending and Carriage Jack offer rely on that return. securePin, callMiller, and combat victory explicitly establish pin recovery; combat loss says the miller recovers it.",
+      "notes": "On helpDriver, the player helps lift the cart before anyone reaches the pin, so recovery is not established. Wave 87 makes the shared aftermath, both follow-up endings, and Carriage Jack offer neutral about pin custody; the securePin response still explicitly returns it, callMiller still records the miller taking it, and combat win/loss recovery statements are preserved. No recovery state or reward mechanics were changed.",
       "preReconciliationPosition": 500,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8693,12 +8693,12 @@
       "slug": "the-letter-under-the-seat",
       "title": "The Letter Under the Seat",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0196"
       ],
       "reviewProvenance": "current-source route review; envelope/seat/clerk approaches, receipt/owner-choice/coach-hold responses, sealed-note and receipt endings, duplicate case, coins, refusal and Knowledge traced",
-      "notes": "Only checkSeat actually finds the folded, sealed note. askEnvelope establishes that the man took an empty envelope, and askClerk only delays departure while Quill checks her things. Yet the shared aftermath says Quill keeps her private note and the boardTogether ending says it remains sealed on all branches. The case/reward and receipt distinction otherwise remain consistent.",
+      "notes": "Only checkSeat finds the folded, sealed note. Wave 87 removes note-presence assumptions from the threat and receipt response, makes aftermath text route-aware, and keeps both endings neutral about note location unless the search established it. The separate map-case reward and provenance no longer imply that a missing note was recovered or that private papers transfer.",
       "preReconciliationPosition": 501,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17514,7 +17514,9 @@
       "violatedRule": "Shared route outcomes must preserve NPC presence and location established by prior choices.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 87 in roadDangerGenreBatch.ts removes the request for Pike to confirm the stamp after the eastOffice route sends her away; common aftermath reports only the visible seal and unexamined case. roadDangerGenreBatch.test.ts checks the eastOffice/stayBack route and a contrast approach."
     },
     {
       "findingId": "CRA-F0192",
@@ -17568,7 +17570,9 @@
       "violatedRule": "Recovery and custody claims must be supported by an action on every route reaching the shared result or reward.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 87 makes the shared pursuit aftermath, endings, and reward copy independent of pin recovery while preserving the explicit securePin/callMiller/combat recovery routes. roadDangerGenreBatch.test.ts contrasts helpDriver settlement with securePin recovery."
     },
     {
       "findingId": "CRA-F0196",
@@ -17580,7 +17584,9 @@
       "violatedRule": "Object presence and custody at convergence must be established by an incoming route; a search not performed cannot be treated as a successful recovery.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 87 makes the threat and receipt response note-neutral, varies aftermath text by the approach that did or did not find the note, and neutralizes ending/reward text about its status. roadDangerGenreBatch.test.ts checks all nine approach/response combinations, both endings, and Gear provenance."
     },
     {
       "findingId": "CRA-F0197",
@@ -20235,9 +20241,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 696,
+    "HEALTHY": 699,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 106,
+    "CONFIRMED DEFECT": 103,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
