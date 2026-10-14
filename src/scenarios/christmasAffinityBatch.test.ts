@@ -36,6 +36,27 @@ describe('Christmas and winter-affinity adventures', () => {
     const result = pick(state, scenario, 'compareOldWafer');
     expect(result.character?.knowledge).toContain('A wafer from Wren’s buried millwheel bears a groove like the old stone bearing at this mill; it suggests a shared milling practice, not a common site or maker.');
     expect(result.run?.inventory).toContain('blackMillingStone');
+    expect(result.run?.sceneId).toBe('comparisonNotRepair');
+    expect(sceneText(scenario.scenes.comparisonNotRepair, result)).toMatch(/comparison does not free this wheel/i);
+    expect(result.character?.historyFlags).not.toContain('Helped free a frozen millwheel by easing water pressure before warming its bearing');
+    expect(pick(result, scenario, 'warmAndDrain').run?.sceneId).toBe('wheelFreed');
+  });
+
+  it('does not treat bracing the surge gate as a completed bearing repair', () => {
+    const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'frozen-millwheel')!;
+    let state = pick(fresh(scenario), scenario, 'inspectSluice');
+    state = pick(state, scenario, 'openBleed', () => 0.999999);
+    expect(state.run?.sceneId).toBe('surge');
+    state = pick(state, scenario, 'closeGateFromBank', () => 0);
+    expect(state.run?.sceneId).toBe('gateSecured');
+    expect(sceneText(scenario.scenes.gateSecured, state)).toMatch(/bearing has not been warmed/i);
+    expect(state.character?.historyFlags).not.toContain('Helped free a frozen millwheel by easing water pressure before warming its bearing');
+
+    state = pick(state, scenario, 'continueRepair');
+    state = pick(state, scenario, 'brushHousing');
+    state = pick(state, scenario, 'warmAndDrain');
+    expect(state.run?.sceneId).toBe('wheelFreed');
+    expect(sceneText(scenario.scenes.wheelFreed, state)).toMatch(/ice releases after the bearing is warmed/i);
   });
 
   it('registers 28 distinct stories and locks only holiday-dependent premises to December', () => {
