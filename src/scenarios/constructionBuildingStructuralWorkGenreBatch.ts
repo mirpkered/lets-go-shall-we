@@ -68,6 +68,14 @@ const make = (w:BuildStory,index:number):Scenario => {
   if (w.loreCallback) inspectVariants.push({requirements:{lore:[w.loreCallback]},text:`${startSetup}\n\nA remembered account changes how the old marks read: ${w.loreCallback} The history gives context, not a safety certificate.`});
   const revealSetup = `${w.turn} The physical sign supports a concern, but does not by itself establish the whole history or certify the structure.`;
   const revealVariants:NonNullable<Scene['textVariants']> = [];
+  const methodResult = `${revealSetup} ${w.methodResult}`;
+  revealVariants.push({
+    requirements: { flags: ['constructionMeasured'], ...(nextLore ? { lore: [nextLore] } : {}) },
+    text: nextLore
+      ? `${methodResult} The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`
+      : methodResult,
+  });
+  if (nextLore) revealVariants.push({requirements:{flags:['constructionMeasured'],notLore:[nextLore]},text:methodResult});
   if (nextLore) revealVariants.push({requirements:{lore:[nextLore]},text:`${revealSetup} The site calls to mind what you learned before: ${nextLore} The resemblance is worth recording, not treating as proof.`});
   const earnedFact = w.knowledge ?? (w.id === 'three-knots-on-the-platform' ? 'scaffoldFootAndLashing' : undefined);
   const learnedKnowledge = earnedFact ? {knowledgeEntries:[KNOWLEDGE_FACTS[earnedFact]],historyFlags:[`construction_knowledge_${w.id}`]} : {};
@@ -90,7 +98,7 @@ const make = (w:BuildStory,index:number):Scenario => {
       {id:'rush',label:'Begin the requested work without checking the support',next:'work',effects:{setFlags:['rushedWork']}},
       {id:'withdraw',label:'Decline the unsafe part and keep others out of the area',next:'hold',effects:{setFlags:['declinedWork']}},
     ],inspectVariants),
-    work:s('work','The Work Changes the Building',`${w.methodResult} The next task changes the structure or access; the crew pauses before the changed section is loaded.`,[
+    work:s('work','The Work Changes the Building','The next task changes the structure or access; the crew pauses before the changed section is loaded.',[
       ...actions,
       {id:'force',label:'Force the planned alteration while the support is uncertain',next:'partial',effects:{setFlags:['forcedWork']}},
     ]),
@@ -105,7 +113,7 @@ const make = (w:BuildStory,index:number):Scenario => {
       {requirements:{flags:['usedRememberedConstructionKnowledge']},text:'You explain which structural sign you remembered and ask the builder to compare it here. The second check narrows the concern; the builder—not memory alone—decides what work is safe.'},
       {requirements:{flags:['connectedRememberedConstructionLore']},text:'The clerk recognizes the place you describe and adds that context to the account. The history explains the mark, but the present structure still needs its own inspection.'},
       {requirements:{flags:['rushedWork']},text:`Because you began before checking the support, the builder stops the alteration and resets the work sequence. ${w.sign}`},
-      {requirements:{flags:['constructionUsedGear']},text:`Your tool helps check one part of the problem; ${w.methodResult} The builder still confirms the bearing before loading the structure.`},
+      {requirements:{flags:['constructionUsedGear']},text:'Your tool helps check one part of the problem. The builder still confirms the bearing before loading the structure.'},
       {requirements:{flags:['forcedWork']},text:`The forced alteration loosens material and costs the crew time. No one is hurt, but the affected area stays closed until the builder rechecks it. ${w.lesson??w.sign}`},
     ]),
     ...(w.lane==='GEAR'&&w.tool?{gearEnding:e('gearEnding','A Tool Released to You',`${w.toolSource??''} You take the ${w.toolName}; it helps with practical work but cannot certify a building or replace a qualified builder.`)}:{}),

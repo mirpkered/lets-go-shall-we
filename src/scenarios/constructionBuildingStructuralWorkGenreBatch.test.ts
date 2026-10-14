@@ -18,6 +18,12 @@ const act=(state:SaveData,scenario:(typeof BATCH)[number],id:string):SaveData=>{
   expect(meets(choice!.requirements,state),`${scenario.id}.${state.run!.sceneId}.${id} requirements`).toBe(true);
   return choose(state,scenario,choice!);
 };
+const carry=(state:SaveData,itemId:string)=>{
+  state.character!.carriedItem=itemId;
+  state.character!.carriedItems=[itemId];
+  state.run!.inventory.push(itemId);
+  return state;
+};
 const reachSettlement=(scenario:(typeof BATCH)[number])=>{
   let state=initial(scenario);
   state=act(state,scenario,'inspect');
@@ -70,6 +76,60 @@ describe('Construction / Building / Structural Work batch',()=>{
     expect(clamp.scenes.work.choices.find(({id})=>id==='measure')?.requirements?.usableItems).toContain('foldingBenchClamp');
   });
 
+  it('withholds method results until the relevant method or tool action is chosen',()=>{
+    for(const scenario of BATCH){
+      const work=scenario.scenes.work;
+      expect(work.text,scenario.id).toBe('The next task changes the structure or access; the crew pauses before the changed section is loaded.');
+
+      let alternate=initial(scenario);
+      alternate=act(alternate,scenario,'inspect');
+      expect(sceneText(work,alternate),`${scenario.id} before method choice`).toBe(work.text);
+      alternate=act(alternate,scenario,'shore');
+      expect(alternate.run?.sceneId).toBe('reveal');
+      expect(sceneText(scenario.scenes.reveal,alternate),`${scenario.id} shore route`).not.toContain('The square shows the left post is sound');
+
+      let measured=initial(scenario);
+      measured=act(measured,scenario,'inspect');
+      const method=work.choices.find(({id})=>id==='measure')!;
+      const methodItem=method.requirements?.items?.[0];
+      if(methodItem) measured=carry(measured,methodItem);
+      expect(meets(method.requirements,measured),`${scenario.id} method availability`).toBe(true);
+      measured=act(measured,scenario,'measure');
+      expect(measured.run?.sceneId).toBe('reveal');
+    }
+
+    const square=BATCH.find(({id})=>id==='the-square-at-mill-street')!;
+    let measured=initial(square);
+    measured=carry(measured,'carpenterSquare');
+    measured=act(measured,square,'inspect');
+    measured=act(measured,square,'measure');
+    expect(sceneText(square.scenes.reveal,measured)).toContain('The square shows the left post is sound');
+
+    const gearStory=BATCH.find(({id})=>id==='the-roof-that-held-its-breath')!;
+    let gearRoute=initial(gearStory);
+    gearRoute=carry(gearRoute,'steelWedge');
+    gearRoute=act(gearRoute,gearStory,'inspect');
+    gearRoute=act(gearRoute,gearStory,'gear');
+    expect(sceneText(gearStory.scenes.reveal,gearRoute)).not.toContain('The rope holds the loose covering');
+    gearRoute=act(gearRoute,gearStory,'resolve');
+    expect(sceneText(gearStory.scenes.settle,gearRoute)).not.toContain('The rope holds the loose covering');
+  });
+
+  it('preserves observable risk before the method choice and keeps Gear-only checks gated',()=>{
+    const retainingWall=BATCH.find(({id})=>id==='the-riverward-retaining-wall')!;
+    const start=initial(retainingWall);
+    expect(sceneText(retainingWall.scenes.start,start)).toContain('Water seeps from two mortar joints');
+    expect(sceneText(retainingWall.scenes.start,start)).not.toContain('The rod finds soft ground');
+
+    for(const scenario of BATCH.filter(({scenes})=>scenes.work.choices.some(({id})=>id==='gear'))){
+      const gear=scenario.scenes.work.choices.find(({id})=>id==='gear')!;
+      expect(gear.requirements?.usableItems,scenario.id).toHaveLength(1);
+      let unavailable=initial(scenario);
+      unavailable=act(unavailable,scenario,'inspect');
+      expect(meets(gear.requirements,unavailable),`${scenario.id} missing tool`).toBe(false);
+    }
+  });
+
   it('provides clear structural alternatives and consequential rush/force routes without arbitrary death',()=>{
     for(const scenario of BATCH){
       expect(scenario.scenes.start.choices.some(({id})=>id==='withdraw')).toBe(true);
@@ -94,6 +154,7 @@ describe('Construction / Building / Structural Work batch',()=>{
           expect(variant.text.startsWith(base),`${scenario.id}.${sceneId} retains base setup`).toBe(true);
           expect(variant.text.split(base)).toHaveLength(2);
           const recalled=initial(scenario);
+          recalled.run!.flags=[...(variant.requirements.flags??[])];
           recalled.character!.knowledgeKeys=[...(variant.requirements.knowledgeKeys??[])];
           recalled.character!.knowledgeSources=variant.requirements.knowledgeSources??{};
           recalled.character!.lore=[...(variant.requirements.lore??[])];
@@ -201,6 +262,7 @@ describe('Construction / Building / Structural Work batch',()=>{
       const callback=BATCH.flatMap(({scenes})=>Object.values(scenes)).flatMap((scene)=>scene.textVariants??[]).find(({requirements})=>requirements.lore?.includes(entry));
       expect(callback,'Lore callback').toBeTruthy();
       const state=initial(BATCH[0]);
+      state.run!.flags=[...(callback!.requirements.flags??[])];
       state.character!.lore=[entry];
       expect(meets(callback!.requirements,state)).toBe(true);
     }
