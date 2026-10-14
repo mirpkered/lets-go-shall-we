@@ -15478,7 +15478,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 197,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "wellAfter now has neutral source-unknown text by default. Only the successful wellBottom.climbWell outcome sets foundSpeakingTube and receives the tube-specific variant; no route claims a mason capped the opening. occultInvestigationBatch.test.ts checks leaving immediately and withdrawing after asking for help remain neutral, while the successful tube-discovery route preserves its finding after a save round-trip."
     },
     {
       "findingId": "CRA-F0051",
