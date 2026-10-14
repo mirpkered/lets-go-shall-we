@@ -17839,7 +17839,9 @@
       "violatedRule": "A shared outcome may not claim evacuation or safe placement of people/livestock unless every incoming route establishes those route-specific outcomes; a warning/signal is not the same as completed relocation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The partial outcome now keeps worker, flock, and wagon states distinct: only movePeople records springWorkersAtRidge; holdGate records only that the flock turned back from the ditch; signaling the wagon crew does not establish they heard or waited. Route-aware variants report those proven facts and keep all other states unconfirmed. Whistle provenance and the coin conclusion no longer call the outcome a full evacuation. wildernessFieldcraftGenreBatch.test.ts covers all three routes and the reward provenance."
     },
     {
       "findingId": "CRA-F0239",
