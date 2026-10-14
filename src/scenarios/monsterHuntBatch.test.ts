@@ -126,6 +126,52 @@ describe('Monster Hunt / Creature Threat batch', () => {
     explore(MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!, 'conductorWhistle');
   });
 
+  it('keeps The Last Trap outcomes within the actions each route establishes', () => {
+    const scenario = MONSTER_HUNT_SECOND.find(({ id }) => id === 'the-last-trap')!;
+    const textAt = (sceneId: string, state: SaveData) => sceneText(scenario.scenes[sceneId], state);
+    const reload = (state: SaveData) => loadSave({ getItem: () => JSON.stringify(state) });
+    const falseResolution = /dogs (?:return with the trapper|are recovered)|traps are taken down|trapper disarms the wire/i;
+
+    let freedDogs = take(fresh(scenario), scenario, 'questionPlan');
+    freedDogs = take(freedDogs, scenario, 'offerTwoPersonWatch');
+    freedDogs = reload(take(freedDogs, scenario, 'freeDogs'));
+    expect(textAt('trapResolved', freedDogs)).toMatch(/free the dogs and retreat/i);
+    expect(textAt('trapResolved', freedDogs)).not.toMatch(falseResolution);
+
+    let withdrew = take(fresh(scenario), scenario, 'inspectOldTraps');
+    withdrew = take(withdrew, scenario, 'followDenTracks');
+    withdrew = reload(take(withdrew, scenario, 'withdrawDen'));
+    expect(textAt('trapResolved', withdrew)).not.toMatch(falseResolution);
+
+    let creatureWithdrew = take(fresh(scenario), scenario, 'inspectOldTraps');
+    creatureWithdrew = take(creatureWithdrew, scenario, 'moveBedroll');
+    creatureWithdrew = reload(take(creatureWithdrew, scenario, 'approachDen', 0));
+    expect(creatureWithdrew.run?.sceneId).toBe('trapResolved');
+    expect(textAt('trapResolved', creatureWithdrew)).not.toMatch(falseResolution);
+
+    let disabled = take(fresh(scenario), scenario, 'questionPlan');
+    disabled = reload(take(disabled, scenario, 'takeChain'));
+    expect(textAt('trapperStopped', disabled)).toMatch(/disable the wire trap/i);
+    expect(textAt('trapperStopped', disabled)).not.toMatch(/dogs (?:return|are recovered)/i);
+
+    let ledAway = take(fresh(scenario), scenario, 'questionPlan');
+    ledAway = take(ledAway, scenario, 'offerTwoPersonWatch');
+    ledAway = reload(take(ledAway, scenario, 'backTrapperAway'));
+    expect(textAt('trapperStopped', ledAway)).toMatch(/lead the trapper away/i);
+    expect(textAt('trapperStopped', ledAway)).not.toMatch(falseResolution);
+
+    let signaled = take(fresh(scenario), scenario, 'inspectOldTraps');
+    signaled = take(signaled, scenario, 'followDenTracks');
+    signaled = reload(take(signaled, scenario, 'signalTrapperBack'));
+    expect(textAt('trapperStopped', signaled)).toMatch(/signal the trapper to stay back/i);
+    expect(textAt('trapperStopped', signaled)).not.toMatch(falseResolution);
+
+    let leftAfterPlacement = take(fresh(scenario), scenario, 'questionPlan');
+    leftAfterPlacement = reload(take(leftAfterPlacement, scenario, 'walkAwayTrap'));
+    expect(textAt('trapLeft', leftAfterPlacement)).not.toMatch(/before the trapper sets his bedroll/i);
+    expect(textAt('trapLeft', leftAfterPlacement)).toMatch(/what the trapper does next is unknown/i);
+  });
+
   it('makes ordinary curiosity at the ravine survivable, while keeping a warned crossing lethal', () => {
     const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-that-mimics-the-whistle')!;
     const curious = take(fresh(scenario), scenario, 'callAgain');

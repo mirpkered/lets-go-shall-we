@@ -331,26 +331,36 @@ export const THE_LAST_TRAP: Scenario = {
     trapEvidence: scene('trapEvidence', 'A Turn around the Wire', 'The traps are sprung from the far side, as if the animal circled them downwind. One set of tracks continues toward a den; another set belongs to the trapper’s dogs and turns back. The bedroll sits in the animal’s path.', [
       { id: 'moveBedroll', label: 'Move the bedroll to the open ridge', next: 'trapperPlan' },
       { id: 'followDenTracks', label: 'Follow the animal tracks only to the ridge', next: 'denBoundary' },
-      { id: 'disableTrap', label: 'Disable the traps and stop the setup', next: 'trapperArgument', effects: { historyFlags: ['stopped a trapper from using himself as bait'] } },
+      { id: 'disableTrap', label: 'Disable the traps and stop the setup', next: 'trapperArgument', effects: { setFlags: ['lastTrapWireDisabled'], historyFlags: ['stopped a trapper from using himself as bait'] } },
     ]),
     trapperArgument: scene('trapperArgument', 'The Trapper Will Not Wait', 'The trapper says the animal has taken his dogs and he cannot bear another night of waiting. His bedroll is already placed beside the den path. He will listen, but he is reaching for the trap chain.', [
       { id: 'offerTwoPersonWatch', label: 'Offer a watch from the ridge', next: 'trapperPlan' },
-      { id: 'takeChain', label: 'Take the chain and disable the trap', next: 'trapperStopped' },
+      { id: 'takeChain', label: 'Take the chain and disable the trap', next: 'trapperStopped', effects: { setFlags: ['lastTrapWireDisabled'] } },
       { id: 'walkAwayTrap', label: 'Leave him to his own choice', next: 'trapLeft' },
     ], 'warning'),
     trapperPlan: scene('trapperPlan', 'The Den beyond the Ridge', 'From the ridge, you see a young animal at the den mouth. The trapper’s missing dogs are tied behind a fallen log, alive but wary. The adult creature watches from cover; it is guarding its young, not hunting the camp.', [
-      { id: 'freeDogs', label: 'Free the dogs and retreat together', next: 'trapResolved', effects: { knowledge: ['The trapper’s quarry was guarding young at a den; it avoided people who stayed beyond the ridge.'] } },
-      { id: 'backTrapperAway', label: 'Lead the trapper away from the den', next: 'trapperStopped' },
+      { id: 'freeDogs', label: 'Free the dogs and retreat together', next: 'trapResolved', effects: { setFlags: ['lastTrapDogsFreed'], knowledge: ['The trapper’s quarry was guarding young at a den; it avoided people who stayed beyond the ridge.'] } },
+      { id: 'backTrapperAway', label: 'Lead the trapper away from the den', next: 'trapperStopped', effects: { setFlags: ['lastTrapTrapperLedAway'] } },
       { id: 'approachDen', label: 'Approach the adult creature', hint: 'It is guarding young and has a clear route toward you.', chance: { probability: 0.26, successNext: 'trapResolved', failureNext: 'trapFatal', successMessage: 'The creature retreats with its young deeper into cover.', failureMessage: 'It charges when you enter the den boundary.', successEffects: { health: -3 }, failureEffects: { health: -10 } } },
     ], 'danger'),
     denBoundary: scene('denBoundary', 'A Den under the Roots', 'A young animal lies under the roots, alive. The adult’s tracks circle the den and point away from camp. The trapper is behind you, close enough to hear but not yet in sight of the young.', [
-      { id: 'signalTrapperBack', label: 'Signal the trapper to stay back', next: 'trapperStopped' },
+      { id: 'signalTrapperBack', label: 'Signal the trapper to stay back', next: 'trapperStopped', effects: { setFlags: ['lastTrapStayBackSignaled'] } },
       { id: 'withdrawDen', label: 'Withdraw without disturbing the den', next: 'trapResolved' },
       { id: 'takeYoung', label: 'Take the young animal as bait', hint: 'The adult is guarding it. This will likely provoke a lethal charge.', next: 'trapFatal', effects: { health: -10 } },
     ], 'danger'),
-    trapperStopped: end('trapperStopped', 'The Trap Disarmed', 'The trapper disarms the wire and leaves the den alone. His dogs are recovered from the ridge; he is angry that the hunt ended, but he no longer plans to use himself or the young animal as bait.'),
-    trapResolved: end('trapResolved', 'A Hunt Called Off', 'The dogs return with the trapper and the den is left undisturbed. He agrees to abandon this ground until the young animal has left. No creature is killed, and the traps are taken down.'),
-    trapLeft: end('trapLeft', 'The Last Trap Left Behind', 'You leave before the trapper sets his bedroll. You do not know whether he followed your warning; the den remains near the path, and the traps are still in his hands.'),
+    trapperStopped: {
+      ...end('trapperStopped', 'A Plan Interrupted', 'The encounter ends without establishing whether the trapper follows the signal, disables the wire, or recovers his dogs. His next choice remains unknown.'),
+      textVariants: [
+        { requirements: { flags: ['lastTrapWireDisabled'] }, text: 'You disable the wire trap. The dogs are not recovered in this outcome, and the trapper’s later decision is unknown.' },
+        { requirements: { flags: ['lastTrapTrapperLedAway'] }, text: 'You lead the trapper away from the den. This route does not establish that the wire was disabled or that the dogs were recovered.' },
+        { requirements: { flags: ['lastTrapStayBackSignaled'] }, text: 'You signal the trapper to stay back. His response, the wire’s state, and the dogs’ recovery are not established here.' },
+      ],
+    },
+    trapResolved: {
+      ...end('trapResolved', 'A Hunt Left Unresolved', 'The outcome does not establish whether the dogs were recovered or what happened to the traps afterward. The hunt’s later course remains unknown.'),
+      textVariants: [{ requirements: { flags: ['lastTrapDogsFreed'] }, text: 'You free the dogs and retreat with them. The hunt’s later course and the traps’ disposition are not established.' }],
+    },
+    trapLeft: end('trapLeft', 'The Trapper’s Choice', 'You return to the road. What the trapper does next is unknown to you; the dogs’ whereabouts and the hunt’s outcome remain unsettled.'),
     trapFatal: end('trapFatal', 'At the Den', 'The adult creature strikes when you cross the den boundary. The trapper reaches the ridge too late to pull you away.', 'death'),
   },
 };
