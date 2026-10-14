@@ -11307,7 +11307,7 @@
       "slug": "the-broken-handcart",
       "title": "The Broken Handcart",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0248"
       ],
@@ -18284,6 +18284,8 @@
       "violatedRule": "Shared delivery narration must preserve route-established cargo custody and destination; delayed cargo requires an explicit unload/cache/second-trip state.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local Wave 101: The paid delivery result now defaults to neutral wording that does not claim when the timber wedges reached the mine. The existing `handcart_braced` route proof states that food, oil, and wedges arrive together only on the braced full-load path; `handcart_wedges_left` states that wedges remain for a later trip only on the reduced-load path. No new state or persistence is introduced. Regression covers both paid-route variants, the hand-relay partial result, and neutral behavior when route proof is absent. The focused Expedition Logistics suite passed 13 tests; the full suite passed 127 files / 2,473 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20293,9 +20295,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 725,
+    "HEALTHY": 726,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 77,
+    "CONFIRMED DEFECT": 76,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
