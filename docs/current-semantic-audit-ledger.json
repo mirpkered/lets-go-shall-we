@@ -12401,12 +12401,12 @@
       "slug": "the-apple-row-after-hail",
       "title": "The Apple Row after Hail",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0279"
       ],
       "reviewProvenance": "current-source route review; usable-rope net lifting versus picked-crate cover, stop before limb damage, retie versus selective harvest, and coin/pliers outcomes traced",
-      "notes": "netting.cover -> work describes the net as lifted clear and upper-row bruising as newly observed, but covering already-picked crates establishes neither action nor observation. Only netting.lift uses a usable Travel Rope and can establish that state. Retie and selective-pick outcomes are otherwise distinct; the shared work scene inherits route-specific intervention/result facts.",
+      "notes": "Wave 80 makes the shared work scene neutral after crate-covering and gates the lifted-net/bruised-row observation on run-local proof set by the usable-rope lift route. Retie and selective-pick choices remain unchanged. Original route-review evidence is retained.",
       "preReconciliationPosition": 728,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12448,12 +12448,12 @@
       "slug": "the-trough-after-thaw",
       "title": "The Trough after Thaw",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0280"
       ],
       "reviewProvenance": "current-source route review; trough closure/clean-water route versus pipe inspection, runoff/feed isolation, unsafe spring-box use stop, and coin/pail settlement traced",
-      "notes": "trough.close -> check claims the spring pipe is clear although only trough.pipe explicitly inspects it. The herd remains behind the upper gate, unsafe spring-box drinking is stopped, and both check routes keep the suspect feed separate. The coin/pail reward follows cleanup/isolation, but the closed-trough route lacks the pipe-clear proof.",
+      "notes": "Wave 80 records run-local proof only when the Traveler inspects the spring pipe. The close-trough/pail route now states that pipe condition is not established, while the inspection route retains the clear-pipe finding. Downstream sack and trough choices remain unchanged. Original route-review evidence is retained.",
       "preReconciliationPosition": 731,
       "positionDelta": -12,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18618,7 +18618,9 @@
       "violatedRule": "Converged scene text may not import a route-specific intervention or observation into a branch that did not establish it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 80: the usable-rope net-lift route alone sets appleNetLiftedForInspection. The crate-cover route now gets neutral work-scene text; the route that lifts the net retains the bruising observation. Regression contrasts both routes and checks proof across save/reload. Agriculture, CRA-C0004, registry, and library checks pass (61 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0280",
@@ -18630,7 +18632,9 @@
       "violatedRule": "Shared scene conclusions must not assert inspection results absent from the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 80: only trough.pipe sets thawSpringPipeInspected. The close-trough/pail route receives neutral wording that pipe condition was not established, while the inspection route retains the clear-pipe result. Regression contrasts both routes and checks positive proof across save/reload. Agriculture, CRA-C0004, registry, and library checks pass (61 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0281",
@@ -20201,9 +20205,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 679,
+    "HEALTHY": 681,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 123,
+    "CONFIRMED DEFECT": 121,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
