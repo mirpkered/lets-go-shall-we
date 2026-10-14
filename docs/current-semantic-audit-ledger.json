@@ -4950,12 +4950,12 @@
       "slug": "the-man-at-the-end-of-the-bar",
       "title": "The Man at the End of the Bar",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0087"
       ],
       "reviewProvenance": "current source route review; quiet exit, allegation/clerk investigation, witnesses, front/kitchen exit, armed response success/failure, constable, Knowledge and shared safe ending traced",
-      "notes": "safeEnd is also reached by quietKitchen -> backAlley.alleyLeave and by a successful drawFirst -> gunTurn.gunLeave, without any clerk contact. It nevertheless says the clerk’s account corrected the accusation. Those routes have not established a clerk account or even that the accusation was checked.",
+      "notes": "Original review witness preserved: safeEnd is also reached by quietKitchen -> backAlley.alleyLeave and by a successful drawFirst -> gunTurn.gunLeave, without any clerk contact. It nevertheless said the clerk’s account corrected the accusation. Those routes had not established a clerk account or even that the accusation was checked. Wave 62 gates that specific correction on the run-local barClerkCorrectionHeard proof; legacy/absent-proof endings remain neutral.",
       "preReconciliationPosition": 275,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16081,6 +16081,8 @@
       "routeWitness": "bar.quietKitchen -> backAlley.alleyLeave -> safeEnd and bar.drawFirst success -> gunTurn.gunLeave -> safeEnd; neither path reaches clerk or streetSafe, yet safeEnd says 'The clerk’s account corrects the accusation.'",
       "violatedRule": "A shared ending may not claim that an accusation was verified or corrected unless that information was obtained on the selected route.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "safeEnd now uses neutral text unless the run-local barClerkCorrectionHeard flag is set by the two choices that enter the clerk scene. The correction remains on the clerk-heard route; quiet-kitchen and successful armed-diversion exits do not receive it. Regression covers both negative routes, the positive clerk route after save serialization, and an absent-proof legacy fallback. Western Outlaw, registry, library, diversity, and inventory checks pass (36 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 275,
       "registrationStatus": "LIVE"
@@ -20156,9 +20158,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 658,
+    "HEALTHY": 659,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 144,
+    "CONFIRMED DEFECT": 143,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

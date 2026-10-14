@@ -5,9 +5,9 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 61
+### Active local repair checkpoint — CRA-C0001 Wave 62
 
-Wave 61 repairs CRA-F0086 (MEDIUM) on `after-the-tornado`. Checking the fallen gate no longer sets `tornadoCowMoved`; the actual wagon relocation route still does. The regression contrasts the inspection-only and wagon-move routes. Disaster state-aware, registry, diversity, library, and inventory checks pass (**40 tests**); the full suite passes (**127 files, 2,407 tests**), and TypeScript/production build pass with the known bundle-size warning. Current classifications derive to **658 HEALTHY, 59 MINOR CONCERN, 144 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **207 are dispositioned** (202 repaired and 5 healthy/no-longer-reproduces) and **147 remain open**, including **113 CRA-C0001** (92 MEDIUM, 18 LOW, 3 unrecovered severity). No push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+Wave 62 repairs CRA-F0087 (MEDIUM) on `the-man-at-the-end-of-the-bar`. The specific clerk-correction claim now appears only when the existing route enters the clerk scene and sets factual run-local proof; quiet exit and armed-diversion routes stay neutral. The regression covers both negative routes, the clerk route through save serialization, and an absent-proof legacy fallback. Western Outlaw, registry, library, diversity, and inventory checks pass (**36 tests**); TypeScript and production build pass with the known bundle-size warning. Current classifications derive to **659 HEALTHY, 59 MINOR CONCERN, 143 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **208 are dispositioned** (203 repaired and 5 healthy/no-longer-reproduces) and **146 remain open**, including **112 CRA-C0001** (91 MEDIUM, 18 LOW, 3 unrecovered severity). No push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 
 ## Current checkpoint
 
@@ -2156,6 +2156,12 @@ Regression contrasts direct wall bracing against guiding the pair through the ea
 Wave 61 repairs CRA-F0086 (MEDIUM) on `after-the-tornado`. `stoveSafe.safeCow` now records that the stove remains safe without falsely setting `tornadoCowMoved`; only the distinct `helpRider.leaveCow` route records the wagon relocation. No other rescue, family-movement, or stove behavior changed.
 
 The regression contrasts the gate-check route against actual wagon relocation. Disaster state-aware, registry, diversity, library, and inventory checks pass (**40 tests**); the full suite passes (**127 files, 2,407 tests**), and TypeScript/production build pass with the known bundle-size warning. CRA-F0086 is now `VERIFIED_HEALTHY_REPAIRED`, and the Adventure derives HEALTHY. Live classifications are **658 HEALTHY, 59 MINOR CONCERN, 144 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**; live findings remain **354**. Cumulative dispositions are **202 repaired** and **5 healthy/no-longer-reproduces**; **147 findings remain open**, including **113 CRA-C0001** (92 MEDIUM, 18 LOW, 3 unrecovered severity). Local-only; no push, merge, deployment, or human/public QA occurred. Weekly Scenario Batch remains paused.
+
+### CRA-C0001 repair program — local Wave 62: clerk correction requires hearing the account
+
+Wave 62 repairs CRA-F0087 (MEDIUM) on `the-man-at-the-end-of-the-bar`. Both transitions that enter the clerk scene now record `barClerkCorrectionHeard`. `safeEnd` has a neutral absent-proof fallback and includes the clerk’s correction only with that route proof; the quiet-kitchen and armed-diversion exits remain truthful. This is a factual run-local flag; older saves without it receive neutral text.
+
+Regression covers the quiet exit, successful armed diversion, and clerk-heard exit after save serialization, plus a legacy state with no proof. Western Outlaw, registry, library, diversity, and inventory checks pass (**36 tests**); TypeScript and production build pass with the known bundle-size warning. CRA-F0087 is now `VERIFIED_HEALTHY_REPAIRED`, and the Adventure derives HEALTHY. Live classifications are **659 HEALTHY, 59 MINOR CONCERN, 143 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**; live findings remain **354**. Cumulative dispositions are **203 repaired** and **5 healthy/no-longer-reproduces**; **146 findings remain open**, including **112 CRA-C0001** (91 MEDIUM, 18 LOW, 3 unrecovered severity). Local-only; no push, merge, deployment, or human/public QA occurred. Weekly Scenario Batch remains paused.
 
 ### CRA-C0001 repair program — local Wave 41: Christmas tree branch state
 
