@@ -114,6 +114,20 @@ for (const callback of ownedGearCallbacks) {
 }
 
 const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<string, string>; byApproach?: Record<string, string> }> = {
+  'the-cold-iron-latch': {
+    base: 'The tools remain at the well while their separate accounts are recorded.',
+    byApproach: {
+      checkWorkNotes: 'A work note records one spade loaned last week, but does not name the borrower.',
+    },
+    byResponse: {
+      compareMarks: 'The burned initials identify the spades as family tools.',
+      askMill: 'The miller confirms the cart is his and did not authorize anyone to take tools.',
+      callFamily: 'The family identifies both spades and the rope; the stranger leaves the cart.',
+    },
+  },
+  'the-axle-grease-mark': {
+    base: 'The driver cannot identify who deliberately loosened the wheel.',
+  },
   'the-stones-in-the-rut': {
     base: 'The farmer confirms nothing was taken. The cord’s purpose remains uncertain; no evidence shows what the robbers intended to do if a wagon stopped.',
     byApproach: {
@@ -214,12 +228,12 @@ function build(c: RoadStory): Scenario {
   const scenes: Record<string, Scene> = {
     approach: s('approach', c.startTitle, c.start, approachChoices),
     threat: s('threat', c.threatTitle, c.threat, responseChoices, c.risk === 'HIGH' || c.risk === 'SEVERE' ? 'warning' : 'safe', c.approaches.map((choice) => ({ requirements: { flags: [`road_approach_${choice.id}`] }, text: `${choice.result} ${c.threat}` }))),
-    aftermath: s('aftermath', c.aftermathTitle, aftermathOverride?.base ?? c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, ...(c.id === 'the-punctured-tireless-wheel' && choice.id === 'spliceTrace' ? { requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'] } } : {}), ...(c.id === 'the-ledger-under-canvas' && choice.id === 'traceCrate' ? { requirements: { flags: ['road_response_askNumber'] } } : {}), ...(c.id === 'the-camp-with-two-fires' && choice.id === 'returnTool' ? { requirements: { flags: ['road_response_callWatch'] } } : {}), next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', aftermathTextVariants),
+    aftermath: s('aftermath', c.aftermathTitle, aftermathOverride?.base ?? c.aftermath, c.endings.map((choice) => ({ id: `ending_${choice.id}`, label: choice.label, ...(c.id === 'the-cold-iron-latch' && choice.id === 'recordLoan' ? { label: 'Record the one loan listed in the work notes', requirements: { flags: ['road_approach_checkWorkNotes'] } } : {}), ...(c.id === 'the-punctured-tireless-wheel' && choice.id === 'spliceTrace' ? { requirements: { items: ['freightmansStrap'], usableItems: ['freightmansStrap'] } } : {}), ...(c.id === 'the-ledger-under-canvas' && choice.id === 'traceCrate' ? { requirements: { flags: ['road_response_askNumber'] } } : {}), ...(c.id === 'the-camp-with-two-fires' && choice.id === 'returnTool' ? { requirements: { flags: ['road_response_callWatch'] } } : {}), next: 'settlement', effects: { setFlags: [`road_ending_${choice.id}`] } })), 'safe', aftermathTextVariants),
     settlement: s('settlement', 'The Road Opens', offerText, [
       ...(ownedRewardChoice ? [ownedRewardChoice] : []),
       { id: 'takeCoins', label: `Take ${c.coins} coins${ownedRewardChoice ? ' instead' : ''}`, next: 'coins', effects: { money: c.coins } },
       { id: 'decline', label: 'Decline all compensation and leave', next: 'unpaid' },
-    ].map((choice) => ({ ...choice, effects: { knowledge: [c.lesson], ...choice.effects } })), 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${c.id === 'the-blue-thread' && choice.id === 'walkToInn' ? 'The innkeeper records the purse’s return without assigning blame or deciding whether a theft occurred.' : choice.result} ${offerText}` }))),
+    ].map((choice) => ({ ...choice, effects: { knowledge: [c.lesson], ...choice.effects } })), 'safe', c.endings.map((choice) => ({ requirements: { flags: [`road_ending_${choice.id}`] }, text: `${c.id === 'the-cold-iron-latch' && choice.id === 'recordLoan' ? 'The family records that one spade was loaned last week; the note does not name the borrower, and no return is recorded here.' : c.id === 'the-blue-thread' && choice.id === 'walkToInn' ? 'The innkeeper records the purse’s return without assigning blame or deciding whether a theft occurred.' : choice.result} ${offerText}` }))),
     ...(c.gear && c.gearName ? { gear: e('gear', rewardClass === 'SUPPLY' ? 'A New Owner for the Supply' : 'A New Owner for the Gear', c.provenance ?? '') } : {}),
     coins: e('coins', 'The Agreed Payment', `You accept ${c.coins} coins. The payment is recorded; no optional Gear is transferred.`),
     unpaid: e('unpaid', 'The Road behind You', 'You decline compensation. The road is open or safely avoided, and nothing changes ownership.'),

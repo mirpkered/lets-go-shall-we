@@ -217,6 +217,60 @@ describe('Road Danger / Highwaymen genre batch', () => {
     expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/contents have not been examined/i);
   });
 
+  it('keeps the Cold Latch loan claim tied to the work-note evidence', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-cold-iron-latch')!;
+    for (const approach of ['checkWorkNotes', 'followRope', 'askNeighbor']) {
+      for (const response of ['compareMarks', 'askMill', 'callFamily']) {
+        let state = act(initial(story), story, `approach_${approach}`);
+        state = act(state, story, `respond_${response}`);
+        const text = sceneText(story.scenes.aftermath, state);
+        expect(text).not.toMatch(/neighbor admits borrowing|permissioned loan/i);
+        if (approach === 'checkWorkNotes') {
+          expect(text).toMatch(/work note records one spade loaned/i);
+          expect(text).not.toMatch(/names the borrower|neighbor borrowed/i);
+        } else {
+          expect(text).not.toMatch(/work note records one spade loaned/i);
+        }
+      }
+    }
+
+    let documented = act(initial(story), story, 'approach_checkWorkNotes');
+    documented = act(documented, story, 'respond_compareMarks');
+    const documentedText = sceneText(story.scenes.aftermath, documented);
+    expect(documentedText).toMatch(/one spade loaned last week/i);
+    expect(documentedText).not.toMatch(/neighbor admits|names the borrower|with permission/i);
+
+    const recordLoan = story.scenes.aftermath.choices.find(({ id }) => id === 'ending_recordLoan')!;
+    expect(meets(recordLoan.requirements, act(initial(story), story, 'approach_followRope'))).toBe(false);
+    expect(meets(recordLoan.requirements, documented)).toBe(true);
+    documented = act(documented, story, 'ending_recordLoan');
+    expect(sceneText(story.scenes.settlement, documented)).not.toMatch(/neighbor signs|loan is returned/i);
+    expect(sceneText(story.scenes.settlement, documented)).toMatch(/note does not name the borrower/i);
+    expect(sceneText(story.scenes.settlement, documented)).toMatch(/no return is recorded here/i);
+  });
+
+  it('claims the Grease Mark crew-wrench recovery only where the route establishes the drop', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-grease-mark')!;
+    for (const approach of ['stopWagon', 'checkToolBoard', 'signalWorkers']) {
+      const start = () => initial(story, approach === 'checkToolBoard' ? 'compactWheelWrench' : undefined);
+      for (const response of ['protectDriver', 'checkWheel']) {
+        let state = act(start(), story, `approach_${approach}`);
+        state = act(state, story, `respond_${response}`);
+        expect(sceneText(story.scenes.aftermath, state)).not.toMatch(/crew recovers its wrench/i);
+      }
+
+      let returned = act(start(), story, `approach_${approach}`);
+      returned = act(returned, story, 'respond_askReturn');
+      expect(sceneText(story.scenes.aftermath, returned)).toMatch(/drops it and walks away/i);
+
+      let fought = act(start(), story, `approach_${approach}`);
+      fought = act(fought, story, 'fight', () => 0);
+      expect(fought.run?.sceneId).toBe('fightWon');
+      fought = act(fought, story, 'checkRoad');
+      expect(sceneText(story.scenes.aftermath, fought)).not.toMatch(/crew recovers its wrench/i);
+    }
+  });
+
   it('does not place Pike at the toll shed after the east-office route sends her away', () => {
     const scenario = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-paper-road')!;
     let state = act(initial(scenario), scenario, 'approach_eastOffice');
