@@ -1618,12 +1618,12 @@
       "slug": "the-fog-comes-down",
       "title": "The Fog Comes Down",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0022"
       ],
       "reviewProvenance": "current source route review; alone/nearby variants, call/wait/turn-back/headlamp/lantern routes examined",
-      "notes": "foggyTrack.signalLantern routes directly to heardTravelers for every fogCompany selection. The choice says the lantern may help another traveler find the Traveler, but the ending unconditionally asserts a traveler answers and then walks with the Traveler. No witness/arrival state or chance establishes that optional participant; it is also absent/unresponsive in the later `alone` roadBend variant.",
+      "notes": "foggyTrack.signalLantern now routes to a distinct ending describing the roadside light without asserting another traveler arrived. The nearby traveler response remains tied to roadBend.callAhead, whose route explicitly waits for an answer.",
       "preReconciliationPosition": 79,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15124,6 +15124,8 @@
       "violatedRule": "Optional participant presence and response must be established before shared text claims participation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "signalLantern now reaches a route-neutral marker ending, while roadBend.callAhead continues to reach the positive shared-pace ending. Regression contrasts both routes. wildernessBatch suite passes 13 tests.",
       "preReconciliationPosition": 79,
       "registrationStatus": "LIVE"
     },
@@ -20065,9 +20067,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 620,
+    "HEALTHY": 621,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 182,
+    "CONFIRMED DEFECT": 181,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
