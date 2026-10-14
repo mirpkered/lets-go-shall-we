@@ -1491,7 +1491,7 @@
       "slug": "the-road-crew",
       "title": "The Road Crew",
       "sourceFile": "src/scenarios/communityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0020"
       ],
@@ -1599,7 +1599,7 @@
       "slug": "creek-on-the-return",
       "title": "Creek on the Return",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0021"
       ],
@@ -1635,7 +1635,7 @@
       "slug": "dry-camp",
       "title": "Dry Camp",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0023"
       ],
@@ -1653,7 +1653,7 @@
       "slug": "the-ridge-or-the-valley",
       "title": "The Ridge or the Valley",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0024"
       ],
@@ -1671,7 +1671,7 @@
       "slug": "marks-on-the-trail",
       "title": "Marks on the Trail",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0025"
       ],
@@ -1705,7 +1705,7 @@
       "slug": "the-second-sunset",
       "title": "The Second Sunset",
       "sourceFile": "src/scenarios/wildernessBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0026"
       ],
@@ -1739,7 +1739,7 @@
       "slug": "the-calf-in-the-mud",
       "title": "The Calf in the Mud",
       "sourceFile": "src/scenarios/animalsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0027"
       ],
@@ -1857,7 +1857,7 @@
       "slug": "the-bee-yard",
       "title": "The Bee Yard",
       "sourceFile": "src/scenarios/animalsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0030"
       ],
@@ -3493,7 +3493,7 @@
       "slug": "lantern-at-the-crossing",
       "title": "The Lantern at the Crossing",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0045"
       ],
@@ -3803,7 +3803,7 @@
       "slug": "the-hollow-man",
       "title": "The Hollow Man",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0057"
       ],
@@ -5697,7 +5697,7 @@
       "slug": "the-broken-antler",
       "title": "The Broken Antler",
       "sourceFile": "src/scenarios/monsterHuntThird.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0121"
       ],
@@ -7598,7 +7598,7 @@
       "slug": "iron-orchard",
       "title": "The Iron Orchard",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0169"
       ],
@@ -7671,7 +7671,7 @@
       "slug": "deep-room-at-harker-mine",
       "title": "The Deep Room at Harker Mine",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0174",
         "CRA-F0175"
@@ -7690,7 +7690,7 @@
       "slug": "ferry-beneath-the-ferry",
       "title": "The Ferry Beneath the Ferry",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0176"
       ],
@@ -9379,7 +9379,7 @@
       "slug": "the-second-brace",
       "title": "The Second Brace",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0213"
       ],
@@ -9486,7 +9486,7 @@
       "slug": "the-press-before-noon",
       "title": "The Press before Noon",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0214"
       ],
@@ -9723,7 +9723,7 @@
       "slug": "the-slate-on-the-schoolhouse",
       "title": "The Slate on the Schoolhouse",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0220"
       ],
@@ -11699,7 +11699,7 @@
       "slug": "the-clamp-beneath-the-press",
       "title": "The Clamp beneath the Press",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0259"
       ],
@@ -11793,7 +11793,7 @@
       "slug": "the-crate-beyond-the-piles",
       "title": "The Crate Beyond the Piles",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0261"
       ],
@@ -11810,7 +11810,7 @@
       "slug": "the-ford-with-the-white-stone",
       "title": "The Ford with the White Stone",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0262"
       ],
@@ -11860,7 +11860,7 @@
       "slug": "the-lantern-at-the-lower-landing",
       "title": "The Lantern at the Lower Landing",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0265"
       ],
@@ -11959,7 +11959,7 @@
       "slug": "the-channel-that-moved",
       "title": "The Channel That Moved",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0270"
       ],
@@ -11976,7 +11976,7 @@
       "slug": "the-sound-under-the-pontoon",
       "title": "The Sound under the Pontoon",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0271"
       ],
@@ -12008,7 +12008,7 @@
       "slug": "the-ferry-wheel-in-the-silt",
       "title": "The Ferry Wheel in the Silt",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0272"
       ],
@@ -12100,7 +12100,7 @@
       "slug": "the-boat-hook-at-the-cattle-bank",
       "title": "The Boat Hook at the Cattle Bank",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0273"
       ],
@@ -12723,7 +12723,7 @@
       "slug": "the-pasture-bell-before-dusk",
       "title": "The Pasture Bell before Dusk",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0286"
       ],
@@ -15084,7 +15084,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 71,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at paidWorksite.useMultiTool/useFoldingRule; volunteerWorksite.volunteerWithTool/volunteerWithRule now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0021",
@@ -15097,7 +15099,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 78,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at nearBank.useTravelRope; downstreamShelf.handlineCross now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0022",
@@ -15123,7 +15127,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 80,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at dryHollow.changeTomorrowRoute now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0024",
@@ -15136,7 +15142,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 81,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at twoRoutes.signalFromFork now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0025",
@@ -15149,7 +15157,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 82,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at marksInspected.markJunctionAfterLook now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0026",
@@ -15162,7 +15172,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 84,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at longRoadEvening.continueWithLantern; campedKnoll.useBlanket now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0027",
@@ -15175,7 +15187,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 86,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at muddyGate.prepareRopePull; ropeReady.ropeWithHandler now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0028",
@@ -15214,7 +15228,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 93,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at apiaryGate.steadyStandTool now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0031",
@@ -15413,7 +15429,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 189,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at crossingMarks.useSpiritGlass now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0046",
@@ -15534,7 +15552,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 202,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at lateShadow.testShadowLight now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0055",
@@ -15560,7 +15580,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 205,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at fortGreen.useSilverFort now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0057",
@@ -15573,7 +15595,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 207,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at hollowField.removeBones now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0058",
@@ -16175,7 +16199,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 299,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at sideChamber.lowerRope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0104",
@@ -16411,7 +16437,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 318,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at elkWire.cutWire now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0122",
@@ -16450,7 +16478,9 @@
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 323,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at stagedBeast.cutControlRope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0125",
@@ -17005,7 +17035,9 @@
       "violatedRule": "A choice that physically uses Gear must require that Gear to be usable, not merely owned.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at centralShaft.testAir now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0170",
@@ -17065,7 +17097,9 @@
       "violatedRule": "Physical use of Gear requires a usable item; possession alone cannot establish light, flame, or a successful test.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at airShaftHarker.testDraft; harkerOutside.descendHarker now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0175",
@@ -17091,7 +17125,9 @@
       "violatedRule": "A physical Gear action must require the named Gear in usable condition; route access must not imply equipment that the route did not establish.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at lowerWater.followOldRoad now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0177",
@@ -17151,7 +17187,9 @@
       "violatedRule": "Possession is not usability: a physical action using Gear must require the item in usable condition.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at whiteCaveMouth.ropeCave now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0182",
@@ -17535,7 +17573,9 @@
       "violatedRule": "Physical Gear use requires the named tool to be usable; possession alone cannot establish a measurement or grant the resulting route proof.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at frame.measure now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0214",
@@ -17547,7 +17587,9 @@
       "violatedRule": "Possession is not usability; a physical action using Gear must gate on usable condition.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at press.measure now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0215",
@@ -17619,7 +17661,9 @@
       "violatedRule": "A physical Gear-use choice must require that Gear to be usable, not merely present in inventory.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at slate.rope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0221",
@@ -18093,7 +18137,9 @@
       "violatedRule": "A physical Gear-use action must require usable condition; ownership alone cannot prove a broken tool performed its function.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at press.markPath now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0260",
@@ -18117,7 +18163,9 @@
       "violatedRule": "A physical retrieval tool must be usable before its route result can claim successful recovery.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at dock.boatHook now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0262",
@@ -18129,7 +18177,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires usable condition; ownership alone cannot establish an instrument result.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at ford.probe now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0263",
@@ -18141,7 +18191,9 @@
       "violatedRule": "A physical Gear-use action must require usable condition before its successful result is available.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at barge.rope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0264",
@@ -18165,7 +18217,9 @@
       "violatedRule": "A physical signaling tool must be usable before its route can establish that the signal was sent or acknowledged.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at lamp.flags/mirror now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0266",
@@ -18189,7 +18243,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires usable condition before it can establish a result.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at bridge.probe now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0268",
@@ -18225,7 +18281,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires usable condition before it establishes a route result.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at marker.rod now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0271",
@@ -18237,7 +18295,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires usable condition before the route can claim the tool-established result.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at pontoon.probe now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0272",
@@ -18249,7 +18309,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires usable condition before a route result can rely on it.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at winch.clear/probe now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0273",
@@ -18261,7 +18323,9 @@
       "violatedRule": "Physical use of condition-tracked retrieval/tie Gear requires usable condition before successful securing can be claimed.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at gate.hook/rope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0274",
@@ -18381,7 +18445,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires a usable-condition gate before the route can claim the tool-supported result.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at wait.rope now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0284",
@@ -18417,7 +18483,9 @@
       "violatedRule": "Physical use of condition-tracked Gear requires a usable-condition gate before the route can claim a tool-supported observation.",
       "clusterId": "CRA-C0004",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Physical Gear-use gates at bell.glasses now require usable condition through usableItems/anyUsableItems. The new CRA-C0004 regression matrix verifies normal Gear remains eligible while BROKEN and absent Gear are rejected for this exact route; see src/craC0004GearUsability.test.ts."
     },
     {
       "findingId": "CRA-F0287",
@@ -19812,9 +19880,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 507,
+    "HEALTHY": 533,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 296,
+    "CONFIRMED DEFECT": 270,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
