@@ -892,12 +892,12 @@
       "slug": "the-missing-boat",
       "title": "The Missing Boat",
       "sourceFile": "src/scenarios/missingBoat.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0017"
       ],
       "reviewProvenance": "current source route review",
-      "notes": "From emptyLanding.callBoatOwner -> downstreamBank.walkBankToShelf(success), or emptyLanding.enterCurrent(success) -> barWithMyrna.walkTongueTogether(success), the rescue reaches safeLanding without signaling or meeting the ferry crew. safeLanding nevertheless says the crew checks the line. This is an unsupported optional-participant arrival claim.",
+      "notes": "From emptyLanding.callBoatOwner -> downstreamBank.walkBankToShelf(success), or emptyLanding.enterCurrent(success) -> barWithMyrna.walkTongueTogether(success), the rescue reaches safeLanding without signaling or meeting the ferry crew. The shared landing now limits its claims to the owner and punt reaching the near bank; the explicit ferry-assisted rescue remains intact.",
       "preReconciliationPosition": 32,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15051,6 +15051,8 @@
       "violatedRule": "Optional participant involvement may be narrated only when the route establishes it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "safeLanding no longer credits the ferry crew with checking the punt line. Regression contrasts the self-guided walkBankToShelf success with the ferryHelp/catchPuntLineWithHook route and verifies the owner/punt arrival claim remains. groundedExpansion suite passes 14 tests.",
       "preReconciliationPosition": 32,
       "registrationStatus": "LIVE"
     },
@@ -20061,9 +20063,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 618,
+    "HEALTHY": 619,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 184,
+    "CONFIRMED DEFECT": 183,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

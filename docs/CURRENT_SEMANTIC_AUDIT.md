@@ -2003,6 +2003,12 @@ Wave 23 repairs CRA-F0014 (MEDIUM), `the-sound-in-the-well`. The `climbOutAlone`
 
 The focused grounded-expansion suite passed **13 tests**, including the withdrawal-versus-success contrast. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **618 HEALTHY, 59 MINOR CONCERN, 184 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **194 open live findings overall**; CRA-C0001 has **160 open** (127 MEDIUM, 30 LOW, 3 unrecovered severity). Overall open severity is **148 MEDIUM, 36 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
 
+### CRA-C0001 repair program — local Wave 24: self-guided boat rescue convergence
+
+Wave 24 repairs CRA-F0017 (MEDIUM), `the-missing-boat`. The shared `safeLanding` scene no longer claims that the ferry crew checks the punt line, because near-bank and gravel-tongue self-rescue routes do not establish crew participation. It retains the supported owner/punt arrival claims; the distinct ferry-assisted rescue route remains intact.
+
+The focused grounded-expansion suite passed **14 tests**, including self-guided and ferry-assisted contrasts. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **619 HEALTHY, 59 MINOR CONCERN, 183 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **193 open live findings overall**; CRA-C0001 has **159 open** (126 MEDIUM, 30 LOW, 3 unrecovered severity). Overall open severity is **146 MEDIUM, 36 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.
