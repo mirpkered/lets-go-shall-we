@@ -5786,13 +5786,13 @@
       "slug": "the-beast-at-the-toll-road",
       "title": "The Beast at the Toll Road",
       "sourceFile": "src/scenarios/monsterHuntThird.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0123",
         "CRA-F0124"
       ],
       "reviewProvenance": "current source route review; wheel/keeper evidence, gate closure, horse snag/free/grab success/failure, chain reveal, alarm, knife cut, confrontation success/failure and injury/retreat results traced",
-      "notes": "F0123: stagedBeast.raiseAlarm/cutControlRope/confrontMen can reach tollRevealed without recovering sacks or freeing the horse, yet tollRevealed says both happened. F0124: cutControlRope physically cuts the control rope and damages smallKnife but requires only inventory presence, so BROKEN knife can satisfy the action under the same engine semantics documented by CRA-C0004.",
+      "notes": "F0123: stagedBeast.raiseAlarm/cutControlRope/confrontMen can reach tollRevealed without recovering sacks or freeing the horse. Wave 83 keeps the sacks unaccounted for and uses tollHorseLeadFreed only to report that the lead was freed, not to infer the horse's destination; the confrontation injury result also no longer invents keeper recovery. F0124: cutControlRope physically cuts the control rope and damages smallKnife but requires only inventory presence, so BROKEN knife can satisfy the action under the same engine semantics documented by CRA-C0004. Original F0123 and F0124 evidence is retained.",
       "preReconciliationPosition": 323,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16606,7 +16606,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 323,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 83 in src/scenarios/monsterHuntThird.ts no longer reports the missing grain sacks recovered or the toll gate reopened by an unproved keeper response. tollHorseLeadFreed is set only by explicit freeHorse/grabHorse success and controls text that the lead is free while leaving the horse's final location open. tollInjury no longer invents keeper recovery. monsterHuntBatch.test.ts covers exposure-only, freed-lead, grab success, confrontation failure, and legacy neutral fallback. CRA-F0124's separate CRA-C0004 disposition is unchanged."
     },
     {
       "findingId": "CRA-F0124",
@@ -20215,9 +20217,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 686,
+    "HEALTHY": 687,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 116,
+    "CONFIRMED DEFECT": 115,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
