@@ -9679,12 +9679,12 @@
       "slug": "the-long-measure-at-milepost-nine",
       "title": "The Long Measure at Milepost Nine",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0218"
       ],
       "reviewProvenance": "current-source route review; usable chain/lower-stake measurement, stop-block marking, closure, empty-car test and runaway outcome traced",
-      "notes": "Both safe correction choices converge on a settlement stating that a stop block catches the empty test car. The mark choice only sets a stop-block mark and records corrected grade; the close choice closes the siding until railway recheck. Neither choice installs a stop block or performs an empty-car test, and no later test scene intervenes. Loading an empty car directly reaches a separate uncontrolled-roll result.",
+      "notes": "Repaired in Wave 93. The mark route now says only that the stop-block position was marked and grade recorded, with installation and testing still outstanding; the close route remains explicitly closed for railway recheck. Neither route claims an installed block or a caught test car. Regression contrasts both routes across save/reload and tests neutral missing-proof fallback; direct empty-car loading still reaches the separate uncontrolled-roll result.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9696,12 +9696,12 @@
       "slug": "the-door-at-the-telephone-office",
       "title": "The Door at the Telephone Office",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0219"
       ],
       "reviewProvenance": "current-source route review; lift/tool, hinge diagnosis, refit versus explanation, premature lock replacement and share outcomes traced",
-      "notes": "The explain route only shows the clerk why the lock is not faulty, schedules no physical work, and sets a lesson flag; settlement nevertheless says the door closes without lifting and the original lock stays in service. Only the refit route moves the plate into sound wood and refits the lock. Premature replacement reaches a distinct failure.",
+      "notes": "Repaired in Wave 93. The refit route records the plate refit but does not invent a follow-up latch test; the explanation route preserves its Knowledge result and says refit/closure remain unestablished. A neutral missing-proof variant protects restored runs. Regression contrasts both routes across save/reload and retains the existing teaching-choice behavior; premature replacement remains a distinct failure.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9745,12 +9745,12 @@
       "slug": "the-glasshouse-lanterns",
       "title": "The Glasshouse Lanterns",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0221"
       ],
       "reviewProvenance": "current-source route review; draft inspection, usable-glove access, cap/air-hole repair, record-only choice, warm-pane failure and shares traced",
-      "notes": "The record choice records the airflow pattern and grants the lesson but performs no cap turn, air-hole cleaning, or outdoor test. It reaches shared settlement text claiming both lamps burn steadily in open air. The explicit test choice is the route that performs the repair/test; replacing warm glass reaches a separate break-and-cool result.",
+      "notes": "Repaired in Wave 93. The test route records cap turn/air-hole cleaning and outdoor test before reporting a steady flame. The airflow-record route retains Knowledge but explicitly leaves repair and test unestablished; restored states lacking route proof use neutral text. Regression contrasts both routes across save/reload and retains the existing offer to learn the method; warm-pane replacement remains a separate failure.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17890,7 +17890,9 @@
       "violatedRule": "A route may not claim a physical safety device was installed or successfully tested unless the route establishes that intervention and test.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now records the stop-block mark and siding closure as separate route facts. Settlement states that installation and the empty-car test remain outstanding on the mark route, and that the siding stays closed pending recheck on the other; absent proof is neutral for restored state. tradesApprenticeshipGenreBatch.test.ts contrasts mark/close, save-reload, and missing-proof fallback. Focused family/registry/library/inventory/content-quality checks pass (33 tests across 5 files); TypeScript and production build pass. Wave 93 source/test commit 900abd0."
     },
     {
       "findingId": "CRA-F0219",
@@ -17902,7 +17904,9 @@
       "violatedRule": "A completed physical repair/result cannot be asserted on a branch that only explains or schedules the repair.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now distinguishes refitting the hinge plate from explaining the diagnosis. The refit variant claims only that the plate was refit and explicitly does not invent a follow-up latch test; the explanation variant preserves the Knowledge finding but says closure without lifting is unestablished. Restored state without route proof is neutral. tradesApprenticeshipGenreBatch.test.ts contrasts both routes, save-reload, and missing-proof fallback, while the existing learning/teaching behavior remains covered. Focused family checks pass (33 tests across 5 files); TypeScript and production build pass. Wave 93 source/test commit 900abd0."
     },
     {
       "findingId": "CRA-F0220",
@@ -17928,7 +17932,9 @@
       "violatedRule": "A shared outcome may not claim a completed repair or successful test when the selected route records/observes only and performs no corrective action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/tradesApprenticeshipGenreBatch.ts now records cap-turn/air-hole cleaning and the outdoor lamp test separately from airflow recording. Only the tested route reports steady lamps; record-only retains Knowledge but says repair/test are unestablished, and missing proof is neutral. tradesApprenticeshipGenreBatch.test.ts contrasts both routes across save-reload and retains the prior method-learning offer. Focused family checks pass (33 tests across 5 files); TypeScript and production build pass. Wave 93 source/test commit 900abd0."
     },
     {
       "findingId": "CRA-F0222",
@@ -20267,9 +20273,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 712,
+    "HEALTHY": 715,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 90,
+    "CONFIRMED DEFECT": 87,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
