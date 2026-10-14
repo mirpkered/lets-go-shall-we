@@ -215,14 +215,15 @@ charmsScenario.scenes.charmsAfter.textVariants = [
 
 const doorwayScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'doorway-with-no-room')!;
 doorwayScenario.scenes.doorInside.choices = doorwayScenario.scenes.doorInside.choices.map((choice) => {
-  if (choice.id === 'openSecondDoor') return { ...choice, effects: { historyFlags: ['opened_far_door_in_impossible_passage'] } };
-  if (choice.id === 'turnBackDoor') return { ...choice, effects: { historyFlags: ['turned_back_from_impossible_passage'] } };
+  if (choice.id === 'openSecondDoor') return { ...choice, effects: { setFlags: ['openedFarDoorInPassage'] } };
+  if (choice.id === 'turnBackDoor') return { ...choice, effects: { setFlags: ['turnedBackFromPassage'] } };
   return choice;
 });
+doorwayScenario.scenes.doorAfter.text = 'The passage remains unexplained. No builder’s measurements or sealing of both openings is established; the chalk line remains on the old floorboard.';
 doorwayScenario.scenes.doorAfter.textVariants = [
-  ...(doorwayScenario.scenes.doorAfter.textVariants ?? []),
-  { requirements: { historyFlags: ['opened_far_door_in_impossible_passage'] }, text: 'You open the far door into the bedroom you left. No one stands there, and the knocking stops without explaining itself. The owner bricks in both openings; the chalk line remains on the old floorboard.' },
-  { requirements: { historyFlags: ['turned_back_from_impossible_passage'] }, text: 'You turn back through the passage rather than opening the far door. The owner bricks in both openings; the builder confirms the corridor cannot fit, but you leave the knocking unanswered.' },
+  { requirements: { flags: ['chalkComparedPassage'] }, text: 'The chalk stroke you made at the far door appears beside the first mark. Neither mark explains where the corridor goes; no builder’s measurement or sealing of both openings is established.' },
+  { requirements: { flags: ['openedFarDoorInPassage'] }, text: 'You open the far door into the bedroom you left. No one stands there, and the knocking stops without explaining itself; no later measurement or sealing of both openings is established.' },
+  { requirements: { flags: ['turnedBackFromPassage'] }, text: 'You turn back without opening the far door. The knocking remains unanswered; no builder’s measurement or sealing of both openings is established.' },
 ];
 
 // Preserve the route facts at converged occult-investigation closures. The audit

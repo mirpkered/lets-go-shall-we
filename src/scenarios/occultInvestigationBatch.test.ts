@@ -424,7 +424,36 @@ describe('occult investigation adventures', () => {
     expect(state.run?.status).toBe('success');
     expect(state.character?.supplies?.ritualChalk).toBeUndefined();
     expect(state.character?.knowledge).toContain('In the passage behind the plaster, the same chalk stroke appeared at both ends of a corridor longer than the house. The repeated mark confirms the space cannot be measured as an ordinary room.');
-    expect(sceneText(scenario.scenes.doorAfter, state)).toContain('The chalk stroke you made at the far door appeared beside the first mark too');
+    expect(sceneText(scenario.scenes.doorAfter, roundTrip(state))).toContain('The chalk stroke you made at the far door appears beside the first mark');
+    expect(sceneText(scenario.scenes.doorAfter, state)).not.toMatch(/builder’s measurements|bricks in both openings/i);
+  });
+
+  it('keeps impossible-passage closure claims within the route and current-run proof', () => {
+    const scenario = adventures.find((s) => s.id === 'doorway-with-no-room')!;
+
+    let sealed = fresh(scenario);
+    sealed = act(sealed, scenario, 'sealDoorway');
+    expect(sceneText(scenario.scenes.doorAfter, sealed)).toMatch(/no builder’s measurements or sealing of both openings is established/i);
+
+    let measuredThenLeft = fresh(scenario);
+    measuredThenLeft = act(measuredThenLeft, scenario, 'measureDoor');
+    measuredThenLeft = act(measuredThenLeft, scenario, 'leavePassage');
+    expect(sceneText(scenario.scenes.doorAfter, measuredThenLeft)).toMatch(/no builder’s measurements or sealing of both openings is established/i);
+
+    let turnBack = fresh(scenario);
+    turnBack = act(turnBack, scenario, 'enterPassage');
+    turnBack = act(turnBack, scenario, 'turnBackDoor');
+    expect(sceneText(scenario.scenes.doorAfter, roundTrip(turnBack))).toMatch(/turn back without opening the far door/i);
+    expect(sceneText(scenario.scenes.doorAfter, turnBack)).not.toMatch(/builder confirms|bricks in both openings/i);
+
+    let opened = fresh(scenario);
+    opened = act(opened, scenario, 'enterPassage');
+    opened = act(opened, scenario, 'openSecondDoor');
+    expect(sceneText(scenario.scenes.doorAfter, opened)).toMatch(/open the far door into the bedroom/i);
+    expect(sceneText(scenario.scenes.doorAfter, opened)).not.toMatch(/builder’s measurements|bricks in both openings/i);
+
+    sealed.character!.historyFlags.push('opened_far_door_in_impossible_passage', 'turned_back_from_impossible_passage');
+    expect(sceneText(scenario.scenes.doorAfter, sealed)).not.toMatch(/open the far door into the bedroom|turn back without opening/i);
   });
 
   it('offers one optional chapel-prepared Salt packet and respects its stack cap', () => {
