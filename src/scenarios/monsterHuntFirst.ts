@@ -291,7 +291,7 @@ export const THE_LANTERN_EATER: Scenario = {
     ], 'warning'),
     lightPattern: scene('lightPattern', 'A Glow Moves toward Glow', 'The pale point shifts toward every uncovered flame and stops when all lamps are hooded. The travelers’ fire still burns. Beyond the trees, a low branch bends under a weight that makes no sound.', [
       { id: 'hoodOtherLamps', label: 'Ask everyone to hood their lamps', next: 'campDark' },
-      { id: 'raiseLantern', label: 'Raise the lantern to draw it closer', requirements: { items: ['lantern'] , usableItems: ['lantern']}, hint: 'The glow has followed every exposed flame so far.', next: 'lightApproach', effects: { damageItems: ['lantern'] } },
+      { id: 'raiseLantern', label: 'Raise the lantern to draw it closer', requirements: { items: ['lantern'] , usableItems: ['lantern']}, hint: 'The glow has followed every exposed flame so far.', next: 'lightApproach', effects: { damageItems: ['lantern'], setFlags: ['lanternRaisedTowardPresence'] } },
       { id: 'takeRoadLight', label: 'Move together toward the open road', next: 'campLeft' },
     ]),
     campCircle: scene('campCircle', 'The Fire Holds', 'The travelers gather around the fire and cover their lamps. The pale glow stops at the tree line. No one is hurt, but the horses will not approach the woods and the road remains clear behind camp.', [
@@ -314,7 +314,9 @@ export const THE_LANTERN_EATER: Scenario = {
       { id: 'waitForDawn', label: 'Stay together until first light', next: 'coveredDawn' },
     ], 'warning'),
     coveredDawn: end('coveredDawn', 'A Dark Lamp at Dawn', 'At first light the glow has vanished beyond the tree line. The covered lamp kept the travelers together through the night, and no one followed the strange light into the woods.'),
-    campDawn: end('campDawn', 'The Lamps at Morning', 'At first light the pale glow is gone. The travelers keep their lamps hooded until they reach the next settlement. Your lantern remains as it is; the presence never touched it while covered.'),
+    campDawn: { ...end('campDawn', 'The Lamps at Morning', 'At first light the pale glow is gone. The travelers keep their lamps hooded until they reach the next settlement. Your lantern remains as it is; the presence never touched it while covered.'), textVariants: [
+      { requirements: { flags: ['lanternRaisedTowardPresence'] }, text: 'At first light the pale glow is gone. You raised your lantern toward it; the shape dimmed the flame without touching the glass. The travelers keep their lamps hooded until they reach the next settlement.' },
+    ] },
     campLeft: end('campLeft', 'The Road beyond the Trees', 'The travelers leave together by the open road. One lamp is lost to the night, but no one follows the glow into the woods. You do not learn what it was.'),
     lanternFatal: end('lanternFatal', 'A Flame Taken', 'The light closes over you before the others can pull you back. At dawn, only the lantern’s dark casing remains beside the road.', 'death'),
   },

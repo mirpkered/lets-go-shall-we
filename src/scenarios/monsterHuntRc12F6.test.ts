@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
-import { THE_MIRE_HORSE } from './monsterHuntFirst';
+import { THE_LANTERN_EATER, THE_MIRE_HORSE } from './monsterHuntFirst';
 import { THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
@@ -22,6 +22,24 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
+  it('keeps Lantern-Eater dawn text truthful about whether the lantern was exposed and damaged', () => {
+    let exposed = fresh(THE_LANTERN_EATER);
+    exposed.run!.inventory.push('lantern');
+    exposed.itemStates = { lantern: { condition: 'NORMAL', upgrades: [], provenance: [] } };
+    exposed = take(exposed, THE_LANTERN_EATER, 'shieldLamp');
+    exposed = take(exposed, THE_LANTERN_EATER, 'raiseLantern');
+    expect(exposed.itemStates?.lantern?.condition).toBe('NORMAL');
+    exposed = take(exposed, THE_LANTERN_EATER, 'strikeShape', 0);
+    expect(exposed.run?.sceneId).toBe('campDawn');
+    const exposedText = sceneText(THE_LANTERN_EATER.scenes.campDawn, exposed);
+    expect(exposedText).toMatch(/raised your lantern.*dimmed the flame without touching the glass/i);
+    expect(exposedText).not.toMatch(/remains as it is|while covered/i);
+
+    let covered = take(fresh(THE_LANTERN_EATER), THE_LANTERN_EATER, 'stayByFire');
+    covered = take(covered, THE_LANTERN_EATER, 'holdUntilDawn');
+    expect(sceneText(THE_LANTERN_EATER.scenes.campDawn, covered)).toMatch(/lantern remains as it is.*never touched it while covered/i);
+  });
+
   it('does not invent helper intervention on the Mire Horse mark-and-retreat route', () => {
     let markedSkiff = take(fresh(THE_MIRE_HORSE), THE_MIRE_HORSE, 'inspectReeds');
     markedSkiff = take(markedSkiff, THE_MIRE_HORSE, 'markSkiff');
