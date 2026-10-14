@@ -14044,7 +14044,7 @@
       "slug": "the-square-at-mill-street",
       "title": "The Square at Mill Street",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0335"
       ],
@@ -14062,7 +14062,7 @@
       "slug": "the-roof-that-held-its-breath",
       "title": "The Roof That Held Its Breath",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0336"
       ],
@@ -14080,7 +14080,7 @@
       "slug": "three-knots-on-the-platform",
       "title": "Three Knots on the Platform",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0337"
       ],
@@ -14098,7 +14098,7 @@
       "slug": "the-wall-beneath-the-plaster",
       "title": "The Wall Beneath the Plaster",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0338"
       ],
@@ -14116,7 +14116,7 @@
       "slug": "the-riverward-retaining-wall",
       "title": "The Riverward Retaining Wall",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0339"
       ],
@@ -14134,7 +14134,7 @@
       "slug": "the-barn-door-that-wasnt-square",
       "title": "The Barn Door That Wasn’t Square",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0340"
       ],
@@ -14152,7 +14152,7 @@
       "slug": "the-wedge-at-the-schoolhouse",
       "title": "The Wedge at the Schoolhouse",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0341"
       ],
@@ -14170,7 +14170,7 @@
       "slug": "the-last-board-at-harper-yard",
       "title": "The Last Board at Harper Yard",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0342"
       ],
@@ -14188,7 +14188,7 @@
       "slug": "the-joint-that-opened-in-winter",
       "title": "The Joint That Opened in Winter",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0343"
       ],
@@ -14206,7 +14206,7 @@
       "slug": "the-shed-with-two-roofs",
       "title": "The Shed with Two Roofs",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0344"
       ],
@@ -14224,7 +14224,7 @@
       "slug": "the-brace-before-the-bell",
       "title": "The Brace Before the Bell",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0345"
       ],
@@ -14242,7 +14242,7 @@
       "slug": "the-stone-that-kept-the-water",
       "title": "The Stone That Kept the Water",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0346"
       ],
@@ -14260,7 +14260,7 @@
       "slug": "the-ladder-in-the-west-yard",
       "title": "The Ladder in the West Yard",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0347"
       ],
@@ -14278,7 +14278,7 @@
       "slug": "the-chimney-that-pulled-away",
       "title": "The Chimney That Pulled Away",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0348"
       ],
@@ -14296,7 +14296,7 @@
       "slug": "the-ramp-for-the-grain-cart",
       "title": "The Ramp for the Grain Cart",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0349"
       ],
@@ -14346,7 +14346,7 @@
       "slug": "the-tower-without-its-shadow",
       "title": "The Tower Without Its Shadow",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0352"
       ],
@@ -14362,7 +14362,7 @@
       "slug": "the-hall-with-the-mismatched-stone",
       "title": "The Hall with the Mismatched Stone",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0353"
       ],
@@ -14378,7 +14378,7 @@
       "slug": "the-shed-at-ash-lot",
       "title": "The Shed at Ash Lot",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0354"
       ],
@@ -14394,7 +14394,7 @@
       "slug": "the-school-bell-frame",
       "title": "The School Bell Frame",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0355"
       ],
@@ -14410,7 +14410,7 @@
       "slug": "the-lodge-wall-under-new-paint",
       "title": "The Lodge Wall Under New Paint",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0356"
       ],
@@ -14426,7 +14426,7 @@
       "slug": "the-bridge-camp-post",
       "title": "The Bridge Camp Post",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0357"
       ],
@@ -14442,7 +14442,7 @@
       "slug": "the-theater-that-never-opened",
       "title": "The Theater That Never Opened",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0358"
       ],
@@ -14458,7 +14458,7 @@
       "slug": "the-old-well-house",
       "title": "The Old Well House",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0359"
       ],
@@ -14474,7 +14474,7 @@
       "slug": "the-tower-bell-anchor",
       "title": "The Tower Bell Anchor",
       "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0360"
       ],
@@ -19005,7 +19005,9 @@
       "violatedRule": "A route may not narrate a method result before the action that establishes it; inspect/rush routes must not inherit unperformed measurements.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0336",
@@ -19017,7 +19019,9 @@
       "violatedRule": "A route may not narrate a method result before the action that establishes it; inspect/rush routes must not inherit unperformed measurements.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0337",
@@ -19029,7 +19033,9 @@
       "violatedRule": "A route may not narrate a method result before the action that establishes it; inspect/rush routes must not inherit unperformed measurements.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0338",
@@ -19041,7 +19047,9 @@
       "violatedRule": "A route may not narrate a method result before the action that establishes it; inspect/rush routes must not inherit unperformed measurements.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0339",
@@ -19053,7 +19061,9 @@
       "violatedRule": "A route may not narrate a method result before the action that establishes it; inspect/rush routes must not inherit unperformed measurements.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0340",
@@ -19065,7 +19075,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed comparison.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0341",
@@ -19077,7 +19089,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed tool action.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0342",
@@ -19089,7 +19103,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed test.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0343",
@@ -19101,7 +19117,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed comparison.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0344",
@@ -19113,7 +19131,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed inspection.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0345",
@@ -19125,7 +19145,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed measurement.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0346",
@@ -19137,7 +19159,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed trace.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0347",
@@ -19149,7 +19173,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed Gear action.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0348",
@@ -19161,7 +19187,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed Gear action.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0349",
@@ -19173,7 +19201,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed comparison.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0350",
@@ -19209,7 +19239,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0353",
@@ -19221,7 +19253,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0354",
@@ -19233,7 +19267,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0355",
@@ -19245,7 +19281,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0356",
@@ -19257,7 +19295,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0357",
@@ -19269,7 +19309,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0358",
@@ -19281,7 +19323,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0359",
@@ -19293,7 +19337,9 @@
       "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
       "clusterId": "CRA-C0011",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0360",
@@ -19305,7 +19351,9 @@
       "registrationStatus": "LIVE",
       "clusterId": "CRA-C0011",
       "routeWitness": "start.inspect or start.rush -> work; work prints methodResult before the Brass Plumb Bob comparison action is available.",
-      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result."
+      "violatedRule": "A method result must follow the route action that establishes it; other entry routes cannot inherit an unperformed result.",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts now keeps methodResult out of the pre-choice work scene and selects it only after constructionMeasured. Shore/close routes retain neutral setup; the separate constructionUsedGear path does not claim the specific measurement result. constructionBuildingStructuralWorkGenreBatch.test.ts exercises all 24 generated stories for neutral pre-choice and shore text, verifies measurement availability/action progression, and covers a positive result, a separate Gear route, and observable risk language."
     },
     {
       "findingId": "CRA-F0361",
@@ -19764,9 +19812,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 483,
+    "HEALTHY": 507,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 320,
+    "CONFIRMED DEFECT": 296,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
