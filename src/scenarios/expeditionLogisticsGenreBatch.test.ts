@@ -124,6 +124,34 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(meets(scenario.scenes.tracks.choices.find(({ id }) => id === 'carryEssentials')?.requirements, legacy)).toBe(false);
   });
 
+  it('reports Broken Handcart timber delivery from the selected load route', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-broken-handcart')!;
+    let braced = fresh(scenario);
+    braced.run!.inventory.push('pocketToolkit');
+    braced = take(braced, scenario, 'cart', 'braceHandle');
+    braced = take(braced, scenario, 'cut', 'protectOil');
+    expect(braced.run?.sceneId).toBe('paid');
+    expect(sceneText(scenario.scenes.paid, braced)).toMatch(/food, lamp oil, and timber wedges together/i);
+    expect(sceneText(scenario.scenes.paid, braced)).not.toMatch(/wedges remain for a later trip/i);
+
+    let splitLoad = fresh(scenario);
+    splitLoad = take(splitLoad, scenario, 'cart', 'reduceLoad');
+    splitLoad = take(splitLoad, scenario, 'cut', 'deliverEssentials');
+    expect(sceneText(scenario.scenes.paid, splitLoad)).toMatch(/food and lamp oil; the timber wedges remain for a later trip/i);
+    expect(sceneText(scenario.scenes.paid, splitLoad)).not.toMatch(/wedges together/i);
+
+    let relay = fresh(scenario);
+    relay = take(relay, scenario, 'cart', 'relaySmallLoads');
+    relay = take(relay, scenario, 'cut', 'carryFood');
+    expect(relay.run?.sceneId).toBe('partial');
+    expect(sceneText(scenario.scenes.partial, relay)).toMatch(/second trip/i);
+
+    const legacy = fresh(scenario);
+    legacy.run!.sceneId = 'paid';
+    expect(sceneText(scenario.scenes.paid, legacy)).toMatch(/does not establish whether or when the timber wedges reached/i);
+    expect(sceneText(scenario.scenes.paid, legacy)).not.toMatch(/wedges together|remain for a later trip/i);
+  });
+
   it('acquires the Cargo Balance Scale only through explicit release and preserves pending placement across save/resume', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-third-trip')!;
     let state = fresh(scenario);
