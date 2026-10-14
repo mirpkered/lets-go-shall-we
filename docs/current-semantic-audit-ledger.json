@@ -10525,12 +10525,12 @@
       "slug": "the-alder-crossing",
       "title": "The Alder Crossing",
       "sourceFile": "src/scenarios/wildernessFieldcraftGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0236"
       ],
       "reviewProvenance": "current-source route review; near-bank probe, sideways rope pull, shallow-shelf warning, upstream undercut bank, cleared upper approach, foot/cart split, rising-water observation, closure and survey rewards traced; source graph/regression coverage inspected",
-      "notes": "The upper approach route clears the bank, establishes a firm shelf and explicitly sends the carrier on foot while keeping the cart on the road before entering partial. But read.testRope -> edge.markShallow also enters partial after only marking the shallow shelf and warning against crossing loaded; the rope bows downstream and the deeper bend is expressly unsafe. The shared partial text says the carrier gets a safer route to the road bridge despite no proven crossing/bridge approach on that route. The caveat that water remains untested does not support the positive route claim. Closed routes correctly keep traffic on the longer road bridge and award only survey compensation.",
+      "notes": "Original review: only alternate.sendOnFoot established that the carrier was sent on foot while the cart remained on the road; the shallow-shelf survey also entered the shared ending, which overclaimed a safer bridge route. Wave 96 now preserves the positive carrier result only with `alderCarrierSentOnFoot`; the shallow-bank and missing/legacy-proof outcome states that no crossing or carrier route is established.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18126,7 +18126,9 @@
       "violatedRule": "A shared route result cannot assert that an NPC receives a usable crossing/bridge route when the incoming branch established only a limited bank-side survey and explicitly warned against loaded crossing.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Source commit 6775a06 records factual `alderCarrierSentOnFoot` proof only when alternate.sendOnFoot sends the carrier on the established upper foot approach while the cart stays on the road. The shared partial result has a positive route variant and a neutral fallback that says a shallow-bank-only survey establishes no carrier crossing. wildernessFieldcraftGenreBatch.test.ts contrasts the shallow-rope route with the upper foot route, checks proof survives save/reload, and covers missing/legacy proof."
     },
     {
       "findingId": "CRA-F0237",
@@ -20281,9 +20283,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 719,
+    "HEALTHY": 720,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 83,
+    "CONFIRMED DEFECT": 82,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
