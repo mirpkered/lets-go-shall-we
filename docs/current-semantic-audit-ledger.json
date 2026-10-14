@@ -13450,7 +13450,7 @@
       "slug": "the-tool-peg-on-night-shift",
       "title": "The Tool Peg on Night Shift",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0318"
       ],
@@ -13468,7 +13468,7 @@
       "slug": "the-misfed-grain-gate",
       "title": "The Misfed Grain Gate",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0319"
       ],
@@ -13486,7 +13486,7 @@
       "slug": "the-dragging-brake-at-bell-yard",
       "title": "The Dragging Brake at Bell Yard",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0320"
       ],
@@ -13504,7 +13504,7 @@
       "slug": "the-shaft-marks-at-ash-mill",
       "title": "The Shaft Marks at Ash Mill",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0321"
       ],
@@ -13522,7 +13522,7 @@
       "slug": "the-sorting-table-jam",
       "title": "The Jam at the Sorting Table",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0322"
       ],
@@ -13540,7 +13540,7 @@
       "slug": "the-cable-over-foundry-road",
       "title": "The Cable over Foundry Road",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0323"
       ],
@@ -13558,7 +13558,7 @@
       "slug": "the-ore-cart-on-the-incline",
       "title": "The Ore Cart on the Incline",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0324"
       ],
@@ -13576,7 +13576,7 @@
       "slug": "the-bell-before-the-restart",
       "title": "The Bell before the Restart",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0325"
       ],
@@ -13594,7 +13594,7 @@
       "slug": "the-oil-on-the-switch-rod",
       "title": "The Oil on the Switch Rod",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0326"
       ],
@@ -13612,7 +13612,7 @@
       "slug": "the-sparks-at-the-belt-house",
       "title": "The Sparks at the Belt House",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0327"
       ],
@@ -13630,7 +13630,7 @@
       "slug": "the-slow-wheel-at-copper-mill",
       "title": "The Slow Wheel at Copper Mill",
       "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0328"
       ],
@@ -18869,6 +18869,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a route outcome before the action or event that establishes it.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder no longer includes this discovery in pre-choice diagnosis. After the repair/search action, the test scene truthfully reports the spanner found in the fitter’s drawer. Regression coverage CRA-C0010 industrial post-action complications asserts the diagnosis contrast and the after-repair disclosure.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18881,6 +18883,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a later repair/test result as already established.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder omits the low-flow test result from diagnosis and the pre-test scene. The complication appears only after the controlled test reaches settlement. Regression coverage CRA-C0010 industrial post-action complications asserts both contrasts.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18893,6 +18897,8 @@
       "violatedRule": "A scene must preserve chronology and may not present a post-repair/test outcome before it occurs.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds brake-clear and loaded-test results from diagnosis and pre-test narration; they appear after the controlled empty-car test. Regression coverage CRA-C0010 industrial post-action complications asserts the postponed loaded test is not disclosed before the empty test.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18905,6 +18911,8 @@
       "violatedRule": "A scene must preserve chronology and may not present a post-repair/test result before it occurs.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the hand-turn and bearing-block findings from diagnosis and pre-test narration; they appear after the controlled test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18917,6 +18925,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a later repair/test result as already established.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the running-table and unlabeled-parcel result from diagnosis and pre-test narration; it appears after the empty-roller/feed test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18929,6 +18939,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a later repair/test result as already established.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the empty-carrier and anchor result from diagnosis and pre-test narration; it appears after the controlled carrier test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18941,6 +18953,8 @@
       "violatedRule": "A scene must preserve chronology and may not present a post-repair/test result before it occurs.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the brake and cracked-rim result from diagnosis and pre-test narration; it appears after the controlled empty-cart test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18953,6 +18967,8 @@
       "violatedRule": "A scene must preserve chronology and may not reveal a later response or disclosure before its triggering action.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the crew response and foreman disclosure from diagnosis and pre-test narration; they appear after the agreed warning and controlled restart. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18965,6 +18981,8 @@
       "violatedRule": "A scene must preserve chronology and may not present a post-repair/test result before it occurs.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the rod-motion and oval-lock-hole result from diagnosis and pre-test narration; it appears after the double-throw test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18977,6 +18995,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a later repair/test result as already established.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds splice-clearance and oil-waste results from diagnosis and pre-test narration; they appear after the hand/unloaded test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18989,6 +19009,8 @@
       "violatedRule": "A scene must preserve chronology and may not report a later repair/test result as already established.",
       "clusterId": "CRA-C0010",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared industrial builder withholds the click and press-load result from diagnosis and pre-test narration; it appears only after the controlled test. Regression coverage CRA-C0010 industrial post-action complications verifies the chronology.",
       "registrationStatus": "LIVE"
     },
     {
@@ -19880,9 +19902,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 533,
+    "HEALTHY": 544,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 270,
+    "CONFIRMED DEFECT": 259,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
