@@ -5403,7 +5403,8 @@
         "CRA-F0105"
       ],
       "reviewProvenance": "current source route review; dog restraint, firm west access, risky south-rim crossing/crawl outcomes, withdrawal, sheep rescue, marking and pasture relocation routes traced",
-      "notes": "sheepFreed.markMound reaches moundResolved, whose ending also claims the shepherd moves the flock to higher pasture even though that action is available only through the separate closePasture -> flockMoved choice. The converse ending is correctly limited to pasture movement and safe-west-slope use.",
+      "notes": "sheepFreed.markMound reaches moundResolved, whose ending also claimed the shepherd moves the flock to higher pasture even though that action is available only through the separate closePasture -> flockMoved choice. The ending now confines itself to the rim marking and leaves later flock placement unestablished; the route that selects closePasture retains its explicit moved-flock result.",
+      "classification": "HEALTHY",
       "preReconciliationPosition": 301,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16343,7 +16344,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 301,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 74: moundResolved now reports the established rim marking and keeps the rest of the flock's later location unestablished. The distinct closePasture -> flockMoved route still says the sheep were moved to higher pasture. Regression contrasts mark-only and explicit relocation routes. Monster Hunt, registry, and library tests pass (27 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0106",
@@ -20182,9 +20185,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 670,
+    "HEALTHY": 671,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 132,
+    "CONFIRMED DEFECT": 131,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
