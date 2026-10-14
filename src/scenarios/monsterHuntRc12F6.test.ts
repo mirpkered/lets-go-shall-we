@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
-import { THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
+import { THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
 import { THE_SKIN_IN_THE_TREE } from './monsterHuntThird';
@@ -21,6 +21,29 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
+  it('does not turn fetching the cellar keeper into a completed rescue or boarded opening', () => {
+    let fetchOnly = take(fresh(THE_CELLAR_THING), THE_CELLAR_THING, 'inspectOutsideWall');
+    fetchOnly = take(fetchOnly, THE_CELLAR_THING, 'fetchKeeper');
+    const neutral = sceneText(THE_CELLAR_THING.scenes.cellarRescue, fetchOnly);
+    expect(neutral).toMatch(/seller’s arrival in the yard.*not confirmed/i);
+    expect(neutral).toMatch(/keeper’s decision to board.*not confirmed/i);
+    expect(neutral).not.toMatch(/seller reaches the yard|keeper boards/i);
+
+    let escorted = take(take(fresh(THE_CELLAR_THING), THE_CELLAR_THING, 'listenAtSeam'), THE_CELLAR_THING, 'removeBoards');
+    escorted = take(escorted, THE_CELLAR_THING, 'guideSellerOut');
+    expect(escorted.run?.flags).toContain('cellarSellerAtYard');
+    const resumed = loadSave({ getItem: () => JSON.stringify(escorted) });
+    const safe = sceneText(THE_CELLAR_THING.scenes.cellarRescue, resumed);
+    expect(safe).toMatch(/guide the coal seller out to the yard/i);
+    expect(safe).toMatch(/keeper has not yet boarded/i);
+
+    let failed = take(take(fresh(THE_CELLAR_THING), THE_CELLAR_THING, 'listenAtSeam'), THE_CELLAR_THING, 'removeBoards');
+    failed = take(failed, THE_CELLAR_THING, 'pushEarth', 0.999);
+    const failure = sceneText(THE_CELLAR_THING.scenes.cellarInjury, failed);
+    expect(failure).toMatch(/seller’s position.*remain unconfirmed/i);
+    expect(failure).not.toMatch(/seller pull you back|keeper boards/i);
+  });
+
   it('distinguishes a safely evacuated worker from an unconfirmed worker', () => {
     const foundWorker = take(take(fresh(THE_ANTLERED_THING), THE_ANTLERED_THING, 'callWorker'), THE_ANTLERED_THING, 'callWorkerBack');
     const safelyEvacuated = take(foundWorker, THE_ANTLERED_THING, 'abandonForestRoad');

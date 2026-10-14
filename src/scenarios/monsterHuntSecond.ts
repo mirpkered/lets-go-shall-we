@@ -203,13 +203,13 @@ export const THE_CELLAR_THING: Scenario = {
       { id: 'enterPassage', label: 'Crawl into the passage alone', hint: 'Loose earth is already blocking the passage.', chance: { probability: 0.42, successNext: 'cellarRescue', failureNext: 'cellarInjury', successMessage: 'You reach the seller and guide him toward the grate.', failureMessage: 'The passage slumps and pins your leg.', failureEffects: { health: -4 } } },
     ]),
     cellarPassage: scene('cellarPassage', 'The Coal Seller’s Route', 'The boards open onto a narrow coal passage. The seller is visible beyond a fallen basket, and the return grate is partly blocked with earth. The keeper stands at the cellar stair with a lantern; the house above has not shifted.', [
-      { id: 'guideSellerOut', label: 'Guide the seller toward the cellar stair', next: 'cellarRescue' },
+      { id: 'guideSellerOut', label: 'Guide the seller out to the yard', next: 'cellarRescue', effects: { setFlags: ['cellarSellerAtYard'] } },
       { id: 'backOutCellar', label: 'Back out and clear the grate outside', next: 'cellarRescue' },
       { id: 'pushEarth', label: 'Push through the loose earth', hint: 'The ceiling is soft and the passage is narrow.', chance: { probability: 0.51, successNext: 'cellarRescue', failureNext: 'cellarInjury', successMessage: 'The earth shifts enough for the seller to crawl through.', failureMessage: 'The low ceiling drops soil across your shoulder.', failureEffects: { health: -4 } } },
     ], 'warning'),
-    cellarRescue: end('cellarRescue', 'The Scratching Stops', 'The coal seller reaches the yard and the keeper boards the old service opening. The sound had a human cause, but the passage is still unsafe and will be filled before the house is used again.'),
+    cellarRescue: { ...end('cellarRescue', 'The Scratching Stops', 'The coal passage remains unsafe. The seller’s arrival in the yard and the keeper’s decision to board the opening are not confirmed; the house should not use the passage again until it is secured.'), textVariants: [{ requirements: { flags: ['cellarSellerAtYard'] }, text: 'You guide the coal seller out to the yard. The keeper has not yet boarded the old service opening, and the passage remains unsafe until it is secured.' }] },
     cellarClosed: end('cellarClosed', 'A Door Kept Shut', 'The keeper keeps guests away from the cellar and sends for a mason in daylight. The scratching continues once after you leave; no one enters the boarded chute alone.'),
-    cellarInjury: end('cellarInjury', 'A Narrow Escape', 'The keeper and seller pull you back before the passage closes. Your leg is bruised, and the keeper boards the chute until a mason can fill it safely.'),
+    cellarInjury: end('cellarInjury', 'A Narrow Escape', 'You are pulled clear as the passage slumps. Your leg is bruised. The seller’s position and whether the keeper secured the chute remain unconfirmed.'),
   },
 };
 
