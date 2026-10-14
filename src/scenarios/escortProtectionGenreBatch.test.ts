@@ -211,4 +211,31 @@ describe('Escort / Protection genre batch', () => {
     expect(transferred.run?.sceneId).toBe('delivered');
     expect(sceneText(medicine.scenes.delivered, transferred)).toMatch(/farm cart takes the medicine to the patient/i);
   });
+
+  it('does not import the neighboring loose-ewe intervention into a lamb-only watch', () => {
+    const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-watch-at-the-sheepfold')!;
+    const start = (gear?: string): SaveData => {
+      const character = newCharacter('Sheepfold Route Tester');
+      if (gear) { character.carriedItem = gear; character.carriedItems = [gear]; }
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const pick = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      const option = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      expect(option, `${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(option.requirements, state), `${sceneId}.${choiceId} requirements`).toBe(true);
+      return choose(state, scenario, option, () => 0);
+    };
+
+    let lambOnly = pick(start(), 'fold', 'stay');
+    lambOnly = pick(lambOnly, 'approach', 'lamb');
+    expect(lambOnly.run?.sceneId).toBe('lambSafe');
+    expect(sceneText(scenario.scenes.lambSafe, lambOnly)).toMatch(/lamb is back with its mother/i);
+    expect(sceneText(scenario.scenes.lambSafe, lambOnly)).not.toMatch(/neighbor secures the loose ewe/i);
+    expect(sceneText(scenario.scenes.lambSafe, lambOnly)).toMatch(/no neighboring loose-ewe intervention/i);
+
+    let neighborRoute = pick(start('farmWhistle'), 'fold', 'answer');
+    neighborRoute = pick(neighborRoute, 'response', 'open');
+    expect(neighborRoute.run?.sceneId).toBe('safe');
+    expect(sceneText(scenario.scenes.safe, neighborRoute)).toMatch(/neighbor secures the loose ewe/i);
+  });
 });
