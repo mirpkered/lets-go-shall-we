@@ -858,12 +858,12 @@
       "slug": "the-bell-after-midnight",
       "title": "The Bell After Midnight",
       "sourceFile": "src/scenarios/bellAfterMidnight.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0015"
       ],
       "reviewProvenance": "current source route review",
-      "notes": "stableYard choices leadStablehandClear and useLanternGuard route directly to stableSafe without dousing/soaking the straw; stableSafe nevertheless states that the straw is soaked before the fire reaches the stalls. The guarded-lantern option only carries the lamp clear of the rail. Fire suppression is asserted without route proof.",
+      "notes": "stableYard choices leadStablehandClear and useLanternGuard route directly to stableSafe without dousing/soaking the straw. The shared result now describes the fire as under control before it reaches the stalls without asserting that these routes used water. The douseStraw/pourWater routes remain available and retain their action effects.",
       "preReconciliationPosition": 30,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15019,6 +15019,8 @@
       "violatedRule": "Outcome narration must not claim an unperformed action or unsupported consequence.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "stableSafe now says the small fire is under control before reaching the stalls without claiming the straw was soaked. Regression covers both douseStraw and the contrasting leadStablehandClear route converging on stableSafe. Focused groundedExpansion and Taking on Water suites pass (42 tests).",
       "preReconciliationPosition": 30,
       "registrationStatus": "LIVE"
     },
@@ -20057,9 +20059,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 616,
+    "HEALTHY": 617,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 186,
+    "CONFIRMED DEFECT": 185,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
