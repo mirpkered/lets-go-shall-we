@@ -5752,12 +5752,12 @@
       "slug": "the-three-toed-track",
       "title": "The Three-Toed Track",
       "sourceFile": "src/scenarios/monsterHuntThird.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0122"
       ],
       "reviewProvenance": "current source route review; print comparison, shepherd account, neighbor disclosure, sale-note comparison, payment demand, return-plate, accusation, unresolved dispute and withdrawal variants traced",
-      "notes": "trackAccount.returnPlate reaches trackResolved without consulting the owner or comparing the sale note; poacherFound.askForPayment likewise reaches it without a comparison. The shared ending says sale terms are compared even though only compareSaleNote performs that action. The unpaid balance remains qualified rather than declared owed.",
+      "notes": "trackAccount.returnPlate reaches trackResolved without locating the sheep or comparing the sale note; poacherFound.askForPayment establishes the sheep in the neighboring pen but does not compare the note. Wave 82 records those facts separately and reserves the comparison result for compareSaleNote. The unpaid balance remains qualified rather than declared owed. Original route-review evidence is retained.",
       "preReconciliationPosition": 321,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -5839,12 +5839,12 @@
       "slug": "the-stoneback",
       "title": "The Stoneback",
       "sourceFile": "src/scenarios/monsterHuntThird.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0126"
       ],
       "reviewProvenance": "current source route review; stack inspection, crew relocation, road closure, rope stabilization, den approach, safe reroute, lure success/failure, entry success/fatality and retreat variants traced",
-      "notes": "stonePattern.useRopeStack secures a loose stack but enters stoneRerouted without moving the cart to the upper bench. The shared ending nevertheless says the crew moves the cart and the Stoneback stops shifting stacks; the actual rerouteHaul and stoneReveal.leaveDenAlone choices establish the upper-bench move.",
+      "notes": "stonePattern.useRopeStack secures only one loose stack; rerouteHaul moves the cart, and stoneReveal.leaveDenAlone keeps workers on the upper bench. Wave 82 records all three actions distinctly and no longer infers that the Stoneback stopped shifting stacks. Original route-review evidence is retained.",
       "preReconciliationPosition": 326,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16591,7 +16591,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 321,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 82 in src/scenarios/monsterHuntThird.ts records sheep location and sale-note comparison separately. returnPlate receives neutral text, askForPayment confirms only the sheep location, and compareSaleNote alone states that the note was compared. monsterHuntBatch.test.ts covers the contrasting routes, save/reload, and neutral legacy fallback."
     },
     {
       "findingId": "CRA-F0123",
@@ -16645,7 +16647,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 326,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 82 in src/scenarios/monsterHuntThird.ts gives rerouteHaul, useRopeStack, and leaveDenAlone distinct run-local proof and route-specific ending text. No branch claims the Stoneback stopped shifting stacks. monsterHuntBatch.test.ts covers all three outcomes, save/reload, and a neutral legacy fallback."
     },
     {
       "findingId": "CRA-F0127",
@@ -20211,9 +20215,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 684,
+    "HEALTHY": 686,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 118,
+    "CONFIRMED DEFECT": 116,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
