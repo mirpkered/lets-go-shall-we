@@ -3871,12 +3871,12 @@
       "slug": "the-pass-before-snow",
       "title": "The Pass Before Snow",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0059"
       ],
       "reviewProvenance": "current source route review; early retreat, shelf wait, marked/compass routes, gear availability, whiteout signal/crawl/cross and success/failure outcomes traced",
-      "notes": "passWhiteout.crawlPassStone reaches passRescue without signaling, but the shared rescue ending says 'Your signal is answered.' The signal-gated route is separately available and correctly establishes that event. Pass-retreat, shelter, and fatal outcomes otherwise match their routes.",
+      "notes": "The existing signalPassParty route flag passSignaledForRescue selects the signal-specific rescue wording; crawlPassStone receives neutral rescue text and no longer attributes an unmade signal. Tests cover both paths and preserve the signal proof through save/reload. Pass-retreat, shelter, and fatal outcomes remain unchanged.",
       "preReconciliationPosition": 211,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -3925,12 +3925,12 @@
       "slug": "across-the-floodplain",
       "title": "Across the Floodplain",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0062"
       ],
       "reviewProvenance": "current source route review; herd success/failure, cart-first, whistle signal, split outcomes, recovery risk, rescue and death endings traced",
-      "notes": "cartHighGround.keepCartSafe reaches floodRescue without any signal action, but floodRescue states the road crew reaches the rise after the Traveler’s signal. leaveFloodNow explicitly calls for help and is the distinct route that establishes signaling. Other cart/sheep/family partial outcomes remain qualified.",
+      "notes": "The explicit leaveFloodNow call-for-help route sets floodHelpSignaled and retains signal-specific rescue text; keepCartSafe receives neutral rescue wording. Tests cover both routes and preserve the call-for-help proof through save/reload. Other cart/sheep/family partial outcomes remain qualified.",
       "preReconciliationPosition": 214,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15622,6 +15622,8 @@
       "violatedRule": "A converged result may not claim a route-specific action or response that the selected branch did not establish.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts sets passSignaledForRescue only on the gear-gated signalPassParty choice. passRescue uses neutral wording by default and the signal attribution only when that run-local flag is present. src/scenarios/survivalExpeditionBatch.test.ts verifies crawl-without-signal versus signal routes, including save/reload of positive proof.",
       "preReconciliationPosition": 211,
       "registrationStatus": "LIVE"
     },
@@ -15661,6 +15663,8 @@
       "violatedRule": "Shared rescue outcomes must not invent an unperformed signal or communication action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts sets floodHelpSignaled only on the explicit leaveFloodNow call-for-help choice. floodRescue uses neutral wording by default and the signal attribution only when that run-local flag is present. src/scenarios/survivalExpeditionBatch.test.ts verifies keepCartSafe versus leaveFloodNow, including save/reload of positive proof.",
       "preReconciliationPosition": 214,
       "registrationStatus": "LIVE"
     },
@@ -20008,9 +20012,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 597,
+    "HEALTHY": 599,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 206,
+    "CONFIRMED DEFECT": 204,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
