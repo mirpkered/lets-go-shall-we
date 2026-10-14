@@ -686,11 +686,12 @@
       "slug": "taking-on-water",
       "title": "Taking on Water",
       "sourceFile": "src/scenarios/takingOnWater.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0013"
       ],
-      "reviewProvenance": "prior-chat source review summary; not re-audited this batch",
+      "reviewProvenance": "prior-chat route review retained; CRA-F0013 implementation verified against the abandoned-canoe struggle and rescue paths",
+      "notes": "The abandoned-canoe route could converge on struggle and rescue text that claimed a gunwale was caught and the canoe was tied/brought alongside. Those shared scenes and endings now avoid asserting the canoe’s condition or recovery; the rescue choice itself no longer promises it will be in tow. The existing monetary/cargo-loss variants and swim outcomes remain intact.",
       "preReconciliationPosition": 19,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14990,6 +14991,8 @@
       "violatedRule": "Object and method state must remain truthful across failure/rescue convergence.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "PRIOR_CHAT_REVIEW_SUMMARY",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Shared swimStruggle/swimStruggleFinal text now stays route-neutral about the canoe; rescueResponse/rescueEnding state only the Traveler’s rescue and explicitly leave canoe condition/recovery unestablished. Regression forces failure from both an abandon-possessions route and a canoe-retained route, then exercises rescue convergence. Taking on Water suite passes 30 tests. No new state or save changes.",
       "preReconciliationPosition": 19,
       "registrationStatus": "LIVE"
     },
@@ -20054,9 +20057,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 615,
+    "HEALTHY": 616,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 187,
+    "CONFIRMED DEFECT": 186,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
