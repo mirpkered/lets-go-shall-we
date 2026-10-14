@@ -197,3 +197,58 @@ describe('The Room Behind the Chimney outcome continuity',()=>{
     expect(sceneText(THE_ROOM_BEHIND_THE_CHIMNEY.scenes.discovery,legacy)).not.toMatch(/letters explain|box and the returned letters/i);
   });
 });
+
+describe('The Island When the Water Falls discovery continuity', () => {
+  const scenario = get('the-island-when-the-water-falls');
+
+  it('does not infer the island landing or submergence from safe-bank and uninspected-island routes', () => {
+    let safeBank = start(scenario);
+    safeBank = actIn(safeBank, scenario, 'waitWater');
+    safeBank = actIn(safeBank, scenario, 'waitTurnBack');
+    expect(text(safeBank, scenario)).not.toMatch(/freight landing|goes under|covers it/i);
+
+    let postOnly = start(scenario);
+    postOnly = actIn(postOnly, scenario, 'readPost');
+    postOnly = actIn(postOnly, scenario, 'postRecord');
+    expect(text(postOnly, scenario)).not.toMatch(/freight landing|goes under|covers it/i);
+
+    let uninspectedBar = start(scenario);
+    uninspectedBar = actIn(uninspectedBar, scenario, 'readPost');
+    uninspectedBar = actIn(uninspectedBar, scenario, 'postCross');
+    uninspectedBar = actIn(uninspectedBar, scenario, 'islandReturn');
+    expect(text(uninspectedBar, scenario)).not.toMatch(/freight landing|goes under|covers it/i);
+  });
+
+  it('states the landing only after its foundation or receipt establishes the use', () => {
+    let foundation = start(scenario);
+    foundation = actIn(foundation, scenario, 'readPost');
+    foundation = actIn(foundation, scenario, 'postCross');
+    foundation = actIn(foundation, scenario, 'islandFoundation');
+    foundation = actIn(foundation, scenario, 'foundationRecord');
+    expect(text(foundation, scenario)).toMatch(/freight landing/i);
+    expect(text(foundation, scenario)).not.toMatch(/gone under|covers it/i);
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    saveGame(foundation, storage as unknown as Storage);
+    foundation = loadSave(storage as unknown as Storage);
+    expect(text(foundation, scenario)).toMatch(/freight landing/i);
+
+    let receipt = start(scenario);
+    receipt = actIn(receipt, scenario, 'readPost');
+    receipt = actIn(receipt, scenario, 'postCross');
+    receipt = actIn(receipt, scenario, 'islandTin', 0);
+    receipt = actIn(receipt, scenario, 'tinReturn');
+    expect(text(receipt, scenario)).toMatch(/freight landing/i);
+    expect(text(receipt, scenario)).not.toMatch(/gone under|covers it/i);
+  });
+
+  it('limits the submerged-bar claim to the rescue route that establishes it', () => {
+    let rescued = start(scenario);
+    rescued = actIn(rescued, scenario, 'waitWater');
+    rescued = actIn(rescued, scenario, 'waitRisk', 0.99);
+    rescued = actIn(rescued, scenario, 'strandWait');
+    rescued = actIn(rescued, scenario, 'islandRescueEnd');
+    expect(text(rescued, scenario)).toMatch(/gone under since your rescue/i);
+    expect(text(rescued, scenario)).not.toMatch(/freight landing/i);
+  });
+});
