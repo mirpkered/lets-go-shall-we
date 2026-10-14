@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, startRun } from '../engine';
+import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import { validateScenarioMetadata } from '../scenarioDiversity';
@@ -112,5 +112,46 @@ describe('comedy and absurdity additions', () => {
     expect(scenario.scenes.upstairs.text).toMatch(/show the owner/i);
     expect(scenario.scenes.menders.text).toMatch(/misses the supper deadline/i);
     expect(scenario.scenes.menders.text).toMatch(/no one mistakes it for a finished repair/i);
+  });
+
+  it('keeps the ferryman endings faithful to sign-turning, explanation, escort, and marking requests', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-ferrymans-sign')!;
+    const start = (): SaveData => {
+      const character = newCharacter('Ferry Route QA');
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      const current = scenario.scenes[state.run!.sceneId];
+      expect(current.id).toBe(sceneId);
+      const choice = current.choices.find(({ id }) => id === choiceId);
+      expect(choice).toBeDefined();
+      return choose(state, scenario, choice!);
+    };
+
+    let explained = act(start(), 'landing', 'callTravelers');
+    explained = act(explained, 'redirect', 'explainSafety');
+    expect(sceneText(scenario.scenes.signFixed, explained)).not.toMatch(/sign points to the upstream/i);
+    expect(sceneText(scenario.scenes.signFixed, explained)).toMatch(/point out the new rope/i);
+
+    let turned = act(start(), 'landing', 'askFerryman');
+    turned = act(turned, 'reason', 'turnBoard');
+    expect(sceneText(scenario.scenes.signFixed, turned)).toMatch(/turn the sign toward the upstream/i);
+    turned = JSON.parse(JSON.stringify(turned)) as SaveData;
+    expect(sceneText(scenario.scenes.signFixed, turned)).toMatch(/turn the sign toward the upstream/i);
+
+    let escorted = act(start(), 'landing', 'callTravelers');
+    escorted = act(escorted, 'redirect', 'offerWalk');
+    expect(sceneText(scenario.scenes.walked, escorted)).toMatch(/walk the travelers to the new landing/i);
+    expect(sceneText(scenario.scenes.walked, escorted)).not.toMatch(/pale cloth/i);
+    escorted = JSON.parse(JSON.stringify(escorted)) as SaveData;
+    expect(sceneText(scenario.scenes.walked, escorted)).toMatch(/walk the travelers to the new landing/i);
+
+    let requested = act(start(), 'landing', 'askFerryman');
+    requested = act(requested, 'reason', 'markPath');
+    expect(sceneText(scenario.scenes.walked, requested)).toMatch(/ask the ferryman to mark the towpath/i);
+    expect(sceneText(scenario.scenes.walked, requested)).not.toMatch(/you walk the travelers|pale cloth/i);
+
+    expect(sceneText(scenario.scenes.signFixed, start())).toMatch(/not established by this ending/i);
+    expect(sceneText(scenario.scenes.walked, start())).toMatch(/no completed escort or towpath mark/i);
   });
 });

@@ -457,16 +457,22 @@ export const THE_FERRYMAN_S_SIGN = story('the-ferrymans-sign', 'The Ferryman’s
     { id: 'followOldSign', label: 'See where the old path leads', next: 'oldLanding' },
   ]),
   redirect: scene('redirect', 'A Longer Walk, the Right Boat', 'The travelers turn back. One is annoyed at losing time; the other says the old landing was closer to their destination.', [
-    { id: 'explainSafety', label: 'Point out the new rope and landing', next: 'signFixed' },
-    { id: 'offerWalk', label: 'Walk with them to the new landing', next: 'walked' },
+    { id: 'explainSafety', label: 'Point out the new rope and landing', next: 'signFixed', effects: { setFlags: ['ferryLandingExplained'] } },
+    { id: 'offerWalk', label: 'Walk with them to the new landing', next: 'walked', effects: { setFlags: ['ferryTravelersEscorted'] } },
   ]),
   reason: scene('reason', 'The River Took the Path', 'A spring flood cut away the old bank. The ferryman has moved upstream but has not yet painted a new sign because the board is drying after repair.', [
-    { id: 'turnBoard', label: 'Help turn the sign toward the new path', next: 'signFixed' },
-    { id: 'markPath', label: 'Ask the ferryman to mark the towpath', next: 'walked' },
+    { id: 'turnBoard', label: 'Help turn the sign toward the new path', next: 'signFixed', effects: { setFlags: ['ferrySignTurned'] } },
+    { id: 'markPath', label: 'Ask the ferryman to mark the towpath', next: 'walked', effects: { setFlags: ['ferrymanAskedToMarkTowpath'] } },
   ]),
   oldLanding: end('oldLanding', 'An Empty Place to Wait', 'The old landing is still visible but no longer reaches the boat. You return to the upstream rope and tell the ferryman what the sign sent you to find.'),
-  signFixed: end('signFixed', 'An Arrow That Arrives', 'The sign points to the upstream landing. The travelers reach the right ferry, and the ferryman can spend the afternoon carrying passengers instead of redirecting them.'),
-  walked: end('walked', 'A Sign on the Towpath', 'You walk the travelers to the new landing and mark the turn with a strip of pale cloth. The crossing is ordinary again, if a little longer.'),
+  signFixed: { ...end('signFixed', 'An Arrow That Arrives', 'The ferry now leaves from the upstream landing. The sign’s direction and the travelers’ arrival are not established by this ending.'), textVariants: [
+    { requirements: { flags: ['ferryLandingExplained'] }, text: 'You point out the new rope and upstream landing to the travelers. They know where to find the ferry, though the old sign still points toward the empty shore.' },
+    { requirements: { flags: ['ferrySignTurned'] }, text: 'You turn the sign toward the upstream landing, marking the current ferry route for travelers. The ferryman can spend the afternoon carrying passengers instead of redirecting them.' },
+  ] },
+  walked: { ...end('walked', 'A Sign on the Towpath', 'The ferry now leaves from upstream. No completed escort or towpath mark is established by this ending.'), textVariants: [
+    { requirements: { flags: ['ferryTravelersEscorted'] }, text: 'You walk the travelers to the new landing. The old sign still points toward the empty shore; no cloth marker was placed.' },
+    { requirements: { flags: ['ferrymanAskedToMarkTowpath'] }, text: 'You ask the ferryman to mark the towpath. The request is made, but no completed mark or escort is established on this route.' },
+  ] },
 });
 
 export const THE_BACKWARDS_COURTROOM = story('the-backwards-courtroom', 'The Backwards Courtroom', 'The visiting magistrate sits where the witnesses were meant to stand.', T('A town hall rearranges benches for a visiting magistrate, leaving the presiding chair facing the wrong way; the traveler helps reset the room before a minor fence hearing without confusing ceremony with justice.', ['social interaction', 'puzzle/problem-solving'], 'visitor', 'town hall', ['room-layout problem', 'procedural comedy', 'fair hearing'], 'witnesses incident'), 'hall', {
