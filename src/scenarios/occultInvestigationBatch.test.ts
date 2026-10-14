@@ -104,6 +104,30 @@ describe('occult investigation adventures', () => {
     expect(meets(scenario.scenes.chalkPattern.choices.find((c) => c.id === 'liftFloor')!.requirements, state)).toBe(true);
   });
 
+  it('keeps the dry-well ending neutral unless the Traveler reaches the speaking tube', () => {
+    const scenario = adventures.find((s) => s.id === 'voice-in-the-well')!;
+
+    let leave = fresh(scenario);
+    leave = act(leave, scenario, 'leaveWell');
+    expect(sceneText(scenario.scenes.wellAfter, leave)).toMatch(/source remains unexplained/i);
+    expect(sceneText(scenario.scenes.wellAfter, leave)).not.toMatch(/mason caps|speaking tube/i);
+
+    let withdraw = fresh(scenario);
+    withdraw = act(withdraw, scenario, 'testEcho');
+    withdraw = act(withdraw, scenario, 'askForHelpAtWell');
+    withdraw = act(withdraw, scenario, 'haulLanternBack');
+    expect(sceneText(scenario.scenes.wellAfter, withdraw)).toMatch(/source remains unexplained/i);
+    expect(sceneText(scenario.scenes.wellAfter, withdraw)).not.toMatch(/mason caps|speaking tube/i);
+
+    let inspect = fresh(scenario);
+    inspect = act(inspect, scenario, 'lowerLantern');
+    inspect = act(inspect, scenario, 'climbWell', 0);
+    expect(inspect.run?.flags).toContain('foundSpeakingTube');
+    inspect = roundTrip(inspect);
+    expect(sceneText(scenario.scenes.wellAfter, inspect)).toMatch(/find an old speaking tube/i);
+    expect(sceneText(scenario.scenes.wellAfter, inspect)).not.toMatch(/mason caps/i);
+  });
+
   it('shows the person pulled from the ditch before the Light Behind You ending', () => {
     const scenario = adventures.find(({ id }) => id === 'lantern-at-the-crossing')!;
     const start = fresh(scenario);
