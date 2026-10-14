@@ -3409,12 +3409,12 @@
       "slug": "seance-at-bellweather-house",
       "title": "The Séance at Bellweather House",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0042"
       ],
       "reviewProvenance": "current source route review; decline, inspect/confront, continue-under-watch, direct séance, ask/break circle, record/end answer, stay/leave, and Knowledge/Lore effects inspected",
-      "notes": "bellweatherAfter is shared by routes that never hear a voice or choose to write down the answer, yet always says the family keeps a written answer and that the voice remains an account each person remembers. It also asserts a partial fee recovery on the direct séance route where the thread was never inspected or exposed. recordAnswer alone writes the Lore; route-specific ending claims exceed the selected evidence/actions.",
+      "notes": "bellweatherAfter now defaults to a neutral no-written-answer/no-fee-return result; only bellweatherVoiceHeard enables voice-account wording, and only bellweatherAnswerWritten enables the written-answer variant. The ending no longer asserts a fee return on any route because no refund action or settlement is mechanically established.",
       "preReconciliationPosition": 184,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15419,6 +15419,8 @@
       "violatedRule": "Ending claims about discovery, recording, and compensation must follow the selected route and established evidence.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "bellweatherAfter now uses neutral default text; factual run-local flags bellweatherVoiceHeard and bellweatherAnswerWritten are set only by routes that hear the voice and write the answer. The fee-recovery claim was removed from all variants without changing coin/economy effects, since no recovery action is established. Regression covers confrontation without hearing the voice, voice without writing, written answer after save/reload with Lore retained, and the watched continuation route. occultInvestigationBatch.test.ts passes 33 tests; registry/library/inventory checks pass; TypeScript and production build pass.",
       "preReconciliationPosition": 184,
       "registrationStatus": "LIVE"
     },
@@ -20114,9 +20116,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 643,
+    "HEALTHY": 644,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 159,
+    "CONFIRMED DEFECT": 158,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
