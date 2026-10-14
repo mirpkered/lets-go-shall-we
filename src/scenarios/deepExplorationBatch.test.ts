@@ -355,6 +355,74 @@ describe('deep exploration anthology', () => {
     expect(meets(request.requirements, full)).toBe(false);
   });
 
+  it('keeps White Chamber rope and pack claims tied to actions actually taken', () => {
+    const cave = getScenario('white-chamber')!;
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = cave.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(choice!.requirements, state), `${sceneId}.${choiceId} requirements`).toBe(true);
+      return choose(state, cave, choice!, () => 0);
+    };
+    const start = (name: string, withRope = false): SaveData => {
+      const character = newCharacter(name);
+      if (withRope) character.carriedItem = 'travelRope';
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, cave, () => 0) };
+    };
+    const toPackRoom = (state: SaveData, entryChoice: 'askForChalk' | 'ropeCave'): SaveData => {
+      if (entryChoice === 'askForChalk') {
+        state = act(state, 'whiteCaveMouth', 'askForChalk');
+        state = act(state, 'whiteChalkReady', 'saveChalkForLater');
+        expect(state.run?.flags).not.toContain('whiteChalkSet');
+      } else {
+        state = act(state, 'whiteCaveMouth', 'ropeCave');
+        expect(state.run?.flags).toContain('whiteLineSet');
+      }
+      state = act(state, 'whiteFirstRoom', 'followDraft');
+      state = act(state, 'whiteDraftRoom', 'downDraft');
+      state = act(state, 'whiteMechanism', 'followMapped');
+      return state;
+    };
+
+    let unmarked = toPackRoom(start('No Line or Chalk'), 'askForChalk');
+    expect(unmarked.run?.flags).not.toContain('whiteLineSet');
+    unmarked = act(unmarked, 'whitePackRoom', 'inspectSeal');
+    expect(sceneText(cave.scenes.whiteSeal, unmarked)).toMatch(/pack remains beside the door/i);
+    expect(sceneText(cave.scenes.whiteSeal, unmarked)).not.toMatch(/pack is already recovered/i);
+    expect(cave.scenes.whiteSeal.choices.find(({ id }) => id === 'openSeal')?.label).not.toMatch(/rope/i);
+
+    const copied = act(structuredClone(unmarked), 'whiteSeal', 'copySeal');
+    expect(copied.run?.sceneId).toBe('whiteResolved');
+    expect(sceneText(cave.scenes.whiteResolved, copied)).toMatch(/pack remains beside the sealed door/i);
+    expect(sceneText(cave.scenes.whiteResolved, copied)).not.toMatch(/prospector gets the pack|recovered pack/i);
+    expect(copied.character?.money).toBe(4);
+
+    const opened = act(unmarked, 'whiteSeal', 'openSeal');
+    expect(opened.run?.flags).not.toContain('whiteLineSet');
+    expect(opened.run?.flags).not.toContain('whiteChalkSet');
+    expect(sceneText(cave.scenes.whiteDeep, opened)).not.toMatch(/rope remains taut/i);
+    const tracing = act(opened, 'whiteDeep', 'leaveRod');
+    expect(sceneText(cave.scenes.whiteFragment, tracing)).toMatch(/pack remains beside the chamber/i);
+    expect(sceneText(cave.scenes.whiteFragment, tracing)).not.toMatch(/recovered pack|prospector receives the pack/i);
+    expect(tracing.character?.money).toBe(4);
+
+    let unropedWheel = start('Unroped Wheel Route');
+    unropedWheel = act(unropedWheel, 'whiteCaveMouth', 'askForChalk');
+    unropedWheel = act(unropedWheel, 'whiteChalkReady', 'saveChalkForLater');
+    unropedWheel = act(unropedWheel, 'whiteFirstRoom', 'followWear');
+    unropedWheel = act(unropedWheel, 'whiteWearRoom', 'followEcho');
+    unropedWheel = act(unropedWheel, 'whiteEchoRoom', 'turnWheel');
+    expect(unropedWheel.run?.flags).not.toContain('whiteLineSet');
+    expect(sceneText(cave.scenes.whiteReversed, unropedWheel)).not.toMatch(/line tied outside/i);
+    expect(cave.scenes.whiteReversed.choices.find(({ id }) => id === 'retreatWheel')?.label).not.toMatch(/rope|chalk/i);
+
+    const roped = toPackRoom(start('Roped Route', true), 'ropeCave');
+    expect(roped.run?.flags).toContain('whiteLineSet');
+    const safeRecovery = act(roped, 'whitePackRoom', 'takePack');
+    expect(sceneText(cave.scenes.whiteRescueEnd, safeRecovery)).toMatch(/prospector receives the pack/i);
+    expect(safeRecovery.character?.historyFlags).toContain('retrieved the prospector’s pack from the white cave');
+  });
+
   it('qualifies Briar House conclusions by whether the hidden bedroom was reached', () => {
     const house = getScenario('last-door-briar-house')!;
     const character = newCharacter('Briar House Reader');
