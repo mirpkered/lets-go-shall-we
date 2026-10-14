@@ -2007,7 +2007,13 @@ The focused grounded-expansion suite passed **13 tests**, including the withdraw
 
 Wave 24 repairs CRA-F0017 (MEDIUM), `the-missing-boat`. The shared `safeLanding` scene no longer claims that the ferry crew checks the punt line, because near-bank and gravel-tongue self-rescue routes do not establish crew participation. It retains the supported owner/punt arrival claims; the distinct ferry-assisted rescue route remains intact.
 
-The focused grounded-expansion suite passed **14 tests**, including self-guided and ferry-assisted contrasts. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **619 HEALTHY, 59 MINOR CONCERN, 183 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **193 open live findings overall**; CRA-C0001 has **159 open** (126 MEDIUM, 30 LOW, 3 unrecovered severity). Overall open severity is **146 MEDIUM, 36 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+The focused grounded-expansion suite passed **14 tests**, including self-guided and ferry-assisted contrasts. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **619 HEALTHY, 59 MINOR CONCERN, 183 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **193 open live findings overall**; CRA-C0001 has **159 open** (126 MEDIUM, 30 LOW, 3 unrecovered severity). Overall open severity is **147 MEDIUM, 36 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
+### CRA-C0001 repair program — local Wave 25: well-source containment convergence
+
+Wave 25 repairs CRA-F0018 (MEDIUM), `poison-the-well`. After setting aside the barrel to compare sources, the `wellRunoff` and `wellDebris` `wrongSource` variants no longer claim the well had already been closed or that its lower channel was being cleared. The text now describes the remaining concern and future action; explicit well-closure and cleanup routes retain their existing outcomes. No other water/food diagnosis, Knowledge, or containment mechanics changed.
+
+The focused grounded-consequence suite passed **14 tests**, covering both routes that had not closed the well and contrasting the explicit `warnWell` closure route. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **620 HEALTHY, 59 MINOR CONCERN, 182 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **192 open live findings overall**; CRA-C0001 has **158 open** (125 MEDIUM, 30 LOW, 3 unrecovered severity). Overall open severity is **146 MEDIUM, 36 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
 
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 

@@ -987,12 +987,12 @@
       "slug": "poison-the-well",
       "title": "Poison the Well",
       "sourceFile": "src/scenarios/poisonTheWell.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0018"
       ],
       "reviewProvenance": "current source route review",
-      "notes": "With source=wellRunoff or wellDebris, barrelInspection.coverBarrel -> barrelSetAside -> barrelWasNotCauseWell/barrelWasNotCauseDebris -> wrongSource reaches source-specific text claiming the well was already closed (and, for debris, that the channel is being cleared). That route only closed the barrel; the well/channel state has not been changed. The shared wrongSource variants overstate prior containment.",
+      "notes": "With source=wellRunoff or wellDebris, barrelInspection.coverBarrel -> barrelSetAside -> barrelWasNotCauseWell/barrelWasNotCauseDebris -> wrongSource reaches source-specific text. The updated variants no longer claim the well was already closed or that its channel was cleared; they distinguish the remaining concern without asserting unfinished containment. Actual well closure and cleanup routes retain their established text.",
       "preReconciliationPosition": 38,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15066,6 +15066,8 @@
       "violatedRule": "Investigation and containment state in converged text must match actions actually taken on the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "wrongSource wellRunoff and wellDebris variants no longer claim prior well closure/channel cleanup after barrelSetAside. Regression drives both uncontained routes and contrasts the explicit warnWell closure. groundedConsequenceBatch suite passes 14 tests.",
       "preReconciliationPosition": 38,
       "registrationStatus": "LIVE"
     },
@@ -20063,9 +20065,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 619,
+    "HEALTHY": 620,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 183,
+    "CONFIRMED DEFECT": 182,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
