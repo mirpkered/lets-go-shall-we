@@ -1809,12 +1809,12 @@
       "slug": "the-ownerless-mule",
       "title": "The Ownerless Mule",
       "sourceFile": "src/scenarios/animalsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0029"
       ],
       "reviewProvenance": "current source route review; all muleClue variants, claimant/comparison, lead-stable success/failure, keeper and leave endings examined",
-      "notes": "A successful leadMuleStable chance from muleClueSeen goes directly to muleAtStable without visiting muleClaimant or establishing claimants. The shared ending nevertheless says two claimants compare their accounts; wait/ask-resident or failed-leading routes do establish them.",
+      "notes": "The settlement ending now defaults to neutral text on the direct tack-inspection and successful-relocation route, which establishes no claimants. Claimant comparison wording is enabled only after the stable keeper encounters the two claimant accounts; regression confirms the distinction survives save/reload. The action still makes no ownership judgment.",
       "preReconciliationPosition": 90,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15234,6 +15234,8 @@
       "violatedRule": "Shared outcome text may assert only participants and facts established by every incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "muleAtStable now defaults to neutral waiting-stall text. Only leaveMuleKeeper and leaveMuleStable, both reached after the two claimant accounts are established, set the factual run-local mule_claimants_heard flag that enables the comparison wording. The direct inspectMuleTack -> successful leadMuleStable route remains truthful and does not claim two people are comparing accounts. Regression contrasts the bypass route with the claimant route and verifies the flag/text after save/reload. animalsBatch.test.ts passes 14 tests; no ownership decision, reward, or persistent schema changed.",
       "preReconciliationPosition": 90,
       "registrationStatus": "LIVE"
     },
@@ -20088,9 +20090,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 630,
+    "HEALTHY": 631,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 172,
+    "CONFIRMED DEFECT": 171,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
