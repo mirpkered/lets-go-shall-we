@@ -3547,12 +3547,12 @@
       "slug": "the-black-thread",
       "title": "The Black Thread",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0047"
       ],
       "reviewProvenance": "current source route review; leave, witness, salt/no-salt, tailor/ring, storeroom, thread-cutting, and Knowledge effects inspected",
-      "notes": "threadAfter is shared by leaveThreadStreet, tellNeighbors, removeThread, and ring-investigation routes, but always says the tailor opens his storeroom and the neighbors join the traveler in cutting down the strands. Several incoming routes never meet the tailor, inspect the ring, or enter the yard; leaveThreadStreet explicitly leaves knots undisturbed.",
+      "notes": "CRA-F0047 is repaired: `threadAfter` defaults to the two explanations established at the street; route-action variants only report asking the tailor to cut/open, telling the neighbors, or laying salt, without inventing a completed storeroom opening, neighbor attendance, or cutting. The no-proof fallback remains neutral, including for legacy state.",
       "preReconciliationPosition": 192,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15493,6 +15493,8 @@
       "routeWitness": "blackThreadStreet.leaveThreadStreet -> threadAfter and threadWitness.tellNeighbors -> threadAfter: neither route reaches threadTailor/threadRing, yet threadAfter states the tailor opens the storeroom with neighbors and they cut the threads together. threadTailor.removeThread requests a cut but does not ask to open the storeroom.",
       "violatedRule": "A converged outcome must preserve actual participation and route actions; unselected resolution steps cannot be narrated as completed.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "`threadAfter` now defaults to the two explanations established at the street and leaves the thread's fate unresolved. Factual run-local flags preserve the selected acts (asking the tailor to cut, telling the neighbors, asking to open the storeroom, or laying Consecrated Salt) without claiming that the tailor opened the store, neighbors attended, or strands were cut. `occultInvestigationBatch.test.ts` contrasts all four routes with leaving the knots undisturbed, verifies the unsupported shared claims are absent, and round-trips each proof through save/load. Focused occult, inventory, registry, and library checks pass (53 tests); TypeScript and production build pass with the known bundle-size warning. The preceding full-suite checkpoint passed (127 files / 2,398 tests); the next full run is scheduled at the repair-program cadence checkpoint.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 192,
       "registrationStatus": "LIVE"
@@ -20126,9 +20128,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 649,
+    "HEALTHY": 650,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 153,
+    "CONFIRMED DEFECT": 152,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
