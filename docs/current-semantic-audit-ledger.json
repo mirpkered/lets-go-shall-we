@@ -18663,7 +18663,9 @@
       "violatedRule": "A converged evidence scene may not present a route-specific physical comparison as completed on every incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now shows the socket-fit result only after observe.measure, using the existing the-gate-pin-at-south-pasture_measure route flag; other observation routes receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies the measure-versus-inquiry/other-route contrast. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0298",
@@ -18675,7 +18677,9 @@
       "violatedRule": "A converged scene may not grant route-specific discovery without route proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reveals the pressure-mark impression only after observe.compare; tube protection and clerk inquiry receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts exercises each observation route. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0299",
@@ -18687,7 +18691,9 @@
       "violatedRule": "A converged scene may not present route-specific physical examination results as established on every incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reveals strand stretch/abrasion only after observe.measure or the explicit glove-assisted observe.compare route; inquiry receives neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies both proof routes and non-inspection contrasts. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0300",
@@ -18711,7 +18717,9 @@
       "violatedRule": "A converged evidence scene may not import route-specific measurement results.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now presents the rod-measured void result only after observe.measure; mirror and plan routes receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies the measurement contrast while the CRA-C0008 Gear gate remains intact. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0302",
@@ -18737,7 +18745,9 @@
       "violatedRule": "A converged scene may not grant a route-specific discovery without route proof.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now gives the pre-search test scene neutral wording; the thread/shears location is revealed only after the explicit test.careful bench-search action in settlement text. src/scenarios/investigationEvidenceGenreBatch.test.ts checks all observation routes and the search contrast. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0304",
@@ -18749,7 +18759,9 @@
       "violatedRule": "A shared evidence result may not import route-specific comparisons.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reports print-size proximity only after observe.measure or observe.compare; worker-timing inquiry receives neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies both comparison routes and the inquiry contrast. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0305",
@@ -18865,7 +18877,9 @@
       "violatedRule": "A converged evidence result may not import route-specific comparisons.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reveals the wax source match only after observe.measure compares the fleck with the recorder’s seal; staff inquiry and key-teeth inspection receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts checks route contrasts. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0314",
@@ -18877,7 +18891,9 @@
       "violatedRule": "A shared evidence result may not state a route-specific mechanical test as completed on all branches.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reports the worn-rope-eye test only after observe.measure tests the keeper-side pull; teamster inquiry and second-pull search receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies route contrasts. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0315",
@@ -18889,7 +18905,9 @@
       "violatedRule": "A shared evidence scene may not import route-specific comparison/discovery.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reports relative notch age only after observe.measure compares the cuts; mason-history and rubbing routes receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies the measurement contrast; the CRA-C0008 Loupe gate remains unchanged. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0316",
@@ -18915,7 +18933,9 @@
       "violatedRule": "A converged result may not claim route-specific identity verification absent that comparison.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/investigationEvidenceGenreBatch.ts now reports the receipt-signature household match only after observe.measure compares it with the witness book; courier inquiry and sealed route-ledger handling receive neutral text. src/scenarios/investigationEvidenceGenreBatch.test.ts verifies route contrasts. Full validation passed 127 files / 2,346 tests, TypeScript, and production build."
     },
     {
       "findingId": "CRA-F0318",
@@ -19960,9 +19980,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 562,
+    "HEALTHY": 583,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 241,
+    "CONFIRMED DEFECT": 220,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
