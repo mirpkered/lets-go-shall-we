@@ -178,4 +178,41 @@ describe('Road Danger / Highwaymen genre batch', () => {
       }
     }
   });
+
+  it('keeps outside-party confirmation tied to the route that establishes it', () => {
+    const aftermathFor = (id: string, approach: string, response: string) => {
+      const scenario = ROAD_DANGER_GENRE_BATCH.find(({ id: candidate }) => candidate === id)!;
+      let state = act(initial(scenario), scenario, `approach_${approach}`);
+      state = act(state, scenario, `respond_${response}`);
+      return sceneText(scenario.scenes.aftermath, state);
+    };
+
+    expect(aftermathFor('the-glass-at-milepost-nine', 'warn', 'signalStation'))
+      .toMatch(/field-glass case is left behind as the station answers/i);
+    for (const response of ['coverDriver', 'recordFace']) {
+      expect(aftermathFor('the-glass-at-milepost-nine', 'warn', response))
+        .not.toMatch(/station answers|left behind as the station/i);
+    }
+
+    for (const response of ['keepDoor', 'offerWitness', 'followAtDistance']) {
+      expect(aftermathFor('the-brass-notch', 'askClerk', response))
+        .not.toMatch(/foreman confirms|confirms the man was not assigned/i);
+    }
+
+    for (const [approach, response] of [['inspectPost', 'waitBank'], ['watchSkiff', 'showCut'], ['findFerryman', 'callFerryman']]) {
+      expect(aftermathFor('the-ferry-chain', approach, response))
+        .not.toMatch(/ferryman confirms|confirms the stranger had no claim/i);
+    }
+
+    for (const response of ['searchWrapper', 'askStablehand', 'compareReceipt']) {
+      const text = aftermathFor('the-courier-who-came-back', 'askRoute', response);
+      expect(text).not.toMatch(/county clerk confirms|papers were never placed in the satchel/i);
+      expect(text).toMatch(/do not establish whether the county papers were packed before Penn reached the inn/i);
+    }
+
+    const paperRoad = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-paper-road')!;
+    let unaffected = act(initial(paperRoad), paperRoad, 'approach_eastOffice');
+    unaffected = act(unaffected, paperRoad, 'respond_stayBack');
+    expect(sceneText(paperRoad.scenes.aftermath, unaffected)).toMatch(/Pike confirms the county stamp/i);
+  });
 });
