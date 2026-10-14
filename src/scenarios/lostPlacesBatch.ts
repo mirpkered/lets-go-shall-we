@@ -155,16 +155,20 @@ export const THE_ROOM_BEHIND_THE_CHIMNEY = E('the-room-behind-the-chimney', 'The
   ], 'warning'),
   braced: scene('braced', 'The Mason Sets a Prop', 'A timber props the chimney while the mason widens the opening by hand. The letters name the aunt’s former business partners; the sewing box bears a maker’s mark from this county.', [
     { id: 'openLetters', label: 'Ask the householder to open the letters', next: 'letters' },
-    { id: 'removeBox', label: 'Let the householder take the sewing box', next: 'boxFound' },
+    { id: 'removeBox', label: 'Let the householder take the sewing box', next: 'boxFound', effects: { setFlags: ['chimneyBoxReturned'] } },
     { id: 'bracedLeave', label: 'Leave the contents for the family', next: 'discovery' },
   ]),
   boxFound: scene('boxFound', 'The Sewing Box', 'The tin contains needles, a thimble, and a small account slip—not coin. Its maker’s mark matches the aunt’s shop. The householder recognizes the handwriting on the ribbon but cannot yet identify the letters’ recipients.', [
     { id: 'boxRead', label: 'Compare the account slip with the letters', next: 'letters' },
-    { id: 'boxReturn', label: 'Return the box to the household', next: 'discovery', effects: { historyFlags: ['helped recover a sewing box from a hidden wall space'] } },
+    { id: 'boxReturn', label: 'Return the box to the household', next: 'discovery', effects: { setFlags: ['chimneyBoxReturned'], historyFlags: ['helped recover a sewing box from a hidden wall space'] } },
   ]),
   brickFall: scene('brickFall', 'Mortar on the Floor', 'A brick strikes your forearm and drops harmlessly to the floor. The mason braces the chimney before anyone reaches in again. The box remains inside, and the letters have not been disturbed.', [{ id: 'fallBrace', label: 'Let the mason secure the opening', next: 'braced', effects: { health: -1 } }], 'warning'),
-  letters: scene('letters', 'A Debt Paid in Stitching', 'The letters show the aunt lent her sewing room to a neighbor after a shop fire. The hidden room served as dry storage, not a secret escape. The account slip shows the neighbor repaid her in work over two winters.', [{ id: 'lettersShare', label: 'Give the letters back to the family', next: 'discovery', effects: { knowledge: ['The room behind the chimney was dry storage used by a sewing business after a neighboring shop fire.'] } }]),
-  discovery: end('discovery', 'A Room Kept for Dry Work', 'The family learns why the small space was built and returns the box and letters to their proper place. The discovery changes the house’s history, not the traveler’s inventory.'),
+  letters: scene('letters', 'A Debt Paid in Stitching', 'The letters show the aunt lent her sewing room to a neighbor after a shop fire. The hidden room served as dry storage, not a secret escape. The account slip shows the neighbor repaid her in work over two winters.', [{ id: 'lettersShare', label: 'Give the letters back to the family', next: 'discovery', effects: { setFlags: ['chimneyLettersReturned'], knowledge: ['The room behind the chimney was dry storage used by a sewing business after a neighboring shop fire.'] } }]),
+  discovery: { ...end('discovery', 'A Room Kept for the Family', 'The chimney is braced, and the contents remain for the family to handle. This route does not establish the room’s purpose or the contents’ final disposition.'), textVariants: [
+    { requirements: { flags: ['chimneyBoxReturned', 'chimneyLettersReturned'] }, text: 'The family has the sewing box and the returned letters. The letters explain that the hidden room served as dry storage for the sewing business after a neighboring shop fire; the discovery changes the house’s history, not the Traveler’s inventory.' },
+    { requirements: { flags: ['chimneyLettersReturned'] }, text: 'The returned letters explain that the hidden room served as dry storage for the sewing business after a neighboring shop fire. The sewing box’s return to the family was not established on this route.' },
+    { requirements: { flags: ['chimneyBoxReturned'] }, text: 'The sewing box is in the family’s care, but the letters were not opened and returned. The room’s purpose remains unknown.' },
+  ] },
   leave: end('leave', 'A Wall Left Undisturbed', 'You leave before the mason opens the space. The householder keeps the repair small; whatever lies behind the chimney remains their concern.'),
 }, 'house', 'farmhouse interior');
 
