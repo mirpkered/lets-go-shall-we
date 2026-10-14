@@ -12336,12 +12336,12 @@
       "slug": "the-feed-bin-with-the-blue-seam",
       "title": "The Feed Bin with the Blue Seam",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0277"
       ],
       "reviewProvenance": "current-source route review; sack separation versus tally check, feed refusal, sealed return versus miller inspection/exchange, coin/whistle and wage effects traced",
-      "notes": "sack.separate -> records reaches the same scene as sack.ask without checking the delivery tally. That scene states the tally omits the blue-sealed sack and introduces the farmhand seed-grain recollection; neither fact follows from merely separating and keeping the sack closed. The mixing/feed route is stopped, return stays sealed, and only the call-to-miller branch supports identifying and exchanging seed grain.",
+      "notes": "Wave 78 repaired the records-scene attribution with run-local proof set by the explicit delivery-tally check. Sack separation retains a neutral fallback; the tally comparison and seed-grain recollection appear only on the checked route. Existing return/inspection outcomes are unchanged. Original route-review evidence is retained in the finding record.",
       "preReconciliationPosition": 724,
       "positionDelta": -10,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12694,12 +12694,12 @@
       "slug": "the-sheep-shears-that-went-missing",
       "title": "The Sheep Shears That Went Missing",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0285"
       ],
       "reviewProvenance": "current-source route review; tally/work-table search versus greased-latch shed inspection, under-sack check versus asking shearer, false-accusation stop, edge inspection, partial shade wait, and coin/whistle rewards traced",
-      "notes": "shears.rack -> search.sack reaches found text asserting the shearer recalls putting the shears on a shelf, though this route only checks beneath the moved wool sack. The contrasting search.ask explicitly asks the shearer to retrace the last cut and can establish that recall. Gate inspection independently finds them on the shelf. Sheep remain shaded and the edge-check/partial outcomes are otherwise truthful.",
+      "notes": "Wave 78 repaired the found-scene testimony attribution with run-local proof set only by the explicit ask-the-shearer route. The under-sack route now retains a neutral account of how the shears were set aside, while the independent gate inspection still directly finds them on the shelf. Sheep, edge-check, partial outcome, and reward behavior are unchanged. Original route-review evidence is retained in the finding record.",
       "preReconciliationPosition": 746,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18590,7 +18590,9 @@
       "violatedRule": "A converged discovery scene may not assert route-specific record checks or learned explanations on a route that established neither.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 78: sack.ask sets blueSeamTallyChecked; the shared records scene defaults to neutral text for sack.separate and shows the tally comparison plus seed-grain recollection only after the check. Regression checks separate-versus-ask routes and save/reload of the positive proof. Agriculture, registry, and library tests pass (14 tests across 3 files)."
     },
     {
       "findingId": "CRA-F0278",
@@ -18692,7 +18694,9 @@
       "violatedRule": "A converged discovery may not treat route-specific testimony as obtained on a route that did not solicit or otherwise establish it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 78: only search.ask sets shearerRetracedLastCut. The shared found scene no longer attributes the shelf recollection to search.sack; the greased-latch shed route retains its direct shelf observation. Regression contrasts sack-search, asked-recollection, and direct-shed routes and checks proof across save/reload. Agriculture, registry, and library tests pass (14 tests across 3 files)."
     },
     {
       "findingId": "CRA-F0286",
@@ -20193,9 +20197,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 675,
+    "HEALTHY": 677,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 127,
+    "CONFIRMED DEFECT": 125,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
