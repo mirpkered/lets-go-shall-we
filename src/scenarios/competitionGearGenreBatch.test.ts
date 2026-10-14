@@ -336,6 +336,78 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(wind.character?.knowledge).toContain(lesson);
   });
 
+  it('ties the brace hammer to a recorded gradual-load result', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-match-at-the-brace')!;
+    const gradual = act(begin(scenario), scenario, 'testSlow');
+    expect(gradual.run?.flags).toContain('brace_gradual_test');
+    expect(sceneText(scenario.scenes.strain, gradual)).toMatch(/gradual load holds on Nell’s brace/i);
+    expect(meets(scenario.scenes.strain.choices.find(({ id }) => id === 'awardNell')?.requirements, gradual)).toBe(true);
+
+    const resumed = loadSave({ getItem: () => JSON.stringify(gradual) });
+    expect(resumed.run?.flags).toContain('brace_gradual_test');
+    expect(meets(scenario.scenes.strain.choices.find(({ id }) => id === 'awardNell')?.requirements, resumed)).toBe(true);
+    const winner = act(resumed, scenario, 'awardNell');
+    expect(winner.run?.inventory).toContain('bridgewrightHammer');
+    expect(sceneText(scenario.scenes.winner, winner)).toMatch(/Nell receives the ribbon/i);
+
+    let harsh = act(begin(scenario), scenario, 'testFast');
+    expect(sceneText(scenario.scenes.strain, harsh)).toMatch(/both braces crack/i);
+    expect(meets(scenario.scenes.strain.choices.find(({ id }) => id === 'awardNell')?.requirements, harsh)).toBe(false);
+    harsh = act(harsh, scenario, 'voidUnsafe');
+    expect(harsh.character?.knowledge).toContain('A brace should be loaded gradually; a sudden test can damage both the repair and the part it supports.');
+
+    const oldHarshResult = begin(scenario);
+    oldHarshResult.run!.sceneId = 'winner';
+    oldHarshResult.run!.flags.push('brace_harsh_test');
+    expect(sceneText(scenario.scenes.winner, oldHarshResult)).toMatch(/does not establish a safe winner/i);
+
+    let unproven = begin(scenario);
+    unproven.run!.sceneId = 'strain';
+    expect(sceneText(scenario.scenes.strain, unproven)).toMatch(/test method is not recorded/i);
+    expect(meets(scenario.scenes.strain.choices.find(({ id }) => id === 'awardNell')?.requirements, unproven)).toBe(false);
+  });
+
+  it('awards the lookout glasses only after the correct signal is recorded', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-lookout-at-dusk')!;
+    let correct = act(begin(scenario), scenario, 'askSpotter');
+    correct = act(correct, scenario, 'callChanged');
+    expect(correct.run?.flags).toContain('lookout_signal_correct');
+    expect(sceneText(scenario.scenes.scoring, correct)).toMatch(/judge confirms that it was the changed signal/i);
+    expect(meets(scenario.scenes.scoring.choices.find(({ id }) => id === 'claimGlass')?.requirements, correct)).toBe(true);
+
+    const resumed = loadSave({ getItem: () => JSON.stringify(correct) });
+    expect(resumed.run?.flags).toContain('lookout_signal_correct');
+    correct = act(resumed, scenario, 'claimGlass');
+    expect(correct.run?.inventory).toContain('fieldGlasses');
+    expect(sceneText(scenario.scenes.prize, correct)).toMatch(/judge confirms your call/i);
+    expect(sceneText(scenario.scenes.prize, correct)).not.toMatch(/survey hand back/i);
+
+    let noCall = act(begin(scenario), scenario, 'nakedEye');
+    noCall = act(noCall, scenario, 'stayContest');
+    expect(noCall.run?.sceneId).toBe('scoring');
+    expect(sceneText(scenario.scenes.scoring, noCall)).toMatch(/did not record which signal you called/i);
+    expect(meets(scenario.scenes.scoring.choices.find(({ id }) => id === 'claimGlass')?.requirements, noCall)).toBe(false);
+    expect(meets(scenario.scenes.scoring.choices.find(({ id }) => id === 'claimCoin')?.requirements, noCall)).toBe(true);
+    const noCallCoin = act(noCall, scenario, 'claimCoin');
+    expect(sceneText(scenario.scenes.coin, noCallCoin)).toMatch(/does not establish a winner/i);
+
+    let legacy = begin(scenario);
+    legacy.run!.sceneId = 'scoring';
+    expect(sceneText(scenario.scenes.scoring, legacy)).toMatch(/did not record which signal you called/i);
+    expect(meets(scenario.scenes.scoring.choices.find(({ id }) => id === 'claimGlass')?.requirements, legacy)).toBe(false);
+
+    const legacyPrize = begin(scenario);
+    legacyPrize.run!.sceneId = 'prize';
+    expect(sceneText(scenario.scenes.prize, legacyPrize)).toMatch(/does not preserve which route earned the Field Glasses/i);
+
+    let helper = act(begin(scenario), scenario, 'askSpotter');
+    helper = act(helper, scenario, 'checkRidgeFirst');
+    expect(helper.run?.sceneId).toBe('worker');
+    helper = act(helper, scenario, 'takeGlasses');
+    expect(helper.run?.inventory).toContain('fieldGlasses');
+    expect(sceneText(scenario.scenes.prize, helper)).toMatch(/helped bring the survey hand back/i);
+  });
+
   it('keeps Hammer and Ribbon rewards tied to an established result', () => {
     const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-hammer-and-the-ribbon')!;
 

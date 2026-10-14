@@ -16,17 +16,25 @@ const item = (id: string, source: string, flag: string) => ({ gainItems: [id], g
 export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
   a('the-match-at-the-brace', 'The Match at the Brace', 'Two carpenters disagree about what makes a repair strong.', 'A public repair trial tests judgment under a load, not speed alone.', 'county fair work yard', 'MODERATE', 'trial', {
     trial: s('trial','A Brace under Load','Nell Ward and Hiram Cole each build a brace for the same split cart rail. You may test their work, but the prize—a Bridgewright’s Hammer—is announced before the first load is set.',[
-      {id:'testSlow',label:'Load both braces gradually, recording each movement',next:'strain'}, {id:'testFast',label:'Apply the full cart weight at once',next:'strain',effects:{setFlags:['brace_harsh_test']}}, {id:'judgeMethod',label:'Ask each carpenter to explain the grain direction first',next:'grain'},
+      {id:'testSlow',label:'Load both braces gradually, recording each movement',next:'strain',effects:{setFlags:['brace_gradual_test']}}, {id:'testFast',label:'Apply the full cart weight at once',next:'strain',effects:{setFlags:['brace_harsh_test']}}, {id:'judgeMethod',label:'Ask each carpenter to explain the grain direction first',next:'grain'},
     ]),
     grain:s('grain','Wood Has a Direction','Nell aligned the brace with the grain; Hiram cut across a knot. The fast test could still split both pieces, so the fair keeper asks you to choose how the load is applied.',[
-      {id:'gradual',label:'Use a gradual load and watch the knot',next:'strain'}, {id:'full',label:'Use the full load as the posted trial requires',next:'strain',effects:{setFlags:['brace_harsh_test']}},
+      {id:'gradual',label:'Use a gradual load and watch the knot',next:'strain',effects:{setFlags:['brace_gradual_test']}}, {id:'full',label:'Use the full load as the posted trial requires',next:'strain',effects:{setFlags:['brace_harsh_test']}},
     ]),
-    strain:s('strain','The Rail Moves','The gradual load holds on Nell’s brace. Hiram’s shifts at the knot; under the sudden load, both braces crack, but the cart rail remains supported by its original blocks.',[
-      {id:'awardNell',label:'Award the hammer to the stronger safe brace',next:'winner',effects:{...item('bridgewrightHammer','Awarded by the fair keeper for a tested, safe brace in The Match at the Brace.','won_bridgewright_hammer_brace_trial')}},
+    strain:{...s('strain','The Rail Moves','The keeper records a winner only when the test establishes which brace remained safe.',[
+      {id:'awardNell',label:'Award the hammer to Nell for the tested safe brace',next:'winner',requirements:{flags:['brace_gradual_test']},effects:{...item('bridgewrightHammer','Awarded by the fair keeper for a tested, safe brace in The Match at the Brace.','won_bridgewright_hammer_brace_trial')}},
       {id:'voidUnsafe',label:'Void the trial and ask both carpenters to rebuild',next:'void',effects:{knowledge:['A brace should be loaded gradually; a sudden test can damage both the repair and the part it supports.']}},
       {id:'takeTwoCoins',label:'Take the posted two-coin judge’s fee and decline the call',next:'fee',effects:{money:2}},
-    ]),
-    winner:e('winner','A Sound Result','Nell receives the ribbon. The keeper awards you the announced hammer for identifying a safe result rather than the fastest build.'),
+    ]),textVariants:[
+      {requirements:{flags:['brace_gradual_test']},text:'The gradual load holds on Nell’s brace. Hiram’s shifts at the knot. The keeper records Nell’s brace as the tested safe result.'},
+      {requirements:{flags:['brace_harsh_test']},text:'Under the sudden full load, both braces crack, though the cart rail remains supported by its original blocks. The keeper records no safe brace winner.'},
+      {requirements:{notFlags:['brace_gradual_test','brace_harsh_test']},text:'The test method is not recorded here, so the keeper cannot establish which brace remained safe. No winner is recorded without that proof.'},
+    ]},
+    winner:{...e('winner','A Sound Result','The keeper closes the recorded trial and transfers the announced hammer.'),textVariants:[
+      {requirements:{flags:['brace_gradual_test']},text:'Nell receives the ribbon after her brace holds under the gradual load. The keeper awards you the announced hammer for identifying a tested, safe result.'},
+      {requirements:{flags:['brace_harsh_test']},text:'This saved result does not establish a safe winner: the sudden full load cracked both braces. The keeper has closed the trial, but the winner cannot be verified from this route record.'},
+      {requirements:{notFlags:['brace_gradual_test','brace_harsh_test']},text:'This saved result has no recorded test method, so the keeper cannot verify a safe winner. The trial is closed, but its result remains unconfirmed.'},
+    ]},
     void:e('void','Trial Reset','The keeper stops the contest and gives the builders time to replace the split braces. The result is not called a win; you leave with the lesson, not the hammer.'),
     fee:e('fee','A Judge’s Fee','You take the two coins. The builders redo the test with a gradual load, and the announced hammer goes to the keeper’s next volunteer judge.'),
   }),
@@ -116,18 +124,25 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
         {id:'checkRidge',label:'Pause scoring and ask the foreman to check the ridge',next:'worker',effects:{knowledge:['A moving cloth outside a signal course may be a person in trouble, not part of the contest.']}}, {id:'stayContest',label:'Finish the marked signal round first',next:'scoring'},
     ]),
     wind:s('wind','A Crosswind','The lookout says the wind is pushing all three flags east. The changed signal’s shadow does not move with it.',[
-        {id:'callChanged',label:'Call the signal whose shadow stays still',next:'scoring',effects:{knowledge:['At a windy lookout, compare a signal’s shadow or fixed edge before treating every movement as a deliberate sign.']}}, {id:'checkRidgeFirst',label:'Ask the foreman to inspect the extra movement',next:'worker',effects:{knowledge:['A moving cloth outside a signal course may be a person in trouble, not part of the contest.']}},
+        {id:'callChanged',label:'Call the signal whose shadow stays still',next:'scoring',effects:{setFlags:['lookout_signal_correct'],knowledge:['At a windy lookout, compare a signal’s shadow or fixed edge before treating every movement as a deliberate sign.']}}, {id:'checkRidgeFirst',label:'Ask the foreman to inspect the extra movement',next:'worker',effects:{knowledge:['A moving cloth outside a signal course may be a person in trouble, not part of the contest.']}},
     ]),
     seen:s('seen','The Cloth Is Not a Signal','The glasses show a coat snagged below the ridge and a person waving from behind it. The judge pauses the contest and sends the foreman to check.',[
         {id:'goWithForeman',label:'Go with the foreman along the marked path',next:'worker',effects:{knowledge:['A moving cloth outside a signal course may be a person in trouble, not part of the contest.']}}, {id:'completeCall',label:'Record the signal result while help goes out',next:'scoring',effects:{knowledge:['A moving cloth outside a signal course may be a person in trouble, not part of the contest.']}},
     ]),
     worker:s('worker','A Survey Hand Needs Help','The coat belongs to a survey hand who twisted an ankle while retrieving a dropped stake. The foreman brings them back by the lower path; the contest has been paused, not abandoned.',[
-        {id:'takeGlasses',label:'Accept the Field Glasses prize for the correct call',next:'prize',effects:item('fieldGlasses','Awarded by the rail-camp foreman after the Traveler noticed a person outside the marked contest field.','won_field_glasses_lookout_trial')}, {id:'takeCoin',label:'Take the one-coin helper’s fee instead',next:'coin',effects:{money:1}}, {id:'declineHelperFee',label:'Decline material compensation',next:'lesson'},
+        {id:'takeGlasses',label:'Accept the Field Glasses prize for the correct call',next:'prize',effects:{...item('fieldGlasses','Awarded by the rail-camp foreman after the Traveler noticed a person outside the marked contest field.','won_field_glasses_lookout_trial'),setFlags:['lookout_helped_worker']}}, {id:'takeCoin',label:'Take the one-coin helper’s fee instead',next:'coin',effects:{money:1}}, {id:'declineHelperFee',label:'Decline material compensation',next:'lesson'},
     ]),
-    scoring:s('scoring','A Call Is Checked','The judge checks the signal chart. A correct call earns the posted glasses; a close miss earns a coin, and no one is blamed for pausing when a person may need help.',[
-      {id:'claimGlass',label:'Take the Field Glasses if your call was correct',next:'prize',requirements:{notOwnedItems:['fieldGlasses']},effects:item('fieldGlasses','Awarded by the rail-camp foreman for a correct signal reading in The Lookout at Dusk.','won_field_glasses_signal_trial')}, {id:'claimCoin',label:'Take the one-coin consolation purse',next:'coin',effects:{money:1}},
-    ]),
-      prize:e('prize','A Clearer View','The foreman awards the Field Glasses as announced. The contest result records both the accurate observation and the pause for the survey hand.'), coin:e('coin','A Coin for the Call','You take one coin. The glasses go to the contest winner, and the survey hand reaches camp safely.'), lesson:e('lesson','The Wider Field','You decline material compensation. The survey hand reaches camp safely, and any knowledge you gained from noticing the extra movement remains yours.'),
+    scoring:{...s('scoring','A Call Is Checked','The judge checks the contest record. The result is awarded only if the route established which signal you called.',[
+      {id:'claimGlass',label:'Accept the Field Glasses for the verified correct call',next:'prize',requirements:{flags:['lookout_signal_correct'],notOwnedItems:['fieldGlasses']},effects:item('fieldGlasses','Awarded by the rail-camp foreman for a correct signal reading in The Lookout at Dusk.','won_field_glasses_signal_trial')}, {id:'claimCoin',label:'Take the one-coin contest purse',next:'coin',effects:{money:1}},
+    ]),textVariants:[
+      {requirements:{flags:['lookout_signal_correct']},text:'You called the signal whose shadow stayed still, and the judge confirms that it was the changed signal. The posted Field Glasses prize is yours to accept.'},
+      {requirements:{notFlags:['lookout_signal_correct']},text:'The route did not record which signal you called, so the judge cannot verify a correct result. The Field Glasses are not awarded on missing proof; you may take the one-coin contest purse instead or leave it.'},
+    ]},
+      prize:{...e('prize','A Clearer View','The foreman completes the Field Glasses transfer already recorded in this saved result; the route that earned them is not recorded here.'),textVariants:[
+        {requirements:{flags:['lookout_helped_worker']},text:'The foreman awards the Field Glasses after you paused the contest and helped bring the survey hand back by the lower path.'},
+        {requirements:{flags:['lookout_signal_correct']},text:'The foreman awards the Field Glasses after the judge confirms your call of the signal whose shadow stayed still.'},
+        {requirements:{notFlags:['lookout_helped_worker','lookout_signal_correct']},text:'This saved result does not preserve which route earned the Field Glasses. The foreman completes the transfer already recorded, but no further contest or rescue result can be verified here.'},
+      ]}, coin:e('coin','A Coin for the Call','You take one coin. No Field Glasses are transferred to you on this route; the saved contest record does not establish a winner.'), lesson:e('lesson','The Wider Field','You decline material compensation. The survey hand reaches camp safely, and any knowledge you gained from noticing the extra movement remains yours.'),
   }),
   a('the-long-carry', 'The Long Carry', 'A lumber camp tests how teams move a beam without wrecking the road.', 'A strength contest rewards load planning over a single burst of effort.', 'lumber camp road', 'MODERATE', 'load', {
     load:s('load','A Beam and Two Ruts','Teams must move a squared beam between two stakes. The camp’s Pack Frame is the prize, announced before the start. One rut is firm and narrow; the other is broad but soft.',[
