@@ -96,6 +96,34 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(legacyText).not.toMatch(/goods remain together|bedding was left at the staging shed/i);
   });
 
+  it('does not place the Quiet Resupply crew at the cut until the uphill print is followed', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-quiet-resupply')!;
+    let sheltered = fresh(scenario);
+    sheltered = take(sheltered, scenario, 'camp', 'secureCrate');
+    expect(sheltered.run?.flags).toContain('resupply_crate_sheltered');
+    const shelteredText = sceneText(scenario.scenes.tracks, sheltered);
+    expect(shelteredText).toMatch(/no route proof here establishes the crew’s location or current needs/i);
+    expect(shelteredText).not.toMatch(/two workers|crew needs bandages/i);
+    expect(meets(scenario.scenes.tracks.choices.find(({ id }) => id === 'carryEssentials')?.requirements, sheltered)).toBe(false);
+    expect(meets(scenario.scenes.tracks.choices.find(({ id }) => id === 'returnForAll')?.requirements, sheltered)).toBe(true);
+
+    let found = fresh(scenario);
+    found = take(found, scenario, 'camp', 'followPrint');
+    expect(found.run?.flags).toContain('resupply_followed_crew');
+    expect(sceneText(scenario.scenes.tracks, found)).toMatch(/following the uphill print brings you to two workers/i);
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(found, storage as never);
+    found = loadSave(storage as never);
+    expect(meets(scenario.scenes.tracks.choices.find(({ id }) => id === 'carryEssentials')?.requirements, found)).toBe(true);
+    found = take(found, scenario, 'tracks', 'carryEssentials');
+    expect(found.run?.sceneId).toBe('paid');
+
+    const legacy = fresh(scenario);
+    legacy.run!.sceneId = 'tracks';
+    expect(sceneText(scenario.scenes.tracks, legacy)).toMatch(/no route proof here establishes the crew’s location or current needs/i);
+    expect(meets(scenario.scenes.tracks.choices.find(({ id }) => id === 'carryEssentials')?.requirements, legacy)).toBe(false);
+  });
+
   it('acquires the Cargo Balance Scale only through explicit release and preserves pending placement across save/resume', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-third-trip')!;
     let state = fresh(scenario);
