@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, itemState, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { eligibleScenarios } from '../scenarioSelection';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
@@ -188,5 +188,35 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     expect(state.run?.sceneId).toBe('person');
     state = act(state, scenario, 'walkSlow');
     expect(state.run?.sceneId).toBe('rescue');
+  });
+
+  it('keeps Spring Run evacuation claims separate by people, flock, and an unconfirmed wagon signal', () => {
+    const spring = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-spring-run')!;
+
+    let workers = act(begin(spring), spring, 'movePeople');
+    expect(workers.run?.flags).toContain('springWorkersAtRidge');
+    workers = act(workers, spring, 'raiseCloth');
+    const workersText = sceneText(spring.scenes.partial, workers);
+    expect(workersText).toMatch(/two workers are on the high ridge/i);
+    expect(workersText).toMatch(/no completed crossing or flock evacuation is established/i);
+    expect(workersText).not.toMatch(/flock is gathered|everyone stays out/i);
+    const whistleProvenance = spring.scenes.partial.choices.find(({ id }) => id === 'takeWhistle')?.effects?.gainItemProvenance?.farmWhistle;
+    expect(whistleProvenance).toMatch(/helped respond to a rising spring flood/i);
+    expect(whistleProvenance).not.toMatch(/moved people and sheep/i);
+
+    let sheep = act(begin(spring), spring, 'secureFlock');
+    sheep = act(sheep, spring, 'holdGate');
+    const sheepText = sceneText(spring.scenes.partial, sheep);
+    expect(sheep.run?.flags).toContain('springFlockTurnedBack');
+    expect(sheepText).toMatch(/sheep turn back from the flooded ditch/i);
+    expect(sheepText).toMatch(/workers’ location is not confirmed/i);
+    expect(sheepText).not.toMatch(/gathered above the flood|workers are on the high ridge/i);
+
+    let signal = act(begin(spring), spring, 'reachWagon');
+    signal = act(signal, spring, 'showHighMark');
+    const signalText = sceneText(spring.scenes.partial, signal);
+    expect(signal.run?.flags).toContain('springCrewSignaled');
+    expect(signalText).toMatch(/does not confirm that the workers or flock are all clear/i);
+    expect(signalText).not.toMatch(/wagon crew waits|flock is gathered|workers stay on the ridge/i);
   });
 });
