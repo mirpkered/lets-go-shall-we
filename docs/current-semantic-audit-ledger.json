@@ -8554,12 +8554,12 @@
       "slug": "the-stones-in-the-rut",
       "title": "The Stones in the Rut",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0192"
       ],
       "reviewProvenance": "current-source route review; cord inspection/farm warning/stone-moving approaches, whistle/ditch/witness responses, combat win/loss, road reopening and separate whistle compensation traced",
-      "notes": "Only moveStones says the obstruction is moved and the road opens. inspectCord and warnFarm do not clear it; openDitch only turns the wagon through the ditch, while useWhistle/nameWitness make the robbers withdraw. The shared aftermath nevertheless says the obstruction is cleared on every response path. Combat loss ends in withdrawal; combat victory enters that same aftermath without a clearing action.",
+      "notes": "Only moveStones says the obstruction is moved and the road opens. inspectCord and warnFarm do not clear it; openDitch only turns the wagon through the ditch, while useWhistle/nameWitness make the robbers withdraw. Combat loss ends in withdrawal; combat victory enters aftermath without a clearing action. Repaired with a route-aware aftermath: all approaches retain their established response result, only moveStones adds that the road opened slowly, and combat victory uses approach proof without inventing a response. The title and markPinch ending no longer imply the road reopened on every route. Regression covers all approaches/responses, moved and unmoved combat victories, and the markPinch ending on both moved and unmoved routes.",
       "preReconciliationPosition": 493,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17409,6 +17409,8 @@
       "violatedRule": "A location/obstacle state may change only when an incoming route establishes the physical intervention.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "roadDangerGenreBatch.ts now builds approach- and response-aware aftermath variants for this Adventure only. inspectCord/warnFarm and combat victory without moveStones receive neutral obstacle wording; moveStones retains the opening result across response and combat-victory paths. The aftermath title and markPinch result avoid asserting clearance/reopening on routes without that action. roadDangerGenreBatch.test.ts exercises all three response methods across all approaches, the optional usable whistle, moved/unmoved combat wins, and the markPinch ending under moved/unmoved state. No new flags, save behavior, Gear gates, rewards, or other root-cause behavior changed. All 24 road-danger builder callers passed the family suite.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20078,9 +20080,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 625,
+    "HEALTHY": 626,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 177,
+    "CONFIRMED DEFECT": 176,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
