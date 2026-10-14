@@ -7726,12 +7726,12 @@
       "slug": "hollow-fort",
       "title": "The Hollow Fort",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0178"
       ],
       "reviewProvenance": "current-source route review; yard/panel/archive/cistern/powder/tunnel/bastion routes, usable-hook drain, roster copying, resealing, retreat, danger/death and all result variants traced",
-      "notes": "fortYard.archive -> fortArchive.compareWall -> fortMarked (and cistern measure/retreat variants) contains no action or effect telling the workers to stop stripping timber, yet fortMarked says they stop. Only walkAwayFort explicitly tells them to leave the wall alone; exitFort explicitly marks the hatch for them. Conditional fortResolution variants preserve roster, drain, bastion and escape-route facts correctly; the finding is limited to the unsupported work-stoppage claim on the direct survey returns.",
+      "notes": "fortYard.archive -> fortArchive.compareWall -> fortMarked (and cistern measure/retreat variants) contained no action or effect telling the workers to stop stripping timber, yet fortMarked said they stop. Only walkAwayFort explicitly tells them to leave the wall alone; exitFort marks the hatch but does not request a work stoppage. The ending now uses neutral text by default and, when `fortWorkersAskedToPause` exists, records only that the Traveler asked; it does not claim compliance. Conditional fortResolution variants preserving roster, drain, bastion and escape-route facts remain intact.",
       "preReconciliationPosition": 443,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17211,6 +17211,8 @@
       "violatedRule": "A shared ending may not claim an NPC changed behavior unless the route communicated the relevant request/result or otherwise established that response.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared fortMarked ending defaults to route-neutral text. The direct walkAwayFort choice sets factual run-local `fortWorkersAskedToPause` and receives a variant that says only that the request was made, not that workers complied. Regression covers archive/plan, measured cistern, archive exit, and explicit request routes; deep-exploration suite passes 25 tests. No roster/drain/escape route result or persistence system changed.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20052,9 +20054,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 614,
+    "HEALTHY": 615,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 188,
+    "CONFIRMED DEFECT": 187,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
