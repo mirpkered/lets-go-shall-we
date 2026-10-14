@@ -13,6 +13,25 @@ type EvidenceStory = {
 type RouteProofTest = { fallback: string; results: Record<string, string> };
 
 const routeProofTests: Record<string, RouteProofTest> = {
+  'the-scrape-beneath-the-lock': {
+    fallback: 'The hasp has a bright scrape on its outside edge, but no comparison has established how the key turns or whether the inside lip has a separate mark.',
+    results: { measure: 'The spare key turns stiffly and leaves a shallow line on the inside lip. The scrape is on the outside. This suggests separate contact, not a complete account of who entered.' },
+  },
+  'the-switch-that-faced-east': {
+    fallback: 'The lever is out of its expected position and the gravel is scuffed. The exposed locking pin has not been examined closely enough to establish its condition or who moved the switch.',
+    results: { ask: 'The pin is bent at its exposed end and the gravel is scuffed. A wheel or a boot could have struck it; the position alone does not show who moved it.' },
+  },
+  'the-two-seals-at-blackwater-dock': {
+    fallback: 'The ledger route and outer seal disagree, but the boat crew has not yet supplied an account of its landing or loading point.',
+    results: { ask: 'The crew names Bell Landing, while the crate’s outer seal was reused from an earlier shipment. The scuff may come from transfer between boats.' },
+  },
+  'the-empty-hook-in-the-tool-room': {
+    fallback: 'The peg is empty and the shift sheet is torn. Without checking the signed inventory or asking the storekeeper about issue records, the hammer’s last recorded holder remains unknown.',
+    results: {
+      measure: 'The last signed inventory shows the hammer assigned to the bridge crew before the visitor arrived; the torn shift sheet still hides the return mark.',
+      ask: 'The storekeeper confirms the hammer was issued to the bridge crew before the visitor arrived; the torn shift sheet still hides the return mark.',
+    },
+  },
   'the-gate-pin-at-south-pasture': {
     fallback: 'The pin lies beside the hinge, with one polished side and a newer bend. Without comparing it against the socket, its fit and the cause of the gate opening remain unsettled.',
     results: { measure: 'The old polished side fits the socket. The new bend would let the pin ride upward if the gate struck the ground, but it could also follow rough handling.' },
@@ -214,11 +233,11 @@ function build(c: EvidenceStory): Scenario {
     ...(item && itemName ? { gear:e('gear','A Tool for Careful Records',`${provenance} The ${itemName} helps with ${itemSource}; it preserves a comparison, not a conclusion.`) } : {}),
   };
   if (c.combat) {
-    scenes.test = s('test',c.testTitle,`${c.test} Before the owner can decide what to do, a person comes back to remove the disputed item and shoves the clerk aside. They have not drawn a weapon; the office door and public street are both clear.`,[
+    scenes.test = s('test',c.testTitle,`${routeProofTest?.fallback ?? c.test} Before the owner can decide what to do, a person comes back to remove the disputed item and shoves the clerk aside. They have not drawn a weapon; the office door and public street are both clear.`,[
       { id:'callWitness',label:'Call the street watch and keep the clerk behind the counter',next:'settlement',effects:{setFlags:[`${c.id}_careful`],knowledge:[c.lesson]} },
       { id:'secureEvidence',label:'Move the evidence to the locked public office and withdraw',next:'settlement',effects:{setFlags:[`${c.id}_verified`],knowledge:[c.lesson]} },
       { id:'standGround',label:'Restrain the returning intruder',chance:{probability:.55,successNext:'settlement',failureNext:'settlement',successMessage:'The intruder backs away when the watch answers.',failureMessage:'You are struck in the struggle, but the intruder flees when the street watch arrives.',failureEffects:{health:-3,setFlags:[`${c.id}_verified`],knowledge:[c.lesson]},successEffects:{setFlags:[`${c.id}_careful`],knowledge:[c.lesson]} } },
-    ]);
+    ], 'safe', routeProofTest ? Object.entries(routeProofTest.results).map(([choiceId,text]) => ({ requirements:{flags:[`${c.id}_${choiceId}`]}, text:`${text} Before the owner can decide what to do, a person comes back to remove the disputed item and shoves the clerk aside. They have not drawn a weapon; the office door and public street are both clear.` })) : undefined);
   }
   const tags = largeTags({ hook:`${c.claim} ${c.interpretation}`, role:'traveler/passenger', activity:'investigation/mystery', tone:c.risk === 'LOW' ? 'adventurous' : c.risk === 'HIGH' ? 'tense/dangerous' : 'tense', risk:c.risk, setting:c.setting, fantasy:'NONE', combat:c.combat ? 'POSSIBLE' : 'NONE', structures:['evidence review','multiple explanations','choice changes response','interpretation with uncertainty'], entry:['hired/posted work','accidental encounter'], rewards:['Knowledge','coins',...(item ? ['Gear'] : [])], outcomes:['success/partial success','walk-away/refusal'] });
   return largeAdventure(c.id,c.title,c.subtitle,tags,'observe',scenes);

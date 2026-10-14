@@ -57,6 +57,10 @@ describe('Investigation / Evidence / Specialist Tools genre batch', () => {
   });
 
   it.each([
+    { scenarioId: 'the-scrape-beneath-the-lock', resultRoutes: ['measure'], result: /spare key turns stiffly.*shallow line on the inside lip/i, unsupported: /The key turns stiffly and leaves a shallow line/i },
+    { scenarioId: 'the-switch-that-faced-east', resultRoutes: ['ask'], result: /pin is bent at its exposed end/i, unsupported: /pin is bent at its exposed end/i },
+    { scenarioId: 'the-two-seals-at-blackwater-dock', resultRoutes: ['ask'], result: /crew names Bell Landing/i, unsupported: /crew names Bell Landing/i },
+    { scenarioId: 'the-empty-hook-in-the-tool-room', resultRoutes: ['measure', 'ask'], result: /hammer (?:assigned|was issued) to the bridge crew/i, unsupported: /hammer (?:assigned|was issued) to the bridge crew/i },
     { scenarioId: 'the-gate-pin-at-south-pasture', resultRoutes: ['measure'], result: /old polished side fits the socket/i, unsupported: /fits the socket/i },
     { scenarioId: 'the-ledger-page-that-dried', resultRoutes: ['compare'], result: /next sheet preserves part of the line/i, unsupported: /two coin marks/i },
     { scenarioId: 'the-rope-fibers-on-the-ferry-cleat', resultRoutes: ['measure', 'compare'], result: /inner strands are stretched/i, unsupported: /inner strands are stretched/i },
