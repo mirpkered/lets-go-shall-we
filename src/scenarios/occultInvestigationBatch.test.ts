@@ -535,6 +535,24 @@ describe('occult investigation adventures', () => {
     expect(meets(crossing.scenes.crossingMarks.choices.find((c) => c.id === 'useSpiritGlass')!.requirements, equipped)).toBe(true);
   });
 
+  it('does not claim the glazier dismantled the widow’s mirror unless that repair was chosen', () => {
+    const scenario = adventures.find((s) => s.id === 'the-widows-mirror')!;
+    let carried = fresh(scenario);
+    carried = act(carried, scenario, 'carryMirrorOut');
+    const unaltered = sceneText(scenario.scenes.mirrorAfter, carried);
+    expect(unaltered).not.toMatch(/glazier takes the mirror apart/i);
+    expect(unaltered).toMatch(/no repair is established/i);
+
+    let repaired = fresh(scenario);
+    repaired = act(repaired, scenario, 'inspectBacking');
+    repaired = act(repaired, scenario, 'askMason');
+    repaired = act(repaired, scenario, 'allowRepair');
+    repaired = roundTrip(repaired);
+    const repairedText = sceneText(scenario.scenes.mirrorAfter, repaired);
+    expect(repairedText).toMatch(/glazier takes the mirror apart/i);
+    expect(repairedText).toMatch(/warped silver/i);
+  });
+
   it('supports a dungeon retreat, a supernatural confrontation, and a foreshadowed lethal failure', () => {
     const fort = adventures.find((s) => s.id === 'below-the-old-fort')!;
     let retreat = act(fresh(fort), fort, 'retreatFort');
