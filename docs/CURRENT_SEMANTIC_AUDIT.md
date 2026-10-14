@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 109
+### Active local repair checkpoint — CRA-C0001 Wave 110
+
+Wave 110 repairs CRA-F0158 (The Clerk’s Second Stamp). Both routes into the scraped-copy ending leave the Traveler’s name and arrival date unsigned, so that result now says the innkeeper does not yet have a usable certificate. Only the separate `signCorrectLine` route retains the valid-form result. The accept-as-is ending remains unchanged and does not claim the certificate is valid. Regression covers both unsigned arrivals and the signed contrast. Focused tests passed **9 tests**; TypeScript and production build passed with the existing large-bundle warning. Current classifications derive to **732 HEALTHY, 59 MINOR CONCERN, 70 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **284 are dispositioned** (279 repaired and 5 healthy/no-longer-reproduces) and **70 remain open**, including **36 CRA-C0001** (28 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `69d6386`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 109
 
 Wave 109 repairs CRA-F0156 (The Cobbler’s Last Pair). The partner-agreement ending now reports only the dancer’s partner agreeing to change the first figure; it says the worker’s boot still needs repair and that no patch or return promise is arranged on this route. The distinct canvas-patch route still grants the temporary patch. CRA-F0155 (CRA-C0007) remains open and untouched, so this Adventure remains CONFIRMED DEFECT. Focused anthology tests passed **11 tests**; TypeScript and production build passed with the existing large-bundle warning. Current classifications remain **731 HEALTHY, 59 MINOR CONCERN, 71 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **283 are dispositioned** (278 repaired and 5 healthy/no-longer-reproduces) and **71 remain open**, including **37 CRA-C0001** (29 MEDIUM, 5 LOW, 3 unrecovered severity). Gameplay/test commit: `af1828a`; no push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 

@@ -7188,7 +7188,7 @@
       "slug": "the-clerks-second-stamp",
       "title": "The Clerk’s Second Stamp",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0158"
       ],
@@ -7198,7 +7198,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 110: the shared scraped ending now explicitly remains pending the Traveler's name and arrival date and says the innkeeper does not yet have a usable certificate. Both copy.scrape and askClerkInitial use that truthful result; only signCorrectLine retains the valid-form result. The accept-as-is route remains unchanged and does not claim validity. Regression covers both unsigned routes and the signed contrast. Focused comedy-absurdity tests passed (9); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "position": 412,
@@ -17116,7 +17118,9 @@
       "violatedRule": "A form requiring the Traveler’s own declaration cannot be described as a usable completed certificate until that declaration is signed.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 110: the shared scraped ending now explicitly remains pending the Traveler's name and arrival date and says the innkeeper does not yet have a usable certificate. Both copy.scrape and askClerkInitial use that truthful result; only signCorrectLine retains the valid-form result. The accept-as-is route remains unchanged and does not claim validity. Regression covers both unsigned routes and the signed contrast. Focused comedy-absurdity tests passed (9); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0159",
@@ -20315,9 +20319,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 731,
+    "HEALTHY": 732,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 71,
+    "CONFIRMED DEFECT": 70,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
