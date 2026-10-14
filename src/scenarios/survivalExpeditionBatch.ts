@@ -464,16 +464,18 @@ export const THE_ICE_GIVES_WARNING: Scenario = {
     ] },
     iceRead: { id: 'iceRead', title: 'Water under the Skin', tone: 'danger', text: 'The probe breaks through the thin patch with little force. The dark seam is not a safe walking line; the cart cannot cross there today. The gravel bend upstream remains the only visible way across without waiting.', choices: [
       { id: 'moveIceCart', label: 'Take the cart toward the gravel bend', next: 'iceGravelRoute' },
-      { id: 'leaveIceCart', label: 'Leave the cart and seek a mill road', next: 'iceSafeWait' },
+      { id: 'leaveIceCart', label: 'Leave the cart and seek a mill road', next: 'iceSafeWait', effects: { setFlags: ['iceCartLeftBehind'] } },
     ] },
     iceGravelRoute: { id: 'iceGravelRoute', title: 'The Gravel Bend', tone: 'warning', text: 'The bar narrows the creek but exposes shallow water. The cart can be carried across in pieces, though the stones are slick and the current is cold. The mill road is farther upstream and remains dry.', choices: [
       { id: 'carryCartIceBend', label: 'Carry the cart across in pieces', chance: { probability: 0.72, successNext: 'iceFarBank', failureNext: 'iceColdFall', successMessage: 'The cart and traveler reach the far bank on foot.', failureMessage: 'A wheel slips in the shallows and you fall against the stones.', successEffects: { setFlags: ['cartAndTravelerAcross'] }, failureEffects: { health: -2 } } },
       { id: 'takeIceMillRoad', label: 'Use the longer dry mill road', next: 'iceSafeWait' },
     ] },
-    iceBreak: end('iceBreak', 'The Creek Opens', 'The ice breaks under you. The traveler reaches for the rope from shore, but the current carries you under the sheet before they can pull you free.', 'death'),
+    iceBreak: end('iceBreak', 'The Creek Opens', 'The ice breaks beneath you. The current carries you under the sheet before anyone can reach you.', 'death'),
     iceColdFall: end('iceColdFall', 'A Wet Crossing', 'You reach the far bank with a bruised leg and cold water in your clothes. The traveler and cart are safe; the mill’s warm room is now the first stop, not the town beyond.'),
     iceFarBank: { ...end('iceFarBank', 'Across without the Thin Ice', 'You reach the far bank without stepping on the cracked seam. The traveler and cart’s locations are not established by this route record; no one is described as being pulled from the water.'), textVariants: [{ requirements: { flags: ['cartAndTravelerAcross'] }, text: 'The traveler reaches the far bank with the cart by the gravel bar. The cracked seam remains undisturbed; no one was pulled from the water.' }] },
-    iceSafeWait: end('iceSafeWait', 'A Road That Holds', 'You take the longer mill road and report the thin crossing. The cart arrives later, but no one is asked to trust ice that has already shown water beneath it.'),
+    iceSafeWait: { ...end('iceSafeWait', 'A Road That Holds', 'You avoid the thin crossing and report it. The cart is not confirmed across the creek, and no one is asked to trust ice that has already shown water beneath it.'), textVariants: [
+      { requirements: { flags: ['iceCartLeftBehind'] }, text: 'You leave the cart on the near bank and take the mill road, reporting the thin crossing. No one is asked to trust ice that has already shown water beneath it.' },
+    ] },
   },
 };
 

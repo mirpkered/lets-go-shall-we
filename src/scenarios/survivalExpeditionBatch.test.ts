@@ -262,6 +262,25 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceFarBank, restored)).toMatch(/traveler reaches the far bank with the cart/i);
   });
 
+  it('does not invent a rescue rope or cart recovery on the ice endings', () => {
+    const soloFailure = act(start(THE_ICE_GIVES_WARNING), THE_ICE_GIVES_WARNING, 'iceWarning', 'crossIceAlone', 0.999999);
+    expect(soloFailure.run?.sceneId).toBe('iceBreak');
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceBreak, soloFailure)).not.toMatch(/rope/i);
+    const actualLine = act(start(THE_ICE_GIVES_WARNING, ['travelRope']), THE_ICE_GIVES_WARNING, 'iceWarning', 'throwIceLine');
+    expect(actualLine.run?.sceneId).toBe('iceTravelerStops');
+
+    let left = act(start(THE_ICE_GIVES_WARNING, ['smallKnife', 'foremanMultiTool', 'steelWedge']), THE_ICE_GIVES_WARNING, 'iceWarning', 'callIceWarning');
+    left = act(left, THE_ICE_GIVES_WARNING, 'iceTravelerStops', 'testIceSeam');
+    left = act(left, THE_ICE_GIVES_WARNING, 'iceRead', 'leaveIceCart');
+    const leftStorage = { value: '', getItem() { return this.value; }, setItem(_key: string, value: string) { this.value = value; } };
+    saveGame(left, leftStorage);
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceSafeWait, loadSave(leftStorage))).toMatch(/leave the cart on the near bank/i);
+
+    const waited = act(act(start(THE_ICE_GIVES_WARNING), THE_ICE_GIVES_WARNING, 'iceWarning', 'callIceWarning'), THE_ICE_GIVES_WARNING, 'iceTravelerStops', 'waitIceThaw');
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceSafeWait, waited)).not.toMatch(/cart arrives later/i);
+    expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceSafeWait, waited)).not.toMatch(/cart remains on the near bank/i);
+  });
+
   it('remembers meeting the Empty Cabin trapper without inventing that encounter on other exits', () => {
     let met = act(start(THE_EMPTY_CABIN), THE_EMPTY_CABIN, 'cabinDoor', 'readCabinNote');
     met = act(met, THE_EMPTY_CABIN, 'cabinSigns', 'followCabinPrints');
