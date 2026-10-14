@@ -153,6 +153,20 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(tree.scenes.treeDelayEnd, standing)).not.toMatch(/fallen short/i);
   });
 
+  it('mentions garland trimming only after the tree takes a branch-breaking fall', () => {
+    const tree = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'christmas-tree-millers-hill')!;
+    let clean = pick(pick(fresh(tree), tree, 'joinRopeCrew'), tree, 'pullTreeNow', () => 0);
+    expect(clean.run?.sceneId).toBe('safeFall');
+    clean = pick(clean, tree, 'haulTree');
+    expect(clean.run?.sceneId).toBe('treeSquare');
+    expect(sceneText(tree.scenes.treeSquare, clean)).not.toMatch(/split branches are cut/i);
+
+    let rough = pick(pick(fresh(tree), tree, 'joinRopeCrew'), tree, 'pullTreeNow', () => 0.999999);
+    expect(rough.run?.sceneId).toBe('roughFall');
+    rough = pick(rough, tree, 'trimBranches');
+    expect(sceneText(tree.scenes.treeSquare, rough)).toMatch(/split branches are cut for garland/i);
+  });
+
   it('mentions the repaired carving tool only on the binding route', () => {
     const toy = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'toymakers-last-order')!;
     let repaired = pick(pick(fresh(toy), toy, 'inspectTool'), toy, 'bindHandle');
