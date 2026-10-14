@@ -3891,12 +3891,12 @@
       "slug": "no-water-at-millers-spring",
       "title": "No Water at Miller’s Spring",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0060"
       ],
       "reviewProvenance": "current source route review; ground reading, homestead, basin dig success/failure, seep search success/failure, accepted water/work and turnback outcomes traced",
-      "notes": "Successful digging at the old basin routes directly to springSeep, whose text relocates the damp line beneath a fallen branch in the shaded fold; readSpringGround also reaches that scene, but the dig success message establishes a seep at the basin. The homestead, water, knowledge, and retreat endings otherwise remain route-consistent.",
+      "notes": "Successful digging at the old basin now sets dugSpringSeepAtBasin, selecting text that keeps the seep at the basin. The readSpringGround route retains the shaded-fold location, and failed digging still ends without a seep. The flag survives save/reload; homestead, water, Knowledge, and retreat outcomes remain unchanged.",
       "preReconciliationPosition": 212,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15679,6 +15679,8 @@
       "violatedRule": "A shared scene must preserve route-established physical location and not relocate a discovered object/source without movement or transition.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Successful digSpringBasin now records factual run-local dugSpringSeepAtBasin through chance.successEffects. springSeep selects basin-specific text only with that proof; readSpringGround retains its shaded-fold text, and the failed dig never reaches the seep or sets the flag. Regression verifies both successful source routes, failed digging, and save/reload preservation. survivalExpeditionBatch.test.ts passes 20 tests; registry/library checks and TypeScript/build pass.",
       "preReconciliationPosition": 212,
       "registrationStatus": "LIVE"
     },
@@ -20118,9 +20120,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 645,
+    "HEALTHY": 646,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 157,
+    "CONFIRMED DEFECT": 156,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
