@@ -111,6 +111,37 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(scenario.scenes.elkKick.text).not.toContain('moving through the open gate');
   });
 
+  it('keeps White Stag hunt and boundary outcomes limited to route-established facts', () => {
+    const scenario = MONSTER_HUNT_FIRST.find(({ id }) => id === 'the-white-stag')!;
+    const ending = (state: SaveData) => sceneText(scenario.scenes.stagAfter, state);
+    const unsupportedClaims = /farmer postpones the hunt|crop loss is traced to livestock|landholders still have to mend/i;
+
+    let orchard = take(fresh(scenario), scenario, 'inspectCropEdges');
+    orchard = take(orchard, scenario, 'followDeerTracks');
+    orchard = take(orchard, scenario, 'letStagPass');
+    expect(ending(orchard)).not.toMatch(unsupportedClaims);
+    expect(orchard.character?.knowledge).toContain('A pale, limping stag fed beyond the orchard fence and left when given room.');
+
+    let huntersLeft = take(fresh(scenario), scenario, 'inspectCropEdges');
+    huntersLeft = take(huntersLeft, scenario, 'searchForHunters');
+    huntersLeft = take(huntersLeft, scenario, 'leaveHunters');
+    expect(ending(huntersLeft)).not.toMatch(unsupportedClaims);
+    expect(ending(huntersLeft)).toMatch(/what happens to the broken boundary/i);
+
+    let fenceMended = take(fresh(scenario), scenario, 'inspectCropEdges');
+    fenceMended = take(fenceMended, scenario, 'searchForHunters');
+    fenceMended = take(fenceMended, scenario, 'mendFence');
+    expect(ending(fenceMended)).toMatch(/helped the hunters mend the boundary fence/i);
+    expect(ending(fenceMended)).not.toMatch(unsupportedClaims);
+    const reloaded = loadSave({ getItem: () => JSON.stringify(fenceMended) });
+    expect(ending(reloaded)).toMatch(/helped the hunters mend the boundary fence/i);
+
+    let asked = take(fresh(scenario), scenario, 'askNeighbor');
+    asked = take(asked, scenario, 'leaveStagAlone');
+    expect(ending(asked)).toMatch(/whether the farmer pursues a later hunt remains undecided/i);
+    expect(ending(asked)).not.toMatch(/farmer postpones the hunt/i);
+  });
+
   it('explores fresh-character routes through both outcomes of every risky choice without dead ends or revisits', () => {
     for (const scenario of MONSTER_HUNT_ADVENTURES) explore(scenario);
   });

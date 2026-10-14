@@ -190,11 +190,13 @@ export const THE_WHITE_STAG: Scenario = {
       { id: 'approachStag', label: 'Approach the injured stag', hint: 'A frightened animal can kick if cornered.', chance: { probability: 0.61, successNext: 'stagAfter', failureNext: 'stagInjured', successMessage: 'The stag slips through the open fence and reaches the woods.', failureMessage: 'The stag kicks free and leaves you bruised.', failureEffects: { health: -2 } } },
     ]),
     huntersFound: scene('huntersFound', 'A Boundary Dispute', 'The two hunters are alive on opposite sides of a fallen fence, arguing over whose livestock trampled the crops. Their tracks mix with the stag’s only near the orchard. The animal is nowhere in sight.', [
-      { id: 'mendFence', label: 'Help both hunters mend the fence', next: 'stagAfter', effects: { historyFlags: ['helped resolve a crop-loss accusation after separating stag and livestock tracks'] } },
+      { id: 'mendFence', label: 'Help both hunters mend the fence', next: 'stagAfter', effects: { setFlags: ['whiteStagFenceMended'], historyFlags: ['helped resolve a crop-loss accusation after separating stag and livestock tracks'] } },
       { id: 'tellTracks', label: 'Show them where the stag tracks end', next: 'stagAfter', effects: { knowledge: ['Two hunters were found arguing over a fence; their livestock caused the crop damage, not the white stag.'] } },
       { id: 'leaveHunters', label: 'Leave them to settle the boundary', next: 'stagAfter' },
     ]),
-    stagAfter: end('stagAfter', 'No Shot Fired', 'The farmer postpones the hunt. The crop loss is traced to livestock crossing the broken fence, while the pale stag remains a rare sight rather than proven culprit. The two landholders still have to mend their boundary.'),
+    stagAfter: { ...end('stagAfter', 'No Shot Fired', 'The pale stag was not established as the cause of the crop loss. Whether the farmer pursues a later hunt remains undecided, and this route does not settle what happens to the broken boundary.'), textVariants: [
+      { requirements: { flags: ['whiteStagFenceMended'] }, text: 'The pale stag was not established as the cause of the crop loss. You helped the hunters mend the boundary fence; whether the farmer pursues a later hunt remains undecided.' },
+    ] },
     stagDeclined: end('stagDeclined', 'A Hunt Left Behind', 'You leave without joining the hunt. The farmer may still choose to pursue the stag, but you have not treated rumor as proof.'),
     stagInjured: end('stagInjured', 'A Bruised Pursuit', 'The stag clears the fence and vanishes into the trees. Your bruise will fade; the farmer still has no evidence that the animal caused the crop loss.'),
   },
