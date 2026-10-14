@@ -11475,12 +11475,12 @@
       "slug": "the-rain-cup-at-mill-run",
       "title": "The Rain Cup at Mill Run",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0252"
       ],
       "reviewProvenance": "current-source route review; both-site measurement versus upper-only placement, flood-prediction misuse, tributary observation, crossing refusal, gauge/coin/lesson outcomes traced; equipment-testing regression suite reviewed",
-      "notes": "cup.upperOnly sets only the upper pasture cup before converging on result, but result states that the pasture received more rain than the mill yard, a comparison without the yard reading. The later offer also says both sites were recorded and the tributary marked even when only the upper cup was selected and compareGround merely checks the stream. The both-cups and tributary routes establish those facts; false flood prediction is stopped.",
+      "notes": "cup.upperOnly set only the upper pasture cup before converging on result, but result stated that the pasture received more rain than the mill yard, a comparison without the yard reading. The later offer also said both sites were recorded and the tributary marked even when only the upper cup was selected and compareGround merely checks the stream. The both-cups and tributary routes establish those facts; false flood prediction is stopped. The upper-only path now records one local reading and requires a second-site placement before comparison; a truthful single-reading exit is available.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18121,6 +18121,8 @@
       "violatedRule": "A measurement comparison or reward claim requires every referenced measurement/site and follow-up action to have been established on that route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The upperOnly choice now enters an explicit one-site reading scene. A second mill-yard placement is required before the two-site comparison/result; choosing to stop receives neutral single-reading text. Regression drives upper-only, stop, second-site placement, and the original placeBoth route. Equipment Testing suite passes 16 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20044,9 +20046,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 610,
+    "HEALTHY": 611,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 192,
+    "CONFIRMED DEFECT": 191,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
