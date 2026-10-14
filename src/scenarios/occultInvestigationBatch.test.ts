@@ -92,6 +92,35 @@ describe('occult investigation adventures', () => {
     expect(sceneText(scenario.scenes.bellweatherAfter, watchedContinuation)).toMatch(/different accounts of the voice/i);
   });
 
+  it('does not invent the lamplighter’s shared travel or witness status at the shadow ending', () => {
+    const scenario = adventures.find((s) => s.id === 'the-wrong-shadow')!;
+
+    let alone = fresh(scenario);
+    alone = act(alone, scenario, 'leaveShadowAlley');
+    const soloEnding = sceneText(scenario.scenes.shadowAfter, alone);
+    expect(soloEnding).toMatch(/only you witnessed the shadow turn/i);
+    expect(soloEnding).not.toMatch(/lamplighter reaches the crowded street|both of you saw it turn/i);
+
+    let lanternRoute = fresh(scenario, 'lantern');
+    lanternRoute = act(lanternRoute, scenario, 'testShadowLight');
+    lanternRoute = act(lanternRoute, scenario, 'coverLight');
+    expect(sceneText(scenario.scenes.shadowAfter, lanternRoute)).not.toMatch(/lamplighter reaches the crowded street|both of you saw it turn/i);
+
+    let separate = fresh(scenario);
+    separate = act(separate, scenario, 'callLamplighter');
+    separate = act(separate, scenario, 'leaveLamplighter');
+    expect(sceneText(scenario.scenes.shadowAfter, separate)).not.toMatch(/lamplighter reaches the crowded street|both of you saw it turn/i);
+
+    let together = fresh(scenario);
+    together = act(together, scenario, 'callLamplighter');
+    together = roundTrip(act(together, scenario, 'walkWithLamplighter'));
+    const togetherEnding = sceneText(scenario.scenes.shadowAfter, together);
+    expect(togetherEnding).toMatch(/walk into the lit street together/i);
+    expect(togetherEnding).toMatch(/he saw it facing the wall when he returned/i);
+    expect(togetherEnding).not.toMatch(/both of you saw it turn|his shadow follows again there/i);
+    expect(together.character?.historyFlags).toContain('witnessed_late_shadow');
+  });
+
   it('registers 27 distinct new stories without adding the rejected bell duplicate', () => {
     expect(adventures).toHaveLength(27);
     expect(new Set(SCENARIOS.map((s) => s.id)).size).toBe(SCENARIOS.length);
