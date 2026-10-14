@@ -47,7 +47,7 @@ export const THE_CALF_IN_THE_MUD: Scenario = {
   scenes: {
     muddyGate: { id: 'muddyGate', title: 'The Soft Hollow', tone: 'warning', text: 'A calf is stuck belly-deep in a muddy hollow just inside a pasture gate. Its head is above the mud and it is breathing, but each kick sinks its legs farther. The bank is firm beneath your feet. A farmhand is running from the house; there is time to work carefully.', choices: [
       { id: 'callFarmhand', label: 'Call the farmhand and wait for help', timeCost: 5, next: 'helpArrives' },
-      { id: 'prepareRopePull', label: 'Lay a rope low around the calf’s chest', requirements: { items: ['travelRope'] }, hint: 'A broad, low pull avoids the calf’s neck and legs.', timeCost: 4, next: 'ropeReady' },
+      { id: 'prepareRopePull', label: 'Lay a rope low around the calf’s chest', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, hint: 'A broad, low pull avoids the calf’s neck and legs.', timeCost: 4, next: 'ropeReady' },
       { id: 'makeFirmFooting', label: 'Lay boards from the gate to the firm bank', timeCost: 7, next: 'boardsReady' },
       { id: 'leaveCalf', label: 'Fetch the household instead of entering the pasture', next: 'householdFetched' },
     ] },
@@ -58,7 +58,7 @@ export const THE_CALF_IN_THE_MUD: Scenario = {
     ] },
     ropeReady: { id: 'ropeReady', title: 'A Low, Broad Pull', tone: 'warning', text: 'Your rope is arranged around the calf’s chest, clear of its neck. The farmhand reaches the gate and can help guide the line. Pulling hard could hurt the calf; a slow lift may work, but boards would spread its weight better.', choices: [
       { id: 'ropeWithGloves', label: 'Use your Heavy Leather Gloves on the wet line', hint: 'They protect your hands from the rough pull; the calf still has to climb under its own strength.', requirements: { items: ['travelRope'], usableItems: ['travelRope', 'heavyLeatherGloves'] }, timeCost: 4, chance: { probability: 0.88, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'Your gloves keep the muddy line from burning your palms as the calf climbs onto the bank.', failureMessage: 'The calf remains stuck. Your gloves protect your hands while the farmhand repositions the line.' } },
-      { id: 'ropeWithHandler', label: 'Pull gently while the farmhand guides it', timeCost: 4, requirements: { notUsableItems: ['heavyLeatherGloves'] }, chance: { probability: 0.78, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'The calf finds the boards and climbs free with the rope supporting its chest.', failureMessage: 'The rope slips on the muddy coat. You stop before it tightens and the farmhand repositions it.' } },
+      { id: 'ropeWithHandler', label: 'Pull gently while the farmhand guides it', timeCost: 4, requirements: { items: ['travelRope'], usableItems: ['travelRope'], notUsableItems: ['heavyLeatherGloves'] }, chance: { probability: 0.78, successNext: 'calfFree', failureNext: 'pauseCalf', successMessage: 'The calf finds the boards and climbs free with the rope supporting its chest.', failureMessage: 'The rope slips on the muddy coat. You stop before it tightens and the farmhand repositions it.' } },
       { id: 'boardsAfterRope', label: 'Use boards before trying the rope', timeCost: 6, next: 'boardsReady' },
       { id: 'waitForMoreHands', label: 'Wait for another helper to arrive', timeCost: 5, next: 'helpArrives' },
     ] },
@@ -312,7 +312,7 @@ export const THE_BEE_YARD: Scenario = {
     apiaryGate: { id: 'apiaryGate', title: 'Beyond the Low Fence', tone: 'warning', text: 'A small apiary stands behind a low fence, its wooden hives set in rows. A goat has rubbed one stand crooked; bees circle the shifted lid, but there is no swarm in the air. The beekeeper is away in the orchard. The public path is outside the fence.', choices: [
       { id: 'waitBeekeeper', label: 'Wait outside for the beekeeper', timeCost: 8, next: 'beekeeperReturns' },
       { id: 'moveGoatApiary', label: 'Ask the farmhand to lead the goat away', timeCost: 4, next: 'goatMoved' },
-      { id: 'steadyStandTool', label: 'Use a small tool to steady the stand', requirements: { anyItems: ['pocketToolkit', 'foremanMultiTool', 'gateHook'] }, hint: 'Do not open the hive; first make the work area safe.', timeCost: 5, next: 'standSteadied', effects: { setFlags: ['apiaryStandLeveled'] } },
+      { id: 'steadyStandTool', label: 'Use a small tool to steady the stand', requirements: { anyUsableItems: ['pocketToolkit', 'foremanMultiTool', 'gateHook'] }, hint: 'Do not open the hive; first make the work area safe.', timeCost: 5, next: 'standSteadied', effects: { setFlags: ['apiaryStandLeveled'] } },
       { id: 'leaveApiary', label: 'Stay outside the fence and continue on', next: 'apiaryLeft' },
     ] },
     goatMoved: { id: 'goatMoved', title: 'The Yard Cleared', tone: 'safe', text: 'The farmhand leads the goat behind a separate rail fence. The crooked hive stand remains inside the apiary, and the bees keep circling the lid. The beekeeper should handle the hive itself.', choices: [

@@ -57,7 +57,7 @@ export const TEETH_IN_THE_MINE: Scenario = {
       { id: 'withdrawMine', label: 'Withdraw and bring the full crew', next: 'mineWaited' },
     ], 'warning'),
     sideChamber: scene('sideChamber', 'A Miner at the Air Shaft', 'One miner crouches beside the shaft mouth, breathing but unable to climb the last ledge. Beyond him, pale teeth show between stones in the sealed drift. The thing waits where falling rock has trapped the second miner; the return passage remains open behind you.', [
-      { id: 'lowerRope', label: 'Lower your rope to the living miner', requirements: { items: ['travelRope'] }, next: 'minerOut', effects: { historyFlags: ['used rope to rescue a miner from a collapsed drift'] } },
+      { id: 'lowerRope', label: 'Lower your rope to the living miner', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, next: 'minerOut', effects: { historyFlags: ['used rope to rescue a miner from a collapsed drift'] } },
       { id: 'guideUp', label: 'Guide the miner up one step at a time', next: 'minerOut' },
       { id: 'retreatWithMiner', label: 'Lead the miner back without searching farther', next: 'mineRetreat' },
       { id: 'enterCollapsedDrift', label: 'Crawl toward the second miner', hint: 'The ceiling shifts and teeth wait beyond the loose stone. Retreat is still open, but this is a lethal risk.', chance: { probability: 0.34, successNext: 'secondMiner', failureNext: 'mineFatal', successMessage: 'You reach a pocket behind the collapse before the creature turns.', failureMessage: 'The creature lunges as the roof stone shifts.', successEffects: { health: -2 }, failureEffects: { health: -10 } } },

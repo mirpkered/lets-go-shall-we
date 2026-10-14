@@ -17,7 +17,7 @@ export const THE_BROKEN_ANTLER: Scenario = {
     ], 'warning'),
     elkWire: scene('elkWire', 'Wire in the Antler', 'The wire loop is loose enough to move from outside the fence. The elk can back through the open hillside gate if the lane stays clear. No one needs to grab the antler itself.', [
       { id: 'openLane', label: 'Open the gate and clear the lane', next: 'elkCorridor' },
-      { id: 'cutWire', label: 'Cut the loose wire from the fence', requirements: { items: ['smallKnife'] }, next: 'elkFreed', effects: { damageItems: ['smallKnife'] } },
+      { id: 'cutWire', label: 'Cut the loose wire from the fence', requirements: { items: ['smallKnife'], usableItems: ['smallKnife'] }, next: 'elkFreed', effects: { damageItems: ['smallKnife'] } },
       { id: 'waitHandler', label: 'Wait for a trained handler', next: 'elkWaited' },
     ]),
     elkCorridor: scene('elkCorridor', 'The Hill Path Open', 'The gate opens onto a broad slope away from houses. The elk steps toward it but the wire still catches the broken antler. You can clear the fence line from cover or let a handler approach from the hill side.', [
@@ -194,7 +194,7 @@ export const THE_BEAST_AT_THE_TOLL_ROAD: Scenario = {
     ], 'warning'),
     stagedBeast: scene('stagedBeast', 'A Beast on a Chain', 'The hide-covered frame swings across the road when a rope is pulled from a brush blind. Two men have been taking sacks after wagons stop. The loose horse’s lead was tied to the frame; no animal attacked the drivers.', [
       { id: 'raiseAlarm', label: 'Call the toll keeper and drivers', next: 'tollRevealed', effects: { historyFlags: ['exposed a false toll-road beast and protected the wagon route'] } },
-      { id: 'cutControlRope', label: 'Cut the frame’s control rope', requirements: { items: ['smallKnife'] }, next: 'tollRevealed', effects: { damageItems: ['smallKnife'] } },
+      { id: 'cutControlRope', label: 'Cut the frame’s control rope', requirements: { items: ['smallKnife'], usableItems: ['smallKnife'] }, next: 'tollRevealed', effects: { damageItems: ['smallKnife'] } },
       { id: 'confrontMen', label: 'Confront the men at the brush blind', hint: 'They have the road blocked and may be armed.', chance: { probability: 0.48, successNext: 'tollRevealed', failureNext: 'tollInjury', successMessage: 'The men flee toward the upper trail.', failureMessage: 'One shoves you against the wall as the other escapes.', failureEffects: { health: -4 } } },
     ], 'danger'),
     tollRevealed: end('tollRevealed', 'The Road Reopened', 'The keeper opens the toll gate after recovering the sacks and freeing the horse. The frame is taken apart in daylight; the next wagon waits until the bend is cleared, and the drivers are warned that the animal was real even if the beast was not.'),
