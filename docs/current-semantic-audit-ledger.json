@@ -5140,12 +5140,12 @@
       "slug": "the-map-in-the-ledger",
       "title": "The Map in the Ledger",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0094"
       ],
       "reviewProvenance": "current source route review; initial map copying, miller account, creek/stone interpretation, shelf sketch/search success/failure/retreat, token and Knowledge paths traced",
-      "notes": "The copied ending says the old water-gate mark can guide a later repair on routes such as ledger.copyMap -> copied and creek.takeTrackBack -> copied, which never inspect the third stone or establish that its mark denotes a water gate. Only stone.stoneRecord grants that interpretation; the map itself names an unexplained mark.",
+      "notes": "The copied ending said the old water-gate mark could guide a later repair on routes such as ledger.copyMap -> copied and creek.takeTrackBack -> copied, which never inspect the third stone or establish that its mark denotes a water gate. Only reading the third stone establishes the interpretation. The copied ending now keeps the mark unidentified unless run-local proof records that inspection; the explicit interpretation route retains its Knowledge effect.",
       "preReconciliationPosition": 286,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -5325,12 +5325,12 @@
       "slug": "the-last-room-in-the-fort",
       "title": "The Last Room in the Fort",
       "sourceFile": "src/scenarios/lostPlacesBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0099"
       ],
       "reviewProvenance": "current source route review; caretaker accounts, floor plan/vent, permission and waiting variants, room-only inventory, letter identification/referral, Knowledge/History and departure traced",
-      "notes": "gate.readInventory -> plan.planPermission -> permission.openRoom -> room.roomCount -> discovery records blankets/cot only, yet discovery says the county refers the letters to the surgeon’s family. The letters are neither identified nor returned on that route; only roomLetters -> records -> fortRecord performs the family-notice action.",
+      "notes": "gate.readInventory -> plan.planPermission -> permission.openRoom -> room.roomCount -> discovery records blankets/cot only, yet discovery said the county refers the letters to the surgeon’s family. The letters are neither identified nor returned on that route; only the records scene followed by fortRecord performs the family-notice action. The shared discovery now defaults to the counted inventory and neutral letter ownership/destination, with a route-proof variant for explicit family referral.",
       "preReconciliationPosition": 297,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16187,7 +16187,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 286,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 75: only the route that enters and reads the third-stone scene sets thirdStoneWaterGateIdentified; copied-map endings otherwise leave the symbol unidentified. The explicit interpretation route retains its existing Knowledge effect. Regression covers direct copy and creek-location-only negatives, the identified positive route, save/reload, and Knowledge preservation."
     },
     {
       "findingId": "CRA-F0095",
@@ -16260,7 +16262,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 297,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 75: discovery now reports only the counted blankets/cot by default and keeps letter ownership/destination undetermined. Only fortRecord sets factual run-local fortLettersReferredForFamilyNotice proof for the specific identified-letter referral variant. Regression covers roomCount-only, identified-and-referred, waiting outside while the letters are read, save/reload, and Knowledge preservation; no persistent schema or unrelated county/book behavior changed."
     },
     {
       "findingId": "CRA-F0100",
@@ -20185,9 +20189,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 671,
+    "HEALTHY": 673,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 131,
+    "CONFIRMED DEFECT": 129,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
