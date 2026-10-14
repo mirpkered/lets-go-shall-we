@@ -3,7 +3,11 @@ import { addEndingPaymentEffects, largeAdventure, largeEnd, largeScene, largeTag
 
 const s = (id: string, title: string, text: string, choices: Scene['choices'], tone: Scene['tone'] = 'safe') => largeScene(id, title, text, choices, tone);
 const e = (id: string, title: string, text: string) => largeEnd(id, title, text);
-const itemPay = (id: string, provenance: string, flag: string) => ({ gainItems: [id], gainItemProvenance: { [id]: provenance }, historyFlags: [flag] });
+const routeSafeGearProvenance: Record<string, string> = {
+  earned_lantern_guard_hayloft: 'Stable keeper Mara Ell gives an inventoried spare Lantern Guard as compensation after the smoking lantern is taken out of service; this does not imply the horses were led to the yard.',
+  earned_lantern_guard_pig_shed: 'Pig shed owner Tal Wren releases an inventoried spare Lantern Guard after the ember is out and the lantern is removed; this does not imply the pigs were moved from their pen.',
+};
+const itemPay = (id: string, provenance: string, flag: string) => ({ gainItems: [id], gainItemProvenance: { [id]: routeSafeGearProvenance[flag] ?? provenance }, historyFlags: [flag] });
 type Risk = 'LOW' | 'MODERATE' | 'HIGH';
 const monthsFor = (season: SeasonKey) => season === 'SPRING' ? [3, 4, 5] : season === 'SUMMER' ? [6, 7, 8] : season === 'AUTUMN' ? [9, 10, 11] : season === 'WINTER' ? [12, 1, 2] : Array.from({ length: 12 }, (_, i) => i + 1);
 const a = (id: string, title: string, subtitle: string, hook: string, setting: string, risk: Risk, start: string, scenes: Record<string, Scene>, options: { season?: SeasonKey; combat?: 'NONE' | 'POSSIBLE'; activity?: string; structures?: string[] } = {}): Scenario => {

@@ -101,4 +101,44 @@ describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', 
     for (const id of ['farmWire', 'feedSack', 'stableLead', 'farmLantern']) expect(ITEMS[id]).toBeUndefined();
     expect(itemsOfClass('SUPPLY').map(({ id }) => id).sort()).toEqual(['coldIronNails', 'consecratedSalt', 'ritualChalk']);
   });
+
+  it('keeps Lantern Guard provenance truthful across animal-handling routes', () => {
+    const earnLanternGuard = (scenarioId: string, route: string[]) => {
+      const scenario = BATCH.find(({ id }) => id === scenarioId)!;
+      let state = fresh(scenario);
+      for (const step of route) {
+        const [sceneId, choiceId] = step.split('.');
+        state.run!.sceneId = sceneId!;
+        const choice = scenario.scenes[sceneId!]!.choices.find(({ id }) => id === choiceId)!;
+        state = choose(state, scenario, choice);
+      }
+      const visitedSceneIds = [...(state.run?.visitedSceneIds ?? [])];
+      const guard = scenario.scenes.safe.choices.find(({ id }) => id === 'guard')!;
+      state = choose(state, scenario, guard);
+      state = finishRewardResolution(placeReward(openRewardResolution(state), 'lanternGuard', 'carry'));
+      return { state, visitedSceneIds };
+    };
+
+    const hayloftDirect = earnLanternGuard('the-lantern-smoke-in-the-hayloft', ['smoke.lantern']);
+    const hayloftEvacuated = earnLanternGuard('the-lantern-smoke-in-the-hayloft', ['smoke.animals', 'yard.lower']);
+    expect(hayloftDirect.visitedSceneIds).not.toContain('yard');
+    expect(hayloftEvacuated.visitedSceneIds).toContain('yard');
+    for (const { state } of [hayloftDirect, hayloftEvacuated]) {
+      const provenance = state.itemStates?.lanternGuard?.provenance.join(' ') ?? '';
+      expect(provenance).toMatch(/smoking lantern is taken out of service/i);
+      expect(provenance).not.toMatch(/horses were led clear/i);
+    }
+
+    const pigsRemainPenned = earnLanternGuard('the-red-lantern-in-the-pig-shed', ['lantern.sack', 'check.handler']);
+    const pigsMoved = earnLanternGuard('the-red-lantern-in-the-pig-shed', ['lantern.pigs', 'yard.cover']);
+    expect(pigsRemainPenned.visitedSceneIds).toContain('check');
+    expect(pigsRemainPenned.visitedSceneIds).not.toContain('yard');
+    expect(pigsMoved.visitedSceneIds).toContain('yard');
+    for (const { state } of [pigsRemainPenned, pigsMoved]) {
+      const provenance = state.itemStates?.lanternGuard?.provenance.join(' ') ?? '';
+      expect(provenance).toMatch(/ember is out and the lantern is removed/i);
+      expect(provenance).toMatch(/does not imply the pigs were moved from their pen/i);
+      expect(provenance).not.toMatch(/after the Traveler helped move the animals/i);
+    }
+  });
 });
