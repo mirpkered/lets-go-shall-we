@@ -11401,12 +11401,12 @@
       "slug": "the-line-under-load",
       "title": "The Line Under Load",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0250"
       ],
       "reviewProvenance": "current-source route review; low gauge test, anchor-only inspection, reset/repeat, hand comparison, unsafe raise, refusal, failure and gear/coin/lesson settlement traced; equipment-testing regression suite reviewed",
-      "notes": "brief.readAnchor explicitly inspects the anchor before any pull but enters reading, which says the gauge shows unequal strain; selecting compareByHand then reaches the same result claiming a consistent low repeat. Those branches establish observation/manual comparison, not a completed low gauge reading/repeat. The lowTest -> stopAndReset route does establish it; unsafe trust and early refusal do not earn completion compensation.",
+      "notes": "brief.readAnchor previously entered the gauge-reading scene before any pull, and compareByHand reached a result claiming an unperformed repeat. Wave 85 separates anchor-only inspection, requires an explicit low gauge test before reading claims, and removes the unsupported repeat claim from the shared test result. The hand-comparison route still follows an actual low test. Regression covers inspection-only, low test, hand comparison, and reset/repeat.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11463,12 +11463,12 @@
       "slug": "the-saddle-that-sat-crooked",
       "title": "The Saddle That Sat Crooked",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0251"
       ],
       "reviewProvenance": "current-source route review; pad fit versus girth inspection, overload removal, stop/rest, girth replacement, light-walk result and compensation/lesson variants traced",
-      "notes": "yard.inspectGirth only inspects the girth/tree but converges on trail, which unconditionally says the pad spreads pressure and the saddle turns during a rise. After replaceGirth, result then says the pad stays centered on a careful walk although that branch never fitted the pad. The fitPad route establishes those pad-specific facts; overload and stop routes correctly avoid a successful test reward.",
+      "notes": "yard.inspectGirth previously converged on pad-fit narration and could reach the centered-walk result without fitting the pad. Wave 85 sends inspection to girthInspection, where the unfitted state is explicit and the player may fit the pad before entering the pad-test route or stop. The existing fitPad route and subsequent light-walk result remain intact; regression covers both entry paths.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11529,12 +11529,12 @@
       "slug": "the-lantern-in-crosswind",
       "title": "The Lantern in Crosswind",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0254"
       ],
       "reviewProvenance": "current-source route review; leeward flame test versus vent-only inspection, closed-vent smoke, hinge orientation, daylight flag, unsafe waving and guard/coin settlement traced",
-      "notes": "lamp.checkVent inspects the top vent but converges on signal, which says the screen steadies the flame on the leeward side and the hinge points the light away from the boat. Those test findings belong to lamp.testLeeward, not vent inspection. Turning the screen then reaches a successful signal/reward result regardless of which test path established the prior condition.",
+      "notes": "lamp.checkVent previously entered signal-result text despite performing no leeward flame or hinge-direction test. Wave 85 adds a vent-only checkpoint with truthful untested text and requires an explicit leeward test before signal-result claims. The flag fallback remains available from the vent-only branch; regression contrasts vent inspection and actual test routes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -11576,12 +11576,12 @@
       "slug": "the-freightmans-buckle-trial",
       "title": "The Freightman’s Buckle Trial",
       "sourceFile": "src/scenarios/equipmentTestingGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0255"
       ],
       "reviewProvenance": "current-source route review; normal/unupgraded strap gate, grounded short-pull, suspended-crate refusal, rope alternative, seam repair, accept/decline upgrade and persistent completion text traced",
-      "notes": "After the grounded short-pull test, the test scene unconditionally says the strap gains its Stitched Buckle upgrade before offering accept reinforcement versus stop and keep the strap as it is. Only accept applies the persistent upgrade; stop merely records decline and reaches done, whose text claims the strap’s actual upgrade is recorded. The decline path therefore receives upgrade/completion narration without the upgrade effect.",
+      "notes": "After the grounded short-pull, the previous test text said the strap gained its persistent upgrade before the player accepted or declined, and both choices reached an upgrade-claiming ending. Wave 85 makes acceptance the point where edge treatment and upgrade are applied; decline reaches a separate truthful ending without changing the carried strap. Regression asserts both outcomes and the item state.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18250,7 +18250,9 @@
       "violatedRule": "Instrument readings and test completion may be narrated only when the route performed the measurement under the stated conditions.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 85 in equipmentTestingGenreBatch.ts routes anchor-only inspection to a distinct untested result and confines gauge-reading text to an explicit low test; the shared test result no longer asserts a repeat on the manual-comparison path. equipmentTestingGenreBatch.test.ts covers inspection-only, low test, hand comparison, and reset/repeat routes."
     },
     {
       "findingId": "CRA-F0251",
@@ -18262,7 +18264,9 @@
       "violatedRule": "A shared scene and result must not claim a route-specific equipment intervention or its outcome when that intervention was not selected.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 85 routes girth/tree inspection to a truthful unfitted-pad scene and requires fitting the pad before the shared pad-walk route. equipmentTestingGenreBatch.test.ts contrasts inspection-only with both explicit fitting paths."
     },
     {
       "findingId": "CRA-F0252",
@@ -18302,7 +18306,9 @@
       "violatedRule": "A shared test-result scene must retain which physical test was performed and may not attribute an unperformed test to an inspection-only route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 85 routes top-vent inspection to an untested checkpoint and permits the flame/hinge result only after an explicit leeward test. equipmentTestingGenreBatch.test.ts contrasts vent-only inspection with the tested route."
     },
     {
       "findingId": "CRA-F0255",
@@ -18314,7 +18320,9 @@
       "violatedRule": "Persistent item upgrades and their completion narration must follow the selected acceptance/effect path; declining must not be represented as upgraded.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 85 reserves edge treatment and persistent Stitched Buckle upgrade language/effect for acceptance; decline reaches a separate unchanged-strap result. equipmentTestingGenreBatch.test.ts asserts acceptance and decline text plus persistent item state."
     },
     {
       "findingId": "CRA-F0256",
@@ -20219,9 +20227,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 688,
+    "HEALTHY": 692,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 114,
+    "CONFIRMED DEFECT": 110,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
