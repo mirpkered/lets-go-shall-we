@@ -166,4 +166,49 @@ describe('Escort / Protection genre batch', () => {
     expect(excludedCrewPayment.scenes.fight.text).toContain('pays the crew');
     expect(excludedCrewPayment.scenes.fight.choices).toHaveLength(0);
   });
+
+  it('keeps hoof treatment, instrument custody, and medicine transport tied to their routes', () => {
+    const fresh = (scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], gear?: string): SaveData => {
+      const character = newCharacter('Route Truth Tester');
+      if (gear) { character.carriedItem = gear; character.carriedItems = [gear]; }
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+    const pick = (state: SaveData, scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], sceneId: string, choiceId: string): SaveData => {
+      const option = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      expect(option, `${scenario.id}.${sceneId}.${choiceId}`).toBeTruthy();
+      expect(meets(option.requirements, state), `${scenario.id}.${sceneId}.${choiceId} requirements`).toBe(true);
+      return choose(state, scenario, option, () => 0);
+    };
+
+    const farrier = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-horse-for-the-farrier')!;
+    let eased = pick(fresh(farrier, 'heavyLeatherGloves'), farrier, 'street', 'gloves');
+    eased = pick(eased, farrier, 'hoof', 'ease');
+    expect(sceneText(farrier.scenes.arrived, eased)).not.toMatch(/farrier removes the stone/i);
+    expect(sceneText(farrier.scenes.arrived, eased)).toMatch(/checks the hoof.*shoe needs resetting/i);
+    let pendingStone = pick(fresh(farrier), farrier, 'street', 'lead');
+    pendingStone = pick(pendingStone, farrier, 'lane', 'ask');
+    expect(sceneText(farrier.scenes.arrived, pendingStone)).not.toMatch(/farrier removes the stone/i);
+    expect(sceneText(farrier.scenes.arrived, pendingStone)).toMatch(/checks the hoof/i);
+
+    const survey = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-missing-survey-case')!;
+    let peopleFirst = pick(fresh(survey), survey, 'cut', 'workers');
+    peopleFirst = pick(peopleFirst, survey, 'evacuate', 'call');
+    expect(peopleFirst.run?.sceneId).toBe('partialNoCase');
+    expect(sceneText(survey.scenes.partialNoCase, peopleFirst)).toMatch(/case remains below the threatened cut.*condition and recovery are not established/i);
+    expect(sceneText(survey.scenes.partialNoCase, peopleFirst)).not.toMatch(/case reaches the track/i);
+    let caseMoved = pick(fresh(survey, 'freightmansStrap'), survey, 'cut', 'case');
+    caseMoved = pick(caseMoved, survey, 'cart', 'roll');
+    expect(caseMoved.run?.sceneId).toBe('partial');
+    expect(sceneText(survey.scenes.partial, caseMoved)).toMatch(/case reaches the track, scratched but usable/i);
+
+    const medicine = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-last-mile-of-the-medicine-wagon')!;
+    const testedSpan = pick(fresh(medicine, 'collapsibleSoundingRod'), medicine, 'bridge', 'cross');
+    expect(testedSpan.run?.sceneId).toBe('test');
+    expect(sceneText(medicine.scenes.test, testedSpan)).toMatch(/medicine remains with the driver.*patient waits.*no alternate transport/i);
+    expect(sceneText(medicine.scenes.test, testedSpan)).not.toMatch(/farm cart takes the medicine/i);
+    let transferred = pick(fresh(medicine), medicine, 'bridge', 'wagon');
+    transferred = pick(transferred, medicine, 'load', 'transfer');
+    expect(transferred.run?.sceneId).toBe('delivered');
+    expect(sceneText(medicine.scenes.delivered, transferred)).toMatch(/farm cart takes the medicine to the patient/i);
+  });
 });
