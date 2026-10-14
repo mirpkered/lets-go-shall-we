@@ -15331,7 +15331,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 180,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The maker/Dace and evidence/payment routes now end with the tailor's role unresolved and do not grant Knowledge or expose-about-threat History. Only returnOrder/keepOrder after tailorAccount confirms the former partner's intent; those choices now grant the finding-specific Knowledge/History and set tailorNamed, which gates accountable ending text. coffinMakersExtraOrder.test.ts exercises the payment-return, joint-conversation, and evidence-only bypasses plus the confirmed tailor route."
     },
     {
       "findingId": "CRA-F0040",
