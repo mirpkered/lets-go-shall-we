@@ -246,6 +246,29 @@ describe('grounded consequence scenario batch', () => {
     expect(minor.run?.sceneId).toBe('minorRecovered');
   });
 
+  it('keeps an unresolved swimmer emergency truthful when the Traveler turns back early', () => {
+    for (const choiceId of ['turnBackEarly', 'floatInPlace']) {
+      let state = start(THE_BLUE_HOLE, { visitOutcome: 'drowningEmergency', swimmer: 'Nadine' });
+      state = act(state, THE_BLUE_HOLE, 'sunnyBank', 'wadeIn');
+      state = act(state, THE_BLUE_HOLE, 'shallows', 'swimOut');
+      state = act(state, THE_BLUE_HOLE, 'firstSwim', choiceId);
+      expect(state.run?.sceneId).toBe('quietRest');
+      expect(state.run?.flags).toContain('turnedBackFromFirstSwim');
+      state = JSON.parse(JSON.stringify(state)) as SaveData;
+      expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, state)).toMatch(/without reaching Nadine/i);
+      expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, state)).toMatch(/do not know whether anyone brought them to safety/i);
+      expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, state)).not.toMatch(/afternoon passes without a great event/i);
+      expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, state)).not.toMatch(/Nadine reaches the bank alive/i);
+    }
+
+    let ordinarySwim = start(THE_BLUE_HOLE, { visitOutcome: 'quiet' });
+    ordinarySwim = act(ordinarySwim, THE_BLUE_HOLE, 'sunnyBank', 'wadeIn');
+    ordinarySwim = act(ordinarySwim, THE_BLUE_HOLE, 'shallows', 'swimOut');
+    ordinarySwim = act(ordinarySwim, THE_BLUE_HOLE, 'firstSwim', 'turnBackEarly');
+    expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, ordinarySwim)).toMatch(/afternoon passes without a great event/i);
+    expect(sceneText(THE_BLUE_HOLE.scenes.quietRest, ordinarySwim)).not.toMatch(/without reaching .*still calling for help/i);
+  });
+
   it('keeps carried gear on shore during rescue, persists victim state, and supports distinct outcomes', () => {
     let state = start(THE_BLUE_HOLE, { visitOutcome: 'drowningEmergency', victimState: 'panicking' }, 'travelRope');
     state = act(state, THE_BLUE_HOLE, 'sunnyBank', 'talkFirst');

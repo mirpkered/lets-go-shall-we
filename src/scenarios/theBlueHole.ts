@@ -42,8 +42,8 @@ export const THE_BLUE_HOLE: Scenario = {
       ],
       choices: [
         { id: 'swimFarther', label: 'Swim farther from the bank', hint: 'You will be farther from standing depth and your belongings.', timeCost: 5, next: 'deepWater' },
-        { id: 'turnBackEarly', label: 'Turn back while the bank is close', timeCost: 5, next: 'quietRest' },
-        { id: 'floatInPlace', label: 'Float and rest for a while', timeCost: 8, next: 'quietRest' },
+        { id: 'turnBackEarly', label: 'Turn back while the bank is close', timeCost: 5, effects: { setFlags: ['turnedBackFromFirstSwim'] }, next: 'quietRest' },
+        { id: 'floatInPlace', label: 'Float and rest for a while', timeCost: 8, effects: { setFlags: ['turnedBackFromFirstSwim'] }, next: 'quietRest' },
       ] },
     deepWater: { id: 'deepWater', title: 'The Blue Shelf', tone: 'safe',
       text: 'The water is deeper here, though the bank remains in sight. The others are still near the landing and the shallows. You can turn back whenever you choose.',
@@ -90,7 +90,9 @@ export const THE_BLUE_HOLE: Scenario = {
     foundToken: { id: 'foundToken', title: 'A Small Find', tone: 'safe', text: 'You put the copper token away and swim back to shore. It is worth little; its fish mark is the more interesting part. The others are still talking by the landing.', ending: 'success', choices: [] },
     victimLost: { id: 'victimLost', title: 'Too Late', tone: 'danger', text: '{{swimmer}} dies in the water before the others can reach them. You are brought to shore alive. No one can say that a different choice would certainly have changed the outcome.', ending: 'success', choices: [] },
     playerLost: { id: 'playerLost', title: 'The Water Takes Its Due', tone: 'danger', text: 'You cannot keep your head above water. The others bring {{swimmer}} to shore, but they cannot reach you in time.', ending: 'death', choices: [] },
-    quietRest: { id: 'quietRest', title: 'A Good Place to Stop', tone: 'safe', text: 'The afternoon passes without a great event. The water, shade, and company were enough. You gather your belongings and continue when you are ready.', ending: 'success', choices: [] },
+    quietRest: { id: 'quietRest', title: 'A Good Place to Stop', tone: 'safe', text: 'The afternoon passes without a great event. The water, shade, and company were enough. You gather your belongings and continue when you are ready.', textVariants: [
+      { requirements: { selections: { visitOutcome: 'drowningEmergency' }, flags: ['turnedBackFromFirstSwim'] }, text: 'You return to shore without reaching {{swimmer}}. They were still calling for help when you turned back; you do not know whether anyone brought them to safety.' },
+    ], ending: 'success', choices: [] },
     leftBank: { id: 'leftBank', title: 'Back on the Road', tone: 'safe', text: 'You keep your clothes and pack dry and leave the pool behind. Nothing unusual happens while you are there.', ending: 'success', choices: [] },
   },
 };
