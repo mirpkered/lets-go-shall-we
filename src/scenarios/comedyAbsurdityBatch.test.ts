@@ -46,6 +46,40 @@ describe('comedy and absurdity additions', () => {
     expect(THE_COMEDY_ABSURDITY_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
   });
 
+  it('keeps the unsigned scraped certificate distinct from the signed valid form', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-clerks-second-stamp')!;
+    const character = newCharacter('Certificate Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let copyRoute = act(initial, 'counter', 'askForNewCopy');
+    copyRoute = act(copyRoute, 'copy', 'scrape');
+    expect(copyRoute.run?.sceneId).toBe('scraped');
+
+    let initialFirstRoute = act(initial, 'counter', 'explainNeed');
+    initialFirstRoute = act(initialFirstRoute, 'purpose', 'signNow');
+    initialFirstRoute = act(initialFirstRoute, 'signatureCheck', 'askClerkInitial');
+    expect(initialFirstRoute.run?.sceneId).toBe('scraped');
+
+    for (const state of [copyRoute, initialFirstRoute]) {
+      const text = scenario.scenes[state.run!.sceneId].text;
+      expect(text).toMatch(/name and arrival date are still unsigned/i);
+      expect(text).toMatch(/certificate is not yet usable/i);
+    }
+
+    let signedRoute = act(initial, 'counter', 'explainNeed');
+    signedRoute = act(signedRoute, 'purpose', 'signNow');
+    signedRoute = act(signedRoute, 'signatureCheck', 'signCorrectLine');
+    expect(signedRoute.run?.sceneId).toBe('signed');
+    expect(scenario.scenes.signed.text).toMatch(/signature completes.*declaration/i);
+    expect(scenario.scenes.signed.text).toMatch(/receives a valid form/i);
+  });
+
   it('keeps each graph forward-only, connected, actionable, concise, and within four choices', () => {
     for (const scenario of THE_COMEDY_ABSURDITY_ADVENTURES) {
       expect(findScenarioGraphProblems(scenario), scenario.title).toEqual([]);

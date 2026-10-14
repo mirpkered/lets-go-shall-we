@@ -75,7 +75,7 @@ export const THE_CLERKS_SECOND_STAMP = story('the-clerks-second-stamp', 'The Cle
     { id: 'signCorrectLine', label: 'Sign only your own declaration', next: 'signed' },
     { id: 'askClerkInitial', label: 'Have the clerk initial the stamp error first', next: 'scraped' },
   ]),
-  scraped: end('scraped', 'A Thin but Valid Copy', 'The clerk initials the doubled stamp as their own mistake before you sign. The innkeeper gets a usable certificate, and the clerk keeps the corrected copy as a reminder to separate witness and traveler lines.'),
+  scraped: end('scraped', 'A Correction Still Awaiting Your Name', 'The clerk initials the doubled stamp as their own mistake. Your name and arrival date are still unsigned, so the certificate is not yet usable by the innkeeper; the clerk keeps the corrected copy as a reminder to separate witness and traveler lines.'),
   waited: end('waited', 'One Form after Another', 'You return after the register is copied. The clerk has prepared a clean sheet and now keeps the stamp beside the correct box.'),
   signed: end('signed', 'The Form Was Waiting for a Name', 'Your signature completes only your own check-in declaration. The clerk sets the stamp aside, and the innkeeper receives a valid form instead of a false witness record.'),
   note: end('note', 'A Note beside the Stamps', 'The clerk writes that the doubled marks are their own mistake. You leave with a usable explanation and a story the innkeeper has heard before.'),
