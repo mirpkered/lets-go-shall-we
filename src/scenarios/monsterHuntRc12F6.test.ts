@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave } from '../storage';
 import type { SaveData, Scenario } from '../types';
-import { THE_LANTERN_EATER, THE_MIRE_HORSE } from './monsterHuntFirst';
+import { THE_BARROW_HOUND, THE_LANTERN_EATER, THE_MIRE_HORSE } from './monsterHuntFirst';
 import { THE_CELLAR_THING, THE_GOAT_THAT_WOULDNT_STAY_DEAD, THE_MILLERS_BEAST, THE_ANTLERED_THING } from './monsterHuntSecond';
 import { THE_MAN_EATER_OF_MILLERS_GAP } from './monsterHuntThird';
 import { THE_PALE_CHILDREN_OF_THE_QUARRY } from './monsterHuntSecond';
@@ -22,7 +22,24 @@ function take(state: SaveData, scenario: Scenario, choiceId: string, roll = 0): 
 }
 
 describe('RC12 Monster Hunt converged endings', () => {
-  it('keeps Lantern-Eater dawn text truthful about whether the lantern was exposed and damaged', () => {
+  it('does not turn the Barrow Hound rim-marking action into flock relocation', () => {
+    let markedRim = take(fresh(THE_BARROW_HOUND), THE_BARROW_HOUND, 'askShepherd');
+    markedRim = take(markedRim, THE_BARROW_HOUND, 'circleWest');
+    markedRim = take(markedRim, THE_BARROW_HOUND, 'callSheepOut');
+    markedRim = take(markedRim, THE_BARROW_HOUND, 'markMound');
+    const markedText = sceneText(THE_BARROW_HOUND.scenes.moundResolved, markedRim);
+    expect(markedText).toMatch(/shepherd marks the cracked rim/i);
+    expect(markedText).toMatch(/does not establish where the rest of the flock will graze/i);
+    expect(markedText).not.toMatch(/moves the flock to higher pasture/i);
+
+    let movedFlock = take(fresh(THE_BARROW_HOUND), THE_BARROW_HOUND, 'askShepherd');
+    movedFlock = take(movedFlock, THE_BARROW_HOUND, 'circleWest');
+    movedFlock = take(movedFlock, THE_BARROW_HOUND, 'callSheepOut');
+    movedFlock = take(movedFlock, THE_BARROW_HOUND, 'closePasture');
+    expect(sceneText(THE_BARROW_HOUND.scenes.flockMoved, movedFlock)).toMatch(/moved to higher pasture/i);
+  });
+
+  it('keeps Lantern-Eater dawn text truthful about whether the lantern was exposed', () => {
     let exposed = fresh(THE_LANTERN_EATER);
     exposed.run!.inventory.push('lantern');
     exposed.itemStates = { lantern: { condition: 'NORMAL', upgrades: [], provenance: [] } };

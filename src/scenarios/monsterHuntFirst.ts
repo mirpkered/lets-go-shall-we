@@ -159,7 +159,7 @@ export const THE_BARROW_HOUND: Scenario = {
       { id: 'markMound', label: 'Mark the cracked south rim', next: 'moundResolved' },
       { id: 'closePasture', label: 'Move the flock away from the mound', next: 'flockMoved' },
     ]),
-    moundResolved: end('moundResolved', 'A Warning Well Read', 'The shepherd marks the cracked rim and moves the flock to higher pasture. The hound stays with the sheep, not the burial mound; its warning came from the collapsing ground, not an old curse.'),
+    moundResolved: end('moundResolved', 'A Warning Well Read', 'The shepherd marks the cracked rim. This route does not establish where the rest of the flock will graze; the hound stays with the rescued sheep, not the burial mound. Its warning came from the collapsing ground, not an old curse.'),
     flockMoved: end('flockMoved', 'The Flock Kept Clear', 'The sheep are moved to higher pasture until the mound can be inspected. The shepherd thanks you for using the firm west slope; the hound returns to its flock.'),
     moundWarned: end('moundWarned', 'A Rescue Deferred', 'The shepherd keeps people and animals off the cracked mound and calls a digging crew. The sheep remains below the turf for now, but no one climbs onto the settling south rim.'),
   },
