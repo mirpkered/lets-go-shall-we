@@ -60,7 +60,7 @@ export const MEDICAL_CARE_ADVENTURES = authorBatch([
     opening: 'At a boarding house, three guests have stomach trouble after supper. Another guest feels entirely well. The cook says everyone ate the same stew, while one boarder recalls drinking from a pump outside. No one can tell you the cause.',
     routes: [
       { id: 'separate', label: 'Give the unwell guests a quiet room', title: 'Room to Rest', text: 'The innkeeper opens a spare room and sets clean water nearby. The guests can rest apart without being treated as a danger or a certainty.', outcomes: [
-        { id: 'watch', label: 'Ask someone to check on them regularly', title: 'A Thoughtful Watch', text: 'A boarder volunteers to check the room and call for help if anyone worsens. Their condition remains uncertain, so the inn keeps the doctor informed.' },
+        { id: 'watch', label: 'Ask someone to check on them regularly', title: 'A Thoughtful Watch', text: 'A boarder volunteers to check the room and call for help if anyone worsens. Their condition remains uncertain, and no cause or treatment has been established.' },
         { id: 'air', label: 'Open the window and clear the table', title: 'Fresh Air', text: 'The room is aired and the supper dishes are set aside for inspection. No one claims this explains the illness.' },
       ] },
       { id: 'doctor', label: 'Send for the doctor', title: 'A Professional Opinion', text: 'The innkeeper sends a rider for the village doctor. Until then, the guests rest and drink clean water in small amounts.', outcomes: [

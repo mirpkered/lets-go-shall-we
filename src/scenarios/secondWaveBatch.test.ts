@@ -121,4 +121,29 @@ describe('second-wave gap-fill adventures', () => {
       expect(reached.size, `${scenario.title} all authored scenes reachable`).toBe(Object.keys(scenario.scenes).length - (retainedSaveScenes[scenario.id]?.length ?? 0));
     }
   });
+
+  it('does not imply doctor contact on The Red Flag watch route', () => {
+    const scenario = MEDICAL_CARE_ADVENTURES.find(({ id }) => id === 'the-red-flag')!;
+    const chooseById = (state: SaveData, choiceId: string): SaveData => {
+      const scene = scenario.scenes[state.run!.sceneId];
+      const choice = scene.choices.find(({ id }) => id === choiceId);
+      expect(choice, `${scene.id}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let watch = freshState(scenario, 5);
+    watch = chooseById(watch, 'take-separate');
+    watch = chooseById(watch, 'separate-watch');
+    const watchEnding = scenario.scenes[watch.run!.sceneId].text;
+    expect(watch.run!.sceneId).toBe('separate-watch');
+    expect(watchEnding).not.toMatch(/doctor informed|sends? a rider/i);
+    expect(watchEnding).toMatch(/boarder volunteers to check the room/i);
+
+    let doctor = freshState(scenario, 5);
+    doctor = chooseById(doctor, 'take-doctor');
+    expect(doctor.run!.sceneId).toBe('doctor');
+    expect(scenario.scenes[doctor.run!.sceneId].text).toMatch(/sends a rider for the village doctor/i);
+    doctor = chooseById(doctor, 'doctor-wait');
+    expect(scenario.scenes[doctor.run!.sceneId].text).toMatch(/doctor asks what each person ate/i);
+  });
 });
