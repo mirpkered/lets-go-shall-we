@@ -281,6 +281,24 @@ describe('Road Danger / Highwaymen genre batch', () => {
     }
   });
 
+  it('does not give the Second Rope driver a marked descent route unless the Traveler marked it', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-second-rope')!;
+    for (const approach of ['steadyHorses', 'callOwner']) {
+      let state = act(initial(story, 'travelRope'), story, `approach_${approach}`);
+      expect(state.run?.flags).not.toContain('road_approach_markRetreat');
+      state = act(state, story, 'fight', () => 1);
+      expect(state.run?.sceneId).toBe('fightLost');
+      expect(sceneText(story.scenes.fightLost, state)).not.toMatch(/marked route/i);
+      expect(sceneText(story.scenes.fightLost, state)).toMatch(/cannot see how they leave the pass/i);
+    }
+
+    let marked = act(initial(story), story, 'approach_markRetreat');
+    expect(marked.run?.flags).toContain('road_approach_markRetreat');
+    expect(sceneText(story.scenes.threat, marked)).toMatch(/mark a safe turn-around point/i);
+    marked = act(marked, story, 'fight', () => 1);
+    expect(sceneText(story.scenes.fightLost, marked)).not.toMatch(/marked route/i);
+  });
+
   it('keeps public-axle ownership distinct from physical return to the crew', () => {
     const axle = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-axle-without-a-mark')!;
     for (const [approach, response] of [['checkCrewBook', 'callForeman'], ['askSmith', 'refusePurchase'], ['stabilizeWagon', 'checkStamp']]) {

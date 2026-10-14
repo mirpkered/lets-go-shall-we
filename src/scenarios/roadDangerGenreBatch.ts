@@ -115,6 +115,10 @@ const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<st
   },
 };
 
+const routeTruthFightLoss: Record<string, string> = {
+  'the-second-rope': 'You are hurt near the rock shelf as the pair flee. The driver reaches the team; you cannot see how they leave the pass.',
+};
+
 function build(c: RoadStory): Scenario {
   const rewardClass = c.gear ? inventoryClass(c.gear) : undefined;
   const offerText = compensationOffers[c.id] ?? c.rewardText;
@@ -167,7 +171,7 @@ function build(c: RoadStory): Scenario {
   };
   if (c.combat) {
     scenes.fightWon = s('fightWon', 'The Threat Breaks', c.combat.win, [{ id: 'checkRoad', label: 'Check the people and the road before continuing', next: 'aftermath', effects: { setFlags: ['road_combat_won'] } }], 'warning');
-    scenes.fightLost = e('fightLost', 'A Costly Withdrawal', c.combat.loss);
+    scenes.fightLost = e('fightLost', 'A Costly Withdrawal', routeTruthFightLoss[c.id] ?? c.combat.loss);
   }
   const tags = largeTags({ hook: c.hook, activity: c.activity, role: 'traveler/passenger', tone: 'tense/dangerous', risk: c.risk, setting: c.setting, fantasy: 'NONE', combat: c.combat ? 'POSSIBLE' : 'NONE', structures: ['branching narrative', 'evidence review', 'retreat route', 'consequence and restitution'], entry: ['witnesses incident'], rewards: ['Gear', 'coins', 'reusable Knowledge', ...(c.lore ? ['Lore'] : [])], outcomes: ['success/partial success', 'escape/survival', 'walk-away/refusal', 'negotiated compromise'] });
   return largeAdventure(c.id, c.title, c.subtitle, tags, 'approach', scenes);
