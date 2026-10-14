@@ -94,6 +94,44 @@ describe('deep exploration anthology', () => {
     expect(mill.scenes.wheelHeld.choices.some(({ effects }) => effects?.gainItems?.includes('blackMillingStone'))).toBe(true);
   });
 
+  it('does not claim the lower wheel is still unless the route braced it', () => {
+    const mill = getScenario('black-stair-wrens-mill')!;
+    const character = newCharacter('Wheel State QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, mill) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = mill.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, mill, choice!);
+    };
+
+    let unbraced = act(initial, 'millYard', 'cellar');
+    unbraced = act(unbraced, 'cellarSteps', 'lift');
+    unbraced = act(unbraced, 'blackStair', 'waterBelow');
+    unbraced = act(unbraced, 'floodGallery', 'followWater');
+    unbraced = act(unbraced, 'chalkDoor', 'rootRoom');
+    unbraced = act(unbraced, 'rootChamber', 'leaveCoffer');
+    expect(unbraced.run?.sceneId).toBe('beyondWall');
+    expect(unbraced.run?.flags).not.toContain('wheelPinned');
+    expect(sceneText(mill.scenes.beyondWall, unbraced)).toMatch(/cannot tell.*whether the lower wheel is still moving/i);
+    expect(sceneText(mill.scenes.beyondWall, unbraced)).not.toMatch(/remains braced and still/i);
+    unbraced = act(unbraced, 'beyondWall', 'sealWall');
+    expect(unbraced.run?.sceneId).toBe('sealedMill');
+    expect(sceneText(mill.scenes.sealedMill, unbraced)).not.toMatch(/wheel stays still|lower wheel remains braced/i);
+
+    let braced = act(initial, 'millYard', 'cellar');
+    braced = act(braced, 'cellarSteps', 'checkWalls');
+    braced = act(braced, 'lowerRoom', 'pinWheel');
+    expect(braced.run?.flags).toContain('wheelPinned');
+    braced = act(braced, 'wheelHeld', 'chalk');
+    braced = act(braced, 'chalkDoor', 'rootRoom');
+    braced = act(braced, 'rootChamber', 'leaveCoffer');
+    expect(braced.run?.sceneId).toBe('beyondWall');
+    expect(sceneText(mill.scenes.beyondWall, braced)).toMatch(/lower wheel remains braced and still/i);
+    braced = act(braced, 'beyondWall', 'sealWall');
+    expect(sceneText(mill.scenes.sealedMill, braced)).toMatch(/lower wheel remains braced/i);
+  });
+
   it('recognizes the optional sounding rod and preserves a mid-adventure snapshot exactly', () => {
     const bell = getScenario('bell-below-the-water')!;
     const character = newCharacter('Saved Explorer');
