@@ -17739,7 +17739,9 @@
       "violatedRule": "A safety-sensitive location/result claim and completion reward require route proof that the excluded hazard was avoided; a branch directly to the endpoint cannot inherit a safe-path assertion without establishing it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The factual run-local quarrySoundLedge proof is set only when the judge accepts the sound-ledge finish or the hold-traverse succeeds. The safe completion text and marker award require that proof; a direct climb now receives an unverified-result fallback and cannot claim the completion marker. competitionGearGenreBatch.test.ts drives the direct climb, the judged safe route, and the successful lower-ledge traverse."
     },
     {
       "findingId": "CRA-F0231",
@@ -17799,7 +17801,9 @@
       "violatedRule": "A safety-sensitive completion and reward must be supported by route-established safe equipment/setup; a shared finish cannot assert an inspected-safe anchor when a reachable path never establishes it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "A factual roofSoundBeamUsed flag is set only by moving the line to the sound beam, including the rain-route secureLine action. Both the reset-finish and fast-win scenes gate safe completion claims and the mirror/coin award on that proof; direct sling-start paths close as unverified without a prize. competitionGearGenreBatch.test.ts covers direct reset, direct fast win, safe-beam completion, and save/reload retention."
     },
     {
       "findingId": "CRA-F0236",
