@@ -118,6 +118,30 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(sceneText(station.scenes.sharedMeal, shared)).not.toMatch(/children receive the first hot bowls/i);
   });
 
+  it('keeps the stocking reunion truthful when the prank was not explained', () => {
+    const stocking = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-missing-stocking')!;
+
+    let quietReturn = pick(fresh(stocking), stocking, 'followHay');
+    quietReturn = pick(quietReturn, stocking, 'checkStable');
+    quietReturn = pick(quietReturn, stocking, 'quietReturn');
+    const quietText = sceneText(stocking.scenes.reunion, quietReturn);
+    expect(quietText).toMatch(/original stocking/i);
+    expect(quietText).not.toMatch(/brother admits|family now knows why|prank/i);
+
+    let replacement = pick(fresh(stocking), stocking, 'makeReplacement');
+    replacement = pick(replacement, stocking, 'hangPaper');
+    const replacementText = sceneText(stocking.scenes.reunion, replacement);
+    expect(replacementText).toMatch(/paper stocking/i);
+    expect(replacementText).not.toMatch(/family now knows why|carried toward the stable/i);
+
+    let explained = pick(fresh(stocking), stocking, 'followHay');
+    explained = pick(explained, stocking, 'checkStable');
+    explained = pick(explained, stocking, 'truthStocking');
+    expect(sceneText(stocking.scenes.reveal, explained)).toMatch(/brother explains/i);
+    explained = pick(explained, stocking, 'stockingAfter');
+    expect(sceneText(stocking.scenes.stockingAfter, explained)).toMatch(/brother repairs the stocking/i);
+  });
+
   it('distinguishes a goose seen across the creek from one recovered', () => {
     const goose = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-christmas-goose')!;
     let state = pick(fresh(goose), goose, 'followPrints');
