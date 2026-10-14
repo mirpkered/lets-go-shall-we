@@ -145,6 +145,33 @@ describe('grounded consequence scenario batch', () => {
     expect(POISON_THE_WELL.scenes.debrisAftercare.choices.filter(({ id }) => id === 'acceptOldDrainageHook').some(({ requirements }) => meets(requirements, owner))).toBe(false);
   });
 
+  it('does not claim well closure or channel cleanup before those actions occur', () => {
+    let runoff = start(POISON_THE_WELL, { source: 'wellRunoff', setting: 'farm', host: 'Gilda' });
+    runoff = act(runoff, POISON_THE_WELL, 'arrival', 'inspectFood');
+    runoff = act(runoff, POISON_THE_WELL, 'foodInspection', 'discardStew');
+    runoff = act(runoff, POISON_THE_WELL, 'stewSetAside', 'stewWasNotCause');
+    expect(runoff.run?.sceneId).toBe('wrongSource');
+    expect(runoff.run?.flags).not.toContain('wellClosed');
+    expect(sceneText(POISON_THE_WELL.scenes.wrongSource, runoff)).not.toMatch(/well was closed|keeps the well closed/i);
+    expect(sceneText(POISON_THE_WELL.scenes.wrongSource, runoff)).toMatch(/well remains the concern to isolate next/i);
+
+    let debris = start(POISON_THE_WELL, { source: 'wellDebris', setting: 'farm', host: 'Gilda' });
+    debris = act(debris, POISON_THE_WELL, 'arrival', 'inspectFood');
+    debris = act(debris, POISON_THE_WELL, 'foodInspection', 'checkBarrelFromKitchen');
+    debris = act(debris, POISON_THE_WELL, 'barrelInspection', 'coverBarrel');
+    debris = act(debris, POISON_THE_WELL, 'barrelSetAside', 'barrelWasNotCauseDebris');
+    expect(debris.run?.sceneId).toBe('wrongSource');
+    expect(debris.run?.flags).not.toContain('wellClosed');
+    expect(sceneText(POISON_THE_WELL.scenes.wrongSource, debris)).not.toMatch(/marked closed|channel is cleared/i);
+    expect(sceneText(POISON_THE_WELL.scenes.wrongSource, debris)).toMatch(/has not yet been cleared/i);
+
+    let closed = start(POISON_THE_WELL, { source: 'wellRunoff', setting: 'farm', host: 'Gilda' });
+    closed = act(closed, POISON_THE_WELL, 'arrival', 'inspectWell');
+    closed = act(closed, POISON_THE_WELL, 'wellInspection', 'warnWell');
+    expect(closed.run?.flags).toContain('wellClosed');
+    expect(sceneText(POISON_THE_WELL.scenes.wellSetAside, closed)).toMatch(/well is marked out of use/i);
+  });
+
   it('uses accessible carryable tools for inspection without requiring equipment', () => {
     const withRope = start(POISON_THE_WELL, { source: 'wellDebris' }, 'travelRope');
     const wellActions = POISON_THE_WELL.scenes.wellInspection.choices.filter((choice) => meets(choice.requirements, withRope));

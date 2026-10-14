@@ -115,10 +115,10 @@ export const POISON_THE_WELL: Scenario = {
     wrongSource: { id: 'wrongSource', title: 'The Pattern Does Not Fit', tone: 'warning',
       text: 'The people keep to clean food and water, but the illness pattern does not fit the source you set aside. {{host}} compares who ate and drank what; one source remains shared by the sick and not the healthy.',
       textVariants: [
-        { requirements: { selections: { source: 'wellRunoff' } }, text: 'The well was closed, but the first sick guest drank from it before anyone else. The meal and barrel reports do not fit as well. {{host}} keeps the well closed and warns neighboring households.' },
+        { requirements: { selections: { source: 'wellRunoff' } }, text: 'The first sick guest drank from the well before anyone else. The meal and barrel reports fit less well; the well remains the concern to isolate next.' },
         { requirements: { selections: { source: 'spoiledStew' } }, text: 'The barrel and well were set aside, but the sick all ate the stew. {{host}} keeps the pot empty and warns neighboring guests.' },
         { requirements: { selections: { source: 'waterBarrel' } }, text: 'The well and stew reports do not fit. The sick all drank from the covered barrel; its lid sat crooked and its tap was fouled. {{host}} keeps it closed.' },
-        { requirements: { selections: { source: 'wellDebris' } }, text: 'The well’s lower channel is the shared point. With it marked closed, clean water is brought from elsewhere while the channel is cleared.' },
+        { requirements: { selections: { source: 'wellDebris' } }, text: 'The well’s lower channel is the shared point. It has not yet been cleared; clean water should be used while the channel is checked.' },
       ],
       choices: [
         { id: 'recoverWell', label: 'Keep the well closed until runoff is cleared', requirements: { selections: { source: 'wellRunoff' } }, effects: { knowledge: ['Rain runoff can foul an unprotected well.'], historyFlags: ['helped_isolate_contaminated_well'] }, next: 'containedWell' },
