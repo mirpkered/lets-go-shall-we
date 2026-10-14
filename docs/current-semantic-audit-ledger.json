@@ -5,12 +5,12 @@
   "workingTreeStateAtReview": "audit-only update; gameplay source and tests unchanged",
   "totalRegisteredAdventures": 861,
   "liveRegistryCount": 861,
-  "reviewedThroughPosition": 856,
-  "reviewedCount": 856,
-  "remainingCount": 5,
-  "nextPosition": 857,
-  "firstUnreviewedLiveStableId": "morning-the-warning-arrived",
-  "firstUnreviewedLivePosition": 857,
+  "reviewedThroughPosition": 861,
+  "reviewedCount": 861,
+  "remainingCount": 0,
+  "nextPosition": null,
+  "firstUnreviewedLiveStableId": null,
+  "firstUnreviewedLivePosition": null,
   "reviewedStableIdsScope": "CURRENT_LIVE_SCENARIOS_ONLY",
   "unregisteredReviewedAdventureIds": [
     "the-night-bird-turn",
@@ -334,7 +334,7 @@
     "the-hay-wagon-in-soft-ground": "UNREGISTERED_SOURCE",
     "the-sheep-wash-at-cold-creek": "UNREGISTERED_SOURCE"
   },
-  "historicalReviewedAdventureRecordCount": 850,
+  "historicalReviewedAdventureRecordCount": 885,
   "unregisteredReviewedAdventureCount": 24,
   "liveFindingCount": 354,
   "unregisteredHistoricalFindingCount": 7,
@@ -382,7 +382,7 @@
   },
   "nextFindingId": "CRA-F0362",
   "nextClusterId": "CRA-C0012",
-  "status": "IN_PROGRESS",
+  "status": "COMPLETE",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
   "adventures": [
     {
@@ -14749,6 +14749,76 @@
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 857,
+      "adventureId": "morning-the-warning-arrived",
+      "slug": "morning-the-warning-arrived",
+      "title": "The Morning the Warning Arrived",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct delivery, delay, refusal, privacy, disclosure, and persistent variants traced.",
+      "notes": "Traced public-account correction, family review of the separate sealed letter, publish-timeline/keep-letter-sealed alternative, qualified warning, refusal, and settlement. Outgoing time and later entry time remain distinct; the letter is not used as public proof, and secondary Knowledge is only available on a completed handoff.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 858,
+      "adventureId": "no-forwarding-address-for-the-founder",
+      "slug": "no-forwarding-address-for-the-founder",
+      "title": "No Forwarding Address for the Founder",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct delivery, delay, refusal, privacy, disclosure, and persistent variants traced.",
+      "notes": "Traced file sealed/undeliverable, verify sender before reading, tell council only the returned old name, warning, refusal, and open/disclose/conceal variants. Old place name does not identify sender or prove founder alive; notice revelation confirms no reliable return signature; privacy and handoff flags remain distinct.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 859,
+      "adventureId": "blue-room-dispatch",
+      "slug": "blue-room-dispatch",
+      "title": "The Blue Room Dispatch",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct delivery, delay, refusal, privacy, disclosure, and persistent variants traced.",
+      "notes": "Traced explicitly publish as unverified draft, preserve sealed pending dating, compare with mill repair ledger, qualified warning, refusal, and completion/reward. Text retains missing date/signature and does not turn disputed page into a correction or accusation; Knowledge/Lore is handoff-gated.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 860,
+      "adventureId": "last-station-keepers-route",
+      "slug": "last-station-keepers-route",
+      "title": "The Last Station Keeper’s Route",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct delivery, delay, refusal, privacy, disclosure, and persistent variants traced.",
+      "notes": "Traced safe ridge/message at surviving post, turn back/report only to stone marker, signal from stable marker, signposted hazardous ravine with injury/withdrawal settlement, and optional route-end Knowledge/Lore. Log ends before return, and route text preserves that uncertainty; hazard route records injury and does not imply arrival.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
+    },
+    {
+      "position": 861,
+      "adventureId": "envelope-returned-five-times",
+      "slug": "envelope-returned-five-times",
+      "title": "The Envelope Returned Five Times",
+      "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+      "classification": "HEALTHY",
+      "findingIds": [],
+      "reviewProvenance": "Current-source route review; materially distinct delivery, delay, refusal, privacy, disclosure, and persistent variants traced.",
+      "notes": "Traced private consent inquiry, archive until requested, disclosure of only return-history, open/disclose, report breach, conceal/open-delay, refusal, and Lore/Knowledge/fee. Possible relative remains unconfirmed; letter itself asks not to forward and does not establish family history; seal/personal-history state remains explicit.",
+      "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
+      "registrationStatus": "LIVE",
+      "registryStatus": "REGISTERED"
     }
   ],
   "findings": [
@@ -19660,7 +19730,7 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 478,
+    "HEALTHY": 483,
     "MINOR CONCERN": 58,
     "CONFIRMED DEFECT": 320,
     "NEEDS MANUAL REVIEW": 0
@@ -20421,14 +20491,18 @@
     {
       "positions": "847–856 (10 newly completed live reviews)",
       "status": "Reviewed ten courier/telegraph scenarios. Direct source tracing covered delivery, delay, refusal, qualified warning, sealed/opened/concealed messages, authority, route, chronology, hazard and withdrawal branches, handoff-gated rewards, Knowledge/Lore, and persistence where applicable. The information and privacy boundaries remained truthful on the inspected routes; no new confirmed defect was established."
+    },
+    {
+      "positions": "857–861 (final five live reviews)",
+      "status": "Completed all remaining current-registry route reviews: five courier/telegraph stories covering public correction versus private letter, undeliverable notice, unverified press dispatch, uncertain relay-route end, and repeatedly returned sealed correspondence. Delivery/delay/refusal/warning, privacy and disclosure, hazard/withdrawal, handoff rewards, optional Knowledge/Lore, and relevant persistent state were traced. All five are HEALTHY; no new finding or cluster was warranted. This completes 861/861 live review coverage."
     }
   ],
-  "highestContiguousReviewedPosition": 856,
-  "maxReviewedRegistryPosition": 856,
+  "highestContiguousReviewedPosition": 861,
+  "maxReviewedRegistryPosition": 861,
   "reviewedBeyondFirstGapCount": 0,
-  "firstUnreviewedPosition": 857,
-  "firstUnreviewedStableId": "morning-the-warning-arrived",
-  "nextStableId": "morning-the-warning-arrived",
+  "firstUnreviewedPosition": null,
+  "firstUnreviewedStableId": null,
+  "nextStableId": null,
   "reviewedStableIds": [
     "broken-bell",
     "last-stop",
@@ -21285,7 +21359,12 @@
     "horse-change-ledger",
     "first-words-over-the-wire",
     "postal-road-after-the-flood",
-    "letter-from-ash-lot"
+    "letter-from-ash-lot",
+    "morning-the-warning-arrived",
+    "no-forwarding-address-for-the-founder",
+    "blue-room-dispatch",
+    "last-station-keepers-route",
+    "envelope-returned-five-times"
   ],
   "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
   "registryOrderSource": "src/scenarios/index.ts",
@@ -21303,12 +21382,12 @@
     "the-hollow-log-shelter"
   ],
   "registryReconciliation": {
-    "status": "LIVE_REGISTRY_RECONCILED",
+    "status": "COMPLETE",
     "registryOrderSource": "src/scenarios/index.ts",
     "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
     "liveRegistryCount": 861,
-    "reviewedLiveCount": 856,
-    "remainingLiveCount": 5,
+    "reviewedLiveCount": 861,
+    "remainingLiveCount": 0,
     "unregisteredReviewedCount": 24,
     "unregisteredHistoricalFindingCount": 7,
     "unregisteredReviewedAdventureIds": [
@@ -21337,28 +21416,19 @@
       "the-hay-wagon-in-soft-ground",
       "the-sheep-wash-at-cold-creek"
     ],
-    "unreviewedPositionRanges": [
-      [
-        857,
-        861
-      ]
-    ],
+    "unreviewedPositionRanges": [],
     "latest20ReconciledToPositions809Through828": true,
     "latestBatchPositions": [
-      847,
-      848,
-      849,
-      850,
-      851,
-      852,
-      853,
-      854,
-      855,
-      856
-    ]
+      857,
+      858,
+      859,
+      860,
+      861
+    ],
+    "auditStatus": "COMPLETE"
   },
-  "reviewedLiveCount": 856,
-  "remainingLiveCount": 5,
+  "reviewedLiveCount": 861,
+  "remainingLiveCount": 0,
   "reviewedLiveStableIds": [
     "broken-bell",
     "last-stop",
@@ -22215,22 +22285,675 @@
     "horse-change-ledger",
     "first-words-over-the-wire",
     "postal-road-after-the-flood",
-    "letter-from-ash-lot"
-  ],
-  "unreviewedLiveStableIds": [
+    "letter-from-ash-lot",
     "morning-the-warning-arrived",
     "no-forwarding-address-for-the-founder",
     "blue-room-dispatch",
     "last-station-keepers-route",
     "envelope-returned-five-times"
   ],
+  "unreviewedLiveStableIds": [],
   "unregisteredReviewedRecords": 24,
   "unclusteredLiveFindingCount": 6,
   "unclusteredHistoricalFindingCount": 0,
-  "unreviewedPositionRanges": [
-    [
-      857,
-      861
+  "unreviewedPositionRanges": [],
+  "auditStatus": "COMPLETE",
+  "finalAuditSynthesis": {
+    "status": "COMPLETE",
+    "sourceSnapshot": "cba101f0feba09c67543f942331ca38f765ebe14",
+    "registryOrderSource": "src/scenarios/index.ts",
+    "registrySnapshotSha": "5676b85c4c4d4c84d18e7558f1968870961686bb",
+    "liveRegistryCount": 861,
+    "reviewedLiveCount": 861,
+    "remainingLiveCount": 0,
+    "historicalUnregisteredReviewCount": 24,
+    "liveClassificationTotals": {
+      "HEALTHY": 483,
+      "MINOR CONCERN": 58,
+      "CONFIRMED DEFECT": 320,
+      "NEEDS MANUAL REVIEW": 0
+    },
+    "liveFindingCount": 354,
+    "historicalUnregisteredFindingCount": 7,
+    "liveSeverityTotals": {
+      "HIGH": 13,
+      "MEDIUM": 283,
+      "LOW": 48,
+      "SEVERITY_UNRECOVERED": 10
+    },
+    "unclusteredLiveFindingIds": [
+      "CRA-F0006",
+      "CRA-F0007",
+      "CRA-F0008",
+      "CRA-F0009",
+      "CRA-F0010",
+      "CRA-F0139"
+    ],
+    "clusters": [
+      {
+        "clusterId": "CRA-C0001",
+        "title": "Route-specific state lost at convergence",
+        "definition": "Route-specific location, outcome, person/helper, object, method, or prior-intervention facts are lost at convergence, causing shared scenes/endings to assert facts not established by every incoming route.",
+        "liveFindingCount": 222,
+        "uniqueAffectedLiveAdventures": 212,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 12,
+          "MEDIUM": 173,
+          "LOW": 34,
+          "UNRECOVERED": 3
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0002",
+            "adventureId": "last-stop"
+          },
+          {
+            "findingId": "CRA-F0003",
+            "adventureId": "aww-rats"
+          },
+          {
+            "findingId": "CRA-F0005",
+            "adventureId": "dead-mans-hand"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
+            "adventureCount": 18
+          },
+          {
+            "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
+            "adventureCount": 15
+          },
+          {
+            "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
+            "adventureCount": 12
+          }
+        ],
+        "cooccursWith": [
+          "CRA-C0004",
+          "CRA-C0002",
+          "CRA-C0007",
+          "CRA-C0008"
+        ],
+        "repairLayer": "Primarily scenario-specific route gates, shared-ending variants, or narrow run-local proof; broad cross-family pattern.",
+        "expectedRepairReach": "Very large; 212 live Adventures and 222 assignments.",
+        "regressionRisk": "High: repairs can affect shared endings, rescue/outcome claims, and reward eligibility.",
+        "validation": "Finding-by-finding route matrix; assert both positive and absent-proof routes, including save/resume where stateful."
+      },
+      {
+        "clusterId": "CRA-C0002",
+        "title": "Knowledge/History without route proof",
+        "definition": "Knowledge and/or History is granted without sufficient route proof that the Traveler actually learned or established it.",
+        "liveFindingCount": 19,
+        "uniqueAffectedLiveAdventures": 19,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 11,
+          "LOW": 6,
+          "UNRECOVERED": 2
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0001",
+            "adventureId": "broken-bell"
+          },
+          {
+            "findingId": "CRA-F0004",
+            "adventureId": "the-last-room"
+          },
+          {
+            "findingId": "CRA-F0031",
+            "adventureId": "gone-fishing"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
+            "adventureCount": 3
+          },
+          {
+            "sourceFile": "src/scenarios/monsterHuntSecond.ts",
+            "adventureCount": 3
+          },
+          {
+            "sourceFile": "src/scenarios/disasterRescueBatch.ts",
+            "adventureCount": 2
+          }
+        ],
+        "cooccursWith": [
+          "CRA-C0001"
+        ],
+        "repairLayer": "Scenario-local Knowledge/History award gates; selectively shared persistence helpers.",
+        "expectedRepairReach": "Moderate; 19 Adventures.",
+        "regressionRisk": "High for persistent save data and durable facts.",
+        "validation": "Knowledge/History acquisition route tests plus save/reload and negative-route checks."
+      },
+      {
+        "clusterId": "CRA-C0003",
+        "title": "Elapsed-time proxy used as event proof",
+        "definition": "Elapsed time is used as a proxy for a specific event/consequence, making later narration claim that event on routes where it did not occur.",
+        "liveFindingCount": 1,
+        "uniqueAffectedLiveAdventures": 1,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 1,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0011",
+            "adventureId": "one-more-round"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/oneMoreRound.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Scenario-specific event flag/gate.",
+        "expectedRepairReach": "Small; one Adventure.",
+        "regressionRisk": "Low-to-moderate local scope.",
+        "validation": "Test elapsed-time route without event versus event-established route."
+      },
+      {
+        "clusterId": "CRA-C0004",
+        "title": "Gear ownership treated as Gear usability",
+        "definition": "Choices that physically use Gear check only that it remains in inventory, allowing BROKEN gear to satisfy the action requirement instead of requiring usableItems.",
+        "liveFindingCount": 34,
+        "uniqueAffectedLiveAdventures": 34,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 1,
+          "MEDIUM": 25,
+          "LOW": 8,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0020",
+            "adventureId": "the-road-crew"
+          },
+          {
+            "findingId": "CRA-F0021",
+            "adventureId": "creek-on-the-return"
+          },
+          {
+            "findingId": "CRA-F0023",
+            "adventureId": "dry-camp"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
+            "adventureCount": 9
+          },
+          {
+            "sourceFile": "src/scenarios/wildernessBatch.ts",
+            "adventureCount": 5
+          },
+          {
+            "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
+            "adventureCount": 4
+          }
+        ],
+        "cooccursWith": [
+          "CRA-C0001"
+        ],
+        "repairLayer": "Scenario choice requirements (`usableItems`) or a narrow Gear usability helper if callers prove uniform semantics.",
+        "expectedRepairReach": "Moderate; 34 Adventures across multiple families.",
+        "regressionRisk": "High for broken Gear routes and route availability.",
+        "validation": "Test NORMAL/DAMAGED/BROKEN Gear and no-Gear alternatives per affected route."
+      },
+      {
+        "clusterId": "CRA-C0005",
+        "title": "A single fee can be refunded more than once",
+        "definition": "A payment is refunded by an intermediate choice effect and then refunded again by a follow-up refund choice, producing net compensation beyond the paid amount.",
+        "liveFindingCount": 1,
+        "uniqueAffectedLiveAdventures": 1,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 1,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0048",
+            "adventureId": "medium-knows-too-much"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Scenario-specific compensation accounting; potentially one-shot refund token.",
+        "expectedRepairReach": "Small; one Adventure.",
+        "regressionRisk": "Moderate economy/accounting scope.",
+        "validation": "Assert paid amount, refund effect count, and final balance for every follow-up."
+      },
+      {
+        "clusterId": "CRA-C0006",
+        "title": "Generic frontier archetypes promise unsupported actors or action outcomes",
+        "definition": "The shared Frontier Discovery builder applies archetype-level choices/results without adapting them to the card's established people or route effects, so a choice can promise absent-party communication or a concrete object action that the route never resolves.",
+        "liveFindingCount": 17,
+        "uniqueAffectedLiveAdventures": 15,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 17,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0128",
+            "adventureId": "camp-below-the-slide"
+          },
+          {
+            "findingId": "CRA-F0129",
+            "adventureId": "the-hidden-tailings-pile"
+          },
+          {
+            "findingId": "CRA-F0130",
+            "adventureId": "the-claim-with-no-name"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
+            "adventureCount": 15
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Shared Frontier Discovery builder, with per-card data correction where appropriate.",
+        "expectedRepairReach": "Moderate/high; 17 assignments across 15 Adventures in one builder.",
+        "regressionRisk": "High because one template change can affect all generated cards.",
+        "validation": "Enumerate every builder caller and snapshot each route’s actors, promises, and resolved action outcome."
+      },
+      {
+        "clusterId": "CRA-C0007",
+        "title": "NPC consensus inferred from a unilateral route choice",
+        "definition": "A player-selected record or action is persisted as a group agreement or collective authorship even though the affected NPCs were not asked to participate or consent.",
+        "liveFindingCount": 4,
+        "uniqueAffectedLiveAdventures": 4,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 4,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0151",
+            "adventureId": "notes-after-the-ribbon"
+          },
+          {
+            "findingId": "CRA-F0155",
+            "adventureId": "the-cobblers-last-pair"
+          },
+          {
+            "findingId": "CRA-F0166",
+            "adventureId": "the-salute-from-the-wrong-porch"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
+            "adventureCount": 1
+          },
+          {
+            "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
+            "adventureCount": 1
+          },
+          {
+            "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [
+          "CRA-C0001"
+        ],
+        "repairLayer": "Scenario-specific consent/participant gating and persistent group-credit wording.",
+        "expectedRepairReach": "Small; four Adventures.",
+        "regressionRisk": "Moderate social-consent/persistence semantics.",
+        "validation": "Test unilateral choice versus explicit participant consent and persisted record."
+      },
+      {
+        "clusterId": "CRA-C0008",
+        "title": "Equipment-specific action without availability gate",
+        "definition": "A route offers a concrete action whose authored method names carryable Gear without checking that the Traveler possesses and can use that Gear, and without establishing another in-scene source.",
+        "liveFindingCount": 12,
+        "uniqueAffectedLiveAdventures": 12,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 12,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0194",
+            "adventureId": "the-punctured-tireless-wheel"
+          },
+          {
+            "findingId": "CRA-F0290",
+            "adventureId": "the-two-widths-at-morrow-road"
+          },
+          {
+            "findingId": "CRA-F0292",
+            "adventureId": "the-seal-with-the-second-notch"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/investigationEvidenceGenreBatch.ts",
+            "adventureCount": 11
+          },
+          {
+            "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [
+          "CRA-C0001"
+        ],
+        "repairLayer": "Choice-level inventory/usability requirements or explicit in-scene source for the tool.",
+        "expectedRepairReach": "Moderate; 12 Adventures, mostly investigation builder callers.",
+        "regressionRisk": "Moderate; can remove routes for fresh Travelers if fallback omitted.",
+        "validation": "Test Gear present/usable, absent, and unusable plus a truthful fallback."
+      },
+      {
+        "clusterId": "CRA-C0009",
+        "title": "Granted Gear condition disagrees with route-established condition",
+        "definition": "A Gear reward’s authored condition is not preserved mechanically: an explicitly frayed/damaged item may default to NORMAL, or a sound spare may be granted as DAMAGED because an unrelated repair marker is applied to it.",
+        "liveFindingCount": 3,
+        "uniqueAffectedLiveAdventures": 3,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 3,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0223",
+            "adventureId": "the-camp-that-wasnt-empty"
+          },
+          {
+            "findingId": "CRA-F0226",
+            "adventureId": "the-bell-creek-drift"
+          },
+          {
+            "findingId": "CRA-F0232",
+            "adventureId": "the-chain-at-twenty-paces"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
+            "adventureCount": 2
+          },
+          {
+            "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Reward item condition/provenance effects at the scenario grant site.",
+        "expectedRepairReach": "Small; three Adventures.",
+        "regressionRisk": "Moderate persistence/inventory condition.",
+        "validation": "Assert item condition and provenance before/after save/reload for each reward route."
+      },
+      {
+        "clusterId": "CRA-C0010",
+        "title": "Post-action complication disclosed before its trigger",
+        "definition": "A shared industrial-work builder inserts later complication/test outcomes into the diagnosis scene before repair, shutdown, or rush is chosen, making future events appear already established and sometimes contradicting the pre-action diagnosis.",
+        "liveFindingCount": 11,
+        "uniqueAffectedLiveAdventures": 11,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 11,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0318",
+            "adventureId": "the-tool-peg-on-night-shift"
+          },
+          {
+            "findingId": "CRA-F0319",
+            "adventureId": "the-misfed-grain-gate"
+          },
+          {
+            "findingId": "CRA-F0320",
+            "adventureId": "the-dragging-brake-at-bell-yard"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/industrialMillRailWorkGenreBatch.ts",
+            "adventureCount": 11
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Shared industrial mill/rail builder scene ordering.",
+        "expectedRepairReach": "Moderate; 11 Adventures in one builder.",
+        "regressionRisk": "Moderate/high due template fanout and safety complication timing.",
+        "validation": "For every builder story compare diagnosis before action with post-action complication after each trigger."
+      },
+      {
+        "clusterId": "CRA-C0011",
+        "title": "Method result disclosed before method choice",
+        "definition": "The shared construction builder inserts a result produced by a measurement or tool action into the preceding work scene, so inspection and rush routes receive findings they did not establish.",
+        "liveFindingCount": 24,
+        "uniqueAffectedLiveAdventures": 24,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 24,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0335",
+            "adventureId": "the-square-at-mill-street"
+          },
+          {
+            "findingId": "CRA-F0336",
+            "adventureId": "the-roof-that-held-its-breath"
+          },
+          {
+            "findingId": "CRA-F0337",
+            "adventureId": "three-knots-on-the-platform"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/constructionBuildingStructuralWorkGenreBatch.ts",
+            "adventureCount": 24
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Shared construction/building structural-work builder.",
+        "expectedRepairReach": "Moderate/high; 24 Adventures in one builder.",
+        "regressionRisk": "High because method-result placement affects all stories and some Gear gates.",
+        "validation": "For every story, inspect/rush must not receive measurement result; measure/tool route must receive it afterward."
+      }
+    ],
+    "highSeverityFindings": [
+      {
+        "findingId": "CRA-F0016",
+        "adventureId": "the-blue-hole",
+        "clusterId": "CRA-C0001",
+        "defect": "Withdrawal from an active drowning emergency converges on a neutral recreation ending that erases the unresolved swimmer emergency."
+      },
+      {
+        "findingId": "CRA-F0039",
+        "adventureId": "coffin-makers-extra-order",
+        "clusterId": "CRA-C0001",
+        "defect": "Shared closure attributes an anonymous threat to the tailor and records that culpability as Knowledge on paths that never establish the tailor's role or intent."
+      },
+      {
+        "findingId": "CRA-F0043",
+        "adventureId": "red-chalk-circle",
+        "clusterId": "CRA-C0001",
+        "defect": "The boundary-disturbance escape/combat route converges on an ending that says the missing tenant is out when that route never found or rescued him."
+      },
+      {
+        "findingId": "CRA-F0050",
+        "adventureId": "voice-in-the-well",
+        "clusterId": "CRA-C0001",
+        "defect": "The shared ending claims a mason capped the well and discovered its speaking tube on departure/retreat routes that never summon or consult the mason."
+      },
+      {
+        "findingId": "CRA-F0051",
+        "adventureId": "the-empty-coffin",
+        "clusterId": "CRA-C0001",
+        "defect": "Shared closure declares the missing-body cause known and assigns a family disposition after bypass routes never find the living cooper."
+      },
+      {
+        "findingId": "CRA-F0081",
+        "adventureId": "the-bridge-goes-down",
+        "clusterId": "CRA-C0001",
+        "defect": "Calling the driver to abandon the wagon is treated as proof that he reached shore, producing a rescue claim without a completed crossing."
+      },
+      {
+        "findingId": "CRA-F0083",
+        "adventureId": "the-boiler-room",
+        "clusterId": "CRA-C0001",
+        "defect": "Unwarned routes converge on an ending that says workers were counted outside although their evacuation was never established."
+      },
+      {
+        "findingId": "CRA-F0103",
+        "adventureId": "teeth-in-the-mine",
+        "clusterId": "CRA-C0004",
+        "defect": "The rope rescue action accepts a BROKEN travel rope because it checks inventory presence rather than usability, then records a successful miner rescue and History credit."
+      },
+      {
+        "findingId": "CRA-F0116",
+        "adventureId": "the-cellar-thing",
+        "clusterId": "CRA-C0001",
+        "defect": "Fetching the keeper from outside the cellar reaches a rescue ending that says the seller reached the yard and the keeper boarded the service opening, without establishing either action."
+      },
+      {
+        "findingId": "CRA-F0175",
+        "adventureId": "deep-room-at-harker-mine",
+        "clusterId": "CRA-C0001",
+        "defect": "Comparing the Red Door Token after opening the lower seal exits through text falsely claiming the door was restored."
+      },
+      {
+        "findingId": "CRA-F0230",
+        "adventureId": "the-quarry-step",
+        "clusterId": "CRA-C0001",
+        "defect": "A direct climb-to-top success can reach the safe lower-ledge result and prize without establishing avoidance of the expressly excluded cracked upper shelf."
+      },
+      {
+        "findingId": "CRA-F0235",
+        "adventureId": "the-rigging-on-the-roof",
+        "clusterId": "CRA-C0001",
+        "defect": "The direct sling-start route can receive the safe-anchor finish and prize without establishing that the cracked nearest ring was avoided in favor of the sound beam."
+      },
+      {
+        "findingId": "CRA-F0238",
+        "adventureId": "the-spring-run",
+        "clusterId": "CRA-C0001",
+        "defect": "The shared flood-safe partial outcome claims that workers are on the ridge and the flock is gathered above flood when several incoming routes establish neither or only one of those outcomes."
+      }
+    ],
+    "repairWaves": [
+      {
+        "wave": 1,
+        "clusters": [
+          "CRA-C0001",
+          "CRA-C0004"
+        ],
+        "focus": "High-severity route/outcome truth and Gear usability; verify dependencies before batching."
+      },
+      {
+        "wave": 2,
+        "clusters": [
+          "CRA-C0006",
+          "CRA-C0010",
+          "CRA-C0011",
+          "CRA-C0008"
+        ],
+        "focus": "Shared family builders and equipment-gated action templates."
+      },
+      {
+        "wave": 3,
+        "clusters": [
+          "CRA-C0002",
+          "CRA-C0009",
+          "CRA-C0007"
+        ],
+        "focus": "Knowledge/History provenance, reward condition/provenance, and NPC consent/persistent group credit."
+      },
+      {
+        "wave": 4,
+        "clusters": [
+          "CRA-C0003",
+          "CRA-C0005"
+        ],
+        "focus": "Isolated time/event proof and one-time compensation accounting; can be handled as small local repairs."
+      },
+      {
+        "wave": 5,
+        "clusters": [
+          "CRA-C0001"
+        ],
+        "focus": "Remaining medium/low scenario-specific convergence defects after the shared/high-risk first slice."
+      }
+    ],
+    "recommendedFirstRepairTarget": {
+      "clusterIds": [
+        "CRA-C0001"
+      ],
+      "reason": "It carries 12 of 13 known HIGH findings and affects 212 live Adventures (222 assignments), making unsupported rescue/person/outcome claims the broadest player-facing correctness risk. Start verification-first, then repair the highest-severity local instances; do not mistake broad cluster membership for one safe global code edit.",
+      "executionModel": "Verification-first, then severity/family slices",
+      "validation": "Route truth matrices for every selected finding; paired positive/negative outcome regressions; save/reload for persistent state; rerun adjacent healthy routes and reward/withdrawal cases."
+    },
+    "authoringRuleRecommendations": [
+      {
+        "pattern": "CRA-C0011 / CRA-C0010",
+        "safeguard": "In generated builders, keep measurement and post-action result fields out of scenes reachable before their establishing action; add a template test that inspects every story variant."
+      },
+      {
+        "pattern": "CRA-C0001",
+        "safeguard": "For every convergence, enumerate incoming route facts and explicitly test meaningful non-occurrence (not found, not moved, not handed off, not completed) with neutral fallback text."
+      },
+      {
+        "pattern": "CRA-C0002",
+        "safeguard": "Every persistent Knowledge/History grant must name the route action and evidence that teaches it; test a nearby route that does not perform that action."
+      },
+      {
+        "pattern": "CRA-C0004 / CRA-C0008 / CRA-C0009",
+        "safeguard": "For physical Gear actions and rewards, validate ownership, usable condition, source/provenance, and granted condition separately; preserve a fresh-Traveler fallback."
+      },
+      {
+        "pattern": "CRA-C0007",
+        "safeguard": "Do not persist group agreement, consent, or collective authorship from one Traveler-selected action without the affected participants’ explicit assent."
+      },
+      {
+        "pattern": "CRA-C0005",
+        "safeguard": "Model refunds as one-time compensation events and test total paid/refunded balance across every reachable follow-up."
+      }
     ]
-  ]
+  }
 }

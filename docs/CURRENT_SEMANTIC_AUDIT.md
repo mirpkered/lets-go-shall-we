@@ -1,24 +1,24 @@
 # Current-Library Semantic Audit
 
-Status: **IN PROGRESS — LIVE REGISTRY RECONCILED**
+Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 856 live Adventures reviewed; 5 remain. First live gap: position 857, The Morning the Warning Arrived (`morning-the-warning-arrived`; `src/scenarios/courierMailTelegraphGenreBatch.ts`). Next finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
+Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
 ## Current checkpoint
 
-The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. Reconciliation now separates **826 live-reviewed** Adventures from **24 reviewed-but-unregistered historical** records. The historical records and their seven attached findings remain preserved in `adventures` and `unregisteredReviewedAdventures`, but do not count toward live coverage or live defect totals. The latest 20 completed reviews map by stable ID to current positions 809–828; their semantic notes and findings were preserved while their positions were corrected. Historical batch text below is retained as history and must not be read as live-coverage accounting. No scenario source or gameplay test files were changed.
+The canonical registry order is the live exported `SCENARIOS` array in `src/scenarios/index.ts`; stable ID is primary and position is derived. Reconciliation separates **861 live-reviewed** Adventures from **24 reviewed-but-unregistered historical** records. The historical records and their seven attached findings remain preserved in `adventures` and `unregisteredReviewedAdventures`, but do not count toward live coverage or live defect totals. The latest 20 reviews were reconciled by stable ID to positions 809–828. Historical batch summaries below are retained as history and must not be read as current totals. No scenario source or gameplay test files were changed.
 
 | Classification | Adventures |
 | --- | ---: |
-| HEALTHY | 478 |
+| HEALTHY | 483 |
 | MINOR CONCERN | 58 |
 | CONFIRMED DEFECT | 320 |
 | NEEDS MANUAL REVIEW | 0 |
-| Total reviewed live Adventures | 856 |
-| Live Adventures remaining | 5 |
+| Total reviewed live Adventures | 861 |
+| Live Adventures remaining | 0 |
 
-There are 361 finding records in the preserved audit history: 354 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for findings CRA-F0001–CRA-F0010 is unavailable in the conversation carry-forward, so the ledger leaves it null rather than guessing; these account for 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 283, LOW 48, plus 10 unrecovered values.
+There are 361 finding records in the preserved audit history: 354 attached to live registered Adventures and seven attached to unregistered records. Severity metadata for CRA-F0001–CRA-F0010 is unavailable in the carried-forward source context, so it remains null rather than guessed; these are the 10 unrecovered severity values. Live severity totals are HIGH 13, MEDIUM 283, LOW 48, plus those 10 unrecovered values.
 
 ### Live-registry reconciliation
 
@@ -26,7 +26,7 @@ The 24 unregistered reviewed Adventure IDs are recorded in the JSON `unregistere
 
 Those 24 records comprise 15 HEALTHY, 2 MINOR CONCERN, and 7 CONFIRMED DEFECT classifications. Their seven findings are CRA-F0239–CRA-F0242, CRA-F0275, CRA-F0276, and CRA-F0281. Historical cluster memberships are CRA-C0001: 2 and CRA-C0004: 5. Current live cluster counts are CRA-C0001 222, C0002 19, C0003 1, C0004 34, C0005 1, C0006 17, C0007 4, C0008 12, C0009 3, C0010 11, and C0011 24 (348 clustered live findings); six live findings are unclustered.
 
-Coverage invariant: **861 registered = 856 reviewed + 5 remaining**. The verified unreviewed position range is **857–861**. The first unreviewed live entry is position 857, `morning-the-warning-arrived` — The Morning the Warning Arrived — `src/scenarios/courierMailTelegraphGenreBatch.ts`.
+Coverage invariant: **861 registered = 861 reviewed + 0 remaining**. All current live registry positions 1–861 have completed stable-ID reviews. The first unreviewed live entry is none.
 
 ## Live-registry continuation (10 newly completed reviews)
 
@@ -1735,4 +1735,63 @@ Ten additional courier/telegraph routes are HEALTHY. Current source preserves di
 | 855 | The Postal Road after the Flood (`postal-road-after-the-flood`) | HEALTHY | — disconnected valley road is not treated as a viable delivery route. |
 | 856 | The Letter from Ash Lot (`letter-from-ash-lot`) | HEALTHY | — consent, archive, and opening remain distinct; the letter does not establish who stayed. |
 
-Current live totals are **856 reviewed / 5 remaining**; next finding ID: **CRA-F0362**. No gameplay source or tests were changed; Weekly Scenario Batch remains paused.
+At the 847–856 checkpoint, live coverage was 856/861; the final five reviews below supersede that intermediate count.
+
+## Final live-registry continuation (positions 857–861)
+
+The final five courier/telegraph Adventures are HEALTHY. Public correction, sealed/undeliverable correspondence, unverified historical copy, partial relay route, privacy/disclosure, and hazard/withdrawal outcomes remain route-specific. No additional finding or cluster was warranted.
+
+| Position | Adventure | Classification | Finding |
+| ---: | --- | --- | --- |
+| 857 | The Morning the Warning Arrived (`morning-the-warning-arrived`) | HEALTHY | — warning chronology stays distinct from later ledger entry; private letter is not used as public proof. |
+| 858 | No Forwarding Address for the Founder (`no-forwarding-address-for-the-founder`) | HEALTHY | — old place name and unsigned notice do not establish sender identity or founder status. |
+| 859 | The Blue Room Dispatch (`blue-room-dispatch`) | HEALTHY | — undated unsigned page remains explicitly unverified. |
+| 860 | The Last Station Keeper’s Route (`last-station-keepers-route`) | HEALTHY | — retreat at the stone marker does not claim arrival at the upper post or the keeper’s fate. |
+| 861 | The Envelope Returned Five Times (`envelope-returned-five-times`) | HEALTHY | — possible relative remains uncertain; consent, sealed archive, and disclosure routes stay distinct. |
+
+## Final audit synthesis
+
+**COMPLETE — 861/861 live Adventures reviewed.** Current live classifications: **483 HEALTHY, 58 MINOR CONCERN, 320 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. There are **354 live finding assignments** across 320 defect-classified Adventures; classification count and finding count are different units. Severity is **13 HIGH, 283 MEDIUM, 48 LOW, plus 10 unrecovered legacy severity values** (CRA-F0001–CRA-F0010). No finding was assigned CRITICAL severity. The preserved history contains **24 unregistered reviewed records and seven attached findings**, excluded from all live totals. Six live findings are unclustered: CRA-F0006–CRA-F0010 and CRA-F0139, whose root-cause assignment is unrecovered or absent in the carried-forward audit evidence.
+
+| Cluster | Live findings | Unique live Adventures | Severity (H/M/L/unrecovered) | Repair layer and reach |
+| --- | ---: | ---: | --- | --- |
+| CRA-C0001 — Route-specific state lost at convergence | 222 | 212 | 12 / 173 / 34 / 3 | Broad route-specific convergence; mostly local proof, gate, and ending variants. High regression risk. |
+| CRA-C0002 — Knowledge/History without route proof | 19 | 19 | 0 / 11 / 6 / 2 | Local Knowledge/History acquisition and persistence gates. |
+| CRA-C0003 — Elapsed-time proxy used as event proof | 1 | 1 | 0 / 1 / 0 / 0 | Isolated scenario event flag/gate. |
+| CRA-C0004 — Gear ownership treated as Gear usability | 34 | 34 | 1 / 25 / 8 / 0 | Choice requirements: physical Gear use must require usable condition. |
+| CRA-C0005 — A single fee can be refunded more than once | 1 | 1 | 0 / 1 / 0 / 0 | Isolated compensation/refund accounting. |
+| CRA-C0006 — Generic frontier archetypes promise unsupported actors or outcomes | 17 | 15 | 0 / 17 / 0 / 0 | One shared Frontier Discovery builder; inspect every builder caller. |
+| CRA-C0007 — NPC consensus inferred from a unilateral route choice | 4 | 4 | 0 / 4 / 0 / 0 | Consent-aware scenario effects and persistent group-credit wording. |
+| CRA-C0008 — Equipment-specific action without availability gate | 12 | 12 | 0 / 12 / 0 / 0 | Choice-level inventory/usability gates or explicit in-scene tool source. |
+| CRA-C0009 — Granted Gear condition disagrees with route-established condition | 3 | 3 | 0 / 3 / 0 / 0 | Scenario reward condition/provenance effects; validate saved inventory state. |
+| CRA-C0010 — Post-action complication disclosed before its trigger | 11 | 11 | 0 / 11 / 0 / 0 | One industrial mill/rail builder; move complication after its trigger. |
+| CRA-C0011 — Method result disclosed before method choice | 24 | 24 | 0 / 24 / 0 / 0 | One construction/building builder; keep results behind measurement/tool choices. |
+
+Cluster assignments sum to **348 findings**; the other six live findings are currently unclustered. Overlap is limited to CRA-C0001 with CRA-C0002, CRA-C0004, CRA-C0007, and CRA-C0008. These are co-occurrences, not evidence that one repair owns another cluster. Keep the roots separate and check each finding’s independence during implementation.
+
+### High-severity queue
+
+The 13 known HIGH findings are: CRA-F0016 (`the-blue-hole`), CRA-F0039 (`coffin-makers-extra-order`), CRA-F0043 (`red-chalk-circle`), CRA-F0050 (`voice-in-the-well`), CRA-F0051 (`the-empty-coffin`), CRA-F0081 (`the-bridge-goes-down`), CRA-F0083 (`the-boiler-room`), CRA-F0103 (`teeth-in-the-mine`), CRA-F0116 (`the-cellar-thing`), CRA-F0175 (`deep-room-at-harker-mine`), CRA-F0230 (`the-quarry-step`), CRA-F0235 (`the-rigging-on-the-roof`), and CRA-F0238 (`the-spring-run`). Twelve belong to CRA-C0001; CRA-F0103 is CRA-C0004. Their common player impact is unsupported rescue, person/outcome, safety, or usable-Gear claims. No currently recorded critical-severity finding exists.
+
+### Repair program recommendation
+
+Recommended order:
+
+1. CRA-C0001 and CRA-C0004: resolve the HIGH route-truth and broken-Gear cases first, using individual route witnesses rather than a broad text substitution.
+2. CRA-C0011, CRA-C0010, CRA-C0006, and CRA-C0008: address high-reach builders and availability gates with exhaustive caller matrices and generated-story tests.
+3. CRA-C0002, CRA-C0009, and CRA-C0007: protect persistent Knowledge/History, reward condition/provenance, and participant consent.
+4. CRA-C0003 and CRA-C0005: close the isolated event-proof and one-time-refund cases.
+5. Finish remaining CRA-C0001 medium/low scenario-specific convergence findings and validate each route pair.
+
+The first repair program should target **CRA-C0001**, using a verification-first, severity-sliced plan. It has 222 assignments across 212 Adventures and 12 known HIGH findings, so the expected reach is the largest and the risk of touching healthy neighboring routes is significant. Begin with those 12 HIGH cases and classify shared mechanisms before editing; validate positive and negative routes, withdrawals, partial outcomes, reward gates, and persistence wherever involved. CRA-C0004 should be an adjacent high-priority program, but remain semantically separate.
+
+### Authoring-rule safeguards to review
+
+- For generated story builders, assert that every measurement/result/complication appears only after the action that establishes it; test every generated story variant (CRA-C0010, CRA-C0011).
+- For each convergence, list the incoming route facts and test meaningful non-occurrence with neutral fallback text (CRA-C0001).
+- Every persistent Knowledge/History award should identify the route action and evidence that teaches it; include a nearby route that must not grant it (CRA-C0002).
+- Separate Gear possession, usability, source/provenance, and granted condition; keep a truthful fresh-Traveler fallback (CRA-C0004, CRA-C0008, CRA-C0009).
+- Do not persist group agreement or collective credit from one player choice without affected participants’ assent (CRA-C0007).
+- Treat refunds as one-time events and test total paid/refunded balances across all reachable follow-ups (CRA-C0005).
+
+These are recommendations only; no canonical authoring document was changed. No gameplay repair, gameplay test edit, deployment, or scheduler change occurred. Weekly Scenario Batch remains paused. The audit is complete; next unused finding ID is **CRA-F0362**, and next available cluster ID is **CRA-C0012**.
