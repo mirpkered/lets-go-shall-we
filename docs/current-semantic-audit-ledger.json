@@ -3959,12 +3959,12 @@
       "slug": "the-lost-survey-party",
       "title": "The Lost Survey Party",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0063"
       ],
       "reviewProvenance": "current source route review; notebook, uphill prints, camp marker, creek call/rope/withdrawal, refusal, injury and search outcomes traced",
-      "notes": "surveyDelay says the Traveler leaves clear marks at both camp and slope; direct declineSurveySearch leaves the opening scene for this ending without marking either, and leaveSurveySlope also reaches it without a marking action. The explicit avoidSurveyWater branch does mark the creek and is a distinct route.",
+      "notes": "surveyDelay now uses the existing marked_survey_party_creek_search History proof to mention a creek-location mark only on surveyCreek.avoidSurveyWater; refusal and slope-retreat paths receive neutral delayed-search text. Route-pair tests cover these paths and save/reload of the existing proof.",
       "preReconciliationPosition": 216,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15678,6 +15678,8 @@
       "violatedRule": "A shared ending may not claim route-specific information or search preparation that was not performed.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts now uses the existing marked_survey_party_creek_search History flag to select a creek-specific marker sentence; the default surveyDelay text makes no claim that locations were marked. src/scenarios/survivalExpeditionBatch.test.ts verifies decline and slope-retreat negatives, the positive creek route, and save/reload persistence of the pre-existing History proof.",
       "preReconciliationPosition": 216,
       "registrationStatus": "LIVE"
     },
@@ -20012,9 +20014,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 599,
+    "HEALTHY": 600,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 204,
+    "CONFIRMED DEFECT": 203,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
