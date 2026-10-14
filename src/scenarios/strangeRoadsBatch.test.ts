@@ -219,6 +219,30 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineSafeExit, legacy)).toMatch(/no conclusion about the earlier call/i);
   });
 
+  it('keeps the cold-room morning follow-up tied to the innkeeper conversation', () => {
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    const outcomes = [
+      ['windowDraft', /felt/i],
+      ['servicePassage', /carpenter/i],
+      ['chimneyFault', /sweep/i],
+      ['unexplained', /no ordinary cause/i],
+    ] as const;
+
+    for (const [coldRoomCause, expected] of outcomes) {
+      const direct = act(start(THE_COLD_ROOM, { coldRoomCause }), THE_COLD_ROOM, 'coldRoomOffered', 'stayInColdRoom');
+      const directText = sceneText(THE_COLD_ROOM.scenes.coldRoomNight, direct);
+      expect(directText).not.toMatch(/carpenter|sweep|felt/i);
+      expect(directText).toMatch(/no repair arrangement has been established/i);
+
+      let discussed = act(start(THE_COLD_ROOM, { coldRoomCause }), THE_COLD_ROOM, 'coldRoomOffered', 'askColdInnkeeper');
+      discussed = act(discussed, THE_COLD_ROOM, 'coldRoomAccount', 'stayAfterColdTalk');
+      saveGame(discussed, storage as unknown as Storage);
+      discussed = loadSave(storage as unknown as Storage);
+      expect(sceneText(THE_COLD_ROOM.scenes.coldRoomNight, discussed)).toMatch(expected);
+    }
+  });
+
   it('keeps the bridge and black-dog encounters grounded, with opt-in follow-up history', () => {
     expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingFigure.text).toContain('far bank');
     expect(THE_WOMAN_AT_THE_CROSSING.scenes.crossingFigure.text).toContain('near bank');

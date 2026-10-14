@@ -194,10 +194,18 @@ export const THE_COLD_ROOM: Scenario = {
       { requirements: { selections: { coldRoomCause: 'chimneyFault' } }, text: 'The innkeeper admits the damper has been stiff since the last cleaning and promises to have the sweep look at it.' },
       { requirements: { selections: { coldRoomCause: 'unexplained' } }, text: 'The innkeeper checks the fireplace and window, then feels the wall. They find no obvious cause and offer you a different room.' },
     ], choices: [
-      { id: 'stayAfterColdTalk', label: 'Stay after the innkeeper’s check', next: 'coldRoomNight' },
+      { id: 'stayAfterColdTalk', label: 'Stay after the innkeeper’s check', next: 'coldRoomNight', effects: { setFlags: ['cold_room_talked'] } },
       { id: 'moveAfterColdTalk', label: 'Take the warmer room instead', next: 'coldRoomLeft' },
     ] },
-    coldRoomNight: end('coldRoomNight', 'A Night in the Cold Room', 'You sleep in the room with an extra blanket. It may have a draft, a faulty chimney, or no ordinary explanation you can find. The innkeeper says the carpenter will look at it in the morning.'),
+    coldRoomNight: {
+      ...end('coldRoomNight', 'A Night in the Cold Room', 'You sleep in the room with an extra blanket. It may have a draft, a faulty chimney, or no ordinary explanation you can find. No repair arrangement has been established.'),
+      textVariants: [
+        { requirements: { flags: ['cold_room_talked'], selections: { coldRoomCause: 'windowDraft' } }, text: 'You sleep in the room with an extra blanket. The innkeeper brought felt for the draft beneath the sash; whether it will keep the room warm remains to be seen.' },
+        { requirements: { flags: ['cold_room_talked'], selections: { coldRoomCause: 'servicePassage' } }, text: 'You sleep in the room with an extra blanket. The innkeeper will ask the carpenter to inspect the sealed service passage in the morning.' },
+        { requirements: { flags: ['cold_room_talked'], selections: { coldRoomCause: 'chimneyFault' } }, text: 'You sleep in the room with an extra blanket. The innkeeper promised to have the sweep look at the stiff damper.' },
+        { requirements: { flags: ['cold_room_talked'], selections: { coldRoomCause: 'unexplained' } }, text: 'You sleep in the room with an extra blanket. The innkeeper found no ordinary cause for the chill and offered a different room, but you chose to stay.' },
+      ],
+    },
     coldRoomLeft: end('coldRoomLeft', 'A Warmer Bed', 'You accept a different room and leave the cold one to the innkeeper. No one asks you to prove why it felt wrong.'),
   },
 };
