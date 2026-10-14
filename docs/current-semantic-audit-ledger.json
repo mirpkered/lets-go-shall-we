@@ -4009,13 +4009,13 @@
       "slug": "the-last-rope",
       "title": "The Last Rope",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0064",
         "CRA-F0065"
       ],
       "reviewProvenance": "current source route review; direct rope lowering success/failure, pine-anchor sacrifice, stone-path rescue, calls, withdrawal to fetch crew and all ending states traced",
-      "notes": "porterUp asserts the rope remains at the ravine or took strain and cannot be trusted today even on successful direct lowering, where source applies neither loss nor damage. Separately, leaveRavine and retreatAfterRope send the Traveler to fetch a trained crew, while shared ravineWait says the crew follows the Traveler’s call. The rope and rescue alternatives otherwise preserve the porter/cargo outcomes.",
+      "notes": "porterUp now defaults to neutral object-state text; the existing sacrificed_rope_to_rescue_ravine_porter History proof selects the rope-left-at-ravine variant. ravineWait defaults to neutral crew-arrival wording; explicit callRavineHelp/callFromAnchor routes set calledRavineCrew for the call-specific variant, while retreat/fetch routes make no call claim. Paired route tests cover both findings and save/reload proof.",
       "preReconciliationPosition": 219,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15693,6 +15693,8 @@
       "violatedRule": "A shared outcome must preserve route-specific object possession and condition; success on a lower-risk route must not inherit the failed/sacrificed route’s cost.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts uses the existing sacrificed_rope_to_rescue_ravine_porter History proof for the rope-sacrifice variant; direct-lowering success receives neutral wording with no false rope loss/strain claim. src/scenarios/survivalExpeditionBatch.test.ts verifies both outcomes and the sacrificed-rope text after save/reload.",
       "preReconciliationPosition": 219,
       "registrationStatus": "LIVE"
     },
@@ -15706,6 +15708,8 @@
       "violatedRule": "A shared ending may not substitute one method of securing assistance for another route’s action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/survivalExpeditionBatch.ts sets the run-local calledRavineCrew proof only on explicit callRavineHelp/callFromAnchor choices. ravineWait uses neutral crew-arrival text by default and retains call-specific text only with that proof. src/scenarios/survivalExpeditionBatch.test.ts verifies fetched-crew versus called-crew routes and save/reload of the call proof.",
       "preReconciliationPosition": 219,
       "registrationStatus": "LIVE"
     },
@@ -20014,9 +20018,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 600,
+    "HEALTHY": 601,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 203,
+    "CONFIRMED DEFECT": 202,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
