@@ -4694,12 +4694,12 @@
       "slug": "frozen-millwheel",
       "title": "The Frozen Millwheel",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0079"
       ],
       "reviewProvenance": "current source route review; sluice, bearing/tool, compare-old-wafer with optional relic, warming/draining, wait, broken-handle surge, brace success/failure, cracked housing, payoff and reward traced",
-      "notes": "After openBleed fails, surge.closeGateFromBank can succeed by bracing the gate and having the miller close it, then enters wheelFreed without establishing that the bearing was warmed. wheelFreed and downstream History/payoff claim both eased pressure and warmed bearing. Normal repair/wait/refuse/failure paths keep their distinct outcomes.",
+      "notes": "The relic comparison now leads to a non-repair continuation while preserving its Knowledge; successful surge bracing leads to gateSecured and requires the player to continue through bearing work. Only the two complete warm/drain routes reach wheelFreed and its repair History/payment. Regression covers comparison-only, brace-only, and completed repair.",
       "preReconciliationPosition": 260,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15948,6 +15948,8 @@
       "violatedRule": "Success, reward, and persistent outcome claims must be gated by proof that every necessary repair step occurred; partial mitigation is not completed repair.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The relic comparison now reaches comparisonNotRepair, preserving the comparison Knowledge/History while stating the wheel remains bound and offering repair or wait choices. Successful surge-gate bracing now reaches gateSecured, not the freed-wheel payoff; the player must return to the bearing and complete warming/draining. Only bearingClear.warmAndDrain or waterLowered.clearNow reaches wheelFreed, where repair History and payment remain available. Christmas-affinity tests cover comparison-only, gate-brace-only, and complete repair routes; 22 tests pass. Full suite passes 127 files / 2,392 tests and production build passes. No new flags or save changes.",
       "preReconciliationPosition": 260,
       "registrationStatus": "LIVE"
     },
@@ -20106,9 +20108,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 639,
+    "HEALTHY": 640,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 163,
+    "CONFIRMED DEFECT": 162,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
