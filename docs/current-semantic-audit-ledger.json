@@ -5542,12 +5542,12 @@
       "slug": "the-ashen-man",
       "title": "The Ashen Man",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0112"
       ],
       "reviewProvenance": "current source route review; witness accounts, exterior trail, kiln entry/rescue, family/worker presence, ember containment, crew handoff, injury, waiting and fatal outcomes traced",
-      "notes": "kilnInterior.smotherEmber reaches emberStopped while the hired worker remains behind the warped door; emberStopped nevertheless says the worker is safe with the family. The knowledge that the ember/figure are linked is established by kilnInterior, but worker rescue is not.",
+      "notes": "kilnInterior.smotherEmber reaches emberStopped while the hired worker remains behind the warped door; the old shared text nevertheless said the worker was safe with the family. Run-local ashenWorkerReachedDaylight proof is now set only by routes that reach kilnRescue, and the shared ember ending is neutral about rescue without that proof. The ember/figure Knowledge effect and other fire outcomes remain unchanged.",
       "preReconciliationPosition": 309,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -16447,7 +16447,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 309,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Wave 76: all routes that bring the worker to daylight (pole-open, call-through, successful hot-latch, family-guided pull, and successful lantern approach after rescue) set ashenWorkerReachedDaylight proof. Ember-only smothering gets neutral rescue-unestablished text; routes that already rescued the worker receive the supported coughing/able-to-walk description. Regression contrasts ember-only with rescued-and-smothered routes, checks save/reload, Knowledge preservation, and the pole-open route. Focused Monster Hunt, RC12, registry, and library tests pass (28 tests across 4 files)."
     },
     {
       "findingId": "CRA-F0113",
@@ -20189,9 +20191,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 673,
+    "HEALTHY": 674,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 129,
+    "CONFIRMED DEFECT": 128,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
