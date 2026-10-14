@@ -2337,12 +2337,12 @@
       "slug": "the-black-dog",
       "title": "The Black Dog",
       "sourceFile": "src/scenarios/strangeRoadsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0142"
       ],
       "reviewProvenance": "current-source route review; all four blackDogTruth variants; call/follow/pass, owner answer, injured-traveler help by farmhand route and passing-cart route traced; save/resume random selection/history test inspected",
-      "notes": "Only the farmDog variant establishes a farmhand at the bend. In the lostTraveler variant, dogTravelerHelped offers either following the dog to the farm gate (which establishes a farmhand) or staying to call passing help. The latter reaches dogPassingHelp after a cart answers, but its ending additionally says a farmhand arrives; that participant/action is not established on this route.",
+      "notes": "Original review witness preserved: the lostTraveler passing-cart route reached dogPassingHelp, whose ending additionally said a farmhand arrives although the route did not follow the dog to the farm or contact a farmhand. Wave 59 records the evidence-backed repair disposition; route review provenance and original finding remain unchanged.",
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
       "positionDelta": 0,
@@ -16832,6 +16832,8 @@
       "routeWitness": "blackDogRoad (blackDogTruth=lostTraveler).followBlackDog -> dogFollowed -> helpDitchTraveler -> dogTravelerHelped.callForPassingHelp -> dogPassingHelp; the cart answers, but no dog-to-farm route is taken and no farmhand is contacted, while the ending says the farmhand arrives.",
       "violatedRule": "NPC arrival and assistance require route-specific contact or arrival proof.",
       "clusterId": "CRA-C0001",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The passing-cart ending now reports only that the cart answered, the Traveler remains beside the injured person, and the dog waits at the bend; it no longer invents a farmhand arrival. The contrasting follow-the-dog ending still truthfully reports the farmhand. The Strange Roads route-contrast regression plus registry, diversity, library, inventory, and selected RC12 checks pass (60 tests); TypeScript and production build pass with the known bundle-size warning.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE"
     },
@@ -20150,9 +20152,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 655,
+    "HEALTHY": 656,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 147,
+    "CONFIRMED DEFECT": 146,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
