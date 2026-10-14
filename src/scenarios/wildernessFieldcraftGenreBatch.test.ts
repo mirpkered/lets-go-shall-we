@@ -219,4 +219,30 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     expect(signalText).toMatch(/does not confirm that the workers or flock are all clear/i);
     expect(signalText).not.toMatch(/wagon crew waits|flock is gathered|workers stay on the ridge/i);
   });
+
+  it('claims a carrier route only after the upper foot approach is established', () => {
+    const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-alder-crossing')!;
+
+    let shallow = act(begin(scenario), scenario, 'probeNearBank');
+    shallow = act(shallow, scenario, 'testRope');
+    shallow = act(shallow, scenario, 'markShallow');
+    expect(shallow.run?.sceneId).toBe('partial');
+    expect(shallow.run?.flags).not.toContain('alderCarrierSentOnFoot');
+    expect(sceneText(scenario.scenes.partial, shallow)).toMatch(/marks only the shallow bank-side shelf/i);
+    expect(sceneText(scenario.scenes.partial, shallow)).toMatch(/No safe crossing or route for the carrier/i);
+    expect(sceneText(scenario.scenes.partial, shallow)).not.toMatch(/carrier on foot/i);
+
+    let foot = act(begin(scenario), scenario, 'walkUpstream');
+    foot = act(foot, scenario, 'clearBank');
+    foot = act(foot, scenario, 'sendOnFoot');
+    expect(foot.run?.flags).toContain('alderCarrierSentOnFoot');
+    expect(sceneText(scenario.scenes.partial, foot)).toMatch(/send the carrier on foot while keeping the cart on the road/i);
+    const resumed = loadSave({ getItem: () => JSON.stringify(foot) });
+    expect(resumed.run?.flags).toContain('alderCarrierSentOnFoot');
+    expect(sceneText(scenario.scenes.partial, resumed)).toMatch(/send the carrier on foot/i);
+
+    const legacy = begin(scenario);
+    legacy.run!.sceneId = 'partial';
+    expect(sceneText(scenario.scenes.partial, legacy)).toMatch(/No safe crossing or route for the carrier/i);
+  });
 });
