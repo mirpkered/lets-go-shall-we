@@ -50,6 +50,62 @@ describe('Gear Expansion Genre Batch 11 — Agriculture / Ranch / Animal Work', 
     expect(sceneText(trough.scenes.check, inspectedPipe)).toMatch(/the pipe is clear/i);
   });
 
+  it('keeps foal, gate, and halter outcomes faithful to the selected farm route', () => {
+    const foal = BATCH.find(({ id }) => id === 'the-foal-in-the-windbreak')!;
+    let tarpSecured = take(fresh(foal), foal, 'secure');
+    expect(tarpSecured.run?.flags).toContain('foalTarpTiedBack');
+    tarpSecured = loadSave({ getItem: () => JSON.stringify(tarpSecured) });
+    const securedPassage = sceneText(foal.scenes.passage, tarpSecured);
+    expect(securedPassage).toMatch(/tarp is tied away/i);
+    expect(securedPassage).not.toMatch(/tarp status is not established/i);
+
+    let mareBrought = take(fresh(foal), foal, 'dam');
+    expect(mareBrought.run?.flags).toContain('foalMareBroughtToNearPen');
+    mareBrought = loadSave({ getItem: () => JSON.stringify(mareBrought) });
+    const mareResult = sceneText(foal.scenes.reunited, mareBrought);
+    expect(mareResult).toMatch(/handler brings the mare to the near pen/i);
+    expect(mareResult).not.toMatch(/foal reaches the mare|through the clear gate/i);
+
+    const legacyPassage = fresh(foal);
+    legacyPassage.run!.sceneId = 'passage';
+    const neutralPassage = sceneText(foal.scenes.passage, legacyPassage);
+    expect(neutralPassage).toMatch(/does not establish whether the tarp has been tied away/i);
+    expect(neutralPassage).not.toMatch(/tarp is tied away/i);
+
+    const pliers = BATCH.find(({ id }) => id === 'the-fence-pliers-at-willow-turn')!;
+    let gateTest = take(fresh(pliers), pliers, 'twine');
+    gateTest = take(gateTest, pliers, 'gate');
+    expect(gateTest.run?.flags).toContain('willowGateTestedWithSheep');
+    gateTest = loadSave({ getItem: () => JSON.stringify(gateTest) });
+    const gateResult = sceneText(pliers.scenes.resolved, gateTest);
+    expect(gateResult).toMatch(/gate closes after the first sheep passes/i);
+    expect(gateResult).not.toMatch(/gate remains closed/i);
+
+    let railOnly = take(fresh(pliers), pliers, 'twine');
+    railOnly = take(railOnly, pliers, 'rail');
+    expect(railOnly.run?.flags).toContain('willowLowerRailReinforced');
+    railOnly = loadSave({ getItem: () => JSON.stringify(railOnly) });
+    const railResult = sceneText(pliers.scenes.resolved, railOnly);
+    expect(railResult).toMatch(/lower rail is reinforced/i);
+    expect(railResult).toMatch(/gate remains closed/i);
+    expect(railResult).not.toMatch(/first sheep passes/i);
+
+    const legacyResult = fresh(pliers);
+    legacyResult.run!.sceneId = 'resolved';
+    const neutralResult = sceneText(pliers.scenes.resolved, legacyResult);
+    expect(neutralResult).toMatch(/follow-up work is not established/i);
+    expect(neutralResult).not.toMatch(/gate closes|rail is reinforced/i);
+
+    const halter = BATCH.find(({ id }) => id === 'the-lost-halter-at-blue-hill')!;
+    const attemptedPull = take(fresh(halter), halter, 'pull');
+    const stopped = sceneText(halter.scenes.stop, attemptedPull);
+    expect(stopped).toMatch(/begin to pull the damaged halter/i);
+    expect(stopped).toMatch(/you stop before the bent buckle takes the strain/i);
+    expect(stopped).not.toMatch(/no one pulls on the damaged halter/i);
+    const safeGate = take(fresh(halter), halter, 'gate');
+    expect(sceneText(halter.scenes.owner, safeGate)).toMatch(/owner arrives and calls the mule/i);
+  });
+
   it('does not confuse crop cover or bin bracing with moving stored goods', () => {
     const oats = BATCH.find(({ id }) => id === 'the-dry-row-before-the-threshing')!;
     let covered = take(fresh(oats), oats, 'cover');
