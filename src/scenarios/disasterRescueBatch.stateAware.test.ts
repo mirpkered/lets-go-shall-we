@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
-import { THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
+import { THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
 
-function fresh(scenario: Scenario = THE_CROWD_BREAKS): SaveData {
+function fresh(scenario: Scenario = THE_CROWD_BREAKS, carriedItem?: string): SaveData {
   const character = newCharacter('State Tester');
+  if (carriedItem) character.carriedItem = carriedItem;
   return { version: 1, bank: [], character, run: startRun(character, scenario, () => 0) };
 }
 
@@ -66,5 +67,30 @@ describe('state-aware shared aftermath narration', () => {
     state = act(state, THE_ROOF_COMES_IN, 'roofFinalCount');
     expect(state.run?.sceneId).toBe('roofAftermath');
     expect(THE_ROOF_COMES_IN.scenes.roofAftermath.text).toContain('Anyone brought out is taken to the inn');
+  });
+
+  it('does not treat calling the bridge driver as proof he reached shore', () => {
+    let state = fresh(THE_BRIDGE_GOES_DOWN);
+    state = act(state, THE_BRIDGE_GOES_DOWN, 'reachChild', 0);
+    expect(state.run?.sceneId).toBe('childAcross');
+    state = act(state, THE_BRIDGE_GOES_DOWN, 'callFather');
+    state = act(state, THE_BRIDGE_GOES_DOWN, 'bridgeLeave');
+    const ending = THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd;
+    expect(ending.text).not.toMatch(/driver reaches the west bank/i);
+    expect(ending.textVariants?.some(({ text }) => /driver.*reach(?:es)? the west bank/i.test(text))).toBe(false);
+    expect(state.run?.flags).toContain('bridgeChildSaved');
+    expect(state.run?.flags).not.toContain('bridgePeopleSaved');
+
+    let mule = fresh(THE_BRIDGE_GOES_DOWN, 'smallKnife');
+    mule = act(mule, THE_BRIDGE_GOES_DOWN, 'callDriver');
+    mule = act(mule, THE_BRIDGE_GOES_DOWN, 'freeMule');
+    expect(mule.run?.sceneId).toBe('muleSaved');
+    mule = act(mule, THE_BRIDGE_GOES_DOWN, 'muleCallDriver');
+    mule = act(mule, THE_BRIDGE_GOES_DOWN, 'bridgeLeave');
+    const muleEnding = THE_BRIDGE_GOES_DOWN.scenes.bridgeEnd;
+    expect(muleEnding.text).not.toMatch(/driver reaches the west bank/i);
+    expect(muleEnding.textVariants?.some(({ text }) => /driver.*reach(?:es)? the west bank/i.test(text))).toBe(false);
+    expect(mule.run?.flags).toContain('bridgeMuleFreed');
+    expect(mule.run?.flags).not.toContain('bridgePeopleSaved');
   });
 });
