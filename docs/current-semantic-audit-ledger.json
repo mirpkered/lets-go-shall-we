@@ -365,7 +365,8 @@
     "CRA-C0008": 12,
     "CRA-C0009": 3,
     "CRA-C0010": 11,
-    "CRA-C0011": 24
+    "CRA-C0011": 24,
+    "CRA-C0012": 1
   },
   "unregisteredHistoricalClusterFindingCounts": {
     "CRA-C0001": 2,
@@ -378,10 +379,11 @@
     "CRA-C0008": 0,
     "CRA-C0009": 0,
     "CRA-C0010": 0,
-    "CRA-C0011": 0
+    "CRA-C0011": 0,
+    "CRA-C0012": 0
   },
   "nextFindingId": "CRA-F0362",
-  "nextClusterId": "CRA-C0012",
+  "nextClusterId": "CRA-C0013",
   "status": "COMPLETE",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
   "adventures": [
@@ -16624,7 +16626,7 @@
       "defect": "The selected 'Accept supper, then explain' route ends after supper without explaining the mistaken identity.",
       "routeWitness": "doorstep.acceptMeal -> meal terminal ending. No correction scene is visited; meal says the Traveler shares supper and the host speaks of ordinary things, leaving the mistaken-guest premise unaddressed despite the explicit choice label.",
       "violatedRule": "A selected route's promised follow-through must occur or be explicitly declined before the ending.",
-      "clusterId": null,
+      "clusterId": "CRA-C0012",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 360,
       "registrationStatus": "LIVE"
@@ -19727,6 +19729,14 @@
         "CRA-F0359",
         "CRA-F0360"
       ]
+    },
+    {
+      "clusterId": "CRA-C0012",
+      "name": "Choice-promised follow-through omitted before termination",
+      "description": "A route explicitly promises a follow-up action, but reaches a terminal outcome without performing or explicitly declining that action, leaving the selected intent unresolved.",
+      "findingIds": [
+        "CRA-F0139"
+      ]
     }
   ],
   "classificationTotals": {
@@ -22294,7 +22304,7 @@
   ],
   "unreviewedLiveStableIds": [],
   "unregisteredReviewedRecords": 24,
-  "unclusteredLiveFindingCount": 6,
+  "unclusteredLiveFindingCount": 5,
   "unclusteredHistoricalFindingCount": 0,
   "unreviewedPositionRanges": [],
   "auditStatus": "COMPLETE",
@@ -22326,8 +22336,7 @@
       "CRA-F0007",
       "CRA-F0008",
       "CRA-F0009",
-      "CRA-F0010",
-      "CRA-F0139"
+      "CRA-F0010"
     ],
     "clusters": [
       {
@@ -22795,6 +22804,37 @@
         "expectedRepairReach": "Moderate/high; 24 Adventures in one builder.",
         "regressionRisk": "High because method-result placement affects all stories and some Gear gates.",
         "validation": "For every story, inspect/rush must not receive measurement result; measure/tool route must receive it afterward."
+      },
+      {
+        "clusterId": "CRA-C0012",
+        "title": "Choice-promised follow-through omitted before termination",
+        "definition": "A route explicitly promises a follow-up action, but reaches a terminal outcome without performing or explicitly declining that action, leaving the selected intent unresolved.",
+        "liveFindingCount": 1,
+        "uniqueAffectedLiveAdventures": 1,
+        "severityDistribution": {
+          "CRITICAL": 0,
+          "HIGH": 0,
+          "MEDIUM": 1,
+          "LOW": 0,
+          "UNRECOVERED": 0
+        },
+        "representativeFindings": [
+          {
+            "findingId": "CRA-F0139",
+            "adventureId": "an-invitation-for-someone-else"
+          }
+        ],
+        "primarySourceFiles": [
+          {
+            "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
+            "adventureCount": 1
+          }
+        ],
+        "cooccursWith": [],
+        "repairLayer": "Scenario-local route continuation or terminal result; preserve the selected follow-through intent.",
+        "expectedRepairReach": "Small; one currently evidenced Adventure.",
+        "regressionRisk": "Low-to-moderate; local choice-flow change with possible ending text effects.",
+        "validation": "Test the promised-follow-through route and a contrasting route that explicitly defers or declines correction."
       }
     ],
     "highSeverityFindings": [

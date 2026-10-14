@@ -1766,8 +1766,9 @@ The final five courier/telegraph Adventures are HEALTHY. Public correction, seal
 | CRA-C0009 — Granted Gear condition disagrees with route-established condition | 3 | 3 | 0 / 3 / 0 / 0 | Scenario reward condition/provenance effects; validate saved inventory state. |
 | CRA-C0010 — Post-action complication disclosed before its trigger | 11 | 11 | 0 / 11 / 0 / 0 | One industrial mill/rail builder; move complication after its trigger. |
 | CRA-C0011 — Method result disclosed before method choice | 24 | 24 | 0 / 24 / 0 / 0 | One construction/building builder; keep results behind measurement/tool choices. |
+| CRA-C0012 — Choice-promised follow-through omitted before termination | 1 | 1 | 0 / 1 / 0 / 0 | Scenario-local route continuation or terminal result; preserve selected follow-through intent. |
 
-Cluster assignments sum to **348 findings**; the other six live findings are currently unclustered. Overlap is limited to CRA-C0001 with CRA-C0002, CRA-C0004, CRA-C0007, and CRA-C0008. These are co-occurrences, not evidence that one repair owns another cluster. Keep the roots separate and check each finding’s independence during implementation.
+Cluster assignments sum to **349 findings**; the other five live findings (CRA-F0006–CRA-F0010) remain unclustered because their carried-forward records do not preserve enough semantic detail to assign a root cause. CRA-F0139 is now assigned to CRA-C0012 based on its explicit choice promise and terminal-route witness. Overlap is limited to CRA-C0001 with CRA-C0002, CRA-C0004, CRA-C0007, and CRA-C0008. These are co-occurrences, not evidence that one repair owns another cluster. Keep the roots separate and check each finding’s independence during implementation.
 
 ### High-severity queue
 
@@ -1783,7 +1784,7 @@ Recommended order:
 4. CRA-C0003 and CRA-C0005: close the isolated event-proof and one-time-refund cases.
 5. Finish remaining CRA-C0001 medium/low scenario-specific convergence findings and validate each route pair.
 
-The first repair program should target **CRA-C0001**, using a verification-first, severity-sliced plan. It has 222 assignments across 212 Adventures and 12 known HIGH findings, so the expected reach is the largest and the risk of touching healthy neighboring routes is significant. Begin with those 12 HIGH cases and classify shared mechanisms before editing; validate positive and negative routes, withdrawals, partial outcomes, reward gates, and persistence wherever involved. CRA-C0004 should be an adjacent high-priority program, but remain semantically separate.
+The first repair program should target **CRA-C0001**, using a verification-first, severity-sliced plan. It has 222 assignments across 212 Adventures and 12 ledger-recorded HIGH findings, so the expected reach is the largest and the risk of touching healthy neighboring routes is significant. Current-source preparation found that CRA-F0043 (`red-chalk-circle`) and CRA-F0051 (`the-empty-coffin`) have matching route-specific gates and regression coverage; retain their ledger status until a deliberate disposition update, but exclude them from immediate repair selection unless new evidence contradicts those tests. The remaining ten C0001 HIGH candidates should be verified and grouped by their local mechanisms; validate positive and negative routes, withdrawals, partial outcomes, reward gates, and persistence wherever involved. CRA-C0004 should be an adjacent high-priority program, but remain semantically separate.
 
 ### Authoring-rule safeguards to review
 
@@ -1794,4 +1795,4 @@ The first repair program should target **CRA-C0001**, using a verification-first
 - Do not persist group agreement or collective credit from one player choice without affected participants’ assent (CRA-C0007).
 - Treat refunds as one-time events and test total paid/refunded balances across all reachable follow-ups (CRA-C0005).
 
-These are recommendations only; no canonical authoring document was changed. No gameplay repair, gameplay test edit, deployment, or scheduler change occurred. Weekly Scenario Batch remains paused. The audit is complete; next unused finding ID is **CRA-F0362**, and next available cluster ID is **CRA-C0012**.
+These are recommendations only; no canonical authoring document was changed. No gameplay repair, gameplay test edit, deployment, or scheduler change occurred. Weekly Scenario Batch remains paused. The audit is complete; next unused finding ID is **CRA-F0362**, and next available cluster ID is **CRA-C0013**.
