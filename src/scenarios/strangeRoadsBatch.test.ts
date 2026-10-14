@@ -166,6 +166,37 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(sceneText(THE_WOMAN_AT_THE_CROSSING.scenes.crossingDetourArrival, detour)).toContain('marked road brings you around');
   });
 
+  it('keeps the crossing resolution truthful about inspection and daylight', () => {
+    const scenario = THE_WOMAN_AT_THE_CROSSING;
+    const truth = { crossingFigureTruth: 'warning' };
+    const reload = (state: SaveData) => loadSave({ getItem: () => JSON.stringify(state) });
+
+    let detoured = act(start(scenario, truth), scenario, 'crossingFigure', 'takeCrossingDetour');
+    detoured = act(detoured, scenario, 'crossingDetourArrival', 'leaveDetourCrossing');
+    expect(sceneText(scenario.scenes.crossingClear, detoured)).not.toMatch(/stopping long enough to inspect/i);
+
+    let inspected = act(start(scenario, truth), scenario, 'crossingFigure', 'inspectBridgeFromBank');
+    inspected = act(inspected, scenario, 'crossingExamined', 'crossCarefullyAtDusk', () => 0);
+    inspected = act(inspected, scenario, 'crossingPassed', 'leaveCrossingBehind');
+    inspected = reload(inspected);
+    expect(sceneText(scenario.scenes.crossingClear, inspected)).toMatch(/your inspection showed/i);
+
+    let daylight = act(start(scenario, truth), scenario, 'crossingFigure', 'waitAtCrossing');
+    daylight = act(daylight, scenario, 'crossingWaited', 'crossAtDawn', () => 0);
+    daylight = act(daylight, scenario, 'crossingPassed', 'leaveCrossingBehind');
+    expect(sceneText(scenario.scenes.crossingClear, daylight)).not.toMatch(/stopping long enough to inspect/i);
+
+    let daylightFailure = act(start(scenario, truth), scenario, 'crossingFigure', 'waitAtCrossing');
+    daylightFailure = act(daylightFailure, scenario, 'crossingWaited', 'crossAtDawn', () => 0.999999);
+    expect(daylightFailure.run?.sceneId).toBe('crossingScramble');
+    expect(sceneText(scenario.scenes.crossingScramble, daylightFailure)).not.toMatch(/in the dark/i);
+
+    let duskFailure = act(start(scenario, truth), scenario, 'crossingFigure', 'inspectBridgeFromBank');
+    duskFailure = act(duskFailure, scenario, 'crossingExamined', 'crossCarefullyAtDusk', () => 0.999999);
+    expect(sceneText(scenario.scenes.crossingScramble, duskFailure)).not.toMatch(/in the dark/i);
+    expect(sceneText(scenario.scenes.crossingScramble, duskFailure)).toMatch(/no longer a sensible crossing now/i);
+  });
+
   it('does not conjure water for the black dog and lets help lead to meaningful assistance', () => {
     expect(THE_BLACK_DOG.scenes.blackDogRoad.choices.map(({ id }) => id)).not.toContain('offerBlackDogWater');
     expect(Object.values(THE_BLACK_DOG.scenes).flatMap(({ text, textVariants = [] }) => [text, ...textVariants.map(({ text: variant }) => variant)])

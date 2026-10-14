@@ -264,7 +264,7 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
   scenes: {
     crossingFigure: { id: 'crossingFigure', title: 'A Raised Hand', tone: 'warning', text: 'At dusk, you stand on the near bank of a narrow stream. A stone bridge leads to the far bank, where a woman raises her hand and points down toward the crossing. Water clouds around one bridge support; from here you cannot tell whether the stones above it are sound.', choices: [
       { id: 'callToCrossingWoman', label: 'Call across the bridge', timeCost: 2, next: 'crossingCall' },
-      { id: 'inspectBridgeFromBank', label: 'Look over the bridge from here', timeCost: 3, next: 'crossingExamined' },
+      { id: 'inspectBridgeFromBank', label: 'Look over the bridge from here', timeCost: 3, next: 'crossingExamined', effects: { setFlags: ['crossingBridgeInspected'] } },
       { id: 'waitAtCrossing', label: 'Wait for daylight on the near bank', timeCost: 480, next: 'crossingWaited' },
       { id: 'takeCrossingDetour', label: 'Use the marked road around the stream', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
@@ -274,7 +274,7 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
       { requirements: { selections: { crossingFigureTruth: 'prank' } }, text: 'A laugh comes from the hedge, but the woman’s hand is still aimed at the cloudy water under the bridge.' },
       { requirements: { selections: { crossingFigureTruth: 'vanishingFigure' } }, text: 'The far bank empties between gusts. The water still clouds around the bridge support.' },
     ], choices: [
-      { id: 'inspectStonesFromNearBank', label: 'Inspect the stones from this bank', next: 'crossingExamined' },
+      { id: 'inspectStonesFromNearBank', label: 'Inspect the stones from this bank', next: 'crossingExamined', effects: { setFlags: ['crossingBridgeInspected'] } },
       { id: 'leaveCrossingCall', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
     crossingExamined: { id: 'crossingExamined', title: 'What the Water Shows', tone: 'warning', text: 'From the near bank, you see fresh grit washing out beneath one arch and a deck stone sitting lower than its neighbors. The crossing may hold a careful traveler, but a hurried step or loaded cart could shift it further. By the time you finish looking, the far-bank road is empty.', textVariants: [
@@ -290,7 +290,7 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
       { id: 'takeDetourAtDawn', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
       { id: 'crossAtDawn', label: 'Cross slowly in the better light', timeCost: 4, chance: { probability: 0.82, successNext: 'crossingPassed', failureNext: 'crossingScramble', successMessage: 'In the better light, you find a stable line across the uneven stones.', failureMessage: 'A loose stone rolls underfoot. You catch yourself and retreat to the near bank.', failureEffects: { health: -1 } }, effects: { setFlags: ['crossingTested'] } },
     ] },
-    crossingScramble: { id: 'crossingScramble', title: 'A Step Back', tone: 'warning', text: 'The stone shifts and your foot strikes the edge hard. You are back on the near bank, shaken and sore; the bridge has not failed, but it is no longer a sensible crossing in the dark.', choices: [
+    crossingScramble: { id: 'crossingScramble', title: 'A Step Back', tone: 'warning', text: 'The stone shifts and your foot strikes the edge hard. You are back on the near bank, shaken and sore; the bridge has not failed, but it is no longer a sensible crossing now.', choices: [
       { id: 'scrambleTakeDetour', label: 'Take the marked road around', timeCost: 15, next: 'crossingDetourArrival' },
     ] },
     crossingPassed: { id: 'crossingPassed', title: 'Across the Bridge', tone: 'safe', text: 'You crossed after testing the low stones, accepting a risk the woman’s signal had made visible. The woman is nowhere in sight, but the damaged arch will need repair before carts use it again.', choices: [
@@ -299,7 +299,9 @@ export const THE_WOMAN_AT_THE_CROSSING: Scenario = {
     crossingDetourArrival: { id: 'crossingDetourArrival', title: 'Around the Stream', tone: 'safe', text: 'The marked road brings you around to the far bank without putting weight on the damaged arch. The woman is gone; the loose stone and washed mortar remain for the next traveler to notice.', choices: [
       { id: 'leaveDetourCrossing', label: 'Continue along the far-bank road', next: 'crossingClear', effects: { historyFlags: ['noticed_and_avoided_a_weak_bridge_arch'] } },
     ] },
-    crossingClear: end('crossingClear', 'The Signal Remembered', 'You continue on with the crossing behind you. Whether the woman was warning you, asking directions, playing a trick, or something you cannot explain, stopping long enough to inspect the bridge kept you from treating a real weakness as harmless.'),
+    crossingClear: { ...end('crossingClear', 'The Signal Remembered', 'You continue on with the crossing behind you. The washed arch remains a real weakness that needs repair before carts use it again.'), textVariants: [
+      { requirements: { flags: ['crossingBridgeInspected'] }, text: 'You continue on with the crossing behind you. Whether the woman was warning you, asking directions, playing a trick, or something you cannot explain, your inspection showed that the washed arch is a real weakness that needs repair before carts use it again.' },
+    ] },
   },
 };
 
