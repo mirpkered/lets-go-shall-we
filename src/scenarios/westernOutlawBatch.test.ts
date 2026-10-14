@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { THE_BOUNTY_POSTER, THE_OUTLAWS_MOTHER } from './westernOutlawBatch';
+import { THE_BOUNTY_POSTER, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -14,6 +14,39 @@ const act=(state:SaveData,choiceId:string):SaveData=>{
   expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
   return choose(state,THE_BOUNTY_POSTER,choice!);
 };
+const beginBar=():SaveData=>{
+  const character=newCharacter('Bar Tester');
+  return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_MAN_AT_THE_END_OF_THE_BAR,()=>0)};
+};
+const actBar=(state:SaveData,choiceId:string):SaveData=>{
+  const scene=THE_MAN_AT_THE_END_OF_THE_BAR.scenes[state.run!.sceneId];
+  const choice=scene.choices.find(({id})=>id===choiceId);
+  expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+  return choose(state,THE_MAN_AT_THE_END_OF_THE_BAR,choice!,()=>0);
+};
+
+describe('The Man at the End of the Bar route-truth continuity',()=>{
+  it('does not claim the clerk corrected the accusation unless the Traveler heard the correction',()=>{
+    let quiet=actBar(beginBar(),'quietKitchen');
+    quiet=actBar(quiet,'alleyLeave');
+    expect(sceneText(THE_MAN_AT_THE_END_OF_THE_BAR.scenes.safeEnd,quiet)).not.toMatch(/clerk.s account corrects the accusation/i);
+
+    let armed=actBar(beginBar(),'drawFirst');
+    armed=actBar(armed,'gunLeave');
+    expect(sceneText(THE_MAN_AT_THE_END_OF_THE_BAR.scenes.safeEnd,armed)).not.toMatch(/clerk.s account corrects the accusation/i);
+
+    let heard=actBar(beginBar(),'askReason');
+    heard=actBar(heard,'askClerk');
+    heard=JSON.parse(JSON.stringify(heard)) as SaveData;
+    heard=actBar(heard,'clerkSlipOut');
+    heard=actBar(heard,'alleyLeave');
+    expect(sceneText(THE_MAN_AT_THE_END_OF_THE_BAR.scenes.safeEnd,heard)).toMatch(/clerk.s account corrects the accusation/i);
+
+    const legacy=beginBar();
+    legacy.run!.sceneId='safeEnd';
+    expect(sceneText(THE_MAN_AT_THE_END_OF_THE_BAR.scenes.safeEnd,legacy)).not.toMatch(/clerk.s account corrects the accusation/i);
+  });
+});
 
 describe('The Bounty Poster route/evidence integrity',()=>{
   it('routes the livery choice to the household inquiry it actually describes',()=>{

@@ -52,13 +52,13 @@ export const THE_MAN_AT_THE_END_OF_THE_BAR = W('the-man-at-the-end-of-the-bar', 
     { id: 'drawFirst', label: 'Reach for the revolver', hint: 'His hand is already beside a loaded weapon; drawing may be fatal.', chance: { probability: 0.28, successNext: 'gunTurn', failureNext: 'barDeath', successMessage: 'You knock the table into his arm and reach the kitchen door.', failureMessage: 'He fires before you can reach him.', failureEffects: { health: -5 } } },
   ], 'danger'),
   answer: scene('answer', 'A Name from the Freight Book', 'The man says a freight clerk claimed you carried a missing strongbox. You have not seen a strongbox. He wants you to ride with him to the depot; the keeper says the clerk is in town and can be asked.', [
-    { id: 'askClerk', label: 'Ask to hear the clerk’s account here', next: 'clerk' },
+    { id: 'askClerk', label: 'Ask to hear the clerk’s account here', next: 'clerk', effects: { setFlags: ['barClerkCorrectionHeard'] } },
     { id: 'refuseRide', label: 'Refuse to leave the room with him', next: 'witnesses' },
     { id: 'offerExit', label: 'Walk out with both ranch hands watching', next: 'backAlley' },
   ], 'warning'),
   witnesses: scene('witnesses', 'The Room Takes Notice', 'The keeper and ranch hands have turned toward the stranger. His revolver remains on the bar, not yet drawn. The front door opens onto the lit street; the kitchen exit reaches a narrow alley.', [
     { id: 'witnessStreet', label: 'Leave by the lit front door', next: 'streetSafe' },
-    { id: 'witnessClerk', label: 'Ask the keeper to fetch the clerk', next: 'clerk' },
+    { id: 'witnessClerk', label: 'Ask the keeper to fetch the clerk', next: 'clerk', effects: { setFlags: ['barClerkCorrectionHeard'] } },
     { id: 'witnessConfront', label: 'Tell him to put the gun away', hint: 'A direct challenge may make him draw.', chance: { probability: 0.52, successNext: 'gunTurn', failureNext: 'barDeath', successMessage: 'The witnesses close in and he backs away from the weapon.', failureMessage: 'He draws before the keeper can speak.', failureEffects: { health: -4 } } },
   ]),
   clerk: scene('clerk', 'The Clerk’s Mistake', 'The clerk arrives and admits the strongbox was loaded onto another coach. He described the messenger by a name that sounded like yours. The armed man has been threatening the wrong traveler, but his hand is still near the revolver.', [
@@ -71,7 +71,7 @@ export const THE_MAN_AT_THE_END_OF_THE_BAR = W('the-man-at-the-end-of-the-bar', 
   ]),
   gunTurn: scene('gunTurn', 'The Weapon Falls', 'The revolver skids beneath a table. The man is alive, the keeper has called the constable, and the ranch hands keep distance rather than attack him.', [{ id: 'gunLeave', label: 'Leave the room before the constable arrives', next: 'safeEnd' }]),
   streetSafe: scene('streetSafe', 'Outside the Bar', 'The constable arrives with the clerk’s correction. The armed stranger is disarmed and held for questioning about the threats, not for the missing strongbox. Your name is entered as a witness, not a suspect.', [{ id: 'barWitness', label: 'Give a short account, then go', next: 'safeEnd', effects: { knowledge: ['The missing strongbox was placed on another coach; the barroom threat began with a mistaken name.'] } }]),
-  safeEnd: end('safeEnd', 'No Ride to the Depot', 'You leave under your own power. The clerk’s account corrects the accusation; the man’s threat remains a separate matter for the constable. You did not need to draw a weapon to keep your name.'),
+  safeEnd: { ...end('safeEnd', 'No Ride to the Depot', 'You leave under your own power. The man’s threat remains a separate matter for the constable; your name has not been checked by the clerk on this route.'), textVariants: [{ requirements: { flags: ['barClerkCorrectionHeard'] }, text: 'You leave under your own power. The clerk’s account corrects the accusation; the man’s threat remains a separate matter for the constable. You did not need to draw a weapon to keep your name.' }] },
   barDeath: end('barDeath', 'The First Shot', 'The revolver fires before you can get behind cover.', 'death'),
 }, 'bar', 'traveler/passenger');
 
