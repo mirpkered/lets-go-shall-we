@@ -81,6 +81,19 @@ function build(c: EvidenceStory): Scenario {
   };
   const inspectIds = ['measure', 'compare', 'ask'] as const;
   const toolUse = specialistUse[c.id];
+  const namedToolRequirements: Record<string, Partial<Record<(typeof inspectIds)[number], string>>> = {
+    'the-two-widths-at-morrow-road': { measure: 'surveyChain' },
+    'the-seal-with-the-second-notch': { measure: 'assayersLoupe' },
+    'the-gate-pin-at-south-pasture': { compare: 'fieldCalipers' },
+    'the-ledger-page-that-dried': { measure: 'waterproofLedgerTube' },
+    'the-rope-fibers-on-the-ferry-cleat': { compare: 'heavyLeatherGloves' },
+    'the-stone-under-the-floorboard': { measure: 'collapsibleSoundingRod' },
+    'the-boot-mark-in-the-ash': { measure: 'joinersFoldingRule' },
+    'the-two-seals-at-blackwater-dock': { compare: 'waterproofLedgerTube' },
+    'the-stone-chips-at-the-quarry': { measure: 'fieldCalipers', compare: 'surveyChain' },
+    'the-chalk-line-at-the-old-boundary': { compare: 'surveyChain' },
+    'the-notches-on-the-old-millstone': { measure: 'assayersLoupe' },
+  };
   const inspectionGear: Record<string, string> = {
     'the-scrape-beneath-the-lock':'pocketToolkit',
     'the-switch-that-faced-east':'pocketToolkit',
@@ -90,11 +103,13 @@ function build(c: EvidenceStory): Scenario {
     'the-bent-pin-in-the-harvest-engine':'fieldCalipers',
   };
   const inspectChoices: Scene['choices'] = c.inspect.map((label, i) => {
-    const item = inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror|Field Calipers/i.test(label)) ? inspectionGear[c.id] : undefined;
+    const choiceId = inspectIds[i];
+    const item = namedToolRequirements[c.id]?.[choiceId]
+      ?? (inspectionGear[c.id] && (/Pocket Toolkit|Folding Card Mirror|Field Calipers/i.test(label)) ? inspectionGear[c.id] : undefined);
     const caseRoute = c.id === 'the-map-with-two-norths' && /Lockable Map Case/i.test(label);
     const caseItem = item ?? (caseRoute ? 'lockableMapCase' : undefined);
     return {
-      id: inspectIds[i], label,
+      id: choiceId, label,
       ...(caseItem ? { requirements: { items: [caseItem], usableItems: [caseItem] } } : {}),
       next: 'test', effects: { setFlags: [`${c.id}_${inspectIds[i]}`, ...(caseRoute ? ['map_copy_secured'] : [])] },
     };

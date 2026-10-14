@@ -27,7 +27,9 @@ function reachSettlement(scenario: (typeof ROAD_DANGER_GENRE_BATCH)[number]): Sa
   state = act(state, scenario, approach.id);
   const noncombat = scenario.scenes.threat.choices.find((choice) => choice.id.startsWith('respond_') && meets(choice.requirements, state))!;
   state = act(state, scenario, noncombat.id);
-  state = act(state, scenario, scenario.scenes.aftermath.choices[0].id);
+  const ending = scenario.scenes.aftermath.choices.find((choice) => meets(choice.requirements, state));
+  expect(ending, `${scenario.id} has an available aftermath choice`).toBeTruthy();
+  state = act(state, scenario, ending!.id);
   return state;
 }
 
