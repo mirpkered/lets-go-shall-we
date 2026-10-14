@@ -498,4 +498,28 @@ describe('deep exploration anthology', () => {
     const fullRecord = choose(farEntry, fort, fort.scenes.fortBastion.choices.find(({ id }) => id === 'copyRoster')!, () => 0);
     expect(sceneText(fort.scenes.fortResolution, fullRecord)).toMatch(/preserve both the record and route/i);
   });
+
+  it('does not claim workers stopped timber work unless the route establishes the request', () => {
+    const fort = getScenario('hollow-fort')!;
+    const traveler = newCharacter('Fort Work Boundary Test');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, fort, () => 0) };
+
+    const archive = choose(initial, fort, fort.scenes.fortYard.choices.find(({ id }) => id === 'archive')!, () => 0);
+    const comparedPlan = choose(archive, fort, fort.scenes.fortArchive.choices.find(({ id }) => id === 'compareWall')!, () => 0);
+    expect(comparedPlan.run?.sceneId).toBe('fortMarked');
+    expect(sceneText(fort.scenes.fortMarked, comparedPlan)).toMatch(/whether the workers stop stripping timber is not established/i);
+
+    const cistern = choose(initial, fort, fort.scenes.fortYard.choices.find(({ id }) => id === 'cistern')!, () => 0);
+    const measured = choose(cistern, fort, fort.scenes.fortCistern.choices.find(({ id }) => id === 'measureCistern')!, () => 0);
+    expect(measured.run?.sceneId).toBe('fortMarked');
+    expect(sceneText(fort.scenes.fortMarked, measured)).not.toMatch(/workers stop stripping timber near the hollow wall/i);
+    const archived = choose(cistern, fort, fort.scenes.fortCistern.choices.find(({ id }) => id === 'archiveCistern')!, () => 0);
+    expect(archived.run?.sceneId).toBe('fortMarked');
+    expect(sceneText(fort.scenes.fortMarked, archived)).not.toMatch(/workers stop stripping timber near the hollow wall/i);
+
+    const asked = choose(initial, fort, fort.scenes.fortYard.choices.find(({ id }) => id === 'walkAwayFort')!, () => 0);
+    expect(asked.run?.flags).toContain('fortWorkersAskedToPause');
+    expect(sceneText(fort.scenes.fortMarked, asked)).toMatch(/you asked the workers to leave the hollow wall alone/i);
+    expect(sceneText(fort.scenes.fortMarked, asked)).not.toMatch(/whether they comply is established/i);
+  });
 });
