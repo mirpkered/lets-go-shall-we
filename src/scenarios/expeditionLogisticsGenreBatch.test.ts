@@ -64,6 +64,38 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(meets(gated.requirements, scaleRun)).toBe(true);
   });
 
+  it('keeps cached bedding out of the Fourth Mule safe outcome unless the route returns for it', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-fourth-mule')!;
+    let cached = fresh(scenario);
+    cached = take(cached, scenario, 'string', 'leaveBedding');
+    expect(cached.run?.flags).toContain('fourth_mule_bedding_cached');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(cached, storage as never);
+    cached = loadSave(storage as never);
+    cached = take(cached, scenario, 'camp', 'useBlanket');
+    const cachedEnding = sceneText(scenario.scenes.safe, cached);
+    expect(cachedEnding).toMatch(/bedding was left at the staging shed/i);
+    expect(cachedEnding).not.toMatch(/goods remain together/i);
+
+    let handCarried = fresh(scenario);
+    handCarried = take(handCarried, scenario, 'string', 'splitByHand');
+    handCarried = take(handCarried, scenario, 'camp', 'useBlanket');
+    expect(sceneText(scenario.scenes.safe, handCarried)).toMatch(/load remains as placed by the chosen plan/i);
+    expect(sceneText(scenario.scenes.safe, handCarried)).not.toMatch(/bedding was left at the staging shed/i);
+
+    let returned = fresh(scenario);
+    returned = take(returned, scenario, 'string', 'leaveBedding');
+    returned = take(returned, scenario, 'camp', 'returnBedding');
+    expect(returned.run?.sceneId).toBe('paid');
+    expect(sceneText(scenario.scenes.paid, returned)).toMatch(/bedding or daylight was spent/i);
+
+    const legacy = fresh(scenario);
+    legacy.run!.sceneId = 'safe';
+    const legacyText = sceneText(scenario.scenes.safe, legacy);
+    expect(legacyText).toMatch(/load remains as placed by the chosen plan/i);
+    expect(legacyText).not.toMatch(/goods remain together|bedding was left at the staging shed/i);
+  });
+
   it('acquires the Cargo Balance Scale only through explicit release and preserves pending placement across save/resume', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-third-trip')!;
     let state = fresh(scenario);

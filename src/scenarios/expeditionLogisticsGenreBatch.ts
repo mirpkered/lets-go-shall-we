@@ -46,7 +46,10 @@ const EXPEDITION_LOGISTICS_EDITORIAL_DRAFT: Scenario[] = [
       { id: 'retreat', label: 'Return to the staging shed together', next: 'safe', effects: { money: 1 } },
     ]),
     strain: s('strain', 'The Saddle Slips Again', 'The mule stumbles on the first rise. No one is hurt, but the load must come off and the animal rests while the party reorganizes.', [{ id: 'unload', label: 'Unload and divide the goods by hand', next: 'partial', effects: { historyFlags: ['refused_overload_on_pack_animal'] } }]),
-    safe: end('safe', 'Animals and Supplies Safe', 'The party postpones the climb. The mule is rested and the goods remain together; the leader pays one coin for the extra handling.'),
+    safe: {
+      ...end('safe', 'Animals and Supplies Safe', 'The party postpones the climb. The mule is rested; the load remains as placed by the chosen plan. The leader pays one coin for the extra handling.'),
+      textVariants: [{ requirements: { flags: ['fourth_mule_bedding_cached'] }, text: 'The party postpones the climb. The mule is rested; the bedding was left at the staging shed. The leader pays one coin for the extra handling.' }],
+    },
     paid: s('paid', 'A Slower Camp', 'The party reaches a usable camp, though bedding or daylight was spent to get there. The guide offers one coin or an animal-care lesson.', [{ id: 'coin', label: 'Take one coin', next: 'finish', effects: { money: 1 } }, { id: 'learn', label: 'Decline pay and learn the load limit signs', next: 'lesson', effects: knowledge('A slipped pack saddle, shortened stride, or guarded back means an animal needs its load reduced before the next climb.') }]),
     partial: end('partial', 'A Delayed Departure', 'The supplies are saved, but the team stops short and arranges another carrier rather than forcing the mule onward.'),
     finish: end('finish', 'A Camp Within Reach', 'The party reaches shelter with the animal rested and enough supplies to continue after dawn.'),
