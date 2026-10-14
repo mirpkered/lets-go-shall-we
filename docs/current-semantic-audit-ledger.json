@@ -6014,7 +6014,7 @@
       "slug": "camp-below-the-slide",
       "title": "The Camp Below the Slide",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0128"
       ],
@@ -6032,7 +6032,7 @@
       "slug": "the-hidden-tailings-pile",
       "title": "The Hidden Tailings Pile",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0129"
       ],
@@ -6066,7 +6066,7 @@
       "slug": "the-claim-with-no-name",
       "title": "The Claim with No Name",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0130"
       ],
@@ -6132,7 +6132,7 @@
       "slug": "the-washed-out-claim",
       "title": "The Washed-Out Claim",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0131"
       ],
@@ -6150,7 +6150,7 @@
       "slug": "the-old-dredge",
       "title": "The Old Dredge",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0132"
       ],
@@ -6230,7 +6230,7 @@
       "slug": "locked-strongbox-in-the-ruins",
       "title": "The Locked Strongbox in the Ruins",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0143"
       ],
@@ -6247,7 +6247,7 @@
       "slug": "the-broken-gate",
       "title": "The Broken Gate",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0144",
         "CRA-F0145"
@@ -6280,7 +6280,7 @@
       "slug": "the-claim-jumpers-story",
       "title": "The Claim Jumper’s Story",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0146"
       ],
@@ -6297,7 +6297,7 @@
       "slug": "the-forgotten-supply-cache",
       "title": "The Forgotten Supply Cache",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0147"
       ],
@@ -6315,7 +6315,7 @@
       "slug": "the-old-hydraulic-cut",
       "title": "The Old Hydraulic Cut",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0148",
         "CRA-F0149"
@@ -6350,7 +6350,7 @@
       "slug": "claim-jumpers-at-sundown",
       "title": "Claim Jumpers at Sundown",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0133"
       ],
@@ -6384,7 +6384,7 @@
       "slug": "the-timber-claim",
       "title": "The Timber Claim",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0134"
       ],
@@ -6402,7 +6402,7 @@
       "slug": "the-second-claim-marker",
       "title": "The Second Claim Marker",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0135"
       ],
@@ -6420,7 +6420,7 @@
       "slug": "the-claim-that-pays-too-well",
       "title": "The Claim That Pays Too Well",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0136"
       ],
@@ -6438,7 +6438,7 @@
       "slug": "camp-with-fresh-cut-wood",
       "title": "The Camp with Fresh-Cut Wood",
       "sourceFile": "src/scenarios/frontierDiscoveryBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0137"
       ],
@@ -16532,7 +16532,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 337,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "src/scenarios/frontierDiscoveryBatch.ts changes the stable-edge option to inspection-only and gives the successful chest reach an explicit pinned/no-recovery result. frontierDiscoveryC0006.test.ts contrasts inspection, risky success, and fatal failure."
     },
     {
       "findingId": "CRA-F0129",
@@ -16545,7 +16547,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 338,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shareRecord archetype is now a private field record for this unclaimed tailings site; its ending explicitly says no claimant was present/contacted. frontierDiscoveryC0006.test.ts covers the selected and private contrast routes."
     },
     {
       "findingId": "CRA-F0130",
@@ -16558,7 +16562,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 340,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The absent-claimant route now keeps a private field record and leaves the pan in place; no bilateral report is claimed. frontierDiscoveryC0006.test.ts covers this and the private-record contrast."
     },
     {
       "findingId": "CRA-F0131",
@@ -16571,7 +16577,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 344,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The high-bank option is now inspection-only and the result says the shovel remains in place, not recovered or carried. frontierDiscoveryC0006.test.ts covers the inspection and withdrawal contrast."
     },
     {
       "findingId": "CRA-F0132",
@@ -16584,7 +16592,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 345,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The bank-side marking attempt explicitly resolves as illegible with no ledger contents established; successful boarding reaches a distinct result that leaves the bolted box unopened and unknown. frontierDiscoveryC0006.test.ts covers bank, success, and fatal failure."
     },
     {
       "findingId": "CRA-F0133",
@@ -16597,7 +16607,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 349,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The account choice now names only the two present visitors, states the absent employer is not contacted, and records only that one-sided communication. frontierDiscoveryC0006.test.ts verifies recipient and History text."
     },
     {
       "findingId": "CRA-F0134",
@@ -16610,7 +16622,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 351,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The no-claimant timber route now records evidence privately; the result explicitly avoids delivery to another party. frontierDiscoveryC0006.test.ts covers selected and private contrast routes."
     },
     {
       "findingId": "CRA-F0135",
@@ -16623,7 +16637,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 352,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The no-claimant boundary route now records both lines privately without claiming bilateral sharing. frontierDiscoveryC0006.test.ts covers selected and private contrast routes."
     },
     {
       "findingId": "CRA-F0136",
@@ -16636,7 +16652,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 353,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The account choice now tells only the present prospector; the unseen shed occupant is explicitly not reported to. frontierDiscoveryC0006.test.ts verifies the route and recipient-specific History."
     },
     {
       "findingId": "CRA-F0137",
@@ -16649,7 +16667,9 @@
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 354,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The selected visible-marker action now records a factual History flag and its ending acknowledges the marker; the wait route has neither. frontierDiscoveryC0006.test.ts contrasts those outcomes."
     },
     {
       "findingId": "CRA-F0138",
@@ -16723,7 +16743,9 @@
       "violatedRule": "A concrete successful player action must receive a truthful outcome or be explicitly left unresolved.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "A successful pry now reaches an explicit opened-box result while leaving unknown contents untouched; careful and withdrawal routes remain sealed/neutral. frontierDiscoveryC0006.test.ts covers success and both contrasts."
     },
     {
       "findingId": "CRA-F0144",
@@ -16735,7 +16757,9 @@
       "violatedRule": "A route-specific investigation choice must resolve the action it promises before convergence.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The cabin-help choice now reaches a focused outside call/check result that reports no visible person without claiming the cabin is empty or entering it. frontierDiscoveryC0006.test.ts contrasts this with leaving."
     },
     {
       "findingId": "CRA-F0145",
@@ -16747,7 +16771,9 @@
       "violatedRule": "Bilateral communication requires both recipients and a route to deliver the account to be established.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The absent-claimant gate account is now private and explicitly not delivered to another party. frontierDiscoveryC0006.test.ts verifies the changed action/history and the distinct cabin-check finding."
     },
     {
       "findingId": "CRA-F0146",
@@ -16759,7 +16785,9 @@
       "violatedRule": "A bilateral report requires each party and a route-specific delivery/contact action.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The account choice now names only the present worker and says the absent owner did not receive it. frontierDiscoveryC0006.test.ts verifies outcome and History."
     },
     {
       "findingId": "CRA-F0147",
@@ -16771,7 +16799,9 @@
       "violatedRule": "A selected intervention must occur or be explicitly left incomplete; a later ending may not claim an unperformed route action.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The entry marker route now records/acknowledges the marker; rope/blanket acquisition endings no longer falsely say a marker was left, while the explicit mark route remains distinct. frontierDiscoveryC0006.test.ts covers entry, marking, both acquired items, and untouched cache."
     },
     {
       "findingId": "CRA-F0148",
@@ -16783,7 +16813,9 @@
       "violatedRule": "A concrete player-selected intervention must be reflected in the resulting scene/state or explicitly left incomplete.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The mark-and-leave entry route records and acknowledges marking the danger; turning away remains a distinct unmarked route. frontierDiscoveryC0006.test.ts contrasts both."
     },
     {
       "findingId": "CRA-F0149",
@@ -16795,7 +16827,9 @@
       "violatedRule": "A successful route action must resolve or truthfully preserve its result before the next decision/convergence.",
       "clusterId": "CRA-C0006",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The successful descent now reaches a dedicated fitting result that states the limited observation and no ore/ownership discovery; fatal failure remains unchanged. frontierDiscoveryC0006.test.ts covers success and fatal failure."
     },
     {
       "findingId": "CRA-F0150",
@@ -19902,9 +19936,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 544,
+    "HEALTHY": 559,
     "MINOR CONCERN": 58,
-    "CONFIRMED DEFECT": 259,
+    "CONFIRMED DEFECT": 244,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
