@@ -212,6 +212,50 @@ describe('deep exploration anthology', () => {
     expect(recognized.run?.inventory).toContain('ironOrchardRodFragment');
   });
 
+  it('keeps Saint Orra departure and closure claims tied to the actions taken', () => {
+    const orra = getScenario('beneath-saint-orras')!;
+    const route = (steps: Array<[string, string]>): SaveData => {
+      const character = newCharacter('Saint Orra Route QA');
+      let state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, orra, () => 0) };
+      for (const [sceneId, choiceId] of steps) {
+        expect(state.run?.sceneId).toBe(sceneId);
+        const choice = orra.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+        expect(choice).toBeDefined();
+        state = choose(state, orra, choice!);
+      }
+      return state;
+    };
+
+    const copiedMarks = route([['orraYard', 'inspectMarks'], ['orraNiches', 'copyNiches']]);
+    expect(sceneText(orra.scenes.orraExit, copiedMarks)).not.toMatch(/damage is marked/i);
+    const partialRetreat = route([['orraYard', 'descendOrra'], ['orraLanding', 'retreatLanding']]);
+    expect(sceneText(orra.scenes.orraExit, partialRetreat)).not.toMatch(/damage is marked/i);
+    const describedRoom = route([['orraYard', 'descendOrra'], ['orraLanding', 'recordsBelow'], ['orraHiddenRoom', 'describeChamber']]);
+    expect(sceneText(orra.scenes.orraExit, describedRoom)).not.toMatch(/damage is marked/i);
+    const copiedRecord = route([['orraYard', 'askCaretaker'], ['orraRecords', 'copyRecords']]);
+    expect(sceneText(orra.scenes.orraExit, copiedRecord)).not.toMatch(/damage is marked/i);
+    const markedDamage = route([['orraYard', 'leaveOrra']]);
+    expect(sceneText(orra.scenes.orraExit, markedDamage)).toMatch(/mark the rain damage/i);
+
+    const archivedName = route([
+      ['orraYard', 'descendOrra'], ['orraLanding', 'counterweight'], ['orraOssuary', 'copyName'], ['orraName', 'keepCopy'],
+    ]);
+    const archiveText = sceneText(orra.scenes.orraResolved, archivedName);
+    expect(archiveText).not.toMatch(/caretaker accepts|closes the counterweight room/i);
+    expect(archiveText).toMatch(/archive/i);
+
+    const closedAndTold = route([['orraYard', 'descendOrra'], ['orraLanding', 'counterweight'], ['orraOssuary', 'closeOssuary']]);
+    expect(sceneText(orra.scenes.orraResolved, closedAndTold)).toMatch(/caretaker accepts.*closes the counterweight room/i);
+    const restoredAndShared = route([
+      ['orraYard', 'descendOrra'], ['orraLanding', 'counterweight'], ['orraOssuary', 'copyName'], ['orraName', 'restoreStone'],
+    ]);
+    expect(sceneText(orra.scenes.orraResolved, restoredAndShared)).toMatch(/caretaker accepts.*closes the counterweight room/i);
+    const legacyResolved = route([]);
+    legacyResolved.run!.sceneId = 'orraResolved';
+    expect(sceneText(orra.scenes.orraResolved, legacyResolved)).not.toMatch(/caretaker accepts|closes the counterweight room/i);
+    expect(sceneText(orra.scenes.orraResolved, JSON.parse(JSON.stringify(closedAndTold)) as SaveData)).toMatch(/caretaker accepts.*closes the counterweight room/i);
+  });
+
   it('makes the Harker rescue wage and practical tool a real mutually exclusive settlement choice', () => {
     const harker = getScenario('deep-room-at-harker-mine')!;
     const character = newCharacter('Rescue Worker');
