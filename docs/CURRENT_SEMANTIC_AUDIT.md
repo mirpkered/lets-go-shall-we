@@ -1937,6 +1937,16 @@ All four affected Adventures now derive HEALTHY. Live classifications are **607 
 
 Next subgroup selection must be rederived from the ledger; consider another builder-backed family only after checking its exact route witnesses and caller blast radius.
 
+### CRA-C0001 repair program — local Wave 14: route-safe Lantern Guard provenance
+
+Wave 14 repairs CRA-F0278 (`the-lantern-smoke-in-the-hayloft`) and CRA-F0284 (`the-red-lantern-in-the-pig-shed`), both MEDIUM. The agriculture `itemPay` helper now uses narrow overrides for these two Lantern Guard awards. Their persistent Gear provenance records the lantern/fire-risk outcome without claiming that horses or pigs were moved on every reward route. Animal handling, reward eligibility, and inventory behavior are unchanged; no route flags or save changes were added.
+
+The agriculture-family regression drives both direct-action and animal-evacuation paths through the actual Lantern Guard transfer and checks persistent provenance on each. The focused suite passed **9 tests**; TypeScript and production build passed with the existing large-bundle warning. Audit finding-parent/cluster checks and `git diff --check` pass. A full suite passed one wave earlier at **127 files / 2,360 tests**.
+
+Both Adventures now derive HEALTHY. Live classifications are **609 HEALTHY, 59 MINOR CONCERN, 193 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Cumulative implementation dispositions are **146 repaired** and **5 healthy/no-longer-reproduces**. Open inventory is **203 findings overall**, including **169 CRA-C0001** (134 MEDIUM, 32 LOW, 3 unrecovered severity); overall open severity is **155 MEDIUM, 38 LOW, and 10 unrecovered**. The 861 live reviews and 354 live finding records remain unchanged. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
+Next: refresh the full open C0001 family map and select another narrow convergence group; the remaining agriculture findings have distinct outcome mechanisms and should not be swept together.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.

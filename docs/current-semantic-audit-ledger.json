@@ -12362,12 +12362,12 @@
       "slug": "the-lantern-smoke-in-the-hayloft",
       "title": "Lantern Smoke in the Hayloft",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0278"
       ],
       "reviewProvenance": "current-source route review; animal evacuation before lantern/hay inspection, direct lantern lowering, unsafe water refusal, wick/ember result, and coin/Lantern Guard persistent reward provenance traced",
-      "notes": "smoke.lantern -> safe reaches the shared reward scene without leading the horses through the yard; only smoke.animals -> yard establishes that. The Lantern Guard reward effect provenance says the horses were led clear, so the persisted reward history asserts an action absent from the direct-lowering route. Wick trimming, no deeper ember, and lantern removal are otherwise consistent; no separate fire/reward mechanic is implicated.",
+      "notes": "smoke.lantern -> safe reaches the shared reward scene without leading the horses through the yard; only smoke.animals -> yard establishes that. The Lantern Guard reward effect provenance said the horses were led clear, so the persisted reward history asserted an action absent from the direct-lowering route. Wick trimming, no deeper ember, and lantern removal are otherwise consistent; no separate fire/reward mechanic is implicated. The C0001 repair now records only that the lantern was taken out of service; route-pair persistence tests pass.",
       "preReconciliationPosition": 726,
       "positionDelta": -11,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -12591,12 +12591,12 @@
       "slug": "the-red-lantern-in-the-pig-shed",
       "title": "The Red Lantern in the Pig Shed",
       "sourceFile": "src/scenarios/agricultureRanchAnimalWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0284"
       ],
       "reviewProvenance": "current-source route review; pig evacuation versus wet-sack smother, feed-saving refusal, ember check, handler-held pen versus animal movement, and coin/Lantern Guard persistent provenance traced",
-      "notes": "lantern.sack -> check -> handler -> safe can reach the Lantern Guard reward without moving the pigs; check explicitly leaves them behind the east rail and not in smoke, and handler only holds the pen. The shared reward effect says the Traveler helped move the animals. The separate move option does establish evacuation. Feed-saving and unsafe options are stopped; extinguishing the ember and removing the lantern are otherwise consistent.",
+      "notes": "lantern.sack -> check -> handler -> safe can reach the Lantern Guard reward without moving the pigs; check explicitly leaves them behind the east rail and not in smoke, and handler only holds the pen. The shared reward effect said the Traveler helped move the animals. The separate move option does establish evacuation. Feed-saving and unsafe options are stopped; extinguishing the ember and removing the lantern are otherwise consistent. The C0001 repair now records ember/lantern handling without implying animal movement; route-pair persistence tests pass.",
       "preReconciliationPosition": 740,
       "positionDelta": -13,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -18451,6 +18451,8 @@
       "violatedRule": "Persistent reward provenance must describe only actions established on the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The agriculture itemPay helper now uses route-safe provenance for the two Lantern Guard awards: the Hayloft award records that its lantern was taken out of service without claiming horses were led clear. The agriculture family regression drives direct lowering and evacuation routes through the persistent Gear grant and checks the route contrast. Targeted agriculture suite passed 9 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -18525,6 +18527,8 @@
       "violatedRule": "Persistent reward provenance must reflect only actions established on the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The agriculture itemPay helper now uses route-safe provenance for the two Lantern Guard awards: the Pig Shed award records extinguishing/removing the lantern without implying the pigs moved. The agriculture family regression contrasts the handler-held pen route with the evacuation route and checks both persistent Gear provenance results. Targeted agriculture suite passed 9 tests.",
       "registrationStatus": "LIVE"
     },
     {
@@ -20038,9 +20042,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 607,
+    "HEALTHY": 609,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 195,
+    "CONFIRMED DEFECT": 193,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
