@@ -479,6 +479,36 @@ describe('Monster Hunt / Creature Threat batch', () => {
     expect(findScenarioGraphProblems(scenario)).toEqual([]);
   });
 
+  it('does not infer weir closure or farm action from Black Creek bear outcomes', () => {
+    const scenario = MONSTER_HUNT_ADVENTURES.find(({ id }) => id === 'thing-at-black-creek')!;
+
+    let withdrew = fresh(scenario);
+    withdrew = take(withdrew, scenario, 'followBank');
+    withdrew = take(withdrew, scenario, 'waitAtDistance');
+    withdrew = take(withdrew, scenario, 'backAwayBear');
+    const withdrawalText = sceneText(scenario.scenes.bearWithdrawn, withdrew);
+    expect(withdrawalText).toMatch(/leave the bear its route to the water/i);
+    expect(withdrawalText).not.toMatch(/keeper closes|farm moves its dogs/i);
+
+    let rushed = fresh(scenario);
+    rushed = take(rushed, scenario, 'followBank');
+    rushed = take(rushed, scenario, 'waitAtDistance');
+    rushed = take(rushed, scenario, 'rushBear', 0);
+    const rushText = sceneText(scenario.scenes.bearDriven, rushed);
+    expect(rushText).toMatch(/bear retreats along the creek/i);
+    expect(rushText).not.toMatch(/keeper|weir shut/i);
+
+    let called = fresh(scenario);
+    called = take(called, scenario, 'followBank');
+    called = take(called, scenario, 'waitAtDistance');
+    called = take(called, scenario, 'callKeeperBear');
+    const callText = sceneText(scenario.scenes.bearKeeperCalled, called);
+    expect(callText).toMatch(/do not see whether the keeper heard/i);
+    expect(callText).not.toMatch(/keeper closes|weir shut/i);
+    expect(called.character?.historyFlags).toContain('called toward the weir keeper after seeing a bear at Black Creek');
+    expect(called.character?.historyFlags).not.toContain('helped close a fish weir to keep a bear from the farm');
+  });
+
   it('varies creature truth, risk, and combat rather than making every hunt a kill', () => {
     const densities = new Set(MONSTER_HUNT_ADVENTURES.map(({ diversity }) => diversity?.fantasyDensity));
     const combat = new Set(MONSTER_HUNT_ADVENTURES.map(({ diversity }) => diversity?.combat));
