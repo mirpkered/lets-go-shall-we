@@ -2626,12 +2626,12 @@
       "slug": "the-back-door",
       "title": "The Back Door",
       "sourceFile": "src/scenarios/domesticBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0037"
       ],
       "reviewProvenance": "current source route review; private safety plan, aunt destination, sealed-note delivery/lodging and private-room leave/wait routes inspected; second-wave, domestic-payoff and content-depth suites passed (16 tests)",
-      "notes": "The aunt destination is established only in privacy ('trusted aunt in the next village'). The separate shelter branch offers a private room and a choice to leave by the rear lane or wait until dawn, but does not establish any destination; shelter.leave nevertheless says the person takes the lane to the aunt’s home. This imports sensitive route-specific location information into a branch where it was never supplied.",
+      "notes": "The private-room leave ending now says only that the person leaves by the rear lane and that the destination was not discussed. The separate privacy-planning routes retain their own selected destinations. Regression confirms the shelter exit does not disclose the aunt’s home while the existing planned-ride payoff remains intact.",
       "preReconciliationPosition": 136,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15350,6 +15350,8 @@
       "violatedRule": "A converged/outcome location must be supported by the selected route, especially when destination privacy is a safety boundary.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shelter.leave outcome now states only that the person leaves by the rear lane and that the destination was not discussed. The separately planned privacy/ride route still establishes the aunt destination, and its existing payoff test remains intact. The regression drives take-shelter -> shelter-leave and asserts the aunt is not disclosed. domesticBatch.payoff.test.ts passes 2 tests; no other domestic route or safety behavior changed.",
       "preReconciliationPosition": 136,
       "registrationStatus": "LIVE"
     },
@@ -20092,9 +20094,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 632,
+    "HEALTHY": 633,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 170,
+    "CONFIRMED DEFECT": 169,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
