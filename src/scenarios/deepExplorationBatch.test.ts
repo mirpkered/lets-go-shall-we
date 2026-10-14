@@ -645,6 +645,45 @@ describe('deep exploration anthology', () => {
     expect(sceneText(vault.scenes.vaultEnding, legacy)).toMatch(/account of what your route established/i);
   });
 
+  it('claims the Lantern Vault refuge purpose only after route evidence establishes it', () => {
+    const vault = getScenario('lantern-vault')!;
+    const traveler = newCharacter('Vault Route Reviewer');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character: traveler, run: startRun(traveler, vault, () => 0) };
+    const chooseId = (state: SaveData, sceneId: string, choiceId: string) => choose(state, vault, vault.scenes[sceneId]!.choices.find(({ id }) => id === choiceId)!, () => 0);
+
+    const supplyRoom = chooseId(initial, 'innCellar', 'three');
+    const copiedSupplyMap = chooseId(supplyRoom, 'vaultThree', 'copyMap');
+    for (const choiceId of ['leaveThree', 'doorFiveAgain2', 'doorSevenAgain']) {
+      const ending = chooseId(copiedSupplyMap, 'vaultHubThree', choiceId);
+      expect(ending.run?.flags).not.toContain('vaultRefugeEvidenceSeen');
+      expect(sceneText(vault.scenes.vaultResolution, ending)).not.toMatch(/marked a refuge route/i);
+      expect(sceneText(vault.scenes.vaultResolution, ending)).toMatch(/old purpose is uncertain/i);
+    }
+
+    const registerEvidence = chooseId(initial, 'innCellar', 'countRack');
+    expect(registerEvidence.run?.flags).toContain('vaultRefugeEvidenceSeen');
+    const registerResolution = chooseId(chooseId(registerEvidence, 'vaultLedger', 'followSeven'), 'vaultNine', 'copyMapNine');
+    expect(sceneText(vault.scenes.vaultResolution, registerResolution)).toMatch(/marked a refuge route/i);
+
+    const servicePlate = chooseId(chooseId(initial, 'innCellar', 'three'), 'vaultThree', 'doorFive');
+    expect(servicePlate.run?.flags).toContain('vaultRefugeEvidenceSeen');
+    const memory = {
+      stored: null as string | null,
+      getItem() { return this.stored; },
+      setItem(_key: string, value: string) { this.stored = value; },
+    };
+    saveGame(servicePlate, memory);
+    const restored = loadSave(memory);
+    expect(restored.run?.flags).toContain('vaultRefugeEvidenceSeen');
+    const hatchResolution = chooseId(restored, 'vaultFive', 'openHatch');
+    expect(sceneText(vault.scenes.vaultResolution, hatchResolution)).toMatch(/marked a refuge route/i);
+
+    const legacyWithoutProof = { ...structuredClone(initial), run: { ...initial.run!, sceneId: 'vaultResolution' } };
+    expect(legacyWithoutProof.run?.flags).not.toContain('vaultRefugeEvidenceSeen');
+    expect(sceneText(vault.scenes.vaultResolution, legacyWithoutProof)).not.toMatch(/marked a refuge route/i);
+    expect(sceneText(vault.scenes.vaultResolution, legacyWithoutProof)).toMatch(/old purpose is uncertain/i);
+  });
+
   it('does not give the drain-only Hollow Fort route credit for the unseen roster or escape tunnel', () => {
     const fort = getScenario('hollow-fort')!;
     const traveler = newCharacter('Fort Drainage Inspector');
