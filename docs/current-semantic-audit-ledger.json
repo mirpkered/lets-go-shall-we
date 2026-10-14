@@ -9352,12 +9352,12 @@
       "slug": "the-watch-at-the-sheepfold",
       "title": "The Watch at the Sheepfold",
       "sourceFile": "src/scenarios/escortProtectionGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0212"
       ],
       "reviewProvenance": "current-source route review; fold/approach/response/creek/dawn branches traced",
-      "notes": "The stay/lamp -> approach.lamb route reaches safe without hearing the answering whistle or meeting the neighbor, yet safe says the neighbor secures a loose ewe. The answer -> response branch establishes the neighbor and loose ewe; creek and dawn outcomes retain their separate animal/waiting results. Named Gear requirements include usability.",
+      "notes": "The stay/lamp -> approach.lamb route does not establish a neighbor or loose-ewe intervention, while answer -> response.open establishes the neighbor route. The lamb-only action now reaches its own ending, which keeps the flock/lamb result and explicitly does not import the neighboring intervention; the whistle route retains its supported neighbor ending. Regression contrasts both paths.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17806,7 +17806,9 @@
       "violatedRule": "A shared ending must not assert an optional participant’s presence or action unless the incoming route established it.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "escortProtectionGenreBatch.ts routes approach.lamb to a separate lambSafe ending that omits the neighbor/loose-ewe claim; the answer -> response.open path still reaches safe and retains the neighbor result. escortProtectionGenreBatch.test.ts contrasts the lamb-only and whistle-established routes. Wave 91 focused family/registry/library/inventory/content-quality checks pass (33 tests across 5 files), and git diff --check passes. Source/test commit 5cd8e7a."
     },
     {
       "findingId": "CRA-F0213",
@@ -20259,9 +20261,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 708,
+    "HEALTHY": 709,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 94,
+    "CONFIRMED DEFECT": 93,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
