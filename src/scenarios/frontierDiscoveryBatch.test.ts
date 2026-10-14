@@ -87,6 +87,32 @@ describe('remote discovery and frontier claims batch', () => {
     expect(cache.scenes[`${cache.id}Bold`].title).toBe('The Coins Leave with You');
   });
 
+  it('does not describe the old hoist as untouched after the loose-timber test', () => {
+    const hoist = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'the-old-hoist')!;
+    const character = newCharacter('Old Hoist Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, hoist, () => 0) };
+    const approached = choose(initial, hoist, hoist.scenes[hoist.startScene].choices.find(({ id }) => id === 'approach')!);
+    const evidence = hoist.scenes[approached.run!.sceneId];
+
+    const rimInspection = choose(approached, hoist, evidence.choices.find(({ id }) => id === 'testGround')!);
+    const stableDecision = choose(rimInspection, hoist, hoist.scenes[rimInspection.run!.sceneId].choices.find(({ id }) => id === 'advanceFromStable')!);
+    const rimClosure = choose(stableDecision, hoist, hoist.scenes[stableDecision.run!.sceneId].choices.find(({ id }) => id === 'closeCarefully')!);
+
+    const timberChoice = evidence.choices.find(({ id }) => id === 'pressOn')!;
+    const timberTestSucceeded = choose(approached, hoist, timberChoice, () => 0);
+    const testedClosure = choose(timberTestSucceeded, hoist, hoist.scenes[timberTestSucceeded.run!.sceneId].choices.find(({ id }) => id === 'closeCarefully')!);
+    const timberTestFailed = choose(approached, hoist, timberChoice, () => 0.999999);
+
+    for (const result of [rimClosure, testedClosure, timberTestFailed]) {
+      const ending = hoist.scenes[result.run!.sceneId];
+      expect(ending.text).not.toMatch(/leave the hoist untouched/i);
+      expect(ending.text).toMatch(/unsafe for carrying a person/i);
+      expect(ending.text).not.toMatch(/you mark its broken cable/i);
+    }
+    expect(hoist.scenes[timberTestFailed.run!.sceneId].title).toBe('A Warning from the Ground');
+    expect(timberTestFailed.run?.health).toBeLessThan(approached.run!.health);
+  });
+
   it('keeps frontier decision narration and button actions in agreement', () => {
     const cabin = FRONTIER_DISCOVERY_ADVENTURES.find(({ id }) => id === 'roof-through-the-trees')!;
     const cabinDecision = cabin.scenes[`${cabin.id}Decision`];

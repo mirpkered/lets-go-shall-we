@@ -79,7 +79,7 @@ const closures: Record<string, string> = {
   'empty-assay-office': 'The ledger remains in the office. The visitor leaves with no sample until the partnership record can be checked.',
   'cabin-with-two-locks': 'The second lock remains intact. Whatever it protects, you do not mistake an empty trail for permission to break it.',
   'gold-dust-in-the-floorboards': 'The dust points to repeated handling at the stove-side table, but no hidden fortune is established.',
-  'the-old-hoist': 'You leave the hoist untouched and mark its broken cable; anyone returning will see the danger before trusting it.',
+  'the-old-hoist': 'The frayed cable and unreliable brake make the hoist unsafe for carrying a person. You leave without trusting it under a passenger’s weight.',
   'camp-below-the-slide': 'You stop before the moving slope takes more ground. The visible edge is recorded; the buried wall is left alone.',
   'the-hidden-tailings-pile': 'The brush is laid back over the assay fragments. You preserve evidence without deciding why the pile was covered.',
   'the-old-claim-cabin': 'The cabin offers no final explanation, but its worn tools and small boot repair turn an empty room into a remembered life.',
