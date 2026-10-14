@@ -5632,7 +5632,7 @@
       "slug": "the-man-who-sheds-his-skin",
       "title": "The Man Who Sheds His Skin",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0117"
       ],
@@ -16525,6 +16525,8 @@
       "violatedRule": "An ending and persistent explanation must not promote suspicion or a contact request into confirmed knowledge without the route that establishes the explanation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 106: asking the laundress to contact the cousin now reaches a separate pending-contact outcome that leaves identity and the reason for the changed descriptions unresolved. The shared identityAfter text is now reached only after the tailor's account establishes twin brothers and their coat exchange. The existing returnedCoachCoat variant remains unresolved and unchanged; Knowledge and History effects remain tied to their original tailor choices. No new state was added. Regression contrasts cousin contact, tailor disclosure, and the existing saved coat-return route. The focused RC12 I1 regression suite passed 10 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "preReconciliationPosition": 314,
       "registrationStatus": "LIVE"
     },
@@ -20303,9 +20305,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 728,
+    "HEALTHY": 729,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 74,
+    "CONFIRMED DEFECT": 73,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
