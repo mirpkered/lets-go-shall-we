@@ -2432,7 +2432,7 @@
       "slug": "the-red-flag",
       "title": "The Red Flag",
       "sourceFile": "src/scenarios/medicalBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0036"
       ],
@@ -15327,6 +15327,8 @@
       "violatedRule": "An outcome should not assert a route-specific communication or professional-care arrangement absent from that route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The separate/watch outcome now reports only the volunteer watch, uncertain condition, and unknown cause; it no longer says the doctor was informed. Regression drives separate -> watch and contrasts it with doctor -> wait, where the rider and doctor visit remain explicit. secondWaveBatch.test.ts passes 4 tests. No new state or persistence was needed.",
       "preReconciliationPosition": 124,
       "registrationStatus": "LIVE"
     },
@@ -20072,9 +20074,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 623,
+    "HEALTHY": 624,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 179,
+    "CONFIRMED DEFECT": 178,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

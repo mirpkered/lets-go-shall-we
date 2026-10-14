@@ -2033,6 +2033,12 @@ Wave 28 repairs CRA-F0028 (LOW), `the-dog-that-returns`. For the `dogReason=noth
 
 The focused animals-batch suite passed **13 tests**, including a no-need versus bundle contrast. The finding is dispositioned `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Current ledger-derived live classifications are **623 HEALTHY, 59 MINOR CONCERN, 179 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **189 open live findings overall**; CRA-C0001 has **155 open** (123 MEDIUM, 29 LOW, 3 unrecovered severity). Overall open severity is **144 MEDIUM, 35 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
 
+### CRA-C0001 repair program — local Wave 29: doctor-contact claim on watch route
+
+Wave 29 repairs CRA-F0036 (LOW), `the-red-flag`. The `separate -> watch` outcome no longer says the inn keeps the doctor informed; it reports the volunteer watch, uncertain condition, and unknown cause. The distinct doctor route still explicitly sends a rider and retains its doctor-visit result. This is a text-only correction with no new state or persistence.
+
+The second-wave batch regression drives both the watch route and the explicit doctor route, confirming the former does not imply doctor contact while the latter retains the rider and visit. The focused suite passed **4 tests**. CRA-F0036 is now `VERIFIED_HEALTHY_REPAIRED`, and the single-finding Adventure derives HEALTHY. Current ledger-derived live classifications are **624 HEALTHY, 59 MINOR CONCERN, 178 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. There are **188 open live findings overall**; CRA-C0001 has **154 open** (123 MEDIUM, 28 LOW, 3 unrecovered severity). Overall open severity is **144 MEDIUM, 34 LOW, and 10 unrecovered**. No push, merge, deployment, or human QA occurred; Weekly Scenario Batch remains paused.
+
 ### CRA-C0001 repair program — local Wave 10: ice rescue and cart-location outcomes
 
 Wave 10 resolves both MEDIUM findings on `the-ice-gives-warning`: CRA-F0067 and CRA-F0068. The solo thin-ice failure ending now describes only the fatal current and does not invent a rescue rope from the separate handline route. The explicit `leaveIceCart` branch now sets factual run-local proof `iceCartLeftBehind`; `iceSafeWait` uses neutral text by default and identifies the cart as left on the near bank only when that proof exists. The existing `cartAndTravelerAcross` success variant remains unchanged. The new flag is run-local; missing proof, including restored legacy state, does not imply cart recovery.
