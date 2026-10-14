@@ -867,7 +867,7 @@ Continued with the next ten stable IDs in `SCENARIOS` order, then crossed from t
 | 437 | The Door Beneath the Road | CONFIRMED DEFECT | CRA-F0170 (MEDIUM) — shallow wagon recovery claims road-crew notification without a reporting route. |
 | 438 | Beneath Saint Orra’s | CONFIRMED DEFECT | CRA-F0171 (MEDIUM), CRA-F0172 (MEDIUM) — shared exits claim unperformed damage marking and caretaker closure/acceptance. |
 | 439 | The House at Mile Marker Nine | CONFIRMED DEFECT | CRA-F0173 (MEDIUM) — a stopped-clock route promises a reliable trigger for the disappeared earlier view. |
-| 440 | The Deep Room at Harker Mine | CONFIRMED DEFECT | CRA-F0174 (MEDIUM), CRA-F0175 (HIGH) — broken-light usability leaks into mine actions; comparing the token after opening the seal claims an unperformed reseal. |
+| 440 | The Deep Room at Harker Mine | CONFIRMED DEFECT | CRA-F0174 (MEDIUM), CRA-F0175 (HIGH; VERIFIED_HEALTHY_REPAIRED in implementation Wave 1) — broken-light usability leaks into mine actions; comparison-only ending no longer claims an unperformed reseal. |
 
 CRA-F0165, CRA-F0167–CRA-F0168, CRA-F0170–CRA-F0173, and CRA-F0175 extend existing CRA-C0001 (route-specific state/outcome at convergence). CRA-F0166 extends existing CRA-C0007 (NPC consensus inferred from a unilateral route). CRA-F0169 and CRA-F0174 extend existing CRA-C0004 (Gear ownership treated as Gear usability). No new cluster was needed; CRA-C0007 already exists, and the next unused cluster remains CRA-C0008.
 
@@ -1796,3 +1796,7 @@ The first repair program should target **CRA-C0001**, using a verification-first
 - Treat refunds as one-time events and test total paid/refunded balances across all reachable follow-ups (CRA-C0005).
 
 These are recommendations only; no canonical authoring document was changed. No gameplay repair, gameplay test edit, deployment, or scheduler change occurred. Weekly Scenario Batch remains paused. The audit is complete; next unused finding ID is **CRA-F0362**, and next available cluster ID is **CRA-C0013**.
+
+### Implementation disposition
+
+CRA-F0175 was repaired in implementation Wave 1. The comparison-only result is now neutral; only explicit `copyEvidence` and `resealHarker` actions reach the restoration wording. Its original finding ID, audit witness, severity, and CRA-C0001 membership are preserved. No other finding disposition changed.

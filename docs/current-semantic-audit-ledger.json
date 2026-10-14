@@ -17061,7 +17061,9 @@
       "violatedRule": "Containment, closure, and restoration may be claimed only after the route performs the corresponding physical action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The comparison-only route now ends in harkerResealed with neutral text; only copyEvidence and resealHarker reach harkerDoorResealed with restoration wording. Regression 'claims the Harker lower seal was restored only after an explicit reseal action' covers token comparison, explicit reseal, copy-and-reseal, fragment comparison, and a proof-absent legacy ending state."
     },
     {
       "findingId": "CRA-F0176",
