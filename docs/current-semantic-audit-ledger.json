@@ -4660,12 +4660,12 @@
       "slug": "widows-firewood",
       "title": "The Widow’s Firewood",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0078"
       ],
       "reviewProvenance": "current source route review; miller/mark inquiry, widow debt/refusal, neighbor admission, repay versus accept-own-wood, settlement and History traced",
-      "notes": "settled and firewoodEnd state that the miller’s logs have been returned on both neighbor choices. Only correctTheft says to separate and repay the miller’s wood and sets woodRepaid; acceptOwnWood expressly accepts only the neighbor’s own wood and records no return action.",
+      "notes": "The existing woodRepaid flag now gates the miller-log return claim in both settlement and ending text. acceptOwnWood remains limited to the neighbor’s wood for the widow’s loan, while correctTheft preserves the explicit restitution outcome. Regression covers both routes through firewoodEnd.",
       "preReconciliationPosition": 258,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15933,6 +15933,8 @@
       "violatedRule": "A shared outcome must preserve route-specific property restitution; accepting a neighbor’s wood is not proof that separately borrowed property was returned.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The existing woodRepaid proof, set only by correctTheft, now gates returned-log wording in both settled and firewoodEnd. The acceptOwnWood route truthfully says only that the neighbor’s own wood repays the widow’s fuel loan and leaves the miller’s logs unresolved. Route-contrast regression exercises both routes through the ending. christmasAffinityBatch.test.ts passes 21 tests; the full suite passes 127 files / 2,391 tests and production build passes.",
       "preReconciliationPosition": 258,
       "registrationStatus": "LIVE"
     },
@@ -20104,9 +20106,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 638,
+    "HEALTHY": 639,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 164,
+    "CONFIRMED DEFECT": 163,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

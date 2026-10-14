@@ -5,9 +5,9 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 43
+### Active local repair checkpoint — CRA-C0001 Wave 44
 
-CRA-F0075 (`the-missing-stocking`, LOW) and CRA-F0076 (`the-pageant-problem`, LOW) are repaired locally. Live classifications now derive to **638 HEALTHY, 59 MINOR CONCERN, 164 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **181 are dispositioned** (176 repaired and 5 healthy/no-longer-reproduces) and **173 remain open**, including **139 CRA-C0001** (116 MEDIUM, 20 LOW, 3 unrecovered severity). The stocking reunion now distinguishes recovery/replacement from explanation; the pageant rehearsal reuses existing performer flags and stays neutral on prop-only routes. No push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
+CRA-F0075 (`the-missing-stocking`, LOW), CRA-F0076 (`the-pageant-problem`, LOW), and CRA-F0078 (`widows-firewood`, MEDIUM) are repaired locally. Live classifications now derive to **639 HEALTHY, 59 MINOR CONCERN, 163 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **182 are dispositioned** (177 repaired and 5 healthy/no-longer-reproduces) and **172 remain open**, including **138 CRA-C0001** (115 MEDIUM, 20 LOW, 3 unrecovered severity). The stocking reunion preserves whether the prank was explained; pageant rehearsal uses the existing cast flags; miller-log restitution is stated only with existing `woodRepaid` proof. The full suite passes **127 files / 2,391 tests**; TypeScript and production build pass. No push, merge, deployment, public QA, or scheduler change occurred; Weekly Scenario Batch remains paused.
 
 ## Current checkpoint
 
