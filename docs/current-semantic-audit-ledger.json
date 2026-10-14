@@ -16293,6 +16293,8 @@
       "violatedRule": "NPC follow-up, environmental closure and player participation must be tied to route-established communication and completed action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 104: the withdrawal ending now reports only that the bear is left unpursued; it no longer invents keeper closure or farm dog movement. The rush-success ending retains the bear's retreat and injured-paw explanation without claiming a weir decision. Calling the keeper now reaches a separate truthful outcome and records only that the Traveler called, not that the weir was closed. No additional root-cause finding or persistent state was changed. Regression covers withdrawal, rush success, and keeper-call routes. The focused monster-hunt suite passed 17 tests; the full suite passed 127 files / 2,476 tests; TypeScript and production build passed with the existing large-bundle warning.",
       "preReconciliationPosition": 298,
       "registrationStatus": "LIVE"
     },
