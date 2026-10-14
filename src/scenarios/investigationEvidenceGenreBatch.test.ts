@@ -29,6 +29,44 @@ const reachSettlement = (scenario: (typeof INVESTIGATION_EVIDENCE_GENRE_BATCH)[n
 };
 
 describe('Investigation / Evidence / Specialist Tools genre batch', () => {
+  it.each([
+    { scenarioId: 'the-gate-pin-at-south-pasture', resultRoutes: ['measure'], result: /old polished side fits the socket/i, unsupported: /fits the socket/i },
+    { scenarioId: 'the-ledger-page-that-dried', resultRoutes: ['compare'], result: /next sheet preserves part of the line/i, unsupported: /two coin marks/i },
+    { scenarioId: 'the-rope-fibers-on-the-ferry-cleat', resultRoutes: ['measure', 'compare'], result: /inner strands are stretched/i, unsupported: /inner strands are stretched/i },
+    { scenarioId: 'the-stone-under-the-floorboard', resultRoutes: ['measure'], result: /rod finds a narrow void/i, unsupported: /rod finds a narrow void/i },
+    { scenarioId: 'the-boot-mark-in-the-ash', resultRoutes: ['measure', 'compare'], result: /print is close to the porter’s size/i, unsupported: /porter’s size/i },
+    { scenarioId: 'the-wax-on-the-keyhole', resultRoutes: ['measure'], result: /wax matches the recorder’s seal stick/i, unsupported: /wax matches/i },
+    { scenarioId: 'the-quiet-bell-at-milepost-four', resultRoutes: ['measure'], result: /rope has slipped through its worn eye/i, unsupported: /rope has slipped/i },
+    { scenarioId: 'the-notches-on-the-old-millstone', resultRoutes: ['measure'], result: /notches are older than the date scratch/i, unsupported: /notches are older/i },
+    { scenarioId: 'the-sealed-letter-at-cedar-post', resultRoutes: ['measure'], result: /signature belongs to the recipient’s household/i, unsupported: /signature belongs/i },
+  ])('$scenarioId only presents route-established inspection results', ({ scenarioId, resultRoutes, result, unsupported }) => {
+    const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === scenarioId)!;
+    const testScene = scenario.scenes.test;
+    for (const observation of scenario.scenes.observe.choices) {
+      const gear = observation.requirements?.items?.[0];
+      let state = initial(scenario, gear);
+      state = act(state, scenario, observation.id);
+      const selected = testScene.textVariants?.find(({ requirements }) => meets(requirements, state))?.text ?? testScene.text;
+      if (resultRoutes.includes(observation.id)) expect(selected, observation.id).toMatch(result);
+      else {
+        expect(selected, observation.id).toBe(testScene.text);
+        expect(selected, observation.id).not.toMatch(unsupported);
+      }
+    }
+  });
+
+  it('does not reveal the missing shears beneath the bench before the explicit search action', () => {
+    const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-missing-shears-at-the-mill')!;
+    for (const observation of scenario.scenes.observe.choices) {
+      const state = act(initial(scenario), scenario, observation.id);
+      const selected = scenario.scenes.test.textVariants?.find(({ requirements }) => meets(requirements, state))?.text ?? scenario.scenes.test.text;
+      expect(selected).not.toMatch(/thread.*caught beneath|shears.*under the bench/i);
+    }
+    let searched = act(act(initial(scenario), scenario, 'ask'), scenario, 'careful');
+    const ending = scenario.scenes.settlement.textVariants?.find(({ requirements }) => meets(requirements, searched))?.text ?? scenario.scenes.settlement.text;
+    expect(ending).toMatch(/shears turn up under the bench/i);
+  });
+
   it('hides explicitly personal inspection-tool actions unless the matching tool is usable', () => {
     const scenario = INVESTIGATION_EVIDENCE_GENRE_BATCH.find(({ id }) => id === 'the-stone-under-the-floorboard')!;
     const mirror = scenario.scenes.observe.choices.find(({ id }) => id === 'compare')!;

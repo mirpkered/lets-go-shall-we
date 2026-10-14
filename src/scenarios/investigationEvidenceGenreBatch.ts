@@ -10,6 +10,57 @@ type EvidenceStory = {
   coins: number; combat?: boolean;
 };
 
+type RouteProofTest = { fallback: string; results: Record<string, string> };
+
+const routeProofTests: Record<string, RouteProofTest> = {
+  'the-gate-pin-at-south-pasture': {
+    fallback: 'The pin lies beside the hinge, with one polished side and a newer bend. Without comparing it against the socket, its fit and the cause of the gate opening remain unsettled.',
+    results: { measure: 'The old polished side fits the socket. The new bend would let the pin ride upward if the gate struck the ground, but it could also follow rough handling.' },
+  },
+  'the-ledger-page-that-dried': {
+    fallback: 'The page is buckled and one line is pale, but no surviving detail identifies what was written or who wrote it.',
+    results: { compare: 'The next sheet preserves part of the line: a room number and two coin marks, but no name. It shows an entry existed, not who wrote or removed it.' },
+  },
+  'the-rope-fibers-on-the-ferry-cleat': {
+    fallback: 'The broken line remains secured to the second line. The break has not yet been examined closely enough to distinguish strain, abrasion, or a cut.',
+    results: {
+      measure: 'The inner strands are stretched and fuzzy; the dark outer fibers may have been abraded against the cleat. A knife cut remains possible but is not visible across the bundle.',
+      compare: 'The inner strands are stretched and fuzzy; the dark outer fibers may have been abraded against the cleat. A knife cut remains possible but is not visible across the bundle.',
+    },
+  },
+  'the-stone-under-the-floorboard': {
+    fallback: 'One board sounds hollow, but the size and direction of any space beneath it remain unknown until the floor is probed.',
+    results: { measure: 'The rod finds a narrow void under the sill, too shallow for a person. A drain channel runs toward the road ditch; a loose board can explain the sound.' },
+  },
+  'the-missing-shears-at-the-mill': {
+    fallback: 'The shelf outline, chaff trail, and accounts do not establish where the shears are or who moved them. No search beneath the weighing bench has been made yet.',
+    results: {},
+  },
+  'the-boot-mark-in-the-ash': {
+    fallback: 'Water has softened the print edges. Without measuring it or comparing it with a boot, its size cannot be matched to any worker.',
+    results: {
+      measure: 'The print is close to the porter’s size, but two other workers wear the same maker’s pattern. Water has softened the edges and changed the length.',
+      compare: 'The print is close to the porter’s size, but two other workers wear the same maker’s pattern. Water has softened the edges and changed the length.',
+    },
+  },
+  'the-wax-on-the-keyhole': {
+    fallback: 'A wax fleck, key scratch, and lamp-oil smear are visible, but this inspection has not compared the wax or established who handled the cabinet.',
+    results: { measure: 'The wax matches the recorder’s seal stick. It could have transferred from a document packet; the scratch is consistent with the usual key.' },
+  },
+  'the-quiet-bell-at-milepost-four': {
+    fallback: 'The rope is slack and the clapper has no new mark. Until the rope is tested from the keeper’s side, the cause of the missed signal is unknown.',
+    results: { measure: 'The rope has slipped through its worn eye, so pulling from the keeper’s side may not move the clapper. The team may not have heard anything.' },
+  },
+  'the-notches-on-the-old-millstone': {
+    fallback: 'The notches and later date scratch are visible, but their relative age and the stone’s maker are not established without comparing the marks.',
+    results: { measure: 'The notches are older than the date scratch, but the foundation reused stone from elsewhere. The maker’s identity is not established.' },
+  },
+  'the-sealed-letter-at-cedar-post': {
+    fallback: 'The receipt mark is visible and the wrapper remains sealed. This route has not compared the signature with the witness book or established who accepted the letter.',
+    results: { measure: 'The signature belongs to the recipient’s household, but not necessarily the recipient. The intact wrapper suggests the letter came back unopened.' },
+  },
+};
+
 const stories: EvidenceStory[] = [
   { id:'the-scrape-beneath-the-lock', title:'The Scrape Beneath the Lock', subtitle:'A warehouse lock is damaged, but the marks do not yet say who opened it.', setting:'river warehouse', risk:'MODERATE', claim:'The night clerk says a thief forced the door.', scene:'A narrow bright scrape crosses the lower hasp, while the door frame has no fresh split. The warehouse owner points to the clerk; the clerk points to a cart crew that left at dusk.', inspect:['Compare the hasp with the spare key kept by the owner','Use your Pocket Toolkit to inspect the hinge pins without removing them','Ask the cart crew which side of the door they loaded from'], testTitle:'A Lock Can Be Opened More Than One Way', test:'The key turns stiffly and leaves a shallow line on the inside lip. The scrape is on the outside. This suggests separate contact, not a complete account of who entered.', actions:['Ask the owner to produce the key ledger','Keep the door closed and record the marks for the insurer','Question the clerk about the order of the night rounds'], interpretation:'The hasp was touched from outside, but the scrape alone does not identify a person or prove entry.', careful:'You preserve the hardware and record both accounts without naming a culprit.', accuse:'The clerk denies it; the owner suspends his pay, but the surviving marks cannot support your accusation.', lesson:'A fresh tool mark shows contact and direction only when compared with undisturbed surfaces; it does not identify a hand.', coins:2, combat:true },
   { id:'the-two-widths-at-morrow-road', title:'The Two Widths at Morrow Road', subtitle:'Two wagon widths appear in soft ground beside a missing crate.', setting:'rural road and loading yard', risk:'LOW', claim:'A teamster says one wagon carried the crate away.', scene:'Rain has softened the yard. Two wheel tracks leave the loading shed: one broad pair toward the public road, one narrow pair toward the stable. The crate’s seal is still on the floor.', inspect:['Measure the wheel spacing with a Survey Chain','Compare the tracks with the farm wagon standing by the stable','Ask the teamster to point out exactly when the crate was last seen'], testTitle:'The Yard Has More Than One Story', test:'The broad track matches the public wagon, but the narrow track begins beside the shed door. Neither track alone proves which load carried the crate.', actions:['Follow the broad track only to the road fork','Check the stable tally before questioning the teamster','Ask the yard owner to inventory the shed before anyone leaves'], interpretation:'A wagon left by the road and another moved near the shed; the missing crate remains unaccounted for.', careful:'The owner finds the crate behind a feed partition where it was staged for a different delivery.', accuse:'The teamster refuses the accusation; the track width is not a cargo manifest, and the yard delays his pay pending a recount.', lesson:'Wheel spacing can compare vehicles, but a track does not tell you what was on the wagon.', coins:1 },
@@ -72,6 +123,7 @@ function build(c: EvidenceStory): Scenario {
   const itemName = item ? (c.reward?.item === item ? c.reward.name : item.replace(/([A-Z])/g, ' $1').replace(/^./, (letter) => letter.toUpperCase())) : undefined;
   const provenance = item ? (c.reward?.item === item ? c.reward.provenance : `The ${c.setting} custodian transfers a separately owned spare ${itemName} as compensation after your documented inspection; operational equipment remains with its owner.`) : undefined;
   const itemSource = item ? (c.reward?.item === item ? c.reward.source : 'recording a careful inspection and preserving the evidence') : undefined;
+  const routeProofTest = routeProofTests[c.id];
   const specialistUse: Record<string, { index: number; item: string; label: string }> = {
     'the-scrape-beneath-the-lock': { index:0, item:'waxImpressionKit', label:'Press a wax copy of the scrape before comparing the hasp' },
     'the-two-seals-at-blackwater-dock': { index:0, item:'waxImpressionKit', label:'Take a wax impression of the shipping seal for the ledger' },
@@ -144,7 +196,7 @@ function build(c: EvidenceStory): Scenario {
   ].map((choice) => ({ ...choice, effects: { ...choice.effects, knowledge:[c.lesson] } }));
   const scenes: Record<string, Scene> = {
     observe:s('observe','A Claim and a Physical Trace',`${c.scene} ${c.claim} You are asked to help assess the evidence, not to act as an officer.`,inspectChoices),
-    test:s('test',c.testTitle,c.test,[...actionChoices], 'safe', c.id === 'the-map-with-two-norths' ? [
+    test:s('test',c.testTitle,routeProofTest?.fallback ?? c.test,[...actionChoices], 'safe', routeProofTest ? Object.entries(routeProofTest.results).map(([choiceId,text]) => ({ requirements:{flags:[`${c.id}_${choiceId}`]}, text })) : c.id === 'the-map-with-two-norths' ? [
       { requirements:{flags:['map_copy_secured']}, text:`${c.test} The reduced sheet remains flat and protected in your Lockable Map Case for later reference; the case does not resolve the scale or orientation.` },
     ] : undefined),
     settlement:{...s('settlement','What the Evidence Can Support',`${c.interpretation} The owner asks how you want to close the paid inspection.`,settlementChoices),textVariants:[
