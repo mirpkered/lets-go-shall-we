@@ -15381,7 +15381,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 185,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Current source replaces the shared claim with neutral aftermath text and gates the Orin-found/brought-out variant on chalk_orin_found_alive, set only by choices leaving chalkCrawl after Orin is encountered. occultInvestigationBatch.test.ts drives retreat and found routes, asserts the contradiction absent on retreat and the factual variant present after the rescue route. No change made in this run; exact repair attribution remains uncertain."
     },
     {
       "findingId": "CRA-F0044",
@@ -15485,7 +15487,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 198,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Current source uses a neutral 'The burial is delayed.' fallback and gates cause/person/disposition wording on cooper_found_alive plus the selected physician_called_for_cooper or brothers_helped_to_leave route flag. occultInvestigationBatch.test.ts asserts the bypass fallback and a found-cooper/help-brothers route, including round-trip preservation. No change made in this run; exact repair attribution remains uncertain."
     },
     {
       "findingId": "CRA-F0052",

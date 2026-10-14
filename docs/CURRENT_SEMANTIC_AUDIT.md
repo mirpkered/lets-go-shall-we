@@ -1800,3 +1800,5 @@ These are recommendations only; no canonical authoring document was changed. No 
 ### Implementation disposition
 
 CRA-F0175 was repaired in implementation Wave 1. The comparison-only result is now neutral; only explicit `copyEvidence` and `resealHarker` actions reach the restoration wording. Its original finding ID, audit witness, severity, and CRA-C0001 membership are preserved. No other finding disposition changed.
+
+Current-source disposition review also confirms CRA-F0043 and CRA-F0051 no longer reproduce: each has a neutral fallback, route-specific positive proof, and paired regression coverage. They are recorded as `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`; the exact historical repair attribution is uncertain. The remaining open HIGH CRA-C0001 findings are CRA-F0016, CRA-F0039, CRA-F0050, CRA-F0081, CRA-F0083, CRA-F0116, CRA-F0230, CRA-F0235, and CRA-F0238.
