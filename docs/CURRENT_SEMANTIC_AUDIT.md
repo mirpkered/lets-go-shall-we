@@ -17,6 +17,12 @@ CRA-F0011 (`one-more-round`, MEDIUM) is repaired. The constable-arrival fight af
 
 One More Round now derives HEALTHY. Current live classifications are **797 HEALTHY, 59 MINOR CONCERN, 5 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **352 are dispositioned** (**343 repaired**, **9 healthy/no-longer-reproduces**) and **2 remain open**: CRA-C0005 (CRA-F0048) and CRA-C0012 (CRA-F0139), both MEDIUM. The C0003 audit disposition is locally pending its separate checkpoint commit. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
 
+### Current local repair checkpoint — CRA-C0005 one-time reading-fee refund
+
+CRA-F0048 (`medium-knows-too-much`, MEDIUM) is `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`; no gameplay change was needed. Current source charges one coin at `payMedium`, returns exactly one at `askSource`, and gives `acceptRefund` no additional money effect. The refund choice remains gated to a paid reading; unpaid and legacy unpaid routes receive no refund. Existing C3 accounting tests verify the paid and unpaid balances, save/reload, and Knowledge outcome (**9 tests**); TypeScript and `git diff --check` pass. No historical witness was inferred.
+
+The Medium Who Knows Too Much now derives HEALTHY. Current live classifications are **798 HEALTHY, 59 MINOR CONCERN, 4 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **353 are dispositioned** (**343 repaired**, **10 healthy/no-longer-reproduces**) and **1 remains open**: CRA-C0012 (CRA-F0139, MEDIUM). The C0005 disposition is locally pending its separate audit checkpoint. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
+
 ### Previous local repair checkpoint — carry-forward reconciliation
 
 Focused current-source review resolved the five incomplete carry-forwards without reconstructing missing historical witnesses. CRA-F0006 (`bridge-out`) and CRA-F0007/F0008 (`the-long-way-home`) are `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`: all relevant route/result families were traced, and current route-specific outcomes remain truthful; their historical witnesses and severities remain unknown. The original `CARRY_FORWARD_INCOMPLETE` provenance is retained.

@@ -3566,7 +3566,7 @@
       "slug": "medium-knows-too-much",
       "title": "The Medium Who Knows Too Much",
       "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0048"
       ],
@@ -3576,7 +3576,8 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "notes": "CRA-F0048 no longer reproduces in current source: the paid fee is refunded once at askSource; acceptRefund only acknowledges the already returned coin and grants the route-established Knowledge. Unpaid routes remain ineligible for the refund."
     },
     {
       "position": 198,
@@ -15587,7 +15588,9 @@
       "clusterId": "CRA-C0005",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 193,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "Focused current-source verification found the original double-refund witness no longer reproduces. payMedium charges one coin; mediumClaim.askSource returns exactly one coin; mediumConfront.acceptRefund carries no money effect and remains gated by mediumPaidForReading. The existing rc03AccountingC3.test.ts verifies the paid path nets to its starting balance before and after the explicit follow-up and save/reload, while unpaid legacy/current routes cannot claim a refund. Nine focused C3 accounting tests, TypeScript, and git diff --check pass. No gameplay change was made and no historical repair witness was inferred."
     },
     {
       "findingId": "CRA-F0049",
@@ -20493,9 +20496,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 797,
+    "HEALTHY": 798,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 5,
+    "CONFIRMED DEFECT": 4,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
