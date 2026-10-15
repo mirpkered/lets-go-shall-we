@@ -8153,12 +8153,12 @@
       "slug": "saw-before-sunrise",
       "title": "Saw Before Sunrise",
       "sourceFile": "src/scenarios/adventurerSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0185"
       ],
       "reviewProvenance": "current-source route review; saw/axe/rope preparation, three handler/branch responses, settlement variants and spare-tool/wage/refusal outcomes traced",
-      "notes": "On axe or rope preparation routes the Traveler does not use Marr’s saw; even the saw route only says it clears smaller limbs. Yet the acceptGear ending unconditionally says the damaged saw stays with Marr for repair. No route records or narrates a tooth loss, so the Gear ending asserts unestablished damage across incoming routes. Route-specific response variants correctly distinguish the handler and branch outcomes; this finding is confined to the unsupported tool-condition claim.",
+      "notes": "Current-source review found that the spare-saw Gear ending asserted damage and repair unsupported by any preparation route. Local CRA-C0001 Wave 121 replaces that provenance with the factual transfer of Marr’s separately owned spare. Regression covers axe, rope, and saw preparation outcomes; the prior route-specific handler and branch variants remain intact.",
       "preReconciliationPosition": 467,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8367,12 +8367,12 @@
       "slug": "the-rail-shed",
       "title": "The Rail Shed at Noon",
       "sourceFile": "src/scenarios/adventurerSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0188"
       ],
       "reviewProvenance": "current-source route review; hinge/post/pry tests, pin/pulley evidence, repair/defer choices, settlement variants, tool/wage/refusal rewards traced",
-      "notes": "The response_test branch only unhooks the gate and tests the counterweight, confirming it moves freely and that the pulley pin is at fault; it does not replace the pin or repair the gate. Yet accepting the Pocket Toolkit routes to an ending saying the foreman signed off the repaired gate. The open and defer responses explicitly replace/repair or obtain measured repair approval; this is isolated to diagnosis-only test plus Gear handoff.",
+      "notes": "The response_test branch only unhooks the gate and tests the counterweight, confirming it moves freely and that the pulley pin is at fault; it does not replace the pin or repair the gate. The prior Gear provenance overclaimed repair and sign-off. Local CRA-C0001 Wave 121 now states only Sorn’s personally owned spare-tool transfer; regression confirms response_test remains diagnosis-only while response_open and response_defer retain their distinct repair/approval results.",
       "preReconciliationPosition": 480,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -8433,12 +8433,12 @@
       "slug": "the-wrong-cache",
       "title": "The Wrong Cache",
       "sourceFile": "src/scenarios/adventurerSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0189"
       ],
       "reviewProvenance": "current-source route review; seal/mark/notes approaches, clerk confirmation, return/witness/document responses, return-case versus statement endings and personal Gear reward/provenance traced",
-      "notes": "The stayForStatement ending records only the Traveler’s account and does not transfer the case. If it follows response_wait or response_document, those routes expressly leave the sealed case at the cellar for a witness or recovery crew. Yet accepting Rell’s spare pry tool reaches gear text claiming the clerk took custody of the case. The explicit returnCase ending does establish receipt/custody; statement-only paths do not.",
+      "notes": "The wait and document responses leave the sealed freight case at the cellar for a witness or recovery crew; only the explicit return response establishes a clerk receipt. Local CRA-C0001 Wave 121 makes the Gear reward provenance depend only on Rell’s separately owned duplicate Folding Pry Tool and no longer asserts case custody. Regression contrasts wait, document, and return responses while leaving movement/custody mechanics unchanged.",
       "preReconciliationPosition": 484,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17510,7 +17510,9 @@
       "violatedRule": "An ending may not assert an object’s changed condition unless the route establishes the damage or the player performed the damaging action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 121 gameplay commit 4aff8d9. The card’s Gear provenance now states only that Marr transfers her separately owned spare Folding Brush Saw. The unsupported lost-tooth/repair statement was removed; no Gear, reward, Knowledge, History, or route-state behavior changed. adventurerSupportGenreBatch.test.ts contrasts axe, rope, and saw preparation paths and confirms the Gear ending does not claim damage or repair. Full suite passed (127 files / 2,493 tests); TypeScript/production build, RC12 ledger validator, and git diff --check passed; existing large-bundle warning remains."
     },
     {
       "findingId": "CRA-F0186",
@@ -17546,7 +17548,9 @@
       "violatedRule": "A diagnostic result is not a completed repair or approval; endings must preserve diagnosis, intervention, and sign-off as separate states.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 121 gameplay commit 4aff8d9. The diagnosis-only counterweight test no longer receives Gear provenance that claims gate repair or foreman sign-off; the text now describes only Sorn’s personally owned spare Pocket Toolkit transfer. The regression contrasts response_test with response_open and response_defer, asserting the diagnosis versus repair/approval text remains distinct. No repair, approval, reward, or state mechanics changed. Full suite passed (127 files / 2,493 tests); TypeScript/production build and RC12 ledger validation passed; existing large-bundle warning remains."
     },
     {
       "findingId": "CRA-F0189",
@@ -17558,7 +17562,9 @@
       "violatedRule": "Custody and ownership transfer must be tied to a route-established handoff; recording a statement is not delivery of the object.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 121 gameplay commit 4aff8d9. The shared card’s Gear provenance no longer claims that the freight clerk took custody of the sealed case; it now describes Rell’s separately owned duplicate Folding Pry Tool and makes the reward transfer independent of case custody. Regression covers wait, document/recovery-crew, and explicit return/receipt routes. No case movement, custody, reward, or ownership mechanics changed. Full suite passed (127 files / 2,493 tests); TypeScript/production build and RC12 ledger validation passed; existing large-bundle warning remains."
     },
     {
       "findingId": "CRA-F0190",
@@ -20359,9 +20365,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 742,
+    "HEALTHY": 745,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 60,
+    "CONFIRMED DEFECT": 57,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
