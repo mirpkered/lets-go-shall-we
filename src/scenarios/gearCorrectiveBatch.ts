@@ -201,10 +201,13 @@ export const THE_WHEEL_BEFORE_DAWN: Scenario = largeAdventure('the-wheel-before-
     { id: 'chooseSafeDelay', label: 'Take the delay and make a full inspection', next: 'inspection', effects: { setFlags: ['wheel_delay_accepted'] } },
     { id: 'chooseLightRun', label: 'Unload the heavy freight and make a short run', next: 'load', effects: { setFlags: ['wheel_short_run'] } },
   ]),
-  inspection: s('inspection', 'A Sounder Washer', 'With the load lightened, the washer can be replaced and the pin seated. The company’s mechanic confirms the repair. The Compact Wheel Wrench did the careful work; the clamp held the axle stand while the wheel was clear.', [
+  inspection: s('inspection', 'A Sounder Washer', 'After the hub cools, the mechanic replaces the scored washer and seats the pin. The freight remains in the load condition established on your route; no load shift is assumed. The mechanic confirms the repair.', [
     { id: 'keepWrenchAsReleasedTool', label: 'Accept the company’s spare Compact Wheel Wrench', requirements: { notOwnedItems: ['compactWheelWrench'] }, next: 'wrench', effects: { gainItems: ['compactWheelWrench'], historyFlags: ['received_company_wheel_wrench'] } },
     { id: 'takeThreeCoins', label: 'Take three coins for the night repair', next: 'paid', effects: { money: 3 } },
     { id: 'returnTools', label: 'Return every tool and leave unpaid', next: 'returned' },
+  ], 'safe', [
+    { requirements: { flags: ['wheel_load_moved'] }, text: 'With the heavy crates moved to the second wagon, the mechanic replaces the scored washer and seats the pin. The mechanic confirms the repair before the freight leaves.' },
+    { requirements: { flags: ['wheel_light_load'] }, text: 'With only light parcels remaining on this wagon, the mechanic replaces the scored washer and seats the pin. The mechanic confirms the repair before it leaves.' },
   ]),
   wrench: e('wrench', 'A Wrench Released from the Kit', 'The mechanic signs over the company’s spare wrench; the tool used on the axle remains in the freight kit. The wagon leaves later with its load safe, and you carry the wrench as earned compensation.'),
   paid: e('paid', 'A Repair Paid in Coin', 'The company pays three coins for the night work. The tools remain with the wagon, and the missed connection is recorded rather than hidden.'),

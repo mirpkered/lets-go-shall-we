@@ -44,6 +44,35 @@ describe('corrective Gear Adventure batch', () => {
     expect(THE_QUARTERMASTERS_TALLY.scenes.leftLoad.text).not.toMatch(/shifted chest/i);
   });
 
+  it('describes Wheel Before Dawn cargo only according to the selected load route', () => {
+    let state = start(THE_WHEEL_BEFORE_DAWN);
+    state = act(state, THE_WHEEL_BEFORE_DAWN, 'askDriverForTime');
+    state = act(state, THE_WHEEL_BEFORE_DAWN, 'chooseSafeDelay');
+    expect(state.run?.flags).toContain('wheel_delay_accepted');
+    expect(state.run?.flags).not.toContain('wheel_load_moved');
+    expect(state.run?.flags).not.toContain('wheel_light_load');
+    expect(sceneText(THE_WHEEL_BEFORE_DAWN.scenes.inspection, state)).toMatch(/freight remains in the load condition established/i);
+    expect(sceneText(THE_WHEEL_BEFORE_DAWN.scenes.inspection, state)).not.toMatch(/load lightened|crates moved|light parcels remaining/i);
+
+    let inspected = start(THE_WHEEL_BEFORE_DAWN);
+    inspected = act(inspected, THE_WHEEL_BEFORE_DAWN, 'checkPinWithWrench');
+    inspected = act(inspected, THE_WHEEL_BEFORE_DAWN, 'coolAndInspect');
+    expect(inspected.run?.flags).toContain('wheel_waited');
+    expect(sceneText(THE_WHEEL_BEFORE_DAWN.scenes.inspection, inspected)).toMatch(/freight remains in the load condition established/i);
+
+    let moved = start(THE_WHEEL_BEFORE_DAWN);
+    moved = act(moved, THE_WHEEL_BEFORE_DAWN, 'secureLoadFirst');
+    moved = act(moved, THE_WHEEL_BEFORE_DAWN, 'moveFreight');
+    expect(moved.run?.flags).toContain('wheel_load_moved');
+    expect(sceneText(THE_WHEEL_BEFORE_DAWN.scenes.inspection, moved)).toMatch(/heavy crates moved to the second wagon/i);
+
+    let lightened = start(THE_WHEEL_BEFORE_DAWN);
+    lightened = act(lightened, THE_WHEEL_BEFORE_DAWN, 'secureLoadFirst');
+    lightened = act(lightened, THE_WHEEL_BEFORE_DAWN, 'leaveLightCrates');
+    expect(lightened.run?.flags).toContain('wheel_light_load');
+    expect(sceneText(THE_WHEEL_BEFORE_DAWN.scenes.inspection, lightened)).toMatch(/only light parcels remaining/i);
+  });
+
   it('registers eight unique all-year Adventures with seven legitimate persistent Gear paths', () => {
     expect(GEAR_CORRECTIVE_ADVENTURES).toHaveLength(8);
     expect(SCENARIOS).toHaveLength(861);
