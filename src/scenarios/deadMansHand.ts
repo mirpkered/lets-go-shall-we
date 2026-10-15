@@ -163,7 +163,9 @@ export const DEAD_MANS_HAND: Scenario = {
     },
     partialEnding: {
       id: 'partialEnding', title: 'A Quiet Exit, for Now',
-      text: 'The marshal keeps the men apart until the room clears. The immediate danger passes, but he has no grounds to arrest anyone and the game’s fairness remains unsettled. You leave without pretending to know more than you do.', choices: [], ending: 'success',
+      text: 'The immediate danger passes before anyone is hurt, but the game’s fairness remains unsettled. You leave without pretending to know more than you do.',
+      textVariants: [{ requirements: { flags: ['marshalAtDoor'] }, text: 'The marshal keeps the men apart until the room clears. He has no grounds to arrest anyone, and the game’s fairness remains unsettled. You leave without pretending to know more than you do.' }],
+      choices: [], ending: 'success',
     },
     walkAwayEnding: {
       id: 'walkAwayEnding', title: 'The Road Outside',
@@ -178,7 +180,7 @@ export const DEAD_MANS_HAND: Scenario = {
       text: 'Boone has drawn a pistol. Mabel has stopped the music, and patrons are pressed against the far wall. His finger is on the trigger; charging him could get you shot. Mercer has both hands on the table. You have one moment to lower the danger or escape.',
       textVariants: [{ requirements: { knowledgeKeys: [KNOWLEDGE_FACTS.markedAces.id] }, text: 'Boone has drawn a pistol. Mabel has stopped the music, and patrons are pressed against the far wall. His finger is on the trigger; charging him could get you shot. The marked aces are visible on the table, but Boone is not looking at them.' }],
       choices: [
-        { id: 'keepHandsVisible', label: 'Keep your hands visible and speak slowly', timeCost: 1, chance: { probability: 0.68, bonusFlags: ['marshalAtDoor', 'showedCardEvidence'], bonusProbability: 0.18, successNext: 'partialEnding', failureNext: 'gunshotAftermath', successMessage: 'Boone’s aim wavers. The marshal steps in and gets everyone clear.', failureMessage: 'The pistol fires into the floorboards; splinters strike your leg.', successEffects: { historyFlags: ['prevented_saloon_violence'] }, failureEffects: { health: -3, historyFlags: ['escalated_saloon_dispute'] } } },
+        { id: 'keepHandsVisible', label: 'Keep your hands visible and speak slowly', timeCost: 1, chance: { probability: 0.68, bonusFlags: ['marshalAtDoor', 'showedCardEvidence'], bonusProbability: 0.18, successNext: 'partialEnding', failureNext: 'gunshotAftermath', successMessage: 'Boone’s aim wavers, and the room gets a moment to breathe.', failureMessage: 'The pistol fires into the floorboards; splinters strike your leg.', successEffects: { historyFlags: ['prevented_saloon_violence'] }, failureEffects: { health: -3, historyFlags: ['escalated_saloon_dispute'] } } },
         { id: 'knockPistolAside', label: 'Knock the pistol aside with a small weapon', hint: 'The pistol is raised. Failure could be fatal.', requirements: { anyItems: WEAPON_ITEMS }, timeCost: 1, chance: { probability: 0.42, bonusItems: ['brassCandlestick', 'ratCatchersHook', 'dealerCardKnife'], bonusProbability: 0.18, successNext: 'weaponDown', failureNext: '__death', successMessage: 'The blow knocks the pistol across the floor.', failureMessage: 'Boone fires before you reach his wrist.' , successEffects: { health: -1 }, failureEffects: { historyFlags: ['escalated_saloon_dispute'] } } },
         { id: 'diveForDoor', label: 'Dive for the front door', hint: 'A clear route remains, but the shot may follow you.', timeCost: 1, chance: { probability: 0.7, successNext: 'walkAwayEnding', failureNext: 'gunshotAftermath', successMessage: 'You reach the door as Boone’s aim swings back toward Mercer.', failureMessage: 'The shot catches your side before you reach the door.', successEffects: { historyFlags: ['walked_away_from_saloon_dispute'] }, failureEffects: { health: -4, historyFlags: ['escalated_saloon_dispute'] } } },
       ],
@@ -209,7 +211,9 @@ export const DEAD_MANS_HAND: Scenario = {
     },
     violentSurvivalEnding: {
       id: 'violentSurvivalEnding', title: 'The Game Is Over',
-      text: 'The pistol is out of reach. Boone is alive, but the table is overturned and two patrons are bruised in the rush to leave. The marshal takes charge at the door. You survived the intervention; the town will remember the noise more than the argument that caused it.', choices: [], ending: 'success',
+      text: 'The pistol is out of reach. Boone is alive, but the table is overturned and two patrons are bruised in the rush to leave. The immediate danger has passed. You survived the intervention; the town will remember the noise more than the argument that caused it.',
+      textVariants: [{ requirements: { flags: ['marshalAtDoor'] }, text: 'The pistol is out of reach. Boone is alive, but the table is overturned and two patrons are bruised in the rush to leave. The marshal takes charge at the door. You survived the intervention; the town will remember the noise more than the argument that caused it.' }],
+      choices: [], ending: 'success',
     },
     exposureReward: {
       id: 'exposureReward', title: 'The Cards Tell Their Story', tone: 'warning',
@@ -222,8 +226,8 @@ export const DEAD_MANS_HAND: Scenario = {
     },
     exposedEnding: {
       id: 'exposedEnding', title: 'Dead Man’s Hand',
-      text: 'The cheating is exposed without turning the table into a fight. Mercer gives the marked aces back and leaves under the marshal’s watch. Boone still owes money, but the accusation no longer decides who is believed. Mabel locks the deck away for the night.', choices: [], ending: 'success',
+      text: 'The cheating is exposed without turning the table into a fight. Mercer gives the marked aces back and leaves while the room watches. Boone still owes money, but the accusation no longer decides who is believed. Mabel locks the deck away for the night.', choices: [], ending: 'success',
     },
-    __death: { id: '__death', title: 'One Shot Too Close', text: 'Boone’s pistol fires before anyone can pull you clear. The marshal and Mabel get the other patrons out, but there is no time to save you.', choices: [], ending: 'death' },
+    __death: { id: '__death', title: 'One Shot Too Close', text: 'Boone’s pistol fires before anyone can pull you clear. Mabel gets the other patrons out, but there is no time to save you.', choices: [], ending: 'death' },
   },
 };

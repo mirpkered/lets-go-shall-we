@@ -190,6 +190,32 @@ describe('Dead Man’s Hand', () => {
     expect(sceneText(DEAD_MANS_HAND.scenes.gunshotAftermath, shot)).toContain('Boone still has the pistol');
   });
 
+  it('mentions the marshal in shared outcomes only when the route brought him in', () => {
+    let noMarshal = reachRisingTension(fresh(3));
+    noMarshal = act(noMarshal, 'speakPrivatelyToBoone');
+    noMarshal = act(noMarshal, 'payBoonesMarker');
+    noMarshal = act(noMarshal, 'leaveAfterDebt');
+    expect(sceneText(DEAD_MANS_HAND.scenes.partialEnding, noMarshal)).not.toContain('marshal');
+
+    let withMarshal = reachRisingTension();
+    withMarshal = act(withMarshal, 'fetchMarshal');
+    withMarshal = act(withMarshal, 'returnWithMarshal');
+    withMarshal = act(withMarshal, 'separateThem');
+    expect(sceneText(DEAD_MANS_HAND.scenes.partialEnding, withMarshal)).toContain('The marshal keeps the men apart');
+
+    let exposedWithoutMarshal = reachRisingTension();
+    exposedWithoutMarshal = act(exposedWithoutMarshal, 'speakPrivatelyToAda');
+    exposedWithoutMarshal = act(exposedWithoutMarshal, 'askAdaToShowDeck');
+    exposedWithoutMarshal = act(exposedWithoutMarshal, 'bringMarksToTable');
+    exposedWithoutMarshal = act(exposedWithoutMarshal, 'showMarkedAces');
+    exposedWithoutMarshal = act(exposedWithoutMarshal, 'declineMabelGift');
+    expect(sceneText(DEAD_MANS_HAND.scenes.exposedEnding, exposedWithoutMarshal)).not.toContain('marshal');
+    expect(DEAD_MANS_HAND.scenes.exposedEnding.text).toContain('leaves while the room watches');
+    expect(DEAD_MANS_HAND.scenes.violentSurvivalEnding.text).not.toContain('marshal');
+    expect(DEAD_MANS_HAND.scenes.__death.text).not.toContain('marshal');
+    expect(DEAD_MANS_HAND.scenes.gunDrawn.choices.find((choice) => choice.id === 'keepHandsVisible')?.chance?.successMessage).not.toContain('marshal');
+  });
+
   it('allows death only after the pistol is visibly raised and an explicitly lethal rush fails', () => {
     const state = fresh();
     state.run!.sceneId = 'gunDrawn';

@@ -4,6 +4,7 @@ import type { SaveData, Scenario } from '../types';
 import { BROKEN_BELL } from './brokenBell';
 import { LAST_STOP } from './lastStop';
 import { AWW_RATS } from './awwRats';
+import { loadSave, saveGame } from '../storage';
 
 function fresh(money = 0, carriedItem: string | null = null): SaveData {
   const character = newCharacter('Test Traveler');
@@ -68,6 +69,7 @@ describe('All Aboard!', () => {
     expect(manualBrake.run?.flags).toContain('manualBrakeHeld');
     expect(manualText).toContain('You pull and hold the manual valve');
     expect(manualText).not.toContain('service-car brake work');
+    expect(manualText).not.toContain('keeping them together');
 
     let combined = fresh();
     for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'front', 'crossRoof']) combined = act(combined, id, 0);
@@ -79,6 +81,39 @@ describe('All Aboard!', () => {
     expect(combined.run?.flags).toContain('manualBrakeHeld');
     expect(combinedText).toContain('Your service-car brake work has bought drag');
     expect(combinedText).toContain('you keep pressure on the manual valve');
+    expect(combinedText).not.toContain('keeping them together');
+  });
+
+  it('credits keeping the passengers together only on the route that establishes it', () => {
+    let soloBrace = fresh();
+    soloBrace.run!.sceneId = 'roofInjury';
+    soloBrace = act(soloBrace, 'secureForImpact');
+    const neutral = sceneText(LAST_STOP.scenes.messyEnding, soloBrace);
+    expect(neutral).toContain('two coins more than before');
+    expect(neutral).not.toContain('passengers press');
+    expect(neutral).not.toContain('helping keep them together');
+
+    let together = fresh();
+    together.run!.sceneId = 'togetherAttempt';
+    together = act(together, 'braceTogether');
+    const values = new Map<string, string>();
+    const storage = { setItem: (key: string, value: string) => values.set(key, value), getItem: (key: string) => values.get(key) ?? null };
+    saveGame(together, storage);
+    together = loadSave(storage);
+    expect(together.run?.flags).toContain('keptPassengersTogether');
+    expect(sceneText(LAST_STOP.scenes.messyEnding, together)).toContain('press two coins into your hand for helping keep them together');
+
+    const legacy = fresh();
+    legacy.run!.sceneId = 'messyEnding';
+    expect(sceneText(LAST_STOP.scenes.messyEnding, legacy)).not.toContain('helping keep them together');
+
+    let separated = fresh();
+    for (const id of ['board', 'settle', 'findConductor', 'takeCharge', 'uncouple', 'cutLoose', 'engine']) separated = act(separated, id);
+    separated = act(separated, 'grabLever', 0.99);
+    separated = act(separated, 'brake');
+    separated = act(separated, 'holdManualBrake');
+    expect(separated.run?.flags).toContain('carsUncoupled');
+    expect(sceneText(LAST_STOP.scenes.messyEnding, separated)).not.toContain('keeping them together');
   });
 
   it('uses a neutral legacy fallback when method flags are absent', () => {
