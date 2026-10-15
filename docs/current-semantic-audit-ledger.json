@@ -351,8 +351,8 @@
   "liveSeverityTotals": {
     "HIGH": 13,
     "MEDIUM": 283,
-    "LOW": 48,
-    "SEVERITY_UNRECOVERED": 10
+    "LOW": 50,
+    "SEVERITY_UNRECOVERED": 8
   },
   "liveClusterFindingCounts": {
     "CRA-C0001": 222,
@@ -410,11 +410,11 @@
       "slug": "last-stop",
       "title": "All Aboard!",
       "sourceFile": "src/scenarios/lastStop.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0002"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed historical witness unavailable; focused current-source re-verification and repair recorded for CRA-F0002",
       "preReconciliationPosition": 2,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -427,11 +427,11 @@
       "slug": "aww-rats",
       "title": "Aww, Rats!!",
       "sourceFile": "src/scenarios/awwRats.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0003"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed historical witness unavailable; focused current-source re-verification found no corresponding CRA-C0001 contradiction",
       "preReconciliationPosition": 3,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -476,11 +476,11 @@
       "slug": "dead-mans-hand",
       "title": "Dead Man’s Hand",
       "sourceFile": "src/scenarios/deadMansHand.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0005"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed historical witness unavailable; focused current-source re-verification and repair recorded for CRA-F0005",
       "preReconciliationPosition": 6,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14879,14 +14879,16 @@
       "findingId": "CRA-F0002",
       "position": 2,
       "adventureId": "last-stop",
-      "severity": null,
-      "defect": "Route-specific outcome or optional-participant facts are lost at convergence; exact detailed claim not recoverable from current carry-forward.",
-      "routeWitness": null,
+      "severity": "LOW",
+      "defect": "The shared wreck ending credits the passengers as paying the Traveler for keeping them together even on solo-bracing and uncoupled routes that do not establish that contribution.",
+      "routeWitness": "roofInjury.secureForImpact -> messyEnding, and separatedFront.engine -> locomotive.grabLever(failure) -> engineBurn.brake -> engineBrakeRescue.holdManualBrake -> messyEnding. Neither route establishes that the Traveler kept the passengers together; the latter explicitly follows carsUncoupled. Contrast: couplingChoice.stayTogether -> togetherAttempt.braceTogether establishes the Traveler braced the passengers while the coaches remained coupled.",
       "violatedRule": "Converged text may assert only route-established outcomes and participation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 2,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The original carry-forward witness was unavailable; focused current-source review re-established a route-truth defect. The result now uses neutral truthful coin/lens text by default. Only the existing explicit stay-together-and-brace route records keptPassengersTogether and receives the contribution-specific variant. Regression contrasts solo bracing, the explicit passenger-bracing route, save/reload of its run-local proof, and absent-proof legacy text. No reward amount changed. Gameplay/test commit: a460e75b4083d60f4246a805aed1d1fc03eb9e9d."
     },
     {
       "findingId": "CRA-F0003",
@@ -14899,7 +14901,9 @@
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 3,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "The original carry-forward witness was not recoverable from repository history. Focused current-source route review covered grain discard/salvage/isolation; trap success, burst, gate closure, and withdrawal; seal success, breach, animal protection, and withdrawal; smoke success/failure, outlet redirection, and containment; reward acceptance/decline; and the resulting clean, contained, costly, survival, and death endings. State and result text preserve which routes are cleared, contained, or unresolved; no shared ending asserts an outcome absent from its incoming route. Existing Aww, Rats route and reward tests passed. No historical witness or severity was invented."
     },
     {
       "findingId": "CRA-F0004",
@@ -14918,14 +14922,16 @@
       "findingId": "CRA-F0005",
       "position": 6,
       "adventureId": "dead-mans-hand",
-      "severity": null,
-      "defect": "Route-specific outcome or optional-participant facts are lost at convergence; exact detailed claim not recoverable from current carry-forward.",
-      "routeWitness": null,
+      "severity": "LOW",
+      "defect": "Shared saloon outcomes credit the marshal with separating or supervising participants on routes that never brought him to the saloon.",
+      "routeWitness": "boonePrivate.payBoonesMarker -> debtSettled.leaveAfterDebt -> partialEnding, with no marshalAtDoor flag; partialEnding says the marshal keeps the men apart. Independently, readyConfrontation.showMarkedAces -> exposureReward.declineMabelGift -> exposedEnding is reachable without marshalAtDoor but said Mercer left under the marshal's watch.",
       "violatedRule": "Converged text may assert only route-established outcomes and participation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 6,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The original carry-forward witness was unavailable; focused current-source review re-established optional-marshal route-truth defects. Marshal-specific wording is now conditioned on the existing marshalAtDoor run flag in shared partial/violent outcomes; otherwise those results stay neutral. The evidence, exposed-card, and death outcomes no longer invent marshal participation, and the keep-hands-visible success message is neutral. Regression contrasts a no-marshal debt-resolution route with the marshal-present separation route and checks other shared outcomes. No history, reward, or combat mechanics changed. Gameplay/test commit: a460e75b4083d60f4246a805aed1d1fc03eb9e9d."
     },
     {
       "findingId": "CRA-F0006",
@@ -20412,9 +20418,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 765,
+    "HEALTHY": 768,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 37,
+    "CONFIRMED DEFECT": 34,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -23021,8 +23027,8 @@
           "CRITICAL": 0,
           "HIGH": 12,
           "MEDIUM": 173,
-          "LOW": 34,
-          "UNRECOVERED": 3
+          "LOW": 36,
+          "UNRECOVERED": 1
         },
         "representativeFindings": [
           {
