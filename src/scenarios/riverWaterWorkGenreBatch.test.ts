@@ -101,6 +101,49 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     expect(sceneText(bridge.scenes.paid, probed)).toMatch(/lower-approach obstruction/i);
   });
 
+  it('keeps Cotter Slip convergence truthful about moving the lighter versus setting a second line', () => {
+    const cotter = BATCH.find(({ id }) => id === 'the-mooring-at-cotter-slip')!;
+
+    let moved = chooseAt(fresh(cotter), cotter, 'barge', 'move');
+    expect(moved.run?.flags).toContain('cotter_lighter_moved');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(moved, storage as never);
+    moved = loadSave(storage as never);
+    expect(sceneText(cotter.scenes.line, moved)).toMatch(/lighter has been moved clear/i);
+    expect(sceneText(cotter.scenes.line, moved)).toMatch(/no second line has been set/i);
+    expect(sceneText(cotter.scenes.line, moved)).not.toMatch(/pale rub mark|second line set/i);
+    moved = chooseAt(moved, cotter, 'line', 'coins');
+    expect(sceneText(cotter.scenes.paid, moved)).toMatch(/lighter remains clear/i);
+    expect(sceneText(cotter.scenes.paid, moved)).not.toMatch(/second shore line holds|line is retired/i);
+
+    let movedForRope = chooseAt(fresh(cotter), cotter, 'barge', 'move');
+    movedForRope = chooseAt(movedForRope, cotter, 'line', 'lineGear');
+    expect(sceneText(cotter.scenes.kept, movedForRope)).toMatch(/lighter remains clear/i);
+    expect(sceneText(cotter.scenes.kept, movedForRope)).toMatch(/original shore line still bears/i);
+    expect(sceneText(cotter.scenes.kept, movedForRope)).not.toMatch(/resumes unloading|rub point is protected/i);
+
+    const ropeStart = fresh(cotter);
+    ropeStart.run!.inventory.push('travelRope');
+    let secured = chooseAt(ropeStart, cotter, 'barge', 'rope');
+    expect(secured.run?.flags).toContain('cotter_second_line_set');
+    const securedStorage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(secured, securedStorage as never);
+    secured = loadSave(securedStorage as never);
+    expect(secured.run?.flags).toContain('cotter_second_line_set');
+    expect(sceneText(cotter.scenes.line, secured)).toMatch(/second shore line set/i);
+    expect(sceneText(cotter.scenes.line, secured)).toMatch(/pale rub mark/i);
+    secured = chooseAt(secured, cotter, 'line', 'coins');
+    expect(sceneText(cotter.scenes.paid, secured)).toMatch(/added shore line holds the stern away/i);
+
+    const legacy = fresh(cotter);
+    legacy.run!.sceneId = 'line';
+    expect(sceneText(cotter.scenes.line, legacy)).not.toMatch(/lighter has been moved|second line|rub mark/i);
+    legacy.run!.sceneId = 'paid';
+    expect(sceneText(cotter.scenes.paid, legacy)).not.toMatch(/lighter remains clear|second shore line|original line is retired/i);
+    legacy.run!.sceneId = 'kept';
+    expect(sceneText(cotter.scenes.kept, legacy)).not.toMatch(/lighter remains clear|resumes unloading|rub point is protected/i);
+  });
+
   it('makes every story leave meaningful continuity and gives most a legitimate Gear path', () => {
     let gearRoutes = 0;
     for (const scenario of BATCH) {
