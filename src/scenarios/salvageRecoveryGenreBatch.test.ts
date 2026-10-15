@@ -213,4 +213,34 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     expect(sceneText(story.scenes.paid, state)).toMatch(/lower light remains unidentified and untouched/i);
     expect(sceneText(story.scenes.paid, state)).not.toMatch(/leave both lamps/i);
   });
+
+  it('keeps seed-tray protection and greenhouse compensation truthful across access methods', () => {
+    const story = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-glasshouse-gutter')!;
+    for (const [access, establishesCover, carried] of [
+      ['carefulAccess', false, 'heavyLeatherGloves'],
+      ['verifyFirst', true, undefined],
+      ['holdAndAsk', false, 'drainageHook'],
+    ] as const) {
+      let state = act(initial(story, carried), story, access);
+      const evidence = sceneText(story.scenes.evidence, state);
+      expect(evidence, access).not.toMatch(/seed trays are covered/i);
+      if (establishesCover) expect(evidence).toMatch(/sheet diverts rain from the seedlings/i);
+      else expect(evidence).not.toMatch(/sheet diverts rain from the seedlings/i);
+
+      state = act(state, story, 'secureRecovery');
+      const decisionText = sceneText(story.scenes.decision, state);
+      expect(decisionText).not.toMatch(/thanks for preserving the seed beds|returns the cloak to its owner/i);
+      const gear = story.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+      expect(meets(gear.requirements, state), access).toBe(true);
+      state = act(state, story, 'acceptReleasedGear');
+      expect(story.scenes.gear.text).toMatch(/help with the greenhouse cleanup/i);
+      expect(story.scenes.gear.text).not.toMatch(/seed beds were protected|seed trays were covered/i);
+    }
+
+    let paid = beginFresh(story);
+    paid = act(paid, story, 'secureRecovery');
+    paid = act(paid, story, 'takeFee');
+    expect(sceneText(story.scenes.paid, paid)).toMatch(/no estate equipment changes hands/i);
+    expect(sceneText(story.scenes.paid, paid)).not.toMatch(/finish covering the seedlings/i);
+  });
 });
