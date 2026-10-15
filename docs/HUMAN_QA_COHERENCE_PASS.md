@@ -65,6 +65,18 @@ These are bounded source reviews of the listed choice/result families, not a lib
 
 The Last Stop semantic issue is resolved. The bounded HQ-C01/HQ-C03 screen may resume from the point where this candidate interrupted it; previously completed seed reviews remain complete.
 
+### Coherence-screen continuation — farm compensation and physical tool actions
+
+After resolving the Last Stop semantic escalation, the bounded HQ-C01/HQ-C03 screen resumed with three live agriculture/ranch stories. These are focused source-path checks, not a new audit of the family.
+
+| Adventure / route | Category | Disposition | Evidence |
+| --- | --- | --- | --- |
+| The Cut Wire at Ash Pasture | HQ-C01 / HQ-C03 | **Plausible / coherent** | The Fencing Pliers option is available only when carried and usable; farm wire/staple is an alternative, while following the rut first leaves the fence gap open until the Traveler returns. The rush route has its own non-reward danger result. Only after the fence is made safe and the yearling is returned does the owner offer the announced two-coin wage or a personally owned pliers pair. No payment/tool reward is attached to the partial or danger outcomes. No ownership or action-method ambiguity established. |
+| The Feed Bin with the Blue Seam | HQ-C01 / HQ-C03 | **Plausible / coherent** | Separating the sack does not claim its contents or tally are known; asking to check the tally sets the specific proof used by the records variant. Only the miller’s inspection confirms the seed-grain mistake and replacement, after which one coin or an inventoried feed-crew Farm Whistle is offered. The whistle’s source and limited use are stated; the route does not claim it taming livestock. Return-unopened and stop outcomes remain separate and receive no inspection reward. |
+| The Apple Row after Hail | HQ-C01 / HQ-C03 | **No confirmed defect; plausible / needs live context** | Lifting the net requires a carried, usable Travel Rope; covering picked crates is a non-Gear alternative, while pulling from the fence has a distinct stop result. Only the rope route sets `appleNetLiftedForInspection`, and the next scene preserves that difference across save/reload. After a successful retie, the owner offers two coins or inventoried orchard Fencing Pliers; their stated wire/tie function is plausibly related to securing orchard netting, though how natural that in-kind option feels is best judged in play. No unsupported Gear access or route-state claim was found. |
+
+This continuation adds three bounded source reviews and no new audit finding. Their existing agriculture regression tests exercise the rope/tool gate, route-state contrast, save/reload, payment, and provenance behavior; no tests or gameplay were changed for this screen.
+
 ## Validation and delivery state
 
 - Focused Shortcut and QA-content tests: **27/27 passed**.
@@ -76,4 +88,5 @@ The Last Stop semantic issue is resolved. The bounded HQ-C01/HQ-C03 screen may r
 - Audit JSON parses and still reports the original audit as `COMPLETE`; three post-audit findings remain separately represented. No original finding text, ID, or disposition was changed in this repair.
 - The Last Stop issue is recorded as post-audit finding CRA-F0364, separately from the original 354-finding closure; all 357 current live findings are dispositioned and 0 remain open.
 - Focused Last Stop, engine, Traveler Memory, memory presentation, storage, library audit, and inventory tests pass (**93 tests across 7 files**). Full suite passes (**130 files / 2,561 tests**); TypeScript and production build pass with the existing bundle-size warning. Full validation and delivery state are recorded in the current audit status document.
+- Three additional agriculture/ranch HQ-C01/HQ-C03 candidates were source-screened after the Last Stop repair; no confirmed coherence defect or source/test change resulted.
 - Weekly Scenario Batch remains paused. No scheduler change, push, merge, or deployment occurred.
