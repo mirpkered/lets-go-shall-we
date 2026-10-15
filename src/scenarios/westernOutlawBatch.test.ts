@@ -345,5 +345,10 @@ describe('The Last Shot action-history continuity',()=>{
     guided=actLastShot(guided,'coverTalk');
     guided=actLastShot(guided,'termsOwnerLeave');
     expect(guided.character.historyFlags).toContain('helped a rancher leave an armed debt dispute');
+
+    let signaled=actLastShot(startLastShot(),'callWitness');
+    signaled=actLastShot(signaled,'witnessOwner');
+    expect(signaled.character.historyFlags).toContain('signaled a rancher toward the side gate during an armed dispute');
+    expect(signaled.character.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
   });
 });

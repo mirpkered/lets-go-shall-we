@@ -418,7 +418,7 @@ export const THE_LAST_SHOT = W('the-last-shot', 'The Last Shot', 'A confrontatio
     { id: 'coverLeave', label: 'Leave by the side path', next: 'retreat' },
   ]),
   witness: scene('witness', 'Voices across the Lane', 'A neighbor answers from the porch but has not entered the yard. The gunman looks toward the voice; his revolver remains in hand. The owner can reach the side gate if the gunman turns away.', [
-    { id: 'witnessOwner', label: 'Signal the owner toward the side gate', next: 'retreat', effects: { historyFlags: ['helped a rancher leave an armed debt dispute'] } },
+    { id: 'witnessOwner', label: 'Signal the owner toward the side gate', next: 'retreat', effects: { historyFlags: ['signaled a rancher toward the side gate during an armed dispute'] } },
     { id: 'witnessTerms', label: 'Ask the gunman to name his employer', next: 'terms' },
   ], 'warning'),
   terms: scene('terms', 'A Paid Threat', 'The gunman says the owner owes money for a fence line. The owner says the bill is false. Neither has a paper present. The neighbor has heard the threat; nobody has a clear view of the gunman’s other hand.', [
