@@ -438,7 +438,7 @@ export const THE_WAGON_WHEEL_MEETING = story('the-wagon-wheel-meeting', 'The Wag
     { id: 'leaveMeeting', label: 'Continue down the road', next: 'leave' },
   ]),
   circle: scene('circle', 'A Smaller Circle', 'The group closes in, but the wheel is now between the foreman and the people who need to measure the road. A cart must still pass before the work begins.', [
-    { id: 'keepLaneOpen', label: 'Leave a clear lane for the cart', next: 'plan' },
+    { id: 'keepLaneOpen', label: 'Leave a clear lane for the cart', next: 'laneClear' },
     { id: 'passNotes', label: 'Ask the clerk to repeat each point', next: 'notes' },
   ]),
   spokes: scene('spokes', 'One Spoke at a Time', 'Each resident takes one spoke as a turn to speak. The foreman hears two different estimates of the damaged section and asks for a marker to show where the repair should start.', [
@@ -450,6 +450,7 @@ export const THE_WAGON_WHEEL_MEETING = story('the-wagon-wheel-meeting', 'The Wag
     { id: 'leaveNotes', label: 'Leave the inspection to the committee', next: 'plan' },
   ]),
   plan: end('plan', 'A Road Meeting with an End', 'The residents agree where to inspect first and keep the cart lane clear. No repair is done at the meeting, but the next step is clear enough for the committee to begin.'),
+  laneClear: end('laneClear', 'A Lane Left Open', 'The cart lane stays clear. The residents continue talking, but no first inspection point is agreed here; the committee can choose one after the cart passes.'),
   leave: end('leave', 'The Wheel Stays on the Green', 'You leave before the group finds a shape that carries voices. The wheel remains where it marks the road, and the residents keep talking.'),
 });
 

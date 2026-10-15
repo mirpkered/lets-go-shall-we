@@ -46,6 +46,35 @@ describe('comedy and absurdity additions', () => {
     expect(THE_COMEDY_ABSURDITY_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
   });
 
+  it('does not invent an inspection plan when the Wagon-Wheel Meeting only clears the cart lane', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-wagon-wheel-meeting')!;
+    const character = newCharacter('Wagon Wheel Route QA');
+    const start: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId);
+      expect(choice, `${sceneId}.${choiceId}`).toBeTruthy();
+      return choose(state, scenario, choice!);
+    };
+
+    let laneOnly = act(start, 'green', 'moveSpeakers');
+    laneOnly = act(laneOnly, 'circle', 'keepLaneOpen');
+    expect(laneOnly.run?.sceneId).toBe('laneClear');
+    expect(sceneText(scenario.scenes.laneClear, laneOnly)).toMatch(/no first inspection point is agreed/i);
+
+    let markedPlan = act(start, 'green', 'useSpokes');
+    markedPlan = act(markedPlan, 'spokes', 'markStart');
+    expect(markedPlan.run?.sceneId).toBe('plan');
+    expect(sceneText(scenario.scenes.plan, markedPlan)).toMatch(/agree where to inspect first/i);
+
+    let clerkPlan = act(start, 'green', 'moveSpeakers');
+    clerkPlan = act(clerkPlan, 'circle', 'passNotes');
+    expect(sceneText(scenario.scenes.notes, clerkPlan)).toMatch(/foreman agrees to inspect the first hundred yards/i);
+    clerkPlan = act(clerkPlan, 'notes', 'leaveNotes');
+    expect(clerkPlan.run?.sceneId).toBe('plan');
+    expect(sceneText(scenario.scenes.plan, clerkPlan)).toMatch(/agree where to inspect first/i);
+  });
+
   it('keeps the unsigned scraped certificate distinct from the signed valid form', () => {
     const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-clerks-second-stamp')!;
     const character = newCharacter('Certificate Route QA');
