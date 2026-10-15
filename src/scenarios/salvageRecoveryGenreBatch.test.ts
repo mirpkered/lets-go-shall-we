@@ -92,6 +92,9 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       } else if (scenario.id === 'the-iron-at-milepost-nine') {
         eligible = act(initial(scenario), scenario, 'verifyFirst');
         eligible = act(eligible, scenario, 'secureRecovery');
+      } else if (scenario.id === 'the-lost-lantern-crate') {
+        eligible = act(initial(scenario), scenario, 'holdAndAsk');
+        eligible = act(eligible, scenario, 'secureRecovery');
       }
       expect(meets(offer.requirements, eligible), `${scenario.id} qualifying route`).toBe(true);
       let state = act(eligible, scenario, 'acceptReleasedGear');
@@ -162,6 +165,41 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     expect(returned.run?.inventory).toContain('collapsibleSoundingRod');
   });
 
+  it('requires foreman-led safe shoring and lamp return before releasing the damaged washout lantern', () => {
+    const washout = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-lost-lantern-crate')!;
+    const secure = washout.scenes.evidence.choices.find(({ id }) => id === 'secureRecovery')!;
+    const offer = washout.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(secure.label).toMatch(/shore the shelf.*return the three serviceable lamps/i);
+
+    for (const approach of washout.scenes.arrival.choices.filter(({ id }) => id !== 'holdAndAsk')) {
+      let state = act(initial(washout, approach.requirements?.items?.[0]), washout, approach.id);
+      const routeText = sceneText(washout.scenes.evidence, state);
+      if (approach.id === 'carefulAccess') expect(routeText).toMatch(/larger shelf still shifts and must not be entered/i);
+      if (approach.id === 'verifyFirst') expect(routeText).toMatch(/without requiring anyone to climb down/i);
+      expect(meets(secure.requirements, state), approach.id).toBe(false);
+      state = act(state, washout, 'traceOwnership');
+      expect(sceneText(washout.scenes.decision, state)).toMatch(/does not stabilize the bank or return the serviceable lamps/i);
+      expect(meets(offer.requirements, state), approach.id).toBe(false);
+      state = act(state, washout, 'takeFee');
+      expect(sceneText(washout.scenes.paid, state)).toMatch(/lantern is not transferred/i);
+    }
+
+    let secured = act(initial(washout), washout, 'holdAndAsk');
+    expect(sceneText(washout.scenes.evidence, secured)).toMatch(/foreman marks the intact lamps for return/i);
+    secured = act(secured, washout, 'secureRecovery');
+    expect(sceneText(washout.scenes.decision, secured)).toMatch(/crew shores the exposed shelf from the stable road/i);
+    expect(sceneText(washout.scenes.decision, secured)).toMatch(/returns them to the county/i);
+    expect(meets(offer.requirements, secured)).toBe(true);
+
+    const storage = { value:'', setItem(_key:string, value:string) { this.value=value; }, getItem(_key:string) { return this.value; } };
+    saveGame(secured, storage as never);
+    secured = loadSave(storage as never);
+    expect(meets(offer.requirements, secured)).toBe(true);
+    secured = act(secured, washout, 'acceptReleasedGear');
+    expect(secured.run?.inventory).toContain('roadmansLantern');
+    expect(itemState(secured, 'roadmansLantern').condition).toBe('DAMAGED');
+  });
+
   it('releases the milepost wedge only after the signed county clearance route and return action', () => {
     const milepost = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-iron-at-milepost-nine')!;
     const secure = milepost.scenes.evidence.choices.find(({ id }) => id === 'secureRecovery')!;
@@ -213,7 +251,10 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     const scenario = SALVAGE_RECOVERY_GENRE_BATCH.find(({ scenes }) => scenes.decision.choices.some(({ effects }) => effects?.gainItemConditions))!;
     const offer = scenario.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
     const item = offer.effects!.gainItems![0];
-    let state = act(decision(scenario), scenario, 'acceptReleasedGear');
+    let state = scenario.id === 'the-lost-lantern-crate'
+      ? act(act(initial(scenario), scenario, 'holdAndAsk'), scenario, 'secureRecovery')
+      : decision(scenario);
+    state = act(state, scenario, 'acceptReleasedGear');
     state = openRewardResolution(state);
     const storage = { value:'', setItem(_key:string, value:string) { this.value=value; }, getItem(_key:string) { return this.value; } };
     saveGame(state, storage as never);
