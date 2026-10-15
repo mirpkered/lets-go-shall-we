@@ -7074,12 +7074,13 @@
       "slug": "the-pocket-in-the-curtain",
       "title": "The Pocket in the Curtain",
       "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0157"
       ],
       "reviewProvenance": "current source route review; discovery/read state, director response, singer privacy request, understudy consent, cast-change endings, and keep-note refusal traced",
-      "notes": "The opening reveals the full note text, so the Traveler has necessarily read it before choosing to give it to the director “unopened” or offer to return it “unseen.” The cast-change outcomes otherwise preserve the singer’s wish not to be named, and the keep-note route explicitly leaves the request unanswered.",
+      "notes": "The opening reveals the full note text, so the Traveler has necessarily read it before returning it. Wave 132 corrects both route labels: the director option promises not to name the author, while the singer option promises not to repeat the contents. The cast-change outcomes preserve the singer’s wish not to be named, and the keep-note route explicitly leaves the request unanswered.",
+      "implementationEvidence": "Local CRA-C0001 Wave 132 gameplay commit 779058b. The two inaccurate labels ‘unopened’ and ‘unseen’ are replaced with the actual privacy-preserving actions: give the note to the director without naming its author, and offer to return it without repeating its contents. No route, cast-change, or privacy mechanics changed. Regression verifies both labels against the exposed opening text and checks the director/singer outcomes remain reachable. Surprise anthology, registry, content-quality, and inventory checks passed (33 tests); git diff --check passed.",
       "preReconciliationPosition": 392,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17129,7 +17130,9 @@
       "violatedRule": "Choice labels and privacy outcomes must reflect information already revealed to the player; a read message cannot subsequently be returned as unseen/unopened.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 132 gameplay commit 779058b. Both return labels now describe route-supported privacy actions rather than implying the Traveler did not read the quoted note: author identity is not named, and its contents are not repeated. Regression exercises both labels and their director/singer routes. Surprise anthology, registry, content-quality, and inventory checks passed (33 tests); git diff --check passed."
     },
     {
       "findingId": "CRA-F0158",
@@ -20388,9 +20391,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 755,
+    "HEALTHY": 756,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 47,
+    "CONFIRMED DEFECT": 46,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

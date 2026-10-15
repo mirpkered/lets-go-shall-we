@@ -5,7 +5,11 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0001 Wave 131
+### Active local repair checkpoint — CRA-C0001 Wave 132
+
+Wave 132 repairs CRA-F0157 (LOW), `the-pocket-in-the-curtain`. The director option now promises not to name the note’s author, and the singer option promises not to repeat its contents; neither falsely describes the already-read note as unopened or unseen. No cast-change or privacy mechanics changed. Surprise anthology, registry, content-quality, and inventory checks passed (**33 tests**); `git diff --check` passed. Current classifications are **756 HEALTHY, 59 MINOR CONCERN, 46 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **308 are dispositioned** (303 repaired and 5 healthy/no-longer-reproduces) and **46 remain open**, including **12 CRA-C0001** (7 MEDIUM, 2 LOW, 3 unrecovered severity). Gameplay/test commit: `779058b`; audit disposition is being checkpointed separately. Local-only; no push, merge, deployment, public QA, or scheduler change occurred. Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0001 Wave 131
 
 Wave 131 repairs CRA-F0249 (LOW), `the-empty-camp-office`. Settlement and Lockable Map Case provenance now credit waiting at the office with a visible signal and respecting the sealed message, which both paid routes establish; the signal-only route no longer receives credit for securing the survey books. Regression contrasts `secureBooks` and `leaveMessage` through `waitCrew` and confirms compensation choices are unchanged. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (**38 tests**); the RC12 validator and `git diff --check` passed. Current classifications are **755 HEALTHY, 59 MINOR CONCERN, 47 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **307 are dispositioned** (302 repaired and 5 healthy/no-longer-reproduces) and **47 remain open**, including **13 CRA-C0001** (7 MEDIUM, 3 LOW, 3 unrecovered severity). Gameplay/test commit: `36bb794`; audit disposition is being checkpointed separately. Local-only; no push, merge, deployment, public QA, or scheduler change occurred. Weekly Scenario Batch remains paused.
 
