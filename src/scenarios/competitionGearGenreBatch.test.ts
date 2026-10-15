@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
+import { choose, itemState, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { ITEMS } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
@@ -22,6 +22,29 @@ function act(state: ReturnType<typeof begin>, scenario: Scenario, id: string, ra
 }
 
 describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', () => {
+  it('awards the bent Survey Chain as damaged only on the corrected-measure prize route', () => {
+    const scenario = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-chain-at-twenty-paces')!;
+    let noPrize = begin(scenario);
+    noPrize = act(noPrize, scenario, 'inspectChain');
+    noPrize = act(noPrize, scenario, 'reportFault');
+    expect(noPrize.run?.sceneId).toBe('honest');
+    expect(noPrize.run?.inventory).not.toContain('surveyChain');
+
+    let prize = begin(scenario);
+    prize = act(prize, scenario, 'inspectChain');
+    prize = act(prize, scenario, 'submitMeasure');
+    prize = act(prize, scenario, 'acceptChain');
+    expect(prize.run?.inventory).toContain('surveyChain');
+    expect(itemState(prize, 'surveyChain').condition).toBe('DAMAGED');
+    expect(prize.character?.historyFlags).toContain('won_survey_chain_measure_trial');
+
+    let coinWinner = begin(scenario);
+    coinWinner = act(coinWinner, scenario, 'inspectChain');
+    coinWinner = act(coinWinner, scenario, 'submitMeasure');
+    coinWinner = act(coinWinner, scenario, 'takeCoins');
+    expect(coinWinner.character?.money).toBe(7);
+    expect(coinWinner.run?.inventory).not.toContain('surveyChain');
+  });
   it('retains practical Knowledge independently of competition compensation', () => {
     const siding = COMPETITION_GEAR_GENRE_BATCH.find(({ id }) => id === 'the-load-on-the-siding')!;
     const sidingLesson = 'A high strap restrains a load but can pull its center of weight sideways on a curve.';

@@ -267,6 +267,21 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     expect(itemState(state, item).condition).toBe('DAMAGED');
   });
 
+  it('matches the camp rope and Bell Creek spare conditions to the exact awarded items', () => {
+    const camp = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-camp-that-wasnt-empty')!;
+    const campOffer = camp.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(campOffer.effects?.gainItemConditions?.travelRope).toBe('DAMAGED');
+    const campAward = act(decision(camp), camp, 'acceptReleasedGear');
+    expect(itemState(campAward, 'travelRope').condition).toBe('DAMAGED');
+
+    const bell = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-bell-creek-drift')!;
+    const bellOffer = bell.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(bellOffer.effects?.gainItemConditions?.freightmansStrap).toBeUndefined();
+    const bellAward = act(decision(bell), bell, 'acceptReleasedGear');
+    expect(itemState(bellAward, 'freightmansStrap').condition).toBe('NORMAL');
+    expect(bell.scenes.decision.choices.some(({ id }) => id === 'repairOwnedGear')).toBe(true);
+  });
+
   it('offers genuine, state-gated repairs for damaged carried tools without granting duplicates or wages', () => {
     for (const [scenarioId, item] of [['the-lost-lantern-crate','roadmansLantern'], ['the-bell-creek-drift','freightmansStrap']]) {
       const scenario = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === scenarioId)!;

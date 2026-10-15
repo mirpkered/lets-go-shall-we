@@ -73,7 +73,7 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
       {id:'submitCorrected',label:'Submit the corrected span',next:'award'}, {id:'leaveTrial',label:'Withdraw and let the assistants repair the chain',next:'honest'},
     ]),
     award:s('award','The Mark Moves','The judge shifts the stake to the corrected mark. Senn awards the Survey Chain as the announced prize because you found the faulty link before the map was changed.',[
-      {id:'acceptChain',label:'Accept the Survey Chain',next:'chainPrize',effects:item('surveyChain','Awarded by Surveyor Ada Senn after the Traveler identified and corrected a bent link in the public measuring trial.','won_survey_chain_measure_trial')},
+      {id:'acceptChain',label:'Accept the Survey Chain',next:'chainPrize',effects:{...item('surveyChain','Awarded by Surveyor Ada Senn after the Traveler identified and corrected a bent link in the public measuring trial.','won_survey_chain_measure_trial'),gainItemConditions:{surveyChain:'DAMAGED'}}},
       {id:'takeCoins',label:'Take the two-coin prize instead',next:'chainCoins',effects:{money:2}},
     ]),
     honest:e('honest','No False Measurement','Senn thanks you for refusing to certify a bad line. The stake is returned; the measurement is corrected before the survey continues.'), dispute:e('dispute','A Mark Not Entered','The judge refuses to record an unrepeated measure. You lose the chance at the prize, but the damaged chain is taken out of service.'),
