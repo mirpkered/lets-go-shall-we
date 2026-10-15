@@ -11224,12 +11224,13 @@
       "slug": "three-crews-one-tool",
       "title": "Three Crews, One Tool",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0246"
       ],
       "reviewProvenance": "current-source route review; toolkit assigned to bridge/cook/survey, borrowed-tool and delay, record/rush, chain correction/provisional reading, shared completion and partial reward routes traced; focused tests run",
-      "notes": "Each successful branch resolves at most the selected task and one follow-up, but finish unconditionally says all three tasks were completed before the next shift. For example board.stoveFirst -> cook.record only records the task order/delay; it neither completes the bridge brace nor checks/corrects the survey chain. The shared result has no state or further route establishing the omitted work.",
+      "notes": "Each successful branch resolves at most the selected task and one follow-up, but finish unconditionally said all three tasks were completed before the next shift. For example board.stoveFirst -> cook.record only records the task order/delay; it neither completes the bridge brace nor checks/corrects the survey chain. The shared result has no state or further route establishing the omitted work. Wave 129 replaces that unsupported completion claim with route-neutral wording: work handled on this route is resolved and anything waiting remains on the board; all three successful allocation routes are covered by route-contrast regression.",
+      "implementationEvidence": "Local CRA-C0001 Wave 129 gameplay commit ec18cb1. The shared finish now says only that the work handled on this route is resolved and anything still waiting remains on the board. Regression drives the stove/record, bridge/borrow, and measure/correct success routes into finish and verifies the bounded claim without asserting all three tasks are complete. Reward choices and mechanics are unchanged. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (37 tests); RC12 ledger validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18340,7 +18341,9 @@
       "violatedRule": "A shared completion result may claim only tasks/outcomes established by the selected route or explicit intervening resolution.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 129 gameplay commit ec18cb1. The shared finish no longer claims all three tasks are complete after resolving only the selected task and one follow-up; it now preserves unresolved work as waiting on the board. Regression exercises stove/record, bridge/borrow, and measure/correct routes into the shared finish. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (37 tests); RC12 ledger validation and git diff --check passed. No reward or task mechanics changed."
     },
     {
       "findingId": "CRA-F0247",
@@ -20379,9 +20382,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 752,
+    "HEALTHY": 753,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 50,
+    "CONFIRMED DEFECT": 49,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
