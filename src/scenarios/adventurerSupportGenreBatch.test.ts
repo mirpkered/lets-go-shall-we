@@ -296,6 +296,24 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(run('return')).toMatch(/clerk signs the receipt/i);
   });
 
+  it('does not credit recovered property after the Flooded Chest combat victory', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-flooded-chest')!;
+    let combat = act(start(story), story, 'kit_rod');
+    combat = act(combat, story, 'standGround', 0);
+    expect(combat.run?.sceneId).toBe('afterFight');
+    combat = act(combat, story, 'continueAfterFight');
+    expect(combat.run?.sceneId).toBe('settlement');
+    const combatSettlement = sceneText(story.scenes.settlement, combat);
+    expect(combatSettlement).toMatch(/chest remains with its owners/i);
+    expect(combatSettlement).not.toMatch(/recovered property|property recovered/i);
+
+    let collarOnly = act(start(story), story, 'kit_rod');
+    collarOnly = act(collarOnly, story, 'response_mark');
+    const collarSettlement = sceneText(story.scenes.settlement, collarOnly);
+    expect(collarSettlement).toMatch(/collar is reached/i);
+    expect(collarSettlement).toMatch(/chest stays beyond the uncertain channel/i);
+  });
+
   it('does not condition the hound’s gear handoff on finding a person or watering the dog', () => {
     const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-silent-hound')!;
     expect(story.scenes.gear.text).toMatch(/no missing person is claimed found/i);
