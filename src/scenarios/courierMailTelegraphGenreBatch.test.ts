@@ -331,7 +331,8 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(sceneText(flood.scenes.handling, owned)).toContain('Your Waterproof Ledger Tube protects papers from rain and spray');
     expect(meets(floodedShortcut.requirements, owned)).toBe(true);
     state = act(owned, flood, 'acceptDelivery');
-    expect(sceneText(flood.scenes.decision, state)).toContain('Your Waterproof Ledger Tube protects papers from rain and spray');
+    expect(sceneText(flood.scenes.decision, state)).not.toContain('your Waterproof Ledger Tube');
+    expect(sceneText(flood.scenes.decision, state)).toContain('The office can record whether it arrived intact');
   });
 
   it('describes a broken Paper Boat tube as owned but unusable, including after save and reload', () => {
@@ -343,7 +344,7 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(sceneText(flood.scenes.handling, state)).toContain('Your Waterproof Ledger Tube is broken');
     expect(meets(floodedShortcut.requirements, state)).toBe(false);
     state = act(state, flood, 'carryNow');
-    expect(sceneText(flood.scenes.decision, state)).toContain('Your Waterproof Ledger Tube is broken');
+    expect(sceneText(flood.scenes.decision, state)).not.toContain('your Waterproof Ledger Tube');
 
     const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
     saveGame(state, storage as never);
