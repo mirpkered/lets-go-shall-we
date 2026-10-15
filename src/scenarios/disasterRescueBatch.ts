@@ -124,7 +124,7 @@ export const THE_TRAIN_THAT_DIDNT_STOP = A('the-train-that-didnt-stop', 'The Tra
     { id: 'jamSignal', label: 'Keep the danger signal raised', next: 'trainAftermath' },
     { id: 'jamForce', label: 'Force the lever while the line is live', hint: 'The switch could throw beneath the train.', chance: { probability: 0.36, successNext: 'sidingOpen', failureNext: 'trainDeath', successMessage: 'The points settle before the train reaches them.', failureMessage: 'The mechanism kicks back as the wheels arrive.' } },
   ], 'danger'),
-  platformClear: scene('platformClear', 'No One on the Rails', 'You keep the passengers and station hands away from the track. The goods train remains a threat only if the warning fails; the stationmaster sends a rider to the next signal post while the passenger train vanishes around the bend.', [
+  platformClear: scene('platformClear', 'No One on the Rails', 'The stationmaster sends a rider to the next signal post while the passenger train vanishes around the bend. The goods train remains a threat only if the warning fails.', [
     { id: 'clearWait', label: 'Wait for word from the next station', next: 'trainAftermath' },
     { id: 'clearRide', label: 'Take the station horse to warn ahead', next: 'trainRider', requirements: { ownedAssets: ['olderChestnutHorse'] } },
   ]),
@@ -132,14 +132,14 @@ export const THE_TRAIN_THAT_DIDNT_STOP = A('the-train-that-didnt-stop', 'The Tra
     { id: 'riderReturn', label: 'Return with the signalman’s report', next: 'trainAftermath', effects: { historyFlags: ['warned a signal post before a train collision'] } },
   ]),
   trainAftermath: scene('trainAftermath', 'Passengers on the Ballast', 'The passenger train is stopped or held only after the next signal crew acts. A brakeman has a burned hand and the passengers are shaken; the north goods train is safe if the warning reached it. The stationmaster writes down exactly what signals you sent.', [
-    { id: 'trainReport', label: 'Give the stationmaster your account', next: 'trainSettlement', effects: { knowledge: ['The north signal box can hold a train when the wire is working; the hand lamp is the fallback.'], historyFlags: ['helped avert a rail collision at a country station'] } },
+    { id: 'trainReport', label: 'Give the stationmaster your account', next: 'trainSettlement', effects: { knowledge: ['The north signal box can hold a train when the wire is working; the hand lamp is the fallback.'], historyFlags: ['gave the stationmaster an account of a damaged passenger train'] } },
   ]),
   trainSettlement: scene('trainSettlement', 'A Country Station’s Thanks', 'Your account is in the signal log. The stationmaster offers two coins for your time or a compact Pocket Toolkit retired from the station’s maintenance set; it has been checked and is no longer assigned to the crew.', [
     { id: 'takeTrainCoins', label: 'Accept two coins for your help', next: 'trainEnd', effects: { money: 2 } },
     { id: 'takeStationToolkit', label: 'Take the Pocket Toolkit instead of the coins', requirements: { notOwnedItems: ['pocketToolkit'] }, next: 'trainEnd', effects: { gainItems: ['pocketToolkit'] } },
     { id: 'leaveTrainPayment', label: 'Thank the stationmaster and take no payment', next: 'trainEnd' },
   ]),
-  trainEnd: end('trainEnd', 'Held Before the Junction', 'No collision follows. The passenger train must be inspected before it travels again, and one damaged step will cost the railway time. A passenger grips your hand and thanks you for keeping them off the line; the stationmaster says your clear account gave the crews time to act and keeps it with the signal log.'),
+  trainEnd: end('trainEnd', 'Held Before the Junction', 'No collision follows. The passenger train must be inspected before it travels again, and one damaged step will cost the railway time. The stationmaster keeps your account with the signal log.'),
   trainDeath: end('trainDeath', 'The Live Points', 'The train reaches the switch before you can get clear of its moving iron.', 'death'),
 }, 'platform');
 

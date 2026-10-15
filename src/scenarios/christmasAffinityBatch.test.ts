@@ -49,6 +49,23 @@ describe('Christmas and winter-affinity adventures', () => {
     expect(letter.scenes.letterContext.text).toContain('family matters, not danger');
   });
 
+  it('does not record station-help History after leaving or merely waiting through the delay', () => {
+    const station = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'christmas-at-the-station')!;
+    let left = pick(fresh(station), station, 'leaveStation');
+    left = pick(left, station, 'walkDarkRoad', () => 0);
+    expect(left.run?.sceneId).toBe('roadsideHouse');
+    left = pick(left, station, 'houseMorning');
+    left = pick(left, station, 'stationEnd');
+    expect(left.character?.historyFlags).not.toContain('Spent Christmas night helping delayed passengers at a railway station');
+
+    let helped = pick(fresh(station), station, 'organizeSoup');
+    helped = pick(helped, station, 'stretchSoup');
+    expect(helped.character?.historyFlags).toContain('Shared a Christmas station supper among delayed passengers');
+    helped = pick(helped, station, 'sharedAfter');
+    helped = pick(helped, station, 'stationEnd');
+    expect(helped.character?.historyFlags).not.toContain('Spent Christmas night helping delayed passengers at a railway station');
+  });
+
   it('recognizes the Black Milling Stone as a comparison clue at an old mill bearing', () => {
     const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'frozen-millwheel')!;
     const character = newCharacter('Millwright Explorer');

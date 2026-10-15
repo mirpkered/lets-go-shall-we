@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, startRun } from '../engine';
 import type { SaveData, Scenario } from '../types';
-import { AFTER_THE_TORNADO, THE_BOILER_ROOM, THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN } from './disasterRescueBatch';
+import { AFTER_THE_TORNADO, THE_BOILER_ROOM, THE_BRIDGE_GOES_DOWN, THE_CROWD_BREAKS, THE_ROOF_COMES_IN, THE_TRAIN_THAT_DIDNT_STOP } from './disasterRescueBatch';
 
 function fresh(scenario: Scenario = THE_CROWD_BREAKS, carriedItem?: string): SaveData {
   const character = newCharacter('State Tester');
@@ -42,6 +42,23 @@ describe('state-aware shared aftermath narration', () => {
 
     const guided = finishAfterOpeningGate();
     expect(guided.character.historyFlags).toContain('guided people toward the exhibition hall west gate during a crowd surge');
+  });
+
+  it('records only the stationmaster account after a run-alongside route, not rail-clearing credit', () => {
+    let state = act(fresh(), THE_TRAIN_THAT_DIDNT_STOP, 'runAlongside');
+    expect(state.run?.sceneId).toBe('platformClear');
+    expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.platformClear.text).not.toMatch(/you keep the passengers|station hands away/i);
+    state = act(state, THE_TRAIN_THAT_DIDNT_STOP, 'clearWait');
+    state = act(state, THE_TRAIN_THAT_DIDNT_STOP, 'trainReport');
+    expect(state.character?.historyFlags).toContain('gave the stationmaster an account of a damaged passenger train');
+    expect(state.character?.historyFlags).not.toContain('helped avert a rail collision at a country station');
+    expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.trainEnd.text).not.toMatch(/thanks you for keeping them off the line|your clear account gave crews time/i);
+
+    let signaled = act(fresh(), THE_TRAIN_THAT_DIDNT_STOP, 'showRedLamp');
+    signaled = act(signaled, THE_TRAIN_THAT_DIDNT_STOP, 'signalWait');
+    signaled = act(signaled, THE_TRAIN_THAT_DIDNT_STOP, 'clearWait');
+    signaled = act(signaled, THE_TRAIN_THAT_DIDNT_STOP, 'trainReport');
+    expect(signaled.character?.historyFlags).toContain('gave the stationmaster an account of a damaged passenger train');
   });
 
   it('does not claim unidentified injuries were taken to first aid when the child was not reached', () => {
