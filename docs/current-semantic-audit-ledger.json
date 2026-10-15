@@ -7476,12 +7476,13 @@
       "slug": "the-wagon-wheel-meeting",
       "title": "The Wagon-Wheel Meeting",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0162"
       ],
       "reviewProvenance": "current-source route review; speaker movement, cart-lane choice, spoke turns, marker placement, estimates, clerk notes, foreman inspection plan, offer-to-walk, committee follow-through, and leave outcomes traced",
-      "notes": "circle.keepLaneOpen enters plan without the marker action from spokes.markStart and without visiting notes, where the foreman agrees to inspect the first hundred yards. The shared ending nevertheless says residents agree where to inspect first. Other plan routes either mark the first damaged stone or carry the foreman's explicit inspection agreement; the location-specific plan claim is not established on keepLaneOpen. The meeting does not claim repair or payment occurred.",
+      "notes": "circle.keepLaneOpen entered the shared plan without the marker action from spokes.markStart and without visiting notes, where the foreman agrees to inspect the first hundred yards. Wave 130 routes that lane-only choice to a dedicated truthful ending: the cart lane stays clear, but no first inspection point is agreed there. Marker and clerk-note routes retain the plan ending. The meeting does not claim repair or payment occurred.",
+      "implementationEvidence": "Local CRA-C0001 Wave 130 gameplay commit 0bab863. The clear-lane-only choice now ends at laneClear, which states no inspection point was agreed. The shared plan remains for the marker route and clerk-notes route, each of which establishes an inspection starting point. Regression covers the lane-only route and both plan-establishing contrasts; comedy/absurdity, registry, content-quality, and inventory checks passed (35 tests); RC12 validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17195,7 +17196,9 @@
       "violatedRule": "A shared ending may claim a route-specific plan/result only when every incoming route establishes that result.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 130 gameplay commit 0bab863. The cart-lane-only branch now reaches a dedicated ending that makes no inspection-plan claim; marker and clerk-note branches still reach the plan ending with their route-established inspection point. Regression covers all three route variants. Comedy/absurdity, registry, content-quality, and inventory checks passed (35 tests); RC12 validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0163",
@@ -20382,9 +20385,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 753,
+    "HEALTHY": 754,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 49,
+    "CONFIRMED DEFECT": 48,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
