@@ -38,6 +38,11 @@ const stories: SalvageStory[] = [
   { id:'the-warehouse-after-rain', title:'The Warehouse After Rain', subtitle:'A roof leak ruins a shipment, but one tool roll was never part of the cargo.', place:'warehouse', risk:'LOW', opening:'Rain came through a warehouse roof and soaked a stack of returned goods. The factor asks you to separate damaged stock from the tenant’s personal property before the morning inventory. A compact pry tool and two sealed crates sit under the drip.', firstChoices:['Move the sealed crates onto dry boards before inspecting contents','Check the tenant’s signed return list against the tool roll','Lay the Waxed Canvas Sheet to divert water from the inventory desk'], complication:'The pry tool is stamped to a former repair contractor who ended his lease last week. One crate contains returned goods; the other is a private trunk left behind by the tenant, who has not answered a letter.', consequence:['The crates are lifted without breaking the seals; the private trunk remains unopened.','The list places the pry tool with the contractor, not with the warehouse stock.','The sheet keeps the papers dry long enough to identify the trunk owner.'], property:'The contractor confirms the pry tool was his and explicitly sells it to you for one coin before leaving town; the private trunk is held for its tenant.', owner:'You hold the trunk for its owner and take two coins for sorting the inventory without opening sealed property.', gear:'foldingPryTool', gearCost:1, gearSource:'Sold directly by its named former contractor-owner for one coin after his mark was verified; it was never part of the warehouse stock.', coins:2, knowledge:'A returned shipment and a tenant’s left property are different claims; keep seals intact until the owner or inventory resolves them.' },
 ];
 
+const stationYardHeap = stories.find(({ id }) => id === 'the-station-yard-heap');
+if (stationYardHeap) {
+  stationYardHeap.complication += ' The borrowed track gauge is uncovered beneath the wrench; the railway requires its return before the wrench can be released.';
+}
+
 function build(story: SalvageStory): Scenario {
   const firstChoiceGear = story.firstChoices.map((label, index) => {
     if (story.id === 'the-quarry-winch' && index === 0) return undefined; // The opening explicitly stages the block on the stable upper beam.
@@ -50,8 +55,12 @@ function build(story: SalvageStory): Scenario {
   const evidenceSetup = `${story.complication}${story.combat ? ` ${story.combat.warning}` : ''}`;
   const decisionSetup = story.id === 'the-missing-pack-frame'
     ? `${story.property} The agreement determines what may be recovered; the replacement frame is offered only if you recovered and returned the rented frame. The recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`
+    : story.id === 'the-station-yard-heap'
+      ? `${story.property} The marked wrench remains with the railway unless the borrowed track gauge beneath it is returned. The recovery fee is separate from any tool transfer, and you may decline all material compensation.`
     : `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`;
-  const gearReleaseRequirements = story.id === 'the-missing-pack-frame' ? { flags:[`${story.id}_access_two`,`${story.id}_limited_recovery`] } : {};
+  const gearReleaseRequirements = story.id === 'the-missing-pack-frame'
+    ? { flags:[`${story.id}_access_two`,`${story.id}_limited_recovery`] }
+    : story.id === 'the-station-yard-heap' ? { flags:[`${story.id}_limited_recovery`] } : {};
   const tags = largeTags({
     hook: `${story.title}: recovery reveals a question of ownership before useful property can change hands.`,
     activity: 'labor/repair', role: 'worker', tone: story.risk === 'LOW' ? 'adventurous' : 'tense/dangerous',
@@ -68,7 +77,7 @@ function build(story: SalvageStory): Scenario {
     ], story.risk === 'HIGH' ? 'warning' : 'safe'),
     evidence: largeScene('evidence', 'What the Recovery Shows', evidenceSetup, [
       { id:'traceOwnership', label:'Trace the marks, records, and witnesses before claiming anything', next:'decision', effects:{ setFlags:[`${story.id}_checked_owner`] } },
-      { id:'secureRecovery', label:'Secure only the clearly authorized item and leave the rest in place', next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
+      { id:'secureRecovery', label:story.id === 'the-station-yard-heap' ? 'Return the borrowed track gauge to railway stores' : 'Secure only the clearly authorized item and leave the rest in place', ...(story.id === 'the-station-yard-heap' ? { hint:'Leave the marked wrench with the clerk; its release depends on this gauge being returned.' } : {}), next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
       { id:'deferRecovery', label:'Stop and ask the responsible owner or crew to settle the claim', next:'deferred', effects:{knowledge:[story.knowledge]} },
       ...(story.combat ? [{ id:'standGround', label:`Stand your ground and fight off the ${story.combat.enemy}`, hint:'The aggressor has made a clear physical threat; you can still withdraw or defer the recovery.', effects:{ combat:{ enemy:story.combat.enemy, winChance:story.combat.winChance, damageOnWin:1, damageOnLoss:3, winNext:'fightWon', lossNext:'fightLost' } } }] : []),
     ], story.risk === 'HIGH' ? 'warning' : 'safe', [
@@ -76,14 +85,14 @@ function build(story: SalvageStory): Scenario {
       { requirements:{ flags:[`${story.id}_access_two`] }, text:`${evidenceSetup} ${story.consequence[1]}` },
       { requirements:{ flags:[`${story.id}_access_three`] }, text:`${evidenceSetup} ${story.consequence[2]}` },
     ]),
-    decision: largeScene('decision', 'The Property Is Accounted For', decisionSetup, [
+    decision: largeScene('decision', story.id === 'the-station-yard-heap' ? 'The Railway Checks Its Return Condition' : 'The Property Is Accounted For', decisionSetup, [
       ...(story.gear ? [{ id:'acceptReleasedGear', label:story.gearCost ? `Buy the released ${gearName} for ${story.gearCost} coin${story.gearCost === 1 ? '' : 's'}` : `Accept the released ${gearName}`, requirements:{ notOwnedItems:[story.gear], ...gearReleaseRequirements, ...(story.gearCost ? { minMoney:story.gearCost } : {}) }, next:'gear', effects:{ gainItems:[story.gear], ...(story.gearCost ? { money:-story.gearCost } : {}), gainItemProvenance:{ [story.gear]:story.gearSource ?? `Recovered with clear ownership release in ${story.title}` }, ...(story.repair ? { gainItemConditions:{ [story.gear]:'DAMAGED' as const } } : {}), historyFlags:[`salvage_${story.id}_${story.gear}`] } }] : []),
       ...(story.repairItem ? [{ id:'repairOwnedGear', label:`Have the recovery crew repair your damaged ${ITEMS[story.repairItem]?.name ?? story.repairItem} instead`, requirements:{ items:[story.repairItem], itemConditions:{ [story.repairItem]:['DAMAGED','BROKEN'] as ('DAMAGED'|'BROKEN')[] } }, next:'repaired', effects:{ repairItems:[story.repairItem], repairItemProvenance:{ [story.repairItem]:`Repaired during ${story.title}` }, historyFlags:[`salvage_${story.id}_repair`] } }] : []),
       { id:'takeFee', label:`Take the ${story.coins}-coin recovery fee instead`, next:'paid', effects:{ money:story.coins, setFlags:[`${story.id}_took_fee`] } },
       { id:'keepLesson', label:'Decline all material compensation', next:'lesson', effects:{ setFlags:[`${story.id}_refused`] } },
     ].map((choice)=>({...choice,effects:{knowledge:[story.knowledge],...choice.effects}})), 'safe', [
-      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:`${decisionSetup} Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.` },
-      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:`${decisionSetup} Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.` },
+      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} The marks identify the missing wrench and former borrower, but this route does not return the buried gauge; the wrench is not released.` : `${decisionSetup} Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.` },
+      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} You return the borrowed track gauge to railway stores. The return condition is met, and the marked wrench can now be released separately.` : `${decisionSetup} Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.` },
     ]),
     deferred: largeEnd('deferred', 'A Claim Left Intact', `You stop before disputed property changes hands. ${story.knowledge} The owner or responsible crew will decide what can be recovered.`),
     ...(story.combat ? {
@@ -96,6 +105,9 @@ function build(story: SalvageStory): Scenario {
     lesson:largeEnd('lesson', 'What the Marks Could Prove', `You leave without material compensation. ${story.knowledge}${story.lore ? ` The older account is also recorded: ${story.lore}` : ''}`),
     unpaid:largeEnd('unpaid', 'Nothing Claimed', 'You refuse compensation and leave the recovered property with the people whose ownership was established.'),
   };
+  if (story.id === 'the-station-yard-heap') {
+    scenes.paid.text = 'You take two coins for sorting the heap. The marked wrench remains with the railway, and the track gauge is returned only if you chose that handoff.';
+  }
   return largeAdventure(story.id, story.title, story.subtitle, tags, 'arrival', scenes);
 }
 

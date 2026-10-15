@@ -81,6 +81,11 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
         expect(meets(offer.requirements, ordinaryRoute), 'frame reward is unavailable without the qualifying recovery').toBe(false);
         eligible = act(initial(scenario, 'travelRope'), scenario, 'verifyFirst');
         eligible = act(eligible, scenario, 'secureRecovery');
+      } else if (scenario.id === 'the-station-yard-heap') {
+        const ownerTraceOnly = decision(scenario);
+        expect(meets(offer.requirements, ownerTraceOnly), 'wrench release is unavailable until the borrowed gauge is returned').toBe(false);
+        eligible = beginFresh(scenario);
+        eligible = act(eligible, scenario, 'secureRecovery');
       }
       expect(meets(offer.requirements, eligible), `${scenario.id} qualifying route`).toBe(true);
       let state = act(eligible, scenario, 'acceptReleasedGear');
@@ -94,6 +99,36 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
       if (scenario.id !== 'the-missing-pack-frame') expect(getCarriedItems(state.character)).toContain(id);
       else expect(state.run?.inventory).toContain(id);
     }
+  });
+
+  it('requires the borrowed track-gauge handoff before releasing the station-yard wrench', () => {
+    const heap = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-station-yard-heap')!;
+    const offer = heap.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(heap.scenes.evidence.choices.find(({ id }) => id === 'secureRecovery')?.label).toMatch(/return the borrowed track gauge/i);
+
+    for (const approach of heap.scenes.arrival.choices) {
+      let traced = act(initial(heap), heap, approach.id);
+      expect(sceneText(heap.scenes.evidence, traced)).toMatch(/borrowed track gauge is uncovered beneath the wrench/i);
+      traced = act(traced, heap, 'traceOwnership');
+      expect(sceneText(heap.scenes.decision, traced)).toMatch(/does not return the buried gauge/i);
+      expect(meets(offer.requirements, traced)).toBe(false);
+    }
+
+    let returned = beginFresh(heap);
+    returned = act(returned, heap, 'secureRecovery');
+    expect(returned.run?.flags).toContain('the-station-yard-heap_limited_recovery');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(returned, storage as never);
+    returned = loadSave(storage as never);
+    expect(sceneText(heap.scenes.decision, returned)).toMatch(/return the borrowed track gauge to railway stores/i);
+    expect(sceneText(heap.scenes.decision, returned)).toMatch(/return condition is met/i);
+    expect(meets(offer.requirements, returned)).toBe(true);
+
+    let challenged = beginFresh(heap);
+    challenged = act(challenged, heap, 'standGround', () => 0);
+    challenged = act(challenged, heap, 'resumeRecovery');
+    expect(sceneText(heap.scenes.decision, challenged)).not.toContain('You return the borrowed track gauge to railway stores.');
+    expect(meets(offer.requirements, challenged)).toBe(false);
   });
 
   it('keeps material compensation exclusive while experience-earned Knowledge survives every resolved route', () => {
