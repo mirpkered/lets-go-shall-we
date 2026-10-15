@@ -9944,12 +9944,12 @@
       "slug": "the-lost-lantern-crate",
       "title": "The Lantern Crate in the Washout",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0224"
       ],
       "reviewProvenance": "current-source route review; wedge/light/foreman routes, explicit unstable-bank warning, limited recovery, repair/reward/fee/defer traced",
-      "notes": "The wedge route says the larger shelf still shifts and must not be entered; the stable-road light route only inspects, and the foreman route marks ownership. Nevertheless, the generic secureRecovery choice advances directly to a decision whose property text says all three serviceable lamps were returned and releases the damaged Roadman’s Lantern, with no stabilization/entry/retrieval step. The damaged-lantern repair/reward and fee/defer paths do not establish safe access to the buried crate.",
+      "notes": "CRA-F0224 is repaired. Only the foreman/property-marking route enables the crew to shore the exposed shelf from the stable road, retrieve the three serviceable lamps, and return them under the salvage terms. The wedge and light routes cannot select that recovery action; their decision variant says the lamps were not returned and the damaged lantern is not released. The inspection-fee path transfers no lantern.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18065,7 +18065,9 @@
       "violatedRule": "A location expressly established as unsafe to enter cannot yield recovered objects or a completed return without a route establishing safe access and retrieval.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 140, gameplay/test commit 233858f. In `src/scenarios/salvageRecoveryGenreBatch.ts`, the foreman route now enables an explicit crew-shoring and serviceable-lamp return action from the stable road; the existing access and limited-recovery run flags gate the damaged lantern release. Wedge and light routes remain outside, cannot choose that action, and receive text that does not claim return or transfer. Regression covers both negative approaches, the positive foreman route, flag continuity through save/reload, and preservation of the granted lantern's DAMAGED condition. Salvage, registry, diversity, and Gear suites passed (43 tests); TypeScript/production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0225",
@@ -20410,9 +20412,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 764,
+    "HEALTHY": 765,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 38,
+    "CONFIRMED DEFECT": 37,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
