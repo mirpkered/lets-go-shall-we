@@ -8301,12 +8301,12 @@
       "slug": "the-flooded-chest",
       "title": "The Flooded Chest",
       "sourceFile": "src/scenarios/adventurerSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0187"
       ],
       "reviewProvenance": "current-source route review; rod/pail/rope preparation, wait/collar-only/family-choice responses, combat win/loss, crossing closure and pail/coin/refusal outcomes traced",
-      "notes": "The direct response variants correctly keep the chest in place on wait/collar-only routes. But standGround -> combat win -> afterFight -> settlement has no response flag and therefore uses the base settlement text ‘The family keeps its recovered property,’ although winText says the chest remains with its owners and no chest or collar was recovered. Loss narration likewise makes no recovery claim.",
+      "notes": "The direct response variants correctly keep the chest in place on wait/collar-only routes. The former standGround -> combat win -> afterFight -> settlement base incorrectly credited recovered property despite winText stating that the chest remained with its owners. Local CRA-C0001 Wave 122 now keeps that settlement neutral about recovery; regression contrasts combat victory with the response_mark collar-only recovery. Loss narration remains unchanged and makes no recovery claim.",
       "preReconciliationPosition": 476,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17536,7 +17536,9 @@
       "violatedRule": "Recovery and possession outcomes must not be asserted unless a route action establishes that the object was recovered.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 122 gameplay commit 871dfa8. The Flooded Chest combat-victory settlement base now states only that the chest remains with its owners and the crossing is closed; it no longer credits recovered property. The response_mark contrast still states that the collar was retrieved while the chest remains beyond the uncertain channel. Regression drives standGround victory through settlement and contrasts the collar-only recovery. No combat outcome, property movement, reward, or route state changed. Targeted Adventurer Support, inventory, registry, and library validation passed; RC12 ledger validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0188",
@@ -20365,9 +20367,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 745,
+    "HEALTHY": 746,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 57,
+    "CONFIRMED DEFECT": 56,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
