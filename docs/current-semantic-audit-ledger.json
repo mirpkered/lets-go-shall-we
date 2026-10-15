@@ -9837,12 +9837,12 @@
       "slug": "the-camp-that-wasnt-empty",
       "title": "The Camp That Wasn’t Empty",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0223"
       ],
       "reviewProvenance": "current-source route review; call/tracks/glasses, returning survey hand, ownership/recovery, fee/refusal/reward paths inspected",
-      "notes": "The released spare Travel Rope is explicitly described as written off as frayed, but the reward adds it without gainItemConditions. engine.ts itemState/itemCondition default missing item state to NORMAL, so the carried reward is represented as sound and usable rather than frayed. Call, tracks, and glasses routes preserve their distinct observations; defer avoids transfer.",
+      "notes": "REPAIRED: The released spare Travel Rope is explicitly described as written off as frayed; the award now records the item as DAMAGED. Call, tracks, and glasses routes preserve their distinct observations; defer avoids transfer.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9993,12 +9993,12 @@
       "slug": "the-bell-creek-drift",
       "title": "The Bell Creek Drift",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0226"
       ],
       "reviewProvenance": "current-source route review; gloves/stitch/hook access, two claimant evidence, owner return, spare reward, repair and combat routes traced",
-      "notes": "The donated Freightman’s Strap is described as the second driver’s own sound spare. The reward effects nevertheless include repair:true, which sets the new item’s condition to DAMAGED; engine.ts reads the stored condition rather than the sound narrative. The wet/frayed recovered strap is separately arranged for repair and returned to the first driver, while fee/owner paths do not grant the spare.",
+      "notes": "REPAIRED: The donated Freightman’s Strap is the second driver’s sound spare and now enters inventory as NORMAL. The separate repairOwnedGear option still repairs the Traveler’s existing damaged/broken strap; the flood-recovered strap remains separate and returns to its owner.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -10196,12 +10196,12 @@
       "slug": "the-chain-at-twenty-paces",
       "title": "The Chain at Twenty Paces",
       "sourceFile": "src/scenarios/competitionGearGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0232"
       ],
       "reviewProvenance": "current-source route review; inspect/repeat, trust/dispute, folding-rule comparison, correction, chain/coin/refusal outcomes and Gear condition default traced",
-      "notes": "The only Survey Chain described is the measuring chain whose flattened link shortens the span; the comparison route explicitly says it is due for repair. Correcting/submitting the measurement reaches the announced chain prize without any repair action or gainItemConditions. The engine defaults an acquired item with no recorded condition to NORMAL, contradicting the route-established bent condition.",
+      "notes": "REPAIRED: The accepted Survey Chain prize now records DAMAGED condition, matching the flattened link established by the contest. Refusal and coin-prize routes still grant no chain.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18121,7 +18121,9 @@
       "violatedRule": "A granted item’s mechanical condition must preserve an explicitly established damaged or unusable state; provenance alone cannot encode item condition.",
       "clusterId": "CRA-C0009",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "CRA-C0009 local repair commit 05ec4d1. In `salvageRecoveryGenreBatch.ts`, the released Travel Rope is recorded as DAMAGED, matching its written-off/frayed description. Scenario regression acquires the rope and checks stored condition; shared reward realization and save/resume condition tests also pass. No new state or persistence change was needed."
     },
     {
       "findingId": "CRA-F0224",
@@ -18161,7 +18163,9 @@
       "violatedRule": "Granted Gear condition must match the condition established by the source narrative; repair state for another item or route must not corrupt the reward item’s condition.",
       "clusterId": "CRA-C0009",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "CRA-C0009 local repair commit 05ec4d1. In `salvageRecoveryGenreBatch.ts`, the sound gifted spare no longer inherits the repair marker for the separate recovered strap and therefore enters inventory as NORMAL. Regression confirms that condition and preserves the distinct repairOwnedGear option for the Traveler's own damaged/broken strap; shared salvage and reward realization tests pass."
     },
     {
       "findingId": "CRA-F0227",
@@ -18243,7 +18247,9 @@
       "violatedRule": "Granted Gear condition must match the condition established for that same item; a known bent tool must not enter inventory as mechanically NORMAL without repair.",
       "clusterId": "CRA-C0009",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "CRA-C0009 local repair commit 05ec4d1. In `competitionGearGenreBatch.ts`, the corrected-measure prize now grants the bent Survey Chain with DAMAGED condition. Regression checks the damaged chain on acceptance and no chain on the refusal or coin route; the competition gear suite passes. No new state or persistence change was needed."
     },
     {
       "findingId": "CRA-F0233",
@@ -20484,9 +20490,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 793,
+    "HEALTHY": 796,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 9,
+    "CONFIRMED DEFECT": 6,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

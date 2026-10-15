@@ -5,6 +5,12 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
+### Current local repair checkpoint — CRA-C0009 Gear condition
+
+CRA-C0009 is complete: CRA-F0223, CRA-F0226, and CRA-F0232 are `VERIFIED_HEALTHY_REPAIRED`. The camp’s released frayed Travel Rope now enters inventory as DAMAGED; Bell Creek’s separately gifted sound Freightman’s Strap now remains NORMAL while the option to repair the Traveler’s own strap is preserved; and the bent Survey Chain prize is explicitly DAMAGED. Regression contrasts cover the award/no-award routes and exact item conditions. Salvage and competition Gear suites pass (**46 tests**); shared route-aware reward realization passes (**1 audit test**, ~124 seconds); TypeScript and `git diff --check` pass. Gameplay/test commit: `05ec4d1`.
+
+The three affected Adventures now derive HEALTHY. Current live classifications are **796 HEALTHY, 59 MINOR CONCERN, 6 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **351 are dispositioned** (**342 repaired**, **9 healthy/no-longer-reproduces**) and **3 remain open**: CRA-C0003 (CRA-F0011), CRA-C0005 (CRA-F0048), and CRA-C0012 (CRA-F0139), all MEDIUM. C0009 audit dispositions are locally pending their separate checkpoint commit. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
+
 ### Previous local repair checkpoint — carry-forward reconciliation
 
 Focused current-source review resolved the five incomplete carry-forwards without reconstructing missing historical witnesses. CRA-F0006 (`bridge-out`) and CRA-F0007/F0008 (`the-long-way-home`) are `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`: all relevant route/result families were traced, and current route-specific outcomes remain truthful; their historical witnesses and severities remain unknown. The original `CARRY_FORWARD_INCOMPLETE` provenance is retained.
