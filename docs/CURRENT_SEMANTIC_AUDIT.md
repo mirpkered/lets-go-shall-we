@@ -5,7 +5,13 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0002 evidence-gated Knowledge
+### Active local repair checkpoint — CRA-C0002 station-participation History
+
+Repaired CRA-F0074 (`christmas-at-the-station`, MEDIUM) by removing the unconditional “spent Christmas night helping” History from the boarding choice; leaving for a farmhouse or merely waiting no longer earns it, while the specific soup-sharing History remains on the actual meal route. Repaired CRA-F0082 (`the-train-that-didnt-stop`, MEDIUM) by making the shared platform and finale neutral about who cleared the rails and replacing collision-prevention credit with the actual account given to the stationmaster. No route, risk, reward, signal, or save mechanics changed.
+
+Christmas, disaster state-aware, and reward-access suites passed (**41 tests across 3 files**). Both single-finding Adventures derive HEALTHY. Live classifications are **782 HEALTHY, 59 MINOR CONCERN, 20 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **336 are dispositioned** (330 repaired and 6 healthy/no-longer-reproduces) and **18 remain open**; CRA-C0002 has **3 open findings**. Gameplay commit: `78f5d54`. Local-only; no push, merge, deployment, or public QA. Human QA remains deferred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0002 evidence-gated Knowledge
 
 Repaired CRA-F0100 (`thing-at-black-creek`, MEDIUM), F0109 (`the-river-devil`, MEDIUM), F0110 (`the-millers-beast`, MEDIUM), and F0113 (`thing-beneath-the-ice`, MEDIUM). Black Creek no longer grants the bear explanation from the keeper’s unresolved account; it records the directly observed injured bear after the reveal. River Devil now records the submerged-log cause only after probing, not merely watching current that obscures the underwater object. Miller’s Beast records run-local wheel-stopped proof and gates the specific “left safely after stopping” Knowledge on both that proof and opening the culvert; alternate routes remain actionable. Thing Beneath the Ice no longer grants sound-response Knowledge or claims it known after direct retreat; the explicit buckle test retains the learned fact. The stopped-wheel proof survives save serialization; no persistent schema changes were introduced.
 

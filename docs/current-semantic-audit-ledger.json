@@ -4364,7 +4364,7 @@
       "slug": "christmas-at-the-station",
       "title": "Christmas at the Station",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0074"
       ],
@@ -4764,7 +4764,7 @@
       "slug": "the-train-that-didnt-stop",
       "title": "The Train That Didn’t Stop",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0082"
       ],
@@ -15956,6 +15956,8 @@
       "routeWitness": "stationMorning.stationEnd unconditionally adds 'Spent Christmas night helping delayed passengers at a railway station'. It is reached from ordinary meal/coal/line paths, but also from waiting for a carter then riding to the inn, or a successful solo walk to a farmhouse where the Traveler rests while the farm sends word to the station; the latter routes do not establish helping passengers at the station.",
       "violatedRule": "Persistent History must record only route-established player participation, location, and actions; completion of a common finale is not proof that every player did the same work.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the unconditional station-help History from stationEnd. The route that leaves for a farmhouse and merely rests now records no station assistance; the existing shared-supper History remains on the explicit soup-sharing action. Regression contrasts the left/rest route with actual station meal participation and verifies the broad claim is absent in both. Christmas affinity suite passes (26 tests). Gameplay commit: 78f5d54.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 240,
       "registrationStatus": "LIVE"
@@ -16074,6 +16076,8 @@
       "routeWitness": "platform.runAlongside -> platformClear has only a health effect; platformClear says the Traveler kept passengers/station hands away, and trainAftermath.trainReport grants collision-prevention History. trainEnd thanks the Traveler for keeping passengers off the line and says their clear account gave crews time.",
       "violatedRule": "Persistent participation/history and shared outcome text may only credit actions established by the selected route.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared platformClear scene no longer says the Traveler kept passengers and station hands off the track, and trainEnd no longer thanks them for that unproved intervention or says their report enabled the response. trainReport records only the action it guarantees: giving the stationmaster an account of the damaged passenger train. Regression contrasts runAlongside with the red-lamp/keep-clear route and checks the route-neutral account History. Disaster state-aware, reward-access, and Christmas suites pass (41 tests across 3 files). Gameplay commit: 78f5d54.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 264,
       "registrationStatus": "LIVE"
@@ -20450,9 +20454,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 780,
+    "HEALTHY": 782,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 22,
+    "CONFIRMED DEFECT": 20,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
