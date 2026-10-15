@@ -58,6 +58,22 @@ describe('The Last Room on the Left', () => {
     expect(state.character?.historyFlags).toContain('uncovered_inn_truth');
   });
 
+  it('does not record the innkeeper truth when leaving before anyone explains it', () => {
+    let state = toCellar(fresh(0, 'pocketToolkit'));
+    state = pick(state, 'pryShelf', () => 0.999);
+    expect(state.run?.sceneId).toBe('cellarSlip');
+    state = pick(state, 'climbOutAlone');
+    expect(state.run?.sceneId).toBe('leftSilasEnding');
+    expect(state.character?.historyFlags).toContain('walked_away_from_inn_problem');
+    expect(state.character?.historyFlags).not.toContain('uncovered_inn_truth');
+
+    let informed = pick(fresh(), 'askInnkeeper');
+    informed = pick(informed, 'askServicePassage');
+    informed = pick(informed, 'askInnkeeperForTruth');
+    informed = pick(informed, 'leaveAfterConfession');
+    expect(informed.character?.historyFlags).toContain('uncovered_inn_truth');
+  });
+
   it('supports a distinct authority-led rescue without requiring money or carry-over gear', () => {
     let state = pick(fresh(), 'askInnkeeper');
     state = pick(state, 'askAboutRoom');

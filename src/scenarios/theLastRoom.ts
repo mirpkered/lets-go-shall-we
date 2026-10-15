@@ -245,7 +245,7 @@ export const THE_LAST_ROOM: Scenario = {
       choices: [
         { id: 'summonHelpAfterSlip', label: 'Call upstairs for the innkeeper and guests', next: 'sharedRescue', effects: { setFlags: ['askedForHelp'] } },
         { id: 'retryWithTool', label: 'Make one more attempt with your tool', requirements: { anyItems: PRY_TOOLS }, chance: { probability: 0.58, bonusItems: PRY_TOOLS, bonusProbability: 0.12, successNext: 'silasFree', failureNext: 'cellarSlipAgain', successMessage: 'The tool gives you a stable point of leverage.', failureMessage: 'The shelf shifts again and the stair above cracks.', failureEffects: { health: -3 } } },
-        { id: 'climbOutAlone', label: 'Climb out and leave the rescue to others', next: 'leftSilasEnding', effects: { historyFlags: ['uncovered_inn_truth', 'walked_away_from_inn_problem'] } },
+        { id: 'climbOutAlone', label: 'Climb out and leave the rescue to others', next: 'leftSilasEnding', effects: { historyFlags: ['walked_away_from_inn_problem'] } },
       ],
     },
     cellarSlipAgain: {

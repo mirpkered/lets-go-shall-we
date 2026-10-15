@@ -26,7 +26,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'chapelExterior', title: 'The Silent Chapel', tone: 'warning',
       text: 'You reach the village chapel beneath a low moon. Its bell rope sways though the night is still. Muddy prints lead from the graveyard gate to the open chapel door; a narrow cellar window sits low in the ivy-covered side wall. The priest who went to investigate has not returned. Somewhere below the stones, a faint knock answers the wind.',
       choices: [
-        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', timeCost: 2, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelInscription], setFlags: ['calledOut'] }, next: 'voiceBelow' },
+        { id: 'callOut', label: 'Call for the priest', hint: 'Listen for an answer before entering.', timeCost: 2, effects: { setFlags: ['calledOut'] }, next: 'voiceBelow' },
         { id: 'inspectRope', label: 'Examine the bell rope', hint: 'The cut may tell you where the bell went.', timeCost: 4, effects: { knowledge: ['The bell rope was cut from below, not from the tower.'], setFlags: ['inspectedRope'] }, next: 'ropeClue' },
         { id: 'enter', label: 'Enter the chapel', timeCost: 1, next: 'chapelNave' },
         { id: 'cellarWindow', label: 'Try the narrow cellar window', hint: 'Broken glass and a hard drop are visible.', timeCost: 3, next: 'cellarWindow' },
@@ -94,7 +94,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestNotes', title: 'The Priest’s Notes',
       text: 'A page lies crushed beneath a muddy bootprint: “Handbell and clapper recovered from the old burial. Parish display after cleaning.” Below, in a shaking hand: “It followed the sound. I was wrong.”',
       choices: [
-        { id: 'readNotes', label: 'Remember the warning and follow the prints', timeCost: 4, effects: { knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell, KNOWLEDGE_FACTS.chapelInscription], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
+        { id: 'readNotes', label: 'Remember the warning and follow the prints', timeCost: 4, effects: { knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell], lore: ['The chapel was built over an older burial place.'], setFlags: ['readNotes'] }, next: 'notesLeadBelow' },
       ],
     },
     notesLeadBelow: {
