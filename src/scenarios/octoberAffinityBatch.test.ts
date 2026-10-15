@@ -88,6 +88,24 @@ describe('Halloween and October-affinity adventures', () => {
     }
   });
 
+  it('records only that the unknown caller called unless a route identifies the person', () => {
+    const house = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-last-house-before-the-woods')!;
+    let unseen = pick(stateAt(house), house, 'acceptRoom');
+    unseen = pick(unseen, house, 'sleepNearDoor');
+    unseen = pick(unseen, house, 'keepDoorBarred');
+    unseen = pick(unseen, house, 'houseFinish');
+    expect(unseen.character?.knowledge).toContain('The last house before the woods barred its north door after dark after an unknown caller called from beyond the fence.');
+    expect(unseen.character?.knowledge?.some((fact) => /a stranger had been calling/i.test(fact))).toBe(false);
+
+    let identified = pick(stateAt(house), house, 'acceptRoom');
+    identified = pick(identified, house, 'sleepNearDoor');
+    identified = pick(identified, house, 'lookWindow');
+    identified = pick(identified, house, 'wakeFamily');
+    identified = pick(identified, house, 'houseFinish');
+    expect(identified.run?.flags).toContain('callerSeen');
+    expect(identified.character?.knowledge).toContain('The last house before the woods barred its north door after dark after an unknown caller called from beyond the fence.');
+  });
+
   it('gives the carving contest performance feedback, event consequence, and an intentional refusal path', () => {
     const contest = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'jack-o-lantern-contest')!;
     const refused = pick(stateAt(contest), contest, 'leaveContest');

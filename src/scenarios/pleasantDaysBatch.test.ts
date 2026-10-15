@@ -121,6 +121,14 @@ describe('day off and pleasant encounters adventure batch', () => {
     expect(payout.character?.money).toBe(3);
   });
 
+  it('records the fishing conversation without inventing a creek-bend name', () => {
+    const cast = act(start(GONE_FISHING, { fishingDay: 'nothing' }), GONE_FISHING, 'fishingBank', 'castLine');
+    const state = act(cast, GONE_FISHING, 'fishingResult', 'askCreekName');
+    expect(state.character?.knowledge).toContain('A local angler described a creek bend around an alder stand before it meets the old footpath.');
+    expect(state.character?.knowledge?.some((fact) => /shared the name/i.test(fact))).toBe(false);
+    expect(sceneText(GONE_FISHING.scenes.fishingTalk, state)).toContain('bends around an alder stand');
+  });
+
   it('keeps the fair light and makes the card game friendly, low-stakes, and voluntary', () => {
     expect(THE_COUNTY_FAIR.scenes.fairGreen.choices.find(({ id }) => id === 'fairRingToss')?.chance?.probability).toBeLessThan(0.6);
     expect(THE_COUNTY_FAIR.scenes.fairGreen.text).toContain('cheerful crowd');

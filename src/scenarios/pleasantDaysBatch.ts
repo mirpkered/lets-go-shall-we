@@ -38,7 +38,7 @@ export const GONE_FISHING: Scenario = {
     ], choices: [
       { id: 'sellSmallCatch', label: 'Offer the trout to a nearby cook', requirements: { selections: { fishingDay: 'fish' } }, next: 'fishSold', effects: { money: 1 } },
       { id: 'keepSmallCatch', label: 'Keep the catch for your own supper', requirements: { selections: { fishingDay: 'fish' } }, next: 'fishKept', effects: { historyFlags: ['kept_a_small_creek_catch_for_supper'] } },
-      { id: 'askCreekName', label: 'Ask what locals call this stretch of creek', next: 'fishingTalk', effects: { knowledge: ['A local angler shared the name of the creek bend and a nearby footpath.'] } },
+      { id: 'askCreekName', label: 'Ask what locals call this stretch of creek', next: 'fishingTalk', effects: { knowledge: ['A local angler described a creek bend around an alder stand before it meets the old footpath.'] } },
       { id: 'packFishingLine', label: 'Pack the line and head back', next: 'fishingLeft' },
     ] },
     fishingTalk: ending('fishingTalk', 'Names Along the Creek', 'The fishers tell you the creek bends around an alder stand before meeting the old footpath. They talk about a good season for trout and a better season for stories.'),

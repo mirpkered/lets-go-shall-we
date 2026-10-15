@@ -85,7 +85,7 @@ export const THE_GRAVE_BELL: Scenario = {
     cemeteryBell: { id: 'cemeteryBell', title: 'A Bell at the Gate', tone: 'warning', text: 'At dusk, a small bell rings beside the cemetery gate. Its cord hangs on the cemetery side of the low stone wall, beyond the closed gate where you stand. There is no house close enough for a servant to ring it by hand.', choices: [
       { id: 'inspectGraveBell', label: 'Enter through the gate to inspect it', timeCost: 3, next: 'bellRope' },
       { id: 'listenGraveBell', label: 'Wait and listen for another ring', timeCost: 4, next: 'bellHeard' },
-      { id: 'readGraveBellRelic', label: 'Hold a keepsake and listen', requirements: { anyItems: ['graveCoin', 'yewCharm'] }, timeCost: 3, next: 'bellRelicResponse', effects: { knowledge: ['A keepsake reacted subtly while the cemetery bell rang; it did not identify the cause.'] } },
+      { id: 'readGraveBellRelic', label: 'Hold a keepsake and listen', requirements: { anyItems: ['graveCoin', 'yewCharm'] }, timeCost: 3, next: 'bellRelicResponse', effects: { knowledge: ['You tested a keepsake while the cemetery bell rang; it did not identify the cause.'] } },
       { id: 'leaveGraveBell', label: 'Leave the cemetery gate undisturbed', next: 'bellUnanswered' },
     ] },
     bellRope: { id: 'bellRope', title: 'A Slack Pull-Cord', tone: 'safe', text: 'The cord hangs slack below the bell. It runs through a guide on the cemetery wall and ends at a small iron loop near the gate. Nothing is caught on it now.', textVariants: [

@@ -140,6 +140,9 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(sceneText(THE_GRAVE_BELL.scenes.bellRelicResponse, charm)).toContain('The Yew Charm’s red thread draws taut');
     const ordinaryCoin = act(start(THE_GRAVE_BELL, { graveBellCause: 'groundskeeper' }, 'graveCoin'), THE_GRAVE_BELL, 'cemeteryBell', 'readGraveBellRelic');
     expect(sceneText(THE_GRAVE_BELL.scenes.bellRelicResponse, ordinaryCoin)).toContain('The Grave Coin remains at its usual temperature');
+    expect(ordinaryCoin.character?.knowledge).toContain('You tested a keepsake while the cemetery bell rang; it did not identify the cause.');
+    expect(ordinaryCoin.character?.knowledge?.some((fact) => /keepsake reacted subtly/i.test(fact))).toBe(false);
+    expect(coin.character?.knowledge).toContain('You tested a keepsake while the cemetery bell rang; it did not identify the cause.');
     expect(sceneText(THE_GRAVE_BELL.scenes.bellRelicResponse, coin)).not.toContain('identifies the cause');
   });
 
