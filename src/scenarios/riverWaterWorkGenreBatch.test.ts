@@ -109,6 +109,7 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     const hookText = sceneText(ferry.scenes.slack, hooked);
     expect(hookText).not.toMatch(/far-bank operator answers|slacks the upper line|current relaxes/i);
     expect(hookText).toMatch(/ferry remains held at the near bank/i);
+    expect(ferry.scenes.slack.choices.find(({ id }) => id === 'clear')?.label).toBe('Clear the snag from the bank');
 
     const legacy = fresh(ferry);
     legacy.run!.sceneId = 'slack';
