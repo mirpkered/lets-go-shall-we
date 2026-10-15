@@ -10100,12 +10100,12 @@
       "slug": "the-glasshouse-gutter",
       "title": "Glass from the Gutter",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0228"
       ],
       "reviewProvenance": "current-source route review; gloves, estate-sheet cover, drainage-hook movement, overhead-frame boundary, cloak ownership and compensation variants traced",
-      "notes": "The shared evidence setup says the seed trays are covered before the three route-specific consequences. Only spreading the estate sheet establishes that cover; gloves merely protect hands and the hook only moves loose fragments. Those other routes therefore receive the false covered-tray state and can reach the shared reward text thanking the Traveler for preserving the seed beds.",
+      "notes": "The shared evidence setup formerly claimed the seed trays were already covered on glove and hook routes; only the estate-sheet route established rain protection. Local CRA-C0001 Wave 124 now keeps common setup neutral and states rain diversion only on the sheet route. Same-Adventure scan also removed unproven seed-preservation and cloak-return claims from the compensation text while preserving all reward choices and mechanics. Regression covers gloves, sheet, and hook paths through evidence, Gear, and fee outcomes.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18096,7 +18096,9 @@
       "violatedRule": "Shared scene setup and rewards must preserve route-specific protection/actions and may not assert an object was covered absent that route’s action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 124 gameplay commit abee197. Glasshouse evidence setup no longer says the trays are already covered; only the estate-sheet route states that it diverts rain. Same-Adventure scan removed unsupported seed-preservation and cloak-return claims from Gear provenance and fee settlement; Gear, fee, and refusal choices remain available as before, with reward mechanics unchanged. The salvage regression contrasts gloves, sheet, and hook routes and checks the Gear and fee endings. The whole salvage family, inventory, registry, and library checks passed (28 tests); RC12 ledger validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0229",
@@ -20369,9 +20371,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 747,
+    "HEALTHY": 748,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 55,
+    "CONFIRMED DEFECT": 54,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
