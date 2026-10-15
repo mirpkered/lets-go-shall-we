@@ -51,6 +51,30 @@ if (paperRoadStory) {
   paperRoadStory.aftermath = 'The county date seal remains visible on the closed case. Its contents have not been examined, and the office will document whether any paper is missing.';
 }
 
+const rainWaybillStory = stories.find(({ id }) => id === 'the-rain-on-the-waybill');
+if (rainWaybillStory) {
+  rainWaybillStory.threat = 'The station clerk arrives and confirms that one coat was stolen last week. The rider wearing it claims the missing waybill case is beneath the wagon, but neither the driver nor clerk can find it. The other rider backs toward the open track.';
+  const keepSealDry = rainWaybillStory.responses.find(({ id }) => id === 'keepCaseDry');
+  if (keepSealDry) {
+    keepSealDry.label = 'Keep the driver under the bridge while the clerk checks the coat';
+    keepSealDry.result = 'The driver stays under the bridge while the clerk checks the coat; the waybill case remains unlocated.';
+  }
+  const standByDriver = rainWaybillStory.responses.find(({ id }) => id === 'standWithDriver');
+  if (standByDriver) standByDriver.label = 'Stand beside the driver while the clerk records the coat issue';
+  rainWaybillStory.aftermathTitle = 'The Case Remains Missing';
+  rainWaybillStory.aftermath = 'The cargo seal remains intact. No route establishes that the missing waybill case was recovered; the clerk records the case loss and coat issue for office review.';
+  rainWaybillStory.endings = [
+    { id: 'carryCase', label: 'Carry the driver’s account to the station office', result: 'The clerk signs the loss report without claiming the waybill case was recovered.' },
+    { id: 'waitBridge', label: 'Wait with the driver for the station wagon', result: 'The freight remains sheltered while the missing case is referred to the station office.' },
+  ];
+  rainWaybillStory.rewardText = 'The stationmaster releases a spare Lockable Map Case from the records room for helping document the coat dispute and protect the freight; the missing waybill case remains unaccounted for.';
+  rainWaybillStory.provenance = 'The stationmaster releases a duplicate case from the records room after the Traveler helps document the coat dispute; the original waybill case remains missing and no railway record is taken.';
+  if (rainWaybillStory.combat) {
+    rainWaybillStory.combat.win = 'The false worker retreats as the clerk calls for help. The driver and freight stay clear; the missing case remains unaccounted for.';
+    rainWaybillStory.combat.loss = 'You are shoved against the wagon, but the clerk keeps the driver and freight clear while the false worker retreats. The missing case remains unaccounted for.';
+  }
+}
+
 const millRoadPursuit = stories.find(({ id }) => id === 'the-mill-road-pursuit');
 if (millRoadPursuit) {
   millRoadPursuit.aftermath = 'The driver says an older companion arranged the theft but does not know their name or destination. The pin’s recovery and current custody are not assumed by this shared account.';
@@ -182,10 +206,19 @@ const routeTruthAftermath: Record<string, { base: string; byResponse?: Record<st
   'the-courier-who-came-back': {
     base: 'The empty satchel and torn wrapper do not establish whether the county papers were packed before Penn reached the inn.',
   },
+  'the-rain-on-the-waybill': {
+    base: 'The cargo seal remains intact. No route establishes that the missing waybill case was recovered; the clerk records the case loss and coat issue for office review.',
+    byResponse: {
+      keepCaseDry: 'The driver stays under the bridge; the waybill case remains unlocated.',
+      askNumber: 'The mismatched division number is recorded; the waybill case remains unlocated.',
+      standWithDriver: 'The false worker retreats without the case; its location remains unknown.',
+    },
+  },
 };
 
 const routeTruthFightLoss: Record<string, string> = {
   'the-second-rope': 'You are hurt near the rock shelf as the pair flee. The driver reaches the team; you cannot see how they leave the pass.',
+  'the-rain-on-the-waybill': 'You are shoved against the wagon. The clerk keeps the driver and freight clear; no recovery of the missing waybill case is established.',
 };
 
 function build(c: RoadStory): Scenario {

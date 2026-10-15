@@ -162,6 +162,49 @@ describe('Road Danger / Highwaymen genre batch', () => {
     }
   });
 
+  it('keeps the missing waybill case unlocated across every approach, response, ending, and combat outcome', () => {
+    const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-rain-on-the-waybill')!;
+    const approaches = ['checkSeal', 'shelterDriver', 'askStation'];
+    const responses = ['keepCaseDry', 'askNumber', 'standWithDriver'];
+
+    for (const approach of approaches) {
+      const start = initial(story, approach === 'checkSeal' ? 'lockableMapCase' : undefined);
+      const atThreat = act(start, story, `approach_${approach}`);
+      const threat = sceneText(story.scenes.threat, atThreat);
+      expect(threat).toMatch(/claims the missing waybill case is beneath the wagon/i);
+      expect(threat).not.toMatch(/reaches for the wet waybill case/i);
+
+      for (const response of responses) {
+        const atAftermath = act(atThreat, story, `respond_${response}`);
+        const aftermath = sceneText(story.scenes.aftermath, atAftermath);
+        expect(aftermath).toMatch(/waybill case remains unlocated|case remains unaccounted|case; its location remains unknown/i);
+        expect(aftermath).not.toMatch(/clerk recovers the case|case is recovered|borrowed coat is returned/i);
+
+        for (const ending of ['carryCase', 'waitBridge']) {
+          const atSettlement = act(structuredClone(atAftermath), story, `ending_${ending}`);
+          const settlement = sceneText(story.scenes.settlement, atSettlement);
+          expect(settlement).not.toMatch(/recovered original|recovered the case|case is recovered/i);
+          expect(settlement).toMatch(/missing waybill case remains unaccounted for/i);
+          const gearChoice = story.scenes.settlement.choices.find(({ id }) => id === 'acceptGear');
+          if (gearChoice && meets(gearChoice.requirements, atSettlement)) {
+            const withGear = act(atSettlement, story, 'acceptGear');
+            expect(sceneText(story.scenes.gear, withGear)).not.toMatch(/after documenting the recovered original/i);
+            expect(sceneText(story.scenes.gear, withGear)).toMatch(/original waybill case remains missing/i);
+          }
+        }
+      }
+    }
+
+    const atThreat = act(initial(story), story, 'approach_shelterDriver');
+    const won = act(atThreat, story, 'fight', () => 0);
+    expect(sceneText(story.scenes.fightWon, won)).not.toMatch(/wrong issue number|case is recovered/i);
+    const afterWin = act(won, story, 'checkRoad');
+    expect(sceneText(story.scenes.aftermath, afterWin)).toMatch(/no route establishes.*case was recovered/i);
+    const lost = act(atThreat, story, 'fight', () => 0.99);
+    expect(sceneText(story.scenes.fightLost, lost)).toMatch(/no recovery of the missing waybill case is established/i);
+    expect(sceneText(story.scenes.fightLost, lost)).not.toMatch(/clerk gets the case/i);
+  });
+
   it('does not say a purse was surrendered on the lantern routes that keep it', () => {
     const story = ROAD_DANGER_GENRE_BATCH.find(({ id }) => id === 'the-lantern-in-the-hedge')!;
     for (const response of ['callHouse', 'leavePurse', 'holdGate']) {
