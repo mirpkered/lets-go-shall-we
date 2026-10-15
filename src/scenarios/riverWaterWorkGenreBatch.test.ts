@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, startRun } from '../engine';
+import { choose, finishRewardResolution, getCarriedItems, meets, newCharacter, openRewardResolution, placeReward, sceneText, startRun } from '../engine';
 import { ITEMS, itemsOfClass } from '../items';
 import { validateScenarioRegistry } from '../scenarioRegistryValidation';
 import { findScenarioGraphProblems } from '../scenarioGraph';
@@ -88,6 +88,33 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     const flood = BATCH.find(({ id }) => id === 'the-case-on-the-flood-step')!;
     expect(flood.scenes.records.choices.find(({ id }) => id === 'tube')?.requirements).toEqual({ items: ['waterproofLedgerTube'], usableItems: ['waterproofLedgerTube'] });
     expect(flood.scenes.tubeUsed.text).toContain('not trusted underwater');
+  });
+
+  it('does not claim a far-bank response on the Boat Hook route', () => {
+    const ferry = BATCH.find(({ id }) => id === 'the-ferry-that-would-not-turn')!;
+
+    let signaled = fresh(ferry);
+    signaled = chooseAt(signaled, ferry, 'ferry', 'signal');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(signaled, storage as never);
+    signaled = loadSave(storage as never);
+    const responseText = sceneText(ferry.scenes.slack, signaled);
+    expect(signaled.run?.flags).toContain('pine_ferry_far_bank_signaled');
+    expect(responseText).toMatch(/far-bank operator answers and slacks the upper line/i);
+    expect(ferry.scenes.slack.text).not.toMatch(/far-bank operator answers|current relaxes/i);
+
+    let hooked = fresh(ferry);
+    hooked.run!.inventory.push('boatHook');
+    hooked = chooseAt(hooked, ferry, 'ferry', 'hook');
+    const hookText = sceneText(ferry.scenes.slack, hooked);
+    expect(hookText).not.toMatch(/far-bank operator answers|slacks the upper line|current relaxes/i);
+    expect(hookText).toMatch(/ferry remains held at the near bank/i);
+
+    const legacy = fresh(ferry);
+    legacy.run!.sceneId = 'slack';
+    const legacyText = sceneText(ferry.scenes.slack, legacy);
+    expect(legacyText).toMatch(/ferry remains held at the near bank/i);
+    expect(legacyText).not.toMatch(/far-bank operator answers|slacks the upper line/i);
   });
 
   it('adds capability-specific callbacks to earlier boat and water stories', () => {
