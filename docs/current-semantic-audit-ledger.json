@@ -8085,7 +8085,7 @@
       "slug": "the-wheel-before-dawn",
       "title": "The Wheel Before Dawn",
       "sourceFile": "src/scenarios/gearCorrectiveBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0184"
       ],
@@ -8095,7 +8095,9 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 120 resolves the only attached finding, CRA-F0184; the repair scene now preserves route-established cargo state, so the Adventure derives HEALTHY."
     },
     {
       "position": 464,
@@ -17494,7 +17496,9 @@
       "violatedRule": "A consequential load state may be claimed only when the selected route establishes the action; inspection or elapsed delay is not proof of unloading.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 120: The Wheel Before Dawn inspection base now states the hub is repaired after cooling while retaining the load state established by the route. Route-aware variants mention moved heavy crates or remaining light parcels only when the existing wheel_load_moved or wheel_light_load flag proves that action. The regression contrasts the delay and cool-and-inspect routes (no load change) with each load-reduction route. No new state, save behavior, reward, or Knowledge effect was added. Full validation passed (127 files / 2,490 tests); TypeScript/production build passed with the existing bundle warning; RC12 ledger validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0185",
@@ -20355,9 +20359,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 741,
+    "HEALTHY": 742,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 61,
+    "CONFIRMED DEFECT": 60,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
