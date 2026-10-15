@@ -11382,12 +11382,13 @@
       "slug": "the-empty-camp-office",
       "title": "The Empty Camp Office",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0249"
       ],
       "reviewProvenance": "current-source route review; books secured versus sealed-message/signal routes, late crew check-in, north-line search, breach/cancellation and case/coin compensation traced",
-      "notes": "office.leaveMessage -> signal.waitCrew -> paid never sets office_books_secured; the paid scene still offers compensation explicitly for securing the working records. The crew-return fact is established by the wait-and-dusk branch, but credit for securing the books is not. The search branch correctly ends without finding the party, and opening the prior-day note cancels the handoff.",
+      "notes": "office.leaveMessage -> signal.waitCrew -> paid never sets office_books_secured; the original paid text credited securing the working records. Wave 131 changes the shared justification to the action both paid routes establish: waiting at the office with a visible signal and respecting the sealed message. The crew-return fact remains established by the wait-and-dusk branch; the search branch still ends without finding the party, and opening the prior-day note still cancels the handoff.",
+      "implementationEvidence": "Local CRA-C0001 Wave 131 gameplay commit 36bb794. The shared settlement now justifies compensation for waiting at the office with a visible signal and respecting the sealed message, true for both secureBooks and leaveMessage routes; the static Gear provenance uses the same truthful basis. Regression contrasts both office choices through waitCrew, checks the sealed/signal route does not receive records-secured credit, and confirms the reward options are unchanged. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (38 tests); RC12 validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18386,7 +18387,9 @@
       "violatedRule": "A reward justification or converged result may credit only route actions actually established; protecting the message does not establish securing the books.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 131 gameplay commit 36bb794. Shared settlement and Gear provenance now credit the route-supported visible-signal wait and respect for the sealed message, not securing survey books. Regression covers both secureBooks and leaveMessage routes followed by waitCrew, verifies the record-specific claim is absent on the signal-only path, and confirms the case/coin choices remain available. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (38 tests); RC12 validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0250",
@@ -20385,9 +20388,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 754,
+    "HEALTHY": 755,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 48,
+    "CONFIRMED DEFECT": 47,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
