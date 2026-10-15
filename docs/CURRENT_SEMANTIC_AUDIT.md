@@ -5,7 +5,13 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0002 factual Knowledge narrowing
+### Active local repair checkpoint — CRA-C0002 action-attribution History
+
+Wave repairs CRA-F0084 (`the-crowd-breaks`), CRA-F0092 (`the-outlaws-mother`), and CRA-F0093 (`the-last-shot`), all LOW. Crowd-guidance History is now awarded only by the two choices that direct people toward the west gate; passive waiting after a failed climb no longer earns it. Family-news delivery History now belongs only to handing the letter to the wanted son, not giving it to the deputy. In The Last Shot, the actual signal route records only that a signal was made, while only the explicit guide-out choice records that the rancher left; leaving and reporting records neither. No crowd, letter, combat, reward, or persistence mechanics changed; no new flags or save changes were needed.
+
+Route-contrast regressions passed with the existing relevant coverage (**26 tests across 2 files**). CRA-F0084, CRA-F0092, and CRA-F0093 are `VERIFIED_HEALTHY_REPAIRED`; each single-finding Adventure derives HEALTHY. Current live classifications are **776 HEALTHY, 59 MINOR CONCERN, 26 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **328 are dispositioned** (322 repaired and 6 healthy/no-longer-reproduces) and **26 remain open**; CRA-C0002 has **11 open findings**. Gameplay/test commits: `b3b4435`, `a28ed3b`. Local-only; no push, merge, deployment, or public QA. Human QA remains deferred, and Weekly Scenario Batch remains paused.
+
+### Previous checkpoint — CRA-C0002 factual Knowledge narrowing
 
 Repaired CRA-F0031 (`gone-fishing`, LOW) by recording the actual creek-and-footpath description without claiming the angler supplied a name. Repaired CRA-F0034 (`the-grave-bell`, LOW) by recording the keepsake test rather than asserting a reaction on ordinary-cause routes. Repaired CRA-F0041 (`the-last-house-before-the-woods`, LOW) by recording only that an unknown caller called, without identifying the person on routes that never saw them. Focused family suites passed (**42 tests across 3 files**). Gameplay/test commit: `98dd2af`.
 

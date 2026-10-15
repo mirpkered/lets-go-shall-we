@@ -4832,7 +4832,7 @@
       "slug": "the-crowd-breaks",
       "title": "The Crowd Breaks",
       "sourceFile": "src/scenarios/disasterRescueBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0084"
       ],
@@ -5072,7 +5072,7 @@
       "slug": "the-outlaws-mother",
       "title": "The Outlaw’s Mother",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0092"
       ],
@@ -5122,7 +5122,7 @@
       "slug": "the-last-shot",
       "title": "The Last Shot",
       "sourceFile": "src/scenarios/westernOutlawBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0093"
       ],
@@ -16098,6 +16098,8 @@
       "routeWitness": "platform.climbStand failure -> crowdFall.fallStayWall -> crowdSettles -> crowdReport grants 'helped guide a crowd away from a false alarm'; fallStayWall only waits for the surge to thin, and crowdFall states stewards open the west gate.",
       "violatedRule": "Persistent History must not turn an unsuccessful attempt or passive presence into completed participation unless the route establishes a contribution.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the generic crowdReport History grant. The factual west-gate guidance History is now recorded only by openWestGate and cartGate, the choices that direct people through that exit. Regression contrasts a failed climbStand followed by passive waiting/reporting (no guidance History) with the open-west-gate route (History retained). Focused disaster state-aware and western outlaw tests pass (26 tests across 2 files); no crowd movement, rescue, or injury mechanics changed. Gameplay/test commit: b3b4435.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 268,
       "registrationStatus": "LIVE"
@@ -16216,6 +16218,8 @@
       "routeWitness": "purpose.tellDeputy -> deputy.deputyLetter grants 'carried family news to a wanted traveler without helping him escape'; the letter never reaches canyon/handLetter, the only action setting familyNewsDeliveredToSon.",
       "violatedRule": "Persistent History must describe the action actually taken and preserve the distinction between carrying a message and delivering it to its intended recipient.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Moved the factual delivery History from deputyLetter to handLetter, the action that actually hands the letter to the wanted son. Regression contrasts the deputy handoff (no delivery History) with the son handoff (History retained); existing refusal/delivery and save/reload coverage remains. Focused disaster state-aware and western outlaw tests pass (26 tests across 2 files). Gameplay/test commit: b3b4435.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 282,
       "registrationStatus": "LIVE"
@@ -16229,6 +16233,8 @@
       "routeWitness": "cover.coverLeave -> retreat; retreat says the owner is safe only if they followed a signal, but coverLeave signals no one. retreat.retreatReport nevertheless grants 'helped a rancher leave an armed debt dispute'. termsOwnerLeave is a separate positive route sharing the same grant.",
       "violatedRule": "History participation claims require route evidence of the credited action; leaving the scene or reporting it is not proof that another person left.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the rancher-departure History grant from generic retreatReport. witnessOwner records only the signal (the route does not prove the owner left); termsOwnerLeave alone records helping the rancher leave. coverLeave followed by retreat/report records neither. Regression covers no-signal, signal-only, and explicit guided-exit routes. Focused disaster state-aware and western outlaw tests pass (26 tests across 2 files); no weapon, negotiation, or constable behavior changed. Gameplay/test commits: b3b4435, a28ed3b.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 285,
       "registrationStatus": "LIVE"
@@ -20432,9 +20438,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 773,
+    "HEALTHY": 776,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 29,
+    "CONFIRMED DEFECT": 26,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
