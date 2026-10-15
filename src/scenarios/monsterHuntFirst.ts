@@ -6,7 +6,7 @@ export const THE_THING_AT_BLACK_CREEK: Scenario = {
   diversity: meta({ hook: 'Three explanations for crooked tracks converge at a creek where an injured bear has learned to raid a fish weir.', activity: 'investigation/mystery', role: 'investigator/explorer', tone: 'mysterious/eerie', risk: 'HIGH', setting: 'creek woodland', fantasy: 'AMBIGUOUS', combat: 'POSSIBLE', structure: 'evidence to territorial boundary' }),
   scenes: {
     creekSigns: scene('creekSigns', 'Water after Sundown', 'A farm dog balks at Black Creek after dusk. Beside the bank are broad paw marks and a line of shallow, almost foot-shaped impressions. The creek bends under a rock shelf; the farm stands uphill behind you. No one has seen what made them.', [
-      { id: 'askWeirKeeper', label: 'Ask the weir keeper what changed', next: 'weirAccount', effects: { knowledge: ['At Black Creek, crooked tracks appeared near a fish weir after an injured animal began visiting at dusk.'] } },
+      { id: 'askWeirKeeper', label: 'Ask the weir keeper what changed', next: 'weirAccount' },
       { id: 'followBank', label: 'Follow the creek bank upstream', next: 'shelfTracks' },
       { id: 'leaveCreek', label: 'Warn the farm and leave the creek alone', next: 'creekWarned', effects: { historyFlags: ['warned a farm away from Black Creek after dusk'] } },
     ], 'warning'),
@@ -21,9 +21,9 @@ export const THE_THING_AT_BLACK_CREEK: Scenario = {
       { id: 'retreatShelf', label: 'Mark the place and retreat', next: 'creekWarned', effects: { knowledge: ['A broad animal shelter under the Black Creek shelf lies between the weir and deeper water.'] } },
     ], 'warning'),
     creekReveal: scene('creekReveal', 'One Paw in the Mud', 'At dusk a black bear limps from the shelf, fishes once, then turns when it smells you. Its damaged front paw makes the prints look almost human. It has not seen you yet; the steep bank leaves room to withdraw.', [
-      { id: 'backAwayBear', label: 'Give the bear the creek and withdraw', next: 'bearWithdrawn', effects: { knowledge: ['The Black Creek tracks were made by a bear favoring an injured front paw; it came for fish and avoided people.'] } },
-      { id: 'callKeeperBear', label: 'Call the weir keeper from the bank', next: 'bearKeeperCalled', effects: { historyFlags: ['called toward the weir keeper after seeing a bear at Black Creek'] } },
-      { id: 'rushBear', label: 'Rush the bear before it turns', hint: 'It is larger than you and has a clear escape route. A failed rush could be fatal.', chance: { probability: 0.27, successNext: 'bearDriven', failureNext: 'bearFatal', successMessage: 'The bear bolts down the creek rather than face you.', failureMessage: 'The bear turns and reaches you before you can retreat.', successEffects: { health: -2 }, failureEffects: { health: -10 } } },
+      { id: 'backAwayBear', label: 'Give the bear the creek and withdraw', next: 'bearWithdrawn', effects: { knowledge: ['At Black Creek, an injured bear fishes at the weir after dusk; its damaged paw makes the tracks look almost human.'] } },
+      { id: 'callKeeperBear', label: 'Call the weir keeper from the bank', next: 'bearKeeperCalled', effects: { knowledge: ['At Black Creek, an injured bear fishes at the weir after dusk; its damaged paw makes the tracks look almost human.'], historyFlags: ['called toward the weir keeper after seeing a bear at Black Creek'] } },
+      { id: 'rushBear', label: 'Rush the bear before it turns', hint: 'It is larger than you and has a clear escape route. A failed rush could be fatal.', effects: { knowledge: ['At Black Creek, an injured bear fishes at the weir after dusk; its damaged paw makes the tracks look almost human.'] }, chance: { probability: 0.27, successNext: 'bearDriven', failureNext: 'bearFatal', successMessage: 'The bear bolts down the creek rather than face you.', failureMessage: 'The bear turns and reaches you before you can retreat.', successEffects: { health: -2 }, failureEffects: { health: -10 } } },
     ], 'danger'),
     closedWeir: scene('closedWeir', 'A Night without a Catch', 'The keeper lifts the weir gate and lets the trapped fish pass downstream. From the bank, you hear one splash beneath the shelf and then silence. The farm will lose tonight’s catch, but no animal is drawn toward the houses.', [
       { id: 'leaveClosedWeir', label: 'Leave the creek closed until morning', next: 'creekOutcome', effects: { historyFlags: ['chose livestock safety over one night of fishing'] } },
@@ -365,19 +365,19 @@ export const THE_RIVER_DEVIL: Scenario = {
   diversity: meta({ hook: 'Repeated hull strikes come from a submerged log wedged beneath a bend; survival requires changing the crossing, not killing a monster.', activity: 'travel/exploration', role: 'helper/rescuer', tone: 'tense/dangerous', risk: 'HIGH', setting: 'river ferry landing', fantasy: 'AMBIGUOUS', combat: 'NONE', structure: 'water-route diagnosis and evacuation' }),
   scenes: {
     riverLanding: scene('riverLanding', 'A Blow beneath the Boat', 'At the ferry landing, a boatman shows you a split plank from a skiff struck beneath the same bend twice. The water is high but not flooding. A slow eddy turns around a dark stump midstream, and the opposite bank is visible.', [
-      { id: 'inspectWater', label: 'Watch the current around the stump', next: 'riverCurrent', effects: { knowledge: ['Small boats were struck by a submerged log caught beneath the eddy at the river bend.'] } },
+      { id: 'inspectWater', label: 'Watch the current around the stump', next: 'riverCurrent' },
       { id: 'askBoatman', label: 'Ask who saw the last strike', next: 'riverWitness' },
       { id: 'avoidBend', label: 'Take the longer ferry route', next: 'riverSafe' },
     ], 'warning'),
     riverWitness: scene('riverWitness', 'A Rope Pulled Sideways', 'A ferryman felt a line catch under the hull and pull sideways. The boat drifted back to the same landing. He refuses another crossing at the bend until someone checks the stump from shore.', [
       { id: 'watchStump', label: 'Watch the eddy from the landing', next: 'riverCurrent' },
       { id: 'sendFerryLong', label: 'Send passengers by the upstream landing', next: 'riverSafe' },
-      { id: 'probeFromShore', label: 'Probe the shallow edge from firm ground', next: 'riverEvidence' },
+      { id: 'probeFromShore', label: 'Probe the shallow edge from firm ground', next: 'riverEvidence', effects: { knowledge: ['Small boats were struck by a submerged log caught beneath the eddy at the river bend.'] } },
     ]),
     riverCurrent: scene('riverCurrent', 'The Water Turns Back', 'A branch caught under the stump pulls hard against the current. It is long enough to strike a hull but too low to see below the dark water. The ferry has a pole and a rope, both on the landing; no one needs to enter the river.', [
-      { id: 'probeWithPole', label: 'Probe the stump from the landing', next: 'riverEvidence' },
+      { id: 'probeWithPole', label: 'Probe the stump from the landing', next: 'riverEvidence', effects: { knowledge: ['Small boats were struck by a submerged log caught beneath the eddy at the river bend.'] } },
       { id: 'markRoute', label: 'Mark the bend and close this landing', next: 'riverSafe', effects: { historyFlags: ['closed a river landing after identifying a submerged strike hazard'] } },
-      { id: 'wadeToStump', label: 'Wade toward the stump', hint: 'The current circles under the stump and can pull a person beneath it.', chance: { probability: 0.34, successNext: 'riverEvidence', failureNext: 'riverFatal', successMessage: 'You reach the shallow side of the snag.', failureMessage: 'The eddy pulls you under before you can reach the stump.', successEffects: { health: -3 }, failureEffects: { health: -10 } } },
+      { id: 'wadeToStump', label: 'Wade toward the stump', hint: 'The current circles under the stump and can pull a person beneath it.', chance: { probability: 0.34, successNext: 'riverEvidence', failureNext: 'riverFatal', successMessage: 'You reach the shallow side of the snag.', failureMessage: 'The eddy pulls you under before you can reach the stump.', successEffects: { health: -3, knowledge: ['Small boats were struck by a submerged log caught beneath the eddy at the river bend.'] }, failureEffects: { health: -10 } } },
     ], 'warning'),
     riverEvidence: scene('riverEvidence', 'A Log under the Eddy', 'The pole catches a heavy log pinned below the stump. One end swings into the boat lane whenever the current rises. The ferryman can pull from shore if the skiffs are kept upstream.', [
       { id: 'pullLogRope', label: 'Use the ferry rope to pull from shore', requirements: { items: ['travelRope'], usableItems: ['travelRope'] }, next: 'riverCleared', effects: { damageItems: ['travelRope'] } },

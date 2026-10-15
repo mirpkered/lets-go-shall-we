@@ -16,7 +16,7 @@ export const THE_MILLERS_BEAST: Scenario = {
       { id: 'setEmptyCrate', label: 'Place an empty crate away from the gears', next: 'millVisitor' },
     ]),
     millCadence: scene('millCadence', 'Steps between the Turning', 'The scrapes pause whenever the wheel knocks, then cross during the quieter beat. A low shape slips behind the grain chute without touching the belt. The miller can stop the wheel from the upper lever.', [
-      { id: 'stopWheel', label: 'Ask the miller to stop the wheel', next: 'millVisitor' },
+      { id: 'stopWheel', label: 'Ask the miller to stop the wheel', next: 'millVisitor', effects: { setFlags: ['millWheelStopped'] } },
       { id: 'watchOneTurn', label: 'Wait for one more wheel turn', next: 'millVisitor' },
       { id: 'reachBehindBelt', label: 'Reach behind the moving belt', hint: 'The belt can catch a sleeve or hand.', chance: { probability: 0.43, successNext: 'millVisitor', failureNext: 'millInjury', successMessage: 'Your hand reaches the wall before the next belt turn.', failureMessage: 'The belt catches your sleeve and throws you back.', failureEffects: { health: -4, setFlags: ['beltCaughtSleeve'] } } },
     ], 'warning'),
@@ -26,7 +26,8 @@ export const THE_MILLERS_BEAST: Scenario = {
       { id: 'returnInside', label: 'Check the lower aisle without the wheel', next: 'millVisitor' },
     ]),
     millVisitor: scene('millVisitor', 'A Shape beside the Chute', 'A large badger comes from the wall gap. It has been nesting behind the chute and tearing sacks for straw, not food. It freezes when the miller steps toward its burrow; the culvert offers a way out.', [
-      { id: 'openCulvert', label: 'Open the culvert route and step back', next: 'badgerLeaves', effects: { knowledge: ['A badger nested behind the mill chute and used the culvert; stopping the wheel let it leave safely.'] } },
+      { id: 'openCulvert', label: 'Open the culvert route and step back', requirements: { flags: ['millWheelStopped'] }, next: 'badgerLeaves', effects: { knowledge: ['A badger nested behind the mill chute and used the culvert; stopping the wheel let it leave safely.'] } },
+      { id: 'openCulvertWithoutStoppingWheel', label: 'Open the culvert route and step back', requirements: { notFlags: ['millWheelStopped'] }, next: 'badgerLeaves' },
       { id: 'guideOutside', label: 'Guide it toward the open yard', next: 'badgerGuidedOutside' },
       { id: 'cornerBadger', label: 'Corner it before it reaches the gears', hint: 'The badger is trapped between the chute and machinery.', chance: { probability: 0.35, successNext: 'badgerLeaves', failureNext: 'millInjury', successMessage: 'It bolts through the culvert.', failureMessage: 'It bites through your glove and darts under the belt.', failureEffects: { health: -3, setFlags: ['badgerBitTraveler'] } } },
     ], 'warning'),
@@ -101,11 +102,11 @@ export const THE_THING_BENEATH_THE_ICE: Scenario = {
     ], 'warning'),
     iceBank: scene('iceBank', 'The Bank Holds', 'You reach packed snow at the bank. The shadow follows beneath the edge and bumps the ice once, then turns toward the center channel. A local crossing marker stands on solid ground, and a longer bridge route is open.', [
       { id: 'markThinIce', label: 'Mark the crossing as unsafe', next: 'iceAfter', effects: { historyFlags: ['marked an unsafe river crossing after a creature followed footsteps under ice'] } },
-      { id: 'waitForOthers', label: 'Warn the next travelers from shore', next: 'iceAfter', effects: { knowledge: ['Something beneath the winter river followed sharp sounds but did not leave the ice.'] } },
+      { id: 'waitForOthers', label: 'Warn the next travelers from shore', next: 'iceAfter' },
       { id: 'goOntoIceAgain', label: 'Step back out to watch the shadow', hint: 'The ice has cracked, and the creature follows sound beneath it.', next: 'iceFatal' },
     ]),
     farIceBank: end('farIceBank', 'The Crossing Left Behind', 'You reach solid ground without crossing the shadow’s path again. The local bridge remains the safer route; no one is missing beneath the ice, and the moving shape has not left the river.'),
-    iceAfter: end('iceAfter', 'A Mark on the Bank', 'The crossing is marked unsafe and travelers are sent to the bridge. The creature remains beneath the river, but its range and response to sound are now known.'),
+    iceAfter: end('iceAfter', 'A Mark on the Bank', 'The crossing is marked unsafe and travelers are sent to the bridge. The moving shape remains beneath the river.'),
     iceFatal: end('iceFatal', 'Under the River Ice', 'The ice breaks before you reach firm ground. The dark shape turns beneath the opening, and the winter current closes over it.', 'death'),
   },
 };
