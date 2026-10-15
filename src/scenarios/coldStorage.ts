@@ -187,7 +187,7 @@ export const COLD_STORAGE: Scenario = {
       text: 'The rack has dropped against the next shelf. You are hurt, Mara is still trapped, and the metal frame continues to groan. A second pull might free her, but the load above you could be fatal. The safer choice is to retreat and wait for a heavy crew.',
       choices: [
         { id: 'secondRackPull', label: 'Make one more pull before it falls', hint: 'This is a desperate attempt under a failing rack; it could kill you.', timeCost: 3, chance: { probability: 0.45, successNext: 'rescueDebrief', failureNext: 'death', successMessage: 'The rack shifts just enough for Mara to slide free.', failureMessage: 'The upper shelf collapses across the space where you are standing.', successEffects: { setFlags: ['workerRescued'], historyFlags: ['rescued_cold_storage_worker'] }, failureEffects: { health: -8 } } },
-        { id: 'retreatToCrew', label: 'Get clear and let the crew take over', effects: { historyFlags: ['returned_with_help'] }, next: 'partialEnding' },
+        { id: 'retreatToCrew', label: 'Get clear, send for the heavy crew, and wait', timeCost: 18, effects: { setFlags: ['helpCalled', 'helpArrived'] }, next: 'workerCrewArrives' },
       ],
     },
     workerCrewArrives: {

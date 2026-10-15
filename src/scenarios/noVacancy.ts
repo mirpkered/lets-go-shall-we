@@ -123,7 +123,7 @@ export const NO_VACANCY: Scenario = {
       choices: [
         { id: 'secureWindowWithGear', label: 'Use your tool or canvas to secure the window', hint: 'The supplies fit the damaged frame; success should hold through the surge.', timeCost: 5, requirements: { anyItems: REPAIR_TOOLS, notFlags: ['windowBraced'], maxElapsedMinutes: 44 }, chance: { probability: 0.82, successNext: 'orderRestoredEnding', failureNext: 'costlySuccessEnding', successMessage: 'The window holds and the upper landing stays dry.', failureMessage: 'The brace buys time, but water ruins part of the common room.', successEffects: { setFlags: ['windowBraced', 'organizedShelter'], historyFlags: ['organized_emergency_shelter'] }, failureEffects: { health: -1, setFlags: ['organizedShelter'], historyFlags: ['organized_emergency_shelter'] } } },
         { id: 'secureWindowByHand', label: 'Set another brace with the remaining boards', hint: 'The soaked frame may not hold.', timeCost: 10, requirements: { notItems: REPAIR_TOOLS, notFlags: ['windowBraced'], maxElapsedMinutes: 44 }, chance: { probability: 0.58, successNext: 'orderRestoredEnding', failureNext: 'costlySuccessEnding', successMessage: 'The boards bite into the frame and hold.', failureMessage: 'The repair only partly holds; everyone must crowd upstairs.', successEffects: { setFlags: ['windowBraced', 'organizedShelter'], historyFlags: ['organized_emergency_shelter'] }, failureEffects: { health: -1, setFlags: ['organizedShelter'], historyFlags: ['organized_emergency_shelter'] } } },
-        { id: 'evacuateHouse', label: 'Move everyone to the higher road', hint: 'The yard is flooded; staying may soon be worse.', timeCost: 5, effects: { setFlags: ['evacuatedGuests'], historyFlags: ['evacuated_guests'] }, next: 'floodedYard' },
+        { id: 'evacuateHouse', label: 'Move everyone to the higher road', hint: 'The yard is flooded; staying may soon be worse.', timeCost: 5, effects: { setFlags: ['evacuatedGuests'] }, next: 'floodedYard' },
         { id: 'holdTogether', label: 'Keep everyone upstairs', hint: 'The lower rooms and supplies may be lost.', requirements: { notFlags: ['windowBraced'] }, effects: { setFlags: ['organizedShelter'], historyFlags: ['organized_emergency_shelter'] }, next: 'costlySuccessEnding' },
         { id: 'trustTheBrace', label: 'Trust the brace and keep everyone upstairs', requirements: { flags: ['windowBraced'] }, effects: { setFlags: ['organizedShelter'], historyFlags: ['organized_emergency_shelter'] }, next: 'orderRestoredEnding' },
       ],
@@ -175,7 +175,8 @@ export const NO_VACANCY: Scenario = {
     },
     evacuationEnding: {
       id: 'evacuationEnding', title: 'Higher Ground', ending: 'success',
-      text: 'You guide the group to the high road before another surge reaches the house. The rooms and most of the supplies are lost to floodwater, but the guests reach the old schoolhouse above the creek. No one gets everything they needed. No one is left behind.',
+      text: 'You get yourself clear to the stone wall. The guests remain at the inn, and what they do next is uncertain; the rooms and supplies are still at risk.',
+      textVariants: [{ requirements: { historyFlags: ['evacuated_guests'] }, text: 'You guide the group to the high road before another surge reaches the house. The rooms and most of the supplies are lost to floodwater, but the guests reach the old schoolhouse above the creek. No one gets everything they needed. No one is left behind.' }],
       choices: [],
     },
     walkAwayEnding: {

@@ -158,6 +158,19 @@ describe('Cold Storage', () => {
     expect(state.character?.historyFlags).toContain('returned_with_help');
   });
 
+  it('requires actually calling the crew before the crew can take over an unstable rack', () => {
+    let state = fresh();
+    state = pick(pick(pick(state, 'inspectDoor'), 'forceDoor'), 'liftUnstableRack', () => 0.99);
+    expect(state.run?.sceneId).toBe('rackShift');
+    state = pick(state, 'retreatToCrew');
+    expect(state.run?.sceneId).toBe('workerCrewArrives');
+    expect(state.run?.flags).toEqual(expect.arrayContaining(['helpCalled', 'helpArrived']));
+    expect(state.character?.historyFlags).not.toContain('returned_with_help');
+    state = pick(state, 'stabilizeRackForLater');
+    expect(state.run?.sceneId).toBe('partialEnding');
+    expect(state.character?.historyFlags).toContain('returned_with_help');
+  });
+
   it('recognizes useful carried equipment and offers two new carryable rewards', () => {
     let state = pick(fresh('travelRope'), 'inspectDoor');
     state = pick(state, 'searchServiceRoute');

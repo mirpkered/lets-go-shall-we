@@ -187,6 +187,21 @@ describe('No Vacancy', () => {
     expect(dead.run?.status).toBe('death');
   });
 
+  it('does not report a group evacuation when only the Traveler reaches the wall', () => {
+    let state = pick(pick(pick(fresh(), 'askAda'), 'giveUpRoom'), 'roomForFamily');
+    state = pick(pick(state, 'evacuateHouse'), 'crossWithoutRope', () => 0.99);
+    expect(state.run?.sceneId).toBe('washedStep');
+    state = pick(state, 'crawlToWall', () => 0);
+    expect(state.run?.sceneId).toBe('evacuationEnding');
+    const soloText = sceneText(NO_VACANCY.scenes.evacuationEnding, state);
+    expect(soloText).toContain('The guests remain at the inn');
+    expect(soloText).not.toContain('You guide the group');
+
+    let group = pick(pick(pick(fresh('travelRope'), 'askAda'), 'giveUpRoom'), 'roomForFamily');
+    group = pick(pick(group, 'evacuateHouse'), 'ropeGuidedCrossing', () => 0);
+    expect(sceneText(NO_VACANCY.scenes.evacuationEnding, group)).toContain('You guide the group to the high road');
+  });
+
   it('keeps history callbacks descriptive and never blocks a new character', () => {
     expect(NO_VACANCY.scenes.innArrival.textVariants?.[0].requirements?.historyFlags).toEqual(['organized_emergency_shelter']);
     const state = fresh();
