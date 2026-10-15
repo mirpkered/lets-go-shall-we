@@ -269,6 +269,19 @@ describe('surprise anthology and library gap-fill', () => {
     expect(result.seasonalCount).toBeLessThan(1000);
   });
 
+  it('grants the wedding preference Knowledge only after asking the couple', () => {
+    const story = SOCIAL_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-toast-nobody-ordered')!;
+    const fact = 'At the wedding supper, the couple preferred a brief sincere toast over a formal speech.';
+
+    let corrected = act(start(story), story, 'supper', 'correctName');
+    corrected = act(corrected, story, 'aside', 'offerWords');
+    expect(corrected.character?.knowledge).not.toContain(fact);
+
+    const preferenceAsked = act(start(story), story, 'supper', 'askCouple');
+    expect(preferenceAsked.run?.sceneId).toBe('couple');
+    expect(preferenceAsked.character?.knowledge).toContain(fact);
+  });
+
   it('preserves route evidence in the bell, whistle, and mule contest results', () => {
     const bell = COMPETITION_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-bell-ringer-trial')!;
     let groundBell = act(start(bell), bell, 'yard', 'inspectRope');

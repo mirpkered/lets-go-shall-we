@@ -138,7 +138,23 @@ describe('final-choice consequence audit', () => {
     expect(endingText(scenario, tally)).toContain('show the stable book');
     expect(endingText(scenario, neighbor)).toContain('neighbor recalls the loose gray goat');
     expect(endingText(scenario, closeGrave)).toContain('You close the shallow grave');
+    expect(endingText(scenario, closeGrave)).not.toMatch(/feed tally|stable book (?:separate|distinguish|point)/i);
+    expect(closeGrave.character?.historyFlags).not.toContain('helped a farmer resolve a repeated-goat death through ear marks and a feed tally');
     expect(endingText(scenario, leaveGrave)).toContain('You leave the grave for the farmer to close');
+    expect(endingText(scenario, leaveGrave)).not.toMatch(/feed tally|stable book (?:separate|distinguish|point)/i);
+    expect(endingText(scenario, leaveGrave)).not.toMatch(/three goats/i);
+
+    let gravediggerRoute = take(scenario, stateAt(scenario, 'goatClaim'), 'compareNotches');
+    gravediggerRoute = take(scenario, gravediggerRoute, 'askGravedigger');
+    gravediggerRoute = take(scenario, gravediggerRoute, 'closeGrave');
+    expect(gravediggerRoute.character?.historyFlags).toContain('closed_goat_grave_and_checked_gate');
+    expect(gravediggerRoute.character?.historyFlags).not.toContain('helped a farmer resolve a repeated-goat death through ear marks and a feed tally');
+    expect(endingText(scenario, gravediggerRoute)).not.toMatch(/feed tally|stable book (?:separate|distinguish|point)/i);
+
+    let tallyRoute = take(scenario, stateAt(scenario, 'goatClaim'), 'askStablehand');
+    tallyRoute = take(scenario, tallyRoute, 'showTally');
+    expect(tallyRoute.character?.historyFlags).toContain('resolved_goat_identity_with_feed_tally');
+    expect(endingText(scenario, tallyRoute)).toMatch(/show the stable book/i);
   });
 
   it('acknowledges whether the Traveler warned the approaching wagoner', () => {

@@ -6,12 +6,12 @@ const T = (hook: string, activity: string[], role: string, tone: string, setting
 export const THE_TOAST_NOBODY_ORDERED = story('the-toast-nobody-ordered', 'The Toast Nobody Ordered', 'A wedding supper needs a speaker, but not necessarily the one the room expects.', T('A traveler is mistaken for the absent toast-giver and must decide whether to preserve the couple’s dignity or correct the room.', ['social interaction', 'communication/witness'], 'accidental participant', 'humorous/absurd', 'town inn dining room', ['public performance', 'mistaken identity', 'social consequence'], 'accidental encounter'), 'supper', {
   supper: scene('supper', 'A Glass Raised in Error', 'At a crowded wedding supper, the best man calls you by another name and raises his glass. The couple look nervous, not angry. The room is waiting to hear what you say.', [
     { id: 'correctName', label: 'Quietly correct the mistake', next: 'aside' },
-    { id: 'askCouple', label: 'Ask the couple what they prefer', next: 'couple' },
+    { id: 'askCouple', label: 'Ask the couple what they prefer', next: 'couple', effects: { knowledge: ['At the wedding supper, the couple preferred a brief sincere toast over a formal speech.'] } },
     { id: 'makeToast', label: 'Give a short toast in their honor', next: 'toast' },
     { id: 'leaveSupper', label: 'Step outside before the toast', next: 'outside' },
   ]),
   aside: scene('aside', 'A Private Correction', 'The best man admits he has been trying to remember three introductions at once. The couple can hear you if you speak up, but the room cannot.', [
-    { id: 'offerWords', label: 'Offer a few words they can use', next: 'toast', effects: { knowledge: ['At the wedding supper, the couple preferred a brief sincere toast over a formal speech.'] } },
+    { id: 'offerWords', label: 'Offer a few words they can use', next: 'toast' },
     { id: 'letHimRecover', label: 'Give him room to recover', next: 'recovery' },
   ]),
   couple: scene('couple', 'The Couple’s Choice', 'The bride asks you not to make a show of the mistake. The groom says a small laugh would ease the room. Neither wants a long speech.', [
