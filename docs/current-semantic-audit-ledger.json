@@ -18098,7 +18098,7 @@
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE",
       "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
-      "implementationEvidence": "Local CRA-C0001 Wave 124 gameplay commit abee197. Glasshouse evidence setup no longer says the trays are already covered; only the estate-sheet route states that it diverts rain. Same-Adventure scan removed unsupported seed-preservation and cloak-return claims from Gear provenance and fee settlement; Gear, fee, and refusal choices remain available as before, with reward mechanics unchanged. The salvage regression contrasts gloves, sheet, and hook routes and checks the Gear and fee endings. The whole salvage family, inventory, registry, and library checks passed (28 tests); RC12 ledger validator and git diff --check passed."
+      "implementationEvidence": "Local CRA-C0001 Wave 124 gameplay commit abee197. Glasshouse evidence setup no longer says the trays are already covered; only the estate-sheet route states that it diverts rain. Same-Adventure scan removed unsupported seed-preservation and cloak-return claims from Gear provenance and fee settlement; Gear, fee, and refusal choices remain available as before, with reward mechanics unchanged. The salvage regression contrasts gloves, sheet, and hook routes and checks the Gear and fee endings. The whole salvage family, inventory, registry, and library checks passed (28 tests); RC12 ledger validator and git diff --check passed. Audit disposition checkpoint: 895c6f2."
     },
     {
       "findingId": "CRA-F0229",
