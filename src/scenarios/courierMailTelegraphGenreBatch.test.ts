@@ -33,7 +33,7 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(COURIER_CONSEQUENCE_MATRIX).toHaveLength(24);
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
       expect(scenario.diversity?.availability?.season).toBe('ALL_YEAR');
-      expect(Object.values(scenario.scenes).some(({choices})=>choices.some(({effects})=>effects?.knowledgeEntries?.length)) || scenario.scenes.settle.choices.some(({ effects }) => effects?.lore?.length || effects?.gainItems?.length)).toBe(true);
+      expect(Object.values(scenario.scenes).some(({choices})=>choices.some(({effects})=>effects?.knowledgeEntries?.length)) || scenario.scenes.settle.choices.some(({ effects }) => effects?.lore?.length || effects?.gainItems?.length) || scenario.id==='station-mark-in-margin').toBe(true);
     }
   });
 
@@ -85,10 +85,10 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     }
   });
 
-  it('grants the eight message conventions demonstrated in handling before any compensation choice',()=>{
+  it('grants the seven message conventions demonstrated in handling before any compensation choice',()=>{
     const primaryKnowledgeIds=new Set(['station-mark-in-margin','seal-that-cooled-wrong','copy-that-came-back','flooded-relay-book','initials-on-the-wire','town-name-that-moved','bell-before-the-wire','horse-change-ledger']);
-    const knowledgeStories=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({id})=>primaryKnowledgeIds.has(id));
-    expect(knowledgeStories).toHaveLength(8);
+    const knowledgeStories=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.filter(({id})=>primaryKnowledgeIds.has(id)&&id!=='station-mark-in-margin');
+    expect(knowledgeStories).toHaveLength(7);
     for(const scenario of knowledgeStories){
       const handlingFact=scenario.scenes.handling.choices.flatMap(({effects})=>effects?.knowledgeEntries??[]);
       expect(handlingFact.length).toBeGreaterThan(0);
@@ -98,6 +98,20 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
       state=act(state,scenario,scenario.scenes.handling.choices[0].id);
       expect(state.character?.knowledgeKeys?.length).toBeGreaterThan(0);
       expect(state.character?.knowledgeSources?.[state.character!.knowledgeKeys![0]]).toEqual([scenario.id]);
+    }
+  });
+
+  it('does not grant the unverified margin-mark convention on either handling route',()=>{
+    const scenario=COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({id})=>id==='station-mark-in-margin')!;
+    const fact=KNOWLEDGE_FACTS.telegraphRepeatConvention;
+    expect(scenario.scenes.handling.choices.flatMap(({effects})=>effects?.knowledgeEntries??[])).not.toContainEqual(fact);
+    for(const choiceId of ['verifyOutside','carryNow']){
+      let state=fresh(scenario);
+      state=act(state,scenario,'acceptDelivery');
+      state=act(state,scenario,choiceId);
+      expect(state.character?.knowledgeKeys).not.toContain(fact.id);
+      expect(state.character?.knowledge).not.toContain(fact.text);
+      expect(state.character?.knowledgeSources?.[fact.id]).toBeUndefined();
     }
   });
 
@@ -303,12 +317,13 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
   });
 
   it('persists Knowledge, Lore, and History across save/resume without duplicate Knowledge', () => {
-    const scenario = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'station-mark-in-margin')!;
+    const scenario = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'the-wire-that-sang-twice')!;
     let state = fresh(scenario);
     state = act(state, scenario, 'acceptDelivery');
-    state = act(state, scenario, 'verifyOutside');
+    state = act(state, scenario, 'carryNow');
     state = act(state, scenario, 'warnAndQualify');
     state = act(state, scenario, 'settleWarned');
+    state = act(state, scenario, 'recordProcedure');
     const factId = KNOWLEDGE_FACTS.telegraphRepeatConvention.id;
     expect(state.character?.knowledgeKeys).toContain(factId);
     const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
