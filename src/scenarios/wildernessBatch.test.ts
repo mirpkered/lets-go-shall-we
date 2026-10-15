@@ -145,7 +145,9 @@ describe('wilderness, navigation, and camp life adventure batch', () => {
     const direct = act(start(THE_SHORTCUT, { shortcutGround: 'firm' }), THE_SHORTCUT, 'roadsideOffer', 'takeCutoff', () => 0);
     expect(direct.run?.sceneId).toBe('shortRoute');
     expect(direct.character?.knowledge).toContain(fact);
-    let state = act(direct, THE_SHORTCUT, 'shortRoute', 'continuePastJunction');
+    let state = direct;
+    expect(state.run?.sceneId).toBe('shortRoute');
+    expect(THE_SHORTCUT.scenes.shortRoute.choices).toHaveLength(0);
     expect(state.character?.knowledge).toContain(fact);
 
     const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
@@ -153,9 +155,7 @@ describe('wilderness, navigation, and camp life adventure batch', () => {
     state = loadSave(storage as never);
     expect(state.character?.knowledge).toContain(fact);
 
-    const view = act(direct, THE_SHORTCUT, 'shortRoute', 'enjoyViewFromRise');
-    expect(view.character?.knowledge).toContain(fact);
-    expect(view.character?.historyFlags).toContain('paused at the ridge after taking a quiet shortcut');
+    expect(state.character?.knowledge).toContain(fact);
 
     const failed = act(start(THE_SHORTCUT, { shortcutGround: 'firm' }), THE_SHORTCUT, 'roadsideOffer', 'takeCutoff', () => 0.99);
     expect(failed.run?.sceneId).toBe('roughCutoff');
