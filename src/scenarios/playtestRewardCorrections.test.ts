@@ -58,8 +58,9 @@ describe('confirmed normal-play feedback and reward clarity', () => {
 
   it('gives civilian help at the junction human acknowledgment without forcing a material reward', () => {
     const ending = SCENARIOS.flatMap(({ scenes }) => Object.values(scenes)).find(({ title }) => title === 'Held Before the Junction');
-    expect(ending?.text).toMatch(/passenger grips your hand and thanks you/i);
-    expect(ending?.text).toMatch(/gave the crews time to act/i);
+    expect(ending?.text).toMatch(/No collision follows\. The passenger train must be inspected/i);
+    expect(ending?.text).toMatch(/stationmaster keeps your account with the signal log/i);
+    expect(ending?.text).not.toMatch(/passenger grips your hand and thanks you|gave the crews time to act/i);
   });
 
   it('makes Unload Before Dark present its shifted freight complication on new runs', () => {

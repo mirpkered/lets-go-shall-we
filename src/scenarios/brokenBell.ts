@@ -168,7 +168,7 @@ export const BROKEN_BELL: Scenario = {
       text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.',
       textVariants: [{ requirements: { minElapsedMinutes: 25 }, text: 'Behind the bronze door, the priest lies pinned beneath a fallen screen, his side bleeding. His breaths have grown shallower while you searched the chapel. A carved bone key and a yew ward hang from his belt. “I took the handbell and clapper from the old burial,” he whispers. “When I sounded it, the keeper came.” He has not yet told you what the keeper wants.' }],
       choices: [
-        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', timeCost: 10, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelInscription, KNOWLEDGE_FACTS.chapelHandbell], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
+        { id: 'bindPriest', label: 'Bind his wound before asking more', hint: 'A steadier breath may save his strength.', timeCost: 10, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell], lore: ['The priest disturbed the old burial beneath the chapel.'], setFlags: ['helpedPriest', 'boundPriest'] }, next: 'priestStabilized' },
         { id: 'askPriest', label: 'Ask what he removed from the burial', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'priestAccount' },
         { id: 'leavePriest', label: 'Leave him resting and follow the keeper', timeCost: 1, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'burialApproach' },
       ],
@@ -185,7 +185,7 @@ export const BROKEN_BELL: Scenario = {
       id: 'priestAccount', title: 'What the Priest Took',
       text: 'The priest tells you he lifted an iron handbell and its black clapper from a burial older than the chapel. The keeper followed the sound, then stood between him and the relics. “It never struck me while I was trapped,” he says. That may be fear speaking—or a clue.',
       choices: [
-        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell, KNOWLEDGE_FACTS.chapelInscription], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
+        { id: 'requestKeyAndWard', label: 'Ask for the bone key and yew ward', hint: 'He offers them for the work below.', requirements: { notItems: ['boneKey'] }, effects: { gainItems: ['boneKey', 'yewCharm'], knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell], lore: ['The masked keeper came when the stolen handbell was sounded.'], setFlags: ['receivedPriestKey'] }, next: 'priestFarewell' },
         { id: 'leaveKeyWithPriest', label: 'Leave the key with him and continue', effects: { knowledge: [RELIC_HISTORY], knowledgeEntries: [KNOWLEDGE_FACTS.chapelHandbell] }, next: 'priestFarewell' },
       ],
     },

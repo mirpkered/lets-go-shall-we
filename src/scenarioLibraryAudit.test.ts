@@ -67,7 +67,6 @@ describe('registered scenario graph audit', () => {
       'the-shed-with-two-roofs': ['knowledgeEnding'],
       'the-stone-that-kept-the-water': ['knowledgeEnding'],
       'the-tower-bell-anchor': ['knowledgeEnding'],
-      'station-mark-in-margin': ['knowledgeEnding'],
       'seal-that-cooled-wrong': ['knowledgeEnding'],
       'copy-that-came-back': ['knowledgeEnding'],
       'flooded-relay-book': ['knowledgeEnding'],

@@ -38,10 +38,10 @@ describe('state-aware shared aftermath narration', () => {
     let passive = act(fresh(), THE_CROWD_BREAKS, 'climbStand', 0.999);
     passive = act(passive, THE_CROWD_BREAKS, 'fallStayWall');
     passive = act(passive, THE_CROWD_BREAKS, 'crowdReport');
-    expect(passive.character.historyFlags).not.toContain('guided people toward the exhibition hall west gate during a crowd surge');
+    expect(passive.character?.historyFlags).not.toContain('guided people toward the exhibition hall west gate during a crowd surge');
 
     const guided = finishAfterOpeningGate();
-    expect(guided.character.historyFlags).toContain('guided people toward the exhibition hall west gate during a crowd surge');
+    expect(guided.character?.historyFlags).toContain('guided people toward the exhibition hall west gate during a crowd surge');
   });
 
   it('records only the stationmaster account after a run-alongside route, not rail-clearing credit', () => {

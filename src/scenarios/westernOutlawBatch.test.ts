@@ -315,11 +315,11 @@ describe('The Outlaw’s Mother message-state continuity',()=>{
     let givenToDeputy=actMother(startMother(),'askLetterPurpose');
     givenToDeputy=actMother(givenToDeputy,'tellDeputy');
     givenToDeputy=actMother(givenToDeputy,'deputyLetter');
-    expect(givenToDeputy.character.historyFlags).not.toContain('carried family news to a wanted traveler without helping him escape');
+    expect(givenToDeputy.character?.historyFlags).not.toContain('carried family news to a wanted traveler without helping him escape');
 
     let delivered=actMother(startMother(),'carrySealed');
     delivered=actMother(delivered,'handLetter');
-    expect(delivered.character.historyFlags).toContain('carried family news to a wanted traveler without helping him escape');
+    expect(delivered.character?.historyFlags).toContain('carried family news to a wanted traveler without helping him escape');
   });
 });
 
@@ -339,16 +339,16 @@ describe('The Last Shot action-history continuity',()=>{
     let leftEarly=actLastShot(startLastShot(),'useCover');
     leftEarly=actLastShot(leftEarly,'coverLeave');
     leftEarly=actLastShot(leftEarly,'retreatReport');
-    expect(leftEarly.character.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
+    expect(leftEarly.character?.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
 
     let guided=actLastShot(startLastShot(),'useCover');
     guided=actLastShot(guided,'coverTalk');
     guided=actLastShot(guided,'termsOwnerLeave');
-    expect(guided.character.historyFlags).toContain('helped a rancher leave an armed debt dispute');
+    expect(guided.character?.historyFlags).toContain('helped a rancher leave an armed debt dispute');
 
     let signaled=actLastShot(startLastShot(),'callWitness');
     signaled=actLastShot(signaled,'witnessOwner');
-    expect(signaled.character.historyFlags).toContain('signaled a rancher toward the side gate during an armed dispute');
-    expect(signaled.character.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
+    expect(signaled.character?.historyFlags).toContain('signaled a rancher toward the side gate during an armed dispute');
+    expect(signaled.character?.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
   });
 });

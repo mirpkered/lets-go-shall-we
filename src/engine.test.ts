@@ -108,7 +108,7 @@ describe('adventure engine', () => {
   it('supports peaceful return from a fresh character using evidence and explicit items', () => {
     let state = fresh();
     state = select(state, 'chapelExterior', 'callOut');
-    expect(state.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    expect(state.character?.knowledge).not.toContain('The soot inscription reads: DO NOT RING IT BELOW.');
     state = select(state, 'voiceBelow', 'enterAfterCall');
     state = select(state, 'chapelNave', 'takeCandlestick');
     expect(state.run?.inventory).toContain('brassCandlestick');
@@ -138,7 +138,7 @@ describe('adventure engine', () => {
 
   it('gives early clue and candlestick meaningful later payoffs', () => {
     const cluePath = select(select(fresh(), 'chapelExterior', 'callOut'), 'voiceBelow', 'enterAfterCall');
-    expect(cluePath.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    expect(cluePath.character?.knowledge).not.toContain('The soot inscription reads: DO NOT RING IT BELOW.');
     let withBrass = select(fresh(), 'chapelNave', 'takeCandlestick');
     withBrass = select(withBrass, 'naveAfterCandle', 'followKnockWithCandle');
     withBrass = select(withBrass, 'rugInvestigation', 'raiseRugAfterKnock');
@@ -212,11 +212,12 @@ describe('adventure engine', () => {
     let state = select(fresh(), 'underStairs', 'findPriestBelow');
     state = select(state, 'priestAfterHound', 'bindPriest');
     expect(state.run?.inventory).not.toContain('boneKey');
-    expect(state.character?.knowledge).toContain('The soot inscription reads: DO NOT RING IT BELOW.');
+    expect(state.character?.knowledge).not.toContain('The soot inscription reads: DO NOT RING IT BELOW.');
     state = select(state, 'priestStabilized', 'askAfterBinding');
     state = select(state, 'priestAccount', 'requestKeyAndWard');
     expect(state.run?.inventory).toContain('boneKey');
     expect(state.run?.inventory).toContain('yewCharm');
+    expect(state.character?.knowledge).not.toContain('The soot inscription reads: DO NOT RING IT BELOW.');
   });
 
   it('offers a real candlestick chest use and consumes it when used', () => {
