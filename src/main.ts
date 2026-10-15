@@ -8,6 +8,7 @@ import { normalizeFeedbackEndpoint, submitFeedback } from './feedback';
 import { filterQaScenarios, renderQaPanel } from './qaPanel';
 import { getScenario, SCENARIOS } from './scenarios';
 import { isQaMode, selectScenario, simulateScenarioSelection } from './scenarioSelection';
+import { attachLongPress, buildNormalModeUrl, buildQaEntryUrl, QA_BANNER_HOLD_MS } from './qaLongPress';
 import { EMPTY_SAVE, loadQaSave, loadSave, QA_SAVE_KEY, SAVE_KEY, saveGame, saveQaGame } from './storage';
 import type { SaveData } from './types';
 import { formatGlobalTotal, normalizeCounterEndpoint, readGlobalTotal, submitGlobalCompletionWithRetry } from './completionCounter';
@@ -22,6 +23,7 @@ import { endedTravelerMilestoneCopy, gearCapacityMilestoneCopy } from './progres
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const qaEnabled = isQaMode(window.location.search);
 let state: SaveData = qaEnabled ? loadQaSave() : loadSave();
+let cleanupBannerQaEntry: (() => void) | null = null;
 let screen: 'home' | 'play' | 'bank' | 'retire' = state.run?.status === 'active' ? 'home' : 'home';
 let inventoryOpen = false;
 let successRewardsOpen = state.run?.status === 'success' && state.run.rewardSelectionOpen === true;
@@ -275,7 +277,13 @@ function icon(name: 'bag' | 'bank' | 'heart' | 'coin'): string {
 }
 
 function shell(content: string, extra = '', style = ''): void {
-  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackContext(state, SCENARIOS, qaEnabled, window.innerWidth))}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  cleanupBannerQaEntry?.();
+  cleanupBannerQaEntry = null;
+  const qaModeBanner = qaEnabled ? '<div class="qa-mode-banner" role="status"><strong>QA MODE</strong><button type="button" data-exit-qa>Exit QA</button></div>' : '';
+  app.innerHTML = `<main class="app-shell ${extra}"${style ? ` style="${style}"` : ''}>${qaModeBanner}${content}${renderQaPanel(qaEnabled, state, SCENARIOS, ITEMS, qaSelectionMonth, counterDiagnostics())}${renderUtilityFeatures(feedbackContext(state, SCENARIOS, qaEnabled, window.innerWidth))}<footer><span>MIRPWORKS · v0.1</span><span>Saved on this device</span></footer></main>`;
+  document.querySelector<HTMLButtonElement>('[data-exit-qa]')?.addEventListener('click', () => {
+    window.location.replace(buildNormalModeUrl(window.location.href));
+  });
   document.querySelectorAll<HTMLButtonElement>('[data-open-help]').forEach((button) => button.addEventListener('click', () => {
     const dialog = document.querySelector<HTMLDialogElement>(`#${button.dataset.openHelp}-dialog`);
     if (dialog && !dialog.open) dialog.showModal();
@@ -336,6 +344,20 @@ function shell(content: string, extra = '', style = ''): void {
       });
   });
   bindQaPanel();
+}
+
+function bindBannerQaEntry(): void {
+  if (qaEnabled) return;
+  const banner = document.querySelector<HTMLElement>('.masthead');
+  if (!banner) return;
+  banner.style.setProperty('--qa-hold-duration', `${QA_BANNER_HOLD_MS}ms`);
+  cleanupBannerQaEntry = attachLongPress(banner, {
+    onProgressChange: (active) => {
+      if (active) banner.dataset.qaHold = 'true';
+      else delete banner.dataset.qaHold;
+    },
+    onActivate: () => window.location.assign(buildQaEntryUrl(window.location.href)),
+  });
 }
 
 function homeSceneStyle(scene: HomeScene = activeHomeScene): string {
@@ -405,6 +427,7 @@ function renderHome(): void {
   shell(`<header class="masthead"><div class="brand-mark" aria-hidden="true">LG</div><div><div class="eyebrow">A Mirpworks adventure</div><h1>Let’s Go,<br><em>Shall We?</em></h1></div></header>
     <section class="start-card"><p>${hasCharacter ? `Welcome back, ${safeText(state.character!.name)}. A new journey is waiting.` : 'A little adventure is waiting.'}</p><button class="primary" id="begin">Begin Adventure</button></section>${travelerStatus}
     <nav class="home-tools${hasCharacter ? '' : ' single-tool'}" aria-label="Character options"><button id="bank">${icon('bank')}<span>Inventory &amp; Bank</span><small>${bankCapacityLabel(state.bank.length)} stored</small></button>${hasCharacter ? `<button id="retire"><span class="retire-icon">◇</span><span>Retire</span><small>${state.character!.name}</small></button>` : ''}</nav>${counterLabel}${homeSceneQaControls()}`, 'home-screen', homeSceneStyle());
+  bindBannerQaEntry();
   bindHomeSceneQaControls();
   document.querySelector('#begin')!.addEventListener('click', () => {
     const scenario = selectScenario(SCENARIOS, state.recentScenarioIds ?? state.mostRecentScenarioId, Math.random, {
