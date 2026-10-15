@@ -11162,12 +11162,12 @@
       "slug": "the-second-wagon",
       "title": "The Second Wagon",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0245"
       ],
       "reviewProvenance": "current-source route review; lighten/fast-push/walk, jack/secure/unload, abandon/carry-only-water, delivered-supplies text and Gear reward/refusal routes traced; engine availability semantics inspected",
-      "notes": "wheel.secureWheel -> repair.abandon explicitly says ‘Leave the wagon and carry only the water’ but reaches partial, whose unconditional text says the crew receives water and food. The distinct wheel.takeWater route explicitly carries both and can share that result; no route state distinguishes the contents. Toolkit alternatives require inventory presence for non-GEAR carryable items, which are not condition-tracked Gear.",
+      "notes": "Historical review: wheel.secureWheel -> repair.abandon explicitly says ‘Leave the wagon and carry only the water’ but reached partial, whose unconditional text said the crew receives water and food. The distinct wheel.takeWater route explicitly carries both and could share that result. Wave 125 preserves the existing second_wagon_essentials_carried route proof: only that route receives the specific food-and-water delivery text; abandon and hard-push routes receive neutral outcome wording. No new state, save behavior, Gear, reward, or delivery mechanic was added. Regression contrasts hand-carried essentials, water-only abandonment, and hard push.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18322,7 +18322,9 @@
       "violatedRule": "Shared outcome narration must retain route-specific cargo and delivery state; a route that carries only one supply cannot inherit the other supply’s arrival.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 125 gameplay commit 6998e5b. The partial outcome defaults to neutral text; the existing second_wagon_essentials_carried flag selects specific food-and-water delivery wording only on the explicit hand-carry route. The water-only abandonment and hard-push routes no longer inherit delivery claims. No new state or gameplay mechanics were added. Expedition Logistics, inventory, scenario-library, and content-quality checks passed (35 tests); RC12 ledger validator, JSON parsing, and git diff --check passed."
     },
     {
       "findingId": "CRA-F0246",
@@ -20371,9 +20373,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 748,
+    "HEALTHY": 749,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 54,
+    "CONFIRMED DEFECT": 53,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
