@@ -8235,12 +8235,12 @@
       "slug": "daylight-flags",
       "title": "Flags at the Cut",
       "sourceFile": "src/scenarios/adventurerSupportGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0186"
       ],
       "reviewProvenance": "current-source route review; flags/whistle/mirror first-signal variants, response choices, clerk positions, wagon/rail timing and spare-flag/fee/refusal outcomes traced",
-      "notes": "The wait response moves the clerk to the lookout and then claims ‘the next flag signal is understood,’ but the route has no subsequent signal action or receipt state; the selected outcome is waiting, not sending the next message. The other response paths explicitly show the clerk repeating a pattern, a courier confirming the message, or a signal after relocation. Compensation and the rail closure boundary were checked.",
+      "notes": "The wait response moved the clerk to the lookout and claimed ‘the next flag signal is understood,’ but the route had no subsequent send action or receipt state. Wave 123 now keeps the wait result unconfirmed. Same-Adventure scan found the courier response also lacked an explicit receipt despite its confirmation label; its result now records the clerk’s acknowledgment. The flag route’s repeated-pattern confirmation remains intact; compensation and the rail closure boundary are unchanged.",
       "preReconciliationPosition": 472,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17524,7 +17524,9 @@
       "violatedRule": "Communication receipt must be established by a sent message and recipient response; waiting for a better position does not prove a later signal was sent or understood.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 123 gameplay commit 7241044. The wait response now reports that the clerk moved to the lookout but the original message remains unconfirmed and no further signal was sent. Same-Adventure scan also found the courier response label promised confirmation while its result only established arrival; that result now states the courier repeats the warning and receives the clerk’s acknowledgment. The flag response still proves receipt by the clerk repeating the agreed pattern. Regression contrasts wait, repeated-pattern, and acknowledged-courier routes. No rail-operating or signal-procedure mechanics changed. Targeted support, inventory, registry, library tests, RC12 validator, and git diff --check passed."
     },
     {
       "findingId": "CRA-F0187",
@@ -20367,9 +20369,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 746,
+    "HEALTHY": 747,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 56,
+    "CONFIRMED DEFECT": 55,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
