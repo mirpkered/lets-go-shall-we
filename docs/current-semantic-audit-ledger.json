@@ -8950,12 +8950,12 @@
       "slug": "the-doctor-before-the-ford",
       "title": "The Doctor Before the Ford",
       "sourceFile": "src/scenarios/escortProtectionGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0208"
       ],
       "reviewProvenance": "current-source route review; case-protection/rope/wait departures, support/case-first/withdraw responses, ferryman retrieval/help, patient delivery and safe-delay outcomes traced",
-      "notes": "Only the departure.rope choice establishes a handline. departure.case reaches the same crossing without one, but crossing.casefirst is still available and its result says the doctor is clinging to the handline. The route offers no rope requirement or alternate result; the missing proof is the witnessed defect. caseLeftHigh, doctorSlipped, ferryman-rescue/retrieval, doctorSafe, and late outcomes otherwise distinguish case and person location and timing.",
+      "notes": "Historical review: only departure.rope established a handline. departure.case reached the same crossing without one, but crossing.casefirst remained available and its result said the doctor was clinging to the handline. Wave 127 reuses the existing doctor_rope_line proof to select that specific text only after the rope route; the case-only and proof-absent/legacy paths say the doctor is struggling to keep her footing without inventing a handline. No new state or mechanics were added. The case-first regression contrasts both departure routes. Other case/person location, ferryman rescue/retrieval, doctorSafe, and late outcomes remain unchanged.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -17830,7 +17830,9 @@
       "violatedRule": "A physical aid or route method must not appear in later narration unless it was established on the incoming route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 127 gameplay commit 1bf4167. caseFirst now defaults to truthful footing-struggle wording and retains the handline claim only when the pre-existing doctor_rope_line flag is present. Regression contrasts case-only and rope-established routes through the same caseFirst scene. Escort/protection, inventory, registry, library, and content-quality checks passed (31 tests); RC12 ledger validation, JSON parsing, and git diff --check passed."
     },
     {
       "findingId": "CRA-F0209",
@@ -20375,9 +20377,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 750,
+    "HEALTHY": 751,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 52,
+    "CONFIRMED DEFECT": 51,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
