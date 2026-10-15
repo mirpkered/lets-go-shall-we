@@ -11877,13 +11877,13 @@
       "slug": "the-mooring-at-cotter-slip",
       "title": "The Mooring at Cotter Slip",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0263",
         "CRA-F0264"
       ],
       "reviewProvenance": "current-source route review; rope placement versus moving the lighter, unsafe gangplank hold, line inspection, coin/rope settlement traced; Gear condition and convergence semantics inspected",
-      "notes": "Two independent route defects: barge.rope uses Travel Rope under an items-only gate, so BROKEN rope can reach the result claiming the second shore line is set (CRA-F0263/C4); barge.move only moves the lighter clear, but the shared line scene states that the second line was set, and the spare-rope ending says the rub point is protected (CRA-F0264/C1). The hold-loaded-gangplank route is stopped and explicitly has the crew set a second line.",
+      "notes": "Both independent route defects are repaired and regression-tested. CRA-F0263/C4 preserves the usable Travel Rope gate. CRA-F0264/C1 distinguishes setting a second line from moving the lighter at the shared result and reward endings; proof is run-local and missing/legacy proof is neutral. The hold-loaded-gangplank route remains stopped and explicitly has the crew set a second line.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18603,7 +18603,9 @@
       "violatedRule": "Converged results must preserve which route action occurred and may not claim an unperformed securing action.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 136. barge.rope and barge.move now set separate factual run-local proof; the shared line result and coin/spare-rope endings use route-aware text, while missing proof falls back to neutral wording for legacy/restored state. The existing usableItems gate for CRA-F0263 is unchanged. River water and C0004 Gear suites passed (59 tests); the full suite passed (127 files / 2,508 tests); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0265",
@@ -20400,9 +20402,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 759,
+    "HEALTHY": 760,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 43,
+    "CONFIRMED DEFECT": 42,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
