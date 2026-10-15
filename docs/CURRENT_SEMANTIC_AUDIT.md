@@ -5,7 +5,13 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0002 information certainty
+### Active local repair checkpoint — CRA-C0002 evidence-gated Knowledge
+
+Repaired CRA-F0100 (`thing-at-black-creek`, MEDIUM), F0109 (`the-river-devil`, MEDIUM), F0110 (`the-millers-beast`, MEDIUM), and F0113 (`thing-beneath-the-ice`, MEDIUM). Black Creek no longer grants the bear explanation from the keeper’s unresolved account; it records the directly observed injured bear after the reveal. River Devil now records the submerged-log cause only after probing, not merely watching current that obscures the underwater object. Miller’s Beast records run-local wheel-stopped proof and gates the specific “left safely after stopping” Knowledge on both that proof and opening the culvert; alternate routes remain actionable. Thing Beneath the Ice no longer grants sound-response Knowledge or claims it known after direct retreat; the explicit buckle test retains the learned fact. The stopped-wheel proof survives save serialization; no persistent schema changes were introduced.
+
+The new Knowledge route-contrast suite and adjacent Monster Hunt / prior C0001 regressions passed (**33 tests across 3 files**). F0109 and F0113 single-finding Adventures derive HEALTHY. `thing-at-black-creek` and `the-millers-beast` remain CONFIRMED DEFECT because their separate findings F0101 and F0111 are still open. Live classifications are **780 HEALTHY, 59 MINOR CONCERN, 22 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **334 are dispositioned** (328 repaired and 6 healthy/no-longer-reproduces) and **20 remain open**; CRA-C0002 has **5 open findings**. Gameplay commit: `514fb98`. Local-only; no push, merge, deployment, or public QA. Human QA remains deferred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0002 information certainty
 
 Repaired CRA-F0072 (`last-parcel-before-christmas`, MEDIUM) by narrowing the Knowledge to the clerk’s actual ambiguous clue: Nell and a blue door are recalled, but the intended address remains unconfirmed. The later mill encounter still establishes that Nell is staying with her aunt there. Repaired CRA-F0077 (`the-frozen-letter`, MEDIUM) by recording only the sealed letter’s identified sender and courier timing; its contents remain unknown unless the Traveler asks the miller, who explicitly confirms it is family news rather than danger. No delivery, reward, or save behavior changed.
 

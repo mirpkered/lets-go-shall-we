@@ -5505,7 +5505,7 @@
       "slug": "the-river-devil",
       "title": "The River Devil",
       "sourceFile": "src/scenarios/monsterHuntFirst.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0109"
       ],
@@ -5560,7 +5560,7 @@
       "slug": "thing-beneath-the-ice",
       "title": "The Thing Beneath the Ice",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0113"
       ],
@@ -16342,6 +16342,8 @@
       "routeWitness": "creekSigns.askWeirKeeper grants the injured-animal/track-timing Knowledge before entering weirAccount; weirAccount says only fish are disappearing, one paw print is deeper, and no animal has attacked anyone. Bear confirmation occurs only at creekReveal.",
       "violatedRule": "Knowledge must be granted after the selected route establishes the proposition, not as a side effect of asking an unresolved question.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the bear-cause Knowledge from askWeirKeeper, which only reveals missing fish and an asymmetric print. The direct bear-sighting choices now record the observed injured bear fishing at dusk and its damaged paw; the conclusion is no longer persisted before the reveal. Regression contrasts the keeper question/early departure with following tracks, seeing the bear, and withdrawing. Monster Hunt focused suites pass (33 tests across 3 files). Gameplay commit: 514fb98.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 298,
       "registrationStatus": "LIVE"
@@ -16475,6 +16477,8 @@
       "routeWitness": "riverLanding.inspectWater -> riverCurrent grants 'Small boats were struck by a submerged log'; riverCurrent says the branch is too low to see below dark water; riverEvidence.probeWithPole/probeFromShore is the first route to catch and identify the heavy log.",
       "violatedRule": "Knowledge must not promote an observed possibility into a confirmed object/cause before the route establishes it.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the submerged-log conclusion from inspectWater, whose resulting scene says the branch is too low to see underwater. The Knowledge now follows a probe that identifies the heavy log; the successful wade route also grants it only on success. Regression contrasts current-only inspection with probing and asserts the evidence scene. Monster Hunt focused suites pass (33 tests across 3 files). Gameplay commit: 514fb98.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 307,
       "registrationStatus": "LIVE"
@@ -16488,6 +16492,8 @@
       "routeWitness": "millEvidence.setEmptyCrate -> millVisitor.openCulvert and millCadence.watchOneTurn -> millVisitor.openCulvert grant the stopping-wheel conclusion without millCadence.stopWheel; the focused F6 test explicitly verifies watchOneTurn leaves the wheel-turning variant active.",
       "violatedRule": "Knowledge about cause/method requires route proof of that method; watching or placing a crate is not stopping the wheel.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The actual stopWheel action records run-local millWheelStopped proof. The two same-labeled culvert actions are now gated by that proof: only a stopped-wheel route grants the Knowledge that the badger left safely after the wheel stopped; watchOneTurn, crate, and other unproven routes remain available but do not grant that claim. Regression covers both variants and save serialization of the positive route; the pre-existing openCulvert choice ID remains on the positive route for test/API stability. Monster Hunt focused suites pass (33 tests across 3 files). Gameplay commit: 514fb98.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 308,
       "registrationStatus": "LIVE"
@@ -16531,6 +16537,8 @@
       "routeWitness": "iceFootsteps.backToNearBank -> iceBank.waitForOthers grants Knowledge and then iceAfter says range/response to sound are known; iceSound is the only scene that explicitly compares boot scrape and buckle sounds, and this direct route never visits it.",
       "violatedRule": "Information about an observed causal mechanism must be supported by that route, not borrowed from an alternate branch through shared closure.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the sound-response Knowledge grant from waitForOthers, which can be reached after directly retreating to the bank without testing sound. The shared iceAfter ending is now neutral about range and sound response; the explicit iceSound.dropBuckle route retains its earned sound-response Knowledge. Regression contrasts direct retreat/warning with the buckle test. Monster Hunt focused suites pass (33 tests across 3 files). Gameplay commit: 514fb98.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 310,
       "registrationStatus": "LIVE"
@@ -20442,9 +20450,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 778,
+    "HEALTHY": 780,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 24,
+    "CONFIRMED DEFECT": 22,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
