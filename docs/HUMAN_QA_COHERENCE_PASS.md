@@ -1,6 +1,6 @@
 # Human-QA Coherence Pass
 
-Status: **IN PROGRESS — focused semantic disposition complete; broader coherence screen resumed**
+Status: **IN PROGRESS — bounded coherence screen active; one separate semantic candidate escalated**
 
 This is a separate player-experience review. It does not reopen, renumber, or alter the completed 354-finding semantic audit. The original completion record remains intact; post-audit semantic discoveries stay in the ledger's separate `postAuditHumanQa` section.
 
@@ -46,13 +46,32 @@ This pass does **not** claim an exhaustive, route-level review of all 861 Advent
 
 These are bounded source reviews of the listed choice/result families, not a library-wide route audit. No gameplay, test, or original-audit disposition change was justified by these candidates.
 
+### Shared assistance-and-settlement builder screen
+
+**Candidates screened: 24 caller cards** in `adventurerSupportGenreBatch.ts` (`glass-road`, `saw-before-sunrise`, `chain-of-sight`, `three-points-down`, `the-mule-load`, `pilot-hole`, `daylight-flags`, `the-unseated-winch`, `the-silent-hound`, `the-iron-claim`, `the-flooded-chest`, `the-roofline`, `the-blind-cut`, `the-old-pulley`, `the-rail-shed`, `the-wet-powder`, `the-brush-line`, `the-missing-brace`, `the-wrong-cache`, `the-rough-water-watch`, `the-ash-frame`, `the-storm-marker`, `the-lamp-in-the-cut`, and `the-second-gunhand`). The common builder and its caller inputs were reviewed as one repeated HQ-C01/HQ-C03 pattern; this is a bounded template/caller-configuration screen, not a claim that every outcome in all 24 stories received a new route-by-route audit.
+
+- **HQ-C01 — HEALTHY / INTENTIONAL at the shared-template level.** The helper reaches settlement after the card’s described work/consequence, then offers the scene’s separately explained spare Gear, its agreed coin amount, or leaving without compensation. The `gearSource` and custom `settlement` text explain why that item is available; the generic “agreed hand-off” button does not itself grant it unless chosen. The common menu does not require additional unpaid labor, and each option applies the work’s Knowledge regardless of compensation, consistent with learning already established by the completed work. The 24 caller-specific settlement explanations were checked for an evident unrelated task/reward pairing; none was promoted to a confirmed polish issue.
+- **HQ-C03 — HEALTHY / INTENTIONAL at the shared-template level.** The shared preparation menu turns each caller’s kit entry into a choice, gates named owned tools where `requiresItem` is specified, and appends caller-authored consequences to the complication. The handoff result uses each caller’s `gearSource`; the actual inventory gain is confined to the explicit settlement choice. Representative physical routes checked include `glass-road` (call/wait, circle by the eastern slope, or signal the nearby naturalist), `daylight-flags` (station clerk, flags, or a courier physically walking to the station), `the-roofline` (ladder tied to the porch, ground cover, or moving bedding), and `the-unseated-winch` (sound piling, release to fenders, or use of the gangplank). Actors, equipment ownership, and physical means are stated in the scene inputs; no new clarity defect was established in this template screen.
+
+### Separate semantic escalation — Last Stop Knowledge persistence
+
+- **Adventure:** `last-stop`; finding CRA-F0002 (the existing repaired C0001 finding remains untouched).
+- **Route witness:** `passengerCar.conductor` enters `conductorCar`. Before the player chooses, its displayed text gives the reliable procedure: “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” The matching stable Knowledge fact is `KNOWLEDGE_FACTS.baggageBrakeHandwheel` (“The baggage-car handwheel can vent the vacuum brake line if it is turned, held, then locked.”). Only `conductorCar.learn` (“Remember the procedure”) currently grants that fact there; choosing `service` or `seat` leaves the scene without that Knowledge. A later `serviceCar.studyBrake` also grants it after the diagram is studied.
+- **Classification:** **E — POSSIBLE SEMANTIC DEFECT; separate focused review required.** The text appears to teach the reliable fact before a later “Remember” persistence choice, matching the route-proof/Knowledge boundary. It may still be an intentional explicit learning interaction; this bounded coherence pass did not decide that semantic question or re-evaluate CRA-F0002.
+- **Likely root cause:** CRA-C0002 (Knowledge persistence does not match route proof), if confirmed by focused semantic review.
+- **Ledger action:** none. Do not add a post-audit finding, change source, or alter CRA-F0002 disposition until a separate focused semantic review determines whether the statement is genuinely teaching before the choice. Original 354-finding closure remains unchanged.
+
+The Last Stop area is therefore held out of polish edits. Unrelated bounded HQ-C01/HQ-C03 discovery may continue safely; any further possible semantic defect must likewise be separated from polish and reported rather than silently fixed.
+
 ## Validation and delivery state
 
 - Focused Shortcut and QA-content tests: **27/27 passed**.
 - Supper with Strangers, Traveler Memory, memory-presentation, and library-audit tests: **17 tests across 4 files passed** after the focused Outcome B disposition.
+- Bounded screen validation: QA long-press, library-audit, and inventory/presentation tests: **26 tests across 4 files passed**; these confirm the existing QA entry and inventory behavior remain intact.
 - Full suite after the Shortcut false-choice repair: **130 files, 2,554 tests passed**.
 - TypeScript and production build: **passed**; the known large-bundle warning remains.
 - Inventory remains 861 Adventures, 74 Gear definitions, and 32 stable Knowledge facts (also exercised by the passing registry/inventory validation tests).
 - Audit JSON parses and still reports the original audit as `COMPLETE`; the two post-audit findings remain separately represented. No historical finding or disposition was changed in this pass.
-- `git diff --check`: passed for the current report update; the semantic ledger was not changed.
+- The possible Last Stop semantic issue is not entered in the semantic ledger; it requires a separate focused disposition. Current semantic ledger still shows 356 live findings and 0 open.
+- `git diff --check`: passed for report-only updates; the semantic ledger was not changed.
 - Weekly Scenario Batch remains paused. No scheduler change, push, merge, or deployment occurred.
