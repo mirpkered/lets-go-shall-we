@@ -11070,12 +11070,12 @@
       "slug": "two-crates-short",
       "title": "Two Crates Short",
       "sourceFile": "src/scenarios/expeditionLogisticsGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0244"
       ],
       "reviewProvenance": "current-source route review; waybill/mark comparison, usable-scale weigh route, send-ten, siding search, load/wait, clerk correction, reward and partial outcomes traced; scale description and focused tests reviewed",
-      "notes": "manifest.weighSealed sets crate_weights_checked and enters marks, whose text asserts reused chalk marks and locates the missing medical crate under the ramp. The scale compares sealed load weights; this route neither compares the manifest marks nor searches the siding, and no outcome/flag establishes that location or mark discovery. checkWaybill and searchSiding are distinct routes that can support those facts.",
+      "notes": "Historical review: manifest.weighSealed set crate_weights_checked and entered marks, whose text asserted reused chalk marks and located the missing medical crate under the ramp. The scale compares sealed load weights; this route neither compares the manifest marks nor searches the siding. Wave 128 now renders route-aware evidence: waybill comparison alone identifies copied chalk marks; weighing explicitly does not establish mark reuse or location; the missing location remains unknown until a ramp/siding search. The search result then identifies the crate before the player chooses to load it. Existing scale Gear gate and Knowledge content are preserved, with that Knowledge earned on the actual waybill-comparison action. Regression covers scale-only, waybill, search, and proof-absent fallback paths.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18312,7 +18312,9 @@
       "violatedRule": "A route may not gain specific information or location knowledge at convergence unless the selected action or subsequent scene establishes how it was learned.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 128 gameplay commit da8c74c. The marks scene distinguishes existing crate_marks_checked and crate_weights_checked proof; the default/scale path stays neutral. Searching enters the explicit siding scene before the crate is described as located. The Knowledge reward remains on the waybill-comparison action. Expedition Logistics, inventory, registry/library, and content-quality checks passed (36 tests); the full suite passed 127 files / 2,500 tests; TypeScript and production build passed with the existing large-bundle warning; RC12 ledger validation and git diff --check passed."
     },
     {
       "findingId": "CRA-F0245",
@@ -20377,9 +20379,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 751,
+    "HEALTHY": 752,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 51,
+    "CONFIRMED DEFECT": 50,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
