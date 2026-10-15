@@ -61,6 +61,25 @@ function explore(scenario: Scenario): number {
 }
 
 describe('surprise anthology and library gap-fill', () => {
+  it('follows through on the supper-then-explain choice without changing other supper routes', () => {
+    const invitation = SOCIAL_SURPRISE_ADVENTURES.find(({ id }) => id === 'an-invitation-for-someone-else')!;
+    let promisedFollowThrough = start(invitation);
+    promisedFollowThrough = act(promisedFollowThrough, invitation, 'doorstep', 'acceptMeal');
+    expect(promisedFollowThrough.run?.sceneId).toBe('meal');
+    expect(promisedFollowThrough.run?.flags).toContain('acceptedMealBeforeExplaining');
+    expect(sceneText(invitation.scenes.meal, promisedFollowThrough)).toMatch(/when it is over, you explain that you arrived by chance/i);
+
+    let privacyRoute = start(invitation);
+    privacyRoute = act(privacyRoute, invitation, 'doorstep', 'askAboutGuest');
+    privacyRoute = act(privacyRoute, invitation, 'letter', 'leaveLetterAlone');
+    expect(privacyRoute.run?.flags).not.toContain('acceptedMealBeforeExplaining');
+    expect(sceneText(invitation.scenes.meal, privacyRoute)).not.toMatch(/when it is over, you explain/i);
+
+    let alreadyExplained = start(invitation);
+    alreadyExplained = act(alreadyExplained, invitation, 'doorstep', 'explainMistake');
+    alreadyExplained = act(alreadyExplained, invitation, 'explanation', 'stayAsTraveler');
+    expect(sceneText(invitation.scenes.meal, alreadyExplained)).not.toMatch(/when it is over, you explain/i);
+  });
   it('adds 38 distinct all-year adventures without changing existing stable IDs', () => {
     expect(ANTHOLOGY).toHaveLength(38);
     expect(SCENARIOS).toHaveLength(861);

@@ -32,7 +32,7 @@ export const AN_INVITATION_FOR_SOMEONE_ELSE = story('an-invitation-for-someone-e
   doorstep: scene('doorstep', 'A Place Set by the Door', 'A woman opens the farmhouse door and greets you as if you were expected. A place is set by the stove, and a folded invitation on the table bears a name you do not know.', [
     { id: 'explainMistake', label: 'Tell her she has the wrong traveler', next: 'explanation' },
     { id: 'askAboutGuest', label: 'Ask who the invitation names', next: 'letter' },
-    { id: 'acceptMeal', label: 'Accept supper, then explain', next: 'meal' },
+    { id: 'acceptMeal', label: 'Accept supper, then explain', next: 'meal', effects: { setFlags: ['acceptedMealBeforeExplaining'] } },
     { id: 'declineDoorstep', label: 'Thank her and continue on', next: 'leave' },
   ]),
   explanation: scene('explanation', 'The Expected Guest', 'The name belongs to her brother, who has not written since their last quarrel. She had hoped the invitation would bring him back, but she does not mistake you for him now.', [
@@ -48,7 +48,7 @@ export const AN_INVITATION_FOR_SOMEONE_ELSE = story('an-invitation-for-someone-e
     { id: 'declineMessage', label: 'Leave the message to her', next: 'meal' },
   ]),
   note: end('note', 'A Message, Not a Promise', 'She seals the reply herself. Whether it is ever sent is her decision; you have helped make the welcome clear without promising a reunion.'),
-  meal: end('meal', 'A Place for a Traveler', 'You share a simple supper, and the empty place remains only a place setting. Your host speaks of ordinary things when she is ready.'),
+  meal: { ...end('meal', 'A Place for a Traveler', 'You share a simple supper, and the empty place remains only a place setting. Your host speaks of ordinary things when she is ready.'), textVariants: [{ requirements: { flags: ['acceptedMealBeforeExplaining'] }, text: 'You share a simple supper. When it is over, you explain that you arrived by chance and are not the brother named in the invitation. Your host accepts the correction; the evening ends without promising a reunion.' }] },
   leave: end('leave', 'The Road Keeps Its Claim', 'You leave before the meal. The invitation stays on the table, neither answered nor thrown away.'),
 });
 
