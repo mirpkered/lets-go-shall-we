@@ -393,11 +393,11 @@
       "slug": "broken-bell",
       "title": "For Whom the Bell Tolls",
       "sourceFile": "src/scenarios/brokenBell.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0001"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout; focused current-source Knowledge route review completed and CRA-F0001 repaired",
       "preReconciliationPosition": 1,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -459,11 +459,11 @@
       "slug": "the-last-room",
       "title": "The Last Room on the Left",
       "sourceFile": "src/scenarios/theLastRoom.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0004"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout; focused current-source History route review completed and CRA-F0004 repaired",
       "preReconciliationPosition": 5,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14866,14 +14866,18 @@
       "findingId": "CRA-F0001",
       "position": 1,
       "adventureId": "broken-bell",
-      "severity": null,
+      "severity": "LOW",
       "defect": "Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.",
-      "routeWitness": null,
+      "routeWitness": "chapelExterior.callOut -> voiceBelow and chapelNave.searchVestry -> priestNotes.readNotes grant chapelInscription before the route presents the exact soot inscription. The priest's answer and notes discuss keeping the bell silent / the keeper following its sound, but do not establish the inscription's exact wording or source. Contrast: underStairs.readWarning explicitly studies the soot-black words and grants the fact.",
       "violatedRule": "Knowledge/History must be granted only when route actions establish it.",
       "clusterId": "CRA-C0002",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 1,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "currentSeverity": "LOW",
+      "currentRouteWitness": "chapelExterior.callOut -> voiceBelow and chapelNave.searchVestry -> priestNotes.readNotes grant chapelInscription before the route presents the exact soot inscription. The priest's answer and notes discuss keeping the bell silent / the keeper following its sound, but do not establish the inscription's exact wording or source. Contrast: underStairs.readWarning explicitly studies the soot-black words and grants the fact.",
+      "implementationEvidence": "Historical witness and severity were unavailable. Focused current-source review re-established a premature route-proof grant. The unsupported Knowledge effect was removed from callOut and readNotes; the explicit readWarning route remains the grant point. Regression covers both negative paths and the positive studied-inscription route. Gameplay/test commit: 93e9f8ac8baa65381a52f229d3cc0cda678e7432."
     },
     {
       "findingId": "CRA-F0002",
@@ -14909,14 +14913,18 @@
       "findingId": "CRA-F0004",
       "position": 5,
       "adventureId": "the-last-room",
-      "severity": null,
+      "severity": "LOW",
       "defect": "Knowledge/History state granted without sufficient route proof; exact detailed claim not recoverable from current carry-forward.",
-      "routeWitness": null,
+      "routeWitness": "serviceHall -> cellarEntry -> getHelpForSilas -> sharedRescue.guideTheLift(failure) -> partialRescue -> cellarSlip.climbOutAlone -> leftSilasEnding; the player leaves after learning only that a traveler is pinned, without learning the cause of the accident or the innkeeper's concealment, yet the exit recorded uncovered_inn_truth. Positive contrast: hostConfrontation.leaveAfterConfession records the truth after the innkeeper explains what happened and why he lied.",
       "violatedRule": "Knowledge/History must be granted only when route actions establish it.",
       "clusterId": "CRA-C0002",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 5,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "currentSeverity": "LOW",
+      "currentRouteWitness": "serviceHall -> cellarEntry -> getHelpForSilas -> sharedRescue.guideTheLift(failure) -> partialRescue -> cellarSlip.climbOutAlone -> leftSilasEnding; the player leaves after learning only that a traveler is pinned, without learning the cause of the accident or the innkeeper's concealment, yet the exit recorded uncovered_inn_truth. Positive contrast: hostConfrontation.leaveAfterConfession records the truth after the innkeeper explains what happened and why he lied.",
+      "implementationEvidence": "Historical witness and severity were unavailable. Focused current-source review re-established an unsupported History claim on the leave-before-learning route. Removed uncovered_inn_truth from climbOutAlone while preserving walked_away_from_inn_problem; explicit confession routes retain the truth record. Regression contrasts the uninformed exit with the confession route. Gameplay/test commit: 93e9f8ac8baa65381a52f229d3cc0cda678e7432."
     },
     {
       "findingId": "CRA-F0005",
@@ -20418,9 +20426,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 768,
+    "HEALTHY": 770,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 34,
+    "CONFIRMED DEFECT": 32,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

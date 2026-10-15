@@ -5,6 +5,12 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
+### Active local repair checkpoint — CRA-C0002 carry-forward and History fixes
+
+Focused review resolved CRA-F0001 (`broken-bell`, LOW) and CRA-F0004 (`the-last-room`, LOW) without inventing their missing historical witnesses. Broken Bell now grants the exact inscription Knowledge only after the Traveler studies the soot inscription; calling out and reading the priest’s note no longer award that source-specific fact prematurely. The Last Room no longer records `uncovered_inn_truth` when the Traveler leaves the cellar before learning what happened; an explicit confession route still records it. Focused tests passed (**24 tests across 2 files**). Gameplay/test commit: `93e9f8a`.
+
+Current totals: **316 repaired, 6 healthy/no-longer-reproduces, 32 open, 0 ambiguous, 0 unreviewed**; classifications derive to **770 HEALTHY, 59 MINOR CONCERN, 32 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. CRA-C0002 has **17 open findings**. Source snapshot and full 861-Adventure coverage are unchanged. Local-only; no push, merge, deployment, or public QA. Weekly Scenario Batch remains paused.
+
 ### Active local repair checkpoint — CRA-C0001 focused final-three review
 
 Focused current-source re-verification resolved the final three CRA-C0001 carry-forwards without reopening the 861-Adventure audit. CRA-F0002 (`last-stop`, LOW) was repaired: `messyEnding` now gives neutral coin/lens text by default and credits keeping passengers together only when the explicit `togetherAttempt.braceTogether` route records `keptPassengersTogether`. CRA-F0005 (`dead-mans-hand`, LOW) was repaired: shared outcomes mention the marshal only when the existing `marshalAtDoor` flag proves he was called; other optional-marshal claims are now neutral. CRA-F0003 (`aww-rats`) is `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`; the historical witness and severity remain unknown, but focused route review found no current shared-result claim unsupported by its incoming routes. Historical `CARRY_FORWARD_INCOMPLETE` provenance is preserved on all three records.
