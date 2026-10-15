@@ -34,6 +34,16 @@ function finishAfterHelpingChild(): SaveData {
 }
 
 describe('state-aware shared aftermath narration', () => {
+  it('credits crowd guidance only on routes that actually direct people through the west gate', () => {
+    let passive = act(fresh(), THE_CROWD_BREAKS, 'climbStand', 0.999);
+    passive = act(passive, THE_CROWD_BREAKS, 'fallStayWall');
+    passive = act(passive, THE_CROWD_BREAKS, 'crowdReport');
+    expect(passive.character.historyFlags).not.toContain('guided people toward the exhibition hall west gate during a crowd surge');
+
+    const guided = finishAfterOpeningGate();
+    expect(guided.character.historyFlags).toContain('guided people toward the exhibition hall west gate during a crowd surge');
+  });
+
   it('does not claim unidentified injuries were taken to first aid when the child was not reached', () => {
     const state = finishAfterOpeningGate();
     expect(state.run?.sceneId).toBe('crowdEnd');

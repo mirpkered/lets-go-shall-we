@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { A_GUN_ON_THE_TABLE, THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
+import { A_GUN_ON_THE_TABLE, THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_LAST_SHOT, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -309,5 +309,41 @@ describe('The Outlaw’s Mother message-state continuity',()=>{
     const legacy=startMother();
     legacy.run!.sceneId='departure';
     expect(sceneText(THE_OUTLAWS_MOTHER.scenes.departure,legacy)).toMatch(/without proof/i);
+  });
+
+  it('credits carrying family news only when the letter reaches the wanted son, not the deputy',()=>{
+    let givenToDeputy=actMother(startMother(),'askLetterPurpose');
+    givenToDeputy=actMother(givenToDeputy,'tellDeputy');
+    givenToDeputy=actMother(givenToDeputy,'deputyLetter');
+    expect(givenToDeputy.character.historyFlags).not.toContain('carried family news to a wanted traveler without helping him escape');
+
+    let delivered=actMother(startMother(),'carrySealed');
+    delivered=actMother(delivered,'handLetter');
+    expect(delivered.character.historyFlags).toContain('carried family news to a wanted traveler without helping him escape');
+  });
+});
+
+describe('The Last Shot action-history continuity',()=>{
+  const startLastShot=():SaveData=>{
+    const character=newCharacter('Last Shot Tester');
+    return {...structuredClone(EMPTY_SAVE),character,run:startRun(character,THE_LAST_SHOT,()=>0)};
+  };
+  const actLastShot=(state:SaveData,choiceId:string):SaveData=>{
+    const scene=THE_LAST_SHOT.scenes[state.run!.sceneId];
+    const choice=scene.choices.find(({id})=>id===choiceId);
+    expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
+    return choose(state,THE_LAST_SHOT,choice!);
+  };
+
+  it('does not credit guiding the rancher when leaving before signaling, but does on guided routes',()=>{
+    let leftEarly=actLastShot(startLastShot(),'useCover');
+    leftEarly=actLastShot(leftEarly,'coverLeave');
+    leftEarly=actLastShot(leftEarly,'retreatReport');
+    expect(leftEarly.character.historyFlags).not.toContain('helped a rancher leave an armed debt dispute');
+
+    let guided=actLastShot(startLastShot(),'useCover');
+    guided=actLastShot(guided,'coverTalk');
+    guided=actLastShot(guided,'termsOwnerLeave');
+    expect(guided.character.historyFlags).toContain('helped a rancher leave an armed debt dispute');
   });
 });

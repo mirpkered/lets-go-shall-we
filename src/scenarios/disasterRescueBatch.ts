@@ -271,7 +271,7 @@ export const THE_BOILER_ROOM = A('the-boiler-room', 'The Boiler Room', 'A mill b
 
 export const THE_CROWD_BREAKS = A('the-crowd-breaks', 'The Crowd Breaks', 'A false fire cry sends a packed platform moving toward one narrow stair.', 'disaster/rescue', 'HIGH', 'Crowd danger is shaped by position, open exits, and calm information, not force.', {
   platform: scene('platform', 'A Cry and a Surge', 'A bell rings at the county exhibition hall and someone shouts “Fire!” No smoke is visible. The crowd surges toward the east stair; a west gate is open, and a child has fallen beside a pillar. A horse cart blocks part of the lane.', [
-    { id: 'openWestGate', label: 'Point people toward the west gate', next: 'gateFlow', effects: { setFlags: ['crowdGateOpened'] } },
+    { id: 'openWestGate', label: 'Point people toward the west gate', next: 'gateFlow', effects: { setFlags: ['crowdGateOpened'], historyFlags: ['guided people toward the exhibition hall west gate during a crowd surge'] } },
     { id: 'liftChild', label: 'Reach the fallen child by the pillar', chance: { probability: 0.62, successNext: 'childClear', failureNext: 'crowdFall', successMessage: 'You lift the child into the gap beside the pillar.', failureMessage: 'The crowd pushes you against the cart.', failureEffects: { health: -2 } } },
     { id: 'clearCart', label: 'Move the cart away from the west lane', next: 'cartClear' },
     { id: 'climbStand', label: 'Climb the stand and call for order', hint: 'The stand is crowded too; a fall could injure you.', chance: { probability: 0.48, successNext: 'calmCall', failureNext: 'crowdFall', successMessage: 'Your voice carries over the nearest rows.', failureMessage: 'The rail shifts as people press against it.', failureEffects: { health: -2 } } },
@@ -285,7 +285,7 @@ export const THE_CROWD_BREAKS = A('the-crowd-breaks', 'The Crowd Breaks', 'A fal
     { id: 'childClearTruth', label: 'Tell the constable the cry was false', next: 'crowdSettles', effects: { setFlags: ['crowdChildSafe', 'crowdFalseAlarm'] } },
   ]),
   cartClear: scene('cartClear', 'Room by the Wall', 'The cart rolls against the wall and opens another passage. You keep your hands clear of the wheel; a teamster steadies the shaft. The west gate is now the broadest way out.', [
-    { id: 'cartGate', label: 'Guide people through the west gate', next: 'crowdSettles', effects: { setFlags: ['crowdGateOpened'] } },
+    { id: 'cartGate', label: 'Guide people through the west gate', next: 'crowdSettles', effects: { setFlags: ['crowdGateOpened'], historyFlags: ['guided people toward the exhibition hall west gate during a crowd surge'] } },
     { id: 'cartChild', label: 'Check the fallen child by the pillar', next: 'childClear' },
   ]),
   calmCall: scene('calmCall', 'A Voice over the Heads', 'Your call slows the nearest rows. The constable confirms the hall is clear of fire and sends two stewards toward the east stair. The child and blocked cart still need attention.', [
@@ -297,7 +297,7 @@ export const THE_CROWD_BREAKS = A('the-crowd-breaks', 'The Crowd Breaks', 'A fal
     { id: 'fallCrawlChild', label: 'Crawl to the child after the first wave', next: 'childClear', effects: { health: -1, setFlags: ['crowdFalseAlarm'] } },
   ], 'danger'),
   crowdSettles: scene('crowdSettles', 'The Hall Empties', 'The crowd reaches the open air without a crush. The constable confirms there was no fire; the shout came from a dropped lantern mistaken for flame. The child is safe only if you reached them, and the cart is clear only if someone moved it.', [
-    { id: 'crowdReport', label: 'Give the stewards a clear account', next: 'crowdEnd', effects: { historyFlags: ['helped guide a crowd away from a false alarm'] } },
+    { id: 'crowdReport', label: 'Give the stewards a clear account', next: 'crowdEnd' },
   ]),
   crowdEnd: end('crowdEnd', 'Outside the Exhibition Hall', 'The hall closes for inspection of the dropped lantern and the damaged stair rail. Stewards thank the people who opened another way out; the fair’s first-aid tent remains open for anyone hurt in the surge.'),
 }, 'platform');

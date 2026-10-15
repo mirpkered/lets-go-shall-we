@@ -306,7 +306,7 @@ export const THE_OUTLAWS_MOTHER = W('the-outlaws-mother', 'The Outlaw’s Mother
     { id: 'tellDeputy', label: 'Ask the deputy to deliver it safely', next: 'deputy' },
   ]),
   canyon: scene('canyon', 'A Man by the Dry Wash', 'The wanted man meets you in the open beside the waystation. He is unarmed in view, but a horse is saddled nearby. He asks if the deputy followed you; the letter remains sealed unless you opened it.', [
-    { id: 'handLetter', label: 'Hand him the letter and step away', next: 'readLetter', effects: { setFlags: ['familyNewsDeliveredToSon'] } },
+    { id: 'handLetter', label: 'Hand him the letter and step away', next: 'readLetter', effects: { setFlags: ['familyNewsDeliveredToSon'], historyFlags: ['carried family news to a wanted traveler without helping him escape'] } },
     { id: 'askReturnBook', label: 'Ask about returning the account book', next: 'choice' },
     { id: 'refuseTransfer', label: 'Keep the letter and leave', next: 'departure' },
   ]),
@@ -321,7 +321,7 @@ export const THE_OUTLAWS_MOTHER = W('the-outlaws-mother', 'The Outlaw’s Mother
     { id: 'leaveChoice', label: 'Refuse to broker the terms', next: 'departure' },
   ]),
   deputy: scene('deputy', 'The Patrol at the Waystation', 'The deputy listens and asks for only what you actually saw. He will take the letter or the returned book, but he will not promise the family immunity from questioning.', [
-    { id: 'deputyLetter', label: 'Give the letter to the deputy', next: 'departure', effects: { historyFlags: ['carried family news to a wanted traveler without helping him escape'] } },
+    { id: 'deputyLetter', label: 'Give the letter to the deputy', next: 'departure' },
     { id: 'deputyLead', label: 'Share the canyon location', next: 'departure' },
   ]),
   bookReturned: scene('bookReturned', 'The Account Book at the Desk', 'The waystation keeper takes the freight account book and writes down who returned it. The wanted man is gone before the deputy arrives; the book may help identify what was stolen, but it does not settle his guilt.', [{ id: 'bookFinish', label: 'Leave the record with the keeper', next: 'departure', effects: { historyFlags: ['returned a freight account book through a waystation'] } }]),
@@ -418,17 +418,17 @@ export const THE_LAST_SHOT = W('the-last-shot', 'The Last Shot', 'A confrontatio
     { id: 'coverLeave', label: 'Leave by the side path', next: 'retreat' },
   ]),
   witness: scene('witness', 'Voices across the Lane', 'A neighbor answers from the porch but has not entered the yard. The gunman looks toward the voice; his revolver remains in hand. The owner can reach the side gate if the gunman turns away.', [
-    { id: 'witnessOwner', label: 'Signal the owner toward the side gate', next: 'retreat' },
+    { id: 'witnessOwner', label: 'Signal the owner toward the side gate', next: 'retreat', effects: { historyFlags: ['helped a rancher leave an armed debt dispute'] } },
     { id: 'witnessTerms', label: 'Ask the gunman to name his employer', next: 'terms' },
   ], 'warning'),
   terms: scene('terms', 'A Paid Threat', 'The gunman says the owner owes money for a fence line. The owner says the bill is false. Neither has a paper present. The neighbor has heard the threat; nobody has a clear view of the gunman’s other hand.', [
     { id: 'termsStandDown', label: 'Ask him to leave before more witnesses arrive', chance: { probability: 0.57, successNext: 'weaponSafe', failureNext: 'weaponDrop', successMessage: 'He backs toward the road rather than face witnesses.', failureMessage: 'He turns the revolver toward the well.' } },
-    { id: 'termsOwnerLeave', label: 'Guide the owner out through the side gate', next: 'retreat' },
+    { id: 'termsOwnerLeave', label: 'Guide the owner out through the side gate', next: 'retreat', effects: { historyFlags: ['helped a rancher leave an armed debt dispute'] } },
     { id: 'termsSurrender', label: 'Step back and let the owner leave first', next: 'retreat' },
   ], 'danger'),
   weaponDrop: scene('weaponDrop', 'The Revolver Hits Dirt', 'The hired gun’s revolver falls. He is alive and reaches for his shoulder; the neighbors are now at the gate. The owner is behind the well, and no one approaches the dropped weapon.', [{ id: 'dropSecure', label: 'Keep everyone back until the constable arrives', next: 'aftermath', effects: { setFlags: ['lastShotWeaponSecured'] } }]),
   retreat: scene('retreat', 'Outside the Yard', 'You reach the side lane. The owner is safe only if they followed your signal; the neighbor has seen the armed threat. The gunman remains in the yard and may leave before the constable arrives.', [
-    { id: 'retreatReport', label: 'Send the neighbor for the constable', next: 'aftermath', effects: { historyFlags: ['helped a rancher leave an armed debt dispute'] } },
+    { id: 'retreatReport', label: 'Send the neighbor for the constable', next: 'aftermath' },
     { id: 'retreatGo', label: 'Leave while the lane is open', next: 'escaped' },
   ]),
   weaponSafe: scene('weaponSafe', 'The Gunman Leaves', 'The gunman backs out of the yard without firing. The neighbor records the direction he takes; the debt and fence line remain disputed, but no one was shot.', [{ id: 'safeReport', label: 'Wait for the constable with the owner', next: 'aftermath' }]),
