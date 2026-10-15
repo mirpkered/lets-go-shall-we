@@ -528,7 +528,7 @@ export const THE_SALUTE_FROM_THE_WRONG_PORCH = story('the-salute-from-the-wrong-
     { id: 'waveBack', label: 'Return the salute and continue', next: 'wave' },
   ]),
   first: scene('first', 'A Courtesy Returned', 'The first captain says his neighbor began the custom after a long illness. He has kept returning it so the neighbor will know he is seen.', [
-    { id: 'shareAccount', label: 'Tell the other captain what he said', next: 'understood' },
+    { id: 'shareAccount', label: 'Tell the other captain what he said', next: 'oneAccountShared' },
     { id: 'askDirectly', label: 'Ask whether they ever spoke about it', next: 'meeting' },
   ]),
   both: scene('both', 'The Same Story Twice', 'They have never agreed who started the salute. Both say they continue it because stopping first would seem unfriendly.', [
@@ -539,7 +539,8 @@ export const THE_SALUTE_FROM_THE_WRONG_PORCH = story('the-salute-from-the-wrong-
     { id: 'shareTea', label: 'Let them choose a time to talk', next: 'understood' },
     { id: 'returnRoad', label: 'Leave them to their conversation', next: 'understood' },
   ]),
-  understood: end('understood', 'A Salute Kept by Choice', 'The captains keep waving, now knowing neither owes the other an origin story. The driver receives a salute of his own, and the lane feels less formal.'),
+  oneAccountShared: end('oneAccountShared', 'One Account Passed Along', 'You pass along one captain’s explanation. The other has not replied, so whether it changes their understanding or the custom remains theirs to decide.'),
+  understood: end('understood', 'A Salute Kept by Choice', 'After both captains share their views, they keep waving without owing one another an origin story. The driver receives a salute of his own, and the lane feels less formal.'),
   wave: end('wave', 'A Greeting for the Road', 'You return the salute. Both captains answer, each pleased that the custom has acquired one more willing participant.'),
 });
 

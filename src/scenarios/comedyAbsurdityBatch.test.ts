@@ -46,6 +46,29 @@ describe('comedy and absurdity additions', () => {
     expect(THE_COMEDY_ABSURDITY_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
   });
 
+  it('keeps a one-sided salute account separate from mutual understanding', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-salute-from-the-wrong-porch')!;
+    const character = newCharacter('Salute Route QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      return choose(state, scenario, choice);
+    };
+
+    let oneSided = act(initial, 'street', 'askFirstCaptain');
+    oneSided = act(oneSided, 'first', 'shareAccount');
+    expect(oneSided.run?.sceneId).toBe('oneAccountShared');
+    expect(scenario.scenes.oneAccountShared.text).toMatch(/has not replied/i);
+    expect(scenario.scenes.oneAccountShared.text).not.toMatch(/both captains|keep waving/i);
+
+    let mutual = act(initial, 'street', 'askBothTogether');
+    mutual = act(mutual, 'both', 'introduceThem');
+    mutual = act(mutual, 'meeting', 'returnRoad');
+    expect(mutual.run?.sceneId).toBe('understood');
+    expect(scenario.scenes.understood.text).toMatch(/both captains share their views/i);
+  });
+
   it('does not invent an inspection plan when the Wagon-Wheel Meeting only clears the cart lane', () => {
     const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-wagon-wheel-meeting')!;
     const character = newCharacter('Wagon Wheel Route QA');

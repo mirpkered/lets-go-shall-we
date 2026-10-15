@@ -350,6 +350,13 @@ describe('surprise anthology and library gap-fill', () => {
     patchRoute = act(patchRoute, scenario, 'craft', 'canvasPatch');
     expect(patchRoute.run?.sceneId).toBe('patched');
     expect(scenario.scenes.patched.text).toMatch(/worker leaves with a temporary patch/i);
+
+    let proposedSplit = start(scenario);
+    proposedSplit = act(proposedSplit, scenario, 'shop', 'hearWorker');
+    proposedSplit = act(proposedSplit, scenario, 'worker', 'offerSplitPair');
+    expect(proposedSplit.run?.sceneId).toBe('split');
+    expect(scenario.scenes.split.text).toMatch(/remains a proposal rather than a shared choice/i);
+    expect(scenario.scenes.split.text).not.toMatch(/customers agree|both leave with a compromise/i);
   });
 
   it('keeps the collection inside the selector’s low-risk share and without new combat or fantasy', () => {

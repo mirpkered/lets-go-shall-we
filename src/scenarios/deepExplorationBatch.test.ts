@@ -132,6 +132,32 @@ describe('deep exploration anthology', () => {
     expect(sceneText(mill.scenes.sealedMill, braced)).toMatch(/lower wheel remains braced/i);
   });
 
+  it('does not invent keeper acceptance or crew consensus after returning from the barrow', () => {
+    const barrow = getScenario('road-through-the-barrow')!;
+    const character = newCharacter('Barrow Consensus QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, barrow) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = barrow.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      return choose(state, barrow, choice);
+    };
+
+    let secretReturn = act(initial, 'barrowRoad', 'outside');
+    secretReturn = act(secretReturn, 'barrowArch', 'secretEntry');
+    secretReturn = act(secretReturn, 'barrowLoop', 'trueNiche');
+    secretReturn = act(secretReturn, 'barrowBurial', 'returnLoop');
+    expect(secretReturn.run?.sceneId).toBe('barrowResolved');
+    expect(barrow.scenes.barrowResolved.text).toMatch(/decision remain unresolved/i);
+    expect(barrow.scenes.barrowResolved.text).not.toMatch(/keeper accepts|crew agrees/i);
+
+    let permitted = act(initial, 'barrowRoad', 'permission');
+    permitted = act(permitted, 'barrowEntry', 'loop');
+    permitted = act(permitted, 'barrowLoop', 'trueNiche');
+    permitted = act(permitted, 'barrowBurial', 'returnLoop');
+    expect(permitted.run?.sceneId).toBe('barrowResolved');
+    expect(barrow.scenes.barrowResolved.text).toMatch(/no reroute has been agreed/i);
+  });
+
   it('recognizes the optional sounding rod and preserves a mid-adventure snapshot exactly', () => {
     const bell = getScenario('bell-below-the-water')!;
     const character = newCharacter('Saved Explorer');

@@ -85,7 +85,8 @@ describe('outcome-dependent continuity spin-offs', () => {
     expect(result.character?.favors).toEqual(source.character?.favors);
 
     const composite = play(NOTES_AFTER_THE_RIBBON, startAdventure(source, NOTES_AFTER_THE_RIBBON), ['askValeClaim', 'leaveWithoutNamingAnOriginal', 'labelWorkingComposite']);
-    expect(composite.character?.lore).toContain('The fair bakers made a working plum-and-pepper pie card from Hester’s measures and Lotte’s seasoning phrase, labeled as their composite rather than Mrs. Orrow’s original recipe.');
+    expect(composite.character?.lore).toContain('A working plum-and-pepper pie card was assembled from Hester’s measures and Lotte’s seasoning phrase, labeled as a present-day composite rather than Mrs. Orrow’s original recipe.');
+    expect(NOTES_AFTER_THE_RIBBON.scenes.composite.text).not.toMatch(/bakers agree|bakers' approval/i);
     const deferred = play(NOTES_AFTER_THE_RIBBON, startAdventure(source, NOTES_AFTER_THE_RIBBON), ['readLotteCard', 'compareLotteNotes', 'deferTheCard']);
     expect(deferred.character?.lore).toEqual(source.character?.lore);
   });

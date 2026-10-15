@@ -124,7 +124,7 @@ export const THE_COBBLERS_LAST_PAIR = story('the-cobblers-last-pair', 'The Cobbl
   ]),
   partner: end('partner', 'A Different Step', 'The dancer’s partner agrees to change the first figure. The worker’s boot still needs repair; no patch or return promise is arranged on this route.'),
   spare: end('spare', 'A Borrowed Boot', 'The cobbler finds one old boot that fits well enough for a day. The worker borrows it, the dancer gets the paid soles, and the shop takes on a repair for tomorrow.'),
-  split: end('split', 'Neither Pair Is Perfect', 'The customers agree to split the finished soles between them. The cobbler will need to make two new pairs later; tonight, both leave with a compromise they chose.'),
+  split: end('split', 'Neither Pair Is Perfect', 'You suggest splitting the finished soles. The dancer has not been asked on this route, so the arrangement remains a proposal rather than a shared choice.'),
   patched: end('patched', 'A Repair, Not a New Pair', 'The worker leaves with a temporary patch and the dancer keeps the finished soles. The cobbler writes down the worker’s name for a proper repair, not a promise of free work.'),
   dancerGetsPair: end('dancerGetsPair', 'The Paid Pair Goes Out', 'The dancer leaves with the soles they paid for and changes the performance to suit them. The worker returns to the road with a boot that still needs repair.'),
 });

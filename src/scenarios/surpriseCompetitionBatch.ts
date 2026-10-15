@@ -59,7 +59,7 @@ export const THE_LAST_VERSE_CONTEST = story('the-last-verse-contest', 'The Last 
 });
 
 const MRS_ORROW_ACCOUNTS_LORE = 'At a county-fair table, Hester and Lotte’s distinct memories of Mrs. Orrow’s plum-and-pepper pie method were recorded under their own names; neither account establishes an original recipe.';
-const MRS_ORROW_COMPOSITE_LORE = 'The fair bakers made a working plum-and-pepper pie card from Hester’s measures and Lotte’s seasoning phrase, labeled as their composite rather than Mrs. Orrow’s original recipe.';
+const MRS_ORROW_COMPOSITE_LORE = 'A working plum-and-pepper pie card was assembled from Hester’s measures and Lotte’s seasoning phrase, labeled as a present-day composite rather than Mrs. Orrow’s original recipe.';
 
 export const NOTES_AFTER_THE_RIBBON = {
   ...story('notes-after-the-ribbon', 'Notes After the Ribbon', 'Lotte follows through on comparing the bakers’ memories, but a community table wants one honest account from several incomplete notes.', T('A named baker asks the traveler to preserve competing oral memories without declaring one an authentic recipe.', 'mediator', 'warm/hopeful', 'county-fair kitchen', ['oral-account comparison', 'attribution decision', 'stateful cultural record'], 'invited/known contact', ['money/item/knowledge/history possible']), 'notes', {
@@ -87,7 +87,7 @@ export const NOTES_AFTER_THE_RIBBON = {
       { id: 'deferTheCard', label: 'Wait for another family account before printing', next: 'deferred', effects: { historyFlags: ['deferred_mrs_orrow_recipe_record_for_more_accounts'] } },
     ]),
     separate: end('separate', 'Accounts Kept in Their Own Hands', 'The supper card gives Hester and Lotte separate lines, with Vale’s pear claim kept apart. Guests can see what each baker remembers without mistaking either memory for a verified original.'),
-    composite: end('composite', 'A Working Card, Not an Original', 'The bakers agree to label the card as a present-day working version assembled from their own methods. It can guide the supper kitchen, but it does not claim to recover Mrs. Orrow’s exact recipe.'),
+    composite: end('composite', 'A Working Card, Not an Original', 'You make a present-day working card from the two methods. The label keeps it separate from Mrs. Orrow’s original recipe; the bakers’ approval of the composite has not been established.'),
     tastingOnly: end('tastingOnly', 'What the Contest Could Say', 'The card records the pies’ flavor and texture, not an unverified recipe. Lotte keeps the separate notes rather than forcing them into one account.'),
     deferred: end('deferred', 'Room for Another Memory', 'No recipe card is printed yet. Lotte keeps each note attributed and leaves space for another account without calling the blank a solution.'),
   }),
