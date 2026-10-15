@@ -23,6 +23,32 @@ function pick(state: SaveData, scenario: Scenario, choiceId: string, random = ()
 }
 
 describe('Christmas and winter-affinity adventures', () => {
+  it('keeps ambiguous parcel-address Knowledge tentative until Nell is actually reached', () => {
+    const parcel = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'last-parcel-before-christmas')!;
+    let state = pick(fresh(parcel), parcel, 'askClerk');
+    state = pick(state, parcel, 'bridgeVale');
+    expect(state.character?.knowledge).toContain('The clerk recalls a child named Nell and a narrow blue door, but both Vale households have blue doors; the intended address is unconfirmed.');
+    expect(state.character?.knowledge).not.toContain('A parcel marked H. Vale was intended for the child Nell at the bridge-side blue door.');
+    state = pick(state, parcel, 'leaveParcel');
+    expect(state.run?.sceneId).toBe('heldParcel');
+    expect(state.character?.historyFlags).not.toContain('Delivered a Christmas parcel to Nell at the mill');
+  });
+
+  it('does not infer the sealed frozen letter contents from its sender and courier route', () => {
+    const letter = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-frozen-letter')!;
+    let sealed = pick(fresh(letter), letter, 'liftSatchel');
+    sealed = pick(sealed, letter, 'takeToMill');
+    sealed = pick(sealed, letter, 'secureLetter');
+    expect(sealed.character?.knowledge).toContain('The miller recognizes the sealed letter as one from his sister in another town and says the courier will carry it tomorrow; its contents remain unknown.');
+    expect(sealed.character?.knowledge).not.toContain('The miller’s sister sends letters through the mill courier; the sealed letter was not an emergency warning.');
+
+    let learnedContext = pick(fresh(letter), letter, 'liftSatchel');
+    learnedContext = pick(learnedContext, letter, 'takeToMill');
+    learnedContext = pick(learnedContext, letter, 'askMiller');
+    expect(learnedContext.run?.sceneId).toBe('letterContext');
+    expect(letter.scenes.letterContext.text).toContain('family matters, not danger');
+  });
+
   it('recognizes the Black Milling Stone as a comparison clue at an old mill bearing', () => {
     const scenario = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'frozen-millwheel')!;
     const character = newCharacter('Millwright Explorer');
