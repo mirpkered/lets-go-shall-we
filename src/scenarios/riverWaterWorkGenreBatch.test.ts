@@ -78,6 +78,29 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     expect(sceneText(rope.scenes.paid, inspected)).toMatch(/taking the suspect line out of passenger service/i);
   });
 
+  it('keeps the old-mark obstruction general and gates the timber identification on probing', () => {
+    const bridge = BATCH.find(({ id }) => id === 'the-mark-below-the-waterline')!;
+    let marked = chooseAt(fresh(bridge), bridge, 'bridge', 'mark');
+    const general = sceneText(bridge.scenes.hazard, marked);
+    expect(general).toMatch(/obstruction near the lower approach/i);
+    expect(general).not.toMatch(/broken timber|near arch|current slackens/i);
+    marked = chooseAt(marked, bridge, 'hazard', 'close');
+    expect(sceneText(bridge.scenes.paid, marked)).toMatch(/lower-approach obstruction/i);
+    marked = chooseAt(marked, bridge, 'paid', 'coin');
+    expect(sceneText(bridge.scenes.done, marked)).not.toMatch(/timber/i);
+
+    const probedStart = fresh(bridge);
+    probedStart.run!.inventory.push('collapsibleSoundingRod');
+    let probed = chooseAt(probedStart, bridge, 'bridge', 'probe');
+    expect(probed.run?.flags).toContain('bridge_timber_probed');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(probed, storage as never);
+    probed = loadSave(storage as never);
+    expect(sceneText(bridge.scenes.hazard, probed)).toMatch(/usable rod catches a broken timber just below the near arch/i);
+    probed = chooseAt(probed, bridge, 'hazard', 'close');
+    expect(sceneText(bridge.scenes.paid, probed)).toMatch(/lower-approach obstruction/i);
+  });
+
   it('makes every story leave meaningful continuity and gives most a legitimate Gear path', () => {
     let gearRoutes = 0;
     for (const scenario of BATCH) {
