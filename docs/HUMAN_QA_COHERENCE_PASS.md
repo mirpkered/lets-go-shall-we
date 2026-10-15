@@ -39,5 +39,5 @@ This pass therefore does **not** claim an exhaustive, route-level review of all 
 - TypeScript and production build: **passed**; the known large-bundle warning remains.
 - Inventory remains 861 Adventures, 74 Gear definitions, and 32 stable Knowledge facts (also exercised by the passing registry/inventory validation tests).
 - Audit JSON parses and still reports the original audit as `COMPLETE`; the two post-audit findings remain separately represented. No historical finding or disposition was changed in this pass.
-- `git diff --check`: passed before recording this report; rerun before checkpointing.
+- `git diff --check`: passed after the report and ledger evidence update, before checkpointing.
 - Weekly Scenario Batch remains paused. No scheduler change, push, merge, or deployment occurred.
