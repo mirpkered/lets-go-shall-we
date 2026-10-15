@@ -9820,12 +9820,12 @@
       "slug": "the-siding-spill",
       "title": "The Siding Spill",
       "sourceFile": "src/scenarios/tradesApprenticeshipGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0222"
       ],
       "reviewProvenance": "current-source route review; waybill, usable-wrench stabilization, worker support, limited recovery/defer, combat/resume and compensation traced",
-      "notes": "The usable wrench route explicitly leaves the marked case below the bank. The decision/transfer result nevertheless claims the listed equipment has been returned and a separate unlisted rod is released as the county surveyor’s duplicate, while no route after that evidence recovers/returns the marked equipment or establishes the duplicate’s release. Limited recovery and owner-trace variants do not supply that missing transfer witness.",
+      "notes": "CRA-F0222 is repaired. The worker-supported cart route now explicitly returns the listed case unopened and reconciles the separate trackside rod; only that route offers the limited handoff and duplicate release. Other approaches cannot select the handoff, and their fee result makes no case-return or rod-transfer claim.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -9976,12 +9976,12 @@
       "slug": "the-iron-at-milepost-nine",
       "title": "Iron at Milepost Nine",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0225"
       ],
       "reviewProvenance": "current-source route review; current inventory/stamp, old records, second-mark inspection, farmhand account, county pry return and wedge release traced",
-      "notes": "The county confirms the stamped pry tool should be returned, but the three route variants do not establish abandonment or signed county clearance for the unmarked Steel Wedge: the stamp identifies only the pry tool, the old-record route authorizes transfer of that pry tool after inspection, and the underside date explicitly does not settle wedge ownership. The shared property settlement nevertheless says the county authorizes the wedge as abandoned and offers it as the reward.",
+      "notes": "CRA-F0225 is repaired. Only the old-record route now surfaces county-signed ditch-clearance for the unmarked wedge, and the explicit return/transfer action is gated to that route. Stamp comparison and post-date inspection do not clear the wedge; their fee outcome does not claim equipment transfer.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18039,7 +18039,9 @@
       "violatedRule": "Object recovery, return, and ownership release require route-established custody and authorization before a shared settlement claims them.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 139, gameplay/test commit 081dcf2. In `src/scenarios/salvageRecoveryGenreBatch.ts`, the track-worker-supported route now enables an explicit return of the listed case; that action confirms the separate trackside rod as a duplicate and gates its release. Other arrival approaches cannot select the return action, and fee text does not claim the case was returned or rod transferred. Regression contrasts unsupported approaches against the qualifying worker/return route and verifies the actual Gear transfer. Salvage, Trades Apprenticeship, registry, and diversity suites passed (40 tests); full suite passed (127 files / 2,512 tests); TypeScript/production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0223",
@@ -18075,7 +18077,9 @@
       "violatedRule": "Ownership transfer and abandonment require route-established evidence/authorization for the specific object being released.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 139, gameplay/test commit 081dcf2. In `src/scenarios/salvageRecoveryGenreBatch.ts`, only the old-record route now establishes county-signed ditch-clearance for the unmarked Steel Wedge. The explicit return/release action and Gear reward both require that route proof; stamp and post-date routes retain the wedge under county control, and the inspection-fee ending makes no equipment-transfer claim. Regression contrasts both unqualified routes with the clearance-and-return route. Salvage, Trades Apprenticeship, registry, and diversity suites passed (40 tests); full suite passed (127 files / 2,512 tests); TypeScript/production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0226",
@@ -20406,9 +20410,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 762,
+    "HEALTHY": 764,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 40,
+    "CONFIRMED DEFECT": 38,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
