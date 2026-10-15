@@ -11977,12 +11977,13 @@
       "slug": "the-wet-rope-at-dawn",
       "title": "The Wet Rope at Dawn",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0269"
       ],
       "reviewProvenance": "current-source route review; flex-inspection versus replace/tag-out, unsafe loaded-ferry test refusal, retire versus non-load marking, and coin/gloves settlement traced",
-      "notes": "rope.replace tags the line out and brings a spare without flexing the splice, but flows to choice, which states that the stiff fibers catch at the splice. That tactile test result is established only by rope.inspect. The initial pale/stiff visual observation is common to both routes, but not the later catch; the loaded test is refused and both safe dispositions keep the line out of passenger service.",
+      "notes": "The recorded audit witness described the replace route reaching the tactile-catch choice; current source now routes `rope.replace` directly to `paid`, while only `rope.inspect` reaches `choice`. The remaining live manifestation was that shared payment still said the coin was for an inspection, even on replace/tag-out. Wave 134 changes the justification and spare-gear provenance to the action both branches establish: keeping the suspect line out of passenger service. The loaded test remains refused and both safe dispositions keep the line out of passenger service.",
+      "implementationEvidence": "Local CRA-C0001 Wave 134 gameplay commit 0e8a08a. Current source already routes replace/tag-out directly to payment, leaving the tactile catch text exclusive to inspection. The shared payment now credits taking the suspect line out of passenger service rather than an inspection, and the spare-glove provenance uses the same supported rationale. Regression contrasts replace/tag-out with flex inspection through the shared payment and confirms only the inspection route receives the tactile result. River water work, registry, content-quality, and inventory checks passed (33 tests); RC12 validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18667,7 +18668,9 @@
       "violatedRule": "Converged scene text must not claim a test or tactile result not performed on the selected route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 134 gameplay commit 0e8a08a. Current source routes replace/tag-out directly to payment and the tactile splice result only through inspection. Shared compensation no longer credits an inspection on replace/tag-out; it credits keeping the suspect line out of passenger service, as both routes establish. Regression covers both paths. River water work, registry, content-quality, and inventory checks passed (33 tests); RC12 validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0270",
@@ -20394,9 +20397,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 757,
+    "HEALTHY": 758,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 45,
+    "CONFIRMED DEFECT": 44,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
