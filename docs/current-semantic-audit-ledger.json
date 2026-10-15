@@ -577,7 +577,7 @@
       "slug": "one-more-round",
       "title": "One More Round",
       "sourceFile": "src/scenarios/oneMoreRound.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0011"
       ],
@@ -586,7 +586,8 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "notes": "CRA-F0011 repaired: the constable’s fight-specific aftermath now requires the factual tavernFightOccurred run flag, set only on routes that enter from an established fight. A long nonviolent investigation/search route receives neutral arrival text regardless of elapsed time."
     },
     {
       "position": 13,
@@ -15027,7 +15028,9 @@
       "clusterId": "CRA-C0003",
       "metadataConfidence": "PRIOR_CHAT_REVIEW_SUMMARY",
       "preReconciliationPosition": 12,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "CRA-C0003 local repair commit cccb6f8. The elapsed-time text variant at constableArrives was replaced by a route-proof variant requiring `tavernFightOccurred`; the flag is recorded only by the actual fight-arrival choices. oneMoreRound.test.ts contrasts a failed nonviolent bench search whose elapsed time is advanced to 24 minutes against the route that reaches threatMoment (where the bottle breaks) and calls help. The first receives neutral text; the second retains fight-specific aftermath. One More Round, fictional-time, and scenario-library audit suites pass (30 tests); TypeScript and git diff --check pass."
     },
     {
       "findingId": "CRA-F0012",
@@ -20490,9 +20493,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 796,
+    "HEALTHY": 797,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 6,
+    "CONFIRMED DEFECT": 5,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

@@ -11,6 +11,12 @@ CRA-C0009 is complete: CRA-F0223, CRA-F0226, and CRA-F0232 are `VERIFIED_HEALTHY
 
 The three affected Adventures now derive HEALTHY. Current live classifications are **796 HEALTHY, 59 MINOR CONCERN, 6 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **351 are dispositioned** (**342 repaired**, **9 healthy/no-longer-reproduces**) and **3 remain open**: CRA-C0003 (CRA-F0011), CRA-C0005 (CRA-F0048), and CRA-C0012 (CRA-F0139), all MEDIUM. C0009 audit dispositions are locally pending their separate checkpoint commit. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
 
+### Current local repair checkpoint — CRA-C0003 elapsed-time event proof
+
+CRA-F0011 (`one-more-round`, MEDIUM) is repaired. The constable-arrival fight aftermath no longer appears merely because 24 minutes passed. A factual `tavernFightOccurred` run flag is set only when the route reaches the constable from an established fight; a delayed nonviolent search receives neutral text. No persistent/save state was added. The One More Round, fictional-time, and scenario-library audit suites pass (**30 tests**); TypeScript and `git diff --check` pass. Gameplay/test commit: `cccb6f8`.
+
+One More Round now derives HEALTHY. Current live classifications are **797 HEALTHY, 59 MINOR CONCERN, 5 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **352 are dispositioned** (**343 repaired**, **9 healthy/no-longer-reproduces**) and **2 remain open**: CRA-C0005 (CRA-F0048) and CRA-C0012 (CRA-F0139), both MEDIUM. The C0003 audit disposition is locally pending its separate checkpoint commit. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
+
 ### Previous local repair checkpoint — carry-forward reconciliation
 
 Focused current-source review resolved the five incomplete carry-forwards without reconstructing missing historical witnesses. CRA-F0006 (`bridge-out`) and CRA-F0007/F0008 (`the-long-way-home`) are `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`: all relevant route/result families were traced, and current route-specific outcomes remain truthful; their historical witnesses and severities remain unknown. The original `CARRY_FORWARD_INCOMPLETE` provenance is retained.
