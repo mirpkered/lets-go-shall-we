@@ -5578,12 +5578,12 @@
       "slug": "the-goat-wouldnt-stay-dead",
       "title": "The Goat That Wouldn’t Stay Dead",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0114"
       ],
       "reviewProvenance": "current source route review; notch comparison, ledger/neighbor accounts, burial check, grave closure/withdrawal/miracle claim, gated ending variants and prior test coverage traced",
-      "notes": "goatMarks.askGravedigger can reach goatBurial without goatLedger. From there closeGrave records History credit for resolving the identities through the feed tally, while leaveGrave and claimMiracle variants say the tally distinguishes three goats. Those routes saw ear marks and the empty grave, but did not inspect the tally.",
+      "notes": "CRA-F0114 repaired: goatMarks.askGravedigger can reach goatBurial without goatLedger. closeGrave no longer records History credit for resolving identities through the feed tally; grave-close, leave-grave, and miracle-claim outcomes preserve the missing-ledger uncertainty. The showTally route retains its supported result. Regression covers both the bypass and tally route; gameplay commit c140e0d.",
       "preReconciliationPosition": 311,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -6527,12 +6527,12 @@
       "slug": "the-toast-nobody-ordered",
       "title": "The Toast Nobody Ordered",
       "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0138"
       ],
       "reviewProvenance": "current source route review; mistaken introduction, private correction, couple preference conversation, toast, best-man recovery, early departure and Knowledge/History reward branches traced",
-      "notes": "On the private aside route, the best man admits his own introduction confusion but the bride/groom preferences are not stated; selecting offerWords nevertheless grants Knowledge that the couple preferred a brief sincere toast. That claim is sourced only by the other couple conversation route, so the route grants unearned Knowledge.",
+      "notes": "CRA-F0138 repaired: the couple-preference Knowledge grant now occurs on supper.askCouple, where both preferences are stated; the private aside and offerWords route no longer grants it. Positive/negative route regression added; gameplay commit c140e0d.",
       "preReconciliationPosition": 359,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14640,12 +14640,12 @@
       "slug": "station-mark-in-margin",
       "title": "The Station Mark in the Margin",
       "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0361"
       ],
       "reviewProvenance": "Current-source route review; routes, outcomes, reward gates, and relevant persistent state traced.",
-      "notes": "Traced refusal, address/route verification, immediate transmission, uncertainty warning, hold for morning operator, settlement and save/resume. Opening says clerk thinks marks may request repeat; office book does not confirm meaning. The only primary Knowledge fact is attached to every handling choice, including carryNow and verifyOutside; no choice compares a confirmed copy or resolves the uncertainty. Save persistence is correctly durable once granted, but route proof for the grant is absent.",
+      "notes": "Traced refusal, address/route verification, immediate transmission, uncertainty warning, hold for morning operator, settlement and save/resume. The primary repeat-mark Knowledge grant was removed because no route confirms the clerk's tentative interpretation. The shared courier builder and other callers remain unchanged; the demonstrated wire-repeat lesson remains available in its owning story. Regression covers both handling choices and the courier save/resume suite.",
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
       "registryStatus": "REGISTERED"
@@ -14876,8 +14876,8 @@
       "registrationStatus": "LIVE",
       "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
       "currentSeverity": "LOW",
-      "currentRouteWitness": "chapelExterior.callOut -> voiceBelow and chapelNave.searchVestry -> priestNotes.readNotes grant chapelInscription before the route presents the exact soot inscription. The priest's answer and notes discuss keeping the bell silent / the keeper following its sound, but do not establish the inscription's exact wording or source. Contrast: underStairs.readWarning explicitly studies the soot-black words and grants the fact.",
-      "implementationEvidence": "Historical witness and severity were unavailable. Focused current-source review re-established a premature route-proof grant. The unsupported Knowledge effect was removed from callOut and readNotes; the explicit readWarning route remains the grant point. Regression covers both negative paths and the positive studied-inscription route. Gameplay/test commit: 93e9f8ac8baa65381a52f229d3cc0cda678e7432."
+      "currentRouteWitness": "Current-source follow-up found two remaining grants: underStairs.findPriestBelow -> priestAfterHound.bindPriest awarded chapelInscription despite the priest discussing only the stolen handbell and keeper; the subsequent priestStabilized.askAfterBinding -> priestAccount.requestKeyAndWard also awarded it while granting the key/ward, without showing or reading the inscription. Contrast: underStairs.readWarning explicitly studies the soot-black words. Both unsupported effects are now removed; the direct readWarning grant remains.",
+      "implementationEvidence": "Historical witness and severity were unavailable. Focused current-source review re-established a premature route-proof grant. The earlier repair removed the unsupported effect from callOut and readNotes; this reconciliation found the remaining leaks on priestAfterHound.bindPriest and priestAccount.requestKeyAndWard, neither of which reveals the soot inscription. Both effects now grant only the independently established handbell fact; underStairs.readWarning remains the sole soot-inscription acquisition route. Regression proves callOut, notes, binding, and key/ward routes do not grant it; readWarning does, and the earned fact survives save/reload. CRA-F0001 remains VERIFIED_HEALTHY_REPAIRED."
     },
     {
       "findingId": "CRA-F0002",
@@ -15313,6 +15313,8 @@
       "routeWitness": "fishingResult.askCreekName -> fishingTalk. The effect says a local angler shared the creek bend's name and nearby footpath; fishingTalk says only that it bends around an alder stand before meeting the old footpath.",
       "violatedRule": "Knowledge entries must not claim a specific fact that the route's dialogue does not actually convey.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed feed-tally resolution credit from closeGrave, which is reachable through goatMarks.askGravedigger without visiting goatLedger. Grave closure still records the action actually performed; grave-close, leave-grave, and miracle-claim endings now explicitly preserve uncertainty without the stable book. The showTally route retains its specific result. Route-contrast regression covers gravedigger/closure versus the ledger tally route. Focused final-choice, Monster Hunt, and anthology suites pass (42 tests across 3 files). Gameplay commit: c140e0d.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 96,
       "registrationStatus": "LIVE",
@@ -15358,6 +15360,8 @@
       "routeWitness": "cemeteryBell.readGraveBellRelic unconditionally adds the reaction Knowledge fact. For graveBellCause=windAndSpring/animal/groundskeeper, bellRelicResponse says the Grave Coin remains at usual temperature or Yew Charm hangs slack; only unexplained produces a reaction.",
       "violatedRule": "Knowledge must describe only information or evidence actually established on the selected route.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Moved the couple-preference Knowledge grant from aside.offerWords to supper.askCouple, the route that actually hears both preferences. The private best-man correction/offer route no longer grants the fact; asking the couple still does. Added a positive/negative route regression. Focused final-choice, Monster Hunt, and anthology suites pass (42 tests across 3 files). Gameplay commit: c140e0d.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 117,
       "registrationStatus": "LIVE",
@@ -16556,6 +16560,8 @@
       "routeWitness": "goatMarks.askGravedigger -> goatBurial bypasses goatLedger; goatBurial.closeGrave grants History for resolving identities through the feed tally, while leaveGrave/claimMiracle say the tally distinguishes three goats. Those routes establish ear marks and an empty grave, not the tally.",
       "violatedRule": "Knowledge/History about a specific explanation must be granted only when route actions establish that evidence; shared closure cannot import an unvisited record.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed feed-tally resolution credit from closeGrave, which is reachable through goatMarks.askGravedigger without visiting goatLedger. Grave closure still records the action actually performed; grave-close, leave-grave, and miracle-claim endings now explicitly preserve uncertainty without the stable book. The showTally route retains its specific result. Route-contrast regression covers gravedigger/closure versus the ledger tally route. Focused final-choice, Monster Hunt, and anthology suites pass (42 tests across 3 files). Gameplay commit: c140e0d.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 311,
       "registrationStatus": "LIVE"
@@ -16914,6 +16920,8 @@
       "routeWitness": "supper.correctName -> aside.offerWords grants the preference Knowledge. aside says the best man admits mixing up three introductions and that the couple can hear if addressed, but no preference is given; only the separate supper.askCouple route establishes bride/groom preferences.",
       "violatedRule": "Knowledge must describe facts actually learned on the selected route, not facts available only on another branch.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Moved the couple-preference Knowledge grant from aside.offerWords to supper.askCouple, the route that actually hears both preferences. The private best-man correction/offer route no longer grants the fact; asking the couple still does. Added a positive/negative route regression. Focused final-choice, Monster Hunt, and anthology suites pass (42 tests across 3 files). Gameplay commit: c140e0d.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 359,
       "registrationStatus": "LIVE"
@@ -20007,6 +20015,8 @@
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "registrationStatus": "LIVE",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Removed the scenario's primary telegraphRepeatConvention grant while leaving the shared courier builder and all other callers unchanged. Neither verifyOutside nor carryNow resolves the clerk's tentative interpretation; the explicit telegraph-training story retains the convention reward. Added positive evidence that the suspect story's handling routes grant no Knowledge and confirmed the courier save/reload test still covers the earned convention from its actually demonstrated route. Courier suite passes (17 tests). Gameplay commit: e05e064.",
       "routeWitness": "start.acceptDelivery -> handling -> verifyOutside or carryNow -> decision; both handling choices attach telegraphRepeatConvention, while the office book explicitly does not confirm the marks. Neither choice establishes the mark’s meaning.",
       "violatedRule": "Persistent Knowledge must be supported by route-established learning; a tentative clue or unrelated handling action cannot grant a certainty-level fact."
     }
@@ -20454,9 +20464,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 782,
+    "HEALTHY": 785,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 20,
+    "CONFIRMED DEFECT": 17,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

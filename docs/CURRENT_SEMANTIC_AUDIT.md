@@ -5,7 +5,15 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0002 station-participation History
+### Completed local repair checkpoint — CRA-C0002 final reconciliation
+
+**CRA-C0002 — COMPLETE (19/19 live findings repaired).**
+
+Repaired CRA-F0114 (`the-goat-wouldnt-stay-dead`, MEDIUM): grave closure and miracle/withdrawal routes no longer claim a feed-tally resolution or award History for it unless the route reaches the tally; the explicit `showTally` route remains specific. Repaired CRA-F0138 (`the-toast-nobody-ordered`, MEDIUM): couple-preference Knowledge now follows `askCouple`, not the private best-man aside. Repaired CRA-F0361 (`station-mark-in-margin`, MEDIUM): removed the unverified repeat-mark Knowledge grant from this scenario only; the shared courier builder and other callers remain unchanged, and the demonstrated wire-training lesson remains available in its owning story. Route-contrast tests passed (**42 tests across 3 files** for F0114/F0138; **17 tests** for F0361). Gameplay commits: `c140e0d`, `e05e064`.
+
+The three queued repairs remain validated: CRA-F0114, CRA-F0138, and CRA-F0361. The CRA-F0001 boundary is now complete: `callOut`, `readNotes`, `bindPriest`, and `requestKeyAndWard` do not grant the soot-inscription fact; only `underStairs.readWarning` does. The handbell fact and other priest effects remain unchanged. Positive/negative route tests and save/reload coverage pass. Stale expectations were aligned in `engine.test.ts` (F0001), `playtestRewardCorrections.test.ts` (F0082), and `scenarioLibraryAudit.test.ts` (F0361). The focused reconciliation set passed **88 tests across 8 files**; full suite passed **129 files / 2,533 tests**; TypeScript and production build passed (existing large-bundle warning). Audit JSON/parent/cluster/classification integrity checks and `git diff --check` passed. All **19 live CRA-C0002 findings** are `VERIFIED_HEALTHY_REPAIRED`; the cluster has **0 open findings**. Overall, **339 of 354 LIVE findings are dispositioned** and **15 remain open** in other clusters. Current live classifications derive to **785 HEALTHY, 59 MINOR CONCERN, 17 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Audit disposition changes remain pending the local audit commit. Local-only: no push, merge, deployment, or public QA. Human QA remains deferred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0002 station-participation History
 
 Repaired CRA-F0074 (`christmas-at-the-station`, MEDIUM) by removing the unconditional “spent Christmas night helping” History from the boarding choice; leaving for a farmhouse or merely waiting no longer earns it, while the specific soup-sharing History remains on the actual meal route. Repaired CRA-F0082 (`the-train-that-didnt-stop`, MEDIUM) by making the shared platform and finale neutral about who cleared the rails and replacing collision-prevention credit with the actual account given to the stationmaster. No route, risk, reward, signal, or save mechanics changed.
 
