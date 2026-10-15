@@ -222,6 +222,25 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(sceneText(scenario.scenes.marks, legacy)).not.toMatch(/chalk marks were copied|crate.*under the platform ramp/i);
   });
 
+  it('does not say every Three Crews task is complete after any single successful allocation route', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'three-crews-one-tool')!;
+    const routes = [
+      [['board', 'stoveFirst'], ['cook', 'record']],
+      [['board', 'bridgeFirst'], ['bridge', 'borrow']],
+      [['board', 'measureFirst'], ['survey', 'correct']],
+    ] as const;
+
+    for (const route of routes) {
+      let state = fresh(scenario);
+      for (const [sceneId, choiceId] of route) state = take(state, scenario, sceneId, choiceId);
+      expect(state.run?.sceneId).toBe('finish');
+      const text = sceneText(scenario.scenes.finish, state);
+      expect(text).toMatch(/work handled on this route is resolved/i);
+      expect(text).toMatch(/anything still waiting stays on the board/i);
+      expect(text).not.toMatch(/all three tasks are completed|every task is complete/i);
+    }
+  });
+
   it('keeps Cache Ledger rewards and outcomes truthful when supplies were taken', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-cache-ledger')!;
     let preserved = fresh(scenario);
