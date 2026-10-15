@@ -11908,12 +11908,12 @@
       "slug": "the-ferry-that-would-not-turn",
       "title": "The Ferry That Would Not Turn",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0266"
       ],
       "reviewProvenance": "current-source route review; far-bank signal versus usable Boat Hook branch movement, unsafe boarding refusal, clear-now versus wait/partial fee, and coin/hook settlement traced",
-      "notes": "ferry.hook moves the branch from shore without signaling the far bank, yet it converges on slack, which says the far operator answered and the current relaxed. That result is established only by ferry.signal. The later clear/wait choice and empty-ferry test/partial delay are otherwise bounded and the Boat Hook route correctly requires usable Gear.",
+      "notes": "Historical review: ferry.hook moves the branch from shore without signaling the far bank, yet it converged on slack, which said the far operator answered and the current relaxed. That response was established only by ferry.signal. Wave 126 records the signal action with the factual run-local pine_ferry_far_bank_signaled flag and selects the operator-response text only with that proof. Hook and proof-absent/legacy paths receive neutral wording; the shared clearance choice no longer presumes slack. Save/reload coverage confirms signal proof persists. Boarding refusal, later clear/wait outcome, compensation, and usable-Boat-Hook gate remain intact.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18610,7 +18610,9 @@
       "violatedRule": "A shared route result may not invent an NPC response or communication event absent from the chosen route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 126 gameplay commits feae7f1 and 210a9f1. The signal route records pine_ferry_far_bank_signaled; only that proof selects the far-bank operator response and upper-line slack narration. The Boat Hook route and proof-absent/legacy state remain neutral, and the clear choice no longer assumes the line is slack. Regression covers signal versus usable Boat Hook, saved/reloaded signal proof, and neutral legacy fallback. River Water Work, inventory, registry, library, and content-quality checks passed (31 tests); the RC12 ledger validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0267",
@@ -20373,9 +20375,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 749,
+    "HEALTHY": 750,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 53,
+    "CONFIRMED DEFECT": 52,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
