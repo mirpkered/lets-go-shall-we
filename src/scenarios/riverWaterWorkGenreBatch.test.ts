@@ -63,6 +63,21 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     expect(sceneText(mill.scenes.partial, observed)).toMatch(/loading does not resume here/i);
   });
 
+  it('does not credit a rope replacement route with a splice inspection', () => {
+    const rope = BATCH.find(({ id }) => id === 'the-wet-rope-at-dawn')!;
+    let replacement = chooseAt(fresh(rope), rope, 'rope', 'replace');
+    expect(replacement.run?.sceneId).toBe('paid');
+    expect(sceneText(rope.scenes.paid, replacement)).toMatch(/taking the suspect line out of passenger service/i);
+    expect(sceneText(rope.scenes.paid, replacement)).not.toMatch(/for the inspection|fibers catch at the splice/i);
+
+    let inspected = chooseAt(fresh(rope), rope, 'rope', 'inspect');
+    expect(inspected.run?.sceneId).toBe('choice');
+    expect(sceneText(rope.scenes.choice, inspected)).toMatch(/fibers catch at the splice/i);
+    inspected = chooseAt(inspected, rope, 'choice', 'retire');
+    expect(inspected.run?.sceneId).toBe('paid');
+    expect(sceneText(rope.scenes.paid, inspected)).toMatch(/taking the suspect line out of passenger service/i);
+  });
+
   it('makes every story leave meaningful continuity and gives most a legitimate Gear path', () => {
     let gearRoutes = 0;
     for (const scenario of BATCH) {
