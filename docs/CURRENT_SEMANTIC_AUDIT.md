@@ -5,6 +5,12 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
+### Active local repair checkpoint — CRA-C0002 factual Knowledge narrowing
+
+Repaired CRA-F0031 (`gone-fishing`, LOW) by recording the actual creek-and-footpath description without claiming the angler supplied a name. Repaired CRA-F0034 (`the-grave-bell`, LOW) by recording the keepsake test rather than asserting a reaction on ordinary-cause routes. Repaired CRA-F0041 (`the-last-house-before-the-woods`, LOW) by recording only that an unknown caller called, without identifying the person on routes that never saw them. Focused family suites passed (**42 tests across 3 files**). Gameplay/test commit: `98dd2af`.
+
+Current totals: **319 repaired, 6 healthy/no-longer-reproduces, 29 open, 0 ambiguous, 0 unreviewed**; classifications derive to **773 HEALTHY, 59 MINOR CONCERN, 29 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. CRA-C0002 has **14 open findings**. Local-only; no push, merge, deployment, or public QA. Weekly Scenario Batch remains paused.
+
 ### Active local repair checkpoint — CRA-C0002 carry-forward and History fixes
 
 Focused review resolved CRA-F0001 (`broken-bell`, LOW) and CRA-F0004 (`the-last-room`, LOW) without inventing their missing historical witnesses. Broken Bell now grants the exact inscription Knowledge only after the Traveler studies the soot inscription; calling out and reading the priest’s note no longer award that source-specific fact prematurely. The Last Room no longer records `uncovered_inn_truth` when the Traveler leaves the cellar before learning what happened; an explicit confession route still records it. Focused tests passed (**24 tests across 2 files**). Gameplay/test commit: `93e9f8a`.

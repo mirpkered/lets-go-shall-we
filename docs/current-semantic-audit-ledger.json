@@ -1909,12 +1909,12 @@
       "slug": "gone-fishing",
       "title": "Gone Fishing",
       "sourceFile": "src/scenarios/pleasantDaysBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0031"
       ],
       "reviewProvenance": "current source route review; fish/nothing/oldFloat variants, sale/keep/pack, conversation and ask-creek-name routes examined",
-      "notes": "fishingResult.askCreekName records Knowledge that a local angler shared the creek bend's name, but fishingTalk only says the creek bends around an alder stand before meeting the old footpath; no name is supplied in displayed text. Other catch-dependent choices are properly selection-gated.",
+      "notes": "The Knowledge record now matches fishingTalk's actual geographic description and does not claim that a creek-bend name was supplied. Other catch-dependent choices remain properly selection-gated.",
       "preReconciliationPosition": 96,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -2251,12 +2251,12 @@
       "slug": "the-grave-bell",
       "title": "The Grave Bell",
       "sourceFile": "src/scenarios/strangeRoadsBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0034"
       ],
       "reviewProvenance": "current source route review; four bell causes, cord/shed/villager/exit/relic routes and graveCoin/yewCharm text variants inspected; strange-roads suite passed (15 tests)",
-      "notes": "cemeteryBell.readGraveBellRelic grants Knowledge for every graveBellCause. For windAndSpring, animal and groundskeeper, bellRelicResponse explicitly says the coin stays at its usual temperature or the charm hangs slack; only unexplained causes produce a reaction. The generic Knowledge fact that a keepsake reacted is therefore false on the three ordinary-cause variants. Existing regression checks the unexplained and ordinary visible text but not the Knowledge effect.",
+      "notes": "The Knowledge record now accurately records testing a keepsake without asserting a reaction. Regression covers both the unexplained reacting route and an ordinary nonreacting cause.",
       "preReconciliationPosition": 117,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -3391,12 +3391,12 @@
       "slug": "the-last-house-before-the-woods",
       "title": "The Last House before the Woods",
       "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0041"
       ],
       "reviewProvenance": "current source route review; accept/refuse, rules, daylight tracks, child inquiry, barred-door, shutter, stranger encounter, injury, report, withdrawal, and Knowledge effects inspected",
-      "notes": "The common houseFinish choice grants Knowledge that a stranger was calling from beyond the fence. On keepDoorBarred and stayShut routes the traveler never sees or identifies the caller; the scene explicitly leaves it as a person, dog owner, or someone who knows the household. The stranger is identified only through the callerSeen/callerFled variants.",
+      "notes": "The persistent Knowledge now records only that an unknown caller called from beyond the fence. The callerSeen/callerFled variants still retain their route-specific identification in immediate narration.",
       "preReconciliationPosition": 183,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -15315,7 +15315,9 @@
       "clusterId": "CRA-C0002",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 96,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Changed the persistent Knowledge wording to match the angler's actual geographic description without claiming a creek name was supplied. Route regression exercises the ask-creek-name choice and displayed dialogue. Gameplay/test commit: 98dd2af0e3a19b5a649301e2da1e5ccf606a1eb5."
     },
     {
       "findingId": "CRA-F0032",
@@ -15358,7 +15360,9 @@
       "clusterId": "CRA-C0002",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 117,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Reworded the Knowledge entry to record that the Traveler tested a keepsake, not that it reacted. Existing positive unexplained and negative ordinary-cause route tests now assert the same truthful action record. Gameplay/test commit: 98dd2af0e3a19b5a649301e2da1e5ccf606a1eb5."
     },
     {
       "findingId": "CRA-F0035",
@@ -15461,7 +15465,9 @@
       "clusterId": "CRA-C0002",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 183,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Narrowed the persistent fact to the known event—an unknown caller called from beyond the fence—without identifying the person on routes lacking callerSeen/callerFled proof. Regression contrasts the barred, unidentified route with the route that sees and reports a person. Gameplay/test commit: 98dd2af0e3a19b5a649301e2da1e5ccf606a1eb5."
     },
     {
       "findingId": "CRA-F0042",
@@ -20426,9 +20432,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 770,
+    "HEALTHY": 773,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 32,
+    "CONFIRMED DEFECT": 29,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
