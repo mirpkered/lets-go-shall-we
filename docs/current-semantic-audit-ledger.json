@@ -4231,7 +4231,7 @@
       "slug": "the-load-must-go",
       "title": "The Load Must Go",
       "sourceFile": "src/scenarios/survivalExpeditionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0070",
         "CRA-F0071"
@@ -5345,7 +5345,7 @@
       "slug": "thing-at-black-creek",
       "title": "The Thing at Black Creek",
       "sourceFile": "src/scenarios/monsterHuntFirst.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0100",
         "CRA-F0101"
@@ -5525,7 +5525,7 @@
       "slug": "the-millers-beast",
       "title": "The Miller’s Beast",
       "sourceFile": "src/scenarios/monsterHuntSecond.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0110",
         "CRA-F0111"
@@ -6547,7 +6547,7 @@
       "slug": "an-invitation-for-someone-else",
       "title": "An Invitation for Someone Else",
       "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0139"
       ],
@@ -6557,7 +6557,8 @@
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registryStatus": "REGISTERED",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "notes": "CRA-F0139 repaired: only the original acceptMeal choice sets acceptedMealBeforeExplaining, and the meal ending narrates the promised post-supper correction. Routes that already explained the mistake or chose privacy retain neutral supper text."
     },
     {
       "position": 373,
@@ -16953,7 +16954,9 @@
       "clusterId": "CRA-C0012",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 360,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "CRA-C0012 local repair commit 6f6fa67. `surpriseSocialBatch.ts` records factual run-local `acceptedMealBeforeExplaining` only on the promised `doorstep.acceptMeal` route. The terminal meal text now states that the Traveler explains the mistaken identity after supper. The letter/privacy route and the route that already explained at the door do not inherit that variant. surpriseAnthologyBatch.test.ts exercises all three contrasts; the anthology and scenario-library suites pass (15 tests), TypeScript and git diff --check pass. No persistent/save schema change was needed."
     },
     {
       "findingId": "CRA-F0140",
@@ -20496,9 +20499,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 798,
+    "HEALTHY": 802,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 4,
+    "CONFIRMED DEFECT": 0,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [

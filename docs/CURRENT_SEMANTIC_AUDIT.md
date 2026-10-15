@@ -23,6 +23,12 @@ CRA-F0048 (`medium-knows-too-much`, MEDIUM) is `VERIFIED_HEALTHY_NO_LONGER_REPRO
 
 The Medium Who Knows Too Much now derives HEALTHY. Current live classifications are **798 HEALTHY, 59 MINOR CONCERN, 4 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **353 are dispositioned** (**343 repaired**, **10 healthy/no-longer-reproduces**) and **1 remains open**: CRA-C0012 (CRA-F0139, MEDIUM). The C0005 disposition is locally pending its separate audit checkpoint. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
 
+### Current local repair checkpoint — CRA-C0012 promised follow-through
+
+CRA-F0139 (`an-invitation-for-someone-else`, MEDIUM) is repaired. The original `acceptMeal` choice now records factual run-local proof, and its terminal meal variant narrates the promised explanation after supper. The letter/privacy route and the route that already explains at the door retain neutral text; neither inherits the follow-through. The surprise-anthology and scenario-library tests pass (**15 tests**); TypeScript and `git diff --check` pass. Gameplay/test commit: `6f6fa67`.
+
+All current open live findings are now dispositioned: **354/354** (**344 VERIFIED_HEALTHY_REPAIRED**, **10 VERIFIED_HEALTHY_NO_LONGER_REPRODUCES**); **0 remain open**. The mechanical disposition review also reconciled three stale Adventure classifications—`the-load-must-go`, `thing-at-black-creek`, and `the-millers-beast`—because every attached finding is repaired. Current live classifications are **802 HEALTHY, 59 MINOR CONCERN, 0 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Full suite passed (**129 files / 2,541 tests**); production build passed with the existing large-bundle warning; ledger, registry/inventory, JSON, and diff checks passed. This completes the local repair program. Local-only: no push, merge, deployment, or public QA; human QA remains deferred and Weekly Scenario Batch remains paused.
+
 ### Previous local repair checkpoint — carry-forward reconciliation
 
 Focused current-source review resolved the five incomplete carry-forwards without reconstructing missing historical witnesses. CRA-F0006 (`bridge-out`) and CRA-F0007/F0008 (`the-long-way-home`) are `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`: all relevant route/result families were traced, and current route-specific outcomes remain truthful; their historical witnesses and severities remain unknown. The original `CARRY_FORWARD_INCOMPLETE` provenance is retained.
