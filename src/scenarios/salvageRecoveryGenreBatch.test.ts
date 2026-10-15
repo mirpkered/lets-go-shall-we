@@ -86,6 +86,12 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
         expect(meets(offer.requirements, ownerTraceOnly), 'wrench release is unavailable until the borrowed gauge is returned').toBe(false);
         eligible = beginFresh(scenario);
         eligible = act(eligible, scenario, 'secureRecovery');
+      } else if (scenario.id === 'the-siding-spill') {
+        eligible = act(initial(scenario), scenario, 'holdAndAsk');
+        eligible = act(eligible, scenario, 'secureRecovery');
+      } else if (scenario.id === 'the-iron-at-milepost-nine') {
+        eligible = act(initial(scenario), scenario, 'verifyFirst');
+        eligible = act(eligible, scenario, 'secureRecovery');
       }
       expect(meets(offer.requirements, eligible), `${scenario.id} qualifying route`).toBe(true);
       let state = act(eligible, scenario, 'acceptReleasedGear');
@@ -129,6 +135,56 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
     challenged = act(challenged, heap, 'resumeRecovery');
     expect(sceneText(heap.scenes.decision, challenged)).not.toContain('You return the borrowed track gauge to railway stores.');
     expect(meets(offer.requirements, challenged)).toBe(false);
+  });
+
+  it('requires the held-cart case return before releasing the siding duplicate rod', () => {
+    const siding = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-siding-spill')!;
+    const secure = siding.scenes.evidence.choices.find(({ id }) => id === 'secureRecovery')!;
+    const offer = siding.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(secure.label).toMatch(/return the listed case/i);
+
+    for (const approach of siding.scenes.arrival.choices.filter(({ id }) => id !== 'holdAndAsk')) {
+      let state = act(initial(siding, approach.requirements?.items?.[0]), siding, approach.id);
+      expect(meets(secure.requirements, state), approach.id).toBe(false);
+      state = act(state, siding, 'traceOwnership');
+      expect(meets(offer.requirements, state), approach.id).toBe(false);
+      state = act(state, siding, 'takeFee');
+      expect(sceneText(siding.scenes.paid, state)).toMatch(/does not establish that the listed case was returned/i);
+    }
+
+    let returned = act(initial(siding), siding, 'holdAndAsk');
+    expect(sceneText(siding.scenes.evidence, returned)).toMatch(/worker steadies the cart/i);
+    returned = act(returned, siding, 'secureRecovery');
+    expect(sceneText(siding.scenes.decision, returned)).toMatch(/return the listed case unopened/i);
+    expect(sceneText(siding.scenes.decision, returned)).toMatch(/confirms the separate trackside rod is a duplicate/i);
+    expect(meets(offer.requirements, returned)).toBe(true);
+    returned = act(returned, siding, 'acceptReleasedGear');
+    expect(returned.run?.inventory).toContain('collapsibleSoundingRod');
+  });
+
+  it('releases the milepost wedge only after the signed county clearance route and return action', () => {
+    const milepost = SALVAGE_RECOVERY_GENRE_BATCH.find(({ id }) => id === 'the-iron-at-milepost-nine')!;
+    const secure = milepost.scenes.evidence.choices.find(({ id }) => id === 'secureRecovery')!;
+    const offer = milepost.scenes.decision.choices.find(({ id }) => id === 'acceptReleasedGear')!;
+    expect(secure.label).toMatch(/signed.*clearance/i);
+
+    for (const approach of milepost.scenes.arrival.choices.filter(({ id }) => id !== 'verifyFirst')) {
+      let state = act(initial(milepost, approach.requirements?.items?.[0]), milepost, approach.id);
+      expect(meets(secure.requirements, state), approach.id).toBe(false);
+      state = act(state, milepost, 'traceOwnership');
+      expect(meets(offer.requirements, state), approach.id).toBe(false);
+      state = act(state, milepost, 'takeFee');
+      expect(sceneText(milepost.scenes.paid, state)).toMatch(/establishes no equipment transfer/i);
+    }
+
+    let cleared = act(initial(milepost), milepost, 'verifyFirst');
+    expect(sceneText(milepost.scenes.evidence, cleared)).toMatch(/county-signed notice/i);
+    cleared = act(cleared, milepost, 'secureRecovery');
+    expect(sceneText(milepost.scenes.decision, cleared)).toMatch(/signed ditch-clearance notice identifies the unmarked wedge as abandoned/i);
+    expect(sceneText(milepost.scenes.decision, cleared)).toMatch(/return the stamped pry tool/i);
+    expect(meets(offer.requirements, cleared)).toBe(true);
+    cleared = act(cleared, milepost, 'acceptReleasedGear');
+    expect(cleared.run?.inventory).toContain('steelWedge');
   });
 
   it('keeps material compensation exclusive while experience-earned Knowledge survives every resolved route', () => {
@@ -217,7 +273,9 @@ describe('Salvage / Recovery / Reclamation genre batch', () => {
         expect(scenario.scenes.evidence.choices.some(({ id }) => id === 'traceOwnership' && meets(undefined, entered)), scenario.id).toBe(true);
 
         for (const decisionChoice of ['traceOwnership', 'secureRecovery']) {
-          const state = act(entered, scenario, decisionChoice);
+          const choice = scenario.scenes.evidence.choices.find(({ id }) => id === decisionChoice)!;
+          const selectedId = decisionChoice === 'secureRecovery' && !meets(choice.requirements, entered) ? 'traceOwnership' : decisionChoice;
+          const state = act(entered, scenario, selectedId);
           const decisionText = sceneText(scenario.scenes.decision, state);
           expect(decisionText, `${scenario.id}.${decisionChoice}: ownership/release setup`).toContain(scenario.scenes.decision.text);
           expect(decisionText.split(scenario.scenes.decision.text).length - 1, `${scenario.id}.${decisionChoice}: setup once`).toBe(1);

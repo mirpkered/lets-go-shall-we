@@ -42,6 +42,12 @@ const stationYardHeap = stories.find(({ id }) => id === 'the-station-yard-heap')
 if (stationYardHeap) {
   stationYardHeap.complication += ' The borrowed track gauge is uncovered beneath the wrench; the railway requires its return before the wrench can be released.';
 }
+const sidingSpill = stories.find(({ id }) => id === 'the-siding-spill');
+const ironAtMilepost = stories.find(({ id }) => id === 'the-iron-at-milepost-nine');
+if (ironAtMilepost) {
+  ironAtMilepost.complication += ' The older worker can check the county ditch-clearance file, which may settle the wedge separately from the stamped pry tool.';
+  ironAtMilepost.consequence[1] = 'The old ditch-clearance file shows the pry tool was written off and includes county-signed notice that the unmarked wedge was abandoned by the former crew; the county authorizes transfer after inspection.';
+}
 
 function build(story: SalvageStory): Scenario {
   const firstChoiceGear = story.firstChoices.map((label, index) => {
@@ -57,10 +63,26 @@ function build(story: SalvageStory): Scenario {
     ? `${story.property} The agreement determines what may be recovered; the replacement frame is offered only if you recovered and returned the rented frame. The recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`
     : story.id === 'the-station-yard-heap'
       ? `${story.property} The marked wrench remains with the railway unless the borrowed track gauge beneath it is returned. The recovery fee is separate from any tool transfer, and you may decline all material compensation.`
+      : story.id === 'the-siding-spill'
+        ? `The county surveyor will release the trackside rod only after the listed case is returned and the rod is confirmed as a duplicate. The recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`
+        : story.id === 'the-iron-at-milepost-nine'
+          ? `The stamped pry tool is county property. The unmarked Steel Wedge remains under county control unless the signed ditch-clearance notice is confirmed; any released item is offered only if accepted below. The inspection fee is an alternative, not an additional payment. You may also decline all material compensation.`
     : `${story.property} The recovered goods are now separated by owner. The item described above is offered only if you accept it below; the recovery fee is an alternative, not an additional payment. You may also decline all material compensation.`;
   const gearReleaseRequirements = story.id === 'the-missing-pack-frame'
     ? { flags:[`${story.id}_access_two`,`${story.id}_limited_recovery`] }
-    : story.id === 'the-station-yard-heap' ? { flags:[`${story.id}_limited_recovery`] } : {};
+    : story.id === 'the-station-yard-heap' ? { flags:[`${story.id}_limited_recovery`] }
+      : story.id === 'the-siding-spill' ? { flags:[`${story.id}_access_three`,`${story.id}_limited_recovery`] }
+        : story.id === 'the-iron-at-milepost-nine' ? { flags:[`${story.id}_access_two`,`${story.id}_limited_recovery`] } : {};
+  const secureRecoveryRequirements = story.id === 'the-siding-spill' ? { flags:[`${story.id}_access_three`] }
+    : story.id === 'the-iron-at-milepost-nine' ? { flags:[`${story.id}_access_two`] } : undefined;
+  const secureRecoveryLabel = story.id === 'the-station-yard-heap' ? 'Return the borrowed track gauge to railway stores'
+    : story.id === 'the-siding-spill' ? 'Return the listed case and reconcile the trackside duplicate rod'
+      : story.id === 'the-iron-at-milepost-nine' ? 'Return the stamped pry tool under the signed wedge clearance'
+        : 'Secure only the clearly authorized item and leave the rest in place';
+  const secureRecoveryHint = story.id === 'the-station-yard-heap' ? 'Leave the marked wrench with the clerk; its release depends on this gauge being returned.'
+    : story.id === 'the-siding-spill' ? 'This handoff requires the track worker to steady the cart while you retrieve the listed case.'
+      : story.id === 'the-iron-at-milepost-nine' ? 'Use the county-signed ditch-clearance notice found in the old records route; other records do not clear the wedge.'
+        : undefined;
   const tags = largeTags({
     hook: `${story.title}: recovery reveals a question of ownership before useful property can change hands.`,
     activity: 'labor/repair', role: 'worker', tone: story.risk === 'LOW' ? 'adventurous' : 'tense/dangerous',
@@ -77,7 +99,7 @@ function build(story: SalvageStory): Scenario {
     ], story.risk === 'HIGH' ? 'warning' : 'safe'),
     evidence: largeScene('evidence', 'What the Recovery Shows', evidenceSetup, [
       { id:'traceOwnership', label:'Trace the marks, records, and witnesses before claiming anything', next:'decision', effects:{ setFlags:[`${story.id}_checked_owner`] } },
-      { id:'secureRecovery', label:story.id === 'the-station-yard-heap' ? 'Return the borrowed track gauge to railway stores' : 'Secure only the clearly authorized item and leave the rest in place', ...(story.id === 'the-station-yard-heap' ? { hint:'Leave the marked wrench with the clerk; its release depends on this gauge being returned.' } : {}), next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
+      { id:'secureRecovery', label:secureRecoveryLabel, ...(secureRecoveryHint ? { hint:secureRecoveryHint } : {}), ...(secureRecoveryRequirements ? { requirements:secureRecoveryRequirements } : {}), next:'decision', effects:{ setFlags:[`${story.id}_limited_recovery`] } },
       { id:'deferRecovery', label:'Stop and ask the responsible owner or crew to settle the claim', next:'deferred', effects:{knowledge:[story.knowledge]} },
       ...(story.combat ? [{ id:'standGround', label:`Stand your ground and fight off the ${story.combat.enemy}`, hint:'The aggressor has made a clear physical threat; you can still withdraw or defer the recovery.', effects:{ combat:{ enemy:story.combat.enemy, winChance:story.combat.winChance, damageOnWin:1, damageOnLoss:3, winNext:'fightWon', lossNext:'fightLost' } } }] : []),
     ], story.risk === 'HIGH' ? 'warning' : 'safe', [
@@ -85,14 +107,14 @@ function build(story: SalvageStory): Scenario {
       { requirements:{ flags:[`${story.id}_access_two`] }, text:`${evidenceSetup} ${story.consequence[1]}` },
       { requirements:{ flags:[`${story.id}_access_three`] }, text:`${evidenceSetup} ${story.consequence[2]}` },
     ]),
-    decision: largeScene('decision', story.id === 'the-station-yard-heap' ? 'The Railway Checks Its Return Condition' : 'The Property Is Accounted For', decisionSetup, [
+    decision: largeScene('decision', story.id === 'the-station-yard-heap' ? 'The Railway Checks Its Return Condition' : story.id === 'the-siding-spill' ? 'The County Claim Is Pending' : story.id === 'the-iron-at-milepost-nine' ? 'County Records and Ownership' : 'The Property Is Accounted For', decisionSetup, [
       ...(story.gear ? [{ id:'acceptReleasedGear', label:story.gearCost ? `Buy the released ${gearName} for ${story.gearCost} coin${story.gearCost === 1 ? '' : 's'}` : `Accept the released ${gearName}`, requirements:{ notOwnedItems:[story.gear], ...gearReleaseRequirements, ...(story.gearCost ? { minMoney:story.gearCost } : {}) }, next:'gear', effects:{ gainItems:[story.gear], ...(story.gearCost ? { money:-story.gearCost } : {}), gainItemProvenance:{ [story.gear]:story.gearSource ?? `Recovered with clear ownership release in ${story.title}` }, ...(story.repair ? { gainItemConditions:{ [story.gear]:'DAMAGED' as const } } : {}), historyFlags:[`salvage_${story.id}_${story.gear}`] } }] : []),
       ...(story.repairItem ? [{ id:'repairOwnedGear', label:`Have the recovery crew repair your damaged ${ITEMS[story.repairItem]?.name ?? story.repairItem} instead`, requirements:{ items:[story.repairItem], itemConditions:{ [story.repairItem]:['DAMAGED','BROKEN'] as ('DAMAGED'|'BROKEN')[] } }, next:'repaired', effects:{ repairItems:[story.repairItem], repairItemProvenance:{ [story.repairItem]:`Repaired during ${story.title}` }, historyFlags:[`salvage_${story.id}_repair`] } }] : []),
       { id:'takeFee', label:`Take the ${story.coins}-coin recovery fee instead`, next:'paid', effects:{ money:story.coins, setFlags:[`${story.id}_took_fee`] } },
       { id:'keepLesson', label:'Decline all material compensation', next:'lesson', effects:{ setFlags:[`${story.id}_refused`] } },
     ].map((choice)=>({...choice,effects:{knowledge:[story.knowledge],...choice.effects}})), 'safe', [
-      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} The marks identify the missing wrench and former borrower, but this route does not return the buried gauge; the wrench is not released.` : `${decisionSetup} Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.` },
-      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} You return the borrowed track gauge to railway stores. The return condition is met, and the marked wrench can now be released separately.` : `${decisionSetup} Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.` },
+      { requirements:{ flags:[`${story.id}_checked_owner`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} The marks identify the missing wrench and former borrower, but this route does not return the buried gauge; the wrench is not released.` : story.id === 'the-siding-spill' ? `${decisionSetup} The case has not been returned on this evidence-only route, so the trackside rod's duplicate status is unresolved and it is not released.` : story.id === 'the-iron-at-milepost-nine' ? `${decisionSetup} The stamp confirms the pry tool's county ownership, but this route does not inspect the old ditch-clearance file; the wedge is not released.` : `${decisionSetup} Your inspection is entered beside the ownership marks, so the transfer applies only to the item explicitly released above.` },
+      { requirements:{ flags:[`${story.id}_limited_recovery`] }, text:story.id === 'the-station-yard-heap' ? `${decisionSetup} You return the borrowed track gauge to railway stores. The return condition is met, and the marked wrench can now be released separately.` : story.id === 'the-siding-spill' ? `${decisionSetup} With the worker steadying the cart, you return the listed case unopened. The surveyor confirms the separate trackside rod is a duplicate and authorizes its release.` : story.id === 'the-iron-at-milepost-nine' ? `${decisionSetup} The signed ditch-clearance notice identifies the unmarked wedge as abandoned. You return the stamped pry tool, and the county authorizes the wedge's separate release.` : `${decisionSetup} Only the authorized recovery was moved; the remaining property stays where its owner can inspect it.` },
     ]),
     deferred: largeEnd('deferred', 'A Claim Left Intact', `You stop before disputed property changes hands. ${story.knowledge} The owner or responsible crew will decide what can be recovered.`),
     ...(story.combat ? {
@@ -107,6 +129,12 @@ function build(story: SalvageStory): Scenario {
   };
   if (story.id === 'the-station-yard-heap') {
     scenes.paid.text = 'You take two coins for sorting the heap. The marked wrench remains with the railway, and the track gauge is returned only if you chose that handoff.';
+  }
+  if (story.id === 'the-siding-spill') {
+    scenes.paid.text = 'You take three coins for documenting the spill. This fee does not establish that the listed case was returned or clear the trackside rod for transfer.';
+  }
+  if (story.id === 'the-iron-at-milepost-nine') {
+    scenes.paid.text = 'You take two coins for the inspection. This payment establishes no equipment transfer; the stamped pry tool and unmarked wedge remain under county review.';
   }
   return largeAdventure(story.id, story.title, story.subtitle, tags, 'arrival', scenes);
 }
