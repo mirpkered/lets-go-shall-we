@@ -10055,12 +10055,12 @@
       "slug": "the-station-yard-heap",
       "title": "The Heap Behind the Station",
       "sourceFile": "src/scenarios/salvageRecoveryGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0227"
       ],
       "reviewProvenance": "current-source route review; scrap separation, missing-ledger check, borrower initials, buried gauge, return precondition, owner/fee/combat routes traced",
-      "notes": "The railway release is expressly conditioned on returning the borrowed track gauge found beneath the marked wrench. The check/initial routes only establish the wrench’s missing status and borrower; the generic owner-trace path records evidence but effects no gauge return, yet the shared decision still offers the released wrench. The limited-recovery choice does not require or record the gauge handoff either.",
+      "notes": "CRA-F0227 is repaired. The evidence scene makes the buried gauge and railway return condition explicit; owner-trace does not satisfy it, while the limited-recovery choice now specifically returns the gauge. The existing limited-recovery flag gates wrench release. Combat recovery and fee settlement do not imply that the gauge was returned or the wrench released.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18099,7 +18099,9 @@
       "violatedRule": "A conditional ownership transfer must remain gated on the specific prerequisite action that authorizes it; evidence of identity alone is not return of the prerequisite property.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 138, gameplay/test commit 784078d. The station-yard evidence scene now establishes that the borrowed track gauge lies beneath the marked wrench, and the limited-recovery choice explicitly returns it to railway stores. The existing limited-recovery run flag gates wrench release, while owner-trace, combat, and fee routes leave it unavailable. Payment wording keeps the gauge return conditional and does not imply that paying the fee releases the wrench. Regression covers all arrival approaches, owner-trace negatives, the qualifying handoff through save/reload, and combat recovery without return proof. Six focused suites passed (81 tests); TypeScript/production build and audit-ledger validation passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0228",
@@ -20404,9 +20406,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 761,
+    "HEALTHY": 762,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 41,
+    "CONFIRMED DEFECT": 40,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
