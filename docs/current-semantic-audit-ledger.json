@@ -382,7 +382,7 @@
     "CRA-C0011": 0,
     "CRA-C0012": 0
   },
-  "nextFindingId": "CRA-F0364",
+  "nextFindingId": "CRA-F0365",
   "nextClusterId": "CRA-C0014",
   "status": "COMPLETE",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
@@ -23775,23 +23775,23 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Two new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 2,
+    "liveFindingCount": 3,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 2,
+      "VERIFIED_HEALTHY_REPAIRED": 3,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 356,
+    "currentLiveFindingCount": 357,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 346,
+      "VERIFIED_HEALTHY_REPAIRED": 347,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 285,
+      "MEDIUM": 286,
       "LOW": 52,
       "SEVERITY_UNRECOVERED": 6
     },
@@ -23801,7 +23801,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0364",
+    "nextFindingId": "CRA-F0365",
     "nextClusterId": "CRA-C0014",
     "findings": [
       {
@@ -23841,6 +23841,25 @@
       "implementationEvidence": "The existing free-text Knowledge entry now applies on successful transitions into the observed `shortRoute` scene, for both direct and after-asking shortcut success. It no longer depends on a knowledge-only ‘Remember’ choice. The observation resolves directly as an ending, avoiding the former non-competing pause/continue choice pair. Failure and established-road routes remain without this fact; save/reload retains it. No new stable Knowledge fact, schema, or route flag was introduced. Wilderness and content-correction regressions pass.",
         "repairLocality": "Scenario-specific successful route effects in wildernessBatch.ts.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0364",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 2,
+        "adventureId": "last-stop",
+        "title": "All Aboard!",
+        "sourceFile": "src/scenarios/lastStop.ts",
+        "severity": "MEDIUM",
+        "defect": "Vale states the complete, reliable baggage-car handwheel procedure before the Traveler chooses what to do next, but the stable Knowledge fact was previously awarded only by the optional ‘Remember the procedure’ choice. Selecting another response therefore discarded Knowledge the route had already taught.",
+        "routeWitness": "`passengerCar.conductor -> conductorCar` displays: ‘Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.’ This is the same operational fact as `KNOWLEDGE_FACTS.baggageBrakeHandwheel` (‘The baggage-car handwheel can vent the vacuum brake line if it is turned, held, then locked.’). Before repair, only `conductorCar.learn` granted the fact; `inspectKey`, `service`, and `seat` left without it. The same teaching scene is also reached by `surveyorAfterTalk.conductorAfterSurvey`. Contrast: `passengerCar.service -> serviceCar.studyBrake` teaches the method from the diagram; a route that settles without reaching Vale or studying the diagram does not establish it.",
+        "violatedRule": "Persist stable Knowledge when the Traveler receives reliable teaching, not only when a later optional meta-choice asks them to remember it. Later choices must not determine whether an already-learned fact was acquired.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Knowledge acquisition now occurs on each transition that first displays Vale’s complete procedure: `passengerCar.conductor` and `surveyorAfterTalk.conductorAfterSurvey` grant the existing stable fact before `conductorCar` is shown. The nonfunctional ‘Remember the procedure’ choice and its redundant explanation-only destination were removed; key handoff, service-car access, return-to-seat, braking actions, the diagram-study acquisition route, and the separate `helpVale` route are preserved. Tests cover acquisition before the next-choice branch, all three sibling choices, the alternate conductor entry, absence on a route with no teaching, diagram-study acquisition, and save/reload. Existing CRA-F0002 passenger-contribution regression remains passing.",
+        "repairLocality": "Scenario-specific teaching transitions in `src/scenarios/lastStop.ts`; no shared persistence or save-schema changes.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -23857,7 +23876,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 20,
+      "CRA-C0002": 21,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -23871,6 +23890,6 @@
       "CRA-C0013": 1
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These two records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these two separately sourced post-audit findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These three records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these three separately sourced post-audit findings."
   }
 }
