@@ -12167,12 +12167,13 @@
       "slug": "the-flood-mark-on-the-mill-door",
       "title": "The Flood Mark on the Mill Door",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0274"
       ],
       "reviewProvenance": "current-source route review; sack relocation, active observation, unsafe below-mark loading stop, intake clearing versus controlled shutdown, and coin/gauge settlement traced",
-      "notes": "mark.move -> gate reaches the same 'Fresh Debris Line' scene as mark.observe. The opening establishes a rattling closed gate and current pressure, but only observe watches the gate/water for several minutes; move sacks does not establish reeds gathering or the millrace creeping higher. The shared scene treats that fresh observation as known on both routes. Loading below the historic mark is stopped; clear and shutdown outcomes and gauge/coin settlement otherwise remain distinct.",
+      "notes": "mark.move -> gate reached the shared scene without establishing the observed water/debris trend. Wave 133 adds factual run-local `mill_gate_watched` proof to the several-minute observe route; the gate scene now defaults to neutral pressure/current-status text and presents the rising-water/reed observation only with that proof. The stop outcome no longer assumes sacks were already upstairs. Loading below the historic mark is still stopped; clear/shutdown outcomes and gauge/coin settlement remain intact.",
+      "implementationEvidence": "Local CRA-C0001 Wave 133 gameplay commit b23416b. The observe choice records `mill_gate_watched`; the shared gate's default is neutral and its specific trend text requires that proof. The shutdown result no longer claims flour is upstairs when the observe-only route did not move it. Regression contrasts move versus observe, verifies observation proof across save/reload, and checks clear and shutdown outcomes. River water work, registry, content-quality, and inventory suites passed (32 tests); RC12 validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18734,7 +18735,9 @@
       "violatedRule": "A converged scene may not treat route-specific observation as known on a route that did not make or otherwise receive that observation.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 133 gameplay commit b23416b. The `mark.observe` route records factual run-local `mill_gate_watched` proof; the shared gate uses neutral text without it and exposes the rising-water/reed trend only when present. The shutdown ending also avoids assuming sack relocation. Regression covers move versus watch, save/reload of the flag, clearing the grate, and shutdown fallback. River water work, registry, content-quality, and inventory suites passed (32 tests); RC12 validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0275",
@@ -20391,9 +20394,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 756,
+    "HEALTHY": 757,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 46,
+    "CONFIRMED DEFECT": 45,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
