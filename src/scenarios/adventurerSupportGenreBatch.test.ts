@@ -314,6 +314,21 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(collarSettlement).toMatch(/chest stays beyond the uncertain channel/i);
   });
 
+  it('does not treat waiting for the lookout post as a signal being sent or received', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'daylight-flags')!;
+    const run = (response: string) => {
+      let state = act(start(story), story, 'kit_flags');
+      state = act(state, story, `response_${response}`);
+      expect(state.run?.sceneId, response).toBe('settlement');
+      return sceneText(story.scenes.settlement, state);
+    };
+
+    expect(run('wait')).toMatch(/original message remains unconfirmed; no further signal is sent/i);
+    expect(run('wait')).not.toMatch(/next flag signal is understood/i);
+    expect(run('flags')).toMatch(/repeats the agreed red-white-red pattern/i);
+    expect(run('runner')).toMatch(/courier reaches the station.*receives a clear acknowledgment/i);
+  });
+
   it('does not condition the hound’s gear handoff on finding a person or watering the dog', () => {
     const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-silent-hound')!;
     expect(story.scenes.gear.text).toMatch(/no missing person is claimed found/i);
