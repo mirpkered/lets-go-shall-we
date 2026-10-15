@@ -5,7 +5,13 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Active local repair checkpoint — CRA-C0002 action-attribution History
+### Active local repair checkpoint — CRA-C0002 information certainty
+
+Repaired CRA-F0072 (`last-parcel-before-christmas`, MEDIUM) by narrowing the Knowledge to the clerk’s actual ambiguous clue: Nell and a blue door are recalled, but the intended address remains unconfirmed. The later mill encounter still establishes that Nell is staying with her aunt there. Repaired CRA-F0077 (`the-frozen-letter`, MEDIUM) by recording only the sealed letter’s identified sender and courier timing; its contents remain unknown unless the Traveler asks the miller, who explicitly confirms it is family news rather than danger. No delivery, reward, or save behavior changed.
+
+Christmas affinity suite passed (**25 tests**). Both findings are `VERIFIED_HEALTHY_REPAIRED`; both single-finding Adventures derive HEALTHY. Live classifications are **778 HEALTHY, 59 MINOR CONCERN, 24 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of 354 live findings, **330 are dispositioned** (324 repaired and 6 healthy/no-longer-reproduces) and **24 remain open**; CRA-C0002 has **9 open findings**. Gameplay/test commit: `83aa7b6`. Local-only; no push, merge, deployment, or public QA. Human QA remains deferred; Weekly Scenario Batch remains paused.
+
+### Previous local repair checkpoint — CRA-C0002 action-attribution History
 
 Wave repairs CRA-F0084 (`the-crowd-breaks`), CRA-F0092 (`the-outlaws-mother`), and CRA-F0093 (`the-last-shot`), all LOW. Crowd-guidance History is now awarded only by the two choices that direct people toward the west gate; passive waiting after a failed climb no longer earns it. Family-news delivery History now belongs only to handing the letter to the wanted son, not giving it to the deputy. In The Last Shot, the actual signal route records only that a signal was made, while only the explicit guide-out choice records that the rancher left; leaving and reporting records neither. No crowd, letter, combat, reward, or persistence mechanics changed; no new flags or save changes were needed.
 

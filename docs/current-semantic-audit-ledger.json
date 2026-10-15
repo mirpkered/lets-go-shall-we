@@ -4280,7 +4280,7 @@
       "slug": "last-parcel-before-christmas",
       "title": "The Last Parcel Before Christmas",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0072"
       ],
@@ -4610,7 +4610,7 @@
       "slug": "the-frozen-letter",
       "title": "The Frozen Letter",
       "sourceFile": "src/scenarios/christmasAffinityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0077"
       ],
@@ -15926,6 +15926,8 @@
       "routeWitness": "counter.askClerk -> addressClue.bridgeVale grants 'A parcel marked H. Vale was intended for the child Nell at the bridge-side blue door.' Yet addressClue only says the clerk recalls a narrow blue door and a child; bridgeRoute then says Nell has been staying with her aunt at the mill since the flood, and rightParcel is the only confirmed delivery to her.",
       "violatedRule": "Knowledge must distinguish a tentative address inference from a confirmed intended-recipient location, especially when the route evidence remains ambiguous.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Narrowed the bridge-side route Knowledge to the clerk's actual ambiguous clue: a child named Nell and a narrow blue door, with the intended address explicitly unconfirmed because both Vale households have blue doors. The later bridge encounter still establishes Nell is staying at the mill; no delivery/history outcome changed. Regression checks tentative Knowledge and the held-undelivered branch. Christmas affinity suite passes (25 tests). Gameplay/test commit: 83aa7b6.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 235,
       "registrationStatus": "LIVE"
@@ -15997,6 +15999,8 @@
       "routeWitness": "roadside.liftSatchel -> satchel.takeToMill -> mill.secureLetter grants 'The miller’s sister sends letters through the mill courier; the sealed letter was not an emergency warning.' The miller identifies the sister and asks that it remain sealed. Only mill.askMiller -> letterContext establishes that the letter concerns family matters, not danger.",
       "violatedRule": "Persistent Knowledge must not state unlearned contents or conclusions; sender/recipient identity and preserving a sealed letter do not prove its message is non-urgent.",
       "clusterId": "CRA-C0002",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Reworded the secureLetter Knowledge to record only what the miller establishes: his sister sent the sealed letter, it will travel by courier tomorrow, and its contents remain unknown. The explicit askMiller route continues to establish that the message concerns family matters, not danger. Regression contrasts the sealed route's neutral Knowledge with the explicit content explanation. Christmas affinity suite passes (25 tests). Gameplay/test commit: 83aa7b6.",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
       "preReconciliationPosition": 255,
       "registrationStatus": "LIVE"
@@ -20438,9 +20442,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 776,
+    "HEALTHY": 778,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 26,
+    "CONFIRMED DEFECT": 24,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
