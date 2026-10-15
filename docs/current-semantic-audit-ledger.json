@@ -11944,13 +11944,14 @@
       "slug": "the-mark-below-the-waterline",
       "title": "The Mark Below the Waterline",
       "sourceFile": "src/scenarios/riverWaterWorkGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0267",
         "CRA-F0268"
       ],
       "reviewProvenance": "current-source route review; physical sounding versus old-mark comparison, repeated-punt refusal, hazard closure/warning delivery, and coin/rod settlement traced; Gear and convergence semantics inspected",
-      "notes": "Two distinct unsupported transitions: bridge.probe is physical rod use gated by items only, so BROKEN rod can reach the timber finding (CRA-F0267/C4); bridge.mark only compares water level with the old pier mark, yet hazard asserts a broken timber below the near arch, visible when current slackens (CRA-F0268/C1). The opening bump gives a general obstruction clue but neither route-specific action establishes the specific visual finding on the mark-only path. Repeating the punt is refused.",
+      "notes": "Two distinct original findings applied: the C0004 Gear usability gate (CRA-F0267) and the C0001 mark-only inference (CRA-F0268). C0004 was separately repaired and remains intact. Wave 135 adds factual local `bridge_timber_probed` proof on the usable-rod route; the old-mark route now reports only a general near-approach obstruction with material/location unknown. The coin ending and spare-rod provenance likewise remain general until inspection. Repeating the punt is still refused.",
+      "implementationEvidence": "Local CRA-C0001 Wave 135 gameplay commit ce29007. The existing usable-rod route records `bridge_timber_probed`; a specific timber claim in the shared hazard requires that proof, while the mark-only route gets neutral obstruction text. The shared reward/ending no longer implies timber was identified on the general route. Regression covers mark-only, usable-rod probe, flag save/reload, and downstream warning/reward; the C0004 Gear usability suite also passes unchanged. River water, C0004, registry, content-quality, and inventory checks passed (79 tests); RC12 validator and git diff --check passed.",
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
       "registrationStatus": "LIVE",
@@ -18656,7 +18657,9 @@
       "violatedRule": "A finding or diagnosis may not claim a specific observation/location beyond the evidence established on that route.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 135 gameplay commit ce29007. The usable-rod probe records `bridge_timber_probed`; only that route receives the specific broken-timber location, while old-mark comparison receives general obstruction text. Shared coin/reward text remains route-neutral, and the separate CRA-F0267/C0004 usability gate is unchanged. Regression covers both routes and flag persistence; river water, C0004, registry, content-quality, and inventory checks passed (79 tests); RC12 validator and git diff --check passed."
     },
     {
       "findingId": "CRA-F0269",
@@ -20397,9 +20400,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 758,
+    "HEALTHY": 759,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 44,
+    "CONFIRMED DEFECT": 43,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
