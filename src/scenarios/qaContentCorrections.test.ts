@@ -175,7 +175,8 @@ describe('targeted QA content corrections', () => {
     let state = begin(THE_SHORTCUT);
     state = choose(state, THE_SHORTCUT, THE_SHORTCUT.scenes.roadsideOffer.choices.find(({ id }) => id === 'takeCutoff')!, () => 0);
     expect(state.run?.sceneId).toBe('shortRoute');
-    state = act(state, THE_SHORTCUT, 'noteFirmCut');
+    expect(state.character?.knowledge).toContain('The shortcut over the rise follows white stones across firm ridge ground and rejoins the old road beyond the wet hollow.');
+    state = act(state, THE_SHORTCUT, 'continuePastJunction');
     expect(state.run?.sceneId).toBe('shortRouteComplete');
     expect(state.character?.knowledge).toContain('The shortcut over the rise follows white stones across firm ridge ground and rejoins the old road beyond the wet hollow.');
     expect(state.character?.adventuresCompleted).toBe(1);

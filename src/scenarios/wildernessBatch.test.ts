@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -138,6 +138,35 @@ describe('wilderness, navigation, and camp life adventure batch', () => {
     expect(shortcut.chance?.penaltySelections?.shortcutGround).toBe('rough');
     expect(THE_SHORTCUT.scenes.roadsideOffer.choices.find(({ id }) => id === 'stayOnRoad')).toBeTruthy();
     expect(rough.run?.randomSelections?.shortcutGround).toBe('rough');
+  });
+
+  it('persists the learned firm-ridge route when the successful shortcut establishes it, not on failure or another route', () => {
+    const fact = 'The shortcut over the rise follows white stones across firm ridge ground and rejoins the old road beyond the wet hollow.';
+    const direct = act(start(THE_SHORTCUT, { shortcutGround: 'firm' }), THE_SHORTCUT, 'roadsideOffer', 'takeCutoff', () => 0);
+    expect(direct.run?.sceneId).toBe('shortRoute');
+    expect(direct.character?.knowledge).toContain(fact);
+    let state = act(direct, THE_SHORTCUT, 'shortRoute', 'continuePastJunction');
+    expect(state.character?.knowledge).toContain(fact);
+
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(state, storage as never);
+    state = loadSave(storage as never);
+    expect(state.character?.knowledge).toContain(fact);
+
+    const view = act(direct, THE_SHORTCUT, 'shortRoute', 'enjoyViewFromRise');
+    expect(view.character?.knowledge).toContain(fact);
+    expect(view.character?.historyFlags).toContain('paused at the ridge after taking a quiet shortcut');
+
+    const failed = act(start(THE_SHORTCUT, { shortcutGround: 'firm' }), THE_SHORTCUT, 'roadsideOffer', 'takeCutoff', () => 0.99);
+    expect(failed.run?.sceneId).toBe('roughCutoff');
+    expect(failed.character?.knowledge).not.toContain(fact);
+    const establishedRoad = act(start(THE_SHORTCUT), THE_SHORTCUT, 'roadsideOffer', 'stayOnRoad');
+    expect(establishedRoad.character?.knowledge).not.toContain(fact);
+
+    let asked = act(start(THE_SHORTCUT, { shortcutGround: 'firm' }), THE_SHORTCUT, 'roadsideOffer', 'askGround');
+    asked = act(asked, THE_SHORTCUT, 'groundAccount', 'takeAfterAsking', () => 0);
+    expect(asked.run?.sceneId).toBe('shortRoute');
+    expect(asked.character?.knowledge).toContain(fact);
   });
 
   it('foreshadows creek danger and leaves wait, detour, and risky crossing options', () => {

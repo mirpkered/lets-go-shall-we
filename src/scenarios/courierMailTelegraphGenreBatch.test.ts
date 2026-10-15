@@ -316,6 +316,44 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(state.character?.historyFlags).toContain('courier_packet_delayed_by_flood');
   });
 
+  it('describes Paper Boat tube ownership only when the Traveler actually has the tube', () => {
+    const flood = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'paper-boat-at-high-water')!;
+    const freshTraveler = fresh(flood);
+    expect(sceneText(flood.scenes.handling, freshTraveler)).not.toContain('your Waterproof Ledger Tube');
+    expect(sceneText(flood.scenes.handling, freshTraveler)).toContain('papers carried through it would be soaked');
+    let state = act(freshTraveler, flood, 'acceptDelivery');
+    const floodedShortcut = flood.scenes.handling.choices.find(({ id }) => id === 'floodedShortcut')!;
+    expect(floodedShortcut.label).not.toContain('your Waterproof Ledger Tube');
+    expect(meets(floodedShortcut.requirements, state)).toBe(false);
+    expect(sceneText(flood.scenes.decision, state)).not.toContain('your Waterproof Ledger Tube');
+
+    const owned = fresh(flood, 'waterproofLedgerTube');
+    expect(sceneText(flood.scenes.handling, owned)).toContain('Your Waterproof Ledger Tube protects papers from rain and spray');
+    expect(meets(floodedShortcut.requirements, owned)).toBe(true);
+    state = act(owned, flood, 'acceptDelivery');
+    expect(sceneText(flood.scenes.decision, state)).toContain('Your Waterproof Ledger Tube protects papers from rain and spray');
+  });
+
+  it('describes a broken Paper Boat tube as owned but unusable, including after save and reload', () => {
+    const flood = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'paper-boat-at-high-water')!;
+    let state = fresh(flood, 'waterproofLedgerTube');
+    state.itemStates = { waterproofLedgerTube: { condition: 'BROKEN', upgrades: [], provenance: [] } };
+    state = act(state, flood, 'acceptDelivery');
+    const floodedShortcut = flood.scenes.handling.choices.find(({ id }) => id === 'floodedShortcut')!;
+    expect(sceneText(flood.scenes.handling, state)).toContain('Your Waterproof Ledger Tube is broken');
+    expect(meets(floodedShortcut.requirements, state)).toBe(false);
+    state = act(state, flood, 'carryNow');
+    expect(sceneText(flood.scenes.decision, state)).toContain('Your Waterproof Ledger Tube is broken');
+
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(state, storage as never);
+    const resumed = loadSave(storage as never);
+    expect(resumed.character?.carriedItems).toContain('waterproofLedgerTube');
+    expect(resumed.itemStates?.waterproofLedgerTube?.condition).toBe('BROKEN');
+    expect(sceneText(flood.scenes.handling, resumed)).toContain('Your Waterproof Ledger Tube is broken');
+    expect(meets(floodedShortcut.requirements, resumed)).toBe(false);
+  });
+
   it('persists Knowledge, Lore, and History across save/resume without duplicate Knowledge', () => {
     const scenario = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'the-wire-that-sang-twice')!;
     let state = fresh(scenario);
