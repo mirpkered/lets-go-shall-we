@@ -239,6 +239,63 @@ describe('Adventurer Support / Squire / Henchman genre batch', () => {
     expect(sceneText(story.scenes.followup, left)).toContain('The tin is still visible');
   });
 
+  it('keeps spare-saw Gear provenance independent of whether Marr’s saw was used or damaged', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'saw-before-sunrise')!;
+    const cases = [
+      ['kit_axe', 'response_cutSmall'],
+      ['kit_rope', 'response_secure'],
+      ['kit_saw', 'response_wait'],
+    ] as const;
+    for (const [kit, response] of cases) {
+      let state = act(start(story), story, kit);
+      state = act(state, story, response);
+      expect(state.run?.sceneId, `${kit}/${response}`).toBe('settlement');
+      state = act(state, story, 'acceptGear');
+      expect(state.run?.sceneId, `${kit}/${response}`).toBe('gear');
+      expect(story.scenes.gear.text).toMatch(/separately owned spare Folding Brush Saw/i);
+      expect(story.scenes.gear.text).not.toMatch(/damaged|lost a tooth|repair/i);
+    }
+  });
+
+  it('does not make the rail-gate test route inherit the repaired-gate Gear provenance', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-rail-shed')!;
+    const run = (response: string) => {
+      let state = act(start(story), story, 'kit_toolkit');
+      state = act(state, story, `response_${response}`);
+      expect(state.run?.sceneId, response).toBe('settlement');
+      const settlement = sceneText(story.scenes.settlement, state);
+      state = act(state, story, 'acceptGear');
+      expect(state.run?.sceneId, response).toBe('gear');
+      expect(story.scenes.gear.text).toMatch(/spare Pocket Toolkit from her personal railway kit/i);
+      expect(story.scenes.gear.text).not.toMatch(/repaired gate|signs off/i);
+      return settlement;
+    };
+
+    expect(run('test')).toMatch(/counterweight moves freely/i);
+    expect(run('open')).toMatch(/replaces it before reopening the gate/i);
+    expect(run('defer')).toMatch(/approves a measured repair/i);
+  });
+
+  it('keeps the pry-tool handoff truthful whether the freight case is returned or left for others', () => {
+    const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-wrong-cache')!;
+    const run = (response: string) => {
+      let state = act(start(story), story, 'kit_glasses');
+      state = act(state, story, `response_${response}`);
+      expect(state.run?.sceneId, response).toBe('settlement');
+      const settlement = sceneText(story.scenes.settlement, state);
+      state = act(state, story, 'acceptGear');
+      expect(state.run?.sceneId, response).toBe('gear');
+      expect(story.scenes.gear.text).toMatch(/separately owned duplicate Folding Pry Tool/i);
+      expect(story.scenes.gear.text).toMatch(/does not depend on the freight case changing custody/i);
+      expect(story.scenes.gear.text).not.toMatch(/clerk takes custody|clerk took custody/i);
+      return settlement;
+    };
+
+    expect(run('wait')).toMatch(/asks the landowner to keep the cellar closed/i);
+    expect(run('document')).toMatch(/case stays sealed/i);
+    expect(run('return')).toMatch(/clerk signs the receipt/i);
+  });
+
   it('does not condition the hound’s gear handoff on finding a person or watering the dog', () => {
     const story = ADVENTURER_SUPPORT_GENRE_BATCH.find(({ id }) => id === 'the-silent-hound')!;
     expect(story.scenes.gear.text).toMatch(/no missing person is claimed found/i);
