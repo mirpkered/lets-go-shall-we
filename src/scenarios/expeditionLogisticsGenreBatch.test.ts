@@ -46,6 +46,27 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(gearRoutes).toBeGreaterThanOrEqual(18);
   });
 
+  it('does not report food delivered when the Second Wagon route carries only water', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-second-wagon')!;
+
+    let handCarried = fresh(scenario);
+    handCarried = take(handCarried, scenario, 'wheel', 'takeWater');
+    const deliveredText = sceneText(scenario.scenes.partial, handCarried);
+    expect(deliveredText).toMatch(/receives water and food carried ahead by hand/i);
+
+    let waterOnly = fresh(scenario);
+    waterOnly = take(waterOnly, scenario, 'wheel', 'secureWheel');
+    waterOnly = take(waterOnly, scenario, 'repair', 'abandon');
+    const waterOnlyText = sceneText(scenario.scenes.partial, waterOnly);
+    expect(waterOnlyText).not.toMatch(/receives water and food|carried ahead by hand/i);
+    expect(waterOnlyText).toMatch(/camp misses its planned work/i);
+
+    let hardPush = fresh(scenario);
+    hardPush = take(hardPush, scenario, 'wheel', 'lighten');
+    hardPush = take(hardPush, scenario, 'light', 'pushHard');
+    expect(sceneText(scenario.scenes.partial, hardPush)).not.toMatch(/receives water and food|carried ahead by hand/i);
+  });
+
   it('keeps expedition allocations temporary and makes the player honor the load choice', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'weighed-before-dawn')!;
     let state = fresh(scenario);
