@@ -5,13 +5,19 @@ Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
 Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
 
-### Current local repair checkpoint — carry-forward reconciliation
+### Previous local repair checkpoint — carry-forward reconciliation
 
 Focused current-source review resolved the five incomplete carry-forwards without reconstructing missing historical witnesses. CRA-F0006 (`bridge-out`) and CRA-F0007/F0008 (`the-long-way-home`) are `VERIFIED_HEALTHY_NO_LONGER_REPRODUCES`: all relevant route/result families were traced, and current route-specific outcomes remain truthful; their historical witnesses and severities remain unknown. The original `CARRY_FORWARD_INCOMPLETE` provenance is retained.
 
 CRA-F0009 (`no-vacancy`, MEDIUM) is repaired. `evacuateHouse` no longer records completed group evacuation before the dangerous crossing. Only successful rope-guided or unroped group crossings grant `evacuated_guests`; solo recovery through `crawlToWall` or `catchPorchLine` receives neutral text and does not claim the guests reached the schoolhouse. CRA-F0010 (`cold-storage`, MEDIUM) is repaired: the unstable-rack retreat now explicitly summons and waits for the heavy crew before entering `workerCrewArrives`; `returned_with_help` is recorded only after the crew-supported action. Regression tests contrast unsupported and supported outcomes. Focused Bridge Out, Long Way Home, No Vacancy, and Cold Storage suites pass (**86 tests across 4 files**). Gameplay/test commit: `6010e87`.
 
 Current live classifications derive to **789 HEALTHY, 59 MINOR CONCERN, 13 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of **354 LIVE findings**, **344 are dispositioned** (**335 repaired**, **9 healthy/no-longer-reproduces**) and **10 remain open**: CRA-C0003 (1 MEDIUM), CRA-C0005 (1 MEDIUM), CRA-C0007 (4 MEDIUM), CRA-C0009 (3 MEDIUM), and CRA-C0012 (1 MEDIUM). CRA-C0001 now includes the two newly evidenced route-truth findings F0009 and F0010; three unclustered carry-forwards remain without a recovered root cause. Ledger disposition is pending a separate local audit commit. Local-only: no push, merge, deployment, public QA, or scheduler change. Human QA remains deferred; Weekly Scenario Batch remains paused.
+
+### Current local repair checkpoint — CRA-C0007 consent and consensus
+
+CRA-C0007 is complete (4/4). CRA-F0151 no longer credits baker agreement/joint authorship in the composite-card ending or persistent Lore; it records the Traveler’s working card from attributed notes. CRA-F0155 now describes the worker-only split as a proposal because the dancer was not consulted; the separate repaired CRA-F0156 partner and patch routes remain intact. CRA-F0166 separates one captain’s relayed account from the mutual-understanding ending, which remains on routes where both captains speak. CRA-F0179’s barrow return records only the observed pattern and undisturbed burial, leaving keeper decision and road reroute unresolved. No new state, rewards, or persistence were added. Regression suites pass (**69 tests across 4 files**). Gameplay/test commit: `b508aa5`.
+
+Current live classifications derive to **793 HEALTHY, 59 MINOR CONCERN, 9 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**. Of **354 LIVE findings**, **348 are dispositioned** (**339 repaired**, **9 healthy/no-longer-reproduces**) and **6 remain open**: CRA-C0003 (1 MEDIUM), CRA-C0005 (1 MEDIUM), CRA-C0009 (3 MEDIUM), and CRA-C0012 (1 MEDIUM). CRA-C0007 has 0 open findings. Ledger disposition is pending a separate local audit commit. Local-only; no push, merge, deployment, public QA, or scheduler change. Human QA remains deferred; Weekly Scenario Batch remains paused.
 
 ### Completed local repair checkpoint — CRA-C0002 final reconciliation
 

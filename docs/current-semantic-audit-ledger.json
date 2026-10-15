@@ -6743,12 +6743,12 @@
       "slug": "notes-after-the-ribbon",
       "title": "Notes After the Ribbon",
       "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0151"
       ],
       "reviewProvenance": "current source route review; both prior-contest eligibility gates, named baker accounts, four card decisions, persistent History/Lore writes, and non-writing outcomes traced; outcome-dependent continuity tests passed",
-      "notes": "The composite choice only authorizes the Traveler to make a working card; no route asks Hester or Lotte to approve or records their agreement. The composite ending and persistent Lore nevertheless assert that “the bakers agree” and that they made the card. Separate-account, tasting-only, and defer routes remain correctly scoped.",
+      "notes": "The composite choice authorizes the Traveler to make a present-day working card; it does not establish baker approval or joint authorship. The ending and persistent Lore now record only the Traveler’s assembly from attributed notes. Separate-account, tasting-only, and defer routes remain correctly scoped.",
       "preReconciliationPosition": 372,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -6975,13 +6975,13 @@
       "slug": "the-cobblers-last-pair",
       "title": "The Cobbler’s Last Pair",
       "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0155",
         "CRA-F0156"
       ],
       "reviewProvenance": "current source route review; worker/dancer testimony, cobbler’s material limits, split, spare-boot, partner, patch, honor-payment and all terminal transfer/repair claims traced",
-      "notes": "Two unsupported outcomes remain: worker.offerSplitPair -> split says both customers agree despite the dancer not being consulted; dancer.askPartner -> partner says the worker accepts a canvas patch and return promise although no worker/patch conversation or patch action occurs on that route. The explicit canvasPatch and honorPayment routes do establish their respective outcomes.",
+      "notes": "The worker-only offerSplitPair route now remains a proposal because the dancer was not consulted. The separate dancer.askPartner route records only the partner’s actual agreement; CRA-F0156’s prior repair and explicit canvasPatch/honorPayment routes remain intact.",
       "preReconciliationPosition": 386,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -7549,12 +7549,12 @@
       "slug": "the-salute-from-the-wrong-porch",
       "title": "The Salute from the Wrong Porch",
       "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0166"
       ],
       "reviewProvenance": "current-source route review; first-captain account, relayed account, direct question, joint meeting, mutual account, voluntary waving, and traveler participation traced",
-      "notes": "first.shareAccount relays one captain’s explanation to the other and ends immediately at understood. The shared ending says both captains now know neither owes an origin story and keep waving; the second captain has not answered, agreed, or confirmed that the custom continues. both.leaveCourtesy and meeting routes do establish each side’s view. No persistent effects or reward.",
+      "notes": "first.shareAccount now ends in oneAccountShared, which says the second captain has not replied. The understood ending remains on both.leaveCourtesy and meeting routes that establish both views; the returned-salute route still records both answers. No persistent effects or reward.",
       "preReconciliationPosition": 432,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -7773,12 +7773,12 @@
       "slug": "road-through-the-barrow",
       "title": "The Road Through the Barrow",
       "sourceFile": "src/scenarios/deepExplorationBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0179"
       ],
       "reviewProvenance": "current-source route review; exterior map, consent/secret entry, loop and false niche, burial markers, untouched or disturbed bowl, returned/taken grave goods, rerouting, closure and death/retreat outcomes traced",
-      "notes": "barrowArch.secretEntry -> barrowLoop.trueNiche -> barrowBurial.returnLoop -> barrowResolved (also the copy-markers route) reaches an ending saying the keeper accepts the account and the crew agrees to reroute the road, although no keeper/crew response or meeting occurs on that branch. Permission routes and explicit surface reporting remain distinct; disturbance, restored/taken coins, trust breach and road access consequences are preserved. This is the existing NPC-consensus root pattern, not a new cluster.",
+      "notes": "barrowResolved now reports the recorded floor pattern and undisturbed burial without claiming keeper acceptance or crew consensus. Secret entry/return and permitted survey returns remain truthful; disturbance, restored/taken coins, trust breach, and road-access outcomes are unchanged. This is the existing NPC-consensus root pattern, not a new cluster.",
       "preReconciliationPosition": 444,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17113,7 +17113,9 @@
       "violatedRule": "NPC consent and collective authorship must be established through route-specific participation before narration or persistent Lore records agreement.",
       "clusterId": "CRA-C0007",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The composite choice still lets the Traveler create a present-day working card, but the ending and persistent Lore no longer claim either baker agreed or jointly authored it. The wording records only the Traveler's assembly from their attributed notes. Separate-account, tasting-only, and defer outcomes are unchanged. Regression verifies the Lore and ending preserve the consent boundary. Gameplay/test commit: b508aa5."
     },
     {
       "findingId": "CRA-F0152",
@@ -17167,7 +17169,9 @@
       "violatedRule": "A shared allocation/compromise requires the affected parties’ participation or consent to be established.",
       "clusterId": "CRA-C0007",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The worker-only split route now ends as a proposal, explicitly noting that the dancer has not been asked; it no longer claims both customers agreed or chose the compromise. The distinct dancer-partner and worker-patch routes remain unchanged, preserving the already repaired CRA-F0156 behavior. Regression covers the one-sided proposal and existing positive partner/patch outcomes. Gameplay/test commit: b508aa5."
     },
     {
       "findingId": "CRA-F0156",
@@ -17319,7 +17323,9 @@
       "violatedRule": "Group understanding, consent, or continued participation requires a response from each affected participant or an explicitly witnessed mutual action.",
       "clusterId": "CRA-C0007",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The first-captain-only account now ends at a separate oneAccountShared result that says the second captain has not replied and leaves the custom's future to them. The understood ending remains for routes where both captains shared their views, and the driver's returned salute still receives both answers. Regression contrasts the one-sided route with the meeting route. Gameplay/test commit: b508aa5."
     },
     {
       "findingId": "CRA-F0167",
@@ -17499,7 +17505,9 @@
       "violatedRule": "NPC acceptance and group agreement require participation or a route-established response from the affected people.",
       "clusterId": "CRA-C0007",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "The shared barrowResolved result now reports only the recorded floor pattern and undisturbed burial, while leaving the keeper's decision and road reroute unresolved. This is truthful for the secret-entry/return-loop route and for the permitted survey route, neither of which establishes a joint rerouting decision. Permission, disturbance, coin return/removal, and road access effects are unchanged. Regression contrasts secret and permitted entry returns. Gameplay/test commit: b508aa5."
     },
     {
       "findingId": "CRA-F0180",
@@ -20476,9 +20484,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 789,
+    "HEALTHY": 793,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 13,
+    "CONFIRMED DEFECT": 9,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
