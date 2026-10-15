@@ -350,12 +350,12 @@
   ],
   "liveSeverityTotals": {
     "HIGH": 13,
-    "MEDIUM": 283,
+    "MEDIUM": 285,
     "LOW": 50,
-    "SEVERITY_UNRECOVERED": 8
+    "SEVERITY_UNRECOVERED": 6
   },
   "liveClusterFindingCounts": {
-    "CRA-C0001": 222,
+    "CRA-C0001": 224,
     "CRA-C0002": 19,
     "CRA-C0003": 1,
     "CRA-C0004": 34,
@@ -493,11 +493,11 @@
       "slug": "bridge-out",
       "title": "Bridge Out",
       "sourceFile": "src/scenarios/bridgeOut.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0006"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable; focused current-source route verification completed",
       "preReconciliationPosition": 7,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -510,12 +510,12 @@
       "slug": "the-long-way-home",
       "title": "The Long Way Home",
       "sourceFile": "src/scenarios/longWayHome.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0007",
         "CRA-F0008"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witnesses unavailable; focused current-source route verification completed",
       "preReconciliationPosition": 8,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -528,11 +528,11 @@
       "slug": "no-vacancy",
       "title": "No Vacancy",
       "sourceFile": "src/scenarios/noVacancy.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0009"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable; focused current-source re-verification reproduced and repaired CRA-F0009",
       "preReconciliationPosition": 9,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -545,11 +545,11 @@
       "slug": "cold-storage",
       "title": "Cold Storage",
       "sourceFile": "src/scenarios/coldStorage.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0010"
       ],
-      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable in this checkout",
+      "reviewProvenance": "prior-chat carry-forward; detailed witness unavailable; focused current-source re-verification reproduced and repaired CRA-F0010",
       "preReconciliationPosition": 10,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -14946,65 +14946,75 @@
       "position": 7,
       "adventureId": "bridge-out",
       "severity": null,
-      "defect": "Confirmed defect carried forward; specific semantic witness and root-cause assignment not available in this checkpoint context.",
+      "defect": "Historical carry-forward defect; no matching route-truth contradiction reproduces in current source.",
       "routeWitness": null,
-      "violatedRule": null,
+      "violatedRule": "Converged text may assert only route-established outcomes and participation.",
       "clusterId": null,
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 7,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "The original witness and severity were not recoverable. Focused current-source review traced the turn-back, shelter, wait, bridge-repair, rope crossing, cargo crossing, costly crossing, downstream ford, and wardens-help routes through their endings. Route-specific outcomes remain distinct; notably costlyEnding uses existing medicineSaved proof to distinguish cargo set safely aside from cargo that may be lost. Bridge Out route tests pass (27). No current unsupported convergence claim corresponding to this carry-forward was found; no historical witness or severity is invented."
     },
     {
       "findingId": "CRA-F0007",
       "position": 8,
       "adventureId": "the-long-way-home",
       "severity": null,
-      "defect": "Confirmed defect carried forward; specific semantic witness and root-cause assignment not available in this checkpoint context.",
+      "defect": "Historical carry-forward defect; no matching route-truth contradiction reproduces in current source.",
       "routeWitness": null,
-      "violatedRule": null,
+      "violatedRule": "Converged text may assert only route-established outcomes and participation.",
       "clusterId": null,
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 8,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "The original two witnesses and severities were not recoverable. Focused current-source review followed the limited-aid and departure routes, the injury/support and alternate descent routes, storm/shelter/failure branches, the Rowan/Benn information routes, clinic/warden decisions, handover, reward, and terminal outcomes. In particular, abandonedEnding now uses heardOtherName and heardForemanClaim independently, with a neutral fallback; medical care, escort, ledger custody, and dispute resolution remain separated among endings. Current Long Way Home route tests pass (23), including route-specific information and save/reload coverage. No current unsupported convergence claim corresponding to these carry-forwards was found; no historical witness or severity is invented."
     },
     {
       "findingId": "CRA-F0008",
       "position": 8,
       "adventureId": "the-long-way-home",
       "severity": null,
-      "defect": "Confirmed defect carried forward; specific semantic witness and root-cause assignment not available in this checkpoint context.",
+      "defect": "Historical carry-forward defect; no matching route-truth contradiction reproduces in current source.",
       "routeWitness": null,
-      "violatedRule": null,
+      "violatedRule": "Converged text may assert only route-established outcomes and participation.",
       "clusterId": null,
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 8,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES",
+      "implementationEvidence": "The original two witnesses and severities were not recoverable. Focused current-source review followed the limited-aid and departure routes, the injury/support and alternate descent routes, storm/shelter/failure branches, the Rowan/Benn information routes, clinic/warden decisions, handover, reward, and terminal outcomes. In particular, abandonedEnding now uses heardOtherName and heardForemanClaim independently, with a neutral fallback; medical care, escort, ledger custody, and dispute resolution remain separated among endings. Current Long Way Home route tests pass (23), including route-specific information and save/reload coverage. No current unsupported convergence claim corresponding to these carry-forwards was found; no historical witness or severity is invented."
     },
     {
       "findingId": "CRA-F0009",
       "position": 9,
       "adventureId": "no-vacancy",
-      "severity": null,
-      "defect": "Confirmed defect carried forward; specific semantic witness and root-cause assignment not available in this checkpoint context.",
-      "routeWitness": null,
-      "violatedRule": null,
-      "clusterId": null,
+      "severity": "MEDIUM",
+      "defect": "The evacuation ending claims the guests reached the schoolhouse on routes where only the Traveler successfully reaches the wall.",
+      "routeWitness": "roofCrisis.evacuateHouse -> floodedYard.crossWithoutRope (failure) -> washedStep.crawlToWall (success) -> evacuationEnding; also washedStepAgain.catchPorchLine (success) -> evacuationEnding. These routes establish only the Traveler's own escape; neither moves the guests from the inn. In contrast, floodedYard.ropeGuidedCrossing and crossWithoutRope success effects record evacuated_guests.",
+      "violatedRule": "A shared ending may claim group evacuation only when the route establishes that the group reached safety; an evacuation attempt is not a completed evacuation.",
+      "clusterId": "CRA-C0001",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 9,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Current-source review assigned MEDIUM severity and reproduced the route leak. The premature evacuated_guests History write moved from the evacuation-attempt choice to successful group crossing outcomes only. evacuationEnding now uses the existing History proof: successful group crossings retain the schoolhouse ending; solo crawl/line-rescue routes receive neutral text stating the guests remain at the inn. No new state or persistence behavior was introduced. Regression contrasts failed-then-solo escape against successful rope-guided group evacuation. Gameplay/test commit: 6010e87."
     },
     {
       "findingId": "CRA-F0010",
       "position": 10,
       "adventureId": "cold-storage",
-      "severity": null,
-      "defect": "Confirmed defect carried forward; specific semantic witness and root-cause assignment not available in this checkpoint context.",
-      "routeWitness": null,
-      "violatedRule": null,
-      "clusterId": null,
+      "severity": "MEDIUM",
+      "defect": "The rack-failure withdrawal route immediately claims the rescue crew took over even though no crew was summoned or arrived.",
+      "routeWitness": "workerFound.liftUnstableRack (failure) -> rackShift.retreatToCrew -> partialEnding. Before the repair this route recorded returned_with_help and claimed the crew had stabilized the rack, despite lacking helpCalled/helpArrived proof. Contrast: workerFound.waitForWorkerCrew -> workerCrewArrives.stabilizeRackForLater explicitly waits for and reaches the crew before entering partialEnding.",
+      "violatedRule": "A result may credit outside help or a completed handoff only after the route establishes that help was called and arrived.",
+      "clusterId": "CRA-C0001",
       "metadataConfidence": "CARRY_FORWARD_INCOMPLETE",
       "preReconciliationPosition": 10,
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Current-source review assigned MEDIUM severity and reproduced the unsupported crew handoff. The retreat choice now explicitly sends for the heavy crew and models the 18-minute wait before entering workerCrewArrives; it records helpCalled/helpArrived but does not claim returned_with_help until the player takes the crew-supported stabilizing/rescue action. The existing no-help withdrawal remains available from outsideCall. Regression covers no premature History credit and the subsequent actual crew-supported handoff. Gameplay/test commit: 6010e87."
     },
     {
       "findingId": "CRA-F0011",
@@ -20250,7 +20260,9 @@
         "CRA-F0333",
         "CRA-F0334",
         "CRA-F0350",
-        "CRA-F0351"
+        "CRA-F0351",
+        "CRA-F0009",
+        "CRA-F0010"
       ]
     },
     {
@@ -20464,9 +20476,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 785,
+    "HEALTHY": 789,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 17,
+    "CONFIRMED DEFECT": 13,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
@@ -23028,7 +23040,7 @@
   ],
   "unreviewedLiveStableIds": [],
   "unregisteredReviewedRecords": 24,
-  "unclusteredLiveFindingCount": 5,
+  "unclusteredLiveFindingCount": 3,
   "unclusteredHistoricalFindingCount": 0,
   "unreviewedPositionRanges": [],
   "auditStatus": "COMPLETE",
