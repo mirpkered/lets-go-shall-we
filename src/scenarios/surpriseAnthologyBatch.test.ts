@@ -209,6 +209,24 @@ describe('surprise anthology and library gap-fill', () => {
     expect(quietChoice.run?.status).toBe('success');
   });
 
+  it('does not describe the already-read curtain note as unopened or unseen', () => {
+    const curtain = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-pocket-in-the-curtain')!;
+    const directorChoice = curtain.scenes.curtain.choices.find(({ id }) => id === 'returnNoteToDirector')!;
+    expect(directorChoice.label).toMatch(/without naming its author/i);
+    expect(directorChoice.label).not.toMatch(/unopened|unseen/i);
+
+    const directorRoute = act(start(curtain), curtain, 'curtain', 'returnNoteToDirector');
+    expect(directorRoute.run?.sceneId).toBe('director');
+    expect(curtain.scenes.director.text).toMatch(/recognizes the handwriting but does not say whose it is/i);
+
+    const singerChoice = curtain.scenes.singer.choices.find(({ id }) => id === 'offerToReturnNote')!;
+    expect(singerChoice.label).toMatch(/without repeating its contents/i);
+    expect(singerChoice.label).not.toMatch(/unopened|unseen/i);
+    const singerRoute = act(act(start(curtain), curtain, 'curtain', 'askSingerPrivately'), curtain, 'singer', 'offerToReturnNote');
+    expect(singerRoute.run?.sceneId).toBe('quietChange');
+    expect(curtain.scenes.quietChange.text).toMatch(/without naming the note’s author/i);
+  });
+
   it('keeps explicit danger fair and accurately resolves injury and death branches', () => {
     const stage = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-stage-rigging')!;
     const risky = stage.scenes.stage.choices.find(({ id }) => id === 'grabLooseLine')!;

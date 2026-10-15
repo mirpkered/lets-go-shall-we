@@ -247,7 +247,7 @@ export const THE_LAMP_LEFT_IN_THE_WINDOW = story('the-lamp-left-in-the-window', 
 
 export const THE_POCKET_IN_THE_CURTAIN = story('the-pocket-in-the-curtain', 'The Pocket in the Curtain', 'A hidden pocket in a hall curtain contains a note addressed to whoever finds it.', T('A theater curtain pocket conceals a note that could embarrass its writer; the traveler may expose, return, or quietly exploit the discovery.', ['investigation/mystery', 'social interaction'], 'opportunist', 'mysterious/eerie', 'town hall stage', ['hidden message', 'privacy and opportunism', 'consequence choice'], 'voluntary curiosity'), 'curtain', {
   curtain: scene('curtain', 'A Pocket Behind the Hem', 'While helping fold a heavy stage curtain, you find a pocket sewn into the hem. It holds a note: “I will not sing the solo. Ask the understudy to take it.” The writer’s name is missing.', [
-    { id: 'returnNoteToDirector', label: 'Give the note to the director unopened', next: 'director' },
+    { id: 'returnNoteToDirector', label: 'Give the note to the director without naming its author', next: 'director' },
     { id: 'askSingerPrivately', label: 'Ask the singer about the solo', next: 'singer' },
     { id: 'keepNote', label: 'Keep the note for now', next: 'kept', effects: { historyFlags: ['kept_an_anonymous_stage_note_private'] } },
   ]),
@@ -256,7 +256,7 @@ export const THE_POCKET_IN_THE_CURTAIN = story('the-pocket-in-the-curtain', 'The
     { id: 'askForPrivateChange', label: 'Ask her to change the solo quietly', next: 'quietChange' },
   ]),
   singer: scene('singer', 'A Singer’s Boundary', 'The singer says they asked to step down from the solo because their voice has been failing. They do not want an announcement; they only want the performance to go on.', [
-    { id: 'offerToReturnNote', label: 'Offer to return the note unseen', next: 'quietChange' },
+    { id: 'offerToReturnNote', label: 'Offer to return the note without repeating its contents', next: 'quietChange' },
     { id: 'askUnderstudy', label: 'Ask whether the understudy is willing', next: 'understudy' },
   ]),
   understudy: scene('understudy', 'The Understudy’s Choice', 'The understudy is willing to take the solo if the singer agrees. They do not want to be described as a replacement for someone who failed.', [
