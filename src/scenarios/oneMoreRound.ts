@@ -252,7 +252,7 @@ export const ONE_MORE_ROUND: Scenario = {
       choices: [
         { id: 'separateAtThreatWithGear', label: 'Use your gear to put space between them', hint: 'A rope, gloves, or heavy object may help; a failure could seriously injure you.', requirements: { anyItems: SEPARATION_GEAR }, timeCost: 1, chance: { probability: 0.62, bonusItems: SEPARATION_GEAR, bonusProbability: 0.2, successNext: 'fightStoppedAftercare', failureNext: 'fightWorsens', successMessage: 'You lever the table aside and Pell drops the glass.', failureMessage: 'The broken bottle catches you as the table shifts.', successEffects: { setFlags: ['fightStopped'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -6, setFlags: ['escalatedTavernDispute'] } } },
         { id: 'stepBetweenBarehanded', label: 'Step between them with empty hands', hint: 'The broken glass is clearly dangerous; a bad hit could be severe.', requirements: { notItems: SEPARATION_GEAR }, timeCost: 1, chance: { probability: 0.48, successNext: 'fightStoppedAftercare', failureNext: 'fightWorsens', successMessage: 'You catch Pell’s wrist and push the bottle away.', failureMessage: 'The broken glass cuts deep as you are knocked against the table.', successEffects: { setFlags: ['fightStopped'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -6, setFlags: ['escalatedTavernDispute'] } } },
-        { id: 'callHelpAtThreat', label: 'Call for the constable now', timeCost: 8, next: 'constableArrives', effects: { historyFlags: ['called_help_at_tavern'] } },
+        { id: 'callHelpAtThreat', label: 'Call for the constable now', timeCost: 8, next: 'constableArrives', effects: { setFlags: ['tavernFightOccurred'], historyFlags: ['called_help_at_tavern'] } },
         { id: 'retreatFromGlass', label: 'Get clear of the broken glass', effects: { historyFlags: ['walked_away_from_tavern_dispute'] }, next: 'walkAwayEnding' },
       ],
     },
@@ -260,7 +260,7 @@ export const ONE_MORE_ROUND: Scenario = {
       id: 'fightWorsens', title: 'A Bad Minute', tone: 'danger',
       text: 'The table overturns and the broken glass scatters. Your injury is real, and neither person is listening. The danger was visible before you stepped in; staying to fight again could make it worse.',
       choices: [
-        { id: 'callAfterFight', label: 'Call for help and protect the doorway', timeCost: 3, next: 'constableArrives', effects: { historyFlags: ['called_help_at_tavern'] } },
+        { id: 'callAfterFight', label: 'Call for help and protect the doorway', timeCost: 3, next: 'constableArrives', effects: { setFlags: ['tavernFightOccurred'], historyFlags: ['called_help_at_tavern'] } },
         { id: 'helpRafeEscape', label: 'Help Rafe get out of the room', timeCost: 1, next: 'fightStoppedAftercare', effects: { setFlags: ['fightStopped'], historyFlags: ['protected_accused_patron', 'broke_up_tavern_fight'] } },
         { id: 'withdrawFromFight', label: 'Withdraw and let the constable handle it', effects: { historyFlags: ['escalated_tavern_dispute'] }, next: 'violentEnding' },
       ],
@@ -335,7 +335,7 @@ export const ONE_MORE_ROUND: Scenario = {
       choices: [
         { id: 'separateAtThreatWithGear', label: 'Use your gear to put space between them', hint: 'A rope, gloves, or heavy object may help; a failure could seriously injure you.', requirements: { anyItems: SEPARATION_GEAR }, timeCost: 1, chance: { probability: 0.62, bonusItems: SEPARATION_GEAR, bonusProbability: 0.2, successNext: 'fightStoppedAftercare', failureNext: 'fightWorsens', successMessage: 'You lever the table aside and Pell drops the glass.', failureMessage: 'The broken bottle catches you as the table shifts.', successEffects: { setFlags: ['fightStopped'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -6, setFlags: ['escalatedTavernDispute'] } } },
         { id: 'stepBetweenBarehanded', label: 'Step between them with empty hands', hint: 'The broken glass is clearly dangerous; a bad hit could be severe.', requirements: { notItems: SEPARATION_GEAR }, timeCost: 1, chance: { probability: 0.48, successNext: 'fightStoppedAftercare', failureNext: 'fightWorsens', successMessage: 'You catch Pell’s wrist and push the bottle away.', failureMessage: 'The broken glass cuts deep as you are knocked against the table.', successEffects: { setFlags: ['fightStopped'], historyFlags: ['broke_up_tavern_fight'] }, failureEffects: { health: -6, setFlags: ['escalatedTavernDispute'] } } },
-        { id: 'callHelpAtThreat', label: 'Call for the constable now', timeCost: 8, next: 'constableArrives', effects: { historyFlags: ['called_help_at_tavern'] } },
+        { id: 'callHelpAtThreat', label: 'Call for the constable now', timeCost: 8, next: 'constableArrives', effects: { setFlags: ['tavernFightOccurred'], historyFlags: ['called_help_at_tavern'] } },
         { id: 'retreatFromGlass', label: 'Get clear of the broken glass', effects: { historyFlags: ['walked_away_from_tavern_dispute'] }, next: 'walkAwayEnding' },
       ],
     },
@@ -343,7 +343,7 @@ export const ONE_MORE_ROUND: Scenario = {
       id: 'fightWorsens', title: 'A Bad Minute', tone: 'danger',
       text: 'The table overturns and the broken glass scatters. Your injury is real, and neither person is listening. The danger was visible before you stepped in; staying to fight again could make it worse.',
       choices: [
-        { id: 'callAfterFight', label: 'Call for help and protect the doorway', timeCost: 3, next: 'constableArrives', effects: { historyFlags: ['called_help_at_tavern'] } },
+        { id: 'callAfterFight', label: 'Call for help and protect the doorway', timeCost: 3, next: 'constableArrives', effects: { setFlags: ['tavernFightOccurred'], historyFlags: ['called_help_at_tavern'] } },
         { id: 'helpRafeEscape', label: 'Help Rafe get out of the room', timeCost: 1, next: 'fightStoppedAftercare', effects: { setFlags: ['fightStopped'], historyFlags: ['protected_accused_patron', 'broke_up_tavern_fight'] } },
         { id: 'withdrawFromFight', label: 'Withdraw and let the constable handle it', effects: { historyFlags: ['escalated_tavern_dispute'] }, next: 'violentEnding' },
       ],
@@ -427,7 +427,7 @@ export const ONE_MORE_ROUND: Scenario = {
     constableArrives: {
       id: 'constableArrives', title: 'Help at the Door', tone: 'warning',
       text: 'The constable arrives after the walk over. The room has had time to change: some patrons have gone, and no account is complete. The constable can separate everyone, but cannot turn a suspicion into proof.',
-      textVariants: [{ requirements: { minElapsedMinutes: 24 }, text: 'The constable arrives after the shouting and broken glass. Pell is seated, Rafe is outside, and Sella is shaken. The room is safe now, but the cost of waiting is visible in the overturned table.' }],
+      textVariants: [{ requirements: { flags: ['tavernFightOccurred'] }, text: 'The constable arrives after the fight broke out. The room is unsettled, and the dispute still needs to be sorted in daylight.' }],
       choices: [
         { id: 'constableSearchesPurse', label: 'Show the recovered purse and explain', requirements: { flags: ['purseRecovered'] }, effects: { setFlags: ['truthResolved'], historyFlags: ['exposed_tavern_truth'] }, next: 'truthRewards' },
         { id: 'acceptConstableSeparation', label: 'Ask the constable to separate them for the night', effects: { historyFlags: ['called_help_at_tavern', 'asked_constable_to_separate_guests'] }, next: 'authorityEnding' },

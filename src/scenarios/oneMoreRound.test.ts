@@ -139,6 +139,24 @@ describe('One More Round', () => {
     expect(failed.run?.flags).toContain('searchFailed');
   });
 
+  it('uses elapsed time no longer as proof that a fight occurred before the constable arrived', () => {
+    let nonviolent = act(act(act(fresh(), 'listenFromBar'), 'questionServerEarly'), 'searchAfterServer');
+    nonviolent = act(nonviolent, 'searchBenchByHand', 0.999);
+    expect(nonviolent.run?.sceneId).toBe('searchMissed');
+    nonviolent.run!.elapsedMinutes = 24;
+    nonviolent = act(nonviolent, 'callAfterSearchMiss');
+    expect(nonviolent.run?.sceneId).toBe('constableArrives');
+    expect(sceneText(ONE_MORE_ROUND.scenes.constableArrives, nonviolent)).not.toMatch(/shouting and broken glass|overturned table|fight broke out/i);
+
+    let fought = act(act(act(act(fresh(), 'listenFromBar'), 'lookAtCounter'), 'goToConfrontation'), 'accuseRafe');
+    fought = act(fought, 'doubleDownOnAccusation');
+    expect(fought.run?.sceneId).toBe('threatMoment');
+    expect(sceneText(ONE_MORE_ROUND.scenes.threatMoment, fought)).toMatch(/bottle breaks/i);
+    fought = act(fought, 'callHelpAtThreat');
+    expect(fought.run?.flags).toContain('tavernFightOccurred');
+    expect(sceneText(ONE_MORE_ROUND.scenes.constableArrives, fought)).toMatch(/after the fight broke out/i);
+  });
+
   it('spends character money to settle the separate debt without claiming the purse was found', () => {
     let state = act(act(fresh(2), 'listenFromBar'), 'askSellaAboutPurse');
     state = act(state, 'payRafeDebt');
