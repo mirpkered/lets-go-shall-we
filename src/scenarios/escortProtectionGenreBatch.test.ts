@@ -77,6 +77,29 @@ describe('Escort / Protection genre batch', () => {
     expect(scenario.scenes.post.choices.filter((choice) => meets(choice.requirements, usableCloak)).map(({ id }) => id)).toEqual(['ask']);
   });
 
+  it('only says the doctor is clinging to a handline when the route established one', () => {
+    const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-doctor-before-the-ford')!;
+    const makeState = (withRope: boolean): SaveData => {
+      const character = newCharacter('Ford Route Tester');
+      if (withRope) { character.carriedItem = 'travelRope'; character.carriedItems = ['travelRope']; }
+      return { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+    };
+
+    let noHandline = makeState(false);
+    noHandline = choose(noHandline, scenario, scenario.scenes.departure.choices.find(({ id }) => id === 'case')!, () => 0);
+    noHandline = choose(noHandline, scenario, scenario.scenes.crossing.choices.find(({ id }) => id === 'casefirst')!, () => 0);
+    const noHandlineText = sceneText(scenario.scenes.caseFirst, noHandline);
+    expect(noHandlineText).toMatch(/struggling to keep her footing/i);
+    expect(noHandlineText).not.toMatch(/clinging to the handline/i);
+
+    let handline = makeState(true);
+    handline = choose(handline, scenario, scenario.scenes.departure.choices.find(({ id }) => id === 'rope')!, () => 0);
+    handline = choose(handline, scenario, scenario.scenes.crossing.choices.find(({ id }) => id === 'casefirst')!, () => 0);
+    const handlineText = sceneText(scenario.scenes.caseFirst, handline);
+    expect(handline.run?.flags).toContain('doctor_rope_line');
+    expect(handlineText).toMatch(/clinging to the handline/i);
+  });
+
   it('lets a carried Telegraph Line Tester confirm continuity from firm ground, but not pole safety', () => {
     const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-telegraph-repair-car')!;
     const makeState = (carried: boolean, bank: string[] = []) => {
