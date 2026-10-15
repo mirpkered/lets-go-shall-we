@@ -222,6 +222,22 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(sceneText(scenario.scenes.marks, legacy)).not.toMatch(/chalk marks were copied|crate.*under the platform ramp/i);
   });
 
+  it('ties Empty Camp Office settlement credit to the shared signal-and-wait action, not book security', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-empty-camp-office')!;
+    for (const [officeChoice, booksSecured] of [['secureBooks', true], ['leaveMessage', false]] as const) {
+      let state = fresh(scenario);
+      state = take(state, scenario, 'office', officeChoice);
+      expect(state.run?.flags).toContain(booksSecured ? 'office_books_secured' : 'office_signal_set');
+      if (!booksSecured) expect(state.run?.flags).not.toContain('office_books_secured');
+      state = take(state, scenario, 'signal', 'waitCrew');
+      const text = sceneText(scenario.scenes.paid, state);
+      expect(text).toMatch(/waiting at the office with a visible signal/i);
+      expect(text).toMatch(/respecting the sealed message/i);
+      expect(text).not.toMatch(/for securing the working records/i);
+      expect(scenario.scenes.paid.choices.map(({ id }) => id)).toEqual(['tube', 'coin']);
+    }
+  });
+
   it('does not say every Three Crews task is complete after any single successful allocation route', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'three-crews-one-tool')!;
     const routes = [
