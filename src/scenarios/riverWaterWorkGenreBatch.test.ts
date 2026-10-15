@@ -40,6 +40,29 @@ describe('Gear Expansion Genre Batch 10 — River / Ferry / Water Work', () => {
     }
   });
 
+  it('limits the fresh millrace trend to the route that watches it and keeps a neutral stop result', () => {
+    const mill = BATCH.find(({ id }) => id === 'the-flood-mark-on-the-mill-door')!;
+
+    let moved = chooseAt(fresh(mill), mill, 'mark', 'move');
+    const movedGate = sceneText(mill.scenes.gate, moved);
+    expect(movedGate).toMatch(/millrace trend has not been established/i);
+    expect(movedGate).not.toMatch(/reeds gather|water creep higher/i);
+    moved = chooseAt(moved, mill, 'gate', 'clear');
+    expect(moved.run?.sceneId).toBe('paid');
+    expect(sceneText(mill.scenes.paid, moved)).toMatch(/grate is cleared and the water level eases/i);
+
+    let observed = chooseAt(fresh(mill), mill, 'mark', 'observe');
+    const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+    saveGame(observed, storage as never);
+    observed = loadSave(storage as never);
+    expect(observed.run?.flags).toContain('mill_gate_watched');
+    expect(sceneText(mill.scenes.gate, observed)).toMatch(/reeds gather.*millrace water creep higher/i);
+    observed = chooseAt(observed, mill, 'gate', 'shut');
+    expect(observed.run?.sceneId).toBe('partial');
+    expect(sceneText(mill.scenes.partial, observed)).not.toMatch(/flour stays on the upper floor/i);
+    expect(sceneText(mill.scenes.partial, observed)).toMatch(/loading does not resume here/i);
+  });
+
   it('makes every story leave meaningful continuity and gives most a legitimate Gear path', () => {
     let gearRoutes = 0;
     for (const scenario of BATCH) {
