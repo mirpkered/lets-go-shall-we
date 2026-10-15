@@ -3,7 +3,16 @@
 Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. Next unused finding ID `CRA-F0362`; next available cluster ID `CRA-C0012`.
+Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; post-audit additions advance the current global IDs to `CRA-F0364` and `CRA-C0014`.
+
+### Post-audit human-QA semantic reconciliation — Paper Boat and The Shortcut
+
+The original semantic audit remains historically **COMPLETE** for its **354 LIVE findings**, all dispositioned (**344 repaired, 10 healthy/no-longer-reproduces; 0 open**). Two additional defects were discovered after that closure during focused human-QA reconciliation and are recorded separately in `postAuditHumanQa` in the JSON ledger; the original 354 finding records, original cluster index, audit classifications, and closure milestone were not rewritten.
+
+- **CRA-F0362 — Paper Boat at High Water** (`paper-boat-at-high-water`, position 842), **LOW**, new cluster **CRA-C0013 — Gear ownership asserted without state proof**. A fresh Traveler could see “your Waterproof Ledger Tube” before any opportunity to earn it. The shared courier builder now uses neutral packet/flood wording when the tube is absent, and state-aware wording for owned usable versus owned BROKEN tubes. The flooded-shortcut action retains its inventory and usability gate; the later Gear reward and other courier stories are unchanged.
+- **CRA-F0363 — The Shortcut** (`the-shortcut`, position 77), **LOW**, extends existing **CRA-C0002 — Knowledge/History without route proof**. Successful shortcut narration already teaches the firm-ridge fact before the final choice, but Knowledge was saved only by an optional “Remember” choice. The existing free-text Knowledge entry is now awarded on successful direct or after-asking shortcut routes; failure and established-road routes do not receive it. The knowledge-only choice was removed; no new stable Knowledge fact or save schema was added.
+
+Both post-audit findings are `VERIFIED_HEALTHY_REPAIRED`; none remain open. Current operational totals are **356 live findings** (**346 repaired, 10 healthy/no-longer-reproduces, 0 open**) with severity totals **13 HIGH, 285 MEDIUM, 52 LOW, 6 unrecovered** across the unchanged 861-Adventures registry. Current disposition-derived Adventure classifications remain **802 HEALTHY, 59 MINOR CONCERN, 0 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. The 354-finding original closure remains separately recorded above. CRA-C0013 is the only new cluster; three original live findings remain unclustered. Focused Paper Boat, Shortcut/wilderness, and QA-content regressions pass (**46 tests across 3 files**); the full suite passes (**130 files / 2,554 tests**), TypeScript and production build pass (existing large-bundle warning), and post-audit ledger/inventory arithmetic plus `git diff --check` pass. The next globally unused IDs are `CRA-F0364` and `CRA-C0014`. No deployment or scheduler change is included in this checkpoint.
 
 ### Current local repair checkpoint — CRA-C0009 Gear condition
 

@@ -382,8 +382,8 @@
     "CRA-C0011": 0,
     "CRA-C0012": 0
   },
-  "nextFindingId": "CRA-F0362",
-  "nextClusterId": "CRA-C0013",
+  "nextFindingId": "CRA-F0364",
+  "nextClusterId": "CRA-C0014",
   "status": "COMPLETE",
   "carryForwardLimitations": "Positions 1-20 are carried forward from prior conversation summaries because no persistent semantic-audit ledger existed in this checkout. Positions 1-10 lack recoverable detailed severity and route-witness metadata here; those fields are explicitly null or qualified rather than inferred. Positions 11-20 have concise prior-review evidence in the conversation but were not re-audited in this batch.",
   "adventures": [
@@ -23754,5 +23754,123 @@
         "safeguard": "Model refunds as one-time compensation events and test total paid/refunded balance across every reachable follow-up."
       }
     ]
+  },
+  "originalAuditClosure": {
+    "status": "COMPLETE",
+    "liveFindingCount": 354,
+    "dispositionTotals": {
+      "VERIFIED_HEALTHY_REPAIRED": 344,
+      "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
+      "OPEN": 0
+    },
+    "classificationTotals": {
+      "HEALTHY": 802,
+      "MINOR CONCERN": 59,
+      "CONFIRMED DEFECT": 0,
+      "NEEDS MANUAL REVIEW": 0
+    },
+    "nextFindingIdAtClosure": "CRA-F0362",
+    "nextClusterIdAtClosure": "CRA-C0013",
+    "findingIdBoundary": "CRA-F0001–CRA-F0361, including seven UNREGISTERED_SOURCE historical findings"
+  },
+  "postAuditHumanQa": {
+    "provenance": "POST_AUDIT_HUMAN_QA",
+    "discovery": "Two new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "status": "RECONCILED",
+    "liveFindingCount": 2,
+    "dispositionTotals": {
+      "VERIFIED_HEALTHY_REPAIRED": 2,
+      "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
+      "OPEN": 0
+    },
+    "currentLiveFindingCount": 356,
+    "currentLiveDispositionTotals": {
+      "VERIFIED_HEALTHY_REPAIRED": 346,
+      "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
+      "OPEN": 0
+    },
+    "currentLiveSeverityTotals": {
+      "HIGH": 13,
+      "MEDIUM": 285,
+      "LOW": 52,
+      "SEVERITY_UNRECOVERED": 6
+    },
+    "currentLiveClassificationTotals": {
+      "HEALTHY": 802,
+      "MINOR CONCERN": 59,
+      "CONFIRMED DEFECT": 0,
+      "NEEDS MANUAL REVIEW": 0
+    },
+    "nextFindingId": "CRA-F0364",
+    "nextClusterId": "CRA-C0014",
+    "findings": [
+      {
+        "findingId": "CRA-F0362",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 842,
+        "adventureId": "paper-boat-at-high-water",
+        "title": "Paper Boat at High Water",
+        "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts",
+        "severity": "LOW",
+        "defect": "The shared courier narration says the Traveler owns a Waterproof Ledger Tube before the route or inventory establishes that Gear; a fresh Traveler can reach the text without the tube.",
+        "routeWitness": "Fresh Traveler has no carried Gear (`newCharacter` initializes an empty loadout). `start.acceptDelivery -> handling` renders the Story complication with the unconditional phrase “your Waterproof Ledger Tube”; `handling.carryNow -> decision` repeats the same assertion. The later optional `settle.takeGear` reward is only available after a completed handoff, so it cannot establish ownership for the earlier text. The `floodedShortcut` choice is separately gated by both inventory and usability and is not the defect.",
+        "violatedRule": "Narration may assert Gear ownership only when current route/inventory state establishes ownership; ownership and usability remain separate facts.",
+        "clusterId": "CRA-C0013",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Courier story data now uses neutral packet/flood wording by default. Paper Boat adds route-state text variants only: owned usable tube text describes its rain/spray limits; an owned BROKEN tube is described as broken and unable to protect the packet. The flooded shortcut label no longer asserts ownership and retains its existing `items` plus `usableItems` gate. No Gear/reward behavior, scenario outcomes, or other courier-story text changed. Positive/negative tests cover no tube, usable ownership, BROKEN ownership, the unavailable action, and BROKEN state through save/reload. Focused courier suite passed.",
+        "repairLocality": "Paper Boat-specific data passed through the courier builder's optional route-state narration field; no other caller opts in.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0363",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 77,
+        "adventureId": "the-shortcut",
+        "title": "The Shortcut",
+        "sourceFile": "src/scenarios/wildernessBatch.ts",
+        "severity": "LOW",
+        "defect": "The successful shortcut route visibly teaches a persistent ridge-route fact before the player's final choice, but the fact is saved only if the player selects the optional “Remember the firm ridge route” choice.",
+        "routeWitness": "`roadsideOffer.takeCutoff` success or `groundAccount.takeAfterAsking` success reaches `shortRoute`. Before its choices, `shortRoute.text` states the ground holds, the cut rejoins the road, and the white stones follow the firm ridge around the wet hollow. The matching Knowledge prose is then awarded only by `shortRoute.noteFirmCut`; `enjoyViewFromRise` and `continuePastJunction` reach the same ending without preserving the already-learned fact. Failure (`roughCutoff`) and established-road routes do not establish the fact.",
+        "violatedRule": "Persist Knowledge when the Traveler learns the reliable fact, not only when a later optional meta-choice asks them to remember it.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing free-text Knowledge entry now applies on successful transitions into the observed `shortRoute` scene, for both direct and after-asking shortcut success. It no longer depends on the removed knowledge-only ‘Remember’ choice. Failure and established-road routes remain without this fact; view/continue choices preserve Knowledge already learned, and save/reload retains it. No new stable Knowledge fact, schema, or route flag was introduced. Wilderness and content-correction regressions pass.",
+        "repairLocality": "Scenario-specific successful route effects in wildernessBatch.ts.",
+        "dependencies": []
+      }
+    ],
+    "newClusters": [
+      {
+        "clusterId": "CRA-C0013",
+        "name": "Gear ownership asserted without state proof",
+        "description": "Narration claims the Traveler owns named Gear without route or current inventory proof. This is distinct from CRA-C0004 (owned Gear is treated as usable) and CRA-C0008 (a Gear action lacks an availability gate): the defect is an unsupported ownership assertion in text.",
+        "findingIds": ["CRA-F0362"],
+        "affectedAdventureIds": ["paper-boat-at-high-water"],
+        "severityTotals": {"HIGH": 0, "MEDIUM": 0, "LOW": 1},
+        "likelyRepairLayer": "Scenario-specific or opt-in family-builder narration variants gated by actual ownership and condition.",
+        "reasonNoExistingClusterFits": "Existing Gear clusters cover action usability, availability gates, and reward condition/provenance, while CRA-C0001 is a route-fact lost at a shared convergence. None captures plain narration asserting possession when the Traveler may not own the item."
+      }
+    ],
+    "currentClusterAssignmentTotals": {
+      "CRA-C0001": 224,
+      "CRA-C0002": 20,
+      "CRA-C0003": 1,
+      "CRA-C0004": 34,
+      "CRA-C0005": 1,
+      "CRA-C0006": 17,
+      "CRA-C0007": 4,
+      "CRA-C0008": 12,
+      "CRA-C0009": 3,
+      "CRA-C0010": 11,
+      "CRA-C0011": 24,
+      "CRA-C0012": 1,
+      "CRA-C0013": 1
+    },
+    "currentUnclusteredLiveFindingCount": 3,
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These two records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these two separately sourced post-audit findings."
   }
 }
