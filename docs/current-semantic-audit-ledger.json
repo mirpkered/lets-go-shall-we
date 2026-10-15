@@ -23838,7 +23838,7 @@
         "clusterId": "CRA-C0002",
         "initialStatus": "OPEN_REPRODUCIBLE",
         "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
-        "implementationEvidence": "The existing free-text Knowledge entry now applies on successful transitions into the observed `shortRoute` scene, for both direct and after-asking shortcut success. It no longer depends on the removed knowledge-only ‘Remember’ choice. Failure and established-road routes remain without this fact; view/continue choices preserve Knowledge already learned, and save/reload retains it. No new stable Knowledge fact, schema, or route flag was introduced. Wilderness and content-correction regressions pass.",
+      "implementationEvidence": "The existing free-text Knowledge entry now applies on successful transitions into the observed `shortRoute` scene, for both direct and after-asking shortcut success. It no longer depends on a knowledge-only ‘Remember’ choice. The observation resolves directly as an ending, avoiding the former non-competing pause/continue choice pair. Failure and established-road routes remain without this fact; save/reload retains it. No new stable Knowledge fact, schema, or route flag was introduced. Wilderness and content-correction regressions pass.",
         "repairLocality": "Scenario-specific successful route effects in wildernessBatch.ts.",
         "dependencies": []
       }
