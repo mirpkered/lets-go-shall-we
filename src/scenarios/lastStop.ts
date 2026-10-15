@@ -58,7 +58,7 @@ export const LAST_STOP: Scenario = {
       id: 'passengerCar', title: 'The Evening Local',
       text: 'Lamplight rocks across velvet seats as the train gathers an easy rhythm. A surveyor reads in the corner. Forward lies the service car; behind, the conductor checks tickets. Rain begins to bead on the glass.',
       choices: [
-        { id: 'conductor', label: 'Speak with the conductor', timeCost: 4, next: 'conductorCar' },
+        { id: 'conductor', label: 'Speak with the conductor', timeCost: 4, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel] }, next: 'conductorCar' },
         { id: 'service', label: 'Explore the service car', timeCost: 5, next: 'serviceCar' },
         { id: 'surveyor', label: 'Talk to the surveyor', timeCost: 5, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.blackstoneMaintenanceSiding], setFlags: ['talkedSurveyor'] }, next: 'surveyorAfterTalk' },
         { id: 'settle', label: 'Watch the countryside', hint: 'Let the journey carry you awhile.', timeCost: 18, next: 'quietJourney' },
@@ -68,7 +68,7 @@ export const LAST_STOP: Scenario = {
       id: 'surveyorAfterTalk', title: 'A Note About Milepost 47',
       text: 'The surveyor folds the map. “The siding is steep, but it was built to hold maintenance wagons. If we reach it slowly, it may save the coaches.”',
       choices: [
-        { id: 'conductorAfterSurvey', label: 'Speak with the conductor', next: 'conductorCar' },
+        { id: 'conductorAfterSurvey', label: 'Speak with the conductor', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel] }, next: 'conductorCar' },
         { id: 'serviceAfterSurvey', label: 'Explore the service car', next: 'serviceCar' },
         { id: 'quietAfterSurvey', label: 'Settle in for the journey', next: 'quietJourney' },
       ],
@@ -77,18 +77,9 @@ export const LAST_STOP: Scenario = {
       id: 'conductorCar', title: 'The Conductor’s Alcove',
       text: 'Conductor Vale points out the red emergency cabinet. “Handwheel vents the brake line: turn, hold, lock. Never wrench it loose all at once.” A square iron key hangs beside his timetable; the locked maintenance case is in the service car.',
       choices: [
-        { id: 'learn', label: 'Remember the procedure', timeCost: 3, effects: { knowledgeEntries: [KNOWLEDGE_FACTS.baggageBrakeHandwheel], setFlags: ['learnedBrake'] }, next: 'conductorExplains' },
         { id: 'inspectKey', label: 'Ask Vale for the cabinet key', timeCost: 2, effects: { gainItems: ['brakeKey'] }, next: 'conductorKeyHandoff' },
         { id: 'service', label: 'Visit the service car', next: 'serviceCar' },
         { id: 'seat', label: 'Return to your seat', next: 'quietJourney' },
-      ],
-    },
-    conductorExplains: {
-      id: 'conductorExplains', title: 'The Conductor’s Instructions',
-      text: 'Vale explains the handwheel procedure. The cabinet key remains on its hook beside the timetable if you need it; the baggage diagram is in the next car.',
-      choices: [
-        { id: 'serviceAfterTalk', label: 'Explore the service car', next: 'serviceCar' },
-        { id: 'seatAfterTalk', label: 'Settle in for the journey', next: 'quietJourney' },
       ],
     },
     conductorKeyHandoff: {

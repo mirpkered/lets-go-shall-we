@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
+import { KNOWLEDGE_FACTS } from '../knowledgeFacts';
 import type { SaveData, Scenario } from '../types';
 import { BROKEN_BELL } from './brokenBell';
 import { LAST_STOP } from './lastStop';
@@ -47,7 +48,7 @@ describe('All Aboard!', () => {
 
   it('supports a fresh-character brake route to a survivable ending', () => {
     let state = fresh();
-    for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
+    for (const id of ['board', 'conductor', 'seat', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'hold']) state = act(state, id);
     expect(state.run?.status).toBe('success');
     expect(state.run?.sceneId).toBe('messyEnding');
     expect(sceneText(LAST_STOP.scenes.messyEnding, state)).toContain('service-car brake work');
@@ -72,7 +73,7 @@ describe('All Aboard!', () => {
     expect(manualText).not.toContain('keeping them together');
 
     let combined = fresh();
-    for (const id of ['board', 'conductor', 'learn', 'seatAfterTalk', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'front', 'crossRoof']) combined = act(combined, id, 0);
+    for (const id of ['board', 'conductor', 'seat', 'findConductor', 'takeCharge', 'brake', 'knownMethod', 'front', 'crossRoof']) combined = act(combined, id, 0);
     combined = act(combined, 'grabLever', 0.99);
     combined = act(combined, 'brake');
     combined = act(combined, 'holdManualBrake');
@@ -260,6 +261,60 @@ describe('All Aboard!', () => {
     expect(LAST_STOP.scenes.serviceCar.text).toContain('make out a compact toolkit');
     state = act(state, 'openCase');
     expect(state.run?.inventory).toContain('pocketToolkit');
+  });
+
+  it('persists Vale’s taught brake procedure before the player chooses what to do next', () => {
+    const key = KNOWLEDGE_FACTS.baggageBrakeHandwheel.id;
+    let state = fresh();
+    state = act(state, 'board');
+    state = act(state, 'conductor');
+
+    expect(LAST_STOP.scenes.conductorCar.text).toContain('turn, hold, lock');
+    expect(state.run?.sceneId).toBe('conductorCar');
+    expect(state.character?.knowledgeKeys).toContain(key);
+    expect(LAST_STOP.scenes.conductorCar.choices.map(({ id }) => id)).not.toContain('learn');
+
+    const values = new Map<string, string>();
+    const storage = { setItem: (name: string, value: string) => values.set(name, value), getItem: (name: string) => values.get(name) ?? null };
+    saveGame(state, storage);
+    state = loadSave(storage);
+    expect(state.character?.knowledgeKeys).toContain(key);
+  });
+
+  it.each(['inspectKey', 'service', 'seat'])(
+    'keeps Vale’s already-taught Knowledge after choosing %s',
+    (choiceId) => {
+      let state = fresh();
+      state = act(state, 'board');
+      state = act(state, 'conductor');
+      state = act(state, choiceId);
+      expect(state.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.baggageBrakeHandwheel.id);
+    },
+  );
+
+  it('persists the procedure when Vale teaches it after the surveyor conversation', () => {
+    let state = fresh();
+    state = act(state, 'board');
+    state = act(state, 'surveyor');
+    state = act(state, 'conductorAfterSurvey');
+    expect(state.run?.sceneId).toBe('conductorCar');
+    expect(state.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.baggageBrakeHandwheel.id);
+  });
+
+  it('does not grant the handwheel Knowledge on a route that never reaches Vale’s teaching', () => {
+    let state = fresh();
+    state = act(state, 'board');
+    state = act(state, 'settle');
+    expect(state.run?.sceneId).toBe('quietJourney');
+    expect(state.character?.knowledgeKeys).not.toContain(KNOWLEDGE_FACTS.baggageBrakeHandwheel.id);
+  });
+
+  it('still grants the handwheel Knowledge when the service-car diagram is studied', () => {
+    let state = fresh();
+    state = act(state, 'board');
+    state = act(state, 'service');
+    state = act(state, 'studyBrake');
+    expect(state.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.baggageBrakeHandwheel.id);
   });
 
   it('uses the standard death handling after a clearly dangerous failed action', () => {
