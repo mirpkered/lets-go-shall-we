@@ -196,6 +196,32 @@ describe('Gear Expansion Genre Batch 8 — Expedition Logistics / Supply / Stagi
     expect(crates.scenes.siding.text).toMatch(/not stolen/i);
   });
 
+  it('keeps the scale-only Two Crates Short route from inventing copied marks or a crate location', () => {
+    const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'two-crates-short')!;
+    const scaleOnly = fresh(scenario);
+    scaleOnly.run!.inventory.push('cargoBalanceScale');
+    let weighed = take(scaleOnly, scenario, 'manifest', 'weighSealed');
+    const weighedText = sceneText(scenario.scenes.marks, weighed);
+    expect(weighedText).toMatch(/weighed, but that does not establish/i);
+    expect(weighedText).not.toMatch(/chalk marks were copied|crate.*under the platform ramp/i);
+    expect(meets(scenario.scenes.marks.choices.find(({ id }) => id === 'secureIt')?.requirements, weighed)).toBe(true);
+    weighed = take(weighed, scenario, 'marks', 'secureIt');
+    expect(sceneText(scenario.scenes.siding, weighed)).toMatch(/medical crate is under the ramp/i);
+
+    let waybill = fresh(scenario);
+    waybill = take(waybill, scenario, 'manifest', 'checkWaybill');
+    expect(sceneText(scenario.scenes.marks, waybill)).toMatch(/chalk marks were copied/i);
+    expect(sceneText(scenario.scenes.marks, waybill)).not.toMatch(/crate.*under the platform ramp/i);
+    expect(meets(scenario.scenes.marks.choices.find(({ id }) => id === 'secureIt')?.requirements, waybill)).toBe(true);
+    waybill = take(waybill, scenario, 'marks', 'secureIt');
+    expect(sceneText(scenario.scenes.siding, waybill)).toMatch(/medical crate is under the ramp/i);
+
+    const legacy = fresh(scenario);
+    legacy.run!.sceneId = 'marks';
+    expect(sceneText(scenario.scenes.marks, legacy)).toMatch(/location remains unknown/i);
+    expect(sceneText(scenario.scenes.marks, legacy)).not.toMatch(/chalk marks were copied|crate.*under the platform ramp/i);
+  });
+
   it('keeps Cache Ledger rewards and outcomes truthful when supplies were taken', () => {
     const scenario = EXPEDITION_LOGISTICS_GENRE_BATCH.find(({ id }) => id === 'the-cache-ledger')!;
     let preserved = fresh(scenario);
