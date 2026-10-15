@@ -8883,12 +8883,12 @@
       "slug": "the-rain-on-the-waybill",
       "title": "The Rain on the Waybill",
       "sourceFile": "src/scenarios/roadDangerGenreBatch.ts",
-      "classification": "CONFIRMED DEFECT",
+      "classification": "HEALTHY",
       "findingIds": [
         "CRA-F0205"
       ],
       "reviewProvenance": "current-source route review; carryable-case/shelter/station approaches, dry/issue-number/driver responses, combat win/loss, original-case/coat custody, office/wait endings, duplicate case reward and Knowledge traced",
-      "notes": "Setup says the waybill case is missing. shelterDriver and askStation do not retrieve it; checkSeal only protects the wet paper in the Traveler’s own usable Lockable Map Case. Nevertheless the shared threat has a rider reaching for a wet case, and the aftermath says the clerk recovers and verifies it, even on standWithDriver where the false worker retreats without the case. The borrowed coat is also said returned without a route-specific handoff; the case/custody contradiction is the registered primary witness.",
+      "notes": "CRA-F0205 is repaired. The missing cargo case remains explicitly unlocated through the shared threat, all responses, both endings, and combat outcomes; the route never claims that the Traveler’s own Lockable Map Case recovered the cargo case. Coat handling is left for station review rather than claiming a return. The duplicate-case reward provenance no longer depends on recovering the missing original.",
       "preReconciliationPosition": 510,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -17801,7 +17801,9 @@
       "violatedRule": "A shared scene may not restore object presence or custody unless an incoming route establishes the recovery or handoff.",
       "clusterId": "CRA-C0001",
       "metadataConfidence": "CURRENT_SOURCE_REVIEW",
-      "registrationStatus": "LIVE"
+      "registrationStatus": "LIVE",
+      "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+      "implementationEvidence": "Local CRA-C0001 Wave 137, gameplay/test commit 72b2b3d. The Road Danger data for The Rain on the Waybill no longer stages or recovers the missing case; route responses and combat outcomes preserve its unlocated status, and both endings keep the case with the station’s unresolved loss report. The duplicate Lockable Map Case reward remains available with provenance tied to help documenting the coat dispute rather than recovery of the missing original. Road Danger, C0004 Gear, registry, library, content-quality, and inventory checks passed (92 tests); TypeScript and production build passed with the existing large-bundle warning."
     },
     {
       "findingId": "CRA-F0206",
@@ -20402,9 +20404,9 @@
     }
   ],
   "classificationTotals": {
-    "HEALTHY": 760,
+    "HEALTHY": 761,
     "MINOR CONCERN": 59,
-    "CONFIRMED DEFECT": 42,
+    "CONFIRMED DEFECT": 41,
     "NEEDS MANUAL REVIEW": 0
   },
   "testEvidence": [
