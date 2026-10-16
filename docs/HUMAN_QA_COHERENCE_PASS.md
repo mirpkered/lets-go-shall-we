@@ -77,6 +77,66 @@ After resolving the Last Stop semantic escalation, the bounded HQ-C01/HQ-C03 scr
 
 This continuation adds three bounded source reviews and no new audit finding. Their existing agriculture regression tests exercise the rope/tool gate, route-state contrast, save/reload, payment, and provenance behavior; no tests or gameplay were changed for this screen.
 
+### Coherence-screen continuation — contest rewards, quiet choices, and animal-care logistics
+
+The next high-signal screen selected explicit contest payouts and post-result menus in `competitionGearGenreBatch.ts`, then checked a small set of deliberately quiet choices and animal-care actions surfaced by the same lexical scan. This is not a review of every competition or animal story, and the previously screened Dry Crossing Race, Lookout at Dusk, and Long Carry were skipped.
+
+#### HQ-C01 — reward / choice naturalness
+
+| Adventure / route | Disposition | Evidence |
+| --- | --- | --- |
+| The Match at the Brace | **HEALTHY / intentional** | The hammer is an announced prize; the two-coin judge’s fee is separately named before the trial. Unsafe/no-winner and rebuild routes do not inherit the prize. |
+| The Knot before the Bell | **HEALTHY / intentional** | The clamp is posted before the lift; the late coin is limited to the runner-up route, and intervening to steady the other team voids the round and returns entry tokens. |
+| The Chain at Twenty Paces | **HEALTHY / intentional** | The chain/coin choice follows a corrected, documented measurement; withdrawal or refusing a false measurement returns the stake without pretending a result was won. |
+| The Quarry Step | **CONFIRMED POLISH ISSUE — repaired** | The opening posts a Folding Trail Marker, but an unverified bell result also offered an unannounced two-coin “participation purse” despite saying the judge could not record a safe finish. Removed that unsupported payout; the unverified route now closes without a prize, while the marker remains available only with `quarrySoundLedge` proof. |
+| Five Marks on the Board | **HEALTHY / intentional** | The marker/coin alternatives follow a confirmed winning score; runner-up purse, tie-break, shared fair-fund split, and no-prize outcomes have distinct standings and consequences. |
+| The Millwheel Hand | **HEALTHY / intentional** | The toolkit is awarded only after locating the peg and safe restart; the two-coin trial fee is named at the outset as a result option. Stopped/forced-risk outcomes receive no tool prize. |
+| The Blind Trail Marker | **HEALTHY / intentional** | The rope is the announced prize for identifying linked evidence; the coin is a stated alternative for a correct reading, while a wrong guess or declining to overstate evidence earns no prize. |
+| The Saw before Supper | **HEALTHY / intentional** | The pry tool is conditional on the sound-end correction; unverified or failed cuts have no prize, and the source distinguishes a safe replacement/withdrawal from a counted result. |
+| The Bell Rope at Ferry End | **HEALTHY / intentional** | The posted whistle is earned by noticing the real hazard; the small fee is explicitly offered after the rescue, and helping re-moor the punt is concrete follow-through rather than unrelated labor. |
+| The Iron Squares | **HEALTHY / intentional** | The square or its coin value follows a diagnosis under the gate’s normal load; an untested or appearance-only answer cannot claim either. |
+| The Load on the Siding | **HEALTHY / intentional** | The strap is limited to the first-place route; second place receives its posted runner-up purse, while disqualification, spill, and withdrawal remain unrewarded. |
+| The Hammer and the Ribbon | **HEALTHY / intentional** | The steel wedge is awarded only for the confirmed leading score. Participation/helper coin options occur only after a safe turn or actual help securing the frame; withdrawal returns the entry token. |
+| The Bet at the Water Wheel | **HEALTHY / intentional** | The single one-coin stake, one-round cap, exact return-plus-winnings, loss, free observation, and no-wager lesson are explicit; no repeat wager or invented prize appears. |
+| The Rigging on the Roof | **HEALTHY / intentional** | The mirror is the posted safe-lift prize; work pay and the weather-delay fee are named in the applicable result, and the unsupported cracked-anchor route cannot collect them as a safe finish. |
+| The Quiet Card Count | **HEALTHY / intentional** | One hand and the maximum stake are stated before play. On a win, the announced case or one coin is a coherent prize-value choice; the stake is returned exactly once. Watching or asking for the method does not create a prize. |
+| The Harness Stitch Trial | **HEALTHY / intentional** | The repair roll is announced; the same finding is available as two coins or no material compensation after the weak stitch is found, while unsafe/late tests do not receive the award. |
+| The Fair-Weather Reading | **HEALTHY / intentional** | The cloak’s two-hour condition and participant purse are stated before the forecast. Warning the parade and submitting a score are genuinely competing actions once time/risk is live; no forecast proof means no cloak. |
+| The Ferryman and the Stake | **HEALTHY / intentional** | The missing marker requires agreement to a shortened course before a finish can claim the posted whistle or its coin value; a tie, stop, or unagreed finish gets neither. |
+| The Silent Score Slate | **HEALTHY / intentional** | The clamp is posted for a correct safe diagnosis; two coins are explicitly offered for assistance at the matching result. Leaving during the retest or stopping an unsafe load does not receive a prize. |
+| The Last Clean Spoke | **PLAUSIBLE / NEEDS CONTEXT** | The wrench is posted, while two coins are described as payment “for the repair work instead” after the practice-wheel repair. That can be a reasonable wage-versus-tool settlement, but the opening does not clearly establish a wage alternative; no source-only basis to call it a definite polish defect. |
+| The Seven-Inch Square | **HEALTHY / intentional** | The square is an announced prize for a practical measurement judgment; coin value and declining compensation are explicit alternatives after the owner’s window is fitted. |
+
+The Quarry Step change is isolated to the unverified result and has a route-contrast regression. It does not change the safe-ledge proof gate, hazard outcome, or posted marker reward.
+
+#### HQ-C02 / HQ-C03 — focused quiet-choice and physical-action candidates
+
+| Adventure / route | Category | Disposition | Evidence |
+| --- | --- | --- | --- |
+| The Swimming Hole — shore curiosity / departure | HQ-C02 | **HEALTHY / intentional** | Swimming, resting, looking along the shore, and leaving are different uses of a quiet stop. The shore result has a separate keep-or-leave choice because keeping the glass/stone changes the object state; “continue” is a complete departure, not an inevitable sibling action. |
+| Skipping Stones — `bankCuriosity` | HQ-C02 / persistence watch | **POSSIBLE SEMANTIC DEFECT — ESCALATE** | The Traveler has already inspected the bank and the variant has established a feather, pottery shard, or no find before `rememberBankFind` (“Keep the little moment in mind”) versus `leaveBankFind`. Only the first records `noticed_a_small_riverbank_curiosity`. This may be a deliberate optional diary/roleplay choice, but the flag describes the already-completed observation; disposition needs a focused semantic determination. No source, test, or ledger change made in this area. |
+| The Calf in the Mud — rope, boards, helper, and handoff routes | HQ-C03 | **HEALTHY / intentional** | The opening establishes firm footing, an approaching farmhand, and time for care. Rope is gated on carried, usable rope; gloves are independently gated for the wet-line method; boards and calling/handing over to the household remain actionable fallbacks. Failed pulls pause with the calf supported, and further attempts/handoff are explicit. |
+| The Injured Dog — bandage offered to handler | HQ-C03 | **PLAUSIBLE / NEEDS CONTEXT** | The dog refuses touch; the player can back away or leave the bandage with the resident, who has said they will fetch the familiar handler. The handoff is plausible, though the transition does not separately narrate the resident carrying the bandage to the handler. No unsupported treatment or healing is claimed. |
+| The Dog That Returns — owner variant / `dogHelped` | HQ-C03 / route-truth watch | **POSSIBLE SEMANTIC DEFECT — ESCALATE** | With `dogReason=owner`, `dogTruth` says the traveler with the twisted ankle asks for a message to the next farm. `offerPracticalHelp` only records `offered_help_after_following_road_dog`; the shared ending asserts “You leave a message” without naming the recipient or an explicit delivery action. The existing no-person/no-object repair is preserved, and the bundle variant remains correct. This may be implied by accepting the request and continuing down the road, but current source leaves delivery proof/means underspecified. Do not alter this Adventure pending semantic disposition. |
+
+The two semantic candidates above are not added to the semantic ledger under coherence-pass authority. They do not undermine the independent contest-reward screen; they are recorded for explicit later disposition and the affected Adventures are otherwise left untouched.
+
+#### Checkpoint validation and delivery
+
+- Candidate tranche: **26 unique Adventures** — 21 HQ-C01 contest/reward stories, 2 quiet-choice HQ-C02 stories, and 3 HQ-C03 animal-care/physical-action stories. The already documented Dry Crossing Race, Lookout at Dusk, and Long Carry were skipped.
+- HQ-C01 dispositions: **1 confirmed polish issue repaired**, **1 needs context**, **19 healthy/intentional**.
+- HQ-C02 dispositions: **1 healthy/intentional**, **1 possible semantic candidate escalated**.
+- HQ-C03 dispositions: **1 healthy/intentional**, **1 needs context**, **1 possible semantic candidate escalated**.
+- Semantic candidates: **2** (Skipping Stones observation/history persistence; Dog That Returns message-delivery route truth). They remain outside the semantic ledger and are not included in the original 354-finding closure.
+- Shared mechanisms investigated: the competition scene/result constructors were checked through their actual callers; no shared helper change was needed. Prize/fee evidence remained caller-specific.
+- Polish repair: The Quarry Step’s unannounced two-coin payout was removed only from the result lacking proof of a safe route. Regression confirms that the direct bell route has only the no-prize close option; existing safe-lower-ledge award coverage remains intact.
+- Focused tests: **53 passed across 3 files** (competition, animals, pleasant-day stories).
+- Full suite: **130 files / 2,561 tests passed**, including QA long-press/storage coverage, registry validation, inventory validation, and the semantic library audit.
+- TypeScript and production build: **passed**; existing large-bundle warning remains.
+- Semantic ledger JSON parses and remains unchanged: original audit **354 findings, 0 open**; post-audit total **357 live findings, 0 open**. No finding ID, disposition, audit classification, or CRA-F0002 record changed.
+- Inventory remains **861 Adventures, 74 Gear definitions, 32 stable Knowledge facts**.
+- `git diff --check`: **passed**. Local-only checkpoint; no push, merge, or deployment. Banner QA remains intact; Weekly Scenario Batch remains paused.
+
 ## Validation and delivery state
 
 - Focused Shortcut and QA-content tests: **27/27 passed**.
