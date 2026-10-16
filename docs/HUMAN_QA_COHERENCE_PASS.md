@@ -881,6 +881,17 @@ After re-reading the coherence record and stable-ID coverage, the four registere
 
 The existing `secondWaveBatch.test.ts` graph test explores all registered second-wave outcomes, and its specific Red Flag regression distinguishes the watch route from the doctor-contact route. `contentDepth.test.ts` checks all six childbirth outcomes for route-specific stabilization after the midwife takes over. Focused validation passes (**16 tests across 2 files**). No HQ-C01 polish issue, semantic candidate, or safe source-only change was established; no gameplay, test, or semantic-ledger change was made.
 
+### Bounded HQ-C01 / HQ-C03 continuation — legal-process callers
+
+After rereading the updated checkpoint and matching candidates by stable ID, `property-of` was skipped because it already has a documented disposition. The two remaining registered callers in `legalProcessBatch.ts` were screened for compensation naturalness, document custody, and the physical availability of witnesses/officials.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| To the Magistrate (`to-the-magistrate`) | **HEALTHY / intentional** | The shopkeeper states the two-coin fee and the voluntary escort’s limits; payment follows arrival under the agreed terms. Asking the clerk, clarifying terms, accepting the hire, or declining restraint are meaningful and distinct choices, with no force or invented legal authority. |
+| The Warrant (`the-warrant`) | **HEALTHY / intentional** | The porter and claimant are present, the traveler whose trunk is claimed is absent, and the station hand physically goes to find the constable. The trunk remains secured or untouched pending the official; reading visible details never becomes a legal ruling. No reward menu or specific Gear is assumed. |
+
+`secondWaveBatch.test.ts` continues to provide forward-only, reachable, actionable coverage for all registered legal-process routes. No HQ-C01 polish issue, semantic candidate, or source change was established. No gameplay, test, or semantic-ledger change was made.
+
 ### Bounded HQ-C01 / HQ-C03 continuation — frontier discovery and claims
 
 After rereading the checkpoint and current live registry, the 40 registered callers of `frontierDiscoveryBatch.ts` were selected as a fresh high-signal group for field actions, salvage decisions, and physical boundaries. The shared `frontierAdventure()` template, its caller-specific card text, and C0006/C0012/RC12 specializations were inspected for this screen’s dimensions only. Existing semantic repairs were preserved and not re-audited as cluster work.
