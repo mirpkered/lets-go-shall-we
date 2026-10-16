@@ -874,6 +874,19 @@ After rereading the checkpoint and confirming these four stable IDs had no prior
 
 | Adventure | Disposition | Focused evidence |
 | --- | --- | --- |
+| First Snow (`first-snow`) | **HEALTHY / intentional** | The inn's ordinary bed rate is paid only on the paid-bed route; a free common-room bench and work-for-stew alternatives are explicit. Continuing on the still-visible road is proportionate, and the Wool Travel Blanket route requires the Traveler to carry a usable blanket. |
+| The Thaw (`the-thaw`) | **HEALTHY / intentional** | Boards, a fallen rail, and the higher-road detour have distinct physical purposes. The Weatherproof Cloak route is carried-and-usable gated; the boards are tested only for a person/handcart and are not represented as safe for a heavy wagon. |
+| Before the Frost (`before-the-frost`) | **PLAUSIBLE / needs context** | The stated two-coin offer is specifically for an hour gathering apples. Covering a few young trees is a distinct alternative task with no wage promise; the text does not claim the gathering wage is earned. It may be voluntary help, but the farmer's expectations are not explicit enough to call the asymmetry clearly intentional or a defect. No change made. |
+| New Year’s Eve (`new-years-eve`) | **HEALTHY / intentional** | Supper is openly shared, the coach seat is booked only on the paid reservation route, and the unpurchased seat is released without a false refund. Helping earns a bowl by the keeper's stated offer; story-sharing, listening, and leaving remain grounded alternatives. |
+
+No item or reward helper is involved; the family uses the generic `authorBatch` wrapper and declares route-local effects. `secondWaveBatch.test.ts` passes (**4 tests**). No confirmed polish repair or semantic candidate was found. The unpaid tree-covering alternative is retained as needs-context, not treated as an unpaid-work defect without clearer employer intent. No gameplay, test, or semantic-ledger change was made.
+
+### Bounded HQ-C01 / HQ-C03 continuation — seasonal travel and farm life
+
+After rereading the checkpoint and confirming these four stable IDs had no prior disposition, `seasonalLifeBatch.ts` was screened for payment naturalness, inventory assumptions, and physical-action clarity.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
 | First Snow (`first-snow`) | **HEALTHY / intentional** | The inn's ordinary bed rate is paid only on the paid-bed route; a free common-room bench and work-for-stew alternatives are explicit. Continuing on the still-visible road is a proportionate choice, and the Wool Travel Blanket route requires the Traveler to carry a usable blanket. |
 | The Thaw (`the-thaw`) | **HEALTHY / intentional** | Boards, a fallen rail, and the higher-road detour have distinct physical purposes. The Weatherproof Cloak route is carried-and-usable gated; the boards are tested only for a person/handcart and are not represented as safe for a heavy wagon. |
 | Before the Frost (`before-the-frost`) | **PLAUSIBLE / needs context** | The stated two-coin offer is specifically for an hour gathering apples. Covering a few young trees is a distinct alternative task with no wage promise; the text does not claim the gathering wage is earned. It may be voluntary help, but the farmer's expectations are not explicit enough to call the asymmetry clearly intentional or a defect. No change made. |
