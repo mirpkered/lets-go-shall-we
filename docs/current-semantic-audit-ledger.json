@@ -1450,8 +1450,9 @@
       "title": "What Did You See?",
       "sourceFile": "src/scenarios/communityBatch.ts",
       "classification": "HEALTHY",
-      "findingIds": [],
-      "reviewProvenance": "current source route review; all randomized witness facts, gated testimony, memory variants, careful/uncertain/refusal outcomes, and horse-trade-history variant examined",
+      "findingIds": ["CRA-F0365"],
+      "reviewProvenance": "current source route review; all randomized witness facts, gated testimony, memory variants, careful/uncertain/refusal outcomes, and horse-trade-history variant examined; focused post-audit route-proof review confirmed observed Knowledge was gated on reporting",
+      "notes": "Post-audit finding CRA-F0365 records that each roadsideQuestion variant directly establishes one observed detail, while the matching persistent free-text Knowledge sentence was previously granted only by the corresponding report choice; declining to report lost the already-observed detail. The exact cause of the cart tip remains uncertain and is not persisted as fact.",
       "preReconciliationPosition": 68,
       "positionDelta": 0,
       "positionBasis": "LIVE_SCENARIOS_BY_STABLE_ID",
@@ -23775,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Four new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 3,
+    "liveFindingCount": 4,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 3,
+      "VERIFIED_HEALTHY_REPAIRED": 4,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 357,
+    "currentLiveFindingCount": 358,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 347,
+      "VERIFIED_HEALTHY_REPAIRED": 348,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 286,
-      "LOW": 52,
+      "LOW": 53,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23801,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0365",
+    "nextFindingId": "CRA-F0366",
     "nextClusterId": "CRA-C0014",
     "findings": [
       {
@@ -23860,6 +23861,25 @@
         "implementationEvidence": "Knowledge acquisition now occurs on each transition that first displays Vale’s complete procedure: `passengerCar.conductor` and `surveyorAfterTalk.conductorAfterSurvey` grant the existing stable fact before `conductorCar` is shown. The nonfunctional ‘Remember the procedure’ choice and its redundant explanation-only destination were removed; key handoff, service-car access, return-to-seat, braking actions, the diagram-study acquisition route, and the separate `helpVale` route are preserved. Tests cover acquisition before the next-choice branch, all three sibling choices, the alternate conductor entry, absence on a route with no teaching, diagram-study acquisition, and save/reload. Existing CRA-F0002 passenger-contribution regression remains passing.",
         "repairLocality": "Scenario-specific teaching transitions in `src/scenarios/lastStop.ts`; no shared persistence or save-schema changes.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0365",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 68,
+        "adventureId": "what-did-you-see",
+        "title": "What Did You See?",
+        "sourceFile": "src/scenarios/communityBatch.ts",
+        "severity": "LOW",
+        "defect": "The Traveler’s variant-specific observation is already established in the roadside scene, but the matching persistent free-text Knowledge is awarded only by reporting it; choosing not to report loses what the Traveler directly saw.",
+        "routeWitness": "On entry to `roadsideQuestion`, `cartIncident=wheel` says the Traveler saw the left wheel strike a buried stone; `cartIncident=road` says loose gravel slid under the near wheel; and `cartIncident=driver` says the driver pulled the reins just before the tip. Each scene explicitly limits what can be concluded about cause. Before repair, only `rememberWheelStone`, `rememberRoadGravel`, or `rememberDriver` both reported that observation and granted its matching persistent `character.knowledge` sentence. The route-matched `declineAccount` option reached `noStatement` without Knowledge, although it changed only the communication/declined-testimony outcome and added no evidence. No `KNOWLEDGE_FACTS` catalog key is involved; these are scenario-authored persistent Knowledge sentences. The underlying observation remains valid while the cause remains uncertain.",
+        "violatedRule": "Persist what the Traveler reliably learned from direct observation independently of whether they later communicate it; preserve uncertainty and do not infer a cause beyond the observed evidence.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Every route that leaves `roadsideQuestion` now carries the matching observation Knowledge: the three report routes retain it, and each incident has a route-matched decline route that preserves the same Knowledge while retaining `declined_uncertain_roadside_testimony`. Reporting-specific flags and destinations are unchanged. Other randomized-variant facts are not granted. Regression covers all three observed variants, report versus decline, the refusal History effect, and save/reload after declining. The focused community scenario suite passes.",
+        "repairLocality": "Scenario-specific outgoing choice effects in `src/scenarios/communityBatch.ts`; no shared engine, stable Knowledge catalog, or save-schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -23876,7 +23896,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 21,
+      "CRA-C0002": 22,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -23890,6 +23910,6 @@
       "CRA-C0013": 1
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These three records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these three separately sourced post-audit findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These four records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these four separately sourced post-audit findings."
   }
 }
