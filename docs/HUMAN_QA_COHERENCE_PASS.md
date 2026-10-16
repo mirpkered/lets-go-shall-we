@@ -731,3 +731,21 @@ The next fresh high-signal family was `agricultureRanchAnimalWorkGenreBatch.ts`.
 | The Old Fence Tool at Red House (`the-old-fence-tool-at-red-house`) | **HEALTHY / intentional** | The pliers’ owner releases the replaced tool before it can be transferred; return, hold, and compensation paths do not infer ownership from possession. |
 
 The Goat on the Schoolhouse Roof equipment-availability candidate is isolated to that Adventure; it does not block the independent compensation/provenance screen of the rest of this family. The family test file and registry/audit tests passed (17 tests total). No gameplay, test, or semantic-ledger change was made. The existing three prior dispositions remain intact.
+
+### Bounded HQ-C01 / HQ-C03 continuation — animal encounters and working stock
+
+After re-reading this checkpoint, the next uncovered high-signal family was the ten-story `animalsBatch.ts`. The Dog That Returns was already dispositioned in the prior focused review and was skipped. The other nine stories were checked for whether animal handling is physically supported, whether outcome claims track who acted, and whether optional work/ownership offers have plausible terms.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| The Stray Horse (`the-stray-horse`) | **HEALTHY / intentional** | Leaving, observing tracks, approaching, waiting, and asking local help remain distinct. The arrival variant claims a worker checked nearby farms only when that request flag is present; no emergency is invented. |
+| The Calf in the Mud (`the-calf-in-the-mud`) | **HEALTHY / intentional** | Rope use requires a carried usable rope; the glove variant also requires usable gloves. Boards, additional help, failed attempts, and handoff keep the rescue recoverable without implying an unsuccessful pull freed the calf. |
+| The Broken Harness (`the-broken-harness`) | **HEALTHY / intentional** | Strap/Rope stabilization requires usable Gear; the strap is explicitly temporary and damaged by the walk. A maker may inspect or mend damaged/broken gear, while active repair/upgrade actions use the appropriate condition gates. |
+| Loose in the Market (`loose-in-the-market`) | **HEALTHY / intentional** | The Gate Hook route is usable-item gated; clearing the lane and owner-led handling remain alternatives. Goat return and owner-handling outcomes are not collapsed, and the market aftermath remains distinct before completion. |
+| The Ownerless Mule (`the-ownerless-mule`) | **HEALTHY / intentional** | Partial marks and familiar calls are not treated as ownership proof. The stable’s “two claimants compare accounts” variant requires hearing both claims; directly leading the mule there does not invent claimants. |
+| The Injured Dog (`the-injured-dog`) | **HEALTHY / intentional** | The Traveler offers help at a distance, leaves the bandage for the resident/handler, or steps back; the dog’s paw is not said to heal and the handler retains treatment authority. The bandage is a clean consumable, not condition-bearing Gear. |
+| The Frightened Team (`the-frightened-team`) | **HEALTHY / intentional; prior route-truth checks preserved** | The team’s cause is a variant; inspection, giving space, leaving the driver to decide, settling, and detouring keep their distinct visible outcomes. Farm Whistle use is gated on usability. |
+| The Bee Yard (`the-bee-yard`) | **HEALTHY / intentional; prior state-variant tests preserved** | Public access stays outside the fence; stand leveling and goat relocation are independent flags, and aftermath variants do not imply the goat moved when only the stand was steadied. |
+| The Old Horse (`the-old-horse`) | **HEALTHY / intentional** | Buying for three coins and exchanging a day’s work are genuine alternative acquisition terms; the horse remains boarded with a stated light-work limit, and declining does not incur a hidden cost. |
+
+No new C01/C02/C03 polish issue was established. The already documented Goat on the Schoolhouse Roof possibility remains separately escalated and does not affect this family’s independent review. Existing animal-batch tests exercise all random variants, carried-item combinations, failed rescue attempts, ownership uncertainty, and the old-horse purchase/work persistence. No gameplay or test changes were made.
