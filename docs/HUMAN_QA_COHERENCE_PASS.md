@@ -868,6 +868,19 @@ After rereading the latest coherence checkpoint and current source, `disasterRes
 
 The shared `largeAdventure` wrapper supplies metadata rather than a route/reward assumption, so no shared-builder change is warranted. Existing state-aware tests exercise the repaired train-history contrast, bridge survivor distinctions, boiler evacuation, roof rescue, and tornado state; reward-access tests cover the two compensation scenarios. No HQ-C01 polish issue was established. The station-horse concern is isolated and does not block independent screening. No gameplay, test, or semantic-ledger change was made.
 
+### Bounded HQ-C01 / HQ-C02 / HQ-C03 continuation — mistaken-identity encounters
+
+After rereading the coherence checkpoint and confirming none of these four stable IDs had been dispositioned, `mistakenIdentityBatch.ts` was screened as a fresh small group for natural compensation, meaningful correction/decline choices, package custody, and physical handoffs.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| You Must Be the New Man (`you-must-be-the-new-man`) | **PLAUSIBLE / needs context** | Correcting the foreman’s assumption, taking a short tally, or waiting for the actual clerk are distinct choices. Finishing the temporary count earns one coin; stopping when the clerk arrives earns no stated wage. The opening does not say whether the one-coin offer is completion-only, so the partial-work pay expectation is unclear; no confirmed polish defect or safe fix follows from the text alone. |
+| That’s Him (`thats-him`) | **HEALTHY / intentional** | The vague coat/bag description is not treated as identity proof; the shopkeeper accepts correction, checks the paid mark, or lets the Traveler leave without demanding money or proof of a negative. |
+| We Were Expecting Someone Else (`we-were-expecting-someone-else`) | **HEALTHY / intentional** | The Traveler is explicitly a guest, not the stove repairer; holding a lamp is not represented as repairing the stove, and the spare kitchen stove supports waiting or leaving. The room rate is stated and gated. |
+| The Package (`the-package`) | **HEALTHY / intentional** | The recipient’s name and address are checked without opening the parcel; the clerk/innkeeper/porter custody chain is explicit, and private delivery waits for the guest’s confirmation rather than exposing them publicly. |
+
+The shared `authorBatch` wrapper supplies only common adventure metadata. `secondWaveBatch.test.ts` passes (**4 tests**) and explores the family’s actionable graphs under no-money and item variants. No HQ-C03 Gear issue or semantic candidate was found, and no polish repair was justified. The short-tally compensation ambiguity remains needs-context rather than being treated as a wage error without stated terms. No gameplay, test, or semantic-ledger change was made.
+
 ### Bounded HQ-C01 / HQ-C03 continuation — seasonal travel and farm life
 
 After rereading the checkpoint and confirming these four stable IDs had no prior disposition, `seasonalLifeBatch.ts` was screened for payment naturalness, inventory assumptions, and physical-action clarity.
