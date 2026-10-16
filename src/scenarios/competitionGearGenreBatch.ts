@@ -107,14 +107,13 @@ export const COMPETITION_GEAR_GENRE_BATCH: Scenario[] = [
     ],'warning'),
     bell:{...s('bell','The Bell at the Quarry Top','The bell is reached, but this route does not establish whether you stayed off the cracked upper shelf. The judge cannot record a safe finish or award the marker on that evidence.',[
       {id:'acceptMarker',label:'Take the Folding Trail Marker prize',requirements:{flags:['quarrySoundLedge']},next:'markerPrize',effects:item('foldingTrailMarker','Awarded by guide Tomas Vale for completing the marked climbing trial without using the cracked shelf.','won_trail_marker_quarry_trial')},
-      {id:'takeWage',label:'Take the two-coin participation purse',next:'purse',effects:{money:2}},
       {id:'closeUnverifiedTrial',label:'Close the unverified climb without a prize',requirements:{notFlags:['quarrySoundLedge']},next:'unverified'},
     ]),textVariants:[{requirements:{flags:['quarrySoundLedge']},text:'You ring the bell from the sound lower ledge without touching the cracked shelf. The judge accepts this safer route as a completed trial.'}]},
     unverified:e('unverified','A Climb Not Counted','You reached the bell, but the route did not establish that you avoided the cracked upper shelf. The judge records no safe finish or prize.'),
     slip:e('slip','A Short Fall to the Bench','The loose hold gives way. The safety line catches you against the lower face; the judge stops your attempt and sends you down for a check. No one is seriously hurt, but the prize is not awarded.'),
     partial:e('partial','A Sensible Descent','You return to the quarry floor under your own control. Vale says turning back at a bad hold is sound judgment, though it is not a winning climb.'),
     withdrawn:e('withdrawn','No Climb Attempted','You withdraw before the start. The judge keeps the route closed until the cracked shelf is repaired; no stake or prize changes hands.'),
-    markerPrize:e('markerPrize','A Marker for the Road','Vale awards the Folding Trail Marker and records that the cracked shelf was not part of the route.'), purse:e('purse','A Small Purse','You take the two-coin participation purse; the marker goes to the fastest safe climber.'),
+    markerPrize:e('markerPrize','A Marker for the Road','Vale awards the Folding Trail Marker and records that the cracked shelf was not part of the route.'),
   }),
   a('the-lookout-at-dusk', 'The Lookout at Dusk', 'A field-glass trial finds a real problem outside the contest ground.', 'A spotting challenge becomes a decision about whether to interrupt a public event.', 'rail camp', 'MODERATE', 'watch', {
     watch:s('watch','Three Signals on the Ridge','A rail survey camp tests lookout skill. The announced prize is a pair of Field Glasses. From the platform, competitors must identify which of three cloth signals is newly changed.',[

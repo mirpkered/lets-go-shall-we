@@ -734,6 +734,7 @@ describe('Gear Expansion Genre Batch 6 — Competitions / Wagers / Challenges', 
     expect(direct.run?.sceneId).toBe('bell');
     expect(sceneText(quarry.scenes.bell, direct)).toMatch(/does not establish whether you stayed off the cracked upper shelf/i);
     expect(meets(quarry.scenes.bell.choices.find(({ id }) => id === 'acceptMarker')?.requirements, direct)).toBe(false);
+    expect(quarry.scenes.bell.choices.filter((choice) => meets(choice.requirements, direct)).map(({ id }) => id)).toEqual(['closeUnverifiedTrial']);
     direct = act(direct, quarry, 'closeUnverifiedTrial');
     expect(quarry.scenes.unverified.text).toMatch(/records no safe finish or prize/i);
 
