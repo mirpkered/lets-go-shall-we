@@ -456,3 +456,17 @@ The commerce escalation was isolated to Half Now, so independent screening conti
 | The Last Train Message (`the-last-train-message`) | **HEALTHY / intentional** | The passenger is physically present, delivery/return is explicit, privacy is retained, and the later shared decision makes clear the passenger—not the Traveler—chooses whether to stay or board. Carrying a reply is a separate optional act. |
 
 `secondWaveBatch.test.ts` covers all five communication stories for reachable, actionable routes under fresh/no-money and item variants; `courierMailTelegraphGenreBatch.test.ts` also preserves the Last Train follow-up and privacy boundaries. No reward menu or gear-presentation polish issue was found. The family is **HEALTHY / intentional** for this HQ-C01/C03 screen; the semantic ledger remains unchanged.
+
+### Bounded HQ-C01 / HQ-C03 continuation — questionable employment and consent
+
+The communication family was healthy and the Half Now candidate remained isolated. The next untouched high-signal family in the live second-wave source was the five-story questionable-employment set. The screen focused on whether the Traveler’s work, payment, and physical handling of another person’s property stay within the stated agreement, and whether a refusal remains a meaningful alternative.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| Collection Day (`collection-day`) | **POSSIBLE SEMANTIC DEFECT — separate disposition required** | The opening promises one coin for carrying the notice. On `notice.partial`, the customer gives a coin to be returned to the shopkeeper and the outcome also applies `money: 1`; the no-payment `notice.report` route applies the same `money: 1`. That effect may represent only the promised errand wage, leaving the collected coin as untracked cargo, but current source does not distinguish wage from collected funds. No code, test, or semantic-ledger change was made pending separate reward/accounting disposition. |
+| Out by Sundown (`out-by-sundown`) | **HEALTHY / intentional** | The original hire is explicitly to move belongings to the cousin’s waiting wagon, not put them in the road; receipt discussion pauses work, and carrying, narrowing the task, or leaving have distinct outcomes. |
+| The Mule Is Mine (`the-mule-is-mine`) | **HEALTHY / intentional** | Disputed papers never authorize seizure; the mule stays fed and in its pen while records are checked, and paid mediation arranges a meeting rather than taking the animal. |
+| The Sealed Crate (`the-sealed-crate`) | **HEALTHY / intentional** | The carrier states the four-coin price and seal terms up front; written custody, confirmed destination, delivery, and refusal remain distinct, and contents are disclosed only by the receiving clerk after handoff. |
+| Find Her (`find-her`) | **HEALTHY / intentional** | The paid task requests an address, not coercion; the woman’s consent controls whether a sealed wage notice is carried, and routes that withhold location still complete the bounded safe-search task. |
+
+The two semantic candidates currently recorded by this bounded screen are isolated to Half Now and Collection Day; neither was repaired or entered into the semantic ledger. Independent family screening remains safe. `secondWaveBatch.test.ts` explores the family’s randomized route graphs, fresh/no-money variants, and physical/item alternatives; its broad route coverage does not resolve Collection Day’s wage-versus-customer-payment accounting distinction.
