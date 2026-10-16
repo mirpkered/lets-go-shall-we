@@ -453,7 +453,7 @@ export const THE_ICE_GIVES_WARNING: Scenario = {
   scenes: {
     iceWarning: { id: 'iceWarning', title: 'A Crack Runs Ahead', tone: 'danger', text: 'You stand at the near bank of a frozen creek. A traveler with a handcart is already stepping onto the ice ahead of you. A dark line crosses the surface near the far bank, and water moves beneath a thin patch beside the reeds. The traveler has not seen it.', choices: [
       { id: 'callIceWarning', label: 'Call the traveler back to shore', next: 'iceTravelerStops', effects: { historyFlags: ['warned_cart_traveler_about_thin_ice'] } },
-      { id: 'signalIceLight', label: 'Flash your lantern toward the thin patch', requirements: { anyUsableItems: ['lantern', 'roadmansLantern', 'roadsideSignalMirror'] }, next: 'iceTravelerStops' },
+      { id: 'signalIceLight', label: 'Signal with your lantern or mirror toward the thin patch', requirements: { anyUsableItems: ['lantern', 'roadmansLantern', 'roadsideSignalMirror'] }, next: 'iceTravelerStops' },
       { id: 'throwIceLine', label: 'Anchor a rope and offer a handline', requirements: { usableItems: ['travelRope'] }, next: 'iceTravelerStops' },
       { id: 'crossIceAlone', label: 'Cross before the traveler reaches the crack', hint: 'The dark line and moving water show that the ice may not hold your weight.', chance: { probability: 0.38, successNext: 'iceFarBank', failureNext: 'iceBreak', successMessage: 'You reach the far bank without stepping on the dark seam.', failureMessage: 'The ice opens beneath your leading foot.' } },
     ] },

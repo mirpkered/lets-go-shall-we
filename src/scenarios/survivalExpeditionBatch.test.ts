@@ -320,6 +320,13 @@ describe('survival and expedition adventure batch', () => {
     expect(sceneText(THE_ICE_GIVES_WARNING.scenes.iceSafeWait, waited)).not.toMatch(/cart remains on the near bank/i);
   });
 
+  it('names both usable signaling tools on the ice-warning action', () => {
+    const signal = THE_ICE_GIVES_WARNING.scenes.iceWarning.choices.find(({ id }) => id === 'signalIceLight');
+    expect(signal?.label).toMatch(/lantern or mirror/i);
+    expect(signal?.requirements?.anyUsableItems).toEqual(['lantern', 'roadmansLantern', 'roadsideSignalMirror']);
+    expect(meets(signal?.requirements, start(THE_ICE_GIVES_WARNING, ['roadsideSignalMirror']))).toBe(true);
+  });
+
   it('distinguishes calling, waiting, and returning without contact at the abandoned camp', () => {
     const returned = act(act(start(THE_ABANDONED_CAMP), THE_ABANDONED_CAMP, 'emptyCamp', 'inspectCamp'), THE_ABANDONED_CAMP, 'campTracks', 'followStreamTracks');
     const noCrossing = act(returned, THE_ABANDONED_CAMP, 'campStream', 'returnEmptyCamp');
