@@ -442,3 +442,17 @@ After a fresh read of this checkpoint and `commerceBatch.ts`, the next unreviewe
 **HQ-C01/C03 result:** aside from the Half Now escalation, the family presents grounded tradeoffs rather than symmetrical menu rewards. Money and property effects are explicit on most branches, and the stories distinguish observation, negotiation, custody, and ownership from unsupported certainty. Half Now is isolated; it does not block further screening of unrelated families. The semantic ledger remains unchanged pending authorized disposition.
 
 `commerceBatch.test.ts` exercises all 10 randomized route graphs and contains focused payment, affordability, ownership, and wage tests. Its Half Now test confirms the seven-coin total but does not assert that the ending text explains the complete balance. This screen did not modify source or tests.
+
+### Bounded HQ-C01 / HQ-C03 continuation — communication and message handoffs
+
+The commerce escalation was isolated to Half Now, so independent screening continued. Rechecking the screen log showed the communication family had not otherwise been reviewed; the previously screened “Still Waiting” case is a different Adventure and was not counted again. The five `COMMUNICATION_ADVENTURES` callers in `communicationBatch.ts` were reviewed for who carries/sends a message, custody and privacy, meaningful action choices, and whether a message’s delivery or consequence is asserted only after an explicit handoff.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| The Telegram (`the-telegram`) | **HEALTHY / intentional** | Similar names remain unresolved until the operator checks the register; private delivery is performed by the operator, and no route claims the Traveler reads sealed contents. |
+| The Wrong Letter (`the-wrong-letter`) | **HEALTHY / intentional** | Post, coach, inn desk, and usable Map Case routes preserve custody and the intact seal; delivery is not overstated where the recipient may still be absent. |
+| The Second Message (`the-second-message`) | **HEALTHY / intentional** | Sender identity, authority, and message timing are distinct; the owner receives both instructions and makes the decision, while the Traveler does not infer motive from receipts. |
+| Wire Down (`wire-down`) | **HEALTHY / intentional** | Carrying names a sealed envelope, destination, and receiving clerk; help to the repair crew or prioritizing another message does not claim a repair or delivery that did not occur. |
+| The Last Train Message (`the-last-train-message`) | **HEALTHY / intentional** | The passenger is physically present, delivery/return is explicit, privacy is retained, and the later shared decision makes clear the passenger—not the Traveler—chooses whether to stay or board. Carrying a reply is a separate optional act. |
+
+`secondWaveBatch.test.ts` covers all five communication stories for reachable, actionable routes under fresh/no-money and item variants; `courierMailTelegraphGenreBatch.test.ts` also preserves the Last Train follow-up and privacy boundaries. No reward menu or gear-presentation polish issue was found. The family is **HEALTHY / intentional** for this HQ-C01/C03 screen; the semantic ledger remains unchanged.
