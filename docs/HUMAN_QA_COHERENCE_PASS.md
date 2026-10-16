@@ -608,3 +608,85 @@ The next fresh high-signal family was all 24 exported callers of `medicalRescueS
 | The Evacuation Bell at Pine Crossing (`the-evacuation-bell-at-pine-crossing`) | **HEALTHY / intentional** | Closed lower bridge, uphill shelter, limited handcart, and two-person sling team make the evacuation sequence and capacity constraints clear. |
 
 The close scene has explicit route-proof variants for the stories where leaving could otherwise overstate a completed caregiver handoff, including neutral text for missing legacy route proof. No additional C01/C03 polish issue or semantic candidate was established in this family, and no shared-builder change is warranted. `medicalRescueSupportGenreBatch.test.ts` provides positive/negative Knowledge action matrices across callers, compensation-independent learning, Gear ownership/usability and supplied-equipment checks, leave-alone/save-reload and legacy fallbacks, reward provenance/resume, and inventory capacity coverage. No gameplay, test, or semantic-ledger change resulted from this screen.
+
+### Bounded HQ-C01 / HQ-C03 continuation — domestic privacy and family choices
+
+The next fresh family was the four-story `domesticBatch.ts`, screened for believable practical help, privacy/consent, and whether lodging, messages, or travel are presented as natural choices rather than compulsory rewards.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| The Will (`the-will`) | **HEALTHY / intentional** | Inventorying the sewing chest makes a shared record, not an ownership ruling; temporary custody and solicitor consultation remain valid next steps. |
+| Home Before Dark (`home-before-dark`) | **HEALTHY / intentional** | The seventeen-year-old’s permission and wish for time control what is shared; a safety message is not narrated as a forced return. |
+| The Visitor (`the-visitor`) | **HEALTHY / intentional** | The brother chooses whether/when to meet; tea, usual-price lodging, and a coach are practical separate outcomes, not reconciliation rewards. |
+| The Back Door (`the-back-door`) | **HEALTHY / intentional** | The resident controls destination, accompaniment, and timing; hired cart terms, sealed note, public inn, and private room are explicit, with no forced confrontation or disclosure. |
+
+No low-risk polish repair or additional semantic candidate was established in this family. No source change was made.
+
+### Bounded HQ-C01 / HQ-C02 continuation — small human moments
+
+The next fresh family was the five-story `smallHumanMomentsBatch.ts`, screened for whether small acts of help remain genuine offers, whether social choices are meaningfully distinct, and whether delayed outcomes remain conditional.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| Dear Mary (`dear-mary`) | **HEALTHY / intentional** | The Traveler writes dictated words, reads them back, and leaves the final sentiment and whether/when to send the letter with the traveler. |
+| The Locket (`the-locket`) | **HEALTHY / intentional** | A clue is not treated as ownership proof; keeper/inn return routes remain available, while the ethically questionable “keep” route is explicit and has no invented advantage. |
+| Supper for Two (`supper-for-two`) | **HEALTHY / intentional** | Listening, sharing a small story, quiet company, and offering a future post-office errand are distinct social actions; the Traveler does not promise a letter’s arrival. |
+| The Children’s Court (`the-childrens-court`) | **HEALTHY / intentional** | Replaying can settle only a new turn, not prove the disputed old shot; sharing turns or letting the children decide are real alternatives. |
+| Still Waiting (`still-waiting`) | **HEALTHY / intentional** | The meeting outcomes distinguish arrival, a missed connection, and an absent passenger through an explicit message; tea, time estimates, company, and a possible note are optional and truthful. |
+
+No confirmed polish issue or semantic candidate was found. These stories do not add a shared reward/Gear mechanism or alter the previously documented semantic boundaries.
+
+### Bounded HQ-C01 / HQ-C03 continuation — escort and protection
+
+The next fresh high-signal family was `escortProtectionGenreBatch.ts`. All 30 registered stories were checked for reward/fee naturalness, owned-versus-borrowed equipment, usable-Gear requirements, and whether physical actions, custody, rescue, and partial outcomes were made explicit. The family’s payment map and shared `addEndingPaymentEffects` helper were checked against the mapped terminal routes; the helper’s other callers remain outside this screen and no shared change was made.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| The Doctor Before the Ford (`the-doctor-before-the-ford`) | **HEALTHY / intentional** | Medicine, doctor, and crossing outcomes stay distinct; the ferryman’s rescue is explicit, and waiting is a viable safety choice. |
+| The Pay Carriage at Dusk (`the-pay-carriage-at-dusk`) | **POSSIBLE SEMANTIC DEFECT — ESCALATE** | The signal and farm-track routes each award 3 coins, while the combat-success and withdrawal endings also say the owner pays a base wage (and, for withdrawal, withholds a danger bonus) without a payment effect. This looks like route-dependent compensation diverging between narration and actual balance; do not treat it as polish or change it here. Focused semantic disposition is required. |
+| The Crate of Window Glass (`the-crate-of-window-glass`) | **HEALTHY / intentional** | Owned Strap and Jack actions are gated; hand-carry, delay, and accepted breakage have distinct and proportionate outcomes. |
+| The Witness under Escort (`the-witness-under-escort`) | **HEALTHY / intentional** | Nell controls disclosure and refuge; the Traveler does not claim to hear her sealed account, and refusing an impossible guarantee remains available. |
+| The Shepherd’s Return (`the-shepherds-return`) | **HEALTHY / intentional** | Whistle/tool, flock, and split-task routes identify who moves each group; agreed and reduced wages match the recorded outcomes. |
+| The Ferry for the Midwife (`the-ferry-for-the-midwife`) | **HEALTHY / intentional** | Gloves-gated inspection leads to a dangerous crossing or safe relay; the replacement/late route’s modest fee is explicit. |
+| The Lanterns at Camp Four (`the-lanterns-at-camp-four`) | **HEALTHY / intentional** | Owned Lantern Guard/Whistle actions are gated; watch, warning, and risky rush routes distinguish worker safety and tool custody. |
+| The Courier Relay Box (`the-courier-relay-box`) | **HEALTHY / intentional** | Temporary case use is offered rather than assumed; custody, verification, consent to transfer, and sealed contents remain separate. |
+| The Wagon with the Lame Wheel (`the-wagon-with-the-lame-wheel`) | **HEALTHY / intentional** | Jack/Wrench actions require the tools; unload, repair, split delivery, and refusal of unsafe travel have distinct consequences and fees. |
+| The Quiet Cattle Drive (`the-quiet-cattle-drive`) | **HEALTHY / intentional** | Whistle/Rope use is gated, and the back-fence, steer, crew, and wait routes keep human and herd positions clear. |
+| The Archive through the Rain (`the-archive-through-the-rain`) | **HEALTHY / intentional** | Blanket, Rope, and Map Case actions are usable-item gated; the clerk sets priority, and the page-loss partial fee is explicit. |
+| The Night Guard at the Icehouse (`the-night-guard-at-the-icehouse`) | **HEALTHY / intentional** | Lantern Guard use is gated; the text distinguishes thaw damage from intrusion and states worker/ice outcomes. |
+| The Horse for the Farrier (`the-horse-for-the-farrier`) | **HEALTHY / intentional** | Gloves are gated; easing the stone does not replace the farrier’s diagnosis, and the stable-lane/crowd/delay routes remain plausible. |
+| The Missing Survey Case (`the-missing-survey-case`) | **HEALTHY / intentional** | The case and chainman’s outcomes remain distinct, including a route that explicitly leaves recovery and condition unestablished. |
+| The Smallpox Letter (`the-smallpox-letter`) | **HEALTHY / intentional** | The sealed notice is not exposed as Traveler knowledge; custody, return, and witnessed delivery are distinct, and only the narrated delivery route pays. |
+| The Winter Feed Sled (`the-winter-feed-sled`) | **HEALTHY / intentional** | Sounding Rod use is gated; the firm inlet, long road, partial hand-carry, and failed crossing preserve their distinct risk/results. |
+| The Fence at Crow Road (`the-fence-at-crow-road`) | **HEALTHY / intentional** | The public-verge claim is deferred to the commissioner; withdrawal and combat outcomes distinguish safety, completion, and bonus. |
+| The Glass-Plate Box (`the-glass-plate-box`) | **HEALTHY / intentional** | Blanket/Map Case protection is gated, and plate versus camera priority yields intact, cracked, or delayed outcomes with matching fees. |
+| The Night Mail Train (`the-night-mail-train`) | **HEALTHY / intentional** | Agent’s key, porter, visible watch, and conditional intervention are concrete; transfer and watch endings account for the sacks. |
+| The Bridge Pins (`the-bridge-pins`) | **HEALTHY / intentional** | The chest is never allowed to outrank clearing the unsafe span; equipment custody and worker safety remain explicit. |
+| The Lost Child’s Lantern (`the-lost-childs-lantern`) | **HEALTHY / intentional** | The gate/farm-lantern routes specify how both children reunite; the mother’s meal/wick or coin is tied to the described help. |
+| The Telegraph Repair Car (`the-telegraph-repair-car`) | **HEALTHY / intentional** | Marker, gloves, mirror, whistle, and tester actions are item-gated; the tester proves continuity only, not pole safety. |
+| The Supper Wagon (`the-supper-wagon`) | **HEALTHY / intentional** | Food delivery, lower-road handoff, team rest, and branch shifting are materially different choices; the named hammer action is usable-Gear gated. |
+| The Fence at the Fog Line (`the-fence-at-the-fog-line`) | **HEALTHY / intentional** | Marker/Rope options are gated; the sealed specimen stays with its carrier and safe/partial outcomes distinguish the porter’s condition. |
+| The Lumber Crew at the Gully (`the-lumber-crew-at-the-gully`) | **HEALTHY / intentional** | Owned versus borrowed stretcher paths are explicit; only the accept-retired-spare choice transfers the crew’s stretcher into inventory. |
+| The Quiet Coffin Cart (`the-quiet-coffin-cart`) | **HEALTHY / intentional** | Rope/Wedge routes are gated, family members’ stabilizing role is named, and the explicitly stated two-coin fee matches the paid arrival. |
+| The Silent Warehouse Shift (`the-silent-warehouse-shift`) | **HEALTHY / intentional** | Hot rope is confirmed before action; two evacuation sequences retain their different action order, while pursuit/fight effects do not invent a bonus. |
+| The Last Mile of the Medicine Wagon (`the-last-mile-of-the-medicine-wagon`) | **HEALTHY / intentional** | The sounding test does not imply alternate transport; the split/delivery outcomes state who carries medicine and the patient delay. |
+| The Watch at the Sheepfold (`the-watch-at-the-sheepfold`) | **HEALTHY / intentional** | Whistle establishes the neighbor’s signal; only that route claims the loose-ewe intervention, while the lamb-only variant explicitly denies it. |
+| The Broken Axle Relay (`the-broken-axle-relay`) | **HEALTHY / intentional** | The driver’s preference, teamster help, axle delivery, and no-wage care-only route are distinct; jack use is item-gated. |
+
+The pay-carriage compensation discrepancy is isolated to that Adventure and does not block this family’s independent Gear/physical-clarity screen. No gameplay or test edits were made. This family uses the shared payment helper already also used by agriculture/ranch/animal work, equipment testing, and river/water work; the mapping is caller-specific and no evidence here justifies changing the helper or its other callers. Existing `escortProtectionGenreBatch.test.ts` covers registered graphs, wage effects only on mapped completion routes (including persistence), borrowed-stretcher acceptance, confidentiality, and multiple positive/negative route distinctions.
+
+### Bounded HQ-C01 / HQ-C02 continuation — pleasant-day encounters
+
+The next fresh family was `pleasantDaysBatch.ts`. The prior dispositions for The Swimming Hole, Supper with Strangers, and Skipping Stones were retained and not repeated. The remaining seven stories were screened for natural small rewards, competing social actions, and whether direct observations or teaching are incorrectly gated on a later memory choice.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| Market Afternoon (`market-afternoon`) | **HEALTHY / intentional** | Browsing establishes the square’s layout; buying a pie has an explicit one-coin price; packing a crate pays a coin that the ending explicitly narrates. |
+| Gone Fishing (`gone-fishing`) | **HEALTHY / intentional** | Catch/no-catch/old-float variants remain distinct; sale, keeping the fish, asking about the creek, and leaving correspond to actual outcomes. |
+| The County Fair (`the-county-fair`) | **HEALTHY / intentional** | Ring-toss success and failure are explicit; food has a stated cost, and the location Knowledge is granted on the livestock-pen visit that establishes it. |
+| A Game of Cards (`a-game-of-cards`) | **HEALTHY / intentional** | Stakes are stated, win/loss effects match the described coin movement, repeated hands require another coin, and watching is a genuine learning action. |
+| The Music Outside (`the-music-outside`) | **HEALTHY / intentional** | Listening, dancing, talking, and tipping are distinct; the coin is optional and its amount is explicit. |
+| The Old Man’s Story (`the-old-mans-story`) | **HEALTHY / intentional** | The teller’s uncertain recollections remain attributed and tentative; optional Lore records that a story was shared, not that its claims were verified. |
+| A Good Night’s Sleep (`a-good-nights-sleep`) | **POSSIBLE SEMANTIC DEFECT — ESCALATE** | `comfortableInn.talkComfortableInn → innConversation` directly states that the baker starts before dawn and the road is busiest after the market bell. Only `innConversation.sleepAfterTalk` persists that sentence as Knowledge; `endInnConversation` exits after hearing the same facts with no new evidence. This appears to make a later departure choice the gate on already-acquired Knowledge. No source, test, or semantic-ledger change made. |
+
+The Knowledge concern is confined to A Good Night’s Sleep and does not prevent independent family screening. The prior three seed dispositions (including the intentional “keep the little moment” History choice in Skipping Stones and the attributed uncertain testimony in Supper with Strangers) remain unchanged. No clear low-risk polish repair was found in the seven fresh stories.
