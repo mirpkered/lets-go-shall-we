@@ -868,6 +868,19 @@ After rereading the latest coherence checkpoint and current source, `disasterRes
 
 The shared `largeAdventure` wrapper supplies metadata rather than a route/reward assumption, so no shared-builder change is warranted. Existing state-aware tests exercise the repaired train-history contrast, bridge survivor distinctions, boiler evacuation, roof rescue, and tornado state; reward-access tests cover the two compensation scenarios. No HQ-C01 polish issue was established. The station-horse concern is isolated and does not block independent screening. No gameplay, test, or semantic-ledger change was made.
 
+### Bounded HQ-C01 / HQ-C03 continuation — fresh medical-care callers
+
+After re-reading the coherence record and stable-ID coverage, the four registered callers of `medicalBatch.ts` were selected; previously dispositioned families and all other reviewed candidates were skipped. This was a focused screen of care choices, compensation (none is offered), and physical/message routes, not a medical semantic re-audit.
+
+| Adventure | Disposition | Focused evidence |
+| --- | --- | --- |
+| The Long Night (`the-long-night`) | **HEALTHY / intentional** | Fetching water, resting a relative, and learning the doctor’s expected road are concrete, non-medical forms of help. The relative and nearby neighbor are named in the scene/outcomes; no cure, travel, or reward is invented. |
+| The Doctor Is Three Miles Away (`the-doctor-is-three-miles-away`) | **HEALTHY / intentional** | The innkeeper offers a sound horse, the neighbor knows the doctor’s house and lane, and the stable has a sound light cart; the innkeeper drives if the patient travels. Ride, messenger, and transport routes each distinguish where the doctor/patient ends up. |
+| When the Baby Comes (`when-the-baby-comes`) | **HEALTHY / intentional** | The family provides a dry lane and lantern; the midwife is met and guided at a stated fork, a farmhand carries the return message, and an older child carries a note to a nearby aunt. Preparation and child-care routes have distinct, plausible physical outcomes without asking the Traveler to perform the midwife’s role. |
+| The Red Flag (`the-red-flag`) | **HEALTHY / intentional** | The cause remains explicitly uncertain. The doctor route sends a rider, the warning route offers covered-kitchen-well water, and the separate-room/watch routes do not imply doctor contact or diagnosis. No compensation or false choice is present. |
+
+The existing `secondWaveBatch.test.ts` graph test explores all registered second-wave outcomes, and its specific Red Flag regression distinguishes the watch route from the doctor-contact route. `contentDepth.test.ts` checks all six childbirth outcomes for route-specific stabilization after the midwife takes over. Focused validation passes (**16 tests across 2 files**). No HQ-C01 polish issue, semantic candidate, or safe source-only change was established; no gameplay, test, or semantic-ledger change was made.
+
 ### Bounded HQ-C01 / HQ-C03 continuation — frontier discovery and claims
 
 After rereading the checkpoint and current live registry, the 40 registered callers of `frontierDiscoveryBatch.ts` were selected as a fresh high-signal group for field actions, salvage decisions, and physical boundaries. The shared `frontierAdventure()` template, its caller-specific card text, and C0006/C0012/RC12 specializations were inspected for this screen’s dimensions only. Existing semantic repairs were preserved and not re-audited as cluster work.
