@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -155,16 +155,58 @@ describe('community and civic life adventure batch', () => {
     const wheel = start(WHAT_DID_YOU_SEE, { cartIncident: 'wheel' });
     expect(sceneText(WHAT_DID_YOU_SEE.scenes.roadsideQuestion, wheel)).toContain('left wheel strike a buried stone');
     expect(WHAT_DID_YOU_SEE.scenes.roadsideQuestion.choices.filter(({ requirements }) => meets(requirements, wheel)).map(({ id }) => id))
-      .toEqual(['rememberWheelStone', 'declineAccount']);
+      .toEqual(['rememberWheelStone', 'declineWheelAccount']);
     const account = act(wheel, WHAT_DID_YOU_SEE, 'roadsideQuestion', 'rememberWheelStone');
     expect(account.character?.knowledge.at(-1)).toContain('buried stone');
     expect(act(account, WHAT_DID_YOU_SEE, 'wheelMemory', 'giveWheelAccount').character?.historyFlags).toContain('gave_limited_cart_witness_account');
 
     const driver = start(WHAT_DID_YOU_SEE, { cartIncident: 'driver' });
     expect(WHAT_DID_YOU_SEE.scenes.roadsideQuestion.choices.filter(({ requirements }) => meets(requirements, driver)).map(({ id }) => id))
-      .toEqual(['rememberDriver', 'declineAccount']);
+      .toEqual(['rememberDriver', 'declineDriverAccount']);
     expect(sceneText(WHAT_DID_YOU_SEE.scenes.roadsideQuestion, start(WHAT_DID_YOU_SEE, { cartIncident: 'driver' }, undefined, 0, ['gave_limited_horse_trade_opinion'])))
       .toContain('A past horse-trade question taught you');
+  });
+
+  it('persists only the directly observed cart detail whether or not the Traveler reports it', () => {
+    const cases = [
+      { incident: 'wheel', report: 'rememberWheelStone', decline: 'declineWheelAccount', reportScene: 'wheelMemory', reportFlag: 'remembered_cart_wheel', fact: 'At the roadside, you saw the cart wheel strike a buried stone; that alone does not prove why the cart tipped.' },
+      { incident: 'road', report: 'rememberRoadGravel', decline: 'declineRoadAccount', reportScene: 'wheelMemory', reportFlag: 'remembered_cart_wheel', fact: 'At the roadside, you saw loose gravel slide under the near wheel; that alone does not prove why the cart tipped.' },
+      { incident: 'driver', report: 'rememberDriver', decline: 'declineDriverAccount', reportScene: 'driverMemory', reportFlag: 'remembered_driver_action', fact: 'At the roadside, you saw the driver pull the reins before the cart tipped; that alone does not prove why it happened.' },
+    ] as const;
+
+    for (const { incident, report, decline, reportScene, reportFlag, fact } of cases) {
+      const observed = start(WHAT_DID_YOU_SEE, { cartIncident: incident });
+      expect(sceneText(WHAT_DID_YOU_SEE.scenes.roadsideQuestion, observed)).toContain(
+        incident === 'wheel' ? 'left wheel strike a buried stone' : incident === 'road' ? 'loose gravel slide under the near wheel' : 'driver pull the reins',
+      );
+      expect(observed.character?.knowledge).not.toContain(fact);
+
+      const reported = act(observed, WHAT_DID_YOU_SEE, 'roadsideQuestion', report);
+      expect(reported.run?.sceneId).toBe(reportScene);
+      expect(reported.run?.flags).toContain(reportFlag);
+      expect(reported.character?.knowledge).toContain(fact);
+      for (const other of cases.filter(({ incident: otherIncident }) => otherIncident !== incident)) {
+        expect(reported.character?.knowledge).not.toContain(other.fact);
+      }
+
+      const declined = act(observed, WHAT_DID_YOU_SEE, 'roadsideQuestion', decline);
+      expect(declined.run?.sceneId).toBe('noStatement');
+      expect(declined.run?.flags).not.toContain(reportFlag);
+      expect(declined.character?.knowledge).toContain(fact);
+      expect(declined.character?.historyFlags).toContain('declined_uncertain_roadside_testimony');
+      for (const other of cases.filter(({ incident: otherIncident }) => otherIncident !== incident)) {
+        expect(declined.character?.knowledge).not.toContain(other.fact);
+      }
+
+      const saved = new Map<string, string>();
+      const storage = {
+        getItem: (key: string) => saved.get(key) ?? null,
+        setItem: (key: string, value: string) => { saved.set(key, value); },
+      } as Pick<Storage, 'getItem' | 'setItem'>;
+      saveGame(declined, storage);
+      expect(loadSave(storage).character?.knowledge).toContain(fact);
+      expect(loadSave(storage).character?.historyFlags).toContain('declined_uncertain_roadside_testimony');
+    }
   });
 
   it('makes the barn contribution voluntary and keeps winter planning uncertain but actionable', () => {
