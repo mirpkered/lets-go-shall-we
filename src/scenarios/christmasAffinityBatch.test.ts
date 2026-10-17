@@ -26,12 +26,123 @@ describe('Christmas and winter-affinity adventures', () => {
   it('keeps ambiguous parcel-address Knowledge tentative until Nell is actually reached', () => {
     const parcel = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'last-parcel-before-christmas')!;
     let state = pick(fresh(parcel), parcel, 'askClerk');
+    expect(state.character?.knowledge).toContain('The clerk recalls a child named Nell and a narrow blue door, but both Vale households have blue doors; the intended address is unconfirmed.');
     state = pick(state, parcel, 'bridgeVale');
     expect(state.character?.knowledge).toContain('The clerk recalls a child named Nell and a narrow blue door, but both Vale households have blue doors; the intended address is unconfirmed.');
     expect(state.character?.knowledge).not.toContain('A parcel marked H. Vale was intended for the child Nell at the bridge-side blue door.');
     state = pick(state, parcel, 'leaveParcel');
     expect(state.run?.sceneId).toBe('heldParcel');
     expect(state.character?.historyFlags).not.toContain('Delivered a Christmas parcel to Nell at the mill');
+  });
+
+  it('persists the tentative parcel clue on either route after the clue is learned, but not before it', () => {
+    const parcel = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'last-parcel-before-christmas')!;
+    const clue = 'The clerk recalls a child named Nell and a narrow blue door, but both Vale households have blue doors; the intended address is unconfirmed.';
+    let learned = pick(fresh(parcel), parcel, 'askClerk');
+    expect(learned.character?.knowledge).toContain(clue);
+    learned = pick(learned, parcel, 'millVale');
+    expect(learned.character?.knowledge).toContain(clue);
+
+    let unshared = pick(fresh(parcel), parcel, 'askClerk');
+    unshared = pick(unshared, parcel, 'bridgeVale');
+    expect(unshared.character?.knowledge).toContain(clue);
+
+    let learnedFromCarter = pick(fresh(parcel), parcel, 'followBlueDoor');
+    learnedFromCarter = pick(learnedFromCarter, parcel, 'askPassingCart');
+    expect(learnedFromCarter.character?.knowledge).toContain(clue);
+
+    let noClue = pick(fresh(parcel), parcel, 'followBlueDoor');
+    noClue = pick(noClue, parcel, 'crossParcelBridge');
+    expect(noClue.character?.knowledge).not.toContain(clue);
+    const reloaded = JSON.parse(JSON.stringify(unshared)) as SaveData;
+    expect(reloaded.character?.knowledge).toContain(clue);
+  });
+
+  it('remembers the rail-report procedure when the porter explains it, regardless of whether it is reported', () => {
+    const station = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'christmas-at-the-station')!;
+    const procedure = 'A blocked rail line can be reported by telegraph from a staffed station; walking the track at night is unsafe.';
+    let returned = pick(fresh(station), station, 'helpPorter');
+    expect(returned.character?.knowledge).toContain(procedure);
+    returned = pick(returned, station, 'returnWaiting');
+    expect(returned.character?.knowledge).toContain(procedure);
+
+    let reported = pick(fresh(station), station, 'helpPorter');
+    reported = pick(reported, station, 'sendLineReport');
+    expect(reported.character?.knowledge).toContain(procedure);
+    expect(reported.run?.sceneId).toBe('reportSent');
+    expect(pick(fresh(station), station, 'seekRoad').character?.knowledge).not.toContain(procedure);
+    expect((JSON.parse(JSON.stringify(returned)) as SaveData).character?.knowledge).toContain(procedure);
+  });
+
+  it('retains the attributed and uncertain winter-fund fact whether it is shared or kept private', () => {
+    const dinner = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'strangers-christmas-dinner')!;
+    const fund = 'An old inn ledger records a winter meal fund for travelers; tonight’s anonymous payer may or may not be the same donor.';
+    let privateRoute = pick(fresh(dinner), dinner, 'askKeeper');
+    privateRoute = pick(privateRoute, dinner, 'checkLedger');
+    expect(privateRoute.character?.knowledge).toContain(fund);
+    privateRoute = pick(privateRoute, dinner, 'keepLedgerPrivate');
+    expect(privateRoute.character?.knowledge).toContain(fund);
+
+    let sharedRoute = pick(fresh(dinner), dinner, 'askKeeper');
+    sharedRoute = pick(sharedRoute, dinner, 'checkLedger');
+    sharedRoute = pick(sharedRoute, dinner, 'tellGuests');
+    expect(sharedRoute.character?.knowledge).toContain(fund);
+    expect(pick(fresh(dinner), dinner, 'acceptDinner').character?.knowledge).not.toContain(fund);
+    expect((JSON.parse(JSON.stringify(privateRoute)) as SaveData).character?.knowledge).toContain(fund);
+  });
+
+  it('persists both directly learned Empty Chair facts independent of later family or sharing choices', () => {
+    const chair = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'empty-chair-at-midnight')!;
+    const custom = 'The family’s empty Christmas chair began as hospitality for a stranded traveler and was kept by a grieving sister.';
+    const fold = 'The empty-chair napkin fold matches a drawing in the dead sister’s letter; no mechanism was found.';
+    let history = pick(fresh(chair), chair, 'askCustom');
+    expect(history.character?.knowledge).toContain(custom);
+    history = pick(history, chair, 'nameSister');
+    expect(history.character?.knowledge).toContain(custom);
+
+    let trace = pick(fresh(chair), chair, 'watchChair');
+    trace = pick(trace, chair, 'inspectNapkin');
+    expect(trace.character?.knowledge).toContain(fold);
+    trace = pick(trace, chair, 'leaveIt');
+    expect(trace.character?.knowledge).toContain(fold);
+
+    let shown = pick(fresh(chair), chair, 'watchChair');
+    shown = pick(shown, chair, 'inspectNapkin');
+    shown = pick(shown, chair, 'showLetter');
+    expect(shown.character?.knowledge).toContain(fold);
+    let unobserved = pick(fresh(chair), chair, 'watchChair');
+    unobserved = pick(unobserved, chair, 'comfortChild');
+    expect(unobserved.character?.knowledge).not.toContain(fold);
+    expect(unobserved.character?.knowledge).not.toContain(custom);
+    expect((JSON.parse(JSON.stringify(trace)) as SaveData).character?.knowledge).toContain(fold);
+  });
+
+  it('remembers the sealed letter’s known sender and courier route on every mill route, not on routes that never reach the mill', () => {
+    const letter = CHRISTMAS_ADVENTURES.find(({ id }) => id === 'the-frozen-letter')!;
+    const routeFact = 'The miller recognizes the sealed letter as one from his sister in another town and says the courier will carry it tomorrow; its contents remain unknown.';
+    let secure = pick(fresh(letter), letter, 'liftSatchel');
+    secure = pick(secure, letter, 'takeToMill');
+    expect(secure.character?.knowledge).toContain(routeFact);
+    secure = pick(secure, letter, 'secureLetter');
+    expect(secure.character?.knowledge).toContain(routeFact);
+
+    let question = pick(fresh(letter), letter, 'liftSatchel');
+    question = pick(question, letter, 'takeToMill');
+    question = pick(question, letter, 'askMiller');
+    expect(question.character?.knowledge).toContain(routeFact);
+    expect(question.run?.sceneId).toBe('letterContext');
+
+    let throughInn = pick(fresh(letter), letter, 'liftSatchel');
+    throughInn = pick(throughInn, letter, 'askInnkeeper');
+    throughInn = pick(throughInn, letter, 'deliverMill');
+    expect(throughInn.character?.knowledge).toContain(routeFact);
+
+    let withoutMill = pick(fresh(letter), letter, 'liftSatchel');
+    withoutMill = pick(withoutMill, letter, 'askInnkeeper');
+    withoutMill = pick(withoutMill, letter, 'waitOwner');
+    expect(withoutMill.character?.knowledge).not.toContain(routeFact);
+    expect((JSON.parse(JSON.stringify(question)) as SaveData).character?.knowledge).toContain(routeFact);
+    expect(question.character?.knowledge).not.toContain('The miller’s sister sends letters through the mill courier; the sealed letter was not an emergency warning.');
   });
 
   it('does not infer the sealed frozen letter contents from its sender and courier route', () => {

@@ -1,5 +1,7 @@
 import type { Requirement, Scenario, TimePhase } from '../types';
 
+type KnowledgeRoute = 'quiet' | 'rushed' | 'carefulSuccess' | 'carefulFailure' | 'toolSuccess' | 'toolFailure' | 'additionalTool' | 'help';
+
 interface WorkSpec {
   id: string;
   title: string;
@@ -23,6 +25,7 @@ interface WorkSpec {
   failedEnding: string;
   history: string;
   knowledge: string;
+  knowledgeRoutes?: Partial<Record<KnowledgeRoute, boolean>>;
   questionLabel?: string;
   goodPay: number;
   reducedPay: number;
@@ -32,6 +35,10 @@ interface WorkSpec {
 
 const issue: Requirement = { selections: { shift: 'complication' } };
 const quiet: Requirement = { selections: { shift: 'quiet' } };
+
+function knowledgeEffect(spec: WorkSpec, route: KnowledgeRoute) {
+  return spec.knowledgeRoutes?.[route] === false ? {} : { knowledge: [spec.knowledge] };
+}
 
 function workAdventure(spec: WorkSpec): Scenario {
   const cleanFinish = {
@@ -66,8 +73,8 @@ function workAdventure(spec: WorkSpec): Scenario {
         id: 'work', title: 'On the Job', tone: 'safe', text: spec.quiet,
         textVariants: [{ requirements: issue, text: spec.complication }],
         choices: [
-          { id: 'finishQuiet', label: 'Finish the agreed work', hint: 'The shift has gone as expected.', requirements: quiet, timeCost: spec.time, next: 'ordinaryFinish', effects: { money: spec.goodPay, historyFlags: [spec.history], knowledge: [spec.knowledge] } },
-          { id: 'finishRushed', label: 'Finish the shift as agreed', hint: 'You leave the new problem for the owner; pay will be reduced.', requirements: issue, timeCost: spec.time, next: 'rushedFinish', effects: { money: spec.reducedPay, historyFlags: [`${spec.history}_left_issue`], knowledge: [spec.knowledge] } },
+          { id: 'finishQuiet', label: 'Finish the agreed work', hint: 'The shift has gone as expected.', requirements: quiet, timeCost: spec.time, next: 'ordinaryFinish', effects: { money: spec.goodPay, historyFlags: [spec.history], ...knowledgeEffect(spec, 'quiet') } },
+          { id: 'finishRushed', label: 'Finish the shift as agreed', hint: 'You leave the new problem for the owner; pay will be reduced.', requirements: issue, timeCost: spec.time, next: 'rushedFinish', effects: { money: spec.reducedPay, historyFlags: [`${spec.history}_left_issue`], ...knowledgeEffect(spec, 'rushed') } },
           { id: 'addressIssue', label: spec.taskLabel, hint: spec.taskHint, requirements: issue, next: 'complication', timeCost: 5 },
           { id: 'leaveEarly', label: 'Call it a day early', hint: 'You leave safely, but earn only a small part of the agreed pay.', next: 'earlyFinish', timeCost: 5, effects: { money: 1, historyFlags: [`${spec.history}_left_early`] } },
         ],
@@ -75,11 +82,11 @@ function workAdventure(spec: WorkSpec): Scenario {
       complication: {
         id: 'complication', title: 'A Problem to Settle', tone: 'warning', text: `You pause the work and take stock before acting. The problem is manageable, but the safe approach matters. You can handle it carefully, use the tool you brought if it fits, or ask the person in charge to join you.`,
         choices: [
-          { id: 'workCarefully', label: 'Take the careful approach', hint: 'It should work, though the awkward task can still go wrong.', timeCost: 15, chance: { probability: 0.82, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: 'The work holds together, and the job is finished.', failureMessage: 'The fix does not hold. You stop before anyone is hurt, but some pay is lost.', successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_handled_problem`], knowledge: [spec.knowledge] }, failureEffects: { money: 1, historyFlags: [`${spec.history}_had_setback`], knowledge: [spec.knowledge], ...(spec.failureHealth ? { health: -spec.failureHealth } : {}) } } },
-          ...(spec.item ? [{ id: 'useCarriedTool', label: spec.item.label, hint: spec.item.hint, requirements: { items: [spec.item.id], usableItems: [spec.item.id] }, timeCost: 10, chance: { probability: 0.94, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: `Your ${spec.item.name} makes the awkward part of the work manageable.`, failureMessage: `The ${spec.item.name} helps, but the underlying problem takes more time than the shift allows.`, successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_gear`], knowledge: [spec.knowledge], ...(spec.item.consumeOnSuccess ? { loseItems: [spec.item.id] } : {}) }, failureEffects: { money: spec.reducedPay, historyFlags: [`${spec.history}_had_setback`], knowledge: [spec.knowledge] } } }] : []),
-          ...(spec.additionalItem ? [{ id: 'useSecondTool', label: spec.additionalItem.label, hint: spec.additionalItem.hint, requirements: { items: [spec.additionalItem.id], usableItems: [spec.additionalItem.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_joiners_rule`], knowledge: [spec.knowledge] } }] : []),
-          ...(spec.additionalItems ?? []).map((item) => ({ id: `use_${item.id}`, label: item.label, hint: item.hint, requirements: { items: [item.id], usableItems: [item.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_${item.id}`], knowledge: [spec.knowledge] } })),
-          { id: 'askForHelp', label: spec.askForHelp, hint: 'The work will take longer and the agreed pay will be smaller.', timeCost: 20, next: helpedFinish.id, effects: { money: spec.reducedPay, historyFlags: [spec.history, `${spec.history}_shared_work`], knowledge: [spec.knowledge] } },
+          { id: 'workCarefully', label: 'Take the careful approach', hint: 'It should work, though the awkward task can still go wrong.', timeCost: 15, chance: { probability: 0.82, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: 'The work holds together, and the job is finished.', failureMessage: 'The fix does not hold. You stop before anyone is hurt, but some pay is lost.', successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_handled_problem`], ...knowledgeEffect(spec, 'carefulSuccess') }, failureEffects: { money: 1, historyFlags: [`${spec.history}_had_setback`], ...knowledgeEffect(spec, 'carefulFailure'), ...(spec.failureHealth ? { health: -spec.failureHealth } : {}) } } },
+          ...(spec.item ? [{ id: 'useCarriedTool', label: spec.item.label, hint: spec.item.hint, requirements: { items: [spec.item.id], usableItems: [spec.item.id] }, timeCost: 10, chance: { probability: 0.94, successNext: cleanFinish.id, failureNext: imperfectFinish.id, successMessage: `Your ${spec.item.name} makes the awkward part of the work manageable.`, failureMessage: `The ${spec.item.name} helps, but the underlying problem takes more time than the shift allows.`, successEffects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_gear`], ...knowledgeEffect(spec, 'toolSuccess'), ...(spec.item.consumeOnSuccess ? { loseItems: [spec.item.id] } : {}) }, failureEffects: { money: spec.reducedPay, historyFlags: [`${spec.history}_had_setback`], ...knowledgeEffect(spec, 'toolFailure') } } }] : []),
+          ...(spec.additionalItem ? [{ id: 'useSecondTool', label: spec.additionalItem.label, hint: spec.additionalItem.hint, requirements: { items: [spec.additionalItem.id], usableItems: [spec.additionalItem.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_joiners_rule`], ...knowledgeEffect(spec, 'additionalTool') } }] : []),
+          ...(spec.additionalItems ?? []).map((item) => ({ id: `use_${item.id}`, label: item.label, hint: item.hint, requirements: { items: [item.id], usableItems: [item.id] }, timeCost: 8, next: cleanFinish.id, effects: { money: spec.goodPay, historyFlags: [spec.history, `${spec.history}_used_${item.id}`], ...knowledgeEffect(spec, 'additionalTool') } })),
+          { id: 'askForHelp', label: spec.askForHelp, hint: 'The work will take longer and the agreed pay will be smaller.', timeCost: 20, next: helpedFinish.id, effects: { money: spec.reducedPay, historyFlags: [spec.history, `${spec.history}_shared_work`], ...knowledgeEffect(spec, 'help') } },
         ],
       },
       ordinaryFinish: { id: 'ordinaryFinish', title: 'A Day Well Spent', text: spec.normalEnding, ending: 'success', completionQualification: 'substantive', choices: [] },
@@ -107,7 +114,7 @@ export const THE_LONG_DRIVE = workAdventure({
   carefulEnding: 'The steer picks its way over the stones. The herd follows without scattering, and you finish the drive with the other hand.',
   helpedEnding: 'The rear hand circles wide while you hold the lead cattle. Together you guide the steer across without driving the herd into the water.',
   failedEnding: 'The steer slips on a stone and strains a leg, but stays on its feet. You stop the drive and help the owner settle it in a nearby pen; the day’s pay is reduced.',
-  history: 'completed_paid_livestock_drive', knowledge: 'A calm, steady pace keeps cattle together at a shallow crossing.', goodPay: 4, reducedPay: 2,
+  history: 'completed_paid_livestock_drive', knowledge: 'A calm, steady pace keeps cattle together at a shallow crossing.', knowledgeRoutes: { quiet: false }, goodPay: 4, reducedPay: 2,
 });
 
 export const FENCE_LINE = workAdventure({
@@ -181,7 +188,7 @@ export const FREIGHT_TO_MILLERS_FORK = workAdventure({
   carefulEnding: 'You ease the crate back against the rail and tie the canvas down. The driver checks the horses and resumes at a slower pace.',
   helpedEnding: 'The driver holds the canvas while you wedge the crate against the sacks. The team remains calm and the load is safe to move.',
   failedEnding: 'The crate shifts again as the wagon starts. A corner pane cracks, but the crate stays aboard; you stop and secure the load before continuing for reduced pay.',
-  history: 'completed_paid_freight_run', knowledge: 'A glass crate should be braced against a firm wagon rail before the team moves.', goodPay: 4, reducedPay: 2,
+  history: 'completed_paid_freight_run', knowledge: 'A glass crate should be braced against a firm wagon rail before the team moves.', knowledgeRoutes: { quiet: false }, goodPay: 4, reducedPay: 2,
 });
 
 export const A_ROOF_BEFORE_RAIN = workAdventure({
@@ -199,7 +206,7 @@ export const A_ROOF_BEFORE_RAIN = workAdventure({
   carefulEnding: 'You brace the damaged edge from the sound rafters and fit a temporary board without stepping onto the rotten section.',
   helpedEnding: 'The carpenter brings a brace and holds the ladder while you secure the patch from the firm side. The roof is weather-tight, though the rotten board will need replacing.',
   failedEnding: 'A brace slips against the rotten edge. You retreat onto a sound rafter before it gives way; the crew covers the opening from below and the carpenter reduces the pay.',
-  history: 'completed_paid_roof_repair', knowledge: 'A rotten roof edge should be supported from sound rafters, not stood upon.', goodPay: 4, reducedPay: 2, failureHealth: 1,
+  history: 'completed_paid_roof_repair', knowledge: 'A rotten roof edge should be supported from sound rafters, not stood upon.', knowledgeRoutes: { quiet: false }, goodPay: 4, reducedPay: 2, failureHealth: 1,
 });
 
 export const NIGHT_WATCH = workAdventure({
@@ -207,17 +214,17 @@ export const NIGHT_WATCH = workAdventure({
   opening: 'A depot keeper pays you to watch a small freight shed until dawn. The stored goods are canvas-covered crates and sacks, not valuables; the keeper shows you the door latch and the sheltered bench. Your task is simply to stay awake and call him if anything needs attention.',
   quiet: 'The first hours pass quietly. The shed remains locked, the covered freight stays dry, and the keeper’s lantern burns steadily on the bench beside you.',
   complication: 'A gust lifts the loose canvas at the shed’s open loading side. A corner of the cover flaps against the stacked sacks. The door is still locked; there is no sign of anyone approaching.',
-  taskLabel: 'Tie down the loose canvas corner', taskHint: 'The stack is stable and the cord is hanging from its usual peg; no climbing is needed.',
-  item: { id: 'freightmansStrap', name: 'Freightman’s Strap', label: 'Secure the canvas with your Freightman’s Strap', hint: 'Reach the low corner from the clear floor and keep the cover from catching the wind.' },
+  taskLabel: 'Tie the canvas at two low points', taskHint: 'Use the hanging cord at the low rail and secure the second corner without climbing.',
+  item: { id: 'freightmansStrap', name: 'Freightman’s Strap', label: 'Secure the canvas with your Freightman’s Strap', hint: 'Reach both low corners from the clear floor; keep the cover from catching the wind.' },
   askForHelp: 'Wake the keeper to help secure the cover', time: 480,
   timePhases: [{ id: 'evening', label: 'Evening', atMinutes: 0 }, { id: 'midnight', label: 'Midnight', atMinutes: 180 }, { id: 'nearDawn', label: 'Near dawn', atMinutes: 360 }],
   normalEnding: 'Nothing unusual happens before dawn. The keeper returns, checks the lock, and pays you for a quiet night’s watch.',
   rushedEnding: 'You keep watch and report the flapping canvas at dawn. A few sacks are damp at the edge, but the freight is safe; the keeper pays a smaller wage for the extra work left behind.',
   earlyEnding: 'You wake the keeper and leave before dawn. He pays you for the hours covered and takes over the watch himself.',
-  carefulEnding: 'You tie the canvas to the low rail and return to the bench. The freight stays covered for the rest of the night.',
-  helpedEnding: 'The keeper comes out with a second cord. Together you fasten the cover without disturbing the stacked goods.',
+  carefulEnding: 'You tie the canvas at two low points along the rail and return to the bench. The freight stays covered for the rest of the night.',
+  helpedEnding: 'The keeper brings a second cord. Together you fasten the cover at two low points without disturbing the stacked goods.',
   failedEnding: 'The knot loosens in the next gust. The canvas is caught before it blows away, though the outside sacks get damp and the keeper docks a little pay.',
-  history: 'completed_paid_night_watch', knowledge: 'A canvas cover tied at two low points is less likely to catch a gust.', goodPay: 4, reducedPay: 2,
+  history: 'completed_paid_night_watch', knowledge: 'A canvas cover tied at two low points is less likely to catch a gust.', knowledgeRoutes: { quiet: false, rushed: false, carefulFailure: false, toolFailure: false }, goodPay: 4, reducedPay: 2,
 });
 
 export const UNLOAD_BEFORE_DARK = workAdventure({
@@ -254,7 +261,7 @@ export const THE_MILL_JOB = workAdventure({
   carefulEnding: 'The miller locks the wheel and confirms it is still. You lift the scoop from the chute, then step back before he starts the mill again.',
   helpedEnding: 'The miller locks and clears the wheel himself while you keep the aisle clear. The machinery starts again only after everyone is behind the rail.',
   failedEnding: 'The scoop is too tightly wedged to move by hand. You leave it for the miller to dismantle with the wheel locked; the delay reduces the shift’s pay.',
-  history: 'completed_paid_mill_shift', knowledge: 'A mill jam must be cleared only after the wheel is stopped and secured.', goodPay: 4, reducedPay: 2,
+  history: 'completed_paid_mill_shift', knowledge: 'A mill jam must be cleared only after the wheel is stopped and secured.', knowledgeRoutes: { quiet: false }, goodPay: 4, reducedPay: 2,
 });
 
 export const CUTTING_TIMBER = workAdventure({
@@ -308,7 +315,7 @@ export const THE_DELIVERY_RUN = workAdventure({
   carefulEnding: 'The covered lane takes longer, but the label and paper wrapping stay dry. The customer accepts the sealed parcel before closing.',
   helpedEnding: 'The post-house keeper provides dry paper and a string tie. You keep the seal intact and deliver the parcel before the shop closes.',
   failedEnding: 'The wrapping tears at one corner in the rain, though the sealed contents remain dry. You deliver it with an explanation and receive a smaller fee.',
-  history: 'completed_paid_delivery_run', knowledge: 'A covered lane can protect a paper-wrapped parcel when rain threatens.', goodPay: 3, reducedPay: 1,
+  history: 'completed_paid_delivery_run', knowledge: 'A covered lane can protect a paper-wrapped parcel when rain threatens.', knowledgeRoutes: { quiet: false }, goodPay: 3, reducedPay: 1,
 });
 
 export const HONEST_WORK_ADVENTURES: Scenario[] = [THE_LONG_DRIVE, FENCE_LINE, HARVEST_HAND, FREIGHT_TO_MILLERS_FORK, A_ROOF_BEFORE_RAIN, NIGHT_WATCH, UNLOAD_BEFORE_DARK, THE_MILL_JOB, CUTTING_TIMBER, THE_DELIVERY_RUN];

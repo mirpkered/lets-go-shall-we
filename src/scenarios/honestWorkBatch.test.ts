@@ -84,7 +84,7 @@ describe('honest work adventure batch', () => {
     }
   });
 
-  it('pays for an ordinary shift and records the character’s work history', () => {
+  it('pays for an ordinary shift and records work history without inventing a complication lesson', () => {
     const scenario = HONEST_WORK_ADVENTURES[0];
     let state = act(start(scenario, 'quiet'), scenario, 'hiring', 'beginWork');
     expect(scenario.scenes.work.textVariants?.length).toBeGreaterThan(0);
@@ -92,7 +92,96 @@ describe('honest work adventure batch', () => {
     expect(state.run?.status).toBe('success');
     expect(state.character?.money).toBe(scenario.scenes.ordinaryFinish ? 4 : 0);
     expect(state.character?.historyFlags).toContain('completed_paid_livestock_drive');
-    expect(state.character?.knowledge.length).toBeGreaterThan(0);
+    expect(state.character?.knowledge).not.toContain('A calm, steady pace keeps cattle together at a shallow crossing.');
+  });
+
+  it('does not award complication-specific Knowledge on quiet routes, while preserving the healthy Fence Line lesson', () => {
+    const cases = [
+      ['the-long-drive', 'A calm, steady pace keeps cattle together at a shallow crossing.'],
+      ['freight-to-millers-fork', 'A glass crate should be braced against a firm wagon rail before the team moves.'],
+      ['a-roof-before-rain', 'A rotten roof edge should be supported from sound rafters, not stood upon.'],
+      ['night-watch', 'A canvas cover tied at two low points is less likely to catch a gust.'],
+      ['the-mill-job', 'A mill jam must be cleared only after the wheel is stopped and secured.'],
+      ['the-delivery-run', 'A covered lane can protect a paper-wrapped parcel when rain threatens.'],
+    ] as const;
+    for (const [id, lesson] of cases) {
+      const scenario = HONEST_WORK_ADVENTURES.find((entry) => entry.id === id)!;
+      let state = act(start(scenario, 'quiet'), scenario, 'hiring', 'beginWork');
+      state = act(state, scenario, 'work', 'finishQuiet');
+      expect(state.character?.knowledge, `${scenario.title} quiet shift`).not.toContain(lesson);
+    }
+
+    const fence = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'fence-line')!;
+    let fenceState = act(start(fence, 'quiet'), fence, 'hiring', 'beginWork');
+    fenceState = act(fenceState, fence, 'work', 'finishQuiet');
+    expect(fenceState.character?.knowledge).toContain('A visible boundary stake can settle a fence-line disagreement before the wire is tightened.');
+  });
+
+  it('still records honest-work lessons after the matching complication is encountered and handled', () => {
+    const cases = [
+      ['the-long-drive', 'A calm, steady pace keeps cattle together at a shallow crossing.'],
+      ['freight-to-millers-fork', 'A glass crate should be braced against a firm wagon rail before the team moves.'],
+      ['a-roof-before-rain', 'A rotten roof edge should be supported from sound rafters, not stood upon.'],
+      ['the-mill-job', 'A mill jam must be cleared only after the wheel is stopped and secured.'],
+      ['the-delivery-run', 'A covered lane can protect a paper-wrapped parcel when rain threatens.'],
+    ] as const;
+    for (const [id, lesson] of cases) {
+      const scenario = HONEST_WORK_ADVENTURES.find((entry) => entry.id === id)!;
+      let state = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
+      state = act(state, scenario, 'work', 'addressIssue');
+      state = act(state, scenario, 'complication', 'workCarefully', () => 0);
+      expect(state.character?.knowledge, `${scenario.title} resolved complication`).toContain(lesson);
+    }
+  });
+
+  it('teaches the Night Watch two-point tie only on routes that complete it', () => {
+    const scenario = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'night-watch')!;
+    const lesson = 'A canvas cover tied at two low points is less likely to catch a gust.';
+    let quietShift = act(start(scenario, 'quiet'), scenario, 'hiring', 'beginWork');
+    quietShift = act(quietShift, scenario, 'work', 'finishQuiet');
+    expect(quietShift.character?.knowledge).not.toContain(lesson);
+
+    let secured = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
+    secured = act(secured, scenario, 'work', 'addressIssue');
+    secured = act(secured, scenario, 'complication', 'workCarefully', () => 0);
+    expect(secured.run?.sceneId).toBe('cleanFinish');
+    expect(secured.character?.knowledge).toContain(lesson);
+    expect(scenario.scenes.cleanFinish.text).toContain('two low points');
+    expect(structuredClone(secured).character?.knowledge).toContain(lesson);
+
+    let geared = act(start(scenario, 'complication', 'freightmansStrap'), scenario, 'hiring', 'beginWork');
+    geared = act(geared, scenario, 'work', 'addressIssue');
+    geared = act(geared, scenario, 'complication', 'useCarriedTool');
+    expect(geared.character?.knowledge).toContain(lesson);
+
+    let failed = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
+    failed = act(failed, scenario, 'work', 'addressIssue');
+    failed = act(failed, scenario, 'complication', 'workCarefully', () => 0.999999);
+    expect(failed.run?.sceneId).toBe('imperfectFinish');
+    expect(failed.character?.knowledge).not.toContain(lesson);
+
+    let helped = act(start(scenario, 'complication'), scenario, 'hiring', 'beginWork');
+    helped = act(helped, scenario, 'work', 'addressIssue');
+    helped = act(helped, scenario, 'complication', 'askForHelp');
+    expect(helped.character?.knowledge).toContain(lesson);
+    expect(scenario.scenes.helpedFinish.text).toContain('two low points');
+  });
+
+  it('preserves custom Harvest Hand and Cutting Timber knowledge routes that bypass the generic quiet grant', () => {
+    const harvest = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'harvest-hand')!;
+    let harvestState = act(start(harvest, 'quiet'), harvest, 'hiring', 'beginWork');
+    harvestState = act(harvestState, harvest, 'work', 'finishQuiet');
+    harvestState = act(harvestState, harvest, 'harvestTally', 'steadyHarvest');
+    expect(harvestState.character?.knowledge).not.toContain('A shallow harvest cut should be cleaned and covered before the worker returns to the field.');
+
+    const timber = HONEST_WORK_ADVENTURES.find(({ id }) => id === 'cutting-timber')!;
+    let quietTimber = act(start(timber, 'quiet'), timber, 'hiring', 'beginWork');
+    quietTimber = act(quietTimber, timber, 'work', 'finishQuiet');
+    quietTimber = act(quietTimber, timber, 'timberTally', 'finishTimberLoad');
+    expect(quietTimber.character?.knowledge).not.toContain('A bound saw should be released by moving the wood from a clear side, not by pulling harder.');
+
+    const instructed = act(start(timber, 'quiet'), timber, 'hiring', 'askThenWork');
+    expect(instructed.character?.knowledge).toContain('A bound saw should be released by moving the wood from a clear side, not by pulling harder.');
   });
 
   it('does not award a task-specific lesson for a generic job-terms question before the work begins', () => {
