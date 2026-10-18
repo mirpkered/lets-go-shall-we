@@ -23776,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Forty-seven new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Fifty new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 47,
+    "liveFindingCount": 50,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 47,
+      "VERIFIED_HEALTHY_REPAIRED": 50,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 401,
+    "currentLiveFindingCount": 404,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 391,
+      "VERIFIED_HEALTHY_REPAIRED": 394,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 290,
-      "LOW": 92,
+      "MEDIUM": 292,
+      "LOW": 93,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,8 +23802,8 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0409",
-    "nextClusterId": "CRA-C0015",
+    "nextFindingId": "CRA-F0412",
+    "nextClusterId": "CRA-C0016",
     "findings": [
       {
         "findingId": "CRA-F0362",
@@ -24644,6 +24644,36 @@
         "implementationEvidence": "The fight choice now requires both possession and `usableItems:['smallKnife']`. A normal starting knife still enables the action; a BROKEN knife cannot, and retreat remains available. `occultInvestigationBatch.test.ts` proves both route states and fallback; the CRA-C0004 matrix now covers absent, BROKEN, and usable knife states for F0408. The two-cellar family suite passes (37 tests) and CRA-C0004 suite passes (46 tests). CRA-F0046's separate jar-label convergence repair remains unchanged.",
         "repairLocality": "Scenario-specific choice requirement in `occultInvestigationBatch.ts`; no helper, save, or schema change.",
         "dependencies": ["CRA-F0046 (same Adventure; separate jar-label convergence repair preserved)"]
+      },
+      {
+        "findingId": "CRA-F0409", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 221,
+        "adventureId": "three-days-to-the-railhead", "title": "Three Days to the Railhead", "sourceFile": "src/scenarios/survivalExpeditionBatch.ts", "severity": "MEDIUM",
+        "defect": "The Traveler’s horse is offered as rescue transport from a remote camp based only on persistent ownership, although the only established horse location is its boarding farm.",
+        "routeWitness": "`railheadCamp.useOwnedHorseRailhead -> horseTransport` was enabled by `ownedAssets:['olderChestnutHorse']` and promised “Use your boarded horse.” The sole acquisition routes `animalsBatch.horseTerms.buyOlderHorse` / `workForHorse -> horseBought` explicitly say the horse stays boarded at the farm where it was bought. `railheadCamp` establishes the surveyor, pack frame, and companions, but no retrieval or arrival of that horse. Thus the ownership record did not prove local availability for this three-day rescue; litter, hut-cart, and split-party alternatives were available.",
+        "violatedRule": "A physical route action may rely only on a resource established as available at that scene; persistent ownership does not establish that an animal or object was brought to a remote location.",
+        "clusterId": "CRA-C0015", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed the unsupported owned-horse transport choice and its result scene; no horse-location state exists that could safely prove the boarding-farm animal reached this remote camp. The litter, cart, split-party, weather, injury, and arrival routes remain intact. `survivalExpeditionBatch.test.ts` confirms a boarded-asset record does not add a local horse option, the three established alternatives remain available, and the removed destination is no longer reachable; all 21 focused tests pass.",
+        "repairLocality": "Scenario-specific removal of an unsupported remote-asset route in `survivalExpeditionBatch.ts`; no asset model, save schema, or shared engine behavior changed.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0410", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 268,
+        "adventureId": "the-train-that-didnt-stop", "title": "The Train That Didn’t Stop", "sourceFile": "src/scenarios/disasterRescueBatch.ts", "severity": "MEDIUM",
+        "defect": "The station-horse warning action is gated by ownership of the Traveler’s unrelated boarded horse and its result incorrectly calls the station horse the Traveler’s own.",
+        "routeWitness": "`platformClear.clearRide -> trainRider` is labeled “Take the station horse to warn ahead” but required `ownedAssets:['olderChestnutHorse']`. The Traveler’s horse acquisition record says it stays boarded at its purchase farm; it is neither the station’s horse nor established at this platform. The station horse is specifically offered as an on-site resource, so personal ownership should not control the warning choice. Before repair, `trainRider` said “Your horse carries you,” contradicting the selected station-horse method. The existing `runAlongside -> platformClear` route and CRA-F0082 run-alongside History repair are separate and remain intact.",
+        "violatedRule": "Choice availability and resulting narration must match the resource and method actually established by the scene; another person’s local resource must not be gated by unrelated Traveler ownership.",
+        "clusterId": "CRA-C0015", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The platform now establishes a second station horse ready for the additional warning, `clearRide` no longer checks the Traveler’s owned assets, and `trainRider` consistently says the station horse carries the Traveler. `disasterRescueBatch.stateAware.test.ts` verifies the option is ungated, the local horse is established, the route reaches `trainRider`, and the result names the station horse; the run-alongside/History contrast remains covered. The focused state-aware suite passes (11 tests). CRA-F0082’s repaired outcome/History behavior is unchanged.",
+        "repairLocality": "Scenario-specific platform setup, choice requirement, and result text in `disasterRescueBatch.ts`; no shared builder, asset model, reward, or save behavior changed.", "dependencies": ["CRA-F0082 (same Adventure; repaired run-alongside participation/History behavior preserved)"]
+      },
+      {
+        "findingId": "CRA-F0411", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 278,
+        "adventureId": "wanted-in-red-creek", "title": "Wanted in Red Creek", "sourceFile": "src/scenarios/westernOutlawBatch.ts", "severity": "LOW",
+        "defect": "The scenario offers a dated travel-receipt route gated by a non-carryable railway map that is not a dated receipt and cannot be carried into a later Adventure through supported progression.",
+        "routeWitness": "`street.showTravelNote -> receipt` required `anyItems:['railwayMap']`. `ITEMS.railwayMap` is `run-only` and non-carryable, is absent from `STARTING_ITEMS`, and is granted only by the Last Stop kiosk; `startRun` initializes an Adventure from starting plus carried items, while successful carry resolution preserves only items whose definitions are carryable. The map’s definition establishes gradients, sidings, and mileposts, not a dated arrival. The Red Creek story itself grants no such receipt. Fresh and normally progressed Travelers therefore have no proof route into the receipt scene; name/question, shopkeeper, and departure alternatives remain available.",
+        "violatedRule": "A gated evidence action must require evidence that can actually be acquired and that supports the conclusion narrated by the resulting scene.",
+        "clusterId": "CRA-C0015", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed the unsupported dated-receipt choice and unreachable `receipt` scene rather than treating a railway map as proof of arrival date. Name/question, witness, livery, departure, uncertainty, Knowledge, and History routes remain unchanged. `westernOutlawBatch.test.ts` verifies the map is non-carryable and not starting equipment, the three grounded opening alternatives remain available, and the receipt choice/scene no longer exist; all 18 focused tests pass.",
+        "repairLocality": "Scenario-specific removal of an unsupported evidence route in `westernOutlawBatch.ts`; no item definition, progression, or inventory behavior changed.", "dependencies": []
       }
     ],
     "newClusters": [
@@ -24666,6 +24696,16 @@
         "severityTotals": {"HIGH": 0, "MEDIUM": 1, "LOW": 2},
         "likelyRepairLayer": "Scenario-specific ending language or terminal-route money effects, with positive/negative route accounting tests.",
         "reasonNoExistingClusterFits": "CRA-C0005 covers one paid fee being refunded more than once. These findings instead concern truthful per-route compensation narration/effects: incomplete wage accounting text, an omitted base-wage effect, and a refund without a prior charge."
+      },
+      {
+        "clusterId": "CRA-C0015",
+        "name": "Scenario-local resource availability confused with possession or unrelated evidence",
+        "description": "A scenario action uses persistent ownership or an unrelated/non-transferable inventory token as a proxy for a resource being physically available at the current scene, or for evidence supporting the narrated conclusion. The repair must align the gate, available source, and resulting claim without adding unsupported cross-adventure state.",
+        "findingIds": ["CRA-F0409", "CRA-F0410", "CRA-F0411"],
+        "affectedAdventureIds": ["three-days-to-the-railhead", "the-train-that-didnt-stop", "wanted-in-red-creek"],
+        "severityTotals": {"HIGH": 0, "MEDIUM": 2, "LOW": 1},
+        "likelyRepairLayer": "Scenario-specific availability requirements and local setup/evidence routes; avoid shared inventory or asset-model changes unless separately justified.",
+        "reasonNoExistingClusterFits": "CRA-C0004 concerns possessed Gear usability; CRA-C0008 concerns ungated Gear-specific actions; CRA-C0013 concerns text claiming Gear ownership; and route-convergence clusters address unsupported shared results. These cases instead conflate scene-local availability or evidentiary fit with persistent ownership or an unrelated item token."
       }
     ],
     "currentClusterAssignmentTotals": {
@@ -24682,9 +24722,10 @@
       "CRA-C0011": 24,
       "CRA-C0012": 1,
       "CRA-C0013": 1,
-      "CRA-C0014": 3
+      "CRA-C0014": 3,
+      "CRA-C0015": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-seven records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These fifty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
