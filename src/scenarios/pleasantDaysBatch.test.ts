@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
-import { EMPTY_SAVE } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { findScenarioGraphProblems } from '../scenarioGraph';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -176,5 +176,25 @@ describe('day off and pleasant encounters adventure batch', () => {
     expect(A_GOOD_NIGHTS_SLEEP.scenes.sleptWell.ending).toBe('success');
     expect(THE_MUSIC_OUTSIDE.scenes.streetMusic.choices).toHaveLength(4);
     expect(SKIPPING_STONES.scenes.riverbank.choices).toHaveLength(4);
+  });
+
+  it('persists the innkeeper’s advice when it is heard, regardless of which bedtime option follows', () => {
+    const fact = 'The baker starts before dawn, and the road is busiest after the market bell.';
+    const heard = act(start(A_GOOD_NIGHTS_SLEEP), A_GOOD_NIGHTS_SLEEP, 'comfortableInn', 'talkComfortableInn');
+    expect(heard.run?.sceneId).toBe('innConversation');
+    expect(heard.character?.knowledge).toContain(fact);
+
+    const backing: Record<string, string> = {};
+    saveGame(heard, { setItem: (key, value) => { backing[key] = value; } });
+    const reloaded = loadSave({ getItem: (key) => backing[key] ?? null });
+    expect(reloaded.character?.knowledge).toContain(fact);
+    for (const choiceId of ['sleepAfterTalk', 'endInnConversation']) {
+      const result = act(heard, A_GOOD_NIGHTS_SLEEP, 'innConversation', choiceId);
+      expect(result.character?.knowledge).toContain(fact);
+      expect(result.run?.sceneId).toBe('sleptWell');
+    }
+
+    const withoutConversation = act(start(A_GOOD_NIGHTS_SLEEP), A_GOOD_NIGHTS_SLEEP, 'comfortableInn', 'sleepComfortableInn');
+    expect(withoutConversation.character?.knowledge).not.toContain(fact);
   });
 });

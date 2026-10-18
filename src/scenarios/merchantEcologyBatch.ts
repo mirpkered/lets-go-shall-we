@@ -53,7 +53,7 @@ function merchant(config: {
       choices: [
         { id: 'browseStock', label: 'Look over the posted stock and prices', next: 'stock' },
         ...(config.sales?.length ? [{ id: 'offerCarriedGear', label: 'Ask whether they will buy a tool you carry', next: 'buyer' }] : []),
-        ...(config.id === 'the-retired-lampwright' ? [{ id: 'askAboutWick', label: 'Ask about the numbered wick you carry', requirements: { items: ['numberedLanternWick'] }, next: 'wickHistory' }] : []),
+        ...(config.id === 'the-retired-lampwright' ? [{ id: 'askAboutWick', label: 'Ask about the numbered wick you carry', requirements: { items: ['numberedLanternWick'] }, next: 'wickHistory', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.numberedRefugeLampSystem] } }] : []),
         { id: 'leaveMerchant', label: 'Thank the seller and move on', next: 'departure' },
       ],
     },
@@ -67,7 +67,7 @@ function merchant(config: {
     scenes.wickHistory = {
       id: 'wickHistory', title: 'A Record, Not a Key', tone: 'safe',
       text: 'The lampwright recognizes the brass tag from an old travelers’ office. The numbered wick marked a registered refuge room; its number was never a key or a signal by itself. They cannot say why the cellar lamp was relit, but the tag records how the inn once guided people cut off by weather.',
-      choices: [{ id: 'rememberWickSystem', label: 'Keep the lampwright’s explanation in mind', next: 'wickAccount', effects: { knowledgeEntries: [KNOWLEDGE_FACTS.numberedRefugeLampSystem] } }],
+      choices: [{ id: 'rememberWickSystem', label: 'Thank the lampwright and leave with the wick', next: 'wickAccount' }],
     };
     scenes.wickAccount = ending('wickAccount', 'An Old System, Carefully Read', 'You keep the numbered wick. Its place in an old refuge system is clearer, while the reason it was removed remains unknown.');
   }

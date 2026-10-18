@@ -169,6 +169,13 @@ describe('fixed-stock merchant ecology', () => {
   it('recognizes the Numbered Lantern Wick, records reusable knowledge, and lets it inform a later independent lamp scene', () => {
     const traveler = start(RETIRED_LAMPWRIGHT, 0, ['numberedLanternWick']);
     const explained = act(traveler, RETIRED_LAMPWRIGHT, 'entry', 'askAboutWick');
+    expect(explained.run?.sceneId).toBe('wickHistory');
+    expect(explained.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.numberedRefugeLampSystem.id);
+    expect(RETIRED_LAMPWRIGHT.scenes.wickHistory.choices[0].effects).toBeUndefined();
+    const saved: Record<string, string> = {};
+    saveGame(explained, { setItem: (key, value) => { saved[key] = value; } });
+    expect(loadSave({ getItem: (key) => saved[key] ?? null }).character?.knowledgeKeys)
+      .toContain(KNOWLEDGE_FACTS.numberedRefugeLampSystem.id);
     const learned = act(explained, RETIRED_LAMPWRIGHT, 'wickHistory', 'rememberWickSystem');
     expect(learned.character?.knowledgeKeys).toContain(KNOWLEDGE_FACTS.numberedRefugeLampSystem.id);
     expect(learned.character?.knowledge).toContain(KNOWLEDGE_FACTS.numberedRefugeLampSystem.text);

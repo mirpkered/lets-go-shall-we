@@ -198,11 +198,11 @@ export const A_GOOD_NIGHTS_SLEEP: Scenario = {
     comfortableInn: { id: 'comfortableInn', title: 'A Comfortable Room', tone: 'safe', easterEggContext: 'inn', text: 'The inn is unusually quiet, the bed is clean, and the wash basin is filled with warm water. The innkeeper says supper will be ready soon and asks whether you need anything. Your pack can stay beside the bed while you settle in.', choices: [
       { id: 'takeWarmMeal', label: 'Eat the inn’s simple supper', requirements: { minMoney: 1 }, timeCost: 20, effects: { money: -1 }, next: 'sleptWell' },
       { id: 'washComfortableInn', label: 'Wash up with the warm basin water', timeCost: 12, next: 'sleptWell' },
-      { id: 'talkComfortableInn', label: 'Share a little conversation downstairs', timeCost: 15, next: 'innConversation' },
+      { id: 'talkComfortableInn', label: 'Share a little conversation downstairs', timeCost: 15, next: 'innConversation', effects: { knowledge: ['The baker starts before dawn, and the road is busiest after the market bell.'] } },
       { id: 'sleepComfortableInn', label: 'Turn in early and sleep', timeCost: 30, next: 'sleptWell' },
     ] },
     innConversation: { id: 'innConversation', title: 'Quiet Talk Before Bed', tone: 'safe', text: 'The innkeeper tells you the baker starts before dawn and that the road is usually busiest after the market bell. No urgent news follows; the conversation is simply pleasant.', choices: [
-      { id: 'sleepAfterTalk', label: 'Thank the innkeeper and turn in', timeCost: 20, next: 'sleptWell', effects: { knowledge: ['The baker starts before dawn, and the road is busiest after the market bell.'] } },
+      { id: 'sleepAfterTalk', label: 'Thank the innkeeper and turn in', timeCost: 20, next: 'sleptWell' },
       { id: 'endInnConversation', label: 'Say good night and leave early', next: 'sleptWell' },
     ] },
     sleptWell: ending('sleptWell', 'Morning Comes Gently', 'You sleep in a clean bed with your belongings close at hand. Morning arrives quietly, and you have had a comfortable night.'),
