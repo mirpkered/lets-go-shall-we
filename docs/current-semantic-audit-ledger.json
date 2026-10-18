@@ -23776,23 +23776,23 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Forty-six new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Forty-seven new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 46,
+    "liveFindingCount": 47,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 46,
+      "VERIFIED_HEALTHY_REPAIRED": 47,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 400,
+    "currentLiveFindingCount": 401,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 390,
+      "VERIFIED_HEALTHY_REPAIRED": 391,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 289,
+      "MEDIUM": 290,
       "LOW": 92,
       "SEVERITY_UNRECOVERED": 6
     },
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0408",
+    "nextFindingId": "CRA-F0409",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24633,6 +24633,17 @@
         "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
         "implementationEvidence": "Removed only the Blue Chalk caller's unsupported `secondaryKnowledge` assignment. Its folding-marker reward, related route lore, private-land restriction, fee/refusal, and delay consequences remain unchanged. The courier regression matrix confirms forwarding-mark Knowledge is absent on this route.",
         "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0408", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 195,
+        "adventureId": "house-with-two-cellars", "title": "The House with Two Cellars", "sourceFile": "src/scenarios/occultInvestigationBatch.ts", "severity": "MEDIUM",
+        "defect": "The Traveler can choose to hold the cellar stair with a BROKEN small knife, even though the choice requires the knife to oppose the skeleton's blade.",
+        "routeWitness": "`twoCellars.descendTwoCellars -> cellarLanding.pushArch -> cellarBrokenArch.fightCellarSkeleton` requires only `items:['smallKnife']`; a BROKEN starting knife remains in the run inventory and satisfies that possession check. The action then presents a 50% fight outcome, including a possible direct death result, despite the tool being unusable. `retreatCellar` remains an available safe alternative.",
+        "violatedRule": "An equipment-specific physical action must require the named Gear in usable condition; mere possession does not establish that it can hold the stair.",
+        "clusterId": "CRA-C0004", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The fight choice now requires both possession and `usableItems:['smallKnife']`. A normal starting knife still enables the action; a BROKEN knife cannot, and retreat remains available. `occultInvestigationBatch.test.ts` proves both route states and fallback; the CRA-C0004 matrix now covers absent, BROKEN, and usable knife states for F0408. The two-cellar family suite passes (37 tests) and CRA-C0004 suite passes (46 tests). CRA-F0046's separate jar-label convergence repair remains unchanged.",
+        "repairLocality": "Scenario-specific choice requirement in `occultInvestigationBatch.ts`; no helper, save, or schema change.",
+        "dependencies": ["CRA-F0046 (same Adventure; separate jar-label convergence repair preserved)"]
       }
     ],
     "newClusters": [
@@ -24661,7 +24672,7 @@
       "CRA-C0001": 226,
       "CRA-C0002": 57,
       "CRA-C0003": 1,
-      "CRA-C0004": 34,
+      "CRA-C0004": 35,
       "CRA-C0005": 1,
       "CRA-C0006": 17,
       "CRA-C0007": 5,
@@ -24674,6 +24685,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-six records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-seven records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
