@@ -255,12 +255,13 @@ describe('survival and expedition adventure batch', () => {
     expect(snapshot.itemStates?.travelRope?.condition).toBe('DAMAGED');
   });
 
-  it('models asset-aware transport, no-perfect-outcome cargo choices, and help that does not require a legacy contact', () => {
+  it('keeps transport choices physically available without treating a boarded asset as present at camp', () => {
     const fresh = start(THREE_DAYS_TO_THE_RAILHEAD);
-    expect(THREE_DAYS_TO_THE_RAILHEAD.scenes.railheadCamp.choices.filter(({ requirements }) => meets(requirements, fresh)).map(({ id }) => id)).not.toContain('useOwnedHorseRailhead');
+    const freshChoices = THREE_DAYS_TO_THE_RAILHEAD.scenes.railheadCamp.choices.filter(({ requirements }) => meets(requirements, fresh)).map(({ id }) => id);
+    expect(freshChoices).toEqual(['makeRailheadLitter', 'seekRailheadWagon', 'splitRailheadParty']);
     const horse = start(THREE_DAYS_TO_THE_RAILHEAD, [], [{ id: 'olderChestnutHorse', name: 'Older Chestnut Horse', description: 'A boarded pack horse.' }]);
-    expect(THREE_DAYS_TO_THE_RAILHEAD.scenes.railheadCamp.choices.filter(({ requirements }) => meets(requirements, horse)).map(({ id }) => id)).toContain('useOwnedHorseRailhead');
-    expect(act(horse, THREE_DAYS_TO_THE_RAILHEAD, 'railheadCamp', 'useOwnedHorseRailhead').run?.sceneId).toBe('horseTransport');
+    expect(THREE_DAYS_TO_THE_RAILHEAD.scenes.railheadCamp.choices.filter(({ requirements }) => meets(requirements, horse)).map(({ id }) => id)).toEqual(freshChoices);
+    expect(THREE_DAYS_TO_THE_RAILHEAD.scenes).not.toHaveProperty('horseTransport');
     expect(THE_LOAD_MUST_GO.scenes.steepGrade.choices.map(({ id }) => id)).toEqual(['unloadOil', 'unloadBedding', 'braceWheels', 'walkAwayLoad']);
     const signal = start(THE_LOST_SURVEY_PARTY);
     expect(THE_LOST_SURVEY_PARTY.scenes.surveyCreek.choices.filter(({ requirements }) => meets(requirements, signal)).map(({ id }) => id)).toContain('avoidSurveyWater');

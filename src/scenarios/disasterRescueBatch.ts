@@ -124,11 +124,11 @@ export const THE_TRAIN_THAT_DIDNT_STOP = A('the-train-that-didnt-stop', 'The Tra
     { id: 'jamSignal', label: 'Keep the danger signal raised', next: 'trainAftermath' },
     { id: 'jamForce', label: 'Force the lever while the line is live', hint: 'The switch could throw beneath the train.', chance: { probability: 0.36, successNext: 'sidingOpen', failureNext: 'trainDeath', successMessage: 'The points settle before the train reaches them.', failureMessage: 'The mechanism kicks back as the wheels arrive.' } },
   ], 'danger'),
-  platformClear: scene('platformClear', 'No One on the Rails', 'The stationmaster sends a rider to the next signal post while the passenger train vanishes around the bend. The goods train remains a threat only if the warning fails.', [
+  platformClear: scene('platformClear', 'No One on the Rails', 'The stationmaster sends a rider to the next signal post while the passenger train vanishes around the bend. A second station horse waits by the platform for another warning to be carried ahead. The goods train remains a threat only if the warning fails.', [
     { id: 'clearWait', label: 'Wait for word from the next station', next: 'trainAftermath' },
-    { id: 'clearRide', label: 'Take the station horse to warn ahead', next: 'trainRider', requirements: { ownedAssets: ['olderChestnutHorse'] } },
+    { id: 'clearRide', label: 'Take the station horse to warn ahead', next: 'trainRider' },
   ]),
-  trainRider: scene('trainRider', 'Ahead of the Line', 'Your horse carries you to the next signal post before the passenger train arrives. The signalman sees the hand-lamp warning and holds the goods train. The passenger train coasts onto a service spur with its wheels locked.', [
+  trainRider: scene('trainRider', 'Ahead of the Line', 'The station horse carries you to the next signal post before the passenger train arrives. The signalman sees the hand-lamp warning and holds the goods train. The passenger train coasts onto a service spur with its wheels locked.', [
     { id: 'riderReturn', label: 'Return with the signalman’s report', next: 'trainAftermath', effects: { historyFlags: ['warned a signal post before a train collision'] } },
   ]),
   trainAftermath: scene('trainAftermath', 'Passengers on the Ballast', 'The passenger train is stopped or held only after the next signal crew acts. A brakeman has a burned hand and the passengers are shaken; the north goods train is safe if the warning reached it. The stationmaster writes down exactly what signals you sent.', [

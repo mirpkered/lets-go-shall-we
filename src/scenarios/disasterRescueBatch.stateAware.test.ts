@@ -47,6 +47,9 @@ describe('state-aware shared aftermath narration', () => {
   it('records only the stationmaster account after a run-alongside route, not rail-clearing credit', () => {
     let state = act(fresh(), THE_TRAIN_THAT_DIDNT_STOP, 'runAlongside');
     expect(state.run?.sceneId).toBe('platformClear');
+    const ride = THE_TRAIN_THAT_DIDNT_STOP.scenes.platformClear.choices.find(({ id }) => id === 'clearRide');
+    expect(ride?.requirements).toBeUndefined();
+    expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.platformClear.text).toMatch(/a second station horse waits by the platform/i);
     expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.platformClear.text).not.toMatch(/you keep the passengers|station hands away/i);
     state = act(state, THE_TRAIN_THAT_DIDNT_STOP, 'clearWait');
     state = act(state, THE_TRAIN_THAT_DIDNT_STOP, 'trainReport');
@@ -59,6 +62,12 @@ describe('state-aware shared aftermath narration', () => {
     signaled = act(signaled, THE_TRAIN_THAT_DIDNT_STOP, 'clearWait');
     signaled = act(signaled, THE_TRAIN_THAT_DIDNT_STOP, 'trainReport');
     expect(signaled.character?.historyFlags).toContain('gave the stationmaster an account of a damaged passenger train');
+
+    let rider = act(fresh(), THE_TRAIN_THAT_DIDNT_STOP, 'runAlongside');
+    rider = act(rider, THE_TRAIN_THAT_DIDNT_STOP, 'clearRide');
+    expect(rider.run?.sceneId).toBe('trainRider');
+    expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.trainRider.text).toMatch(/the station horse carries you/i);
+    expect(THE_TRAIN_THAT_DIDNT_STOP.scenes.trainRider.text).not.toMatch(/your horse carries you/i);
   });
 
   it('does not claim unidentified injuries were taken to first aid when the child was not reached', () => {

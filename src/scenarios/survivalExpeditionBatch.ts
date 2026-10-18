@@ -216,7 +216,6 @@ export const THREE_DAYS_TO_THE_RAILHEAD: Scenario = {
     railheadCamp: { id: 'railheadCamp', title: 'A Badly Turned Ankle', tone: 'warning', text: 'A surveyor has a badly swollen ankle after a fall. The railhead is three days away on foot, but a shepherd’s hut lies half a day back. The patient is alert and can sit; forcing them to walk far may worsen the injury. The rest of the party has one serviceable pack frame.', choices: [
       { id: 'makeRailheadLitter', label: 'Build a light litter from the pack frame', next: 'litterBuilt', effects: { setFlags: ['patientOnLitter'] } },
       { id: 'seekRailheadWagon', label: 'Return to the shepherd’s hut for a cart', next: 'hutCart' },
-      { id: 'useOwnedHorseRailhead', label: 'Use your boarded horse at a slow walk', requirements: { ownedAssets: ['olderChestnutHorse'] }, hint: 'The horse can carry one person, not the full survey load.', next: 'horseTransport' },
       { id: 'splitRailheadParty', label: 'Send two ahead for a cart', next: 'splitParty' },
     ] },
     litterBuilt: { id: 'litterBuilt', title: 'A Slow First Mile', tone: 'warning', text: 'The patient rests on the frame while two companions take the handles. The path is uneven; every mile costs effort, but the patient’s ankle stays still. You can travel at a steady pace, pause often, or use your rope to steady the frame on the next descent.', choices: [
@@ -235,10 +234,6 @@ export const THREE_DAYS_TO_THE_RAILHEAD: Scenario = {
     patientWorse: { id: 'patientWorse', title: 'The Ankle Swells Further', tone: 'danger', text: 'The patient cannot bear any weight now. The railhead is still days away; the hut and its cart are the only route that avoids carrying them over the roughest ground.', choices: [
       { id: 'backToHut', label: 'Return to the hut for the cart', next: 'hutCart' },
       { id: 'restWorsePatient', label: 'Keep them still until help reaches camp', next: 'patientRested' },
-    ] },
-    horseTransport: { id: 'horseTransport', title: 'A Slow Ride', tone: 'safe', text: 'Your boarded horse carries the surveyor at a careful walk while the party keeps pace beside them. The patient’s ankle stays still, though the animal is tiring on the rough path. The shepherd’s hut is close enough to rest there, or you can continue slowly toward the railhead.', choices: [
-      { id: 'restHorsePatient', label: 'Stop at the hut and rest the horse', next: 'patientRested', effects: { historyFlags: ['rested_owned_horse_during_rescue'] } },
-      { id: 'continueHorseRailhead', label: 'Continue at the horse’s slow pace', next: 'railheadArrival', effects: { historyFlags: ['used_owned_horse_for_patient_transport'] } },
     ] },
     patientRested: end('patientRested', 'A Day Given Back', 'The patient rests while the party secures a cart and sends word ahead. The railhead journey takes longer, but the injured traveler is not made to spend a recoverable ankle for one day’s progress.'),
     railheadArrival: end('railheadArrival', 'The Railhead at Last', 'The party reaches the railhead with the surveyor alive. The patient’s ankle is still badly swollen and needs a doctor; the route, pace, and transport made the difference between arrival and further harm.'),

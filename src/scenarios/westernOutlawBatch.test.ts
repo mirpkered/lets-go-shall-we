@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { choose, meets, newCharacter, sceneText, startRun } from '../engine';
+import { ITEMS, STARTING_ITEMS } from '../items';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData } from '../types';
-import { A_GUN_ON_THE_TABLE, THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_LAST_SHOT, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT } from './westernOutlawBatch';
+import { A_GUN_ON_THE_TABLE, THE_BOUNTY_POSTER, THE_EMPTY_JAIL, THE_LAST_SHOT, THE_MAN_AT_THE_END_OF_THE_BAR, THE_OUTLAWS_MOTHER, THE_RUSTLED_HERD, THE_STAGE_WAS_HIT, WANTED_IN_RED_CREEK } from './westernOutlawBatch';
 
 const begin=():SaveData=>{
   const character=newCharacter('Bounty Tester');
@@ -66,6 +67,21 @@ const actGun=(state:SaveData,choiceId:string):SaveData=>{
   expect(choice,`${scene.id}.${choiceId}`).toBeTruthy();
   return choose(state,A_GUN_ON_THE_TABLE,choice!,()=>0);
 };
+
+describe('Wanted in Red Creek evidence availability', () => {
+  it('does not offer a dated-receipt scene gated by an unrelated non-carryable railway map', () => {
+    const character = newCharacter('Red Creek Tester');
+    const state = { version: 1, bank: [], character, run: startRun(character, WANTED_IN_RED_CREEK, () => 0) } satisfies SaveData;
+    const opening = WANTED_IN_RED_CREEK.scenes.street;
+    const available = opening.choices.filter(({ requirements }) => meets(requirements, state)).map(({ id }) => id);
+
+    expect(ITEMS.railwayMap.carryable).toBe(false);
+    expect(STARTING_ITEMS).not.toContain('railwayMap');
+    expect(available).toEqual(['giveName', 'askShopkeeper', 'leaveCreek']);
+    expect(opening.choices.some(({ id }) => id === 'showTravelNote')).toBe(false);
+    expect(WANTED_IN_RED_CREEK.scenes).not.toHaveProperty('receipt');
+  });
+});
 
 describe('A Gun on the Table harvest-book continuity',()=>{
   it('keeps evidence and repayment claims neutral when the book was not fetched',()=>{

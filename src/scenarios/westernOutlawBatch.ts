@@ -13,7 +13,6 @@ const W = (id: string, title: string, subtitle: string, activity: string, risk: 
 export const WANTED_IN_RED_CREEK = W('wanted-in-red-creek', 'Wanted in Red Creek', 'A wanted notice describes a traveler who could be you—or half the road.', 'mistaken identity', 'MODERATE', 'A vague poster turns resemblance into public suspicion until witnesses and a real sighting change the question.', {
   street: scene('street', 'The Poster on the Pump', 'A deputy stops you beside a wanted poster. The fugitive is described as wearing a dark coat and carrying a canvas bag—both common. The reward is large, but the sketch has no clear scar or mark. A shopkeeper has seen the actual fugitive near the livery.', [
     { id: 'giveName', label: 'Give your name and ask what is known', next: 'questions' },
-    { id: 'showTravelNote', label: 'Show your dated travel receipt', next: 'receipt', requirements: { anyItems: ['railwayMap'] } },
     { id: 'askShopkeeper', label: 'Ask the shopkeeper about the sighting', next: 'sighting' },
     { id: 'leaveCreek', label: 'Decline and leave town', next: 'leave' },
   ]),
@@ -21,10 +20,6 @@ export const WANTED_IN_RED_CREEK = W('wanted-in-red-creek', 'Wanted in Red Creek
     { id: 'stateNoLimp', label: 'Say what you know, not what you guess', next: 'sighting', effects: { historyFlags: ['gave a careful account during a mistaken-identity inquiry'] } },
     { id: 'askForWitness', label: 'Ask the deputy to hear the ranch hand', next: 'witnesses' },
     { id: 'walkQuestions', label: 'Leave before rumor becomes a charge', next: 'leave' },
-  ]),
-  receipt: scene('receipt', 'A Dated Arrival', 'The receipt shows you reached Red Creek after the reported robbery. The deputy checks its date and admits the poster cannot be used to hold you. The shopkeeper still remembers a limping rider near the livery.', [
-    { id: 'receiptTell', label: 'Pass the livery sighting to the deputy', next: 'sighting' },
-    { id: 'receiptGo', label: 'Ask for the receipt back and go', next: 'cleared' },
   ]),
   sighting: scene('sighting', 'A Rider at the Livery', 'The shopkeeper saw a rider with a torn right sleeve leave behind the livery. The poster shows neither a limp nor a torn sleeve. The deputy can ask the stable hand, but the rider may already be on the south road.', [
     { id: 'askStableHand', label: 'Ask the stable hand what left town', next: 'stableEvidence' },
