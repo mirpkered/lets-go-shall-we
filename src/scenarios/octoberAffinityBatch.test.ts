@@ -162,6 +162,29 @@ describe('Halloween and October-affinity adventures', () => {
     expect(sceneText(house.scenes.boardingAfter, paperRead)).toMatch(/key is not recovered/i);
   });
 
+  it('records the All Hallows ledger fact when it is learned, independent of how the Traveler handles it', () => {
+    const house = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'all-hallows-boarding-house')!;
+    const knowledge = 'The brass stair key belonged to the boarding house; an old ledger note, not a haunting, explained the hidden detail.';
+
+    let privateSource = stateAt(house);
+    privateSource = pick(privateSource, house, 'askKeySource');
+    privateSource = pick(privateSource, house, 'checkLedger');
+    expect(privateSource.run?.sceneId).toBe('ledgerRevealed');
+    expect(privateSource.character?.knowledge).toContain(knowledge);
+    privateSource = pick(privateSource, house, 'protectVenn');
+    expect(privateSource.character?.knowledge).toContain(knowledge);
+
+    let readSource = stateAt(house);
+    readSource = pick(readSource, house, 'inspectStair');
+    readSource = pick(readSource, house, 'readPaper');
+    expect(readSource.character?.knowledge).toContain(knowledge);
+
+    let noLedger = stateAt(house);
+    noLedger = pick(noLedger, house, 'askKeeper');
+    noLedger = pick(noLedger, house, 'leaveKeyAlone');
+    expect(noLedger.character?.knowledge).not.toContain(knowledge);
+  });
+
   it('does not transfer the Halloween Dare shadow explanation to an outside rescue', () => {
     const dare = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-halloween-dare')!;
     let outside = stateAt(dare);

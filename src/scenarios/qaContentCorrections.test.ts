@@ -11,6 +11,7 @@ import { OCCULT_INVESTIGATION_ADVENTURES } from './occultInvestigationBatch';
 import { SMALL_HUMAN_MOMENT_ADVENTURES } from './smallHumanMomentsBatch';
 import { ENTERTAINMENT_ADVENTURES } from './entertainmentBatch';
 import type { SaveData, Scenario } from '../types';
+import { loadSave, saveGame } from '../storage';
 
 function begin(scenario: Scenario): SaveData {
   const character = newCharacter('Playtest traveler');
@@ -119,6 +120,41 @@ describe('targeted QA content corrections', () => {
     expect(mask.scenes.maskFinish.textVariants?.[0].text).toContain('leaves you bruised');
     expect(state.character?.adventuresCompleted).toBe(1);
     expect(finishSuccess(state, null).character?.adventuresCompleted).toBe(1);
+  });
+
+  it('persists the mask-oil observation only after the oil is identified and preserves uncertainty', () => {
+    const mask = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-harvest-mask')!;
+    const knowledge = 'The mask’s bitter preservative oil may have affected its wearers; airing the room reduced the smell but did not explain their shared vision.';
+
+    let identifiedOil = begin(mask);
+    identifiedOil = act(identifiedOil, mask, 'askWearers');
+    identifiedOil = act(identifiedOil, mask, 'openWindows');
+    expect(identifiedOil.run?.sceneId).toBe('maskAir');
+    expect(identifiedOil.character?.knowledge).toContain(knowledge);
+    const storage = new Map<string, string>();
+    const adapter = { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) } as unknown as Storage;
+    saveGame(identifiedOil, adapter);
+    identifiedOil = loadSave(adapter);
+    identifiedOil = act(identifiedOil, mask, 'leaveMaskToAuctioneer');
+    expect(identifiedOil.character?.knowledge).toContain(knowledge);
+
+    const visionKnowledge = 'The harvest mask’s repeated vision may be tied to its narrow eye-line and bitter preservation oil; its cause remains uncertain.';
+    let knownOilVision = begin(mask);
+    knownOilVision = act(knownOilVision, mask, 'askWearers');
+    knownOilVision = act(knownOilVision, mask, 'testBriefly');
+    expect(knownOilVision.character?.knowledge).toContain(visionKnowledge);
+    expect(sceneText(mask.scenes.maskVision, knownOilVision)).toContain('the preservative oil');
+    knownOilVision = act(knownOilVision, mask, 'keepMaskOn');
+    knownOilVision = act(knownOilVision, mask, 'recoverMask');
+    expect(knownOilVision.character?.knowledge).toContain(visionKnowledge);
+
+    let smellOnly = begin(mask);
+    smellOnly = act(smellOnly, mask, 'inspectCarving');
+    smellOnly = act(smellOnly, mask, 'testBriefly');
+    expect(sceneText(mask.scenes.maskVision, smellOnly)).toContain('that smell');
+    smellOnly = act(smellOnly, mask, 'removeMask');
+    expect(smellOnly.character?.knowledge).not.toContain(knowledge);
+    expect(smellOnly.character?.knowledge).not.toContain(visionKnowledge);
   });
 
   it('keeps the Halloween choices grounded in an established role and contest custom', () => {

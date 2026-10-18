@@ -246,12 +246,12 @@ export const THE_PAINTED_SIGN = story('the-painted-sign', 'The Painted Sign', 'A
 
 export const THE_WHISTLE_AND_THE_WIND = story('the-whistle-and-the-wind', 'The Whistle and the Wind', 'A roadside whistle contest becomes a test of listening rather than lung power.', T('Travelers compete to imitate three bird calls, but wind and an unseen real bird make the audience’s scoring unreliable.', 'competitor', 'humorous/absurd', 'roadside fair', ['sound-identification game', 'audience interpretation', 'unexpected result'], 'traveler is already participating in event'), 'contest', {
   contest: scene('contest', 'Three Calls, One Real Bird', 'A small fair runs a whistle contest. Contestants imitate a lark, a thrush, and a kettle. Wind carries the notes toward the trees, where an actual bird answers.', [
-    { id: 'listenToBird', label: 'Listen before choosing a call', next: 'listening' },
+    { id: 'listenToBird', label: 'Listen before choosing a call', next: 'listening', effects: { knowledge: ['At the roadside whistle contest, a real bird answered twice from the hedgerow after calls; the judges could not tell whether a contestant caused it or only whistled nearby.'] } },
     { id: 'imitateKettle', label: 'Enter with the kettle call', next: 'round', effects: { setFlags: ['whistle_player_called'] } },
     { id: 'watchJudges', label: 'Ask how the judges score it', next: 'rules' },
   ]),
   listening: scene('listening', 'A Reply from the Hedgerow', 'The bird’s answer comes twice, each time after a pause. The judges cannot tell whether a contestant caused it or only happened to whistle nearby.', [
-    { id: 'repeatCall', label: 'Answer the bird with a lark call', next: 'round', effects: { setFlags: ['whistle_player_called'], knowledge: ['At the roadside whistle contest, a real bird answered some imitations from the hedgerow.'] } },
+    { id: 'repeatCall', label: 'Answer the bird with a lark call', next: 'round', effects: { setFlags: ['whistle_player_called'] } },
     { id: 'tellJudgesUncertain', label: 'Tell the judges the answer is uncertain', next: 'scoring' },
   ]),
   rules: scene('rules', 'A Rule That Needs an Ear', 'The judges score resemblance, not volume. One judge admits the wind has made it hard to hear the contestants from the table.', [

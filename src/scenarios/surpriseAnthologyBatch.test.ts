@@ -383,10 +383,17 @@ describe('surprise anthology and library gap-fill', () => {
     expect(called.run?.sceneId).toBe('crowdChoice');
 
     let answered = act(start(whistle), whistle, 'contest', 'listenToBird');
-    answered = act(answered, whistle, 'listening', 'repeatCall');
-    expect(answered.run?.flags).toContain('whistle_player_called');
-    expect(answered.character?.knowledge).toContain('At the roadside whistle contest, a real bird answered some imitations from the hedgerow.');
-    expect(sceneText(whistle.scenes.round, answered)).toMatch(/your call makes the children laugh/i);
+    const birdKnowledge = 'At the roadside whistle contest, a real bird answered twice from the hedgerow after calls; the judges could not tell whether a contestant caused it or only whistled nearby.';
+    expect(answered.character?.knowledge).toContain(birdKnowledge);
+    answered = act(answered, whistle, 'listening', 'tellJudgesUncertain');
+    expect(answered.character?.knowledge).toContain(birdKnowledge);
+    let repeated = act(start(whistle), whistle, 'contest', 'listenToBird');
+    repeated = act(repeated, whistle, 'listening', 'repeatCall');
+    expect(repeated.run?.flags).toContain('whistle_player_called');
+    expect(repeated.character?.knowledge).toContain(birdKnowledge);
+    expect(sceneText(whistle.scenes.round, repeated)).toMatch(/your call makes the children laugh/i);
+    const kettleOnly = act(start(whistle), whistle, 'contest', 'imitateKettle');
+    expect(kettleOnly.character?.knowledge).not.toContain(birdKnowledge);
 
     let judgeOnly = act(start(whistle), whistle, 'contest', 'watchJudges');
     judgeOnly = act(judgeOnly, whistle, 'rules', 'moveJudges');

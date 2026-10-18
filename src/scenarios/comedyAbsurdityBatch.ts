@@ -38,14 +38,14 @@ export const THE_QUEUE_WITH_TWO_ENDS = story('the-queue-with-two-ends', 'The Que
   ]),
   account: scene('account', 'The Screen Came First', 'The clerk says the second line formed when the screen was moved yesterday. Neither customer saw the other arrive, and the people behind them have been waiting quietly.', [
     { id: 'takeTurns', label: 'Let each line advance in turn', next: 'turns' },
-    { id: 'askWitnesses', label: 'Ask who has waited longest', next: 'witnesses' },
+    { id: 'askWitnesses', label: 'Ask who has waited longest', next: 'witnesses', effects: { knowledge: ['At the post office, the counter line began before the screen-side line, though the two disputed customers’ arrival order was unknown.'] } },
   ]),
   join: scene('join', 'A Line with One Beginning', 'The two heads meet politely, then both customers step forward at once. The clerk asks for a rule that will not require anyone to surrender a place they can prove.', [
     { id: 'alternate', label: 'Alternate customers from each side', next: 'turns' },
     { id: 'numberedSlips', label: 'Ask the clerk to mark the order', next: 'slips' },
   ]),
   witnesses: scene('witnesses', 'A Patient Witness', 'A woman near the stove saw one line begin before the other, but cannot say which of the two customers joined first. She remembers the line at the counter was already there.', [
-    { id: 'useKnownFact', label: 'Give the counter line the next place', next: 'turns', effects: { knowledge: ['At the post office, the counter line began before the screen-side line, though the two disputed customers’ arrival order was unknown.'] } },
+    { id: 'useKnownFact', label: 'Give the counter line the next place', next: 'turns' },
     { id: 'avoidVerdict', label: 'Use alternating turns instead', next: 'turns' },
   ]),
   turns: scene('turns', 'One Parcel at a Time', 'The clerk serves one person from each line in turn. The noon window stays open a little longer, and the customers stop arguing long enough to compare addresses.', [

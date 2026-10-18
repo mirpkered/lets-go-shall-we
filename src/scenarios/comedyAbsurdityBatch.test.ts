@@ -69,6 +69,28 @@ describe('comedy and absurdity additions', () => {
     expect(scenario.scenes.understood.text).toMatch(/both captains share their views/i);
   });
 
+  it('persists the queue witness account whether or not the Traveler acts on it', () => {
+    const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-queue-with-two-ends')!;
+    const knowledge = 'At the post office, the counter line began before the screen-side line, though the two disputed customers’ arrival order was unknown.';
+    const character = newCharacter('Queue Witness QA');
+    const initial: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario) };
+    const act = (state: SaveData, sceneId: string, choiceId: string): SaveData => {
+      expect(state.run?.sceneId).toBe(sceneId);
+      const choice = scenario.scenes[sceneId].choices.find(({ id }) => id === choiceId)!;
+      return choose(state, scenario, choice);
+    };
+
+    let witnessButNoVerdict = act(initial, 'window', 'askClerk');
+    witnessButNoVerdict = act(witnessButNoVerdict, 'account', 'askWitnesses');
+    expect(witnessButNoVerdict.character?.knowledge).toContain(knowledge);
+    witnessButNoVerdict = act(witnessButNoVerdict, 'witnesses', 'avoidVerdict');
+    expect(witnessButNoVerdict.character?.knowledge).toContain(knowledge);
+
+    let noWitness = act(initial, 'window', 'suggestOneLine');
+    noWitness = act(noWitness, 'join', 'alternate');
+    expect(noWitness.character?.knowledge).not.toContain(knowledge);
+  });
+
   it('does not invent an inspection plan when the Wagon-Wheel Meeting only clears the cart lane', () => {
     const scenario = THE_COMEDY_ABSURDITY_ADVENTURES.find(({ id }) => id === 'the-wagon-wheel-meeting')!;
     const character = newCharacter('Wagon Wheel Route QA');
