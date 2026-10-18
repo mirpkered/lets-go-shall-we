@@ -23776,23 +23776,23 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Thirty-four new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 34,
+    "liveFindingCount": 35,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 34,
+      "VERIFIED_HEALTHY_REPAIRED": 35,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 388,
+    "currentLiveFindingCount": 389,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 378,
+      "VERIFIED_HEALTHY_REPAIRED": 379,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 287,
+      "MEDIUM": 288,
       "LOW": 82,
       "SEVERITY_UNRECOVERED": 6
     },
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0396",
+    "nextFindingId": "CRA-F0397",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24450,6 +24450,25 @@
         "implementationEvidence": "The oil/airing Knowledge now grants on the explicit `maskAccounts.openWindows` inspection route and survives its follow-up choice/save reload. The shared-vision hypothesis now grants when entering `maskVision` only from the route where the auctioneer identified preservative oil; the matching text variant distinguishes that route from the smell-only inspection path. The smell-only route receives neither preservative-specific Knowledge nor the account-qualified hypothesis. Vision causality remains uncertain and danger/recovery effects are unchanged. Focused route-contrast and save/reload test passes.",
         "repairLocality": "Scenario-specific `maskAccounts` and `maskVision` routes in `octoberAffinityBatch.ts`; no shared builder, mask outcome, injury, reward, or save-schema change.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0396",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 632,
+        "adventureId": "the-spring-run",
+        "title": "The Spring Run",
+        "sourceFile": "src/scenarios/wildernessFieldcraftGenreBatch.ts",
+        "severity": "MEDIUM",
+        "defect": "The whistle-specific action accepts a carried but BROKEN whistle and records a signal outcome that the selected equipment cannot perform.",
+        "routeWitness": "`flood.movePeople -> ridge.signalWagon -> partial` requires only that the Traveler carry any listed whistle; `Requirement.anyItems` does not reject a BROKEN item. The choice unconditionally sets `springCrewSignaled`, and `partial` then uses the signal-qualified text. A bright-cloth signal is separately available and works without whistle Gear. CRA-F0238's repaired worker/flock/wagon convergence distinctions remain intact and are not the defect here.",
+        "violatedRule": "An equipment-specific action must require at least one carried usable item of the named type; unavailable or unusable equipment cannot establish the action's run state.",
+        "clusterId": "CRA-C0008",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "`ridge.signalWagon` now requires one of the three listed whistles to be carried and not BROKEN via `anyItems` plus `anyUsableItems`. With no whistle or a BROKEN Farm Whistle, the action is unavailable while `raiseCloth` remains actionable; a normal carried Farm Whistle still signals and records the flag. Focused wilderness fieldcraft regressions pass (12 tests), including the existing CRA-F0238 outcome matrix.",
+        "repairLocality": "Scenario-specific `ridge.signalWagon` requirement in `wildernessFieldcraftGenreBatch.ts`; no shared helper, reward, rescue, or save behavior changed.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24482,7 +24501,7 @@
       "CRA-C0005": 1,
       "CRA-C0006": 17,
       "CRA-C0007": 4,
-      "CRA-C0008": 12,
+      "CRA-C0008": 13,
       "CRA-C0009": 3,
       "CRA-C0010": 11,
       "CRA-C0011": 24,
@@ -24491,6 +24510,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-four records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-five records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
