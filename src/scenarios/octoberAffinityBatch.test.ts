@@ -204,6 +204,31 @@ describe('Halloween and October-affinity adventures', () => {
     expect(sceneText(dare.scenes.dareAfter, resumed)).toMatch(/moving shadow was a hanging coat in the draft/i);
   });
 
+  it('claims the owner closes the toll house only on routes that wait for the owner', () => {
+    const dare = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-halloween-dare')!;
+
+    let left = stateAt(dare);
+    for (const choice of ['callYouthOut', 'guideYouth', 'leaveOutsideRescue']) left = pick(left, dare, choice);
+    expect(sceneText(dare.scenes.dareAfter, left)).not.toMatch(/owner agrees/i);
+    expect(sceneText(dare.scenes.dareAfter, left)).toMatch(/toll house unsafe/i);
+
+    let waited = stateAt(dare);
+    for (const choice of ['callYouthOut', 'guideYouth', 'stayOutsideRescue']) waited = pick(waited, dare, choice);
+    expect(sceneText(dare.scenes.dareAfter, waited)).toMatch(/owner agrees to mark the building closed/i);
+    const storage = new Map<string, string>();
+    const adapter = { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) } as unknown as Storage;
+    saveGame(waited, adapter);
+    waited = loadSave(adapter);
+    expect(sceneText(dare.scenes.dareAfter, waited)).toMatch(/owner agrees to mark the building closed/i);
+
+    let enteredAndLeft = stateAt(dare);
+    enteredAndLeft = pick(enteredAndLeft, dare, 'enterDareHouse');
+    enteredAndLeft = pick(enteredAndLeft, dare, 'crossGap', () => 0);
+    enteredAndLeft = pick(enteredAndLeft, dare, 'leaveAfterRescue');
+    expect(sceneText(dare.scenes.dareAfter, enteredAndLeft)).not.toMatch(/owner agrees/i);
+    expect(sceneText(dare.scenes.dareAfter, enteredAndLeft)).toMatch(/moving shadow was a hanging coat/i);
+  });
+
   it('retains the Headless Rider motive the Traveler already learned before leaving', () => {
     const rider = OCTOBER_AFFINITY_ADVENTURES.find(({ id }) => id === 'the-headless-rider')!;
     let state = stateAt(rider);
