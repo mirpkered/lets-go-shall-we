@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 35,
+    "liveFindingCount": 36,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 35,
+      "VERIFIED_HEALTHY_REPAIRED": 36,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 389,
+    "currentLiveFindingCount": 390,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 379,
+      "VERIFIED_HEALTHY_REPAIRED": 380,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 288,
-      "LOW": 82,
+      "LOW": 83,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0397",
+    "nextFindingId": "CRA-F0398",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24469,6 +24469,25 @@
         "implementationEvidence": "`ridge.signalWagon` now requires one of the three listed whistles to be carried and not BROKEN via `anyItems` plus `anyUsableItems`. With no whistle or a BROKEN Farm Whistle, the action is unavailable while `raiseCloth` remains actionable; a normal carried Farm Whistle still signals and records the flag. Focused wilderness fieldcraft regressions pass (12 tests), including the existing CRA-F0238 outcome matrix.",
         "repairLocality": "Scenario-specific `ridge.signalWagon` requirement in `wildernessFieldcraftGenreBatch.ts`; no shared helper, reward, rescue, or save behavior changed.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0397",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 179,
+        "adventureId": "the-halloween-dare",
+        "title": "The Halloween Dare",
+        "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
+        "severity": "LOW",
+        "defect": "The shared aftermath says the owner agrees to close the toll house even when the Traveler leaves after the rescue without waiting for or contacting the owner.",
+        "routeWitness": "`dareInvitation.callYouthOut -> dareCall.guideYouth -> dareOutsideRescue.leaveOutsideRescue -> dareAfter` establishes that the youth crawled out, loose stones fell, and the Traveler left once everyone was clear; it does not establish owner contact or agreement. Before repair, shared `dareAfter.text` nevertheless stated, ‘The owner agrees to mark the building closed until it can be braced.’ Contrast: `stayOutsideRescue` and `stayForReaction` explicitly choose to wait with the youths for the owner. The separate shadow-identification variant and CRA-F0396-independent rescue/reward behavior are not this finding.",
+        "violatedRule": "A converged result may not assert an NPC decision or agreement unless an incoming route establishes the NPC was present or informed and the agreement occurred.",
+        "clusterId": "CRA-C0001",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Only the two choices explicitly labeled to wait with the youths for the owner now set `dareWaitedForOwner`; the owner-agreement variant is gated on that run-local proof. Other incoming routes use neutral aftermath text that states the building remains unsafe without claiming the owner agreed or the youth made an admission. The existing shadow-identified and unknown-shadow distinctions remain intact. `octoberAffinityBatch.test.ts` covers the outside-rescue leave/wait contrast, the successful entry-and-leave contrast, and save/reload of the waiting proof; all 18 focused tests pass.",
+        "repairLocality": "Scenario-specific `dareAfter` text variants and two owner-wait choices in `octoberAffinityBatch.ts`; no shared helper, reward effect, rescue state, or save schema changed.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24494,7 +24513,7 @@
       }
     ],
     "currentClusterAssignmentTotals": {
-      "CRA-C0001": 224,
+      "CRA-C0001": 225,
       "CRA-C0002": 49,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
@@ -24510,6 +24529,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-five records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-six records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
