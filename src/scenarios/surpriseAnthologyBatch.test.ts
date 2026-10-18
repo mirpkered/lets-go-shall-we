@@ -7,7 +7,7 @@ import { scenarioRiskTier } from '../riskClassification';
 import { simulateScenarioSelection } from '../scenarioSelection';
 import { renderQaPanel } from '../qaPanel';
 import { ITEMS } from '../items';
-import { EMPTY_SAVE, loadSave } from '../storage';
+import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import { LOTTE_PIE_CONTACT, NESSA_CONTACT, NESSA_MEAL_FAVOR, OUTCOME_HISTORY_FLAGS } from '../travelerContinuity';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
@@ -61,6 +61,63 @@ function explore(scenario: Scenario): number {
 }
 
 describe('surprise anthology and library gap-fill', () => {
+  it('persists five directly learned anthology facts independently of later sharing choices', () => {
+    const dates = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'two-dates-on-one-photograph')!;
+    const datesFact = 'A portrait had two sittings; the first showed four family members, the second three.';
+    let sleeves = act(start(dates), dates, 'studio', 'checkNegativeSleeve');
+    expect(sleeves.character?.knowledge).toContain(datesFact);
+    sleeves = act(sleeves, dates, 'sleeve', 'leaveSleevesPrivate');
+    expect(sleeves.character?.knowledge).toContain(datesFact);
+    const datesWithoutSleeves = act(start(dates), dates, 'studio', 'deliverPortrait');
+    expect(datesWithoutSleeves.character?.knowledge).not.toContain(datesFact);
+
+    const clock = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-clock-that-kept-local-time')!;
+    const clockFact = 'This railway timetable uses standard line time, while the small station clock keeps local time.';
+    let note = act(start(clock), clock, 'platform', 'askForTimetableNote');
+    expect(note.run?.sceneId).toBe('timetable');
+    expect(note.character?.knowledge).toContain(clockFact);
+    const askMaster = act(note, clock, 'timetable', 'askMasterToConfirm');
+    expect(askMaster.character?.knowledge).toContain(clockFact);
+    let passengerNote = act(start(clock), clock, 'platform', 'askWaitingPassengers');
+    passengerNote = act(passengerNote, clock, 'passengers', 'lookForPrintedNote');
+    expect(passengerNote.character?.knowledge).toContain(clockFact);
+    const clockWithoutNote = act(start(clock), clock, 'platform', 'followStationClock');
+    expect(clockWithoutNote.character?.knowledge).not.toContain(clockFact);
+
+    const play = EVERYDAY_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-play-with-an-unwritten-ending')!;
+    const audienceFact = 'A theater audience read the missing ending as a choice about work and family, not escape.';
+    const heardAudience = act(start(play), play, 'curtain', 'askAudience');
+    expect(heardAudience.character?.knowledge).toContain(audienceFact);
+    const privateReading = act(heardAudience, play, 'audience', 'keepInterpretationPrivate');
+    expect(privateReading.character?.knowledge).toContain(audienceFact);
+    const noAudience = act(start(play), play, 'curtain', 'askActors');
+    expect(noAudience.character?.knowledge).not.toContain(audienceFact);
+
+    const invitation = SOCIAL_SURPRISE_ADVENTURES.find(({ id }) => id === 'an-invitation-for-someone-else')!;
+    const invitationFact = 'The farmhouse invitation was meant for a brother who may return only by choice.';
+    let intention = act(start(invitation), invitation, 'doorstep', 'askAboutGuest');
+    intention = act(intention, invitation, 'letter', 'askWhatSheWants');
+    expect(intention.character?.knowledge).toContain(invitationFact);
+    const declineMessage = act(intention, invitation, 'choice', 'declineMessage');
+    expect(declineMessage.character?.knowledge).toContain(invitationFact);
+    const noIntention = act(start(invitation), invitation, 'doorstep', 'askAboutGuest');
+    expect(act(noIntention, invitation, 'letter', 'leaveLetterAlone').character?.knowledge).not.toContain(invitationFact);
+
+    const place = SOCIAL_SURPRISE_ADVENTURES.find(({ id }) => id === 'the-empty-place-setting')!;
+    const accountFact = 'The harvest quarrel concerned who was expected to stay late, not how much work was done.';
+    let cousin = act(start(place), place, 'supper', 'askAboutPlate');
+    cousin = act(cousin, place, 'account', 'listenToCousin');
+    expect(cousin.character?.knowledge).toContain(accountFact);
+    const privateAccount = act(cousin, place, 'cousin', 'keepOutOfIt');
+    expect(privateAccount.character?.knowledge).toContain(accountFact);
+    const noCousin = act(start(place), place, 'supper', 'sayNothing');
+    expect(noCousin.character?.knowledge).not.toContain(accountFact);
+
+    const saved: Record<string, string> = {};
+    saveGame(privateAccount, { setItem: (key, value) => { saved[key] = value; } });
+    expect(loadSave({ getItem: (key) => saved[key] ?? null }).character?.knowledge).toContain(accountFact);
+  });
+
   it('follows through on the supper-then-explain choice without changing other supper routes', () => {
     const invitation = SOCIAL_SURPRISE_ADVENTURES.find(({ id }) => id === 'an-invitation-for-someone-else')!;
     let promisedFollowThrough = start(invitation);

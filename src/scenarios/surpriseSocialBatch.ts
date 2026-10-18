@@ -40,11 +40,11 @@ export const AN_INVITATION_FOR_SOMEONE_ELSE = story('an-invitation-for-someone-e
     { id: 'stayAsTraveler', label: 'Stay only as a passing guest', next: 'meal' },
   ]),
   letter: scene('letter', 'A Name in Ink', 'The invitation asks her brother to come before the first frost. The date has passed. The woman folds it along its old crease and says she would rather not ask a stranger to take sides.', [
-    { id: 'askWhatSheWants', label: 'Ask what she would like to happen', next: 'choice' },
+    { id: 'askWhatSheWants', label: 'Ask what she would like to happen', next: 'choice', effects: { knowledge: ['The farmhouse invitation was meant for a brother who may return only by choice.'] } },
     { id: 'leaveLetterAlone', label: 'Respect the silence and stay for supper', next: 'meal' },
   ]),
   choice: scene('choice', 'A Reply Without Pressure', 'She wants him to know the door is open, but not to be summoned. You can help write that distinction or let the invitation stand as it is.', [
-    { id: 'writeGentleReply', label: 'Help write a welcoming reply', next: 'note', effects: { knowledge: ['The farmhouse invitation was meant for a brother who may return only by choice.'] } },
+    { id: 'writeGentleReply', label: 'Help write a welcoming reply', next: 'note' },
     { id: 'declineMessage', label: 'Leave the message to her', next: 'meal' },
   ]),
   note: end('note', 'A Message, Not a Promise', 'She seals the reply herself. Whether it is ever sent is her decision; you have helped make the welcome clear without promising a reunion.'),
@@ -105,10 +105,10 @@ export const THE_EMPTY_PLACE_SETTING = story('the-empty-place-setting', 'The Emp
   ]),
   account: scene('account', 'Two Versions of the Harvest', 'Your host says her sister left before the work was finished. A cousin at the table says she had already done her share. Neither wants you to judge what you did not see.', [
     { id: 'askWhatWouldHelp', label: 'Ask what would make tonight easier', next: 'choice' },
-    { id: 'listenToCousin', label: 'Ask the cousin what happened', next: 'cousin' },
+    { id: 'listenToCousin', label: 'Ask the cousin what happened', next: 'cousin', effects: { knowledge: ['The harvest quarrel concerned who was expected to stay late, not how much work was done.'] } },
   ]),
   cousin: scene('cousin', 'What the Cousin Remembers', 'The cousin remembers an argument over who was expected to stay late, not over the harvest itself. It does not prove either sister was right.', [
-    { id: 'shareLimitedAccount', label: 'Share only what the cousin recalls', next: 'choice', effects: { knowledge: ['The harvest quarrel concerned who was expected to stay late, not how much work was done.'] } },
+    { id: 'shareLimitedAccount', label: 'Share only what the cousin recalls', next: 'choice' },
     { id: 'keepOutOfIt', label: 'Keep the account private', next: 'meal' },
   ]),
   choice: scene('choice', 'An Invitation Without a Verdict', 'Your host can send an invitation that does not ask anyone to apologize tonight. Or the empty chair can remain without becoming a message.', [

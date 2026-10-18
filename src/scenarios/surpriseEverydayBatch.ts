@@ -32,14 +32,14 @@ export const TWO_DATES_ON_ONE_PHOTOGRAPH = story('two-dates-on-one-photograph', 
   studio: scene('studio', 'Two Dates on the Back', 'A photographer asks you to carry a portrait to a customer’s house. The back bears two dates, six months apart. The family order lists only one sitting.', [
     { id: 'deliverPortrait', label: 'Deliver it without comment', next: 'house' },
     { id: 'askPhotographer', label: 'Ask why two dates are written', next: 'photographer' },
-    { id: 'checkNegativeSleeve', label: 'Check the labeled negative sleeve', next: 'sleeve' },
+    { id: 'checkNegativeSleeve', label: 'Check the labeled negative sleeve', next: 'sleeve', effects: { knowledge: ['A portrait had two sittings; the first showed four family members, the second three.'] } },
   ]),
   photographer: scene('photographer', 'A Second Exposure', 'The photographer recalls a second sitting when one child was sick on the first date. The family paid for one print, and the photographer cannot remember which sitting the customer chose.', [
     { id: 'deliverAndAsk', label: 'Deliver the portrait and ask the family', next: 'house' },
     { id: 'findSleeve', label: 'Look for the negative sleeve', next: 'sleeve' },
   ]),
   sleeve: scene('sleeve', 'Two Negative Sleeves', 'The first sleeve shows all four family members; the second shows three, with a chair pulled close to the frame. The note says “best likeness” but names no child.', [
-    { id: 'showBothRecords', label: 'Take both dates to the family', next: 'house', effects: { knowledge: ['A portrait had two sittings; the first showed four family members, the second three.'] } },
+    { id: 'showBothRecords', label: 'Take both dates to the family', next: 'house' },
     { id: 'leaveSleevesPrivate', label: 'Return the portrait without the sleeves', next: 'quiet' },
   ]),
   house: scene('house', 'The Family’s Account', 'The eldest daughter says the second portrait was made after her younger brother died. Her mother says the second date only marks a repair to the frame. Both may be partly right.', [
@@ -156,16 +156,16 @@ export const THE_PARCEL_WITH_NO_ADDRESS = story('the-parcel-with-no-address', 'T
 
 export const THE_CLOCK_THAT_KEPT_LOCAL_TIME = story('the-clock-that-kept-local-time', 'The Clock That Kept Local Time', 'A station clock is fifteen minutes behind, but the stationmaster says it is right.', T('A small station keeps local time while the rail timetable uses a standard clock; the traveler must prevent an avoidable missed connection without calling either clock broken.', ['puzzle/problem-solving', 'travel/exploration', 'social interaction'], 'witness', 'mysterious/eerie', 'railway station', ['contradictory information', 'practical coordination', 'two-clock resolution'], 'accidental encounter'), 'platform', {
   platform: scene('platform', 'Two Times on One Platform', 'The station clock says 2:15; the printed railway timetable says the train arrives at 2:30. The stationmaster says the clock is set to local noon, not the rail line’s standard time.', [
-    { id: 'askForTimetableNote', label: 'Ask whether the timetable explains the difference', next: 'timetable' },
+    { id: 'askForTimetableNote', label: 'Ask whether the timetable explains the difference', next: 'timetable', effects: { knowledge: ['This railway timetable uses standard line time, while the small station clock keeps local time.'] } },
     { id: 'askWaitingPassengers', label: 'Ask the waiting passengers what time they were told', next: 'passengers' },
     { id: 'followStationClock', label: 'Trust the station clock and wait', next: 'wait' },
   ]),
   timetable: scene('timetable', 'A Line in Small Print', 'A note says times are given by the rail line’s standard clock. The stationmaster did not notice it, and two passengers have been using the platform clock.', [
-    { id: 'tellPassengers', label: 'Tell the waiting passengers about the note', next: 'coordination', effects: { knowledge: ['This railway timetable uses standard line time, while the small station clock keeps local time.'] } },
+    { id: 'tellPassengers', label: 'Tell the waiting passengers about the note', next: 'coordination' },
     { id: 'askMasterToConfirm', label: 'Ask the stationmaster to confirm with the line', next: 'coordination' },
   ]),
   passengers: scene('passengers', 'A Missed Train Last Week', 'One passenger missed a train last week by trusting the same clock. Another says the stationmaster once adjusted it for a funeral procession. Neither memory tells you today’s arrival time.', [
-    { id: 'lookForPrintedNote', label: 'Read the timetable note', next: 'timetable' },
+    { id: 'lookForPrintedNote', label: 'Read the timetable note', next: 'timetable', effects: { knowledge: ['This railway timetable uses standard line time, while the small station clock keeps local time.'] } },
     { id: 'sendRunner', label: 'Ask the clerk to signal the line', next: 'coordination' },
   ]),
   coordination: scene('coordination', 'Which Time to Announce?', 'The stationmaster confirms the timetable is standard line time. You can help post both times or simply tell people which one controls the train.', [
@@ -180,7 +180,7 @@ export const THE_CLOCK_THAT_KEPT_LOCAL_TIME = story('the-clock-that-kept-local-t
 export const THE_PLAY_WITH_AN_UNWRITTEN_ENDING = story('the-play-with-an-unwritten-ending', 'The Play with an Unwritten Ending', 'A small traveling troupe has reached the last page of its script, and the final scene is missing.', T('A traveling troupe asks the audience to help choose between two believable endings after a page is lost, making the public response part of the show.', ['social interaction', 'competition/game'], 'audience participant', 'humorous/absurd', 'town hall stage', ['audience participation', 'branching performance', 'performer feedback'], 'traveler is caught in crowd'), 'curtain', {
   curtain: scene('curtain', 'The Missing Last Page', 'The troupe reaches the final scene and discovers the last page is gone. The lead actor can end with a reunion or a departure; both versions have been rehearsed, but neither is marked as final.', [
     { id: 'askActors', label: 'Ask the actors what each ending changes', next: 'rehearsal' },
-    { id: 'askAudience', label: 'Ask the audience what they understood', next: 'audience' },
+    { id: 'askAudience', label: 'Ask the audience what they understood', next: 'audience', effects: { knowledge: ['A theater audience read the missing ending as a choice about work and family, not escape.'] } },
     { id: 'leavePlay', label: 'Leave before the ending', next: 'left' },
   ]),
   rehearsal: scene('rehearsal', 'Two Endings, Different Costs', 'The reunion brings the siblings back together but leaves the farm unsold. The departure sells the farm and lets the younger sibling begin elsewhere. The actors ask you not to pick a moral.', [
@@ -188,7 +188,7 @@ export const THE_PLAY_WITH_AN_UNWRITTEN_ENDING = story('the-play-with-an-unwritt
     { id: 'tryDeparture', label: 'Ask them to perform the departure ending', next: 'departure' },
   ]),
   audience: scene('audience', 'What the Audience Believes', 'Several spectators understood the younger sibling to be leaving for a job, not escaping a family. The actors can clarify that in either ending or leave the audience to wonder.', [
-    { id: 'shareAudienceReading', label: 'Share the audience’s reading', next: 'choice', effects: { knowledge: ['A theater audience read the missing ending as a choice about work and family, not escape.'] } },
+    { id: 'shareAudienceReading', label: 'Share the audience’s reading', next: 'choice' },
     { id: 'keepInterpretationPrivate', label: 'Let the actors choose privately', next: 'choice' },
   ]),
   choice: scene('choice', 'The Last Scene Is Theirs', 'The company asks the room to choose only which ending to see tonight. The script will be rewritten tomorrow; tonight’s ending will not settle what the characters should do forever.', [
