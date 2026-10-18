@@ -220,6 +220,32 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     expect(signalText).not.toMatch(/wagon crew waits|flock is gathered|workers stay on the ridge/i);
   });
 
+  it('requires a usable whistle before recording a Spring Run signal and keeps the cloth fallback', () => {
+    const spring = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-spring-run')!;
+    const reachRidge = () => act(begin(spring), spring, 'movePeople');
+    const whistleChoice = spring.scenes.ridge.choices.find(({ id }) => id === 'signalWagon')!;
+    const clothChoice = spring.scenes.ridge.choices.find(({ id }) => id === 'raiseCloth')!;
+
+    const absent = reachRidge();
+    expect(meets(whistleChoice.requirements, absent)).toBe(false);
+    expect(meets(clothChoice.requirements, absent)).toBe(true);
+
+    const sound = reachRidge();
+    sound.run!.inventory.push('farmWhistle');
+    sound.itemStates = { farmWhistle: { condition: 'NORMAL', upgrades: [], provenance: [] } };
+    expect(meets(whistleChoice.requirements, sound)).toBe(true);
+    expect(act(sound, spring, 'signalWagon').run?.flags).toContain('springCrewSignaled');
+
+    const broken = reachRidge();
+    broken.run!.inventory.push('farmWhistle');
+    broken.itemStates = { farmWhistle: { condition: 'BROKEN', upgrades: [], provenance: [] } };
+    expect(meets(whistleChoice.requirements, broken)).toBe(false);
+    expect(meets(clothChoice.requirements, broken)).toBe(true);
+    const clothSignal = act(broken, spring, 'raiseCloth');
+    expect(clothSignal.run?.flags).toContain('springCrewSignaled');
+    expect(sceneText(spring.scenes.partial, clothSignal)).toMatch(/you signal the far crew to stay put/i);
+  });
+
   it('claims a carrier route only after the upper foot approach is established', () => {
     const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-alder-crossing')!;
 
