@@ -8,10 +8,10 @@ export const THE_INJURED_TRAVELER: Scenario = {
   runRandomSelections: [{ id: 'injuryAccount', values: [{ value: 'genuine' }, { value: 'exaggerated' }, { value: 'mixed' }] }],
   scenes: {
     roadsideRequest: { id: 'roadsideRequest', title: 'A Request by the Road', tone: 'safe', text: 'A traveler sits beside a milestone holding one wrist close. They say it is badly injured and ask for two coins to reach a healer. You can see swelling, but have no way to judge how serious it is. They are calm and able to speak.', choices: [
-      { id: 'giveInjuryMoney', label: 'Give two coins for the healer', requirements: { minMoney: 2 }, effects: { money: -2, historyFlags: ['gave_money_to_injured_traveler'] }, next: 'moneyGiven' },
+      { id: 'giveInjuryMoney', label: 'Give two coins for the healer', requirements: { minMoney: 2 }, effects: { money: -2, historyFlags: ['gave_money_to_injured_traveler'], knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] }, next: 'moneyGiven' },
       { id: 'offerWaterInjury', label: 'Ask what happened and listen', timeCost: 5, next: 'accountHeard', effects: { knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] } },
-      { id: 'sendForInnkeeper', label: 'Ask the nearby innkeeper to come over', timeCost: 6, next: 'innkeeperArrives' },
-      { id: 'declineInjury', label: 'Wish them well and continue on', next: 'continuedRoad' },
+      { id: 'sendForInnkeeper', label: 'Ask the nearby innkeeper to come over', timeCost: 6, effects: { knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] }, next: 'innkeeperArrives' },
+      { id: 'declineInjury', label: 'Wish them well and continue on', effects: { knowledge: ['A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.'] }, next: 'continuedRoad' },
     ] },
     accountHeard: { id: 'accountHeard', title: 'Two Accounts', tone: 'safe', text: 'The traveler explains how the wrist was hurt. The account may be sincere, overstated, or a little of both; without a healer’s examination, you cannot know.', textVariants: [
       { requirements: { selections: { injuryAccount: 'genuine' } }, text: 'The traveler says a cart wheel rolled over the wrist. A nearby carter confirms there was a stumble, though they did not see the impact clearly.' },
@@ -76,10 +76,10 @@ export const THE_EMPTY_PURSE: Scenario = {
   runRandomSelections: [{ id: 'purseOutcome', values: [{ value: 'misplaced' }, { value: 'taken' }, { value: 'neverBrought' }] }],
   scenes: {
     innComplaint: { id: 'innComplaint', title: 'A Missing Purse', tone: 'warning', text: 'A guest at the inn says their purse has gone missing. They last remember seeing it after supper, but several people shared the common room and no one saw a theft. The innkeeper offers to help look; nobody has accused a particular person.', choices: [
-      { id: 'letHostSearch', label: 'Let the innkeeper search the common room', timeCost: 6, next: 'purseSearch' },
+      { id: 'letHostSearch', label: 'Let the innkeeper search the common room', timeCost: 6, next: 'purseSearch', effects: { knowledge: ['An inn guest reported a missing purse after supper; no witness saw it taken.'] } },
       { id: 'askGuestDetails', label: 'Ask where the purse was last seen', timeCost: 4, next: 'purseDetails', effects: { knowledge: ['An inn guest reported a missing purse after supper; no witness saw it taken.'] } },
-      { id: 'stayOutPurse', label: 'Stay out of it and finish your supper', next: 'purseLeft' },
-      { id: 'leaveInnPurse', label: 'Leave the inn without making a claim', next: 'purseLeft' },
+      { id: 'stayOutPurse', label: 'Stay out of it and finish your supper', next: 'purseLeft', effects: { knowledge: ['An inn guest reported a missing purse after supper; no witness saw it taken.'] } },
+      { id: 'leaveInnPurse', label: 'Leave the inn without making a claim', next: 'purseLeft', effects: { knowledge: ['An inn guest reported a missing purse after supper; no witness saw it taken.'] } },
     ] },
     purseDetails: { id: 'purseDetails', title: 'A Memory After Supper', tone: 'safe', text: 'The guest describes the evening as they remember it. Nothing proves whether the purse was stolen, misplaced, or never brought into the room.', textVariants: [
       { requirements: { selections: { purseOutcome: 'misplaced' } }, text: 'The guest recalls setting the purse by the wash basin, then going downstairs. They are no longer sure whether they brought it back to the common room.' },
@@ -147,7 +147,9 @@ export const THE_BROKEN_PROMISE: Scenario = {
       { id: 'giveLimitedAccountCoin', label: 'Repeat only the words you heard', requirements: { selections: { heardFragment: 'oneCoin' } }, timeCost: 3, next: 'limitedWitness', effects: { knowledge: ['You heard one traveler offer a coin for something, but did not hear the full agreement.'] } },
       { id: 'giveLimitedAccountPaid', label: 'Repeat only the conditional offer', requirements: { selections: { heardFragment: 'ifPaid' } }, timeCost: 3, next: 'limitedWitness', effects: { knowledge: ['You heard a conditional offer to share payment if a cart job paid, but not the agreed amount or date.'] } },
       { id: 'sayHeardNoTerms', label: 'Say you heard no terms or amount', requirements: { selections: { heardFragment: 'noTerms' } }, timeCost: 3, next: 'limitedWitness', effects: { knowledge: ['You heard only that one traveler needed help with a cart, not whether payment was promised.'] } },
-      { id: 'declinePromiseDispute', label: 'Decline to settle what you did not hear', next: 'promiseLeft' },
+      { id: 'declinePromiseCoin', label: 'Decline to settle what you did not hear', requirements: { selections: { heardFragment: 'oneCoin' } }, effects: { knowledge: ['You heard one traveler offer a coin for something, but did not hear the full agreement.'] }, next: 'promiseLeft' },
+      { id: 'declinePromisePaid', label: 'Decline to settle what you did not hear', requirements: { selections: { heardFragment: 'ifPaid' } }, effects: { knowledge: ['You heard a conditional offer to share payment if a cart job paid, but not the agreed amount or date.'] }, next: 'promiseLeft' },
+      { id: 'declinePromiseNoTerms', label: 'Decline to settle what you did not hear', requirements: { selections: { heardFragment: 'noTerms' } }, effects: { knowledge: ['You heard only that one traveler needed help with a cart, not whether payment was promised.'] }, next: 'promiseLeft' },
     ] },
     limitedWitness: { id: 'limitedWitness', title: 'A Partial Account', tone: 'safe', text: 'You give the exact fragment you remember and make clear what you missed. The travelers still disagree about what followed, but neither can fairly claim you heard the whole agreement.', choices: [
       { id: 'suggestPrivateTalk', label: 'Suggest they discuss the rest privately', next: 'promiseTalked', effects: { historyFlags: ['gave_a_limited_witness_account'] } },
@@ -200,9 +202,9 @@ export const THE_MISSING_SACK: Scenario = {
   scenes: {
     wagonStop: { id: 'wagonStop', title: 'One Sack Short', tone: 'warning', text: 'At the inn yard, the driver and a shopkeeper count the flour sacks unloaded from a shared wagon. One is missing. The driver remembers the stack being shorter before the last stop; the shopkeeper remembers seeing another sack aboard. No one saw it taken.', choices: [
       { id: 'checkWagonLedger', label: 'Check the driver’s loading marks', timeCost: 4, next: 'loadingMarks', effects: { knowledge: ['A flour sack was missing after shared wagon transport; the driver and shopkeeper remembered different counts.'] } },
-      { id: 'askLastStop', label: 'Ask the last inn whether a sack was left', timeCost: 6, next: 'lastStopAsked' },
-      { id: 'lookAlongRoad', label: 'Look along the yard entrance and road', timeCost: 5, next: 'roadsideSearch' },
-      { id: 'leaveSackDispute', label: 'Leave them to settle the missing load', next: 'sackUnresolved' },
+      { id: 'askLastStop', label: 'Ask the last inn whether a sack was left', timeCost: 6, effects: { knowledge: ['A flour sack was missing after shared wagon transport; the driver and shopkeeper remembered different counts.'] }, next: 'lastStopAsked' },
+      { id: 'lookAlongRoad', label: 'Look along the yard entrance and road', timeCost: 5, effects: { knowledge: ['A flour sack was missing after shared wagon transport; the driver and shopkeeper remembered different counts.'] }, next: 'roadsideSearch' },
+      { id: 'leaveSackDispute', label: 'Leave them to settle the missing load', effects: { knowledge: ['A flour sack was missing after shared wagon transport; the driver and shopkeeper remembered different counts.'] }, next: 'sackUnresolved' },
     ] },
     loadingMarks: { id: 'loadingMarks', title: 'A Rough Count', tone: 'safe', text: 'The marks help explain what may have happened, but do not prove whether anyone took the sack.', textVariants: [
       { requirements: { selections: { sackOutcome: 'wrongStop' } }, text: 'The driver’s chalk count drops by one beside the previous inn. A sack may have been unloaded there by mistake.' },
@@ -316,10 +318,10 @@ export const THE_DEBT_AT_SUPPER: Scenario = {
   id: 'the-debt-at-supper', title: 'The Debt at Supper', subtitle: 'Two guests remember a small loan differently.', startScene: 'supperDispute',
   scenes: {
     supperDispute: { id: 'supperDispute', title: 'A Quiet Table Grows Awkward', tone: 'warning', text: 'At the inn’s supper table, one guest says another owes two coins from a loan made on the road. The other remembers borrowing one coin and says it was repaid. The room has gone quiet, but neither person threatens the other.', choices: [
-      { id: 'leaveDebtTable', label: 'Finish your meal and leave them to it', next: 'debtLeft' },
+      { id: 'leaveDebtTable', label: 'Finish your meal and leave them to it', next: 'debtLeft', effects: { knowledge: ['Two inn guests disagreed about a small loan and whether it had been repaid.'] } },
       { id: 'listenDebtAccounts', label: 'Listen while they explain what they recall', timeCost: 6, next: 'debtAccounts', effects: { knowledge: ['Two inn guests disagreed about a small loan and whether it had been repaid.'] } },
-      { id: 'askDebtNote', label: 'Ask whether either kept a note or tally', timeCost: 4, next: 'debtEvidence' },
-      { id: 'offerDebtMediation', label: 'Suggest they speak quietly after supper', next: 'debtMediated' },
+      { id: 'askDebtNote', label: 'Ask whether either kept a note or tally', timeCost: 4, next: 'debtEvidence', effects: { knowledge: ['Two inn guests disagreed about a small loan and whether it had been repaid.'] } },
+      { id: 'offerDebtMediation', label: 'Suggest they speak quietly after supper', next: 'debtMediated', effects: { knowledge: ['Two inn guests disagreed about a small loan and whether it had been repaid.'] } },
     ] },
     debtAccounts: { id: 'debtAccounts', title: 'Different Sums, Different Days', tone: 'safe', text: 'One guest remembers two coins for a week’s lodging; the other recalls a single coin for a meal. The accounts may describe separate moments or one poorly remembered loan.', choices: [
       { id: 'askDebtEvidence', label: 'Ask whether either kept a written tally', timeCost: 3, next: 'debtEvidence' },

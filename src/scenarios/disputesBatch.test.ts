@@ -5,7 +5,7 @@ import { findScenarioGraphProblems } from '../scenarioGraph';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { SCENARIOS } from './index';
-import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_FALSE_GUIDE, THE_LANDLORDS_STORY, THE_MISSING_SACK } from './disputesBatch';
+import { A_BORROWED_COAT, A_VERY_GOOD_DEAL, DISPUTE_ADVENTURES, THE_BROKEN_PROMISE, THE_DEBT_AT_SUPPER, THE_EMPTY_PURSE, THE_FALSE_GUIDE, THE_INJURED_TRAVELER, THE_LANDLORDS_STORY, THE_MISSING_SACK } from './disputesBatch';
 
 const WATCH_OWNERS = ['Tavren', 'Isolde', 'Araminta', 'Fenella', 'Leofric'];
 
@@ -108,12 +108,45 @@ describe('deception, disputes, and self-interest adventure batch', () => {
     expect(A_VERY_GOOD_DEAL.scenes.saleInspected.text).toContain('not whether the seller has a right to sell it');
   });
 
-  it('reports only the broken-promise fragment actually heard', () => {
-    const state = start(THE_BROKEN_PROMISE, { heardFragment: 'oneCoin' });
-    expect(sceneText(THE_BROKEN_PROMISE.scenes.roadsideDispute, state)).toContain('I can give you a coin for that');
-    const testified = act(state, THE_BROKEN_PROMISE, 'roadsideDispute', 'giveLimitedAccountCoin');
-    expect(testified.character?.knowledge).toContain('You heard one traveler offer a coin for something, but did not hear the full agreement.');
+  it('preserves the broken-promise fragment the Traveler remembers whether or not they testify', () => {
+    const variants = [
+      { selection: 'oneCoin', report: 'giveLimitedAccountCoin', decline: 'declinePromiseCoin', fact: 'You heard one traveler offer a coin for something, but did not hear the full agreement.', visible: 'I can give you a coin for that' },
+      { selection: 'ifPaid', report: 'giveLimitedAccountPaid', decline: 'declinePromisePaid', fact: 'You heard a conditional offer to share payment if a cart job paid, but not the agreed amount or date.', visible: 'If the cart job pays, I’ll share' },
+      { selection: 'noTerms', report: 'sayHeardNoTerms', decline: 'declinePromiseNoTerms', fact: 'You heard only that one traveler needed help with a cart, not whether payment was promised.', visible: 'heard no amount, date, or clear promise' },
+    ];
+    for (const variant of variants) {
+      const state = start(THE_BROKEN_PROMISE, { heardFragment: variant.selection });
+      expect(sceneText(THE_BROKEN_PROMISE.scenes.roadsideDispute, state)).toContain(variant.visible);
+      for (const choiceId of [variant.report, variant.decline]) {
+        const result = act(state, THE_BROKEN_PROMISE, 'roadsideDispute', choiceId);
+        expect(result.character?.knowledge).toContain(variant.fact);
+      }
+    }
     expect(THE_BROKEN_PROMISE.scenes.roadsideDispute.choices.find(({ id }) => id === 'giveLimitedAccountPaid')?.requirements?.selections).toEqual({ heardFragment: 'ifPaid' });
+  });
+
+  it('persists entry-established dispute facts independently of the Traveler’s next action', () => {
+    const cases = [
+      { scenario: THE_INJURED_TRAVELER, scene: 'roadsideRequest', fact: 'A traveler beside a milestone held a swollen wrist and asked for help reaching a healer.', choices: ['giveInjuryMoney', 'offerWaterInjury', 'sendForInnkeeper', 'declineInjury'], selections: [{}] },
+      { scenario: THE_EMPTY_PURSE, scene: 'innComplaint', fact: 'An inn guest reported a missing purse after supper; no witness saw it taken.', choices: ['letHostSearch', 'askGuestDetails', 'stayOutPurse', 'leaveInnPurse'], selections: selectionSets(THE_EMPTY_PURSE) },
+      { scenario: THE_MISSING_SACK, scene: 'wagonStop', fact: 'A flour sack was missing after shared wagon transport; the driver and shopkeeper remembered different counts.', choices: ['checkWagonLedger', 'askLastStop', 'lookAlongRoad', 'leaveSackDispute'], selections: selectionSets(THE_MISSING_SACK) },
+      { scenario: THE_DEBT_AT_SUPPER, scene: 'supperDispute', fact: 'Two inn guests disagreed about a small loan and whether it had been repaid.', choices: ['leaveDebtTable', 'listenDebtAccounts', 'askDebtNote', 'offerDebtMediation'], selections: [{}] },
+    ];
+
+    for (const entry of cases) {
+      for (const selections of entry.selections) {
+        const initial = start(entry.scenario, selections, 3);
+        for (const choiceId of entry.choices) {
+          const result = act(initial, entry.scenario, entry.scene, choiceId);
+          expect(result.character?.knowledge, `${entry.scenario.id}.${choiceId}`).toContain(entry.fact);
+        }
+        const declined = act(initial, entry.scenario, entry.scene, entry.choices.at(-1)!);
+        const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+        saveGame(declined, storage as never);
+        const resumed = loadSave(storage as never);
+        expect(resumed.character?.knowledge, `${entry.scenario.id} save/reload`).toContain(entry.fact);
+      }
+    }
   });
 
   it('keeps the missing-sack account tied to an actual reply from the previous inn', () => {
