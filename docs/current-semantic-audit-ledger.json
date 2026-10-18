@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 36,
+    "liveFindingCount": 37,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 36,
+      "VERIFIED_HEALTHY_REPAIRED": 37,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 390,
+    "currentLiveFindingCount": 391,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 380,
+      "VERIFIED_HEALTHY_REPAIRED": 381,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 288,
-      "LOW": 83,
+      "LOW": 84,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0398",
+    "nextFindingId": "CRA-F0399",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24488,6 +24488,25 @@
         "implementationEvidence": "Only the two choices explicitly labeled to wait with the youths for the owner now set `dareWaitedForOwner`; the owner-agreement variant is gated on that run-local proof. Other incoming routes use neutral aftermath text that states the building remains unsafe without claiming the owner agreed or the youth made an admission. The existing shadow-identified and unknown-shadow distinctions remain intact. `octoberAffinityBatch.test.ts` covers the outside-rescue leave/wait contrast, the successful entry-and-leave contrast, and save/reload of the waiting proof; all 18 focused tests pass.",
         "repairLocality": "Scenario-specific `dareAfter` text variants and two owner-wait choices in `octoberAffinityBatch.ts`; no shared helper, reward effect, rescue state, or save schema changed.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0398",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 115,
+        "adventureId": "the-lantern-in-the-marsh",
+        "title": "The Lantern in the Marsh",
+        "sourceFile": "src/scenarios/strangeRoadsBatch.ts",
+        "severity": "LOW",
+        "defect": "The opening establishes only a warm light above reeds that hide the ground, but one choice persisted the stronger claim that a lantern moved; the fact was also omitted on other choices despite the same direct observation.",
+        "routeWitness": "`marshSighting.callMarshLight -> marshReply` grants `A lantern moved across the marsh...` for every randomized `marshLight` outcome. In `marshGlow`, the reply says the light thins and spreads and the Traveler cannot tell whether it moved or faded; in `unexplained`, no voice answers and the expected glow does not emerge from behind the reeds. Calling adds no reliable source evidence. The opening itself consistently establishes only that a warm light was visible above reeds hiding the ground, yet `watchMarshLight`, `followMarshLight`, and `leaveMarshLight` did not retain even that directly observed fact.",
+        "violatedRule": "Persistent Knowledge must not exceed what the route proves, and a later investigation choice must not gate a reliable fact already directly observed.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The over-specific ‘lantern moved’ sentence was replaced with the route-invariant observation that a warm light was visible above reeds hiding the marsh ground. That qualified fact is now persisted on all four choices leaving the sighting scene, independent of calling, watching, following, or leaving. No lantern identity, source, or movement certainty is added. The strange-roads regression covers all four random selections crossed with all four choices, confirms the prior overclaim is absent, and verifies save/reload; 18 focused tests pass.",
+        "repairLocality": "Caller-specific Knowledge wording/effects on the `marshSighting` choices in `strangeRoadsBatch.ts`; no shared builder, Gear behavior, or save schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24514,7 +24533,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 225,
-      "CRA-C0002": 49,
+      "CRA-C0002": 50,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24529,6 +24548,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-six records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-seven records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
