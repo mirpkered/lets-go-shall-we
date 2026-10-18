@@ -134,6 +134,32 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(state.character?.knowledgeKeys?.filter((id)=>id===fact.id)).toHaveLength(1);
   });
 
+  it('does not award caller-specific conventions that these five dispatches never establish', () => {
+    const unsupportedFacts = [
+      ['rain-on-the-relay', KNOWLEDGE_FACTS.relayDelayMarks],
+      ['station-without-a-clock', KNOWLEDGE_FACTS.telegraphOfficeBellConvention],
+      ['the-last-mile-pouch', KNOWLEDGE_FACTS.courierHorseChangeNotation],
+      ['postal-road-after-the-flood', KNOWLEDGE_FACTS.relayDelayMarks],
+      ['blue-chalk-milepost', KNOWLEDGE_FACTS.undeliverableForwardingMarks],
+    ] as const;
+
+    for (const [id, fact] of unsupportedFacts) {
+      const scenario = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find((candidate) => candidate.id === id)!;
+      expect(scenario.scenes.settle.choices.some(({ id: choiceId }) => choiceId === 'recordProcedure'), id).toBe(false);
+      let state = fresh(scenario);
+      state = act(state, scenario, 'acceptDelivery');
+      state = act(state, scenario, 'carryNow');
+      state = act(state, scenario, 'deliverAsKnown');
+      state = act(state, scenario, 'settleDelivered');
+      expect(state.character?.knowledgeKeys ?? [], id).not.toContain(fact.id);
+      expect(state.character?.knowledge ?? [], id).not.toContain(fact.text);
+    }
+
+    const supportedCaller = COURIER_MAIL_TELEGRAPH_GENRE_BATCH.find(({ id }) => id === 'the-wire-that-sang-twice')!;
+    const supportedStudy = supportedCaller.scenes.settle.choices.find(({ id }) => id === 'recordProcedure');
+    expect(supportedStudy?.effects?.knowledgeEntries).toContainEqual(KNOWLEDGE_FACTS.telegraphRepeatConvention);
+  });
+
   it('preserves explicit delivery, delay, refusal, and uncertainty choices as persistent History', () => {
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
       let state = fresh(scenario);
