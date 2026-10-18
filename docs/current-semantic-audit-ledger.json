@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 39,
+    "liveFindingCount": 40,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 39,
+      "VERIFIED_HEALTHY_REPAIRED": 40,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 393,
+    "currentLiveFindingCount": 394,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 383,
+      "VERIFIED_HEALTHY_REPAIRED": 384,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 289,
-      "LOW": 85,
+      "LOW": 86,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0401",
+    "nextFindingId": "CRA-F0402",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24545,6 +24545,25 @@
         "implementationEvidence": "The unsupported History flag was removed from `copyMap` and moved to `creek.checkStone`, the action that reads the mark and transitions to the confirming scene. Copy-only and miller-stop routes receive no water-gate History; the identified-stone route does and retains it through save/reload. CRA-F0094’s ending distinction and its evidence remain unchanged. Focused lost-places suite passes (21 tests).",
         "repairLocality": "Scenario-specific History effect placement in `lostPlacesBatch.ts`; no ending text, new persistent state, or schema change.",
         "dependencies": ["CRA-F0094 (same Adventure; distinct ending-text finding preserved)"]
+      },
+      {
+        "findingId": "CRA-F0401",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 396,
+        "adventureId": "a-notice-printed-backward",
+        "title": "A Notice Printed Backward",
+        "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
+        "severity": "LOW",
+        "defect": "The shared on-time ending says the printer pays for a sheet the Traveler helped prepare, although the announcement route has the clerk announce the correct place and prepares no sheet.",
+        "routeWitness": "`press.tellCommittee -> hall.announcePlace -> clear` establishes that the Traveler warned the committee and asked the clerk to announce the correct place; it does not establish that the Traveler prepared or posted a sheet. The ending nevertheless said, ‘The printer pays for the sheet you helped prepare.’ The handwritten correction route does prepare/post a sheet, and the type route has a different delayed ending. The one-coin payment effect on the announcement route is preserved as compensation for the Traveler’s help; only its contribution-specific narration was unsupported.",
+        "violatedRule": "A converged ending must describe the contribution established by each incoming route, not credit a route with another path’s method or work product.",
+        "clusterId": "CRA-C0001",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The shared on-time ending now says the printer pays for the Traveler’s help getting the correct information to the committee, which is true for both the posted handwritten correction and clerk-announcement routes. The announcement still starts the meeting on time and pays the same coin; correction, waiting, type, and reversed-sheet demonstration outcomes remain unchanged. `compensationAccountingC2.test.ts` checks the announcement wording and existing paid/unpaid route accounting; all 8 focused tests pass.",
+        "repairLocality": "Scenario-specific shared `clear` ending text in `surpriseEverydayBatch.ts`; no money effect or choice route changed.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24570,7 +24589,7 @@
       }
     ],
     "currentClusterAssignmentTotals": {
-      "CRA-C0001": 225,
+      "CRA-C0001": 226,
       "CRA-C0002": 51,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
@@ -24586,6 +24605,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-nine records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
