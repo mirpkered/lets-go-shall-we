@@ -31,6 +31,7 @@ const gates: Gate[] = [
   { finding: 'CRA-F0054', scenarioId: 'the-wrong-shadow', sceneId: 'lateShadow', choiceId: 'testShadowLight', gear: ['lantern'] },
   { finding: 'CRA-F0056', scenarioId: 'below-the-old-fort', sceneId: 'fortGreen', choiceId: 'useSilverFort', gear: ['smallKnife'] },
   { finding: 'CRA-F0057', scenarioId: 'the-hollow-man', sceneId: 'hollowField', choiceId: 'removeBones', gear: ['smallKnife'] },
+  { finding: 'CRA-F0408', scenarioId: 'house-with-two-cellars', sceneId: 'cellarBrokenArch', choiceId: 'fightCellarSkeleton', gear: ['smallKnife'] },
   { finding: 'CRA-F0103', scenarioId: 'teeth-in-the-mine', sceneId: 'sideChamber', choiceId: 'lowerRope', gear: ['travelRope'] },
   { finding: 'CRA-F0121', scenarioId: 'the-broken-antler', sceneId: 'elkWire', choiceId: 'cutWire', gear: ['smallKnife'] },
   { finding: 'CRA-F0124', scenarioId: 'the-beast-at-the-toll-road', sceneId: 'stagedBeast', choiceId: 'cutControlRope', gear: ['smallKnife'] },

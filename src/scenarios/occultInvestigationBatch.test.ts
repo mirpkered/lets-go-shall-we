@@ -633,6 +633,22 @@ describe('occult investigation adventures', () => {
     expect(copied.character?.knowledge).toContain('The second cellar held jars bearing family names and an iron-lined sealed arch.');
   });
 
+  it('requires a usable knife to hold the cellar stair and keeps retreat available', () => {
+    const scenario = adventures.find((s) => s.id === 'house-with-two-cellars')!;
+    const fight = scenario.scenes.cellarBrokenArch.choices.find(({ id }) => id === 'fightCellarSkeleton')!;
+
+    let usable = act(act(act(fresh(scenario, 'smallKnife'), scenario, 'descendTwoCellars'), scenario, 'pushArch'), scenario, 'fightCellarSkeleton');
+    expect(usable.run?.sceneId).toBe('cellarVictory');
+
+    let broken = fresh(scenario, 'smallKnife');
+    broken.itemStates = { smallKnife: { condition: 'BROKEN', upgrades: [], provenance: [] } };
+    broken.run = startRun(broken.character!, scenario, () => 0, broken.itemStates);
+    broken = act(act(broken, scenario, 'descendTwoCellars'), scenario, 'pushArch');
+    expect(meets(fight.requirements, broken)).toBe(false);
+    expect(meets(scenario.scenes.cellarBrokenArch.choices.find(({ id }) => id === 'retreatCellar')!.requirements, broken)).toBe(true);
+    expect(act(broken, scenario, 'retreatCellar').run?.sceneId).toBe('cellarAfter');
+  });
+
   it('offers contextual chapel Supplies and consumes Salt only as a boundary-reading aid', () => {
     let state = fresh(BROKEN_BELL);
     state.run!.sceneId = 'priestFarewell';
