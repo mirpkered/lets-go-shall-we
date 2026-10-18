@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 38,
+    "liveFindingCount": 39,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 38,
+      "VERIFIED_HEALTHY_REPAIRED": 39,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 392,
+    "currentLiveFindingCount": 393,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 382,
+      "VERIFIED_HEALTHY_REPAIRED": 383,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 289,
-      "LOW": 84,
+      "LOW": 85,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0400",
+    "nextFindingId": "CRA-F0401",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24526,6 +24526,25 @@
         "implementationEvidence": "The `resolved` scene now states that the boundary still needs the county deed and neither neighbor has yielded the claim or agreed how to handle the gate. The calf-return variant retains the established ‘calf is home’ and passable-lane outcomes without asserting consensus. Tests cover the direct calf-only route and the county-entry route; both preserve their supported route facts and avoid an invented agreement. Focused lost-places suite passes (20 tests).",
         "repairLocality": "Scenario-specific `resolved` text and its calf-return text variant in `lostPlacesBatch.ts`; no agreement flag, reward, persistence, or county-record behavior added.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0400",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 290,
+        "adventureId": "the-map-in-the-ledger",
+        "title": "The Map in the Ledger",
+        "sourceFile": "src/scenarios/lostPlacesBatch.ts",
+        "severity": "LOW",
+        "defect": "Copying the ledger map records History that the Traveler retained an old water-gate location even though the map alone does not identify the third-stone mark as a water gate.",
+        "routeWitness": "`ledger.copyMap -> copied` adds `retained_old_water_gate_location_from_mill_ledger`, although the folded drawing shows only a creek bend, split pine, and a mark beside ‘third stone.’ The miller’s `millerStop` response says the mark may be a boundary marker, not a promise; neither route reads the chisel mark. Only `creek.checkStone -> stone` establishes that it matches an old mill tally symbol for a water gate. CRA-F0094 separately repaired ending text so copied routes leave the mark unidentified; this finding is the distinct persistent-History effect and does not reopen or replace F0094.",
+        "violatedRule": "Persistent History must record only what the Traveler’s route actually established; copying an ambiguous map is not confirmation of a feature’s identity.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The unsupported History flag was removed from `copyMap` and moved to `creek.checkStone`, the action that reads the mark and transitions to the confirming scene. Copy-only and miller-stop routes receive no water-gate History; the identified-stone route does and retains it through save/reload. CRA-F0094’s ending distinction and its evidence remain unchanged. Focused lost-places suite passes (21 tests).",
+        "repairLocality": "Scenario-specific History effect placement in `lostPlacesBatch.ts`; no ending text, new persistent state, or schema change.",
+        "dependencies": ["CRA-F0094 (same Adventure; distinct ending-text finding preserved)"]
       }
     ],
     "newClusters": [
@@ -24552,7 +24571,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 225,
-      "CRA-C0002": 50,
+      "CRA-C0002": 51,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24567,6 +24586,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-eight records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-nine records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
