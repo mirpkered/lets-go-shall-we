@@ -100,6 +100,24 @@ describe('Lost Places route-accurate endings', () => {
     expect(text(state, scenario)).toMatch(/calf is home/i);
   });
 
+  it('does not infer neighbor agreement from returning the calf or reading the county entry aloud', () => {
+    const scenario = get('the-old-survey-stone');
+    let calfOnly = start(scenario);
+    calfOnly = actIn(calfOnly, scenario, 'declineBoundary');
+    calfOnly = actIn(calfOnly, scenario, 'calfReturn');
+    expect(text(calfOnly, scenario)).toMatch(/calf is home/i);
+    expect(text(calfOnly, scenario)).not.toMatch(/neighbors agree/i);
+    expect(text(calfOnly, scenario)).toMatch(/neither neighbor .* agreed how to handle the gate/i);
+
+    let countyEvidence = start(scenario);
+    countyEvidence = actIn(countyEvidence, scenario, 'checkStone');
+    countyEvidence = actIn(countyEvidence, scenario, 'marksLedger');
+    countyEvidence = actIn(countyEvidence, scenario, 'askCounty');
+    countyEvidence = actIn(countyEvidence, scenario, 'recordTell');
+    expect(text(countyEvidence, scenario)).not.toMatch(/neighbors agree/i);
+    expect(text(countyEvidence, scenario)).toMatch(/neither neighbor .* agreed how to handle the gate/i);
+  });
+
   it('does not turn the Sealed Mine Office exterior title into private wage findings', () => {
     const scenario = get('the-sealed-mine-office');
     let state = start(scenario);
