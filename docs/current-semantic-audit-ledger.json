@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 40,
+    "liveFindingCount": 41,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 40,
+      "VERIFIED_HEALTHY_REPAIRED": 41,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 394,
+    "currentLiveFindingCount": 395,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 384,
+      "VERIFIED_HEALTHY_REPAIRED": 385,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 289,
-      "LOW": 86,
+      "LOW": 87,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0402",
+    "nextFindingId": "CRA-F0403",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24564,6 +24564,25 @@
         "implementationEvidence": "The shared on-time ending now says the printer pays for the Traveler’s help getting the correct information to the committee, which is true for both the posted handwritten correction and clerk-announcement routes. The announcement still starts the meeting on time and pays the same coin; correction, waiting, type, and reversed-sheet demonstration outcomes remain unchanged. `compensationAccountingC2.test.ts` checks the announcement wording and existing paid/unpaid route accounting; all 8 focused tests pass.",
         "repairLocality": "Scenario-specific shared `clear` ending text in `surpriseEverydayBatch.ts`; no money effect or choice route changed.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0402",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 301,
+        "adventureId": "the-last-room-in-the-fort",
+        "title": "The Last Room in the Fort",
+        "sourceFile": "src/scenarios/lostPlacesBatch.ts",
+        "severity": "LOW",
+        "defect": "Choosing to refer the fort letters records that the Traveler helped open and correctly inventory the sealed room even on a branch where they explicitly waited outside while others opened it.",
+        "routeWitness": "`gate.readInventory -> plan.planPermission -> permission.waitOutside -> records.fortRecord` establishes that the Traveler stayed outside while the clerk and caretaker opened the room. `records.fortRecord` then correctly grants Knowledge about room seven and sets the family-notice referral flag, but its History effect said `helped open and correctly inventory a sealed fort room`. The existing CRA-F0099 ending-text repair handles the room-only inventory vs. letter disposition separately; it is not reopened.",
+        "violatedRule": "History must credit only actions the Traveler actually performed or participated in; another actor’s opening and inventory cannot be recorded as the Traveler’s work.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The History text on `records.fortRecord` now records the action that choice establishes: arranging family notice for identified letters from the old fort. The knowledge and family-referral flag remain unchanged. Both the witness-inside route and `waitOutside` route retain the same truthful narrow History; regression proves the old participation claim is absent in each. The focused lost-places suite passes (21 tests).",
+        "repairLocality": "Scenario-specific History wording on `records.fortRecord` in `lostPlacesBatch.ts`; no state, ending, permission, or save-schema change.",
+        "dependencies": ["CRA-F0099 (same Adventure; distinct ending-text repair preserved)"]
       }
     ],
     "newClusters": [
@@ -24590,7 +24609,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 226,
-      "CRA-C0002": 51,
+      "CRA-C0002": 52,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24605,6 +24624,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-one records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
