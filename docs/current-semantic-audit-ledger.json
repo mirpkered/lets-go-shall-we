@@ -23776,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Fifteen new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Twenty new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 15,
+    "liveFindingCount": 20,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 15,
+      "VERIFIED_HEALTHY_REPAIRED": 20,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 369,
+    "currentLiveFindingCount": 374,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 359,
+      "VERIFIED_HEALTHY_REPAIRED": 364,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 286,
-      "LOW": 64,
+      "LOW": 69,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0377",
+    "nextFindingId": "CRA-F0382",
     "nextClusterId": "CRA-C0014",
     "findings": [
       {
@@ -24089,6 +24089,101 @@
         "implementationEvidence": "The caller-specific quiet Knowledge grant is disabled; routes that encounter rain retain the existing result-specific fact. The helper caller matrix test confirms the quiet negative and the complication-success positive. Delivery, pay, History, and dry-return behavior are unchanged.",
         "repairLocality": "Caller-specific quiet Knowledge gate in the honest-work shared builder.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0377",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 105,
+        "adventureId": "the-injured-traveler",
+        "title": "The Injured Traveler",
+        "sourceFile": "src/scenarios/disputesBatch.ts",
+        "severity": "LOW",
+        "defect": "The opening directly establishes a visibly swollen wrist and a request for help reaching a healer, but matching persistent Knowledge was previously awarded only after asking the traveler what happened.",
+        "routeWitness": "`roadsideRequest` states the traveler holds one wrist close, says it is badly injured, and asks for two coins to reach a healer; the Traveler can see swelling but cannot judge severity. The matching Knowledge says only that a traveler held a swollen wrist and asked for help. Before repair it was granted only by `offerWaterInjury`, not by `giveInjuryMoney`, `sendForInnkeeper`, or `declineInjury`; the follow-up accounts add uncertainty about cause/severity, not the already-observed fact.",
+        "violatedRule": "Persist a directly observed, reliably stated fact when learned; do not gate it on a later optional question or help method.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing fact is now granted on each departure from `roadsideRequest`, including money, listening, summoning the innkeeper, and declining. No diagnosis, sincerity, or injury severity is added. Tests cover every initial choice and save/reload.",
+        "repairLocality": "Scenario-local effects on the four `roadsideRequest` choices; no shared helper or schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0378",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 107,
+        "adventureId": "the-empty-purse",
+        "title": "The Empty Purse",
+        "sourceFile": "src/scenarios/disputesBatch.ts",
+        "severity": "LOW",
+        "defect": "The opening establishes that an inn guest reported a purse missing after supper and that no witness saw a theft, but the identical persistent Knowledge was previously granted only by asking for additional details.",
+        "routeWitness": "`innComplaint` presents the missing-purse report, timing, shared room, and lack of eyewitness before `letHostSearch`, `askGuestDetails`, `stayOutPurse`, or `leaveInnPurse`. The exact Knowledge sentence was previously an effect only of `askGuestDetails`; none of the other routes gained it. Later random variants introduce mutually exclusive guest memories but do not change the general fact recorded by this Knowledge.",
+        "violatedRule": "A later investigative or reporting choice must not gate persistence of a general fact already established at entry; preserve the distinction between the report and unproven cause.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing cautious Knowledge is now granted on every departure from `innComplaint`. It still states only a report and absence of eyewitness proof; no theft, culprit, or purse location is inferred. Tests cover every entry action across all authored purse variants and save/reload.",
+        "repairLocality": "Scenario-local effects on `innComplaint` choices; no shared helper or schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0379",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 109,
+        "adventureId": "the-broken-promise",
+        "title": "The Broken Promise",
+        "sourceFile": "src/scenarios/disputesBatch.ts",
+        "severity": "LOW",
+        "defect": "The Traveler’s variant-specific remembered fragment is displayed before the choice, but its matching persistent Knowledge was previously granted only when the Traveler repeated it as testimony.",
+        "routeWitness": "On entry to `roadsideDispute`, each `heardFragment` variant explicitly says what the Traveler remembers hearing and what remains unknown. `giveLimitedAccountCoin`, `giveLimitedAccountPaid`, or `sayHeardNoTerms` persists the matching limited fragment; `declinePromiseDispute` reaches `promiseLeft` without it even though the ending says the Traveler knows the piece overheard. No route establishes whether an offer was accepted, what “that” meant, the amount/date, or whether a promise was broken.",
+        "violatedRule": "Persist what the Traveler already heard independently of later testimony; preserve the exact limits and uncertainty of the fragment.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Each testimony option retains its existing variant-matched Knowledge. The decline choice is now represented by mutually exclusive variant-matched choices that grant the same limited fact without changing the refusal outcome or History. Tests verify all three variants on report and decline routes.",
+        "repairLocality": "Scenario-local variant-matched effects in `roadsideDispute`; no shared helper or schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0380",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 111,
+        "adventureId": "the-missing-sack",
+        "title": "The Missing Sack",
+        "sourceFile": "src/scenarios/disputesBatch.ts",
+        "severity": "LOW",
+        "defect": "The opening establishes that a flour sack is missing after shared transport and that the driver and shopkeeper remember different counts, but the matching general Knowledge was previously granted only by checking the driver’s marks.",
+        "routeWitness": "`wagonStop` displays the count discrepancy and absence of a witness before `checkWagonLedger`, `askLastStop`, `lookAlongRoad`, or `leaveSackDispute`. The general Knowledge sentence was previously granted only by `checkWagonLedger`; asking the previous inn, searching, and leaving omitted it. The four randomized causes remain possibilities and are not established by the opening.",
+        "violatedRule": "Persist the general discrepancy already learned at entry independently of the selected investigation; do not persist a cause before evidence establishes it.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The cautious general Knowledge is now granted on all four departures from `wagonStop`; cause-specific reply/search logic and its route flags are unchanged. Tests cover every authored cause variant and initial action plus save/reload.",
+        "repairLocality": "Scenario-local effects on `wagonStop` choices; no shared helper or schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0381",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 114,
+        "adventureId": "the-debt-at-supper",
+        "title": "The Debt at Supper",
+        "sourceFile": "src/scenarios/disputesBatch.ts",
+        "severity": "LOW",
+        "defect": "The opening explicitly establishes that two inn guests disagree about a small loan and repayment, but matching persistent Knowledge was previously granted only after choosing to listen to their accounts.",
+        "routeWitness": "`supperDispute` states one guest alleges a two-coin debt and the other recalls a one-coin loan repaid before the Traveler chooses to leave, listen, ask about a tally, or suggest a private conversation. The Knowledge sentence repeats only the already-present general disagreement; it was previously granted only by `listenDebtAccounts`. No route proves the amount or repayment, and later evidence text explicitly keeps those unresolved.",
+        "violatedRule": "Persist the general disagreement already presented at entry, while keeping disputed amount and repayment unresolved; do not make optional listening the memory gate.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing general Knowledge is now granted on every departure from `supperDispute`; the tally, mediation, and unresolved-debt outcomes remain unchanged. Tests cover all initial choices and save/reload.",
+        "repairLocality": "Scenario-local effects on `supperDispute` choices; no shared helper or schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24105,7 +24200,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 33,
+      "CRA-C0002": 38,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24119,6 +24214,6 @@
       "CRA-C0013": 1
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These fifteen records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }

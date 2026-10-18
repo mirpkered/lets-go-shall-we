@@ -3,7 +3,7 @@
 Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0377` and `CRA-C0014`.
+Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0382` and `CRA-C0014`.
 
 ### Post-audit human-QA semantic reconciliation — Paper Boat, The Shortcut, Last Stop, and What Did You See?
 
@@ -2395,6 +2395,12 @@ Regression contrasts `carryMirrorOut` with `allowRepair` and checks the proof/te
 Wave 40 repairs CRA-F0061 (LOW), `the-broken-axle`. The cartwright still thanks the Traveler for bringing the wagon in, but no longer characterizes the chosen method as “without rushing it.” The same settlement remains truthful after the explicit `forceBrokenWagon` success and after a lightened, slow delivery. Reward choices and effects, family safety, cargo accounting, and failure outcomes are unchanged; no new state was needed.
 
 Regression drives both the forced-success and lightened-slow routes. The Survival Expedition, reward-access, inventory, library, and registry suites pass (**40 tests**); TypeScript and production build pass. CRA-F0061 is now `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Live classifications are **635 HEALTHY, 59 MINOR CONCERN, 167 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**; live findings remain **354**. Cumulative dispositions are **174 repaired** and **5 healthy/no-longer-reproduces**; **176 findings remain open**, including **142 CRA-C0001** (115 MEDIUM, 24 LOW, 3 unrecovered severity). Overall open severity is **137 MEDIUM, 29 LOW, and 10 unrecovered**. Local-only; no push, merge, deployment, or human/public QA occurred. Weekly Scenario Batch remains paused.
+
+### Current post-audit semantic checkpoint — dispute-story Knowledge boundaries
+
+Five additional post-audit human-QA findings, CRA-F0377–CRA-F0381, are repaired and appended under `postAuditHumanQa`, extending CRA-C0002. In The Injured Traveler, Empty Purse, Missing Sack, and Debt at Supper, the opening already presents the exact cautious general fact later persisted; it now survives any initial choice. In The Broken Promise, the selected fragment is explicitly remembered before the decision; the matching limited Knowledge now survives either testimony or decline. Unknown injury severity, purse cause, missing-sack cause, promise acceptance/terms, and disputed debt amount/repayment remain unknown. No shared helper, reward, scenario registration, save schema, or original audit record changed.
+
+Focused validation: `disputesBatch.test.ts` passes (**10 tests**), covering each opening action, all authored purse/sack/heard-fragment variants, report-versus-decline outcomes, and Knowledge save/reload. Current post-audit totals are **374 live findings** (**364 repaired, 10 healthy/no-longer-reproduces, 0 open**); severity totals are **13 HIGH, 286 MEDIUM, 69 LOW, 6 unrecovered**. Classification totals remain **802 HEALTHY, 59 MINOR CONCERN, 0 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Current cluster assignments include **CRA-C0002: 38**; other prior totals are unchanged, and three live findings remain unclustered. Next post-audit finding ID is `CRA-F0382`; no new cluster was created. The original 354-finding closure remains historically unchanged.
 
 ### CRA-C0001 repair program — local Wave 77: independent fence and feeding outcomes
 
