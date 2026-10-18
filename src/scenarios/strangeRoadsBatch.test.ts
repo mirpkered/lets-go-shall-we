@@ -245,6 +245,24 @@ describe('strange roads and supernatural adventure batch', () => {
     expect(sceneText(THE_LANTERN_IN_THE_MARSH.scenes.marshPassed, legacy)).not.toMatch(/workers carrying|workers answer/i);
   });
 
+  it('persists only the directly observed marsh light, independent of later investigation choice', () => {
+    const observation = 'From the raised road, you saw a warm light above the reeds, which hid the marsh ground.';
+    for (const marshLight of ['lostTraveler', 'nightWorkers', 'marshGlow', 'unexplained']) {
+      for (const choice of ['callMarshLight', 'watchMarshLight', 'followMarshLight', 'leaveMarshLight']) {
+        const state = act(start(THE_LANTERN_IN_THE_MARSH, { marshLight }), THE_LANTERN_IN_THE_MARSH, 'marshSighting', choice, () => 0.999999);
+        expect(state.character?.knowledge).toContain(observation);
+        expect(state.character?.knowledge).not.toContain('A lantern moved across the marsh below the raised road; the ground was hidden by reeds.');
+      }
+    }
+
+    const memory = new Map<string, string>();
+    const storage = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    let observed = act(start(THE_LANTERN_IN_THE_MARSH, { marshLight: 'marshGlow' }), THE_LANTERN_IN_THE_MARSH, 'marshSighting', 'leaveMarshLight');
+    saveGame(observed, storage as unknown as Storage);
+    observed = loadSave(storage as unknown as Storage);
+    expect(observed.character?.knowledge).toContain(observation);
+  });
+
   it('does not turn an encountered mine worker back into an unresolved possible voice', () => {
     let met = act(start(THE_VOICE_IN_THE_MINE, { mineVoice: 'otherWorker' }), THE_VOICE_IN_THE_MINE, 'mineCall', 'followMineVoice', () => 0);
     expect(sceneText(THE_VOICE_IN_THE_MINE.scenes.mineVoiceReached, met)).toMatch(/worker emerges/i);
