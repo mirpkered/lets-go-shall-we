@@ -83,6 +83,29 @@ describe('Lost Places route-accurate endings', () => {
     expect(text(waitedOutside, fort)).toMatch(/identified letters are referred to the surgeon’s family/i);
   });
 
+  it('records the water-gate location only after the third stone identifies it', () => {
+    const map = get('the-map-in-the-ledger');
+    const waterGateHistory = 'retained_old_water_gate_location_from_mill_ledger';
+
+    const copiedOnly = actIn(start(map), map, 'copyMap');
+    expect(copiedOnly.character?.historyFlags).not.toContain(waterGateHistory);
+    expect(text(copiedOnly, map)).toMatch(/third stone’s mark remains unidentified/i);
+
+    let millerAccount = actIn(start(map), map, 'askMiller');
+    millerAccount = actIn(millerAccount, map, 'millerStop');
+    expect(millerAccount.character?.historyFlags).not.toContain(waterGateHistory);
+
+    let identified = actIn(start(map), map, 'traceCreek');
+    identified = actIn(identified, map, 'checkStone');
+    expect(identified.character?.historyFlags).toContain(waterGateHistory);
+    const memory = new Map<string, string>();
+    const adapter = { getItem: (key: string) => memory.get(key) ?? null, setItem: (key: string, value: string) => memory.set(key, value) };
+    saveGame(identified, adapter as unknown as Storage);
+    identified = loadSave(adapter as unknown as Storage);
+    expect(identified.character?.historyFlags).toContain(waterGateHistory);
+    expect(text(identified, map)).toMatch(/matches an old mill tally symbol for a water gate/i);
+  });
+
   it('keeps the Old Survey Stone calf unresolved on the boundary-only route', () => {
     const scenario = get('the-old-survey-stone');
     let state = start(scenario);
