@@ -74,7 +74,7 @@ export const A_NOTICE_PRINTED_BACKWARD = story('a-notice-printed-backward', 'A N
     { id: 'announcePlace', label: 'Ask the clerk to announce it aloud', next: 'clear', effects: { money: 1 } },
     { id: 'waitForPrinter', label: 'Wait for the corrected sheet', next: 'late', effects: { money: 1 } },
   ]),
-  clear: end('clear', 'Everyone Finds the Hall', 'The committee meeting starts on time after the clerk announces the place. The printer pays for the sheet you helped prepare and promises to check the type before the next run.'),
+  clear: end('clear', 'Everyone Finds the Hall', 'The committee meeting starts on time after the clerk announces the place. The printer pays for your help getting the correct information to the committee and promises to check the type before the next run.'),
   demonstration: end('demonstration', 'A Reversed Lesson', 'The printer turns the mistake into a short explanation of how type reads backward. The corrected meeting notice is written clearly beside it.'),
   late: end('late', 'A Meeting Delayed', 'The notice is corrected, but some neighbors arrive late. The printer pays the agreed coin; the committee reschedules its first item rather than pretending nothing was lost.'),
 });

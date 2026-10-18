@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { choose, newCharacter, startRun } from '../engine';
+import { choose, newCharacter, sceneText, startRun } from '../engine';
 import { EMPTY_SAVE, loadSave, saveGame } from '../storage';
 import type { SaveData, Scenario } from '../types';
 import { getScenario } from './index';
@@ -29,6 +29,12 @@ function scenario(id: string): Scenario {
 describe('Pass C2 compensation accounting', () => {
   it('pays every A Notice Printed Backward paid ending once, without paying its demonstration route', () => {
     const notice = scenario('a-notice-printed-backward');
+    const announcement = take(notice, 'hall', 'announcePlace');
+    const announcementText = sceneText(notice.scenes.clear, announcement);
+    expect(announcementText).not.toMatch(/sheet you helped prepare/i);
+    expect(announcementText).toMatch(/printer pays for your help getting the correct information/i);
+    expect(announcement.character?.money).toBe(11);
+
     for (const [scene, choice, ending] of [
       ['hand', 'postCorrection', 'clear'],
       ['hall', 'announcePlace', 'clear'],
