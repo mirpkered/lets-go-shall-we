@@ -23776,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Forty-six new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 41,
+    "liveFindingCount": 46,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 41,
+      "VERIFIED_HEALTHY_REPAIRED": 46,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 395,
+    "currentLiveFindingCount": 400,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 385,
+      "VERIFIED_HEALTHY_REPAIRED": 390,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 289,
-      "LOW": 87,
+      "LOW": 92,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0403",
+    "nextFindingId": "CRA-F0408",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24583,6 +24583,56 @@
         "implementationEvidence": "The History text on `records.fortRecord` now records the action that choice establishes: arranging family notice for identified letters from the old fort. The knowledge and family-referral flag remain unchanged. Both the witness-inside route and `waitOutside` route retain the same truthful narrow History; regression proves the old participation claim is absent in each. The focused lost-places suite passes (21 tests).",
         "repairLocality": "Scenario-specific History wording on `records.fortRecord` in `lostPlacesBatch.ts`; no state, ending, permission, or save-schema change.",
         "dependencies": ["CRA-F0099 (same Adventure; distinct ending-text repair preserved)"]
+      },
+      {
+        "findingId": "CRA-F0403", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 838,
+        "adventureId": "rain-on-the-relay", "title": "Rain on the Relay", "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts", "severity": "LOW",
+        "defect": "The optional study reward grants relay-acknowledgment Knowledge although the story presents no relay acknowledgment or distinction between sending and receipt.",
+        "routeWitness": "`start.acceptDelivery -> handling.carryNow -> decision.deliverAsKnown -> delivered.settleDelivered -> settle.recordProcedure` reaches the optional study choice after a route about a flooded crossing, a longer ridge, and a mill office closing at dusk. No relay book, receipt mark, or sending-time entry is presented, yet `recordProcedure` grants `relayDelayMarks`.",
+        "violatedRule": "Persistent Knowledge must be supported by evidence or instruction the Traveler encounters on this route; a generic study label cannot stand in for absent evidence.",
+        "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed only this caller's unsupported `secondaryKnowledge` assignment, so its settlement no longer offers `recordProcedure` or grants relay-delay Knowledge. Its tube reward, fee/refusal, delivery, delay, and warning outcomes are unchanged. The courier regression matrix confirms the fact is absent after successful handoff; the supported Wire That Sang Twice caller retains its study reward.",
+        "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0404", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 843,
+        "adventureId": "station-without-a-clock", "title": "The Station without a Clock", "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts", "severity": "LOW",
+        "defect": "The optional study reward grants Knowledge of a telegraph-office bell convention from a story that presents only a rail platform bell and boarding signal.",
+        "routeWitness": "`start.acceptDelivery -> handling.carryNow -> decision.deliverAsKnown -> delivered.settleDelivered -> settle.recordProcedure` follows a private note handoff at a small rail halt. The story establishes that its platform bell confirms boarding, but presents no telegraph office, line-status bell, or shared sender/receiver convention; `recordProcedure` nevertheless grants `telegraphOfficeBellConvention`.",
+        "violatedRule": "Knowledge wording and provenance must not generalize a local signal into an unencountered procedure or setting.",
+        "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed only the station caller's unsupported `secondaryKnowledge` assignment. Platform-bell choices, private delivery, whistle provenance, fee, and refusal remain unchanged. The courier regression matrix confirms this story no longer offers or grants telegraph-office bell Knowledge.",
+        "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0405", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 845,
+        "adventureId": "the-last-mile-pouch", "title": "The Last-Mile Pouch", "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts", "severity": "LOW",
+        "defect": "The optional study reward grants horse-change-ledger Knowledge although the sealed pouch story presents no horse-change record or staffed relay move.",
+        "routeWitness": "`start.acceptDelivery -> handling.carryNow -> decision.deliverAsKnown -> delivered.settleDelivered -> settle.recordProcedure` concerns a sealed pouch, a chained pasture gate, a named tenant, and the tenant's reassigned hired team. The letter remains sealed and no stable ledger appears, yet `recordProcedure` grants `courierHorseChangeNotation`.",
+        "violatedRule": "Knowledge about a specific record or procedure requires that record or procedure to be encountered; route completion alone is not proof of learning it.",
+        "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed only this caller's unsupported `secondaryKnowledge` assignment. The sealed-delivery boundary, public-door/gate alternatives, travel-rope source, fee/refusal, and outcome remain unchanged. The courier regression matrix confirms no horse-change Knowledge is available on the completed pouch route.",
+        "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0406", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 855,
+        "adventureId": "postal-road-after-the-flood", "title": "The Postal Road after the Flood", "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts", "severity": "LOW",
+        "defect": "The optional study reward grants relay-acknowledgment Knowledge from a route about a washed bridge and redirected postal road, with no message acknowledgment or sending-time evidence.",
+        "routeWitness": "`start.acceptDelivery -> handling.carryNow -> decision.deliverAsKnown -> delivered.settleDelivered -> settle.recordProcedure` presents an old marker, a buried bridge abutment, an uphill route, and a possible route correction. It presents no relay message, receipt mark, or sending-time entry, but `recordProcedure` grants `relayDelayMarks`.",
+        "violatedRule": "Persistent Knowledge must not exceed route-specific evidence; a related communications theme does not establish the fact encoded by a stable Knowledge entry.",
+        "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed only the Postal Road caller's unsupported `secondaryKnowledge` assignment. Its route lore, route correction, delivery outcomes, fee/refusal, and warnings are preserved. The courier regression matrix confirms relay-delay Knowledge is absent after handoff.",
+        "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0407", "provenance": "POST_AUDIT_HUMAN_QA", "registrationStatus": "LIVE", "position": 840,
+        "adventureId": "blue-chalk-milepost", "title": "Blue Chalk at the Milepost", "sourceFile": "src/scenarios/courierMailTelegraphGenreBatch.ts", "severity": "LOW",
+        "defect": "The optional study reward grants forwarding-mark Knowledge from a route that shows faded road chalk and a current bridge closure, not returned mail or forwarding marks.",
+        "routeWitness": "`start.acceptDelivery -> handling.carryNow -> decision.deliverAsKnown -> delivered.settleDelivered -> settle.recordProcedure` establishes only that faded blue chalk points along an old lane and the current notice redirects uphill. No returned envelope, address-change history, or uncertain present recipient is shown, yet `recordProcedure` grants `undeliverableForwardingMarks`.",
+        "violatedRule": "Knowledge must preserve the specific evidence and uncertainty represented by its definition; a visual mark on a road is not proof of postal forwarding history.",
+        "clusterId": "CRA-C0002", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Removed only the Blue Chalk caller's unsupported `secondaryKnowledge` assignment. Its folding-marker reward, related route lore, private-land restriction, fee/refusal, and delay consequences remain unchanged. The courier regression matrix confirms forwarding-mark Knowledge is absent on this route.",
+        "repairLocality": "Caller-specific Knowledge configuration in `courierMailTelegraphGenreBatch.ts`; shared settlement builder unchanged.", "dependencies": []
       }
     ],
     "newClusters": [
@@ -24609,7 +24659,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 226,
-      "CRA-C0002": 52,
+      "CRA-C0002": 57,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24624,6 +24674,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-one records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These forty-six records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
