@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Twenty-three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 25,
+    "liveFindingCount": 30,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 25,
+      "VERIFIED_HEALTHY_REPAIRED": 30,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 379,
+    "currentLiveFindingCount": 384,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 369,
+      "VERIFIED_HEALTHY_REPAIRED": 374,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 287,
-      "LOW": 73,
+      "LOW": 78,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0387",
+    "nextFindingId": "CRA-F0392",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24279,6 +24279,101 @@
         "implementationEvidence": "The existing free-text Knowledge now applies on the conversation choice before `innConversation` is shown. Both subsequent bedtime responses retain it, and direct sleep without the conversation does not. Regression includes save/reload of the learned fact; no other pleasant-day outcome changed.",
         "repairLocality": "Scenario-specific transition effect in `pleasantDaysBatch.ts`; no shared builder or save-schema change.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0387",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 395,
+        "adventureId": "two-dates-on-one-photograph",
+        "title": "Two Dates on One Photograph",
+        "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
+        "severity": "LOW",
+        "defect": "Inspecting the negative sleeves directly establishes the four-person and three-person sittings, but the matching Knowledge was previously granted only when the Traveler shared the sleeves with the family.",
+        "routeWitness": "`studio.checkNegativeSleeve -> sleeve` reveals that the first sleeve shows all four family members and the second shows three; the note names no child. Before repair, only `sleeve.showBothRecords` granted that exact observation as Knowledge. `sleeve.leaveSleevesPrivate` exited without retaining it even though the Traveler had already inspected the sleeves. Delivery, photographer recollection, and other routes that never inspect the sleeves do not establish this fact; the later family interpretations remain explicitly uncertain.",
+        "violatedRule": "Persist directly observed evidence when learned, independently of whether the Traveler later shares it; do not convert evidence into a conclusion about the family’s grief.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing observation Knowledge now grants on the `checkNegativeSleeve` transition into the inspection scene. Sharing the records and returning the sleeves privately both retain it; routes without sleeve inspection still do not. Family interpretations, silence, copying, and the decision of which portrait to keep are unchanged. Focused route-contrast regression passes.",
+        "repairLocality": "Scenario-specific scene-entry effect in `surpriseEverydayBatch.ts`; no shared helper or save-schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0388",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 400,
+        "adventureId": "the-clock-that-kept-local-time",
+        "title": "The Clock That Kept Local Time",
+        "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
+        "severity": "LOW",
+        "defect": "Reading the printed timetable note establishes the standard-time/local-clock distinction before the Traveler chooses whether to tell passengers or seek confirmation, but only the passenger-report choice previously persisted it.",
+        "routeWitness": "Either `platform.askForTimetableNote -> timetable` or `passengers.lookForPrintedNote -> timetable` presents the printed rule that train times use standard line time, while the platform clock is local. Before repair, only `timetable.tellPassengers` granted the matching Knowledge; `askMasterToConfirm` reached the same coordination scene without it and did not add evidence to the Traveler’s memory. Routes that wait by the clock or signal the line without reading the note do not receive the fact.",
+        "violatedRule": "Persist information learned from a source when it is read, independently of whether the Traveler communicates it or seeks confirmation afterward.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing fact is now granted on both transitions that display the printed note. Telling passengers and asking the stationmaster retain it, while waiting by the clock without reading the note does not gain it. Timetable coordination and arrival outcomes are unchanged. Focused route-contrast regression passes.",
+        "repairLocality": "Two scenario-specific note-reading transitions in `surpriseEverydayBatch.ts`; no confirmation, communication, or clock behavior changed.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0389",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 401,
+        "adventureId": "the-play-with-an-unwritten-ending",
+        "title": "The Play with an Unwritten Ending",
+        "sourceFile": "src/scenarios/surpriseEverydayBatch.ts",
+        "severity": "LOW",
+        "defect": "Spectators’ interpretation is presented before a later choice to share it, but the existing Knowledge was granted only by sharing and not by privately letting the actors choose.",
+        "routeWitness": "`curtain.askAudience -> audience` directly presents several spectators’ reading that the younger sibling is leaving for a job, not escaping a family. Before repair, only `audience.shareAudienceReading` persisted that same attributed reading; `keepInterpretationPrivate` reached the performance choice without it and adds no new information. Actor-rehearsal and leave-before-hearing routes do not establish the audience interpretation.",
+        "violatedRule": "Persist an account the Traveler has already heard independently of whether they later share it; retain attribution and do not turn a temporary audience interpretation into permanent truth about the play.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing attributed audience-reading Knowledge now grants when the Traveler enters the audience-account scene. Sharing it or keeping it private preserves the same fact; actor rehearsal and leaving before the audience speaks still grant none. The company’s later ending choice and performance remain unchanged. Focused route-contrast regression passes.",
+        "repairLocality": "Scenario-specific scene-entry effect in `surpriseEverydayBatch.ts`; no performance outcome or save-schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0390",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 372,
+        "adventureId": "an-invitation-for-someone-else",
+        "title": "An Invitation for Someone Else",
+        "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
+        "severity": "LOW",
+        "defect": "The host’s preference that her brother know the door is open but not be summoned is stated before a later writing choice, while the matching Knowledge was previously granted only by helping write the reply.",
+        "routeWitness": "`doorstep.askAboutGuest -> letter.askWhatSheWants -> choice` presents the host’s exact intention before the Traveler chooses whether to help write or leave the message to her. Before repair, only `choice.writeGentleReply` granted the matching Knowledge; `declineMessage` reached supper without it and adds no new information. The privacy route that leaves the letter alone never learns the host’s preference and remains without it.",
+        "violatedRule": "Persist the host’s stated intention when heard, independently of the Traveler’s later choice to communicate it; do not infer that the reply is sent.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing cautious Knowledge now grants when `askWhatSheWants` opens the host’s intention scene. Helping write or declining the message both preserve the learned preference; leaving the letter untouched does not. The ending still makes clear that the host seals the reply and whether it is sent remains her decision. Focused route-contrast regression passes.",
+        "repairLocality": "Scenario-specific information-gathering choice in `surpriseSocialBatch.ts`; no History, delivery, or save-schema change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0391",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 375,
+        "adventureId": "the-empty-place-setting",
+        "title": "The Empty Place Setting",
+        "sourceFile": "src/scenarios/surpriseSocialBatch.ts",
+        "severity": "LOW",
+        "defect": "The Traveler hears the cousin’s limited account before choosing whether to share it, but the matching Knowledge was previously granted only by sharing the account.",
+        "routeWitness": "`supper.askAboutPlate -> account.listenToCousin -> cousin` states that the cousin remembers a disagreement about who was expected to stay late, not the harvest quantity, and explicitly says this does not prove either sister right. Before repair, only `cousin.shareLimitedAccount` granted the corresponding narrow Knowledge; `keepOutOfIt` left without it even though the Traveler had heard the same account. Routes that do not ask the cousin do not establish it; the family’s underlying dispute remains unresolved.",
+        "violatedRule": "Persist an attributed account when heard independently of later sharing, without promoting testimony into a verdict about either sister.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing narrow Knowledge now grants when `listenToCousin` enters the testimony scene. Sharing it or keeping it private preserves the same limited account; routes that skip the cousin do not receive it. Invitation, privacy, and unresolved reconciliation outcomes remain intact. Focused route-contrast and save/reload regression passes.",
+        "repairLocality": "Scenario-specific testimony transition in `surpriseSocialBatch.ts`; no shared helper or save-schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24305,7 +24400,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 40,
+      "CRA-C0002": 45,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24320,6 +24415,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty-five records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
