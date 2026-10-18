@@ -3,7 +3,7 @@
 Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0382` and `CRA-C0014`.
+Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0385` and `CRA-C0015`.
 
 ### Post-audit human-QA semantic reconciliation — Paper Boat, The Shortcut, Last Stop, and What Did You See?
 
@@ -2395,6 +2395,12 @@ Regression contrasts `carryMirrorOut` with `allowRepair` and checks the proof/te
 Wave 40 repairs CRA-F0061 (LOW), `the-broken-axle`. The cartwright still thanks the Traveler for bringing the wagon in, but no longer characterizes the chosen method as “without rushing it.” The same settlement remains truthful after the explicit `forceBrokenWagon` success and after a lightened, slow delivery. Reward choices and effects, family safety, cargo accounting, and failure outcomes are unchanged; no new state was needed.
 
 Regression drives both the forced-success and lightened-slow routes. The Survival Expedition, reward-access, inventory, library, and registry suites pass (**40 tests**); TypeScript and production build pass. CRA-F0061 is now `VERIFIED_HEALTHY_REPAIRED`; the Adventure derives HEALTHY. Live classifications are **635 HEALTHY, 59 MINOR CONCERN, 167 CONFIRMED DEFECT, and 0 NEEDS MANUAL REVIEW**; live findings remain **354**. Cumulative dispositions are **174 repaired** and **5 healthy/no-longer-reproduces**; **176 findings remain open**, including **142 CRA-C0001** (115 MEDIUM, 24 LOW, 3 unrecovered severity). Overall open severity is **137 MEDIUM, 29 LOW, and 10 unrecovered**. Local-only; no push, merge, deployment, or human/public QA occurred. Weekly Scenario Batch remains paused.
+
+### Current post-audit semantic checkpoint — compensation/accounting candidates
+
+Three additional post-audit findings, CRA-F0382–CRA-F0384, are repaired and appended under `postAuditHumanQa` in new cluster CRA-C0014, “Narrated compensation diverges from route money effects.” Half Now’s ending now itemizes the retained original three-coin wage balance and one additional coin while preserving its existing four-coin effect. The Pay Carriage at Dusk combat choice now applies the three-coin base wage on both success and withdrawal, matching the existing signal and farm-track delivery branches; injury and danger-bonus outcomes are unchanged. The Quiet Room no longer claims a refund where no room payment was recorded; no money effect was added. Collection Day was reviewed and found healthy: its one-coin effect is the shopkeeper’s promised errand wage, while the customer’s separate coin is carried back as entrusted payment.
+
+Focused validation passes: `commerceBatch.test.ts`, `escortProtectionGenreBatch.test.ts`, and `finalChoiceConsequenceAudit.test.ts` (**39 tests**). Current post-audit totals are **377 live findings** (**367 repaired, 10 healthy/no-longer-reproduces, 0 open**); severity totals are **13 HIGH, 287 MEDIUM, 71 LOW, 6 unrecovered**. Classifications remain **802 HEALTHY, 59 MINOR CONCERN, 0 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. Current cluster assignments: **CRA-C0001 224, CRA-C0002 38, CRA-C0003 1, CRA-C0004 34, CRA-C0005 1, CRA-C0006 17, CRA-C0007 4, CRA-C0008 12, CRA-C0009 3, CRA-C0010 11, CRA-C0011 24, CRA-C0012 1, CRA-C0013 1, CRA-C0014 3**; three live findings remain unclustered. Next post-audit IDs are `CRA-F0385` and `CRA-C0015`. The original 354-finding audit closure and all its records remain unchanged.
 
 ### Current post-audit semantic checkpoint — dispute-story Knowledge boundaries
 

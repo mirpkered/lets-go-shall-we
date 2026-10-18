@@ -23776,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Twenty new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Twenty-three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 20,
+    "liveFindingCount": 23,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 20,
+      "VERIFIED_HEALTHY_REPAIRED": 23,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 374,
+    "currentLiveFindingCount": 377,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 364,
+      "VERIFIED_HEALTHY_REPAIRED": 367,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 286,
-      "LOW": 69,
+      "MEDIUM": 287,
+      "LOW": 71,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,8 +23802,8 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0382",
-    "nextClusterId": "CRA-C0014",
+    "nextFindingId": "CRA-F0385",
+    "nextClusterId": "CRA-C0015",
     "findings": [
       {
         "findingId": "CRA-F0362",
@@ -24184,6 +24184,63 @@
         "implementationEvidence": "The existing general Knowledge is now granted on every departure from `supperDispute`; the tally, mediation, and unresolved-debt outcomes remain unchanged. Tests cover all initial choices and save/reload.",
         "repairLocality": "Scenario-local effects on `supperDispute` choices; no shared helper or schema change.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0382",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 60,
+        "adventureId": "half-now",
+        "title": "Half Now",
+        "sourceFile": "src/scenarios/commerceBatch.ts",
+        "severity": "LOW",
+        "defect": "The in-kind completion route awards four additional coins after the three-coin advance, but its ending previously narrated only one coin alongside the waxed canvas sheet, leaving the original wage balance unexplained.",
+        "routeWitness": "`offer.takeAdvance` grants 3 coins under the six-coin total agreement. `storeroom.acceptCanvasInstead` grants 4 more coins and the sheet after the Traveler completes the enlarged task, bringing the total to 7. Before repair, `canvasPayment` said only that the carpenter gives one coin and the sheet, unlike `originalTermsFinished` which explicitly accounts for the remaining three-coin balance.",
+        "violatedRule": "The ending must account truthfully for the route’s actual compensation and distinguish the original balance from added-work compensation.",
+        "clusterId": "CRA-C0014",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The ending now states that the three-coin balance from the original agreement and one additional coin for the added work are paid, plus the waxed canvas sheet. The existing total remains 7; no wage or item effect changed. `commerceBatch.test.ts` asserts both the balance and the route narration.",
+        "repairLocality": "Scenario-local settlement text; no accounting effect changed.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0383",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 515,
+        "adventureId": "the-pay-carriage-at-dusk",
+        "title": "The Pay Carriage at Dusk",
+        "sourceFile": "src/scenarios/escortProtectionGenreBatch.ts",
+        "severity": "MEDIUM",
+        "defect": "The combat success and withdrawal outcomes narrate payment of a base wage, but the combat choice previously applied no coin effect on either result; equivalent signal and farm-track deliveries award three coins.",
+        "routeWitness": "From `stop.fight` or `clause.hold`, combat success reaches `arrival` and loss reaches `withdraw`. The `fight` ending says the owner pays the base wage and withholds the danger bonus; `withdraw` says the owner withholds the danger bonus, establishing a base wage distinct from that bonus. Before repair, neither combat choice had a money effect, while `stop.signal` and `clause.turn` each applied `money: 3`.",
+        "violatedRule": "Narrated compensation must be reflected in the route’s actual money state, and comparable completed deliveries must not silently omit the stated base wage.",
+        "clusterId": "CRA-C0014",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "Both combat choices now apply the same 3-coin base wage before either combat result. Positive tests cover signal, farm-track, combat success, and withdrawal, including save/reload. Damage, objective, and danger-bonus narration are unchanged.",
+        "repairLocality": "Two caller-specific combat choice effects in `escortProtectionGenreBatch.ts`; no shared payment builder changed.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0384",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 194,
+        "adventureId": "the-quiet-room",
+        "title": "The Quiet Room",
+        "sourceFile": "src/scenarios/occultInvestigationBatch.ts",
+        "severity": "LOW",
+        "defect": "The sealed-hatch ending previously claimed the innkeeper refunded a room charge, though no route charges money or records a room payment.",
+        "routeWitness": "`quietRoomDoor` offers the room without a payment choice, requirement, or money effect; the test/inspection routes to `quietRoomNight` and `sealHatch` add only a History flag before `quietRoomAfter`. The alternate `sleepElsewhere` route leaves without sealing. Before repair, `quietRoomAfter` asserted a refund although the Traveler’s money was unchanged throughout the route.",
+        "violatedRule": "A refund may be claimed only when the route established a prior payment; narration must match actual accounting state.",
+        "clusterId": "CRA-C0014",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The unsupported refund claim was removed; the innkeeper still boards the hatch and the ending remains route-specific. Tests assert the sealed result does not mention a refund and that money is unchanged; the unsealed departure contrast remains intact.",
+        "repairLocality": "Scenario-specific ending text only; no charge, refund, or other money effect was introduced.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24196,6 +24253,16 @@
         "severityTotals": {"HIGH": 0, "MEDIUM": 0, "LOW": 1},
         "likelyRepairLayer": "Scenario-specific or opt-in family-builder narration variants gated by actual ownership and condition.",
         "reasonNoExistingClusterFits": "Existing Gear clusters cover action usability, availability gates, and reward condition/provenance, while CRA-C0001 is a route-fact lost at a shared convergence. None captures plain narration asserting possession when the Traveler may not own the item."
+      },
+      {
+        "clusterId": "CRA-C0014",
+        "name": "Narrated compensation diverges from route money effects",
+        "description": "A route's authored payment, balance, or refund narration does not match the money effects actually applied on that route. This includes omitted paid outcomes and unsupported refunds, but not duplicate refund mechanics, which remain CRA-C0005.",
+        "findingIds": ["CRA-F0382", "CRA-F0383", "CRA-F0384"],
+        "affectedAdventureIds": ["half-now", "the-pay-carriage-at-dusk", "the-quiet-room"],
+        "severityTotals": {"HIGH": 0, "MEDIUM": 1, "LOW": 2},
+        "likelyRepairLayer": "Scenario-specific ending language or terminal-route money effects, with positive/negative route accounting tests.",
+        "reasonNoExistingClusterFits": "CRA-C0005 covers one paid fee being refunded more than once. These findings instead concern truthful per-route compensation narration/effects: incomplete wage accounting text, an omitted base-wage effect, and a refund without a prior charge."
       }
     ],
     "currentClusterAssignmentTotals": {
@@ -24211,9 +24278,10 @@
       "CRA-C0010": 11,
       "CRA-C0011": 24,
       "CRA-C0012": 1,
-      "CRA-C0013": 1
+      "CRA-C0013": 1,
+      "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty-three records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
