@@ -23778,21 +23778,21 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Thirty-five new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 37,
+    "liveFindingCount": 38,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 37,
+      "VERIFIED_HEALTHY_REPAIRED": 38,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 391,
+    "currentLiveFindingCount": 392,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 381,
+      "VERIFIED_HEALTHY_REPAIRED": 382,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
-      "MEDIUM": 288,
+      "MEDIUM": 289,
       "LOW": 84,
       "SEVERITY_UNRECOVERED": 6
     },
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0399",
+    "nextFindingId": "CRA-F0400",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24507,6 +24507,25 @@
         "implementationEvidence": "The over-specific ‘lantern moved’ sentence was replaced with the route-invariant observation that a warm light was visible above reeds hiding the marsh ground. That qualified fact is now persisted on all four choices leaving the sighting scene, independent of calling, watching, following, or leaving. No lantern identity, source, or movement certainty is added. The strange-roads regression covers all four random selections crossed with all four choices, confirms the prior overclaim is absent, and verifies save/reload; 18 focused tests pass.",
         "repairLocality": "Caller-specific Knowledge wording/effects on the `marshSighting` choices in `strangeRoadsBatch.ts`; no shared builder, Gear behavior, or save schema change.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0399",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 292,
+        "adventureId": "the-old-survey-stone",
+        "title": "The Old Survey Stone",
+        "sourceFile": "src/scenarios/lostPlacesBatch.ts",
+        "severity": "MEDIUM",
+        "defect": "The shared resolution says the neighbors agree to leave the orchard gate unlatched, including after a route that only returns the calf and contains no neighbor discussion or assent.",
+        "routeWitness": "`fence.declineBoundary -> calf.calfReturn -> resolved` establishes that the Traveler found the calf in the orchard and led it through the already-open gate. It does not establish that either neighbor was consulted or that they jointly agreed to leave the gate unlatched. Before repair, the calf-return text variant stated ‘The neighbors agree to leave the orchard gate unlatched for the calf’; the shared fallback also asserted agreement. The county-record route reads the entry aloud, but it likewise does not contain an explicit agreement choice or response, so the convergence no longer claims consensus on any route.",
+        "violatedRule": "Mutual NPC agreement or consensus cannot be inferred from a unilateral Traveler action or from evidence being shared without an established response.",
+        "clusterId": "CRA-C0007",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The `resolved` scene now states that the boundary still needs the county deed and neither neighbor has yielded the claim or agreed how to handle the gate. The calf-return variant retains the established ‘calf is home’ and passable-lane outcomes without asserting consensus. Tests cover the direct calf-only route and the county-entry route; both preserve their supported route facts and avoid an invented agreement. Focused lost-places suite passes (20 tests).",
+        "repairLocality": "Scenario-specific `resolved` text and its calf-return text variant in `lostPlacesBatch.ts`; no agreement flag, reward, persistence, or county-record behavior added.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24538,7 +24557,7 @@
       "CRA-C0004": 34,
       "CRA-C0005": 1,
       "CRA-C0006": 17,
-      "CRA-C0007": 4,
+      "CRA-C0007": 5,
       "CRA-C0008": 13,
       "CRA-C0009": 3,
       "CRA-C0010": 11,
@@ -24548,6 +24567,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-seven records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-eight records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
