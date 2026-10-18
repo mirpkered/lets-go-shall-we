@@ -23776,24 +23776,24 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Twenty-three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Thirty-four new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 30,
+    "liveFindingCount": 34,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 30,
+      "VERIFIED_HEALTHY_REPAIRED": 34,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 384,
+    "currentLiveFindingCount": 388,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 374,
+      "VERIFIED_HEALTHY_REPAIRED": 378,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 287,
-      "LOW": 78,
+      "LOW": 82,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0392",
+    "nextFindingId": "CRA-F0396",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24374,6 +24374,82 @@
         "implementationEvidence": "The existing narrow Knowledge now grants when `listenToCousin` enters the testimony scene. Sharing it or keeping it private preserves the same limited account; routes that skip the cousin do not receive it. Invitation, privacy, and unresolved reconciliation outcomes remain intact. Focused route-contrast and save/reload regression passes.",
         "repairLocality": "Scenario-specific testimony transition in `surpriseSocialBatch.ts`; no shared helper or save-schema change.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0392",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 390,
+        "adventureId": "the-whistle-and-the-wind",
+        "title": "The Whistle and the Wind",
+        "sourceFile": "src/scenarios/surpriseCompetitionBatch.ts",
+        "severity": "LOW",
+        "defect": "The Traveler hears the real bird answer twice and hears that judges cannot attribute the response before choosing whether to repeat a call or report the uncertainty, but the qualified Knowledge was previously granted only by repeating a call.",
+        "routeWitness": "`contest.listenToBird -> listening` exposes that the bird answered twice after pauses and the judges cannot tell whether a contestant caused it or only whistled nearby. Before repair, only `listening.repeatCall` granted Knowledge, and its wording over-associated the reply with imitations; `tellJudgesUncertain` left without the fact. The kettle-entry and judge-only routes do not enter this listening scene and remain without this specific Knowledge.",
+        "violatedRule": "Persist a directly heard, uncertainty-preserving fact when learned; do not make Knowledge depend on the later choice to perform another call.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing Knowledge was moved to `contest.listenToBird`, where the listening scene presents the two replies and attribution uncertainty. Repeating a call still sets only the performance flag; telling the judges preserves the learned fact, while entering through the kettle call without listening does not receive it. CRA-F0153's separate call-attribution repair remains unchanged. Focused route-contrast test passes.",
+        "repairLocality": "Scenario-specific listening transition in `surpriseCompetitionBatch.ts`; no shared builder, save schema, judging, or reward change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0393",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 410,
+        "adventureId": "the-queue-with-two-ends",
+        "title": "The Queue with Two Ends",
+        "sourceFile": "src/scenarios/comedyAbsurdityBatch.ts",
+        "severity": "LOW",
+        "defect": "The witness's limited account establishes which line began first before the Traveler chooses whether to use that evidence or avoid declaring a winner, but the matching Knowledge was previously granted only by using it.",
+        "routeWitness": "`window.askClerk -> account.askWitnesses -> witnesses` presents a woman who saw the counter line already there, while she cannot establish either disputed customer's arrival order. Before repair, only `witnesses.useKnownFact` granted that narrow Knowledge; `avoidVerdict` applied alternating turns without persisting the same heard fact. Routes that do not ask the witness remain without it.",
+        "violatedRule": "Persist a limited account when heard independently of the later choice to act on the evidence; do not turn line order into proof of customer arrival order.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing narrow Knowledge now grants on `account.askWitnesses`, before the Traveler chooses to use it or keep alternating turns. The disputed customers' arrival order remains unknown; leaving or joining without asking remains without this fact. Focused positive/negative route-contrast test passes.",
+        "repairLocality": "Scenario-specific witness transition in `comedyAbsurdityBatch.ts`; no queue-order, reward, or shared helper change.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0394",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 177,
+        "adventureId": "all-hallows-boarding-house",
+        "title": "All Hallows at the Boarding House",
+        "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
+        "severity": "LOW",
+        "defect": "The Traveler learns from the old ledger and Venn's admission that the key story came from a copied private note before choosing whether to help search or protect Venn, but the matching Knowledge was previously granted only by helping search.",
+        "routeWitness": "The supported learning paths are `boardingStories.askKeySource -> vennQuestion.checkLedger -> ledgerRevealed`, `boardingStories.askKeeper -> keeperAccount.askLedger -> ledgerRevealed`, and `boardingStories.inspectStair -> stairClue.readPaper -> ledgerRevealed`. The ledger explanation and Venn's admission are shown before `helpKeeperSettle` / `protectVenn`; before repair only the help choice granted Knowledge. Leaving the ledger unread or confronting Venn based only on an outline remains without the ledger-source fact.",
+        "violatedRule": "Persist the source explanation when the Traveler reads/hears it, independently of the later choice to act or protect privacy; do not claim the missing key was recovered.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing Knowledge now grants on each of the three transitions that establish the ledger explanation, before the subsequent help/privacy choice. `helpKeeperSettle`, `protectVenn`, missing-key uncertainty, and the no-ledger route remain distinct. Focused positive/negative tests pass; the existing save/reload aftermath test remains intact.",
+        "repairLocality": "Scenario-specific ledger-reading transitions in `octoberAffinityBatch.ts`; no History, search, or ending behavior changed.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0395",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 181,
+        "adventureId": "the-harvest-mask",
+        "title": "The Harvest Mask",
+        "sourceFile": "src/scenarios/octoberAffinityBatch.ts",
+        "severity": "LOW",
+        "defect": "A Knowledge effect about preservative oil and the mask's possible causes was previously gated on later choices, and one route granted preservative-specific Knowledge after the Traveler had only noticed an unidentified bitter smell.",
+        "routeWitness": "On `maskLot.askWearers -> maskAccounts`, the auctioneer identifies preservation oil; choosing `openWindows` airs the room and reaches `maskAir`, where the smell has faded and the oil is identified as a preservative. Before repair, only `maskAir.askWearersAgain` granted Knowledge about that oil and its possible effect, while `leaveMaskToAuctioneer` did not. Separately, `maskLot.inspectCarving -> maskCarving.testBriefly -> maskVision.removeMask` granted a Knowledge sentence naming preservative oil even though that route had only observed an unidentified bitter smell; `maskVision` text is now route-aware and uses neutral smell wording without oil-identification proof. On the account route, the cautious shared-vision hypothesis is persisted upon entering `maskVision`, independent of the later risk/withdrawal choice.",
+        "violatedRule": "Persist what the Traveler has actually learned before later choices, preserve uncertainty, and do not persist a specific material identification when the route establishes only an unidentified smell.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The oil/airing Knowledge now grants on the explicit `maskAccounts.openWindows` inspection route and survives its follow-up choice/save reload. The shared-vision hypothesis now grants when entering `maskVision` only from the route where the auctioneer identified preservative oil; the matching text variant distinguishes that route from the smell-only inspection path. The smell-only route receives neither preservative-specific Knowledge nor the account-qualified hypothesis. Vision causality remains uncertain and danger/recovery effects are unchanged. Focused route-contrast and save/reload test passes.",
+        "repairLocality": "Scenario-specific `maskAccounts` and `maskVision` routes in `octoberAffinityBatch.ts`; no shared builder, mask outcome, injury, reward, or save-schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24400,7 +24476,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 45,
+      "CRA-C0002": 49,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24415,6 +24491,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These thirty-four records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
