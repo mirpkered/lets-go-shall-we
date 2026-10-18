@@ -171,7 +171,7 @@ export const HALF_NOW: Scenario = {
     renegotiated: ending('renegotiated', 'A New Agreement', 'The added work is put on the tally for two more coins. You finish the shelves and braces, then receive the additional pay alongside the agreed balance.'),
     keptOriginal: ending('keptOriginal', 'The Original Job Remains', 'The carpenter cannot pay for more work, so the extra shelf is left for another day. You complete the original shelves and receive the remaining three coins.'),
     originalTermsFinished: ending('originalTermsFinished', 'The Agreed Work Is Done', 'The first shelves are fitted, and you receive the remaining three coins. The damp wall and extra shelf remain for the carpenter to plan separately.'),
-    canvasPayment: ending('canvasPayment', 'Goods for Added Work', 'The carpenter gives you one coin and the waxed canvas sheet from the shop stock. The extra work is finished, and the tool remains yours to carry or leave behind.'),
+    canvasPayment: ending('canvasPayment', 'Goods for Added Work', 'The carpenter pays the three-coin balance from the original agreement and one more coin for the added work, then hands over the waxed canvas sheet from the shop stock. The extra work is finished, and the tool remains yours to carry or leave behind.'),
     quitPaid: ending('quitPaid', 'A Partial Settlement', 'You keep the advance as pay for the hours already worked and leave the added shelf undone. The carpenter accepts the settlement; the original agreement is not finished.'),
   },
 };

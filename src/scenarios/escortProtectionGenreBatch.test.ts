@@ -190,6 +190,30 @@ describe('Escort / Protection genre batch', () => {
     expect(excludedCrewPayment.scenes.fight.choices).toHaveLength(0);
   });
 
+  it('pays the Pay Carriage base wage on both combat outcomes without stacking direct-route pay', () => {
+    const scenario = ESCORT_PROTECTION_GENRE_BATCH.find(({ id }) => id === 'the-pay-carriage-at-dusk')!;
+    const makeState = (sceneId: string): SaveData => {
+      const character = newCharacter('Payroll Escort Tester');
+      const state: SaveData = { ...structuredClone(EMPTY_SAVE), character, run: startRun(character, scenario, () => 0) };
+      state.run!.sceneId = sceneId;
+      return state;
+    };
+    const signal = choose(makeState('stop'), scenario, scenario.scenes.stop.choices.find(({ id }) => id === 'signal')!, () => 0);
+    const farmTrack = choose(makeState('clause'), scenario, scenario.scenes.clause.choices.find(({ id }) => id === 'turn')!, () => 0);
+    const wonFight = choose(makeState('stop'), scenario, scenario.scenes.stop.choices.find(({ id }) => id === 'fight')!, () => 0);
+    const withdrew = choose(makeState('stop'), scenario, scenario.scenes.stop.choices.find(({ id }) => id === 'fight')!, () => 0.999999);
+
+    expect([signal.character?.money, farmTrack.character?.money, wonFight.character?.money, withdrew.character?.money]).toEqual([3, 3, 3, 3]);
+    expect(wonFight.run?.sceneId).toBe('arrival');
+    expect(withdrew.run?.sceneId).toBe('withdraw');
+    expect(sceneText(scenario.scenes.withdraw, withdrew)).toContain('withholds the danger bonus');
+    for (const state of [wonFight, withdrew]) {
+      const storage = { value: '', setItem(_key: string, value: string) { this.value = value; }, getItem(_key: string) { return this.value; } };
+      saveGame(state, storage as never);
+      expect(loadSave(storage as never).character?.money).toBe(3);
+    }
+  });
+
   it('keeps hoof treatment, instrument custody, and medicine transport tied to their routes', () => {
     const fresh = (scenario: (typeof ESCORT_PROTECTION_GENRE_BATCH)[number], gear?: string): SaveData => {
       const character = newCharacter('Route Truth Tester');

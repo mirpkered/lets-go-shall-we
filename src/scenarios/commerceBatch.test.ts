@@ -229,6 +229,7 @@ describe('commerce, bargains, and property adventure batch', () => {
     inKind = act(inKind, HALF_NOW, 'storeroom', 'acceptCanvasInstead');
     expect(inKind.character?.money).toBe(7);
     expect(inKind.run?.inventory).toContain('waxedCanvasSheet');
+    expect(HALF_NOW.scenes.canvasPayment.text).toContain('three-coin balance from the original agreement and one more coin for the added work');
   });
 
   it('uses the folding rule as limited property evidence in both land stories', () => {

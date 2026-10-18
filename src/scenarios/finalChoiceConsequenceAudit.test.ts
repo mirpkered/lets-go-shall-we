@@ -81,10 +81,13 @@ describe('final-choice consequence audit', () => {
 
   it('does not claim the hatch was sealed when the Traveler leaves the quiet room', () => {
     const scenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'the-quiet-room')!;
-    const sealed = take(scenario, stateAt(scenario, 'quietRoomNight'), 'sealHatch');
+    const beforeSeal = stateAt(scenario, 'quietRoomNight');
+    const sealed = take(scenario, beforeSeal, 'sealHatch');
     const left = take(scenario, stateAt(scenario, 'quietRoomNight'), 'sleepElsewhere');
     expect(sealed.run?.sceneId).toBe('quietRoomAfter');
     expect(endingText(scenario, sealed)).toContain('the innkeeper boards the hatch');
+    expect(endingText(scenario, sealed)).not.toMatch(/refunds your room charge/i);
+    expect(sealed.character?.money).toBe(beforeSeal.character?.money);
     expect(left.run?.sceneId).toBe('quietRoomLeft');
     expect(endingText(scenario, left)).toContain('without asking the innkeeper to board the hatch');
   });

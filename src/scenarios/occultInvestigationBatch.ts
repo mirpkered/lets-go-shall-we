@@ -161,7 +161,7 @@ const quietRoomNight = quietRoomScenario.scenes.quietRoomNight;
 quietRoomNight.choices = quietRoomNight.choices.map((choice) => choice.id === 'sealHatch'
   ? { ...choice, effects: { historyFlags: ['asked_innkeeper_to_seal_quiet_room_hatch'] } }
   : { ...choice, next: 'quietRoomLeft', effects: { historyFlags: ['left_quiet_room_without_sealing_hatch'] } });
-quietRoomScenario.scenes.quietRoomAfter.text = 'At your request, the innkeeper boards the hatch and refunds your room charge. You leave the room before dawn; neither of you hears the voice again.';
+quietRoomScenario.scenes.quietRoomAfter.text = 'At your request, the innkeeper boards the hatch. You leave the room before dawn; neither of you hears the voice again.';
 quietRoomScenario.scenes.quietRoomLeft = done('quietRoomLeft', 'Out Before Dawn', 'You leave the room before dawn without asking the innkeeper to board the hatch. The room remains closed behind you; whether the voice returns is not something you stay to learn.');
 
 const lastCandleScenario = OCCULT_INVESTIGATION_ADVENTURES.find(({ id }) => id === 'last-candle-in-the-house')!;
