@@ -75,12 +75,17 @@ describe('Lost Places route-accurate endings', () => {
     identifiedAndReferred = loadSave({ getItem: () => JSON.stringify(identifiedAndReferred) });
     expect(text(identifiedAndReferred, fort)).toMatch(/identified letters are referred to the surgeon’s family/i);
     expect(identifiedAndReferred.character?.knowledge).toContain('Room seven at the old fort was a temporary infirmary during a fever year, not an armory.');
+    expect(identifiedAndReferred.character?.historyFlags).toContain('arranged family notice for identified letters from the old fort');
+    expect(identifiedAndReferred.character?.historyFlags).not.toContain('helped open and correctly inventory a sealed fort room');
 
     let waitedOutside = actIn(start(fort), fort, 'readInventory');
     waitedOutside = actIn(waitedOutside, fort, 'planPermission');
     waitedOutside = actIn(waitedOutside, fort, 'waitOutside');
+    expect(waitedOutside.character?.historyFlags).not.toContain('helped open and correctly inventory a sealed fort room');
     waitedOutside = actIn(waitedOutside, fort, 'fortRecord');
     expect(text(waitedOutside, fort)).toMatch(/identified letters are referred to the surgeon’s family/i);
+    expect(waitedOutside.character?.historyFlags).toContain('arranged family notice for identified letters from the old fort');
+    expect(waitedOutside.character?.historyFlags).not.toContain('helped open and correctly inventory a sealed fort room');
   });
 
   it('records the water-gate location only after the third stone identifies it', () => {

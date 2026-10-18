@@ -111,14 +111,16 @@ describe('focused live-play QA repairs', () => {
     expect(scenario.scenes.delay.text).toMatch(/herd waits until the crew lowers the pole/i);
   });
 
-  it('persists the Old Water-Gate map location only when the Traveler explicitly copies it', () => {
+  it('persists the Old Water-Gate map location only after the Traveler identifies the stone mark', () => {
     const copy = THE_MAP_IN_THE_LEDGER.scenes.ledger.choices.find(({ id }) => id === 'copyMap')!;
-    expect(copy.effects?.historyFlags).toContain('retained_old_water_gate_location_from_mill_ledger');
+    expect(copy.effects?.historyFlags ?? []).not.toContain('retained_old_water_gate_location_from_mill_ledger');
     const copied = pick(fresh(THE_MAP_IN_THE_LEDGER), THE_MAP_IN_THE_LEDGER, 'copyMap');
-    expect(copied.character?.historyFlags).toContain('retained_old_water_gate_location_from_mill_ledger');
+    expect(copied.character?.historyFlags ?? []).not.toContain('retained_old_water_gate_location_from_mill_ledger');
+    const identified = pick(pick(fresh(THE_MAP_IN_THE_LEDGER), THE_MAP_IN_THE_LEDGER, 'traceCreek'), THE_MAP_IN_THE_LEDGER, 'checkStone');
+    expect(identified.character?.historyFlags).toContain('retained_old_water_gate_location_from_mill_ledger');
     const stored = new Map<string, string>();
     const storage = { getItem: (key: string) => stored.get(key) ?? null, setItem: (key: string, value: string) => { stored.set(key, value); } };
-    saveGame(copied, storage);
+    saveGame(identified, storage);
     expect(loadSave(storage).character?.historyFlags).toContain('retained_old_water_gate_location_from_mill_ledger');
     const declined = pick(fresh(THE_MAP_IN_THE_LEDGER), THE_MAP_IN_THE_LEDGER, 'leaveLedger');
     expect(declined.character?.historyFlags).not.toContain('retained_old_water_gate_location_from_mill_ledger');
