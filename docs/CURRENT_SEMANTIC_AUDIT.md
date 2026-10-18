@@ -3,7 +3,11 @@
 Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0385` and `CRA-C0015`.
+Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0387` and `CRA-C0015`.
+
+### Current local checkpoint — named human-QA dispositions
+
+The post-audit ledger now contains **25** additional human-QA findings, all repaired. Current live total is **379** (**369 repaired, 10 healthy/no-longer-reproduces, 0 open**); severity totals are **13 HIGH, 287 MEDIUM, 73 LOW, 6 unrecovered**. Classifications remain **802 HEALTHY, 59 MINOR CONCERN, 0 CONFIRMED DEFECT, 0 NEEDS MANUAL REVIEW**. The post-audit Knowledge/History cluster CRA-C0002 now has **40** assigned findings; the original 354-finding closure and its records are unchanged. CRA-F0385 fixes the Retired Lampwright teaching/remember boundary, and CRA-F0386 fixes A Good Night’s Sleep persistence after the innkeeper’s complete advice. The Morning Edition candidate was verified healthy because its exact closure/detour details are only disclosed on the route that persists them. Next finding ID: `CRA-F0387`; next cluster ID: `CRA-C0015`. This is local-only; Weekly Scenario Batch remains paused.
 
 ### Post-audit human-QA semantic reconciliation — Paper Boat, The Shortcut, Last Stop, and What Did You See?
 

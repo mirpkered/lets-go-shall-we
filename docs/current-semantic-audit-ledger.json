@@ -23778,22 +23778,22 @@
     "provenance": "POST_AUDIT_HUMAN_QA",
     "discovery": "Twenty-three new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 23,
+    "liveFindingCount": 25,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 23,
+      "VERIFIED_HEALTHY_REPAIRED": 25,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 377,
+    "currentLiveFindingCount": 379,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 367,
+      "VERIFIED_HEALTHY_REPAIRED": 369,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 287,
-      "LOW": 71,
+      "LOW": 73,
       "SEVERITY_UNRECOVERED": 6
     },
     "currentLiveClassificationTotals": {
@@ -23802,7 +23802,7 @@
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0385",
+    "nextFindingId": "CRA-F0387",
     "nextClusterId": "CRA-C0015",
     "findings": [
       {
@@ -24241,6 +24241,44 @@
         "implementationEvidence": "The unsupported refund claim was removed; the innkeeper still boards the hatch and the ending remains route-specific. Tests assert the sealed result does not mention a refund and that money is unchanged; the unsealed departure contrast remains intact.",
         "repairLocality": "Scenario-specific ending text only; no charge, refund, or other money effect was introduced.",
         "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0385",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 456,
+        "adventureId": "the-retired-lampwright",
+        "title": "The Retired Lampwright",
+        "sourceFile": "src/scenarios/merchantEcologyBatch.ts",
+        "severity": "LOW",
+        "defect": "The lampwright fully explains the numbered-wick refuge-room system before a later meta-memory choice, but stable Knowledge was previously granted only by that choice.",
+        "routeWitness": "With a carried Numbered Lantern Wick, `entry.askAboutWick -> wickHistory` displays that numbered wicks marked registered refuge rooms and were neither keys nor signals; the reason this cellar lamp was relit remains unknown. Before repair, only `wickHistory.rememberWickSystem` granted `KNOWLEDGE_FACTS.numberedRefugeLampSystem`. The teaching is complete before that choice, so declining to remember erased knowledge already acquired. Stock, purchase, sale, and leave-without-asking routes do not teach or receive this fact.",
+        "violatedRule": "Persist stable Knowledge when reliable information is taught, not only when a later meta-choice asks the Traveler to remember it; retain unrelated uncertainty.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing stable Knowledge entry is now granted when the gated wick question opens the explanation scene. The subsequent choice no longer controls memory and is worded as thanking the lampwright and leaving with the already-carried wick. Other merchant routes remain without this Knowledge. Focused tests verify the teaching transition, no Knowledge effect on the follow-up choice, and save/reload retention.",
+        "repairLocality": "Caller-specific entry transition in the Retired Lampwright section of `merchantEcologyBatch.ts`; shared merchant builder behavior for other callers is unchanged.",
+        "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0386",
+        "provenance": "POST_AUDIT_HUMAN_QA",
+        "registrationStatus": "LIVE",
+        "position": 103,
+        "adventureId": "a-good-nights-sleep",
+        "title": "A Good Night’s Sleep",
+        "sourceFile": "src/scenarios/pleasantDaysBatch.ts",
+        "severity": "LOW",
+        "defect": "The innkeeper states two reliable, repeatable schedule facts before the Traveler chooses a bedtime response, but one subsequent choice alone previously persisted them as Knowledge.",
+        "routeWitness": "`comfortableInn.talkComfortableInn -> innConversation` displays that the baker starts before dawn and the road is usually busiest after the market bell. Before repair, `innConversation.sleepAfterTalk` alone granted the same sentence; `endInnConversation` reached the same `sleptWell` ending without it and added no new evidence. The direct wash/sleep routes do not include the innkeeper conversation and do not establish this fact.",
+        "violatedRule": "Persist reliable information when heard, independently of the later choice about ending a conversation or turning in.",
+        "clusterId": "CRA-C0002",
+        "initialStatus": "OPEN_REPRODUCIBLE",
+        "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The existing free-text Knowledge now applies on the conversation choice before `innConversation` is shown. Both subsequent bedtime responses retain it, and direct sleep without the conversation does not. Regression includes save/reload of the learned fact; no other pleasant-day outcome changed.",
+        "repairLocality": "Scenario-specific transition effect in `pleasantDaysBatch.ts`; no shared builder or save-schema change.",
+        "dependencies": []
       }
     ],
     "newClusters": [
@@ -24267,7 +24305,7 @@
     ],
     "currentClusterAssignmentTotals": {
       "CRA-C0001": 224,
-      "CRA-C0002": 38,
+      "CRA-C0002": 40,
       "CRA-C0003": 1,
       "CRA-C0004": 34,
       "CRA-C0005": 1,
@@ -24282,6 +24320,6 @@
       "CRA-C0014": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty-three records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These twenty-five records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
   }
 }
