@@ -23776,33 +23776,47 @@
   },
   "postAuditHumanQa": {
     "provenance": "POST_AUDIT_HUMAN_QA",
-    "discovery": "Fifty new semantic findings were established after the original 354-finding audit had closed, during focused human-QA reconciliation. The historical audit remains complete and unchanged.",
+    "discovery": "Fifty-one new semantic findings have been established after the original 354-finding audit had closed, during focused human-QA reconciliation and the finite MINOR CONCERN deep review. The historical audit remains complete and unchanged.",
     "status": "RECONCILED",
-    "liveFindingCount": 50,
+    "liveFindingCount": 51,
     "dispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 50,
+      "VERIFIED_HEALTHY_REPAIRED": 51,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 0,
       "OPEN": 0
     },
-    "currentLiveFindingCount": 404,
+    "currentLiveFindingCount": 405,
     "currentLiveDispositionTotals": {
-      "VERIFIED_HEALTHY_REPAIRED": 394,
+      "VERIFIED_HEALTHY_REPAIRED": 395,
       "VERIFIED_HEALTHY_NO_LONGER_REPRODUCES": 10,
       "OPEN": 0
     },
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 292,
-      "LOW": 95,
+      "LOW": 96,
       "SEVERITY_UNRECOVERED": 4
     },
     "currentLiveClassificationTotals": {
-      "HEALTHY": 802,
-      "MINOR CONCERN": 59,
+      "HEALTHY": 804,
+      "MINOR CONCERN": 57,
       "CONFIRMED DEFECT": 0,
       "NEEDS MANUAL REVIEW": 0
     },
-    "nextFindingId": "CRA-F0412",
+    "currentAdventureClassificationOverrides": [
+      {
+        "adventureId": "the-bridge-crews-wedge",
+        "previousClassification": "MINOR CONCERN",
+        "currentClassification": "HEALTHY",
+        "reason": "CRA-F0412 is repaired and the only documented semantic mismatch in the finite review is resolved."
+      },
+      {
+        "adventureId": "the-cold-rope-at-dawn",
+        "previousClassification": "MINOR CONCERN",
+        "currentClassification": "HEALTHY",
+        "reason": "The malformed terminal phrase was clarified; the only documented concern is resolved without changing route behavior."
+      }
+    ],
+    "nextFindingId": "CRA-F0413",
     "nextClusterId": "CRA-C0016",
     "findings": [
       {
@@ -24674,6 +24688,16 @@
         "clusterId": "CRA-C0015", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
         "implementationEvidence": "Removed the unsupported dated-receipt choice and unreachable `receipt` scene rather than treating a railway map as proof of arrival date. Name/question, witness, livery, departure, uncertainty, Knowledge, and History routes remain unchanged. `westernOutlawBatch.test.ts` verifies the map is non-carryable and not starting equipment, the three grounded opening alternatives remain available, and the receipt choice/scene no longer exist; all 18 focused tests pass.",
         "repairLocality": "Scenario-specific removal of an unsupported evidence route in `westernOutlawBatch.ts`; no item definition, progression, or inventory behavior changed.", "dependencies": []
+      },
+      {
+        "findingId": "CRA-F0412", "provenance": "POST_AUDIT_HUMAN_QA", "discoverySource": "post-audit MINOR CONCERN deep review", "registrationStatus": "LIVE", "position": 465,
+        "adventureId": "the-bridge-crews-wedge", "title": "The Bridge Crew’s Wedge", "sourceFile": "src/scenarios/gearCorrectiveBatch.ts", "severity": "LOW",
+        "defect": "The shared inspection ending says the Traveler’s tool choice affected how the beam was held on the askCrewLead route, where the Traveler chose no tool.",
+        "routeWitness": "`approach.askCrewLead -> inspection` establishes only that the Traveler asked the crew lead to inspect the jack; it does not establish a Traveler-selected tool or line. The shared `inspection` text nevertheless said, ‘Your tool choice affected how the beam was held.’ Contrast: `approach.seatWedge -> wedge.stopAndReset -> inspection` establishes the wedge held the beam; `approach.holdLine -> line.inspectSplit -> inspection` establishes the rope line held it. All routes correctly leave the span closed and split timber untrusted.",
+        "violatedRule": "A converged result must not attribute a route-specific method or action to the Traveler unless the incoming route establishes it; choice/result narration must preserve selected intent.",
+        "clusterId": "CRA-C0001", "initialStatus": "OPEN_REPRODUCIBLE", "implementationStatus": "VERIFIED_HEALTHY_REPAIRED",
+        "implementationEvidence": "The common inspection text is now neutral, and text variants acknowledge the rope line or wedge only when their existing run-local flags prove that method. The crew-lead/no-tool route receives no tool-credit claim. `gearCorrectiveBatch.test.ts` covers no-tool, wedge, and line route contrasts (**16 tests** in the focused suite); `wildernessFieldcraftGenreBatch.test.ts` covers the separate Cold Rope wording repair (**14 tests**).",
+        "repairLocality": "Scenario-specific state-aware text variants in `gearCorrectiveBatch.ts`; the existing bridge_wedge_used and bridge_line_used flags are reused. No new state, save schema, reward, Gear, or crossing behavior changed.", "dependencies": []
       }
     ],
     "newClusters": [
@@ -24709,7 +24733,7 @@
       }
     ],
     "currentClusterAssignmentTotals": {
-      "CRA-C0001": 226,
+      "CRA-C0001": 227,
       "CRA-C0002": 57,
       "CRA-C0003": 1,
       "CRA-C0004": 35,
@@ -24726,6 +24750,6 @@
       "CRA-C0015": 3
     },
     "currentUnclusteredLiveFindingCount": 3,
-    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These fifty records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings."
+    "scopeNote": "The original `findings`, `clusters`, Adventure classifications, audit synthesis, and closure counters remain unchanged. These fifty-one records are appended only in this post-audit section; operational totals combine the 354 closed original live findings with these separately sourced post-audit human-QA findings. Current classification overrides are recorded separately from the original closed-audit classification totals."
   }
 }
