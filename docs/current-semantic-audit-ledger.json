@@ -351,8 +351,8 @@
   "liveSeverityTotals": {
     "HIGH": 13,
     "MEDIUM": 285,
-    "LOW": 50,
-    "SEVERITY_UNRECOVERED": 6
+    "LOW": 52,
+    "SEVERITY_UNRECOVERED": 4
   },
   "liveClusterFindingCounts": {
     "CRA-C0001": 224,
@@ -23793,8 +23793,8 @@
     "currentLiveSeverityTotals": {
       "HIGH": 13,
       "MEDIUM": 292,
-      "LOW": 93,
-      "SEVERITY_UNRECOVERED": 6
+      "LOW": 95,
+      "SEVERITY_UNRECOVERED": 4
     },
     "currentLiveClassificationTotals": {
       "HEALTHY": 802,
