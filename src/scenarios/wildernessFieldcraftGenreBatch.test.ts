@@ -313,4 +313,15 @@ describe('Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft', () => 
     expect(meets(scenario.scenes.north.choices.find(({ id }) => id === 'takeChain')?.requirements, legacy)).toBe(true);
     expect(scenario.scenes.north.choices.find(({ id }) => id === 'takeChain')?.effects?.gainItemProvenance?.surveyChain).toMatch(/award itself does not establish public access/i);
   });
+
+  it('keeps the failed ice shortcut ending aligned with the established fracture', () => {
+    const scenario = WILDERNESS_FIELDCRAFT_GENRE_BATCH.find(({ id }) => id === 'the-cold-rope-at-dawn')!;
+    let state = act(begin(scenario), scenario, 'crossIce');
+    expect(state.run?.sceneId).toBe('crack');
+    state = act(state, scenario, 'retreatIce');
+    expect(state.run?.sceneId).toBe('retreated');
+    expect(sceneText(scenario.scenes.retreated, state)).toMatch(/leave the fractured ice alone/i);
+    expect(sceneText(scenario.scenes.retreated, state)).toMatch(/bridge remains the only known route/i);
+    expect(sceneText(scenario.scenes.retreated, state)).not.toMatch(/crossed|safe ice/i);
+  });
 });

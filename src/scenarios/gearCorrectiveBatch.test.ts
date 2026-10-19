@@ -163,6 +163,23 @@ describe('corrective Gear Adventure batch', () => {
     expect(THE_APPRENTICES_LIGHT.scenes.test.choices.find(({ id }) => id === 'rememberAirflow')).toBeUndefined();
   });
 
+  it('keeps the Bridge Crew inspection account truthful for tool and no-tool routes', () => {
+    let noTool = act(start(THE_BRIDGE_CREWS_WEDGE), THE_BRIDGE_CREWS_WEDGE, 'askCrewLead');
+    expect(noTool.run?.sceneId).toBe('inspection');
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, noTool)).not.toMatch(/your tool choice affected/i);
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, noTool)).toMatch(/new brace fits the sound timber/i);
+
+    let wedge = act(start(THE_BRIDGE_CREWS_WEDGE), THE_BRIDGE_CREWS_WEDGE, 'seatWedge');
+    wedge = act(wedge, THE_BRIDGE_CREWS_WEDGE, 'stopAndReset');
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, wedge)).toMatch(/your wedge helped hold the beam/i);
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, wedge)).toMatch(/could not make split wood sound/i);
+
+    let line = act(start(THE_BRIDGE_CREWS_WEDGE), THE_BRIDGE_CREWS_WEDGE, 'holdLine');
+    line = act(line, THE_BRIDGE_CREWS_WEDGE, 'inspectSplit');
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, line)).toMatch(/your rope line held the beam/i);
+    expect(sceneText(THE_BRIDGE_CREWS_WEDGE.scenes.inspection, line)).toMatch(/could not make split wood sound/i);
+  });
+
   it('keeps salvage ownership unresolved and never silently grants the named chest', () => {
     let state = start(THE_CLAIMED_SALVAGE);
     state = act(state, THE_CLAIMED_SALVAGE, 'inspectCamp');

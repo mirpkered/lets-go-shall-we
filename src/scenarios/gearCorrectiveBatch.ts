@@ -256,10 +256,13 @@ export const THE_BRIDGE_CREWS_WEDGE: Scenario = largeAdventure('the-bridge-crews
     { id: 'inspectSplit', label: 'Inspect the split from the bank with the crew lead', next: 'inspection' },
     { id: 'keepLineTaut', label: 'Keep the line taut while the jack is lowered', next: 'inspection', effects: { setFlags: ['bridge_line_used'] } },
   ], 'warning'),
-  inspection: s('inspection', 'The Repair Is Replanned', 'A new brace fits the sound timber and the damaged board is set aside. No one crosses until the crew lead checks the whole span. Your tool choice affected how the beam was held, but it could not make split wood sound.', [
+  inspection: s('inspection', 'The Repair Is Replanned', 'A new brace fits the sound timber and the damaged board is set aside. No one crosses until the crew lead checks the whole span.', [
     { id: 'acceptSpareHammer', label: 'Accept the crew lead’s spare Bridgewright’s Hammer', requirements: { notOwnedItems: ['bridgewrightHammer'] }, next: 'hammer', effects: { gainItems: ['bridgewrightHammer'], historyFlags: ['received_bridgewright_hammer_from_crew'] } },
     { id: 'takeThreeCoins', label: 'Take three coins for the maintenance shift', next: 'wage', effects: { money: 3 } },
     { id: 'returnEquipment', label: 'Return the crew’s tools and leave without pay', next: 'unpaid' },
+  ], 'safe', [
+    { requirements: { flags: ['bridge_line_used'] }, text: 'The crew replans around sound timber and sets the damaged board aside. Your rope line held the beam for inspection, but it could not make split wood sound. No one crosses until the crew lead checks the whole span.' },
+    { requirements: { flags: ['bridge_wedge_used'] }, text: 'The crew replans around sound timber and sets the damaged board aside. Your wedge helped hold the beam, but it could not make split wood sound. No one crosses until the crew lead checks the whole span.' },
   ]),
   hammer: e('hammer', 'A Hammer for Careful Work', 'The lead releases a spare Bridgewright’s Hammer from the crew chest, with the crew’s name struck on the old one left behind. You receive the spare as payment; the bridge remains closed until the inspection is complete.'),
   wage: e('wage', 'The Shift Ends at the Detour', 'The crew pays three coins for the shift. The detour stays posted until the lead signs the bridge open, and the split brace is carried back for examination.'),
