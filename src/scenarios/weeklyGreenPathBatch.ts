@@ -565,4 +565,3 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
     },
   },
 ];
-

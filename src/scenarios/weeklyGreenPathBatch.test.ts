@@ -124,4 +124,3 @@ describe('weekly green-path Adventure batch', () => {
     expect(state.character?.lore).toEqual([]);
   });
 });
-
