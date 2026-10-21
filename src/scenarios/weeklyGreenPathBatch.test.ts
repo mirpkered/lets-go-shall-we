@@ -63,6 +63,8 @@ describe('weekly green-path Adventure batch', () => {
     expect(itemsOfClass('GEAR')).toHaveLength(74);
     expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
     expect(WEEKLY_GREEN_PATH_ADVENTURES.some(({ scenes }) => Object.values(scenes).some(({ choices }) => choices.some(({ effects }) => effects?.gainItems?.length || effects?.gainSupplies || effects?.knowledge?.length || effects?.knowledgeEntries?.length)))).toBe(false);
+    const continuityStories = WEEKLY_GREEN_PATH_ADVENTURES.filter(({ scenes }) => Object.values(scenes).some(({ choices }) => choices.some(({ effects }) => Boolean(effects && (effects.money !== undefined || effects.loseMoney || effects.historyFlags?.length || effects.lore?.length || effects.knowledge?.length || effects.knowledgeEntries?.length || effects.gainContacts?.length || effects.gainFavors?.length || effects.gainItems?.length || effects.gainSupplies || effects.addItemUpgrades?.length || effects.repairItems?.length || effects.replaceItems?.length || effects.gainOwnedAssets?.length)))));
+    expect(continuityStories).toHaveLength(14);
   });
 
   it('has complete acyclic graphs, reachable actions, and QA launch entries', () => {
@@ -121,6 +123,6 @@ describe('weekly green-path Adventure batch', () => {
     state = start(byId('the-stone-with-two-labels'), 'charcoalRubbingKit');
     state = advance(state, byId('the-stone-with-two-labels'), 'cabinet', 'copyGroove');
     expect(state.run?.sceneId).toBe('rubbed');
-    expect(state.character?.lore).toEqual([]);
+    expect(state.character?.lore).toEqual(['A shallow groove on a river stone was preserved without proving where the stone came from or who marked it.']);
   });
 });

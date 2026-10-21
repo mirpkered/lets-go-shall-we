@@ -180,7 +180,7 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
       ]),
       purpose: n('purpose', 'What the Demonstration Can Prove', 'Emmet wants to show how a shadow changes, not certify the town’s clock. The crowd can watch the movement without being told that either face sets the correct civic hour.', [
         { id: 'showShadowChange', label: 'Keep the demonstration about the moving shadow', next: 'temporary' },
-        { id: 'announceClockConflict', label: 'Explain the disagreement before the lecture begins', next: 'announcement' },
+        { id: 'announceClockConflict', label: 'Explain the disagreement before the lecture begins', next: 'announcement', effects: { historyFlags: ['town_lecture_recorded_both_clock_readings'] } },
       ]),
       announcement: e('announcement', 'A Difference, Not a Verdict', 'Emmet names both clock readings and says the town clock has not been checked. The demonstration begins without turning a disagreement into a claim of exact time.'),
       temporary: e('temporary', 'A Local Demonstration', 'The room watches the shadow shift across the floor mark. Emmet describes what is visible and leaves the town’s official time unsettled.'),
@@ -195,7 +195,7 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
         { id: 'readCards', label: 'Compare the handwriting and dates on both labels', next: 'cards' },
         { id: 'askDonors', label: 'Ask the two donors what they remember', next: 'donors' },
         { id: 'inspectStone', label: 'Look for a feature that could distinguish the locations', next: 'stone' },
-        { id: 'copyGroove', label: 'Use your Charcoal Rubbing Kit to preserve the shallow groove', next: 'rubbed', requirements: { usableGear: ['charcoalRubbingKit'] }, unavailableText: 'No usable Charcoal Rubbing Kit is carried.' },
+        { id: 'copyGroove', label: 'Use your Charcoal Rubbing Kit to preserve the shallow groove', next: 'rubbed', requirements: { usableGear: ['charcoalRubbingKit'] }, unavailableText: 'No usable Charcoal Rubbing Kit is carried.', effects: { lore: ['A shallow groove on a river stone was preserved without proving where the stone came from or who marked it.'] } },
       ]),
       cards: n('cards', 'Two Different Hands', 'The mill note is older, but its ink has run. The ford note is newer and names the child, not a date. Neither card proves the stone’s origin.', [
         { id: 'keepBothCards', label: 'Keep both cards beside the stone as competing accounts', next: 'labelled' },
@@ -224,7 +224,7 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
         { id: 'watchFromDoor', label: 'Keep clear and tell the hall steward what you saw', next: 'steward' },
       ]),
       pause: n('pause', 'The Show Stops before the Flame Spreads', 'You set the candle on stone and Orel ties the curtain away. The prop change is delayed, but the cloth cools before anyone returns to the table.', [
-        { id: 'inspectBeforeRestart', label: 'Check that the cloth and prop table are cool before restarting', next: 'safeRestart' },
+        { id: 'inspectBeforeRestart', label: 'Check that the cloth and prop table are cool before restarting', next: 'safeRestart', effects: { historyFlags: ['paused_performance_for_curtain_fire_safety'] } },
         { id: 'leaveRestartToOrel', label: 'Leave the restart decision to the stagehand', next: 'closed' },
       ]),
       warning: n('warning', 'A Warning with a Window', 'Orel hears the warning while the flame is still small. He can tie the cloth clear now, or the steward can stop the performance until the prop table is moved.', [
@@ -315,10 +315,10 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
       ]),
       rack: n('rack', 'The Fold Trapped Dampness', 'The inner fold has blocked air from reaching the cloth. Moving it to a wider rack will slow the order but let the whole length dry before another test.', [
         { id: 'moveAndWait', label: 'Spread the cloth on the wider rack and wait', next: 'delayed' },
-        { id: 'testOneLength', label: 'Test the dry end and offer only what it supports', next: 'partial' },
+        { id: 'testOneLength', label: 'Test the dry end and offer only what it supports', next: 'partial', effects: { money: 1, historyFlags: ['dye_worker_sold_only_tested_color'] } },
       ]),
       delayed: e('delayed', 'An Honest Delay', 'Yara tells the buyer the color has not set through the fold and promises no finished lining today. The cloth is spread out to dry before the order is cut.'),
-      partial: e('partial', 'Only the Tested Length', 'The buyer takes the shorter dry section for a sleeve repair and sees the color difference before paying. The rest of the cloth stays on the rack until it can be checked.'),
+      partial: e('partial', 'Only the Tested Length', 'The buyer takes the shorter dry section for a sleeve repair, sees the color difference, and pays the agreed inspection fee. The rest of the cloth stays on the rack until it can be checked.'),
     },
   },
   {
@@ -331,7 +331,7 @@ export const WEEKLY_GREEN_PATH_ADVENTURES: Scenario[] = [
         { id: 'askVessaHistory', label: 'Ask whether this tray has shown damage before', next: 'history' },
       ]),
       tray: n('tray', 'A Small Mark on One Leaf', 'The underside has one fresh notch and no clusters of eggs. The neighboring trays show no matching damage. That supports a local check, not a claim that the whole house is infested.', [
-        { id: 'isolateTray', label: 'Set the single tray aside for a closer morning inspection', next: 'isolated' },
+        { id: 'isolateTray', label: 'Set the single tray aside for a closer morning inspection', next: 'isolated', effects: { historyFlags: ['isolated_one_glasshouse_tray_pending_inspection'] } },
         { id: 'keepHouseOpen', label: 'Leave the other trays in place and inspect again at dawn', next: 'morning' },
       ]),
       observe: n('observe', 'A Passing Visitor', 'The moth moves toward the high glass and then settles on a warm frame. It does not return to the seedlings while you watch.', [

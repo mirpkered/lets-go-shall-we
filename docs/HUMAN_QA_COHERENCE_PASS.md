@@ -1617,4 +1617,4 @@ The weekly content workflow may be deliberately resumed under the current [Autom
 
 ### Weekly batch route review — 2026-10-21
 
-The new 20-Adventures batch is covered by fresh-character graph traversal, required-action reachability, four optional existing-Gear branches, QA launch enumeration, text/menu length bounds, and explicit route-specific consequence checks. This is automated route review of the new authored content; it does not expand or rewrite the historical 861-Adventure semantic review ledger, whose finding totals and closure status remain separately preserved.
+The new 20-Adventures batch brings the current registry to 881 and is covered by fresh-character graph traversal, required-action reachability, four optional existing-Gear branches, QA launch enumeration, text/menu length bounds, continuity-mix, and explicit route-specific consequence checks. This is automated route review of the new authored content; it does not expand or rewrite the historical 861-Adventure semantic review ledger, whose finding totals and closure status remain separately preserved.

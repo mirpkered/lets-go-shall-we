@@ -28,7 +28,7 @@ describe('Courier / Mail / Telegraph / Message Work batch', () => {
     expect(COURIER_BATCH_PRIMARY_LANES).toEqual({ GEAR: 8, KNOWLEDGE: 8, LORE: 8 });
     expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
     const authoredLore = new Set(SCENARIOS.flatMap(({ scenes }) => Object.values(scenes).flatMap(({ choices }) => choices.flatMap(({ effects }) => effects?.lore ?? []))));
-    expect(authoredLore).toHaveLength(51);
+    expect(authoredLore).toHaveLength(52);
     expect(validateScenarioRegistry(COURIER_MAIL_TELEGRAPH_GENRE_BATCH)).toMatchObject({ errors: [], warnings: [] });
     expect(COURIER_CONSEQUENCE_MATRIX).toHaveLength(24);
     for (const scenario of COURIER_MAIL_TELEGRAPH_GENRE_BATCH) {
