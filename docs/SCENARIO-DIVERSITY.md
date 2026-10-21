@@ -2,6 +2,8 @@
 
 This framework exists to help the library grow toward hundreds or 1,000+ adventures without turning authoring into a fixed form. Metadata is internal, never a quality score, and never player-facing.
 
+The October 21, 2026 weekly batch adds 20 year-round Adventures, bringing the registry to 881 (806 Adventure depth, alongside 59 Encounters and 16 Deep Explorations). It emphasizes quieter civic/cultural participation, privacy, shared resources, and practical evidence decisions. Its metadata and route structures are included in the current automated diversity report; similarity warnings remain prompts for human review rather than release failures. See [Adventure Library Status](ADVENTURE_LIBRARY.md) for the batch scope.
+
 ## Classification dimensions
 
 `src/scenarioDiversity.ts` supplies a complete searchable classification for every registered scenario. Legacy adventures are classified from their authored title, subtitle, scenes, variants, choices, endings, risk, and effects; specific author decisions can override any dimension through `Scenario.diversity`. Legacy inferences are a review aid rather than infallible canon. Authors of new adventures should set `distinctiveHook` and seasonal availability intentionally, then correct any inaccurate inferred values.

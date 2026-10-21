@@ -164,13 +164,13 @@ describe('Equipment Testing / Inventors / Field Trials batch', () => {
 
   it('registers 24 unique, all-year Adventures with a valid reachable graph', () => {
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(861);
+    expect(SCENARIOS).toHaveLength(881);
     expect(new Set(BATCH.map(({ id }) => id)).size).toBe(24);
     expect(BATCH.every(({ diversity }) => diversity?.depthClass === 'ADVENTURE' && diversity.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(validateScenarioRegistry(BATCH).errors).toEqual([]);
     for (const id of ['the-tester-who-left-the-shop', 'the-rain-cup-at-the-bridge', 'the-caliper-for-the-new-buckle', 'the-square-that-lied-on-the-ramp', 'the-quiet-gauge-at-the-river-gate']) {
       expect(AUTHORED.some(({ id: authoredId }) => authoredId === id), `${id} remains in the authoring draft`).toBe(true);
-      expect(SCENARIOS.some(({ id: registeredId }) => registeredId === id), `${id} is not added to the 861-Adventure registry`).toBe(false);
+      expect(SCENARIOS.some(({ id: registeredId }) => registeredId === id), `${id} is not added to the 881-Adventure registry`).toBe(false);
     }
   });
 

@@ -29,7 +29,7 @@ function verseOutcome(...choiceIds: string[]): SaveData {
 
 describe('outcome-dependent continuity spin-offs', () => {
   it('registers exactly two new Adventures without changing existing stable IDs', () => {
-    expect(SCENARIOS).toHaveLength(861);
+    expect(SCENARIOS).toHaveLength(881);
     expect(SCENARIOS.filter(({ id }) => ['notes-after-the-ribbon', 'a-line-for-the-broadside'].includes(id))).toHaveLength(2);
     expect(THE_PIE_WITH_NO_RECIPE.id).toBe('the-pie-with-no-recipe');
     expect(THE_LAST_VERSE_CONTEST.id).toBe('the-last-verse-contest');

@@ -256,7 +256,7 @@ describe('Lost Places route-accurate endings', () => {
   });
 
   it('keeps the five audit candidates registered without changing library size', () => {
-    expect(SCENARIOS).toHaveLength(861);
+    expect(SCENARIOS).toHaveLength(881);
     expect(validateScenarioRegistry(LOST_PLACES_ADVENTURES).errors).toEqual([]);
     expect(validateScenarioRegistry(LOST_PLACES_ADVENTURES).warnings).toEqual([]);
   });
