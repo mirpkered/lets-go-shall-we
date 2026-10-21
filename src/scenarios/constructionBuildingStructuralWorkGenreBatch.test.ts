@@ -36,7 +36,7 @@ const reachSettlement=(scenario:(typeof BATCH)[number])=>{
 describe('Construction / Building / Structural Work batch',()=>{
   it('adds 24 unique, reachable, year-round Adventures with balanced primary continuity',()=>{
     expect(BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(861);
+    expect(SCENARIOS).toHaveLength(881);
     expect(new Set(BATCH.map(({id})=>id)).size).toBe(24);
     expect(CONSTRUCTION_BATCH_PRIMARY_LANES).toEqual({GEAR:8,KNOWLEDGE:8,LORE:8});
     expect(validateScenarioRegistry(BATCH).errors).toEqual([]);

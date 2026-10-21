@@ -97,6 +97,7 @@ import { INDUSTRIAL_MILL_RAIL_GEAR_BATCH } from './industrialMillRailWorkGenreBa
 import { MEDICAL_RESCUE_SUPPORT_GEAR_BATCH } from './medicalRescueSupportGenreBatch';
 import { CONSTRUCTION_BUILDING_STRUCTURAL_WORK_BATCH } from './constructionBuildingStructuralWorkGenreBatch';
 import { COURIER_MAIL_TELEGRAPH_GENRE_BATCH } from './courierMailTelegraphGenreBatch';
+import { WEEKLY_GREEN_PATH_ADVENTURES } from './weeklyGreenPathBatch';
 
 export const SCENARIOS: Scenario[] = [
   BROKEN_BELL, LAST_STOP, AWW_RATS, WHATS_MINE, THE_LAST_ROOM, DEAD_MANS_HAND, BRIDGE_OUT, THE_LONG_WAY_HOME,
@@ -141,6 +142,7 @@ export const SCENARIOS: Scenario[] = [
   ...MEDICAL_RESCUE_SUPPORT_GEAR_BATCH,
   ...CONSTRUCTION_BUILDING_STRUCTURAL_WORK_BATCH,
   ...COURIER_MAIL_TELEGRAPH_GENRE_BATCH,
+  ...WEEKLY_GREEN_PATH_ADVENTURES,
 ];
 
 const BY_ID = new Map(SCENARIOS.map((scenario) => [scenario.id, scenario]));
