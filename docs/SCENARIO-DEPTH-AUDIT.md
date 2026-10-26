@@ -6,10 +6,12 @@ Internal snapshot for the library-wide retrofit pass. The QA Content Quality pan
 
 ### Merchant ecology registry update (2026-10-05)
 
-After Genre Batch 16, the current local registry contains 859 adventures. Effective depth is 59 ENCOUNTER, 784 ADVENTURE (including 202 legacy entries without explicit depth metadata), and 16 DEEP_EXPLORATION. Effective risk totals are LOW 304, MODERATE 313, HIGH 202, and SEVERE 40. Selector formulas and weights are unchanged. Batch 16’s 24 stories are Adventure depth; the registry classifier assigns eight LOW, twelve MODERATE, and four HIGH tiers.
+At this October 5 snapshot after Genre Batch 16, the local registry contained 859 adventures. Effective depth was 59 ENCOUNTER, 784 ADVENTURE (including 202 legacy entries without explicit depth metadata), and 16 DEEP_EXPLORATION. Effective risk totals were LOW 304, MODERATE 313, HIGH 202, and SEVERE 40. Selector formulas and weights were unchanged. Batch 16’s 24 stories were Adventure depth; the registry classifier assigned eight LOW, twelve MODERATE, and four HIGH tiers.
+
+#### Historical content-quality audit baseline (2026-10-02)
 
 - 445 registered adventures; 1,629 ending route variants reviewed by the content-quality heuristics.
-- Current intended depth classification: 49 Encounter, 380 Adventure, 16 Deep Exploration (445 total).
+- Intended depth classification at that 445-adventure baseline: 49 Encounter, 380 Adventure, 16 Deep Exploration.
 - The 16 Deep Exploration entries are explicit in current metadata. Compact Encounter classification reflects authorial intent and story scale, not a raw scene-count threshold. Legacy scenarios with explicitly authored `VIGNETTE` metadata classify as Encounter; legacy metadata built through the standard authoring helpers defaults to Adventure. Length is not a quality grade and does not override an explicit intended lane.
 - The graph audit found no invalid targets, cycles, or unaccounted unreachable scenes. Seventeen retained unreachable IDs are deliberately preserved in six existing adventures for stable-scene/save compatibility, including migration entry scenes and older authored endings. Engine-routed `__death` nodes are accounted for separately. Do not remove a retained scene without checking its active-save history.
 

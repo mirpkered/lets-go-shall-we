@@ -1,9 +1,9 @@
 # Current-Library Semantic Audit
 
-Status: **COMPLETE — 861/861 LIVE ADVENTURES REVIEWED**
+Status: **COMPLETE — 861/861 ADVENTURES IN THE HISTORICAL AUDIT SCOPE REVIEWED**
 Source snapshot: `cba101f0feba09c67543f942331ca38f765ebe14`
 Registry order source: `src/scenarios/index.ts`; registry snapshot SHA: `5676b85c4c4d4c84d18e7558f1968870961686bb`.
-Current live registry: 861 Adventures; 861 live Adventures reviewed; 0 remain. First unreviewed live Adventure: none. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0413` and `CRA-C0016`.
+Audit scope at closure: 861 Adventures; 861 reviewed; 0 remain. The current registered library contains 881 Adventures; the 20 stories added in the October 21 weekly batch are outside this historical semantic-audit scope. At the original audit closure, the next IDs were `CRA-F0362` and `CRA-C0013`; current post-audit next IDs are `CRA-F0413` and `CRA-C0016`.
 
 ### Current checkpoint — finite MINOR CONCERN deep review
 

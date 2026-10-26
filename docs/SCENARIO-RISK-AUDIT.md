@@ -1,10 +1,10 @@
 # Scenario Risk Audit
 
-## Current registry update (2026-10-06)
+## Historical registry snapshot after Genre Batch 16 (2026-10-06)
 
-After Courier / Mail / Telegraph Genre Batch 16, the local registry contains 859 scenarios. Effective risk counts are LOW 304, MODERATE 313, HIGH 202, and SEVERE 40. Selector formulas and risk weights are unchanged. Batch 16 adds eight LOW, twelve MODERATE, and four HIGH stories. Its high-risk options warn about floodwater, an active rail line, a due quarry shift, or loose ravine stone; none creates authored death. The construction batch notes remain a dated snapshot in the continuity program document.
+After Courier / Mail / Telegraph Genre Batch 16, the October 6 snapshot contained 859 scenarios. Effective risk counts were LOW 304, MODERATE 313, HIGH 202, and SEVERE 40. Selector formulas and risk weights were unchanged. Batch 16 added eight LOW, twelve MODERATE, and four HIGH stories. Its high-risk options warn about floodwater, an active rail line, a due quarry shift, or loose ravine stone; none creates authored death. The construction batch notes remain a dated snapshot in the continuity program document.
 
-Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. In the current 445-adventure registry, explicit `diversity.riskTier` is now authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries use the compatibility classifier until they are individually migrated. Current effective counts are LOW 197, MODERATE 115, HIGH 94, SEVERE 39 (see [Current Systems](CURRENT_SYSTEMS.md)). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
+Historical detailed risk audit of the original **175-adventure registry snapshot**. It is not a current full-library table. The 301-adventure counts below belong to that dated expansion snapshot. At the historical 445-adventure registry snapshot, explicit `diversity.riskTier` was authoritative for all 275 metadata-bearing scenarios; the remaining 170 older entries used the compatibility classifier pending individual migration. Its effective counts were LOW 197, MODERATE 115, HIGH 94, SEVERE 39. Current risk counts are in [Current Systems](CURRENT_SYSTEMS.md). Risk class describes authored route danger, not tone, and does not change success odds once a scenario begins.
 
 ## Effective-risk reconciliation
 

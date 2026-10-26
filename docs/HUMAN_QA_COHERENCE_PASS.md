@@ -1,8 +1,8 @@
 # Human-QA Coherence Pass
 
-Status: **BOUNDED REVIEW COMPLETE — all documented semantic candidates dispositioned; all 59 minor-concern Adventures reviewed, with CRA-F0412 repaired. This does not claim exhaustive route-level or hands-on review of all 861 Adventures.**
+Status: **BOUNDED REVIEW COMPLETE — all documented semantic candidates dispositioned; all 59 minor-concern Adventures reviewed, with CRA-F0412 repaired. This does not claim exhaustive route-level or hands-on review of the current 881-adventure library.**
 
-This is a separate player-experience review. It does not reopen, renumber, or alter the completed 354-finding semantic audit. The original completion record remains intact; post-audit semantic discoveries stay in the ledger's separate `postAuditHumanQa` section.
+This is a separate player-experience review. It does not reopen, renumber, or alter the completed 354-finding semantic audit. Its 861-adventure references describe the historical audit population, not the current 881-adventure registry. The original completion record remains intact; post-audit semantic discoveries stay in the ledger's separate `postAuditHumanQa` section.
 
 ## Review categories
 
@@ -31,7 +31,7 @@ A lexical screen of scenario source covered “remember,” “pause,” “cont
 - **Route-truth review:** the Traveler directly hears the carter's qualified report, but does not independently verify the road or ford. The saved sentence is explicitly attributed (“A carter said…”) and preserves the uncertainty (“might still be muddy”); it is one-off free-text memory, not a new stable Knowledge fact. The `rememberRoadSupper` choice therefore records deliberate retention of uncertain testimony rather than converting it to objective road truth. The other topic variants similarly gate their own account/memory. The listener can also leave the conversation without retaining it.
 - **Disposition:** **no semantic defect (Outcome B)**. No source or ledger change is warranted. The persistent-memory choice is a meaningful roleplay/retention option, not enough evidence of a false-exclusive or misleading action by itself. The original audit remains closed and unchanged.
 
-This pass does **not** claim an exhaustive, route-level review of all 861 Adventures. A lexical screen generated leads, but only candidates documented here received focused review; no other candidate was promoted from a search hit alone.
+This pass does **not** claim an exhaustive, route-level review of the current library of 881 Adventures. A lexical screen generated leads, but only candidates documented here received focused review; no other candidate was promoted from a search hit alone.
 
 ### Additional focused coherence leads screened
 
