@@ -20,7 +20,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current local registry has 861 adventures, including ten fixed-stock merchant encounters, sixteen continuity-expansion genre batches, and two outcome-rooted follow-ups gated by specific character History and Contact state. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
+The current local registry has 881 Adventures: ten fixed-stock merchant encounters, sixteen continuity-expansion genre batches, two outcome-rooted follow-ups gated by specific character History and Contact state, and the October 21 weekly batch. Depth totals are 59 Encounters, 806 Adventures, and 16 Deep Explorations. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 
@@ -184,7 +184,7 @@ The QA panel’s “Generate library diversity report” builds one row per regi
 
 ### Current gap snapshot
 
-The first generated snapshot for 175 registered adventures (2026-10-01) is a prompt for human review, not a definitive score. Tags overlap, and legacy keyword classification can mistake a passing mention for a central activity. The QA report is the current data source; do not apply that dated snapshot to the later 445-adventure registry.
+The first generated snapshot for 175 registered adventures (2026-10-01) is a prompt for human review, not a definitive score. Tags overlap, and legacy keyword classification can mistake a passing mention for a central activity. The QA report is the current data source; do not apply that dated snapshot to the historical 445-adventure audit baseline from 2026-10-02 or to the current registry.
 
 - **Risk:** 111 LOW, 35 MODERATE, 20 HIGH, 9 SEVERE. Low-risk stories dominate by count, while meaningful lethal danger remains a smaller share.
 - **Fantasy/combat:** 169 NONE, 5 EERIE, 1 CONFIRMED_SUPERNATURAL; no current scenario classifies as an explicit fantasy threat or dungeon fantasy. Combat presence is NONE 163, AVOIDABLE 6, POSSIBLE 5, MULTIPLE 1 (the broader literary word matcher and explicit combat metadata need author review). Grounded social content is therefore the clear center of gravity; exceptional undead/monster and compact dungeon experiences are a genuine future option, not a required quota.
