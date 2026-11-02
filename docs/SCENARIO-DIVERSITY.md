@@ -2,7 +2,7 @@
 
 This framework exists to help the library grow toward hundreds or 1,000+ adventures without turning authoring into a fixed form. Metadata is internal, never a quality score, and never player-facing.
 
-The October 21, 2026 weekly batch adds 20 year-round Adventures, bringing the registry to 881 (806 Adventure depth, alongside 59 Encounters and 16 Deep Explorations). It emphasizes quieter civic/cultural participation, privacy, shared resources, and practical evidence decisions. Its metadata and route structures are included in the current automated diversity report; similarity warnings remain prompts for human review rather than release failures. See [Adventure Library Status](ADVENTURE_LIBRARY.md) for the batch scope.
+The October 21, 2026 weekly batch added 20 year-round Adventures. The November 2 weekly batch adds another 20, bringing the registry to 901 (826 Adventure depth, alongside 59 Encounters and 16 Deep Explorations). The November batch emphasizes shore and industrial work, outdoor maintenance, field operations, and a route-evidence dispatch handoff. Its metadata and route structures are included in the current automated diversity report; similarity warnings remain prompts for human review rather than release failures. See [Adventure Library Status](ADVENTURE_LIBRARY.md) for the batch scope.
 
 ## Classification dimensions
 
@@ -20,7 +20,7 @@ Length is VIGNETTE, STANDARD, EXTENDED, or EPIC_SHORT, estimated from meaningful
 
 ## Current registry snapshot
 
-The current local registry has 881 Adventures: ten fixed-stock merchant encounters, sixteen continuity-expansion genre batches, two outcome-rooted follow-ups gated by specific character History and Contact state, and the October 21 weekly batch. Depth totals are 59 Encounters, 806 Adventures, and 16 Deep Explorations. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
+The current local registry has 901 Adventures: ten fixed-stock merchant encounters, sixteen continuity-expansion genre batches, two outcome-rooted follow-ups gated by specific character History and Contact state, and the October 21 and November 2 weekly batches. Depth totals are 59 Encounters, 826 Adventures, and 16 Deep Explorations. Batches 1–14 document the program’s Gear-correction phase; Batches 15–16 begin equal editorial emphasis on Gear, Knowledge, and Lore and Batch 16 applies explicit persistent-consequence review. Risk and seasonal availability are recorded in [Current Systems](CURRENT_SYSTEMS.md). Historical presence is currently NONE throughout the registry. Counts in dated batch sections below describe their own snapshots.
 
 ### Gear Expansion Genre Batch 7 — Wilderness Work / Fieldcraft
 

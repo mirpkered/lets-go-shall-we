@@ -59,7 +59,7 @@ describe('scenario diversity and seasonal framework', () => {
 
   it('reports intended depth separately from raw scene-count length', () => {
     const audit = analyzeScenarioLibrary(SCENARIOS);
-    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 59, ADVENTURE: 806, DEEP_EXPLORATION: 16 });
+    expect(audit.distributions.depthClass).toEqual({ ENCOUNTER: 59, ADVENTURE: 826, DEEP_EXPLORATION: 16 });
     expect(DEEP_EXPLORATION_ADVENTURES).toHaveLength(14);
     expect(audit.rows.filter(({ metadata }) => metadata.depthClass === 'DEEP_EXPLORATION')).toHaveLength(16);
     expect(['broken-bell', 'whats-mine', ...DEEP_EXPLORATION_ADVENTURES.map(({ id }) => id)].every((id) => classifyScenario(SCENARIOS.find((scenario) => scenario.id === id)!).depthClass === 'DEEP_EXPLORATION')).toBe(true);
@@ -120,7 +120,7 @@ describe('scenario diversity and seasonal framework', () => {
     const library = [october, ...Array.from({ length: 174 }, (_, index) => ({ ...annual, id: `annual-${index}` }))];
     expect(eligibleScenarios([annual, october, december], [october.id], 10).map(({ id }) => id)).not.toContain(october.id);
     expect(selectScenario([annual, october, december], [], () => 0, { selectionMonth: 10 })).toBeDefined();
-    const weighted = scenarioSelectionWeights(eligibleScenarios(library, [], 10));
+    const weighted = scenarioSelectionWeights(eligibleScenarios(library, [], 10), { selectionMonth: 10 });
     const total = weighted.reduce((sum, entry) => sum + entry.weight, 0);
     const seasonalWeight = weighted.find(({ scenario }) => scenario.id === october.id)!.weight;
     expect(seasonalWeight / total).toBeLessThan(0.02);

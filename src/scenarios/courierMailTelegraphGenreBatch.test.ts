@@ -23,7 +23,7 @@ const act = (state: SaveData, scenario: (typeof COURIER_MAIL_TELEGRAPH_GENRE_BAT
 describe('Courier / Mail / Telegraph / Message Work batch', () => {
   it('registers 24 unique reachable all-year Adventures with an exact 8/8/8 continuity balance', () => {
     expect(COURIER_MAIL_TELEGRAPH_GENRE_BATCH).toHaveLength(24);
-    expect(SCENARIOS).toHaveLength(881);
+    expect(SCENARIOS).toHaveLength(901);
     expect(new Set(COURIER_MAIL_TELEGRAPH_GENRE_BATCH.map(({ id }) => id)).size).toBe(24);
     expect(COURIER_BATCH_PRIMARY_LANES).toEqual({ GEAR: 8, KNOWLEDGE: 8, LORE: 8 });
     expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
