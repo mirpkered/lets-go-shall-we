@@ -59,7 +59,7 @@ describe('weekly green-path Adventure batch', () => {
     expect(new Set(WEEKLY_GREEN_PATH_ADVENTURES.map(({ title }) => title)).size).toBe(20);
     expect(WEEKLY_GREEN_PATH_ADVENTURES.every(({ diversity }) => diversity?.availability?.season === 'ALL_YEAR')).toBe(true);
     expect(new Set(SCENARIOS.map(({ id }) => id)).size).toBe(SCENARIOS.length);
-    expect(SCENARIOS).toHaveLength(881);
+    expect(SCENARIOS).toHaveLength(901);
     expect(itemsOfClass('GEAR')).toHaveLength(74);
     expect(Object.keys(KNOWLEDGE_FACTS)).toHaveLength(32);
     expect(WEEKLY_GREEN_PATH_ADVENTURES.some(({ scenes }) => Object.values(scenes).some(({ choices }) => choices.some(({ effects }) => effects?.gainItems?.length || effects?.gainSupplies || effects?.knowledge?.length || effects?.knowledgeEntries?.length)))).toBe(false);
